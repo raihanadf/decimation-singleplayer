@@ -598,7 +598,10 @@ to go to direction ... except if its from the enemy or rival".
   - Bug: an NPC that once killed something kept the corpse as its old style target
     (entityToAttack is never cleared under the new AI) and never investigated again; Investigate
     now clears dead targets (bug.md "NPCs that once killed something ignored gunshots").
-  - The dev test noise now has 8 checks: a survival player's shot brings a Soviet from 40 away
+  - v0.43.3 (user: the juggernaut still did not react in survival): entityToAttack keeps the
+    last enemy seen even while it lives on far away; busy now reads only the revenge target and
+    the new AI target (bug.md "Enemy NPCs ignored gunshots, juggernaut too").
+  - The dev test noise (v0.43.2) had 8 checks: a survival player's shot brings a Soviet from 40 away
     until it sees the player within 32 and fights (heard, came 12, engaged); a creative player's
     shot does not; the friendly bandit check reads whether it took the noise. The test removes
     mobs it did not spawn (stray infected on the arena made every NPC fight them). All PASS.

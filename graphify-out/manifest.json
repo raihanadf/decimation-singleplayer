@@ -110,9 +110,9 @@
     "semantic_hash": "de153d1f8408971d6190e16a7d4256f9"
   },
   "CLAUDE.md": {
-    "mtime": 1791672060.2267294,
-    "ast_hash": "df4e682448a00ea24abbe8f177041352",
-    "semantic_hash": "df4e682448a00ea24abbe8f177041352"
+    "mtime": 1791675756.2595956,
+    "ast_hash": "2312f8fd9383dc129029d5c87378ccbf",
+    "semantic_hash": "2312f8fd9383dc129029d5c87378ccbf"
   },
   "DECIMATION_MOD_TASK.md": {
     "mtime": 1784958353.0126374,
@@ -120,9 +120,9 @@
     "semantic_hash": "aa4550575e47e7c1d0b020a51afbb501"
   },
   "bug.md": {
-    "mtime": 1791672060.2262554,
-    "ast_hash": "c057e4798168603b58ab6f016f9fbc7e",
-    "semantic_hash": "c057e4798168603b58ab6f016f9fbc7e"
+    "mtime": 1791675756.257649,
+    "ast_hash": "2e163cf20fed5dd40892374b5e13c5fc",
+    "semantic_hash": "2e163cf20fed5dd40892374b5e13c5fc"
   },
   "create_weapons.md": {
     "mtime": 1791653625.5948887,
@@ -150,9 +150,9 @@
     "semantic_hash": "38e41d82998e4feb2a1494d2401c4034"
   },
   "new_feature.md": {
-    "mtime": 1791672060.2255492,
-    "ast_hash": "19c4ce4b0dccfd8cca07f3d39c14e4d7",
-    "semantic_hash": "19c4ce4b0dccfd8cca07f3d39c14e4d7"
+    "mtime": 1791675756.258687,
+    "ast_hash": "5f62f37914ba9df21cb198505cb92ab7",
+    "semantic_hash": "5f62f37914ba9df21cb198505cb92ab7"
   },
   "tools/graph_update.py": {
     "mtime": 1791348965.63658,
@@ -655,9 +655,9 @@
     "semantic_hash": "fcaf65f43d983d02c0fb54297bfc77a4"
   },
   "docs/roadmap.md": {
-    "mtime": 1791672068.7946646,
-    "ast_hash": "2d27f640083bf046aed1153ff515fa8e",
-    "semantic_hash": "2d27f640083bf046aed1153ff515fa8e"
+    "mtime": 1791675756.2602584,
+    "ast_hash": "418cc49387090928911fdc93a5614ae0",
+    "semantic_hash": "418cc49387090928911fdc93a5614ae0"
   },
   "dev/src/main/java/net/decimation/worldgen/LegacyStreets.java": {
     "mtime": 1791487239.5087948,
@@ -995,14 +995,14 @@
     "semantic_hash": "c10e45f92d307a92e1e7fa28640128ac"
   },
   "dev/src/main/java/net/decimation/fixes/GunNoise.java": {
-    "mtime": 1791671833.0452793,
-    "ast_hash": "fa1c0f47b2f5d468b825b4a6d813ea2c",
-    "semantic_hash": "fa1c0f47b2f5d468b825b4a6d813ea2c"
+    "mtime": 1791674643.5926237,
+    "ast_hash": "6dbd191672a4baadc6f31999486b82a7",
+    "semantic_hash": "6dbd191672a4baadc6f31999486b82a7"
   },
   "dev/src/main/java/net/decimation/worldgen/devtest/NoiseTest.java": {
-    "mtime": 1791671833.0459342,
-    "ast_hash": "4d118b3d654165ec7dbdaf0d5261d2ef",
-    "semantic_hash": "4d118b3d654165ec7dbdaf0d5261d2ef"
+    "mtime": 1791675336.5062895,
+    "ast_hash": "399ca7abaad0e2b443f047fa18319588",
+    "semantic_hash": "399ca7abaad0e2b443f047fa18319588"
   },
   "dev/src/main/java/net/decimation/worldgen/devtest/AimDriftTest.java": {
     "mtime": 1791671028.7914507,

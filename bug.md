@@ -11,6 +11,26 @@ not something we introduced or need to fix) see `documentation.md`.
 ## Open
 
 
+### Enemy NPCs ignored gunshots, juggernaut too (11 Oktober 2026, FIXED v0.43.3)
+- User on 0.43.2: "even on survival mode the juggernaut dont react when i shooting when there is
+  no zombies". v0.43.2 (below) fixed only dead targets.
+- Cause: Decimation's NPCs fight their revenge target (getAITarget): findTarget sets it together
+  with the old style entityToAttack, vanilla drops the revenge target about 5 s later or when it
+  dies, then findTarget looks again. entityToAttack is only ever overwritten by the next enemy
+  found, never cleared, so it keeps the last enemy seen even while that one lives far away or out
+  of sight. GunNoise's busy check read entityToAttack: an NPC that had ever seen any enemy counted
+  as fighting forever, and with no zombies near nothing replaced it.
+- Reproduced (dev test noise -Ptier=juggernaut -Pfar=45, stale living target held, a pig behind
+  it): old code heard the shot and moved -0.1 blocks; fixed: came 13 to 15 and engaged.
+- Fix (fixes/GunNoise Investigate.busy): busy only while the revenge target or the new AI target
+  is alive; entityToAttack is ignored.
+- Seen on the way (dev test, juggernaut 20 blocks away in sight, survival): Decimation's own
+  targeting works, it engaged and hit the player on 8 ticks; in creative 0.
+- Test hardening: noise test removes stray mobs, respawns infected Decimation swapped for a
+  hulk / bloater, checks "took the noise" where wandering made distances flaky, counts hits on
+  a survival player (damage on, health 100000); a sniper rifle Soviet engages from up to 70
+  (sniperSearch) without walking, which counts. 4 runs in a row all PASS (10 checks).
+
 ### NPCs that once killed something ignored gunshots (11 Oktober 2026, FIXED v0.43.2)
 - User (0.43.0): "enemy npc do nothing when me shooting near them"; zombies did react. They were
   in Creative, where Decimation's NPCs never react to a player at all (isHostileTo is false for
@@ -21,6 +41,7 @@ not something we introduced or need to fix) see `documentation.md`.
   findTarget sets it and nothing clears it. GunNoise's Investigate counted that as "busy
   fighting", so an NPC that had killed anything never investigated a shot again.
 - Fix (fixes/GunNoise Investigate.busy): a dead entityToAttack or attack target is cleared.
+  Not enough: see the v0.43.3 entry above (a living stale entityToAttack blocked too).
 - Check: dev test noise, 8 checks PASS: Soviet walks 19.8 toward a bandit's shot; survival player
   shot: Soviet heard, came 12, engaged the player; creative player shot: not heard. Not yet tried
   by the user in survival [not verified].

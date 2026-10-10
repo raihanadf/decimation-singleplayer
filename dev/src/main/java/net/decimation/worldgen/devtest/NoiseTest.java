@@ -20,7 +20,8 @@ import net.minecraft.world.World;
  * 4. the same with a bandit 43 blocks away (its own side): it does not;
  * 5. the player's held gun goes from 30 to 29 rounds (how the game records a shot): an
  *    infected 45 blocks away comes (the detection path of real player shots);
- * 6. the same shot by a SURVIVAL player (damage off): a Soviet 40 blocks away comes, and by a
+ * 6. the same shot by a SURVIVAL player (damage off): a Soviet 40 blocks away comes even with a
+ *    stale living target from before (a pig behind it, as played worlds have), and by a
  *    creative player it does not (Decimation's NPCs are never hostile to creative players, user
  *    report 11 Oktober 2026 "enemy npc do nothing when me shooting near them", in creative).
  * The player is in creative, so the infected do not chase the player instead.
@@ -64,6 +65,17 @@ public class NoiseTest extends DevTestMode
                 DevTestResults.value(name(), "phase 1 spawn refused", (a == null ? "a " : "") + (b == null ? "b" : ""));
             }
         }
+        if (t == 26)
+        {
+            // Decimation turns some fresh infected into hulks / bloaters: the one spawned is then
+            // removed and the test would watch a dead entity (seen: "came closer by 0.0")
+            if (a == null || a.isDead)
+            {
+                DevTestResults.value(name(), "phase 1 infected replaced by Decimation", "spawned again");
+                a = spawn(w, Deci.newInfected(w), X - 50, Z);
+                ax = dist(a, X, Z);
+            }
+        }
         if (t == 30)
         {
             GunNoise.shot(p, ak);                     // the player at the centre fires
@@ -71,12 +83,18 @@ public class NoiseTest extends DevTestMode
         if (t == 20 + PHASE - 10)
         {
             check("unsuppressed: infected 50 away came closer by", ax - dist(a, X, Z), ax - dist(a, X, Z) >= 15, ">= 15");
-            check("unsuppressed: infected 76 away (out of range) moved by", bx - dist(b, X, Z),
-                  Math.abs(bx - dist(b, X, Z)) < 4, "< 4");
+            boolean far = b != null && b.getEntityData().hasKey("deciwgNoise");
+            DevTestResults.check(name(), "unsuppressed: infected 76 away (out of range) took the noise", far, !far,
+                                 "false (it may wander on its own)");
         }
         if (t == 20 + PHASE)
         {
             DevTestArena.build(w, p);
+            c = spawn(w, Deci.newInfected(w), X - 30, Z);
+            cx = dist(c, X, Z);
+        }
+        if (t == 26 + PHASE && (c == null || c.isDead))
+        {
             c = spawn(w, Deci.newInfected(w), X - 30, Z);
             cx = dist(c, X, Z);
         }
@@ -89,7 +107,10 @@ public class NoiseTest extends DevTestMode
         }
         if (t == 20 + 2 * PHASE - 10)
         {
-            check("suppressed: infected 30 away came closer by", cx - dist(c, X, Z), cx - dist(c, X, Z) < 4, "< 4");
+            boolean quiet = c != null && !c.isDead && !c.getEntityData().hasKey("deciwgNoise");
+            DevTestResults.check(name(), "suppressed: infected 30 away took the noise / came closer by",
+                                 !quiet + " / " + String.format("%.1f", cx - dist(c, X, Z)), quiet && cx - dist(c, X, Z) < 4,
+                                 "false / < 4");
         }
         playerShotPhase(t, p, w, ak);
         // phases 3 and 4: a bandit fires and leaves; first a Soviet (an enemy) alone, then a bandit
@@ -146,6 +167,12 @@ public class NoiseTest extends DevTestMode
             gun.stackTagCompound.setInteger("ammo", 30);
             p.inventory.setInventorySlotContents(p.inventory.currentItem, gun);
         }
+        if (t == base + 6 && (c == null || c.isDead))
+        {
+            DevTestResults.value(name(), "phase 5 infected replaced by Decimation", "spawned again");
+            c = spawn(w, Deci.newInfected(w), X - 45, Z);
+            cx = dist(c, X, Z);
+        }
         if (t == base + 10 && p.getHeldItem() != null && p.getHeldItem().stackTagCompound != null)
         {
             p.getHeldItem().stackTagCompound.setInteger("ammo", 29);   // what the server does per shot
@@ -165,16 +192,42 @@ public class NoiseTest extends DevTestMode
                 DevTestArena.build(w, p);
                 creative = p.capabilities.isCreativeMode;
                 p.capabilities.isCreativeMode = !survival;
-                p.capabilities.disableDamage = true;
+                // survival: damage on, health huge and topped up, hits counted (did it fire at all)
+                p.capabilities.disableDamage = !survival;
                 p.sendPlayerAbilities();
+                p.getEntityAttribute(net.minecraft.entity.SharedMonsterAttributes.maxHealth).setBaseValue(100000);
+                p.setHealth(100000);
+                hits = 0;
                 p.setPositionAndUpdate(X + 0.5, DevTestArena.Y, Z + 0.5);
-                a = spawn(w, Deci.newSoviet(w), X - 40, Z);
+                EntityLiving sov = Deci.newSoviet(w);
+                if (!tier.isEmpty())
+                {
+                    net.decimation.fixes.NpcLoadouts.instance().equip(sov,
+                        net.decimation.fixes.NpcLoadouts.instance().byName(tier), sov.getEntityData());
+                }
+                a = spawn(w, sov, X - far, Z);
                 ax = dist(a, X, Z);
                 heardIt = engaged = false;
+                // a stale old style target, alive and out of sight far away, as NPCs in a played
+                // world have (Decimation never clears entityToAttack): it must not stop the reaction
+                // a pig behind it: alive, never fought (an infected there was shot dead, which
+                // cleared the target and hid the bug)
+                EntityLiving pig = new net.minecraft.entity.passive.EntityPig(w);
+                pig.getEntityData().setBoolean(net.decimation.fixes.VanillaMobs.KEEP, true);
+                c = spawn(w, pig, X - far - 2, Z + 2);
+                if (a != null && c != null)
+                {
+                    ((net.minecraft.entity.EntityCreature) a).setTarget(c);
+                }
                 ItemStack gun = ak.copy();
                 gun.stackTagCompound = new NBTTagCompound();
                 gun.stackTagCompound.setInteger("ammo", 30);
                 p.inventory.setInventorySlotContents(p.inventory.currentItem, gun);
+            }
+            if (t == b + 10)
+            {
+                state((survival ? "survival" : "creative") + " Soviet at the shot (stale target "
+                      + (c == null ? "not spawned" : c.isEntityAlive() ? "alive" : "dead") + ")", a);
             }
             if (t == b + 10 && p.getHeldItem() != null && p.getHeldItem().stackTagCompound != null)
             {
@@ -184,27 +237,43 @@ public class NoiseTest extends DevTestMode
             {
                 watch(a, p);
             }
+            // no zombies near in the user's case: a stray the NPC picks here (then swept dead)
+            // would replace the stale target, so the pig is put back unless it found the player
+            if (t > b && a != null && c != null && ((net.minecraft.entity.EntityCreature) a).getEntityToAttack() != p
+                && ((net.minecraft.entity.EntityCreature) a).getEntityToAttack() != c)
+            {
+                ((net.minecraft.entity.EntityCreature) a).setTarget(c);
+            }
+            if (t > b && p.getHealth() < 100000)
+            {
+                hits++;
+                p.setHealth(100000);
+            }
             if (t == b + PHASE - 10)
             {
+                DevTestResults.value(name(), (survival ? "survival" : "creative") + ": ticks the player was hit", hits);
                 double came = ax - dist(a, X, Z);
                 state(survival ? "survival Soviet state" : "creative Soviet state", a);
                 if (survival)
                 {
                     // it walks toward the shot until it sees the player within 32 (Decimation's
-                    // findTarget), then fights from there: 8 blocks closer and engaged is a pass
-                    DevTestResults.check(name(), "survival player shot: Soviet 40 away heard / came / engaged",
+                    // findTarget; snipers 70, NpcLoadouts.sniperSearch), then fights from there
+                    DevTestResults.check(name(), "survival player shot: Soviet " + tier + " " + far + " away heard / came / engaged",
                         heardIt + " / " + String.format("%.1f", came) + " / " + engaged,
-                        heardIt && (came >= 10 || engaged && came >= 5), "heard, and came >= 10 or came >= 5 and engaged");
+                        heardIt && (came >= 10 || engaged),
+                        "heard, and came >= 10 or engaged (sniper rifles lock on from up to sniperRange 70)");
                 }
                 else
                 {
-                    DevTestResults.check(name(), "creative player shot: Soviet 40 away heard / came",
+                    DevTestResults.check(name(), "creative player shot: Soviet " + tier + " " + far + " away heard / came",
                         heardIt + " / " + String.format("%.1f", came), !heardIt && came < 5,
                         "false / < 5 (Decimation's NPCs ignore creative players)");
                 }
                 p.inventory.setInventorySlotContents(p.inventory.currentItem, null);
                 p.capabilities.isCreativeMode = creative;
                 p.capabilities.disableDamage = creative;
+                p.getEntityAttribute(net.minecraft.entity.SharedMonsterAttributes.maxHealth).setBaseValue(20);
+                p.setHealth(20);
                 p.sendPlayerAbilities();
                 if (k == 1)
                 {
@@ -216,8 +285,12 @@ public class NoiseTest extends DevTestMode
     }
 
     private boolean creative;
+    /** -Ptier=juggernaut: the Soviet of phases 6 / 7 gets that tier; -Pfar=N its distance (40). */
+    private final String tier = System.getProperty("deciworldgen.autotest.tier", "");
+    private final int far = Integer.getInteger("deciworldgen.autotest.far", 40);
     /** Since the last phase start: did the NPC under test take the noise, did it lock onto the player. */
     private boolean heardIt, engaged;
+    private int hits;
 
     /**
      * Infected keep spawning on the arena at night and every NPC turns to fight them (seen: a
@@ -242,7 +315,7 @@ public class NoiseTest extends DevTestMode
         if (e != null)
         {
             heardIt |= e.getEntityData().hasKey("deciwgNoise");
-            engaged |= ((net.minecraft.entity.EntityCreature) e).getEntityToAttack() == p;
+            engaged |= ((net.minecraft.entity.EntityCreature) e).getEntityToAttack() == p || e.getAITarget() == p;
         }
     }
 
@@ -257,6 +330,7 @@ public class NoiseTest extends DevTestMode
         net.minecraft.nbt.NBTTagCompound d = e.getEntityData();
         DevTestResults.value(name(), what, d.getString(net.decimation.fixes.NpcLoadouts.TAG) + " / "
             + d.getString(net.decimation.fixes.NpcLoadouts.GUN_TAG) + " / noise " + d.hasKey("deciwgNoise")
+            + " / revenge " + (e.getAITarget() == null ? "none" : e.getAITarget().getClass().getSimpleName())
             + " / target " + (e.getAttackTarget() == null ? "none" : e.getAttackTarget().getClass().getSimpleName())
             + " / attacking " + (((net.minecraft.entity.EntityCreature) e).getEntityToAttack() == null ? "none"
                 : ((net.minecraft.entity.EntityCreature) e).getEntityToAttack().getClass().getSimpleName()

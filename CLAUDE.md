@@ -747,6 +747,9 @@ of the last session:
   creative player: test NPC reactions in survival. `aimdrift
   changes=gun:sight,...` swaps gun / sight while aiming. Test NPC modes must
   remove mobs they did not spawn (NoiseTest.sweep): arena strays distract NPCs.
+  v0.43.3: Decimation never clears an NPC's entityToAttack (the last enemy
+  seen); only getAITarget (revenge, expires) means "fighting". GunNoise
+  reads that. noise test: -Ptier / -Pfar, stale target held, hit counter.
   Gun study (10 Oktober 2026): docs/gun_style_guide.md, tools/guns/study.py
   (renders / measures Decimation's guns from the jar, `attach` adds
   attachments as the game places them), dev test mode `gunview` (hip, aim

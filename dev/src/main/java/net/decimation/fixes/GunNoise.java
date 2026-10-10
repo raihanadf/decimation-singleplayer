@@ -200,26 +200,17 @@ public final class GunNoise
         }
 
         /**
-         * Fighting something alive. Decimation's NPCs run the new AI, so vanilla never clears their
-         * old style target (entityToAttack) when it dies: an NPC that once killed an infected kept
-         * the corpse as its target and never reacted to a shot again (dev test noise, 11 Oktober
-         * 2026). Dead targets are cleared here.
+         * Fighting something alive right now. Decimation's NPCs fight their revenge target
+         * (getAITarget: findTarget sets it, vanilla drops it about 5 s after it was set or when it
+         * dies, then findTarget looks again); their old style entityToAttack is only ever
+         * overwritten, never cleared, so it is no sign of a fight: an NPC that once saw any enemy
+         * kept it there and never reacted to a shot again (user 11 Oktober 2026: "even on survival
+         * mode the juggernaut dont react when i shooting"). New AI targets (infected) count too.
          */
         private boolean busy()
         {
-            Entity t = m.getEntityToAttack();
-            if (t != null && !t.isEntityAlive())
-            {
-                m.setTarget(null);
-                t = null;
-            }
-            EntityLivingBase a = m.getAttackTarget();
-            if (a != null && !a.isEntityAlive())
-            {
-                m.setAttackTarget(null);
-                a = null;
-            }
-            return a != null || t != null;
+            EntityLivingBase r = m.getAITarget(), a = m.getAttackTarget();
+            return r != null && r.isEntityAlive() || a != null && a.isEntityAlive();
         }
 
         @Override
