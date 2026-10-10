@@ -18,7 +18,12 @@ How shots are made: `./gradlew runClient -Pautotest` (street views),
 - sheet_fixed_npc_in_view.png: dev test aimdrift after the fix, 1160 x 650 window, elite sniper
   NPC in front: at 3 s and 15 s the ACOG centred, reticle on the crosshair, identical pictures.
 
-## worldmap_seed1_v0.14.png
+## aimdrift_v0.43.2/ (aim test with gun and sight changes, 11 Oktober 2026)
+- sheet_changes.png: dev test aimdrift, 1160 x 650, elite sniper NPC in view: AK-74 + ACOG at 3
+  and 15 s centred; then changed while aiming: AK-74 + red dot (no zoom, Decimation's own aim
+  pose, sniper NPC at the right), M4A4 + 2x centred, AK-74 + ACOG centred again.
+
+_v0.14.png
 Top down map (`tools/worldmap.py`), seed 1, Decimation world type, 800x800
 around spawn. Grey squares = Decimated City sectors full of building
 footprints; brown = military; yellow tan = dead plains / suburbs; green =

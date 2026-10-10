@@ -182,6 +182,8 @@ boot. Falls straight through to the mod's own (re-skinned) main menu after that.
 - `deciworldgen_noise.cfg` (v0.43.0): gunshot noise. A shot is heard `range` 64 blocks away,
   `suppressedRange` 12 with a suppressor; infected walk to it and search `zombieSearchSeconds`
   30, enemy NPCs (not the shooter's own side) `npcSearchSeconds` 40; `enabled` false turns it off.
+  NPCs never react to a player in creative mode (Decimation's NPCs are not hostile to creative
+  players); test NPC reactions in survival.
 - `deciworldgen_stats.cfg`: the local kill / death counters per player UUID (delete a player's
   block to reset them).
 - `deciworldgen_props.cfg`: prop render distance by size: small 24, medium 32, large 48

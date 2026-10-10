@@ -589,6 +589,19 @@ to go to direction ... except if its from the enemy or rival".
   not; a suppressed shot does not move one 30 away; a Soviet 43 away walks 32 toward a bandit's
   shot, a bandit does not; a real player shot (ammo 30 -> 29) brings an infected from 45 away.
   Not measured: frame time with many infected walking to a firefight [not verified].
+- User test of 0.43.0 (11 Oktober): "enemy npc do nothing when me shooting near them", zombies
+  react. Two causes (v0.43.2):
+  - The user was in Creative. Decimation's isHostileTo is false for every creative player
+    (bandit, soldier, Soviet, mech), so no NPC fights or investigates a creative player's shots;
+    kept as Decimation's rule. In survival: Soviets react to everyone, bandits to humanity 50
+    or more, soldiers and mechs to humanity under 50.
+  - Bug: an NPC that once killed something kept the corpse as its old style target
+    (entityToAttack is never cleared under the new AI) and never investigated again; Investigate
+    now clears dead targets (bug.md "NPCs that once killed something ignored gunshots").
+  - The dev test noise now has 8 checks: a survival player's shot brings a Soviet from 40 away
+    until it sees the player within 32 and fights (heard, came 12, engaged); a creative player's
+    shot does not; the friendly bandit check reads whether it took the noise. The test removes
+    mobs it did not spawn (stray infected on the arena made every NPC fight them). All PASS.
 
 ### v0.42.4: fourth review (11 Oktober 2026)
 Ladders walkable from the base on every tower (5 of 6 were walled in), the outpost's TOC back,

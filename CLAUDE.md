@@ -742,6 +742,11 @@ of the last session:
   v0.43.1: aim drift fix (bug.md "Gun creeps down while aiming"): ScopeZoom
   measured the scope glass of NPC guns too; measuring now only during the
   player's hand draw. Dev test `aimdrift` (sniper NPC in view).
+  v0.43.2: NPCs kept a dead old style target (entityToAttack) forever and
+  ignored gunshots; GunNoise clears it. Decimation's NPCs never react to a
+  creative player: test NPC reactions in survival. `aimdrift
+  changes=gun:sight,...` swaps gun / sight while aiming. Test NPC modes must
+  remove mobs they did not spawn (NoiseTest.sweep): arena strays distract NPCs.
   Gun study (10 Oktober 2026): docs/gun_style_guide.md, tools/guns/study.py
   (renders / measures Decimation's guns from the jar, `attach` adds
   attachments as the game places them), dev test mode `gunview` (hip, aim

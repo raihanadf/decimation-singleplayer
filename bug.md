@@ -10,7 +10,20 @@ not something we introduced or need to fix) see `documentation.md`.
 
 ## Open
 
-## Fixed
+
+### NPCs that once killed something ignored gunshots (11 Oktober 2026, FIXED v0.43.2)
+- User (0.43.0): "enemy npc do nothing when me shooting near them"; zombies did react. They were
+  in Creative, where Decimation's NPCs never react to a player at all (isHostileTo is false for
+  creative players in every NPC class: kept, new_feature.md "Gunshot noise").
+- Found while testing the survival case: every NPC on the test arena showed a DEAD infected as
+  its old style target (EntityCreature.entityToAttack). Decimation's NPCs run the new AI, so
+  vanilla's updateEntityActionState, which clears a dead entityToAttack, never runs; Decimation's
+  findTarget sets it and nothing clears it. GunNoise's Investigate counted that as "busy
+  fighting", so an NPC that had killed anything never investigated a shot again.
+- Fix (fixes/GunNoise Investigate.busy): a dead entityToAttack or attack target is cleared.
+- Check: dev test noise, 8 checks PASS: Soviet walks 19.8 toward a bandit's shot; survival player
+  shot: Soviet heard, came 12, engaged the player; creative player shot: not heard. Not yet tried
+  by the user in survival [not verified].
 
 ### Gun creeps down while aiming through a scope until it leaves the screen (11 Oktober 2026, FIXED v0.43.1)
 - User (AK-74 with the ACOG, screenshots docs/shots/aimdrift_v0.43.1/user_116.png, user_117.png):

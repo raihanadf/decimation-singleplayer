@@ -741,6 +741,9 @@ revision (same commit), never remove old ones.
   average was put back as it was.
 - Check: `devtest.py --live aimdrift size=1160x650` (elite sniper in view by default): shift
   0.0049, -0.2189 at 3, 8, 15 s, gun centred; old code -3.8931, 0.1726. Lesson 24.
+- Follow up (v0.43.2, user: "maybe the bug appear in change"): `aimdrift
+  changes=ak74:reddot,m4a4:2x,ak74:ta11acog` swaps gun / sight while aiming, 6 s each; each
+  settles and stays on screen (docs/shots/aimdrift_v0.43.2/sheet_changes.png).
 
 ### Case 8: test traps met on the way (dev test gunview)
 - No gun in the shots: F1 (hideGUI) hides the held item too; first

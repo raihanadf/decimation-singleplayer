@@ -31,6 +31,15 @@ public class AimDriftTest extends DevTestMode
     private final float turn = Float.parseFloat(System.getProperty("deciworldgen.autotest.turn", "0"));
     private boolean resized;
     /**
+     * -Pchanges=ak74:reddot,m4a4:2x,ak74:ta11acog: after the 15 s hold, the held gun / sight
+     * changes WHILE aiming to each gun:sight in turn, 6 s each; the shift must settle and stay on
+     * screen after every change (user, 11 Oktober 2026: "maybe the bug appear in change").
+     */
+    private final String[] changes = System.getProperty("deciworldgen.autotest.changes", "").isEmpty()
+        ? new String[0] : System.getProperty("deciworldgen.autotest.changes").split(",");
+    private static final int SEG = 120;
+    private double[] segMid;
+    /**
      * -Pnpc=TIER: an NPC of that tier in view, off centre (default elite_sniper: a scoped gun; the
      * user's report had sniper NPCs in view, their glass was taken for ours); -Pnpc=none for none.
      */
@@ -100,9 +109,33 @@ public class AimDriftTest extends DevTestMode
                                  at15 != null && Math.abs(at15[0]) < 0.5 && Math.abs(at15[1]) < 0.5,
                                  "both within 0.5 (gun on screen; an NPC's glass gave -3.9)");
             DevTestUtil.screenshot(mc, name(), "aimdrift_15s");
-            Deci.setAimMode(mc.thePlayer, 0);
             done = true;
+            if (changes.length == 0)
+            {
+                Deci.setAimMode(mc.thePlayer, 0);
+                return false;
+            }
+        }
+        int seg = t < 40 + 300 + 2 ? -1 : (t - 342) / SEG, at = (t - 342) % SEG;
+        if (seg >= changes.length)
+        {
+            Deci.setAimMode(mc.thePlayer, 0);
             return false;
+        }
+        if (seg >= 0 && at == 60)
+        {
+            segMid = ScopeZoom.debugShift();
+        }
+        if (seg >= 0 && at == SEG - 4)
+        {
+            double[] end = ScopeZoom.debugShift();
+            double d = segMid == null || end == null ? 99
+                : Math.max(Math.abs(end[0] - segMid[0]), Math.abs(end[1] - segMid[1]));
+            DevTestResults.check(name(), "after change to " + changes[seg] + ": shift 3 s / 6 s",
+                                 fmt(segMid) + " / " + fmt(end),
+                                 d < 0.01 && end != null && Math.abs(end[0]) < 0.5 && Math.abs(end[1]) < 0.5,
+                                 "steady (< 0.01) and within 0.5");
+            DevTestUtil.screenshot(mc, name(), "aimdrift_change" + seg);
         }
         return true;
     }
@@ -149,6 +182,18 @@ public class AimDriftTest extends DevTestMode
                     break;
                 }
             }
+        }
+        if (t >= 342 && (t - 342) % SEG == 0 && (t - 342) / SEG < changes.length)
+        {
+            String[] gs = changes[(t - 342) / SEG].split(":");
+            ItemStack g = new ItemStack(GameRegistry.findItem("deci", gs[0]));
+            g.stackTagCompound = new NBTTagCompound();
+            g.stackTagCompound.setInteger("ammo", 30);
+            if (gs.length > 1 && !gs[1].equals("none"))
+            {
+                g.stackTagCompound.setString("sightAttach", gs[1]);
+            }
+            p.inventory.setInventorySlotContents(p.inventory.currentItem, g);
         }
         if (t >= 40)
         {

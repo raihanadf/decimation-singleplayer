@@ -199,9 +199,27 @@ public final class GunNoise
             setMutexBits(1);
         }
 
+        /**
+         * Fighting something alive. Decimation's NPCs run the new AI, so vanilla never clears their
+         * old style target (entityToAttack) when it dies: an NPC that once killed an infected kept
+         * the corpse as its target and never reacted to a shot again (dev test noise, 11 Oktober
+         * 2026). Dead targets are cleared here.
+         */
         private boolean busy()
         {
-            return m.getAttackTarget() != null || m.getEntityToAttack() != null;
+            Entity t = m.getEntityToAttack();
+            if (t != null && !t.isEntityAlive())
+            {
+                m.setTarget(null);
+                t = null;
+            }
+            EntityLivingBase a = m.getAttackTarget();
+            if (a != null && !a.isEntityAlive())
+            {
+                m.setAttackTarget(null);
+                a = null;
+            }
+            return a != null || t != null;
         }
 
         @Override
