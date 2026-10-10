@@ -601,6 +601,7 @@ to go to direction ... except if its from the enemy or rival".
   - v0.43.3 (user: the juggernaut still did not react in survival): entityToAttack keeps the
     last enemy seen even while it lives on far away; busy now reads only the revenge target and
     the new AI target (bug.md "Enemy NPCs ignored gunshots, juggernaut too").
+  - Accepted by the user on 0.43.3 (11 Oktober 2026): "nice it work now".
   - The dev test noise (v0.43.2) had 8 checks: a survival player's shot brings a Soviet from 40 away
     until it sees the player within 32 and fights (heard, came 12, engaged); a creative player's
     shot does not; the friendly bandit check reads whether it took the noise. The test removes

@@ -30,6 +30,7 @@ not something we introduced or need to fix) see `documentation.md`.
   hulk / bloater, checks "took the noise" where wandering made distances flaky, counts hits on
   a survival player (damage on, health 100000); a sniper rifle Soviet engages from up to 70
   (sniperSearch) without walking, which counts. 4 runs in a row all PASS (10 checks).
+- Confirmed by the user in game on 0.43.3: "nice it work now".
 
 ### NPCs that once killed something ignored gunshots (11 Oktober 2026, FIXED v0.43.2)
 - User (0.43.0): "enemy npc do nothing when me shooting near them"; zombies did react. They were

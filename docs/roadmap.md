@@ -44,9 +44,8 @@ or `[not decided]`.
 1. Traders that spawn on their own and walk.
    All in new_feature.md ("New hostile NPCs and stronger bandits", "More
    zombie variants...", "3 new mobs", "More clothing variety").
-2. **Gunshot noise**: DONE v0.43.0 (new_feature.md "Gunshot noise"); user test: zombies react, NPCs
-   did not (creative mode, plus stale target bugs fixed in v0.43.2 / v0.43.3); NPC reaction in
-   survival still to be tried by the user.
+2. **Gunshot noise**: DONE and ACCEPTED (user on 0.43.3, 11 Oktober 2026: "nice it work now"),
+   v0.43.0 to v0.43.3 (new_feature.md "Gunshot noise"; NPCs ignore creative players).
 3. **Sniper NPC nerf**: DONE v0.42.5 (documentation.md balance list).
 4. **NPC loot system** (user, 10 Oktober 2026, new feature): what NPCs drop
    when killed, how it works, the rewards per tier; design first (ask).
