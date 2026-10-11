@@ -843,6 +843,18 @@ the user before building.
 1. Advanced safezone. Exists: Decimation zone type SAFEZONE (ZoneManager,
    infected spawns cancelled inside; explosions skip it, RocketEntity
    checks it); our ZoneStore tags generated structures, no safezones yet.
+   User choices (11 Oktober 2026, after the bridges): "create safezone maybe
+   that have trader + guard inside"; where: BOTH one per city and own sites
+   outside cities (roadside / countryside camps); look: BOTH a walled
+   survivor camp built by our own generator (FOB style: scrap and sandbag
+   walls, guarded gate, trader stalls, tents, campfire, medical tent) and a
+   fortified city building (barricaded, traders on the ground floor);
+   guards friendly unless provoked (they shoot infected, bandits and
+   Soviets near the zone, turn on a player who shoots inside or hits
+   someone); people inside: traders, guards, unarmed civilians and armed
+   survivors (item 5 joins this). Next: research the existing pieces
+   (Decimation trader entity, civilian HumanEntity2, faction rules, zone
+   registration) and a plan for the user.
 2. Player claimable zone areas. Exists: Decimation's TURF system
    (net.decimation.mod.server.turf: TurfManager add / remove / owner /
    isCapturable, turfs json, TurfCommands), server proxy only, so likely

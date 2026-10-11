@@ -62,7 +62,9 @@ or `[not decided]`.
 
 Details and starting points: new_feature.md "Zones, factions and world".
 1. **Advanced safezone.** NEXT (user, 11 Oktober 2026: "create safezone maybe that have trader +
-   guard inside?"): design session with the user first.
+   guard inside?"): choices taken (new_feature.md "Zones, factions and world" item 1): one per
+   city AND camps outside, walled camp AND fortified city building, guards friendly unless
+   provoked, traders + guards + unarmed civilians + armed survivors. Next: research, plan.
 2. **Zone areas claimable by the player.**
 3. **Advanced zone claims**: a claimed zone can be lost now and then when
    NPCs claim it.
