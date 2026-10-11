@@ -114,6 +114,10 @@ props placement".
     remove its people or zone afterwards (remove an earlier run's at the start instead). And
     check Decimation's server side resets of NPCs (traders wiped every 3000 ticks on a
     dedicated server) when residents depend on Decimation classes.
+17. Residents are placed by a keeper, never by the generator, and only once the site's chunks are
+    populated; static NPCs (Decimation traders and guards) hang wherever they spawned, so spawning
+    them before their floor exists leaves them in the air. Watch the residents for 30 s in the test
+    (positions, put back count) and keep friendly fire harmless in safezones (no retaliation).
 15. A 1 x 1 stall (outhouse, booth) needs two free cells above its floor: a seat block on the
     floor left no head room (walkcheck DOOR finding).
 
@@ -210,3 +214,15 @@ props placement".
 - Also seen in the shot: awnings white from the street (the white stripe was the front column).
 - Fix: test camp stays populated, keeper dedicated server respawn, front edge coloured,
   `/deciworldgen camp`.
+
+### Case 9: flying guard, retaliation, hidden entry sign, boring corners (v0.47.1 -> v0.47.2, 11 Oktober 2026)
+- User: "npc shot me when they got hit by me better remove it, its easily accidently hit friendly
+  npc"; shots user_120 / user_121 (a guard standing in the air over the wall) and user_122 (the
+  "Entering Safezone!" text cut by the lintel logs); "add more cosmetic props ... jeep cars,
+  package, crate".
+- Fix: provocation removed (ZoneRules, zones test reworked), keeper waits for populated chunks
+  and puts residents back, entry sign one block outside, clutter() (jeeps, a car wreck, care
+  packages, crates, barrels, tyres, bags, a plaza table). First clutter run: 3 clashes (a jeep
+  turned along x into the wall: military wrecks lie along z at 2 / 3 and along x at 4 / 5; crates
+  drawn 1.4 across their front side by side), fixed. Camp test with a 30 s watch: 0 off post,
+  0 put back, survivors in survivor gear; zones test all PASS; propclash 0 (91 props), walkcheck 0.

@@ -2,7 +2,6 @@ package net.decimation.fixes;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -16,7 +15,6 @@ import net.decimation.mod.server.zones.ObjectZone;
 import net.decimation.mod.server.zones.ObjectZoneList;
 import net.decimation.worldgen.ZoneKind;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.player.EntityPlayer;
@@ -36,9 +34,8 @@ import net.minecraftforge.event.entity.living.LivingAttackEvent;
  * The copies here step aside on a dedicated server. Ours on top, on both sides:
  * - inside a safezone nobody friendly can be hurt (players, traders and guards, civilians,
  *   friendly soldiers, owned pets); hostiles stay attackable so the guards can defend;
- * - a player who attacks a protected one there is provoked for PROVOKED_TICKS after the last
- *   offence: no damage done, but their combat timer keeps running (Decimation's own rule then
- *   takes their safezone protection away) and the guards and soldiers around take them as target;
+ * - a player's hit on a protected one there simply does nothing (v0.46.0 had the guards fire on
+ *   a player who did it; user 11 Oktober 2026: too easy to hit a friendly by accident, removed);
  * - conditions (infection, bleeding, broken leg) cannot start inside a safezone, which
  *   Decimation's setters only check on a dedicated server;
  * - every player gets the zones near them as PacketZoneLists (Decimation only ever sent the
@@ -46,16 +43,10 @@ import net.minecraftforge.event.entity.living.LivingAttackEvent;
  */
 public class ZoneRules
 {
-    /** Provocation lasts this long after the last offence. */
-    static final int PROVOKED_TICKS = 1200;
-    /** Guards and soldiers within this many blocks turn on a provoked player. */
-    static final double GUARD_RANGE = 64;
     /** Zones sent to a player: boxes within this many blocks (x / z). */
     static final int SYNC_RANGE = 1024;
     static final int SYNC_EVERY = 100;
 
-    /** World time until which a player is provoked. */
-    private final Map<UUID, Long> provoked = new HashMap<UUID, Long>();
     /** Conditions of a player at the last tick inside a safezone: infected, bleeding, broken leg. */
     private final Map<UUID, boolean[]> conditions = new HashMap<UUID, boolean[]>();
     /** Zone list text last sent to a player. */
@@ -85,23 +76,6 @@ public class ZoneRules
             || e instanceof EntityTameable && ((EntityTameable) e).isTamed();
     }
 
-    public boolean isProvoked(EntityPlayer p)
-    {
-        Long until = provoked.get(p.getUniqueID());
-        return until != null && until >= p.worldObj.getTotalWorldTime();
-    }
-
-    /** Ends a provocation now (dev tests). */
-    public void forgive(EntityPlayer p)
-    {
-        provoked.remove(p.getUniqueID());
-        Deci.Player d = Deci.player(p);
-        if (d != null)
-        {
-            d.setCombatTimer(0);
-        }
-    }
-
     // ------------------------------------------------------------ attacks
 
     @SubscribeEvent(priority = EventPriority.HIGHEST, receiveCanceled = true)
@@ -129,7 +103,7 @@ public class ZoneRules
                 }
             }
             Deci.Player d = Deci.player(player);
-            if (Deci.safezoneGraceEnabled() && d != null && d.safezoneGrace() > 0 && !isProvoked(player))
+            if (Deci.safezoneGraceEnabled() && d != null && d.safezoneGrace() > 0)
             {
                 event.setCanceled(true);
                 return;
@@ -140,49 +114,6 @@ public class ZoneRules
             return;
         }
         event.setCanceled(true);
-        if (src instanceof EntityPlayer && src != target && !((EntityPlayer) src).capabilities.isCreativeMode)
-        {
-            provoke((EntityPlayer) src);
-        }
-    }
-
-    /** A player attacked someone protected in a safezone: the guards turn on them. */
-    void provoke(EntityPlayer p)
-    {
-        if (!isProvoked(p))
-        {
-            p.addChatComponentMessage(new ChatComponentText(EnumChatFormatting.RED
-                + "You attacked someone in a safezone! The guards open fire."));
-            cpw.mods.fml.common.FMLLog.info("[deciworldgen] safezone provoked by %s at %d,%d,%d", p.getCommandSenderName(),
-                                            (int) p.posX, (int) p.posY, (int) p.posZ);
-        }
-        provoked.put(p.getUniqueID(), p.worldObj.getTotalWorldTime() + PROVOKED_TICKS);
-        hunt(p);
-    }
-
-    /** Keeps the combat timer running and points the guards and soldiers around at the player. */
-    private void hunt(EntityPlayer p)
-    {
-        Deci.Player d = Deci.player(p);
-        if (d != null && d.combatTimer() < 40)
-        {
-            d.setCombatTimer(40);
-        }
-        List<?> near = p.worldObj.getEntitiesWithinAABBExcludingEntity(p, p.boundingBox.expand(GUARD_RANGE, 24, GUARD_RANGE));
-        for (Object o : near)
-        {
-            Entity e = (Entity) o;
-            NpcKind k = Deci.npcKind(e);
-            if (!(Deci.isArmedTrader(e) || k == NpcKind.SOLDIER || k == NpcKind.HAZMAT) || e.getDistanceToEntity(p) > GUARD_RANGE)
-            {
-                continue;
-            }
-            ((EntityLivingBase) e).setRevengeTarget(p);
-            if (e instanceof EntityCreature)
-            {
-                ((EntityCreature) e).setTarget(p);
-            }
-        }
     }
 
     // ------------------------------------------------------------ player tick
@@ -263,7 +194,7 @@ public class ZoneRules
         }
     }
 
-    // ------------------------------------------------------------ server tick: provocation, zone lists
+    // ------------------------------------------------------------ server tick: zone lists
 
     @SubscribeEvent
     public void onServerTick(TickEvent.ServerTickEvent event)
@@ -279,26 +210,6 @@ public class ZoneRules
         }
         List<?> players = server.getConfigurationManager().playerEntityList;
         tick++;
-        if (tick % 20 == 0 && !provoked.isEmpty())
-        {
-            for (Iterator<Map.Entry<UUID, Long>> it = provoked.entrySet().iterator(); it.hasNext(); )
-            {
-                Map.Entry<UUID, Long> e = it.next();
-                EntityPlayer p = online(players, e.getKey());
-                if (p == null || p.isDead)
-                {
-                    it.remove();
-                    continue;
-                }
-                if (e.getValue() < p.worldObj.getTotalWorldTime())
-                {
-                    it.remove();
-                    p.addChatComponentMessage(new ChatComponentText(EnumChatFormatting.GRAY + "The guards lost interest in you."));
-                    continue;
-                }
-                hunt(p);
-            }
-        }
         if (tick % SYNC_EVERY == 0)
         {
             for (Object o : players)
@@ -306,18 +217,6 @@ public class ZoneRules
                 sync((EntityPlayerMP) o);
             }
         }
-    }
-
-    private static EntityPlayer online(List<?> players, UUID id)
-    {
-        for (Object o : players)
-        {
-            if (((EntityPlayer) o).getUniqueID().equals(id))
-            {
-                return (EntityPlayer) o;
-            }
-        }
-        return null;
     }
 
     @SubscribeEvent

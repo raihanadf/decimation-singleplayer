@@ -26,10 +26,10 @@ import net.minecraft.world.WorldSettings;
  * 2. water refilled inside, bleeding cannot start inside;
  * 3. radiation zone: irradiated flag on inside (and damage without a gas mask), off outside;
  * 4. a bandit's hit on the civilian inside does nothing;
- * 5. the player's gunshot on the civilian does nothing but provokes: the guard targets the player,
- *    the player loses safezone protection and is hurt by the guard;
+ * 5. the player's gunshot on the civilian does nothing, and nothing follows: the guard ignores the
+ *    player, who keeps the safezone protection and stays unhurt (no provocation since v0.46.1);
  * 6. a bandit outside the safezone gets shot by the guard; a bandit moved inside can be hurt by
- *    the player without provoking anyone;
+ *    the player;
  * 7. leaving the safezone starts Decimation's grace timer;
  * 8. the client got the safezone box (PacketZoneLists: chat line, map marker).
  * The zones are removed at the end.
@@ -70,7 +70,6 @@ public class ZonesTest extends DevTestMode
             return;
         }
         World w = p.worldObj;
-        ZoneRules rules = DecimationWorldGen.zoneRules();
         Deci.Player d = Deci.player(p);
         if (t == 20)
         {
@@ -110,15 +109,20 @@ public class ZonesTest extends DevTestMode
             p.setPositionAndUpdate(RX + 0.5, Y, Z + 0.5);
             p.setHealth(p.getMaxHealth());
         }
-        if (t == 73)
+        if (t == 34)
+        {
+            d.setSafezoneGrace(0); // the grace after leaving the safezone would block the radiation damage
+        }
+        if (t == 93)
         {
             boolean hurt = p.getHealth() < p.getMaxHealth();
             DevTestResults.check(name(), "irradiated inside the radiation zone", d.irradiated(), d.irradiated(), "true");
-            DevTestResults.check(name(), "radiation hurts without a gas mask", p.getHealth(), hurt, "< max");
+            DevTestResults.check(name(), "radiation hurts without a gas mask", p.getHealth() + " (grace " + d.safezoneGrace() + ")",
+                hurt, "< max");
             p.setPositionAndUpdate(SX + 0.5, Y, Z + 0.5);
             p.setHealth(p.getMaxHealth());
         }
-        if (t == 78)
+        if (t == 98)
         {
             DevTestResults.check(name(), "irradiated off outside", d.irradiated(), !d.irradiated(), "false");
             if (civilian != null && bandit == null)
@@ -131,15 +135,14 @@ public class ZonesTest extends DevTestMode
                     "no damage (" + h + ")");
             }
         }
-        if (t == 85 && civilian != null)
+        if (t == 105 && civilian != null)
         {
             float h = civilian.getHealth();
             civilian.attackEntityFrom(Deci.gunDamage(p), 6);
             DevTestResults.check(name(), "player shot on a civilian inside", civilian.getHealth(), civilian.getHealth() == h,
                 "no damage (" + h + ")");
-            DevTestResults.check(name(), "player provoked", rules.isProvoked(p), rules.isProvoked(p), "true");
         }
-        if (t > 85 && t < 220)
+        if (t > 105 && t < 220)
         {
             minHealth = Math.min(minHealth, p.getHealth());
             if (p.getHealth() < 8)
@@ -147,17 +150,17 @@ public class ZonesTest extends DevTestMode
                 p.setHealth(p.getMaxHealth()); // keep the player alive under fire
             }
         }
-        if (t == 110)
+        if (t == 130)
         {
-            DevTestResults.check(name(), "guard targets the provoked player", guard == null ? "none" : String.valueOf(guard.getAITarget() == p),
-                guard != null && guard.getAITarget() == p, "true");
+            // no provocation since v0.46.1 (user: too easy to hit a friendly by accident)
+            DevTestResults.check(name(), "guard ignores the player after the shot", guard == null ? "none" : String.valueOf(guard.getAITarget() == p),
+                guard != null && guard.getAITarget() != p, "false");
             boolean in = Deci.isPlayerInZone(p, ZoneKind.SAFEZONE);
-            DevTestResults.check(name(), "provoked player loses safezone protection", in, !in, "false");
+            DevTestResults.check(name(), "player keeps safezone protection", in, in, "true");
         }
         if (t == 220)
         {
-            DevTestResults.check(name(), "guard hurts the provoked player", minHealth, minHealth < p.getMaxHealth(), "< max");
-            rules.forgive(p);
+            DevTestResults.check(name(), "player unhurt after the shot", minHealth, minHealth >= p.getMaxHealth(), "max");
             p.setHealth(p.getMaxHealth());
             if (guard != null)
             {
@@ -176,7 +179,6 @@ public class ZonesTest extends DevTestMode
             float h = inner.getHealth();
             inner.attackEntityFrom(Deci.gunDamage(p), 4);
             DevTestResults.check(name(), "bandit inside can be hurt", inner.getHealth(), inner.getHealth() < h, "< " + h);
-            DevTestResults.check(name(), "hurting a bandit does not provoke", rules.isProvoked(p), !rules.isProvoked(p), "false");
             inner.setDead();
         }
         if (t == 420)

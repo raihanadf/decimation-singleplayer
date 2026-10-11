@@ -891,7 +891,9 @@ the user before building.
    singleplayer plus protection of every friendly entity in a safezone; provoked = a player
    attacks someone protected inside: no damage, guards and soldiers within 64 blocks fire on them
    for 60 s after the last offence, their combat timer runs (no safezone protection). Dev test
-   `zones` 19 PASS.
+   `zones` 19 PASS. Provocation REMOVED in v0.47.2 (user: "its easily accidently hit friendly
+   npc so i guess in safezone dont need that feature"): a hit on a protected one just does
+   nothing.
    Step 2 DONE v0.47.0 (docs/safezone.md): survivor camps in wild / civilian sectors (5 % of
    sites, new worlds only): scrap wall, 4 watchtowers, guarded gate with safezone signs, market
    street of 6 traders, plaza with campfire and water, medical tent, family tents, latrines,

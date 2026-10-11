@@ -864,3 +864,16 @@ on a dedicated server the keeper respawns traders and guards at once after a res
 front edges coloured; `/deciworldgen camp` to place a populated camp anywhere. Checked: camp
 test all PASS, all 20 residents saved in the world after the test, campcmd 20 residents. Peaceful
 difficulty removes Decimation humans (EntityMob) `[inferred]`, documented in docs/safezone.md.
+
+## Camp guard "flying" over the wall (reported 11 Oktober 2026 on 0.47.1, FIXED v0.47.2)
+
+User shots docs/shots/safezone_camp_v0.47.1_review/user_120.png and user_121.png: a guard
+standing in the air over the scrap wall next to a tower. Guards (Decimation's GuardTrader) are
+static: TraderEntity resets its position every tick, so one spawned before the blocks under it
+exist hangs in the air. The keeper only checked that the chunks existed, while the camp is
+written during chunk population (and a camp built over an older one keeps the older residents
+in place) `[inferred: not reproduced; the 30 s test after the fix had nobody off post]`. Fix:
+the keeper waits until every chunk under the site and one around is populated, and puts any
+trader / guard off its post, or any civilian / survivor on a wall, roof or outside the walls,
+back to its post every 2 s (logged). Same review: provocation removed, entry sign one block out,
+more cosmetic props.

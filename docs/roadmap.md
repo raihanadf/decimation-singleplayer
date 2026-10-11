@@ -192,8 +192,10 @@ docs/gun_model_spec.md); every user review goes into its lessons and casebook.
   gun, Mk18 IMI TS stock, HK416 front sight folds away; accepted.
 - v0.47.0 survivor camps: walled safezones outside the cities with a market of traders, guards,
   civilians and armed survivors (new worlds).
+- v0.47.2 camp review: no retaliation in safezones, residents kept on their posts, entry sign
+  moved, jeeps / car / care packages / crates in the camp.
 - v0.46.0 zones work in singleplayer; safezones protect every friendly NPC; guards fire on a
-  player who attacks someone there.
+  player who attacks someone there (removed in v0.47.2).
 - v0.45.1 bridges are the streets carried over the canals (same road, sidewalks, lamps; railings;
   broken ones in the wasteland).
 - v0.45.0 rivers through cities (new worlds): canals with quay walls, DeceasedCraft's bridges on

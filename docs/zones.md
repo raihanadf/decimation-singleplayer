@@ -109,11 +109,10 @@ list sync, which runs on both (it sends a superset: the live list holds the file
    inside a safezone NOBODY friendly can be hurt: players, traders and guards, civilians
    (HumanEntity2 that are not bandits), friendly soldiers / survivors, owned pets. Hostiles
    (infected, bandits, Soviets, mechs, vanilla monsters) stay attackable so guards can defend.
-3. Provocation (user, 11 Oktober 2026: guards "friendly unless provoked"): a player who attacks
-   a protected one inside a safezone does no damage, but is PROVOKED for 60 s after the last
-   offence: chat warning, combat timer kept running (so Decimation's own rule takes their safezone
-   protection away), and every armed trader / guard and friendly soldier within 64 blocks takes
-   the player as its target (re-set every second: an NPC's revenge target expires after 5 s).
+3. No provocation (since v0.47.2): a player's hit on a protected one inside a safezone simply does
+   nothing. v0.46.0 to v0.47.1 had the guards and soldiers within 64 blocks fire on such a player
+   for 60 s; the user removed it (11 Oktober 2026: "its easily accidently hit friendly npc so i
+   guess in safezone dont need that feature").
 4. Spawns near safezones, the rest of EntitySpawnZoneHandler: traps and projectiles within 10
    blocks cancelled; plus ours: bandits, Soviets and mechs never spawn inside.
 5. Safezone status effects the SP setters skip: infection, bleeding and broken legs cleared
@@ -130,6 +129,9 @@ Result 11 Oktober 2026 (v0.46.0): 19 checks PASS (spawns refused inside, water, 
 radiation flag and damage, hits on a civilian by a bandit and by the player do nothing, the
 player provoked, the guard targets and hurts them, a bandit inside can be hurt without
 provoking, the guard shoots a bandit outside, grace timer, the client got the safezone box).
+Since v0.47.2 (no provocation): the player's shot does nothing and nothing follows (the guard
+ignores the player, who keeps the protection and stays unhurt); 16 checks PASS. The radiation
+check zeroes the safezone grace first (it blocks every attack on the player, radiation too).
 Not covered by the test: traps and projectiles near a safezone `[not verified]`, the chat line
 and map markers drawn from the client list `[inferred from IngameHud / MapRenderHelper]`.
 Test trap: a condition the player already has stays (the rule stops new ones only); the dev
@@ -148,8 +150,10 @@ Not built. Ideas to decide with the user:
   pole) held for N seconds, or the trader leader killed.
 - Guards must be killable for this: a safezone under attack drops its protection (a
   "breached" state: the SAFEZONE box is removed from the live list while the fight lasts, so
-  Decimation's checks and ours stop protecting), triggered by the player provoking it AND
-  shooting a guard for real (today shots at protected NPCs do nothing).
+  Decimation's checks and ours stop protecting), triggered by a deliberate act (today shots at
+  protected NPCs do nothing, and since v0.47.2 nothing follows them: the user removed the
+  provocation because friendlies get hit by accident; an attack must be clearly intended, for
+  example an explosive at the gate or a held key).
 - After the fall: the box removed from deciworldgen_zones.json for good (ZoneStore.remove),
   traders gone or hostile, loot unlocked (the 10 block no loot margin goes with the zone),
   humanity loss like killing civilians, bandits may move in (zone becomes a bandit camp,

@@ -97,6 +97,7 @@ final class SurvivorCamp
         latrines(36, 10);
         generatorYard(7, 33);
         garden(33, 33);
+        clutter();
         people();
         c.validateProps(log);
         return c;
@@ -182,7 +183,9 @@ final class SurvivorCamp
             c.set(x, 5, Z1, log1, 4);                      // lintel, logs along x
             c.set(x, 0, Z1, Blocks.cobblestone);
         }
-        c.prop((GX0 + GX1) / 2, 6, Z1, d("BlockSafezoneSignEntry"), S);
+        // the entry text one block outside the lintel (on it, the logs hid it: user review 11 Oktober
+        // 2026), the exit text one block inside
+        c.prop((GX0 + GX1) / 2, 6, Z1 + 1, d("BlockSafezoneSignEntry"), S);
         c.prop((GX0 + GX1) / 2, 6, Z1 - 1, d("BlockSafezoneSignExit"), N);
         // sandbag guard posts inside beside the gate
         for (int gx : new int[] {GX0 - 1, GX1 + 1})
@@ -545,6 +548,58 @@ final class SurvivorCamp
         }
         c.set(x0 + 3, 1, z0, Blocks.fence_gate, 0);
         poi("garden", x0 + 3.5, 3.6, z0 - 3, 0, 30);
+    }
+
+    // ================================================================ clutter
+
+    /**
+     * Life along the walls and in the corners (user review 11 Oktober 2026: "add more cosmetic
+     * props ... jeep cars, package, crate"): parked vehicles in the strips between the wall and the
+     * tents, supply stacks, care packages, barrels and tyres, a table with chairs on the plaza, odds
+     * and ends in the gaps between the stalls. Every prop from its drawn box (validateProps).
+     */
+    private void clutter()
+    {
+        Block car = d("BlockWreckage1");
+        // west strip (x 3..6): a military jeep and a car, both long along z
+        c.prop(4, 1, 12, b.jeep, S);
+        c.prop(5, 1, 30, car != null ? car : b.jeep, S);
+        c.prop(4, 1, 22, b.tireStack, S);
+        c.prop(4, 1, 24, b.barrel, S);
+        c.prop(5, 1, 24, b.barrel, S);
+        // east strip (x 40..43): a jeep, a care package, tyres and barrels
+        c.prop(42, 1, 20, b.jeep, S);                          // military wrecks lie along z at 2 / 3
+        c.prop(42, 1, 28, b.carePackage, WEST);
+        c.prop(42, 1, 32, b.tireStack, S);
+        c.prop(42, 1, 35, b.barrel, S);
+        c.prop(41, 1, 35, b.barrel, S);
+        c.prop(42, 1, 37, b.trashBag, S);
+        // north strip (z 3..6): supply stacks
+        c.prop(9, 1, 4, b.woodCrate, E);                       // drawn 1.4 long across the front: side by side facing E
+        c.prop(10, 1, 4, b.woodCrate, E);
+        c.prop(12, 1, 4, b.waterPalletTarp, S);
+        c.prop(14, 1, 4, b.cardboard, S);
+        c.prop(16, 1, 4, b.barrel, S);
+        c.prop(30, 1, 4, b.woodCrate, E);
+        c.prop(31, 1, 4, b.woodCrateOpen != null ? b.woodCrateOpen : b.woodCrate, E);
+        c.prop(35, 1, 5, b.carePackage, S);
+        // south strip: a jeep along x west of the gate, tyres, barrels and bags east of it
+        c.prop(10, 1, 42, b.jeep, WEST);
+        c.prop(33, 1, 42, b.tireStack, S);
+        c.prop(35, 1, 42, b.barrel, S);
+        c.prop(36, 1, 42, b.barrel, S);
+        c.prop(38, 1, 42, b.trashBag, S);
+        // plaza: a table with two chairs west of the fire
+        c.prop(18, 1, 21, b.woodTable, E);
+        c.prop(17, 1, 21, b.chair, E);
+        c.prop(19, 1, 22, b.chair, WEST);
+        // the gaps between the stalls: a barrel and a bag at the back
+        c.prop(16, 1, 31, b.barrel, S);
+        c.prop(16, 1, 36, b.trashBag, S);
+        c.prop(30, 1, 31, b.barrel, S);
+        c.prop(30, 1, 36, b.trashBag2 != null ? b.trashBag2 : b.trashBag, S);
+        poi("clutter_west", 5.5, 2.6, 38.5, 180, 15);
+        poi("clutter_east", 41.5, 2.6, 40.5, 180, 15);
     }
 
     // ================================================================ people

@@ -11,6 +11,23 @@ How shots are made: `./gradlew runClient -Pautotest` (street views),
 `-Paudit` (building audit), `-Pgallery` (prop gallery); output in
 `dev/run/client/screenshots/`, then copied here into a versioned folder.
 
+## safezone_camp_v0.47.1_review/ (user review, 11 Oktober 2026)
+- user_120.png (night, the sky test camp): a guard standing in the air over the scrap wall left
+  of a watchtower (another guard correctly on the tower deck), civilians and survivors crowding at
+  the tower ladder; chat "Safezone protection ends in 16 seconds!" / "Now entering a Safezone
+  controlled by Nobody" (the client zone list works).
+- user_121.png (day, the camp from /deciworldgen camp near a city): a guard (boonie hat, woodland
+  camo, M16) standing on top of the wall by a torch post.
+- user_122.png: the gate from outside: the "Entering Safezone!" text partly hidden by the lintel
+  logs it stood on; inside, the market with traders, guards behind sandbags, a civilian lying on
+  the street.
+
+## safezone_camp_v0.47.2/ (after the review)
+- gate_outside.png: the entry sign now one block outside the lintel (its stripes over the gate).
+- clutter_west.png: a black civilian car wreck parked along the west wall, the generator yard and
+  crates, a watchtower behind. clutter_east.png: barrels, a tyre stack and a jeep in the east
+  strip by the garden. aerial.png: the camp with the new vehicles and stacks in its corners.
+
 ## safezone_camp_v0.47.1/ (camp people kept, awning fronts, camp command, 11 Oktober 2026)
 - camp_market.png (dev test camp, turns 0): the market street, awning front edges coloured
   (green, blue, red left; orange, yellow, brown right), a trader behind every counter, guards

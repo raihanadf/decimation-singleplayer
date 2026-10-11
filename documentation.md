@@ -234,8 +234,8 @@ Decimation's zones now work in singleplayer as on its old server: inside a safez
 stays full, no new bleeding, infection or broken leg, no traps or explosives within 10 blocks,
 and nobody friendly can be hurt: you, traders, guards, civilians and friendly soldiers. Hostiles
 (infected, bandits, Soviets) can still be shot there, so the guards defend it. Shoot at someone
-protected and nothing happens to them, but the guards open fire on you for a minute and the
-safezone stops protecting you. Radiation zones irradiate you without a gas mask. Entering a
+protected and nothing happens (since 0.47.2 the guards no longer fire back: too easy to hit a
+friendly by accident). Radiation zones irradiate you without a gas mask. Entering a
 safezone prints "Now entering a Safezone" and the GPS map shows the zones. Details: docs/zones.md.
 
 Since 0.47, new worlds have survivor camps in the countryside: walled safezones with a gate and

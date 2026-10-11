@@ -44,6 +44,7 @@ public class CampTest extends DevTestMode
     private int taken = -1;
     private SurvivorCampPlan plan;
     private String id;
+    private int reseatStart;
 
     public boolean client(Minecraft mc)
     {
@@ -176,9 +177,44 @@ public class CampTest extends DevTestMode
                 float h = trader.getHealth();
                 trader.attackEntityFrom(Deci.gunDamage(p), 6);
                 DevTestResults.check(name(), "trader shot does nothing", trader.getHealth(), trader.getHealth() == h, "" + h);
-                net.decimation.worldgen.DecimationWorldGen.zoneRules().forgive(p);
             }
             built = true;
+        }
+        if (t == FILL + 1)
+        {
+            reseatStart = SafezoneSites.reseated;
+        }
+        if (t == FILL + 600)
+        {
+            // 30 s of life: where did everyone go, and who had to be put back
+            SafezoneSites.Site s = SafezoneSites.find(id);
+            int bad = 0, survivors = 0, tiered = 0;
+            for (Object o : w.loadedEntityList)
+            {
+                Entity e = (Entity) o;
+                if (!(e instanceof EntityLiving) || e.isDead || !id.equals(e.getEntityData().getString(SafezoneSites.SITE_TAG)))
+                {
+                    continue;
+                }
+                SafezoneSites.Post q = s.posts.get(e.getEntityData().getInteger(SafezoneSites.POST_TAG));
+                boolean fixed = q.kind.startsWith("trader:") || q.kind.equals("guard");
+                double d = Math.hypot(e.posX - q.x, e.posZ - q.z);
+                boolean off = fixed ? d > 0.7 || Math.abs(e.posY - q.y) > 0.6 : e.posY > q.y + 1.6;
+                if (off)
+                {
+                    bad++;
+                    DevTestResults.value(name(), "off post " + q.kind, String.format("%.1f,%.1f,%.1f post %.1f,%.1f,%.1f",
+                        e.posX, e.posY, e.posZ, q.x, q.y, q.z));
+                }
+                if (q.kind.equals("survivor"))
+                {
+                    survivors++;
+                    tiered += "survivor".equals(e.getEntityData().getString(net.decimation.fixes.NpcLoadouts.TAG)) ? 1 : 0;
+                }
+            }
+            DevTestResults.check(name(), "residents off their post after 30 s", bad, bad == 0, "0");
+            DevTestResults.value(name(), "put back by the keeper in 30 s", SafezoneSites.reseated - reseatStart);
+            DevTestResults.check(name(), "survivors in survivor gear", tiered, tiered == survivors, survivors + "");
         }
         if (built)
         {

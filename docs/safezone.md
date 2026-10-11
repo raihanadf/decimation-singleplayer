@@ -2,7 +2,8 @@
 
 User request 11 Oktober 2026: "create safezone maybe that have trader + guard inside?"; choices
 (new_feature.md "Zones, factions and world" item 1): one per city AND camps outside, a walled
-camp of our own generator AND a fortified city building, guards friendly unless provoked,
+camp of our own generator AND a fortified city building, guards friendly unless provoked
+(provocation removed later, v0.47.2: friendlies get hit by accident),
 traders, guards, unarmed civilians and armed survivors. The zone rules are docs/zones.md
 (v0.46.0). This doc: the sites. v0.47.0 builds the survivor camps outside cities; the fortified
 city building is the next step `[not built]`.
@@ -29,7 +30,7 @@ boxes, validateProps, CanvasPlan turns 0..270 and grades the ground around over 
 | Part | Where (canvas) | Blocks |
 | Scrap wall | lines 2 and 44 | panels of BlockMetal_3 (rusty), BlockMetal_2 (dark plate) or spruce boards between oak log posts every 4, a sheet stacked higher here and there, torches on the posts |
 | Concertina | outer ring 0 / 46, gaps, none before the gate | BlockConcertinaWire |
-| Gate | south, x 21..25 | 5 closed fence gates between log posts, log lintel, BlockSafezoneSignEntry (outside) / Exit (inside) over it, two guards behind sandbags inside |
+| Gate | south, x 21..25 | 5 closed fence gates between log posts, log lintel, BlockSafezoneSignEntry one block outside the lintel (on it the logs hid the text, v0.47.2) / Exit one block inside, two guards behind sandbags inside |
 | Watchtowers | 4 corners, 4 x 4 | spruce filled base, ladder in a shaft on the camp side (front cell free), deck at 4, fence railing, log corner posts, slab roof at 8, a guard on the deck |
 | Market street | x 21..25, z 15..43 | cobblestone; 3 stalls each side (z 27 / 32 / 37) |
 | Stall | 5 deep x 4 long | plank floor, board back wall, counter of two BlockWoodTable (2 apart, drawn 2 long), trader behind it, two goods props at the back by trade (cabinets / cases / water / crates), striped wool awning on fence posts (coloured on the odd columns, so the front edge seen from the street is coloured; v0.47.0 had it white) |
@@ -39,6 +40,7 @@ boxes, validateProps, CanvasPlan turns 0..270 and grades the ground around over 
 | Latrines | x 35..40, z 9..12 | two plank outhouses with doors, a wash cauldron |
 | Generator yard | x 7..12, z 33..38 | generator, barrels, tyres, crate, light tower |
 | Garden | x 33..39, z 33..39 | fenced farmland, carrots / potatoes / wheat, a water channel, a fence gate |
+| Clutter (v0.47.2, user: "add more cosmetic props") | strips between wall and tents, plaza, stall gaps | military jeeps (along z at metadata 2 / 3, along x at 4 / 5), a civilian car wreck, two care packages, crates (side by side facing E: drawn 1.4 across the front), water pallet, cardboard, tyre stacks, barrels, trash bags, a plaza table with two chairs |
 Traders: guns, ammunition, food, medical always, plus two of armor, backpack, convenience,
 scrap, fortification, black market, heavy guns, gold cap (shuffled per camp).
 No loot: Decimation gives no loot from containers inside or within 10 blocks of a safezone.
@@ -66,8 +68,15 @@ No loot: Decimation gives no loot from containers inside or within 10 blocks of 
   EntityMob.onUpdate; not tested]`.
 - `/deciworldgen camp [turns]`: a camp centred on the player (graded), its zone and people
   registered as for a generated one (an earlier camp of the same id is replaced).
-- Protection, provocation: docs/zones.md section 5 (every friendly resident is protected
-  inside the safezone; a player who attacks one is fired on by the guards and soldiers around).
+- Protection: docs/zones.md section 5 (every friendly resident is protected inside the safezone;
+  a player's hit on one does nothing, no provocation since v0.47.2).
+- Spawn timing and places (v0.47.2, user review: a guard "flying" over the wall): the keeper
+  fills a site only when every chunk under it and one around is populated (the structure is
+  written during population; a static guard spawned before its tower would hang in the air);
+  every 2 s it puts back a trader / guard found off its post and a civilian / survivor found
+  more than a step above its post (wall, roof, tower) or outside the inner area (log line
+  "safezone resident ... put back from x,y,z"). In the 30 s camp test nobody had to be put back
+  and nobody left their post.
 
 ## 4. Placement (LargeSites)
 

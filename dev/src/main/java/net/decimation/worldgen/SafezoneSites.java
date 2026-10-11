@@ -203,7 +203,12 @@ public class SafezoneSites
             Entity e = (Entity) o;
             if (e instanceof EntityLiving && !e.isDead && s.id.equals(e.getEntityData().getString(SITE_TAG)))
             {
-                present.add(e.getEntityData().getInteger(POST_TAG));
+                int i = e.getEntityData().getInteger(POST_TAG);
+                present.add(i);
+                if (i >= 0 && i < s.posts.size())
+                {
+                    reseat(s, s.posts.get(i), (EntityLiving) e);
+                }
             }
         }
         long now = w.getTotalWorldTime();
@@ -244,6 +249,34 @@ public class SafezoneSites
             }
             FMLLog.info("[%s] safezone site %s filled: %d residents spawned", DecimationWorldGen.MODID, s.id, spawned);
         }
+    }
+
+    /** Residents put back by reseat (dev test). */
+    public static int reseated;
+
+    /**
+     * Puts a resident back where it belongs (user review 11 Oktober 2026: a guard "flying" on the
+     * wall): traders and guards stand on their post; civilians and survivors walk about, but back
+     * to their post when found higher than a step above it (a wall, a roof, a tower) or outside the
+     * camp's inner area (the site box less the 6 block zone margin and the wall).
+     */
+    static void reseat(Site s, Post p, EntityLiving e)
+    {
+        boolean fixed = p.kind.startsWith("trader:") || p.kind.equals("guard");
+        double d = Math.hypot(e.posX - p.x, e.posZ - p.z);
+        boolean off = fixed ? d > 0.7 || Math.abs(e.posY - p.y) > 0.6
+            : e.posY > p.y + 1.6 || e.posX < s.x0 + 9 || e.posX > s.x1 - 8 || e.posZ < s.z0 + 9 || e.posZ > s.z1 - 8;
+        if (!off)
+        {
+            return;
+        }
+        FMLLog.info("[%s] safezone resident %s of %s put back from %.1f,%.1f,%.1f", DecimationWorldGen.MODID, p.kind, s.id,
+                    e.posX, e.posY, e.posZ);
+        reseated++;
+        e.setPositionAndUpdate(p.x, p.y, p.z);
+        e.rotationYaw = e.rotationYawHead = e.renderYawOffset = p.yaw;
+        e.motionX = e.motionY = e.motionZ = 0;
+        e.fallDistance = 0;
     }
 
     /** Spawns the resident of one post, tagged with its site and post; null when refused. */
@@ -309,13 +342,18 @@ public class SafezoneSites
         return best;
     }
 
+    /**
+     * Every chunk under the site and one around it exists and is populated: the structure is
+     * written during population (Slices), so a resident spawned earlier could stand in a tower or on
+     * a deck that is not there yet, and a static guard would hang in the air.
+     */
     private static boolean loaded(World w, Site s)
     {
-        for (int cx = s.x0 >> 4; cx <= s.x1 >> 4; cx++)
+        for (int cx = (s.x0 >> 4) - 1; cx <= (s.x1 >> 4) + 1; cx++)
         {
-            for (int cz = s.z0 >> 4; cz <= s.z1 >> 4; cz++)
+            for (int cz = (s.z0 >> 4) - 1; cz <= (s.z1 >> 4) + 1; cz++)
             {
-                if (!w.getChunkProvider().chunkExists(cx, cz))
+                if (!w.getChunkProvider().chunkExists(cx, cz) || !w.getChunkFromChunkCoords(cx, cz).isTerrainPopulated)
                 {
                     return false;
                 }

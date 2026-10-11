@@ -186,6 +186,8 @@ public final class Deci
         public void setCombatTimer(long t) { data.l(t); }
         /** getSafezoneGraceTicks (dn): protection left after leaving a safezone. */
         public long safezoneGrace() { return data.dn(); }
+        /** setSafezoneGraceTicks (T). */
+        public void setSafezoneGrace(int t) { data.T(t); }
         /** isInfected (cm) / setInfected (f), isBleeding (cn) / setBleeding (g), hasBrokenLeg (cl) / setBrokenLeg (e). */
         public boolean infected() { return data.cm(); }
         public void setInfected(boolean b) { data.f(b); }
