@@ -244,3 +244,12 @@ Pending, in order:
   end, the guard booth crate the door, the TOC ammo case the room); overrides: flag poles have no
   front (cloth reads both sides), the generator's front is unknown (pictures unreadable). All three
   sizes 0 findings, walk test only the known locked TOC note, camp and refuge 0.
+
+## User review (12 Oktober 2026, new world on v0.51.2)
+
+- City refuge: "i was though you place it on wilderness but i was wrong. its really nice and fit
+  with other structure. great job." Accepted.
+- Props: "nice improvement but still need learning more and the props is not balanced and mostly
+  similar between other building." To do: variety between buildings of one kind (today every
+  building of a kind draws from the same short list with the same weights) and balance (how many
+  of each prop per building / room size). Not started.

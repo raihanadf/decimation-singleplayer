@@ -34,9 +34,18 @@ cctv, tv, vending, skeleton, cabinet, payphone, washer, shopdisplay, graffiti, d
 3. The checker and the placer must judge alike (thresholds, front rule, solid shapes): every
    difference showed up as findings the placer thought fine.
 
+4. Variety and balance (user review of v0.51.2): one short prop list per building kind made
+   buildings of a kind look alike and some props too common. Give each building its own pick of
+   the kind's palette (seeded subset, a theme), and cap each prop per building / room size.
+
 ## Casebook (never delete a case)
 ### Case 1: first interior dressing (v0.50.0, 12 Oktober 2026)
 - 574 EXIT lights, 375 cabinets, TVs, vending machines, washers, police / medical / military props,
   skeletons with blood, body bags, trash, graffiti and warning decals on seed 1; the dressing adds
   0 propclash findings (1 left: water flowed in from the world after generation).
 - Evidence: docs/shots/city_dressing_v0.50/ (exitlight, tv, vending, payphone, skeleton, bodybag).
+
+### Case 2: user review of v0.51.2 (12 Oktober 2026)
+- User walked a new world: refuge accepted ("really nice and fit with other structure"); props
+  "nice improvement but still need learning more ... not balanced and mostly similar between other
+  building". Open: per building palettes and caps (lesson 4).
