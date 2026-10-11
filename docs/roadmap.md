@@ -109,6 +109,16 @@ docs/gun_model_spec.md); every user review goes into its lessons and casebook.
 
 (nothing open)
 
+## Ideas (later, user 12 Oktober 2026)
+
+docs/ideas.md: more crate / loot block types, more military NPC outfits, a sniper bandit egg, harder
+zombies, more zombie variants, zombies with melee weapons, smarter zombies (follow the shooter),
+armour against zombies, 5 stages of infection, demons in the wasteland / military zones, zombies
+growing from day 1 to 100, city names on entering ("[district] - [number]"), a barricaded police
+building as the city safezone (3 police building kinds), the wasteland district as a military area
+with military loot (check DeceasedCraft first), story, a GitHub link on the home menu. Not designed:
+each needs a design talk first. Current work comes first (user).
+
 ## Last: only when nothing else is left (user 9 Oktober 2026)
 
 1. **MAC-10 model polish** (DONE v0.37.2, 10 Oktober 2026, accepted by

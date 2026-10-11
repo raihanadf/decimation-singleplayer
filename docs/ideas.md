@@ -1,0 +1,53 @@
+# Ideas for later (user, 12 Oktober 2026)
+
+The user's list of future features ("just idea"), written down as given, with notes on what we
+already know. Nothing here is planned or designed yet: each needs a design talk with the user
+first (questions with options) before any code. Priority now: finish the current work first
+(user: "we figure it out previous feature now, prioritize that!"). Listed in docs/roadmap.md
+"Ideas (later)".
+
+## Loot and items
+1. **More crate types**: industrial, civilian and more, each with its own loot.
+   Note: Decimation's loot pools are hardcoded per block (deci.aD.l, documentation.md "Loot pool
+   definition"); a new crate type means a new block of ours plus a pool registered through Deci, or
+   reusing an existing pool [not checked how].
+2. **More loot type blocks** (same direction as 1: more containers with their own loot).
+
+## NPCs
+3. **More military NPC outfits** (skins / armour looks per tier).
+4. **Sniper bandit spawn egg** (we have tier eggs: fixes/NpcEgg, NpcLoadouts; a bandit sniper tier
+   may need a new tier, new tiers go LAST in NpcLoadouts).
+
+## Zombies
+5. **Harder zombies**, **more zombie variants** (fixes/InfectedVariants already has variants).
+6. **Zombies with melee weapons** as a variant.
+7. **Smarter zombies**: today GunNoise makes infected walk to where a shot was heard; idea: they know
+   WHO shot and follow / lock onto that player.
+8. **Armour counts against zombies too** (today ArmorGunfireHandler covers NPC gunfire; zombie hits
+   [not checked]).
+9. **Five levels of infection** until the player dies (an infection that worsens in stages).
+10. **Demons** (Decimation has a demon mob: deobf render/DemonRenderer) spawning in the wasteland or
+    military zones.
+11. **Zombies grow over time**: from day 1 to day 100 the zombies get more / stronger ("idk which
+    yet": count, strength, variants all open).
+
+## World
+12. **City zone names**: entering a city shows its name on screen, generated as "[district] -
+    [number]", the number taken from the chunk / cell location (zones: docs/zones.md; client zone
+    lists exist since v0.46.0).
+13. **City safezone as a police building**: our city refuge (v0.48.0, docs/safezone.md section 7) is
+    a 48 x 48 compound that does not fit the chunk city like DeceasedCraft's generator does. Idea:
+    keep the refuge feature, but in cities use a structure we already have, a police building,
+    barricaded, as the safezone; so police buildings come in 3 kinds: normal, abandoned, and a
+    barricaded safezone with people inside.
+14. **Wasteland district = military area**: the user says DeceasedCraft's wasteland area with its
+    wasteland buildings is really a military zone / sector, to be stocked with military loot. User:
+    "if you dont trust me you can check it up on deceased craft directly" [not verified yet: check
+    DeceasedCraft's city style data (legacy deadzone) and its loot before acting]. Today our
+    wasteland district stands next to military sectors (v0.24.3) and is zoned MILITARY.
+15. **Story** ("story??": open, nothing decided).
+
+## Menu
+16. **GitHub repo link on the home screen**: on the menu shown before the player clicks Play (the
+    "previous hud"), not on Decimation's server screens. The main menu GUI is otherwise "not our
+    priority" (roadmap UI 1).
