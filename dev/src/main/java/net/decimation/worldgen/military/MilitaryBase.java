@@ -687,7 +687,7 @@ public final class MilitaryBase
         c.clear(x0 + 1, 2, z0);
         c.prop(x0 + 2, 1, z0 + 1, b.chair, E);          // looking out at the lane
         c.prop(x0 + 2, 1, z0 + 2, b.radioSmall, E);
-        c.prop(x0 + 1, 1, z0 + 2, b.militaryCrate, S);
+        c.prop(x0 + 1, 1, z0 + 2, b.militaryCrate, N);   // latch toward the door, not the bags
         c.prop(x0 + 3, 4, z0, b.redLight, S);
         poi("guard_booth", x0 + 6.5, 6.6, z0 + 2.0, 90, 45);       // above the lane, looking west
     }
@@ -1049,8 +1049,8 @@ public final class MilitaryBase
         if (dx + 4 < x1)
         {
             // drawn 1.9 long along the wall (x dx + 2.6 .. dx + 4.4), a small case on top
-            c.prop(dx + 3, 1, z1 - 1, b.ammoCrateLarge, S);
-            c.prop(dx + 3, 2, z1 - 1, b.ammoCrate, S);
+            c.prop(dx + 3, 1, z1 - 1, b.ammoCrateLarge, N);
+            c.prop(dx + 3, 2, z1 - 1, b.ammoCrate, N);      // handle side to the room, not the wall
         }
         else
         {
@@ -1433,7 +1433,9 @@ public final class MilitaryBase
             for (int k = 0; k < 4; k++)
             {
                 int x = alongX ? ix + k : ix, z = alongX ? iz : iz + k;
-                c.prop(x, 1, z, b.militaryCrate, alongX ? N : W);
+                // latch faces toward the open end (the hold is 1 wide: any side is a wall; verified
+                // facing, docs/references/prop_facing.tsv)
+                c.prop(x, 1, z, b.militaryCrate, alongX ? E : S);
             }
         }
         else if (content == 2)

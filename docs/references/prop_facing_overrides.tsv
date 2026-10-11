@@ -4,3 +4,6 @@ BlockRoadsign60	E	S	W	N	judge said W N E S; in game meta 3 shows the face from t
 BlockRoadsignOneway	E	S	W	N	judge said W N E S; same as every road sign (12 Oktober 2026)
 BlockBodyBagBlue	E	S	W	N	same model as the black bag, identical at every meta in game (12 Oktober 2026)
 BlockBodyBagGreen	E	S	W	N	same model as the black bag (12 Oktober 2026)
+BlockFlagPollUAHD	-	-	-	-	a flag's cloth reads from both sides: no front (12 Oktober 2026)
+BlockFlagPollUSSR	-	-	-	-	a flag's cloth reads from both sides: no front (12 Oktober 2026)
+BlockPowerGenerator	-	-	-	-	front not readable in the facing pictures, judge medium: unknown until a clear picture (12 Oktober 2026)

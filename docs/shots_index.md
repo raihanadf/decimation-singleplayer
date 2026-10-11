@@ -17,6 +17,8 @@ How shots are made: `./gradlew runClient -Pautotest` (street views),
   props; yellow line = front): left a jam at x 0 z 200..247, three cars in a column all pointing south
   toward the city exit; middle the crossing at 0,128: a car through the middle pointing east, traffic
   light arms (orange) from the corners over the roads; right a jam car at 240,128 pointing east.
+- topdown_lots.png (v0.51.2): left the bare lot at -176,144: two cars in their rows, noses toward
+  the middle line, on grass; right the dump at 48,96: junk along one edge.
 - topdown_crossing_crash.png (v0.51.1): the crossing at 0,128: first car through the middle pointing
   east, the second from the north pointing south with its nose at the first one's side, under a
   traffic light arm (arm props count as their pole under the arm).

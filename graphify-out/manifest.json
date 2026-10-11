@@ -530,9 +530,9 @@
     "semantic_hash": "4754c787c15ae49542d1bf2159b29b75"
   },
   "dev/src/main/java/net/decimation/worldgen/city/LcCity.java": {
-    "mtime": 1791749352.5962477,
-    "ast_hash": "979b73cc185a0e2702174b94a03c4861",
-    "semantic_hash": "979b73cc185a0e2702174b94a03c4861"
+    "mtime": 1791751306.7191038,
+    "ast_hash": "e7e9900dd01aacad938987e3280bd6dd",
+    "semantic_hash": "e7e9900dd01aacad938987e3280bd6dd"
   },
   "dev/src/main/java/net/decimation/worldgen/city/LcContent.java": {
     "mtime": 1791734512.8675733,
@@ -910,9 +910,9 @@
     "semantic_hash": "5db389303647c79e35cbfa3d2c3ec757"
   },
   "dev/src/main/java/net/decimation/worldgen/military/MilitaryBase.java": {
-    "mtime": 1791705125.9807973,
-    "ast_hash": "d62d042fbe48448f893835a2e28b7087",
-    "semantic_hash": "d62d042fbe48448f893835a2e28b7087"
+    "mtime": 1791751173.5025902,
+    "ast_hash": "2d73859166fbb0532ec98f4ad08f2df9",
+    "semantic_hash": "2d73859166fbb0532ec98f4ad08f2df9"
   },
   "dev/src/main/java/net/decimation/worldgen/military/MilitaryBasePlan.java": {
     "mtime": 1791704951.3075655,
@@ -922,12 +922,12 @@
   ".claude/skills/decimation-military-base/SKILL.md": {
     "mtime": 1791719288.0734754,
     "ast_hash": "ce962aa550ec0304d06cfbb8da3a7a61",
-    "semantic_hash": "ce962aa550ec0304d06cfbb8da3a7a61"
+    "semantic_hash": ""
   },
   "docs/military_base.md": {
-    "mtime": 1791750651.4935033,
-    "ast_hash": "1b42e97725c61240bb0b32bbac2af02a",
-    "semantic_hash": "1b42e97725c61240bb0b32bbac2af02a"
+    "mtime": 1791751710.4425635,
+    "ast_hash": "03f7dcde062e363a0bc0b235817aac8d",
+    "semantic_hash": "03f7dcde062e363a0bc0b235817aac8d"
   },
   "dev/src/main/java/net/decimation/worldgen/military/BlockHesco.java": {
     "mtime": 1791651267.5664878,
@@ -1210,9 +1210,9 @@
     "semantic_hash": "6109a8933c56e5af2a1eeb2678b52d7c"
   },
   "docs/city_dressing.md": {
-    "mtime": 1791750651.4918795,
-    "ast_hash": "9a989baf50f6afbc7e0497e12bc28804",
-    "semantic_hash": "9a989baf50f6afbc7e0497e12bc28804"
+    "mtime": 1791751710.440018,
+    "ast_hash": "beddfaab74162eb930bafc663fa3e18e",
+    "semantic_hash": "beddfaab74162eb930bafc663fa3e18e"
   },
   "docs/references/city_dressing_research.md": {
     "mtime": 1791734106.144288,

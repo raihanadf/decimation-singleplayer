@@ -33,8 +33,8 @@ BlockElectricBoxBin	floor	E	S	W	N	-	-	-	-
 BlockElevator	floor	-	-	-	-	-	-	-	-
 BlockElevatorButton	wall	-	-	-	-	-	-	-	-
 BlockExitLight	wall	E	S	W	N	z	x	z	x
-BlockFlagPollUAHD	floor	E	S	W	N	z	x	z	x
-BlockFlagPollUSSR	floor	E	S	W	N	z	x	z	x
+BlockFlagPollUAHD	floor	-	-	-	-	z	x	z	x
+BlockFlagPollUSSR	floor	-	-	-	-	z	x	z	x
 BlockFlatscreenTV	wall	E	S	W	N	z	x	z	x
 BlockFlatscreenTV_Emergency	wall	E	S	W	N	z	x	z	x
 BlockFlatscreenTV_News	wall	E	S	W	N	z	x	z	x
@@ -88,7 +88,7 @@ BlockNewsStand2	floor	E	S	W	N	-	-	-	-
 BlockOfficeChair	floor	E	S	W	N	-	-	-	-
 BlockPhonebooth	wall	E	S	W	N	z	x	z	x
 BlockPoliceCrate	floor	E	S	W	N	-	-	-	-
-BlockPowerGenerator	floor	S	W	N	E	-	-	-	-
+BlockPowerGenerator	floor	-	-	-	-	-	-	-	-
 BlockPowerPole	floor	-	-	-	-	z	x	z	x
 BlockPresent	floor	-	-	-	-	-	-	-	-
 BlockPresent2	floor	-	-	-	-	-	-	-	-

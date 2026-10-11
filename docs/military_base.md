@@ -208,5 +208,8 @@ tools/props/propclash.py now checks FACE with the verified facing table
 (docs/references/prop_facing.tsv). milbase_1 (FOB) shows 8 FACE findings the old placer rule hid:
 military crates at 34..37, 1, 65 (conex_inside) and 21, 1, 33 (guard booth) with their front into
 the conex wall / sandbags, the ammo case at 60, 2, 42 (toc_inside), the flag pole (cloth) and the
-work light at 57..58, 1, 32..36 into HESCO. To fix: place them through PropFacing (front into the
-room / away from the wall) like the city dressing does [not done].
+work light at 57..58, 1, 32..36 into HESCO.
+FIXED v0.51.2: conex crates face the open end (the hold is 1 wide), the guard booth crate faces the
+door, the TOC ammo cases face the room; flag poles are "no front" (cloth reads from both sides) and
+the generator's front is unknown (docs/references/prop_facing_overrides.tsv). All three sizes 0
+findings (turns 0), walk test only the locked TOC note.

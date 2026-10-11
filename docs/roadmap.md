@@ -202,6 +202,8 @@ each needs a design talk first. Current work comes first (user).
   rail.
 - v0.41.0 / 0.41.1 EOTech 558 and ACOG TA11 of our own, reticles in the glass swaying with the
   gun, Mk18 IMI TS stock, HK416 front sight folds away; accepted.
+- v0.51.2 a third of the open lots bare (parked cars, camp, dump); military base props facing walls
+  fixed with the verified table.
 - v0.51.1 arm props count as their pole under the arm (crossing crash second car, lamp over car
   false positives gone).
 - v0.51.0 city dressing, the rest: shop signs and graffiti on facades, parks and lots, traffic jams

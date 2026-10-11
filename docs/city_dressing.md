@@ -231,3 +231,16 @@ Pending, in order:
   8 FACE findings that the placer rule hid: military crates in a conex with their front (label) to
   the conex wall, an ammo case, the flag pole's cloth and the work light into HESCO. Military base
   follow up (docs/military_base.md), not changed here.
+
+### 12 Oktober 2026: v0.51.2
+
+- Bare lots: every district has its own park parts (the wasteland too), so no lot was ever bare
+  and LotDress.bare never ran. Now 35 % of open lots stay bare (LcCity.plan, only with the dressing
+  on): parked cars, a survivor's spot, a dumping ground or nothing. Seed 1: lots "cars" at -176,144,
+  "dump" at 48,96, "empty" at 16,16; the dressing adds no finding.
+  docs/shots/city_dressing_v0.51/topdown_lots.png: two cars in their rows, noses toward the middle
+  line, on a grass lot; the dump's junk along one edge.
+- Military base facing (docs/military_base.md): fixed in MilitaryBase (conex crates face the open
+  end, the guard booth crate the door, the TOC ammo case the room); overrides: flag poles have no
+  front (cloth reads both sides), the generator's front is unknown (pictures unreadable). All three
+  sizes 0 findings, walk test only the known locked TOC note, camp and refuge 0.

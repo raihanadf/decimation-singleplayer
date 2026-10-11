@@ -543,8 +543,12 @@ public final class LcCity
                 if (pick == null)
                 {
                     used[i][j] = true;
+                    // a third of the open lots stay bare (parking, a camp, a dump: LotDress) when the city
+                    // dressing is on; the rest carry a park part of the district
+                    boolean bare = Dress.ON && hl(seed ^ 0x42415245L, minX >> 4, minZ >> 4) % 100 < 35;
                     out.add(new LotPlan("lcl_" + cellX + "_" + cellZ + "_" + i + "_" + j, minX, minZ, g,
-                                        decor(seed, style, "parks", minX >> 4, minZ >> 4, 0x5041524BL), seed, style));
+                                        bare ? null : decor(seed, style, "parks", minX >> 4, minZ >> 4, 0x5041524BL),
+                                        seed, style));
                     continue;
                 }
                 for (int a = 0; a < pick.cx; a++)

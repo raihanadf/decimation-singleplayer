@@ -133,6 +133,10 @@ props placement".
     (APC, shelves) and their parts take new cells with them: clear the box before rebuilding in
     tests and commands.
 
+14. Facing comes from the verified table (docs/references/prop_facing.tsv), not the placer rule
+    alone: a crate's front is its latch face, so a crate in a 1 wide hold faces the open end, a crate
+    in a booth faces the door. propclash.py checks FACE with the table; keep it 0 for every size.
+
 ## Casebook (never delete a case)
 
 ### Case 1: first FOB generator (v0.42.0, 10 Oktober 2026)
@@ -255,3 +259,11 @@ props placement".
   rebuild losing a tent to the old APC's multiblock break.
 - Check: turns 0..3 all PASS, propclash 0 (222 props), walkcheck 0; seed 1 server: refuge at
   80,64,144 complete and level with the streets. Evidence: docs/shots/city_refuge_v0.48.0/.
+
+### Case 7: facing against the verified table (v0.51.2, 12 Oktober 2026)
+- The verified facing table (city dressing work) made propclash FACE stricter: 2 / 7 / 30 findings
+  on the outpost / FOB / large FOB (turns 0): conex crates with their latches to the conex wall, the
+  guard booth crate to its bags, the TOC ammo case to the wall, the flag pole and a generator.
+- Fix: crates face the open end / the door / the room; flag poles no front, generator front unknown
+  (overrides). All sizes 0, walk test unchanged. Trap: hotswap does not rebuild the cached base
+  layout; stop and start the live game after changing MilitaryBase.
