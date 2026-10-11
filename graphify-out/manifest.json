@@ -150,9 +150,9 @@
     "semantic_hash": "c25a07446165b4d2daecc22e65547151"
   },
   "new_feature.md": {
-    "mtime": 1791703498.8230603,
-    "ast_hash": "a7de24dfefbdf513343dd32a4b3bf964",
-    "semantic_hash": "a7de24dfefbdf513343dd32a4b3bf964"
+    "mtime": 1791703538.133648,
+    "ast_hash": "241b9081fe7466f7dde6782a34eaace9",
+    "semantic_hash": "241b9081fe7466f7dde6782a34eaace9"
   },
   "tools/graph_update.py": {
     "mtime": 1791348965.63658,

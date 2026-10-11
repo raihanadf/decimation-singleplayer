@@ -855,6 +855,35 @@ the user before building.
    survivors (item 5 joins this). Next: research the existing pieces
    (Decimation trader entity, civilian HumanEntity2, faction rules, zone
    registration) and a plan for the user.
+   What Decimation already has (deobf/names.tsv, 11 Oktober 2026, read from
+   the names table only; behaviour `[not verified]` until the classes are
+   read):
+   - Traders: TraderEntity deci.ai.a (FactionHumanEntity, static offer list
+     per class, opens TraderScreen; PacketTraderTransaction buys / sells for
+     caps or gold caps) and 19 subclasses: ammunition, armor, backpack,
+     banker, black market, bounty, car dealer, convenience, drug dealer,
+     food, fortification, gold cap, GuardTrader deci.ai.n ("armed guard NPC
+     protecting a safezone"), guitar player, guns, heavy guns, medical,
+     scrap, skins (+ Santa / witch). ArmedTraderEntity deci.ai.v shoots
+     infected and bandits within 32 blocks with its held gun.
+   - Placement on the official server: TraderSpawnManager
+     (net.decimation.mod.server.traders, decimation_traders.json, removes
+     all trader entities and respawns them), server proxy only: in
+     singleplayer we place and keep them ourselves.
+   - Safezone rules: SafezoneAttackHandler deci.aK.g (cancels attacks in
+     safezones and in the leave grace timer), FriendlyFireHandler deci.aK.i,
+     EntitySpawnZoneHandler deci.aK.d (blocks hostiles in safezones),
+     PlayerZoneTickHandler deci.aK.m (grace timer): all ServerProxy, so dead
+     in singleplayer like the others `[inferred]` (our ZoneSpawnHandler
+     covers the spawn side since v0.7.0). TraderAndSafezoneAttackGuard
+     deci.an.a (both sides): traders cannot be attacked.
+   - Props: BlockSafezoneSignEntry / Exit (signs at a safezone gate).
+   - Civilians: HumanEntity2 deci.ah.d (faction CIVILIAN, unarmed);
+     NpcFaction deci.ae.b: Bandit, Military, Civilian, Soviet.
+   Open design point for the plan: Decimation's safezone cancels every
+   attack inside, while the user wants guards to turn on a player who
+   shoots or hits someone inside; the plan must say what "provoked" means
+   (a shot fired inside, an attack attempt on a trader / civilian).
 2. Player claimable zone areas. Exists: Decimation's TURF system
    (net.decimation.mod.server.turf: TurfManager add / remove / owner /
    isCapturable, turfs json, TurfCommands), server proxy only, so likely
