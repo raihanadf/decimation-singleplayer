@@ -45,6 +45,8 @@ final class Dress
     private final Map<Integer, Block> blocks = new HashMap<Integer, Block>();
     private final Map<Integer, Integer> metas = new HashMap<Integer, Integer>();
     private final List<float[]> boxes = new ArrayList<float[]>();
+    /** Per placed box: its block and anchor {x, y, z}. */
+    private final List<Object[]> boxOwners = new ArrayList<Object[]>();
     /** Props placed, refused (did not fit) per prop name: the dev test and the log read it. */
     final Map<String, int[]> tally = new HashMap<String, int[]>();
     /** Refusal reasons (index = fits() result): placed, taken, out of plan, no support, doorway, block, prop, faces a wall. */
@@ -288,6 +290,7 @@ final class Dress
         if (d != null)
         {
             boxes.add(PropGeom.box(b, m, x, y, z));
+            boxOwners.add(new Object[] {b, new int[] {x, y, z}});
         }
         t[0]++;
         return true;
@@ -398,7 +401,15 @@ final class Dress
                         continue;
                     }
                     float[] q = PropGeom.shape(k, meta(cx, cy, cz));
-                    if (q != null && PropGeom.overlap(p, cx + q[0], cx + q[1], cy + q[2], cy + q[3], cz + q[4], cz + q[5],
+                    if (q != null && PropBoxes.box(k, meta(cx, cy, cz)) != null)
+                    {
+                        float[] s = {cx + q[0], cx + q[1], cy + q[2], cy + q[3], cz + q[4], cz + q[5]};
+                        if (PropGeom.propsOverlap(p, b, x, y, z, s, k, cx, cy, cz))
+                        {
+                            return 6;
+                        }
+                    }
+                    else if (q != null && PropGeom.overlap(p, cx + q[0], cx + q[1], cy + q[2], cy + q[3], cz + q[4], cz + q[5],
                                                       PropGeom.isDoor(k) ? 0 : PropGeom.SMALL))
                     {
                         return 5;
@@ -406,9 +417,11 @@ final class Dress
                 }
             }
         }
-        for (float[] q : boxes)
+        for (int i = 0; i < boxes.size(); i++)
         {
-            if (PropGeom.overlap(p, q[0], q[1], q[2], q[3], q[4], q[5], PropGeom.SMALL))
+            float[] q = boxes.get(i);
+            int[] a = (int[]) boxOwners.get(i)[1];
+            if (PropGeom.propsOverlap(p, b, x, y, z, q, (Block) boxOwners.get(i)[0], a[0], a[1], a[2]))
             {
                 return 6;
             }
@@ -425,7 +438,7 @@ final class Dress
                     if (q != null && (cx != x || cy != y || cz != z))
                     {
                         float[] s = PropGeom.shrink(q, cx, cy, cz);
-                        if (PropGeom.overlap(p, s[0], s[1], s[2], s[3], s[4], s[5], PropGeom.SMALL))
+                        if (PropGeom.propsOverlap(p, b, x, y, z, s, k, cx, cy, cz))
                         {
                             return 6;
                         }

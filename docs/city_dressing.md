@@ -215,3 +215,19 @@ Pending, in order:
   -19 41 220 under a bunker: the building's floor there is gone in the world (carved by the railway
   tunnel or a cave after the building was written [inferred]).
 - Still open: bare lot scenes seen in game; a whole dressed city walked by the user.
+
+### 12 Oktober 2026: v0.51.1
+
+- Arm props (traffic lights, street lights) count as their pole only against a prop whose top stays
+  under the arm (4 above their base): PropGeom.propsOverlap in the dressing, low_box in
+  tools/props/propclash.py. Their drawn box spans the whole arm from the ground up, so a car under a
+  traffic light arm was refused (the crossing crash never got its second car) and street lamps over
+  parked cars were reported (the "lamp arm" false positives of v0.49.0).
+- Crossing crash: the first car sits 2 off the middle away from the side the second comes from; the
+  second (6.9 long) then fits inside the crossing chunk with its nose 0.7 from the first one's side.
+  docs/shots/city_dressing_v0.51/topdown_crossing_crash.png: car through the crossing pointing east,
+  the second from the north pointing south at its side, under a traffic light arm.
+- Found with the verified table (not the dressing): the military base test dump milbase_1 now shows
+  8 FACE findings that the placer rule hid: military crates in a conex with their front (label) to
+  the conex wall, an ammo case, the flag pole's cloth and the work light into HESCO. Military base
+  follow up (docs/military_base.md), not changed here.

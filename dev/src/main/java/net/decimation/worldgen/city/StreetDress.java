@@ -842,17 +842,20 @@ final class StreetDress
         }
         boolean aAlongX = roll(0x584158L) < 500;
         int dirA = aAlongX ? (roll(0x5844L) < 500 ? 0 : 2) : (roll(0x5844L) < 500 ? 1 : 3);
-        if (!crossRoad(ca, PropFacing.meta(ca, dirA), 8, 8))
+        // a car is 6.9 long: the first one sits 2 off the middle, away from the side the second comes
+        // from, so the second fits inside this chunk with its nose 0.7 from the first one's side
+        int side = roll(0x58534944L) < 500 ? 1 : -1;
+        int ax = aAlongX ? 8 : 8 - 2 * side, az = aAlongX ? 8 - 2 * side : 8;
+        if (!crossRoad(ca, PropFacing.meta(ca, dirA), ax, az))
         {
             return;
         }
         cpw.mods.fml.common.FMLLog.info("[deciworldgen] dress crossing crash at %d,%d", chx << 4, chz << 4);
-        // the other car comes from one side, nose toward the first: try a few gaps
-        int side = roll(0x58534944L) < 500 ? 1 : -1;
+        // the other car comes from that side, nose toward the first: try a few spots
         int dirB = aAlongX ? (side > 0 ? 3 : 1) : (side > 0 ? 2 : 0);
-        for (int gap = 4; gap <= 8; gap++)
+        for (int gap = 4; gap <= 6; gap++)
         {
-            int bx = aAlongX ? 8 : 8 + side * gap, bz = aAlongX ? 8 + side * gap : 8;
+            int bx = aAlongX ? 8 : 8 - 2 * side + side * (gap + 2), bz = aAlongX ? 8 - 2 * side + side * (gap + 2) : 8;
             if (crossRoad(cb, PropFacing.meta(cb, dirB), bx, bz))
             {
                 break;

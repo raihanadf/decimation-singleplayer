@@ -129,6 +129,37 @@ final class PropGeom
         return null;
     }
 
+    /** Props with an arm overhead (from about 4 up): below the arm only their pole stands. */
+    static boolean armProp(Block b)
+    {
+        String n = String.valueOf(Block.blockRegistry.getNameForObject(b));
+        return n.startsWith("deci:BlockTrafficLights") || n.startsWith("deci:BlockStreetLight");
+    }
+
+    /** The pole of an arm prop at (x, y, z): its own cell's middle, full height. */
+    static float[] pole(int x, int y, int z)
+    {
+        return new float[] {x + 0.3f, x + 0.7f, y, y + 7.8f, z + 0.3f, z + 0.7f};
+    }
+
+    /**
+     * Do a prop a (block ka at its anchor ay) and a prop b overlap? An arm prop counts as its pole only
+     * against a prop whose top stays under its arm (4 above the arm prop's base): a car under a traffic
+     * light arm is where cars always are.
+     */
+    static boolean propsOverlap(float[] a, Block ka, int ax, int ay, int az, float[] b, Block kb, int bx, int by, int bz)
+    {
+        if (ka != null && armProp(ka) && b[3] < ay + 4f)
+        {
+            a = pole(ax, ay, az);
+        }
+        if (kb != null && armProp(kb) && a[3] < by + 4f)
+        {
+            b = pole(bx, by, bz);
+        }
+        return overlap(a, b[0], b[1], b[2], b[3], b[4], b[5], SMALL);
+    }
+
     static boolean overlap(float[] p, float x0, float x1, float y0, float y1, float z0, float z1, float min)
     {
         float ox = Math.min(p[1], x1) - Math.max(p[0], x0);

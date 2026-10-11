@@ -657,7 +657,7 @@
   "docs/roadmap.md": {
     "mtime": 1791750258.5631332,
     "ast_hash": "196402cc4ab935d88c048189f541d2b4",
-    "semantic_hash": "196402cc4ab935d88c048189f541d2b4"
+    "semantic_hash": ""
   },
   "dev/src/main/java/net/decimation/worldgen/LegacyStreets.java": {
     "mtime": 1791487239.5087948,
@@ -925,9 +925,9 @@
     "semantic_hash": "ce962aa550ec0304d06cfbb8da3a7a61"
   },
   "docs/military_base.md": {
-    "mtime": 1791665574.399853,
-    "ast_hash": "7836c309e27eb12f1ed57c1caf98ca14",
-    "semantic_hash": "7836c309e27eb12f1ed57c1caf98ca14"
+    "mtime": 1791750651.4935033,
+    "ast_hash": "1b42e97725c61240bb0b32bbac2af02a",
+    "semantic_hash": "1b42e97725c61240bb0b32bbac2af02a"
   },
   "dev/src/main/java/net/decimation/worldgen/military/BlockHesco.java": {
     "mtime": 1791651267.5664878,
@@ -945,9 +945,9 @@
     "semantic_hash": "ad372a54da88e970267b9463304a38d4"
   },
   "tools/props/propclash.py": {
-    "mtime": 1791746963.3879907,
-    "ast_hash": "84f8cd1302587b464dd0da204399713a",
-    "semantic_hash": "84f8cd1302587b464dd0da204399713a"
+    "mtime": 1791750526.632726,
+    "ast_hash": "8d0e8b2ac193bbbd5cc6b30d83e99ac4",
+    "semantic_hash": "8d0e8b2ac193bbbd5cc6b30d83e99ac4"
   },
   "tools/props/propgeom.py": {
     "mtime": 1791652326.6049495,
@@ -1140,9 +1140,9 @@
     "semantic_hash": "f8ebe321090fda8b8d141f41f903a496"
   },
   "dev/src/main/java/net/decimation/worldgen/city/Dress.java": {
-    "mtime": 1791749718.3721898,
-    "ast_hash": "7a64737d692666d17b3cfbd1f9cd6b35",
-    "semantic_hash": "7a64737d692666d17b3cfbd1f9cd6b35"
+    "mtime": 1791750514.8234699,
+    "ast_hash": "fa443a2d5eb6c2dfd8ee45a508ca1db7",
+    "semantic_hash": "fa443a2d5eb6c2dfd8ee45a508ca1db7"
   },
   "dev/src/main/java/net/decimation/worldgen/city/PropFacing.java": {
     "mtime": 1791733114.0682964,
@@ -1155,14 +1155,14 @@
     "semantic_hash": "0008cb26c5711970053ce06bbf9891e4"
   },
   "dev/src/main/java/net/decimation/worldgen/city/PropGeom.java": {
-    "mtime": 1791747928.6799855,
-    "ast_hash": "e097357dd6c64b79717f1b75805461f7",
-    "semantic_hash": "e097357dd6c64b79717f1b75805461f7"
+    "mtime": 1791750514.8228192,
+    "ast_hash": "643b893d04ff5e67658cff673a788503",
+    "semantic_hash": "643b893d04ff5e67658cff673a788503"
   },
   "dev/src/main/java/net/decimation/worldgen/city/StreetDress.java": {
-    "mtime": 1791750128.9713702,
-    "ast_hash": "36474edadd850738089d35cb60442ada",
-    "semantic_hash": "36474edadd850738089d35cb60442ada"
+    "mtime": 1791750387.6105356,
+    "ast_hash": "4a81081a21e41b64278e0e8d224da547",
+    "semantic_hash": "4a81081a21e41b64278e0e8d224da547"
   },
   "dev/src/main/java/net/decimation/worldgen/city/StreetLayout.java": {
     "mtime": 1791749288.8525496,
@@ -1210,9 +1210,9 @@
     "semantic_hash": "6109a8933c56e5af2a1eeb2678b52d7c"
   },
   "docs/city_dressing.md": {
-    "mtime": 1791750258.5613256,
-    "ast_hash": "5360716c0c943ec63623a3ef9c2ed527",
-    "semantic_hash": "5360716c0c943ec63623a3ef9c2ed527"
+    "mtime": 1791750651.4918795,
+    "ast_hash": "9a989baf50f6afbc7e0497e12bc28804",
+    "semantic_hash": "9a989baf50f6afbc7e0497e12bc28804"
   },
   "docs/references/city_dressing_research.md": {
     "mtime": 1791734106.144288,

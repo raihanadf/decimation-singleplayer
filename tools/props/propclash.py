@@ -236,17 +236,27 @@ def main():
                        % (x + dx, y, z + dz))
                 break
 
+    ARM = ("BlockTrafficLights", "BlockTrafficLightsMiddle", "BlockStreetLight", "BlockStreetLightMiddle")
+
+    def low_box(q, other_top):
+        """An arm prop (traffic light, street light) counts as its pole only against a prop whose top
+        stays under the arm (4 above its base): a car under a traffic light arm is where cars are."""
+        if q[0] in ARM and other_top < q[2][1] + 4:
+            x, y, z = q[2]
+            return [x + 0.3, x + 0.7, y, y + 7.8, z + 0.3, z + 0.7]
+        return q[3]
+
     for i in range(len(props)):
         a = props[i]
-        ab = [a[3][0] + TOL, a[3][1] - TOL, a[3][2] + TOL, a[3][3] - TOL, a[3][4] + TOL, a[3][5] - TOL]
         for j in range(i + 1, len(props)):
             c = props[j]
             if abs(c[2][0] - a[2][0]) > 12 or abs(c[2][2] - a[2][2]) > 12 or abs(c[2][1] - a[2][1]) > 6:
                 continue
             if a[0] in MULTI and a[0] == c[0]:
                 continue
-            ov = overlap(ab, [c[3][0] + TOL, c[3][1] - TOL, c[3][2] + TOL, c[3][3] - TOL, c[3][4] + TOL,
-                              c[3][5] - TOL])
+            A, C = low_box(a, c[3][3]), low_box(c, a[3][3])
+            ab = [A[0] + TOL, A[1] - TOL, A[2] + TOL, A[3] - TOL, A[4] + TOL, A[5] - TOL]
+            ov = overlap(ab, [C[0] + TOL, C[1] - TOL, C[2] + TOL, C[3] - TOL, C[4] + TOL, C[5] - TOL])
             if min(ov) > 0:
                 report("PROP", a[0], a[2], a[1], "overlaps %s at %d %d %d meta %d (%.2f deep)"
                        % (c[0], c[2][0], c[2][1], c[2][2], c[1], min(ov) + TOL), min(ov) + TOL)

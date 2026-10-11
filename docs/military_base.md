@@ -201,3 +201,12 @@ Traps met (the skill decimation-military-base has them as lessons):
   alternate (COP 128 / 68); judge multiblocks on a first build.
 - Real worldgen: `python3 tools/servertest.py 1 type=decimation pregen=-64,448,9` places the
   two seed 1 COPs; the log lines "military base (...) ... at x,y,z".
+
+## Open: facing with the verified table (12 Oktober 2026)
+
+tools/props/propclash.py now checks FACE with the verified facing table
+(docs/references/prop_facing.tsv). milbase_1 (FOB) shows 8 FACE findings the old placer rule hid:
+military crates at 34..37, 1, 65 (conex_inside) and 21, 1, 33 (guard booth) with their front into
+the conex wall / sandbags, the ammo case at 60, 2, 42 (toc_inside), the flag pole (cloth) and the
+work light at 57..58, 1, 32..36 into HESCO. To fix: place them through PropFacing (front into the
+room / away from the wall) like the city dressing does [not done].
