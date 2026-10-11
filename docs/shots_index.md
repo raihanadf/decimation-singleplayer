@@ -11,6 +11,12 @@ How shots are made: `./gradlew runClient -Pautotest` (street views),
 `-Paudit` (building audit), `-Pgallery` (prop gallery); output in
 `dev/run/client/screenshots/`, then copied here into a versioned folder.
 
+## safezone_camp_v0.47.0_review/ (user review of the survivor camp, 11 Oktober 2026)
+- user_119.png (user's dev client, creative, the dev test sky camp in deciworldgen_devtest):
+  the market street from the gate end, both rows of stalls with counters, goods (medical cases
+  left, water pallet right), the medical tent at the end, NO people (the camp test had removed
+  them at its end); the awnings white from this side (the front column was a white stripe).
+
 ## safezone_camp_v0.47.0/ (survivor camp, a safezone outside the cities, 11 Oktober 2026)
 Dev test `camp`, sky build at -20000, 230, -19700, turned 90 degrees (turns=1), seed 42, all
 PASS. Files camp_<point>_turn1.png and the sheet.

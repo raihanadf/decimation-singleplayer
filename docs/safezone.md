@@ -32,7 +32,7 @@ boxes, validateProps, CanvasPlan turns 0..270 and grades the ground around over 
 | Gate | south, x 21..25 | 5 closed fence gates between log posts, log lintel, BlockSafezoneSignEntry (outside) / Exit (inside) over it, two guards behind sandbags inside |
 | Watchtowers | 4 corners, 4 x 4 | spruce filled base, ladder in a shaft on the camp side (front cell free), deck at 4, fence railing, log corner posts, slab roof at 8, a guard on the deck |
 | Market street | x 21..25, z 15..43 | cobblestone; 3 stalls each side (z 27 / 32 / 37) |
-| Stall | 5 deep x 4 long | plank floor, board back wall, counter of two BlockWoodTable (2 apart, drawn 2 long), trader behind it, two goods props at the back by trade (cabinets / cases / water / crates), striped wool awning on fence posts |
+| Stall | 5 deep x 4 long | plank floor, board back wall, counter of two BlockWoodTable (2 apart, drawn 2 long), trader behind it, two goods props at the back by trade (cabinets / cases / water / crates), striped wool awning on fence posts (coloured on the odd columns, so the front edge seen from the street is coloured; v0.47.0 had it white) |
 | Plaza | x 15..31, z 15..24 | cobblestone with gravel; campfire (fire on netherrack, stone slab ring, benches 3 away facing it), 4 BlockHazardLight light towers, water tank (iron) with 2 cauldrons, water pallets |
 | Medical tent | x 19..27, z 5..12 | white wool vault, red mark over the door, stretchers both sides, medical crates, lights |
 | Family tents | 7 tents 5 x 6 | vault of sandstone / brown / green / grey wool, a bed, a footlocker, a light |
@@ -55,6 +55,17 @@ No loot: Decimation gives no loot from containers inside or within 10 blocks of 
   112 blocks and all its chunks loaded gets its missing residents, all at the first visit
   (`filled`), later a dead or missing one again after 5 minutes while no player is within 40
   blocks of its post. Residents carry entity data deciwgSite / deciwgPost, never despawn.
+- Dedicated server: Decimation's ServerTickHandler (server only) removes EVERY TraderEntity each
+  3000 ticks (2.5 min, traderRestockCountdown) and respawns only those of decimation_traders.json
+  (TraderSpawnManager.respawnTraders): the user remembered this "reset" from setting up a
+  Decimation server. There the keeper respawns trader and guard posts at once (no 5 minute wait).
+  In singleplayer that handler is stripped, the reset never runs (read from the code
+  11 Oktober 2026).
+- Peaceful difficulty: every Decimation human (traders and guards too) is an EntityMob, and
+  vanilla removes mobs on peaceful each tick: no camp residents on peaceful `[inferred from
+  EntityMob.onUpdate; not tested]`.
+- `/deciworldgen camp [turns]`: a camp centred on the player (graded), its zone and people
+  registered as for a generated one (an earlier camp of the same id is replaced).
 - Protection, provocation: docs/zones.md section 5 (every friendly resident is protected
   inside the safezone; a player who attacks one is fired on by the guards and soldiers around).
 
@@ -77,7 +88,9 @@ No loot: Decimation gives no loot from containers inside or within 10 blocks of 
   and residents registered as the generator does; checks: no clash / refusal in the generator
   log, every resident spawned by kind, the player inside counts as in a safezone, a gunshot on a
   trader does nothing; one shot per camera point; writes run/client/devtest/camp.tsv.
-  `-Pturns=0..3`, `-Pseed=N`. Zone, site and residents are removed at the end.
+  `-Pturns=0..3`, `-Pseed=N`. Since v0.47.1 the camp keeps its zone and people after the test
+  (an earlier run's are removed first): the user visited the sky camp and found it empty
+  (11 Oktober 2026, docs/shots/safezone_camp_v0.47.0_review/user_119.png).
 - `python3 tools/props/propclash.py dev/run/client/devtest/camp.tsv` and
   `python3 tools/props/walkcheck.py dev/run/client/devtest/camp.tsv`: both 0 (walkcheck opens
   fence gates since v0.47.0).

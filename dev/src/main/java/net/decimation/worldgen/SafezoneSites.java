@@ -122,6 +122,22 @@ public class SafezoneSites
         return new ArrayList<Site>(sites);
     }
 
+    /** Removes the living residents of a site (dev tests, commands). */
+    public static int clearResidents(World w, String id)
+    {
+        int n = 0;
+        for (Object o : w.loadedEntityList)
+        {
+            Entity e = (Entity) o;
+            if (!e.isDead && id.equals(e.getEntityData().getString(SITE_TAG)))
+            {
+                e.setDead();
+                n++;
+            }
+        }
+        return n;
+    }
+
     /** Forgets a site (dev tests; later a fallen safezone). */
     public static synchronized boolean remove(String id)
     {
@@ -206,7 +222,13 @@ public class SafezoneSites
             {
                 missingSince.put(key, since = now);
             }
-            boolean due = !s.filled || now - since >= RESPAWN && nearest(w, p.x, p.z) > UNSEEN;
+            // a dedicated server's Decimation removes EVERY trader entity each 3000 ticks and respawns
+            // only those of its decimation_traders.json (ServerTickHandler traderRestockCountdown,
+            // TraderSpawnManager.respawnTraders; server side only, stripped in singleplayer): ours
+            // come back at once there
+            boolean wiped = cpw.mods.fml.common.FMLCommonHandler.instance().getSide().isServer()
+                && (p.kind.startsWith("trader:") || p.kind.equals("guard"));
+            boolean due = !s.filled || wiped || now - since >= RESPAWN && nearest(w, p.x, p.z) > UNSEEN;
             if (due && spawn(w, s, i) != null)
             {
                 missingSince.remove(key);

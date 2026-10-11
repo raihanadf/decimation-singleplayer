@@ -67,6 +67,24 @@ public class ZoneStore
         return zone;
     }
 
+    /** Removes every zone of ours of this kind containing the point; how many (dev tests, commands). */
+    public static synchronized int removeAt(ZoneKind kind, int x, int y, int z)
+    {
+        int n = 0;
+        for (ObjectZone zone : new ArrayList<ObjectZone>(zones))
+        {
+            if (net.decimation.fixes.Deci.isZone(zone, kind)
+                && x >= Math.min(zone.zoneX1, zone.zoneX2) && x <= Math.max(zone.zoneX1, zone.zoneX2)
+                && y >= Math.min(zone.zoneY1, zone.zoneY2) && y <= Math.max(zone.zoneY1, zone.zoneY2)
+                && z >= Math.min(zone.zoneZ1, zone.zoneZ2) && z <= Math.max(zone.zoneZ1, zone.zoneZ2))
+            {
+                remove(zone);
+                n++;
+            }
+        }
+        return n;
+    }
+
     /** Takes a zone of ours out of this world and the live list (dev tests; later a fallen safezone). */
     public static synchronized boolean remove(ObjectZone zone)
     {

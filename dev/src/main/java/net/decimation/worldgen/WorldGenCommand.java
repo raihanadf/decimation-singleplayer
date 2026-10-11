@@ -25,7 +25,7 @@ public class WorldGenCommand extends CommandBase
     @Override
     public String getCommandUsage(ICommandSender sender)
     {
-        return "/deciworldgen reload | rebuild [radius] [x z] | pos1|pos2 [x y z]"
+        return "/deciworldgen reload | rebuild [radius] [x z] | camp [turns 0..3] | pos1|pos2 [x y z]"
                + " | capture set <name> <room> [north|south|west|east] [weight] | capture part <name> | paste <name> <x> <y> <z>";
     }
 
@@ -52,6 +52,28 @@ public class WorldGenCommand extends CommandBase
                 net.minecraft.entity.player.EntityPlayerMP player = getCommandSenderAsPlayer(sender);
                 rebuild(sender, player.worldObj, (int) Math.floor(player.posX), (int) Math.floor(player.posZ), radius);
             }
+            return;
+        }
+        if (args.length >= 1 && "camp".equals(args[0]))
+        {
+            // a survivor camp (safezone) centred on the player, its zone and people (docs/safezone.md)
+            net.minecraft.entity.player.EntityPlayerMP player = getCommandSenderAsPlayer(sender);
+            int turns = args.length > 1 ? parseIntBounded(sender, args[1], 0, 3) : 0;
+            int[] f = net.decimation.worldgen.military.SurvivorCampPlan.footprint();
+            int x = (int) Math.floor(player.posX) - f[0] / 2, z = (int) Math.floor(player.posZ) - f[1] / 2;
+            int y = (int) Math.floor(player.boundingBox.minY + 0.01) - 1;
+            String id = "C" + x + "_" + z;
+            net.minecraft.world.World world = player.worldObj;
+            SafezoneSites.clearResidents(world, id);
+            SafezoneSites.remove(id);
+            ZoneStore.removeAt(ZoneKind.SAFEZONE, x + f[0] / 2, y + 1, z + f[1] / 2);
+            net.decimation.worldgen.military.SurvivorCampPlan plan = new net.decimation.worldgen.military.SurvivorCampPlan(
+                id, world.getSeed() ^ (x * 341873128712L + z * 132897987541L), x, z, turns);
+            Slices.placeAt(world, plan, y, true);
+            plan.register(y);
+            player.setPositionAndUpdate(x + f[0] / 2 + 0.5, y + 1, z + f[1] / 2 + 0.5);
+            sender.addChatMessage(new ChatComponentText("[deciworldgen] survivor camp " + id + " at " + x + " " + y + " " + z
+                + ": its people arrive within a few seconds"));
             return;
         }
         if (args.length >= 1 && ("pos1".equals(args[0]) || "pos2".equals(args[0])))

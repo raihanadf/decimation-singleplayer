@@ -75,9 +75,9 @@
     "semantic_hash": "35872d888ffcf42528c6f521c7f5a31f"
   },
   "dev/src/main/java/net/decimation/worldgen/ZoneStore.java": {
-    "mtime": 1791704376.5351973,
-    "ast_hash": "efb3b334f6bded52359c9a89b11ad08e",
-    "semantic_hash": "efb3b334f6bded52359c9a89b11ad08e"
+    "mtime": 1791709281.3874838,
+    "ast_hash": "111d4766cadc105b42f59ec1a281dc36",
+    "semantic_hash": "111d4766cadc105b42f59ec1a281dc36"
   },
   "tools/build.py": {
     "mtime": 1786559778.002923,
@@ -120,9 +120,9 @@
     "semantic_hash": "aa4550575e47e7c1d0b020a51afbb501"
   },
   "bug.md": {
-    "mtime": 1791704683.8192217,
-    "ast_hash": "c3991cf0f6ad483f1bc67a04507b1b2e",
-    "semantic_hash": "c3991cf0f6ad483f1bc67a04507b1b2e"
+    "mtime": 1791709334.269507,
+    "ast_hash": "59cabda68176f931834b283107f2ca7c",
+    "semantic_hash": "59cabda68176f931834b283107f2ca7c"
   },
   "create_weapons.md": {
     "mtime": 1791653625.5948887,
@@ -325,9 +325,9 @@
     "semantic_hash": "0145e0863788d451e8ae4273d3c2abdd"
   },
   "docs/shots_index.md": {
-    "mtime": 1791706800.3717346,
-    "ast_hash": "1809b45aee5e4a45c853ede52d43c062",
-    "semantic_hash": "1809b45aee5e4a45c853ede52d43c062"
+    "mtime": 1791709334.3296776,
+    "ast_hash": "0f58bd083a2e4194bda1d8881f9d7f7c",
+    "semantic_hash": "0f58bd083a2e4194bda1d8881f9d7f7c"
   },
   "docs/interior_spec.md": {
     "mtime": 1791385593.9436893,
@@ -340,9 +340,9 @@
     "semantic_hash": "93ceaca2ef7ce3e2c45c4fe4dbab9bcf"
   },
   "dev/src/main/java/net/decimation/worldgen/WorldGenCommand.java": {
-    "mtime": 1791405910.9566429,
-    "ast_hash": "3115823d4869c460d2f66e46d3eb0290",
-    "semantic_hash": "3115823d4869c460d2f66e46d3eb0290"
+    "mtime": 1791709281.3888662,
+    "ast_hash": "a1d9cd6b85b2a3417f888dbdbcad6e9e",
+    "semantic_hash": "a1d9cd6b85b2a3417f888dbdbcad6e9e"
   },
   "dev/src/main/java/net/decimation/worldgen/sets/FurnitureSet.java": {
     "mtime": 1791395757.5220072,
@@ -920,9 +920,9 @@
     "semantic_hash": "4c81ad1f466b3abac5a346fc8ca4c89a"
   },
   ".claude/skills/decimation-military-base/SKILL.md": {
-    "mtime": 1791706363.6535037,
-    "ast_hash": "1ee3532b0aed7a41f125a1246dedb80c",
-    "semantic_hash": "1ee3532b0aed7a41f125a1246dedb80c"
+    "mtime": 1791709334.270182,
+    "ast_hash": "09b4f1ce2c1b6c9e1396b9439918d1c5",
+    "semantic_hash": "09b4f1ce2c1b6c9e1396b9439918d1c5"
   },
   "docs/military_base.md": {
     "mtime": 1791665574.399853,
@@ -1060,14 +1060,14 @@
     "semantic_hash": "b21e3a27af962afe1729627d26db1cba"
   },
   "dev/src/main/java/net/decimation/worldgen/SafezoneSites.java": {
-    "mtime": 1791705234.7334657,
-    "ast_hash": "dd41f34a9f41a42b57d06833d312c376",
-    "semantic_hash": "dd41f34a9f41a42b57d06833d312c376"
+    "mtime": 1791709281.3881204,
+    "ast_hash": "a9df8a5c27b9e581cff08842d8542f28",
+    "semantic_hash": "a9df8a5c27b9e581cff08842d8542f28"
   },
   "dev/src/main/java/net/decimation/worldgen/devtest/CampTest.java": {
-    "mtime": 1791705464.6829443,
-    "ast_hash": "f7c963e586254d7ce9c0c6dc86fa4d38",
-    "semantic_hash": "f7c963e586254d7ce9c0c6dc86fa4d38"
+    "mtime": 1791709287.9004092,
+    "ast_hash": "722cf22450bf6c7aad4d5fd02aaa3c63",
+    "semantic_hash": "722cf22450bf6c7aad4d5fd02aaa3c63"
   },
   "dev/src/main/java/net/decimation/worldgen/military/CanvasPlan.java": {
     "mtime": 1791704951.3070405,
@@ -1075,18 +1075,18 @@
     "semantic_hash": "634fbc611f3c6134d33833a9ce9b46f9"
   },
   "dev/src/main/java/net/decimation/worldgen/military/SurvivorCamp.java": {
-    "mtime": 1791706286.2645316,
-    "ast_hash": "ef17d4c16f506ee36c67c826dad1a57f",
-    "semantic_hash": "ef17d4c16f506ee36c67c826dad1a57f"
+    "mtime": 1791709281.3863358,
+    "ast_hash": "a4d877c68822b14befe85e712486e5a7",
+    "semantic_hash": "a4d877c68822b14befe85e712486e5a7"
   },
   "dev/src/main/java/net/decimation/worldgen/military/SurvivorCampPlan.java": {
-    "mtime": 1791705201.1689413,
-    "ast_hash": "fa52b2bfb8da69d17b1aa226b360ef05",
-    "semantic_hash": "fa52b2bfb8da69d17b1aa226b360ef05"
+    "mtime": 1791709281.3868723,
+    "ast_hash": "4a94e1b5ab540e7b3d1944382ae5fb57",
+    "semantic_hash": "4a94e1b5ab540e7b3d1944382ae5fb57"
   },
   "docs/safezone.md": {
-    "mtime": 1791706800.3712137,
-    "ast_hash": "d3bdbf4e67735bf7038f25630d551e94",
-    "semantic_hash": "d3bdbf4e67735bf7038f25630d551e94"
+    "mtime": 1791709334.2688582,
+    "ast_hash": "6c2805f4fb0c940d062b187a6f2f1236",
+    "semantic_hash": "6c2805f4fb0c940d062b187a6f2f1236"
   }
 }

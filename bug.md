@@ -850,3 +850,16 @@ Safezone" line and no map markers, on a server too for our generated zones.
 Fix: fixes/ZoneRules (copies of the server handlers, stepping aside on a dedicated server, plus
 the client zone list sync on both) and ZoneSpawnHandler (traps, projectiles; ours: no bandits,
 Soviets, mechs spawning inside a safezone). Checked: dev test `zones`, 19 checks PASS.
+
+## Survivor camp NPCs missing (reported 11 Oktober 2026 on 0.47.0, FIXED v0.47.1)
+
+User shot docs/shots/safezone_camp_v0.47.0_review/user_119.png: the market of the camp with no
+trader, guard or civilian. The user suspected Decimation's trader "reset" countdown. Read from
+the code: that reset is real but server only (ServerTickHandler traderRestockCountdown 3000
+ticks -> TraderSpawnManager.respawnTraders removes every TraderEntity and spawns those of
+decimation_traders.json), stripped in singleplayer. The camp shown was the dev test's sky camp
+in deciworldgen_devtest (the user's game had that world open, log "survivor camps off"), whose
+residents and site the camp test removed at its end. Fixes: the test keeps its camp populated;
+on a dedicated server the keeper respawns traders and guards at once after a reset; awning
+front edges coloured; `/deciworldgen camp` to place a populated camp anywhere. Peaceful
+difficulty removes Decimation humans (EntityMob) `[inferred]`, documented in docs/safezone.md.

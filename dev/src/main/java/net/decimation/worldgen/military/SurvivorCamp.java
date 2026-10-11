@@ -362,7 +362,8 @@ final class SurvivorCamp
             for (int k = 0; k <= 5; k++)
             {
                 int x = back + dir * k;
-                c.set(x, 4, z, wool, (k & 1) == 0 ? stripe : 0);
+                // colour on the odd columns: the front edge (k 5), the one seen from the street, is coloured
+                c.set(x, 4, z, wool, (k & 1) == 1 ? stripe : 0);
             }
         }
         for (int z : new int[] {z0, z1})

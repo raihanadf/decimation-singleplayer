@@ -73,6 +73,17 @@ public final class SurvivorCampPlan extends CanvasPlan implements Residents
         return "survivor camp (safezone) rot " + turns * 90;
     }
 
+    /**
+     * Registers the camp as Slices does for a generated one: the SAFEZONE box 6 around and the
+     * residents (the /deciworldgen camp command, the camp dev test).
+     */
+    public void register(int baseY)
+    {
+        int x0 = minX() - 6, z0 = minZ() - 6, x1 = maxX() + 6, z1 = maxZ() + 6;
+        net.decimation.worldgen.ZoneStore.add(ZoneKind.SAFEZONE, x0, baseY - 4, z0, x1, baseY + height() + 12, z1);
+        SafezoneSites.add(id, x0, baseY - 4, z0, x1, baseY + height() + 12, z1, residents(baseY));
+    }
+
     public List<SafezoneSites.Post> residents(int baseY)
     {
         List<SafezoneSites.Post> out = new ArrayList<SafezoneSites.Post>();

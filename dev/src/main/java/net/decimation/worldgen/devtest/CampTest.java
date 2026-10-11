@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import net.decimation.fixes.Deci;
-import net.decimation.mod.server.zones.ObjectZone;
 import net.decimation.worldgen.SafezoneSites;
 import net.decimation.worldgen.Slices;
 import net.decimation.worldgen.ZoneKind;
@@ -24,8 +23,8 @@ import net.minecraft.world.World;
  * refusal in the generator log, every resident spawned by the keeper (by kind), the residents are
  * protected (a player shot at a trader does nothing), the player inside counts as in a safezone.
  * Then one shot per camera point. Writes run/client/devtest/camp.tsv for tools/props/propclash.py
- * and walkcheck.py. -Pturns=0..3, -Pseed=N, -Ppoints=a,b. Zone, site and residents are removed at
- * the end; the blocks stay in the sky.
+ * and walkcheck.py. -Pturns=0..3, -Pseed=N, -Ppoints=a,b. The camp stays with its zone and people
+ * (an earlier run's are removed first).
  */
 public class CampTest extends DevTestMode
 {
@@ -44,7 +43,6 @@ public class CampTest extends DevTestMode
     private volatile boolean built;
     private int taken = -1;
     private SurvivorCampPlan plan;
-    private ObjectZone zone;
     private String id;
 
     public boolean client(Minecraft mc)
@@ -101,7 +99,17 @@ public class CampTest extends DevTestMode
         if (t == BUILD)
         {
             id = "TC_" + seed + "_" + turns;
-            SafezoneSites.remove(id);
+            // an earlier run's camp here: its people, site and zone go; this run's stay afterwards (the
+            // user visits the sky camp: it was empty when the test removed them at the end)
+            for (SafezoneSites.Site old : SafezoneSites.all())
+            {
+                if (old.id.startsWith("TC_"))
+                {
+                    SafezoneSites.clearResidents(w, old.id);
+                    SafezoneSites.remove(old.id);
+                }
+            }
+            ZoneStore.removeAt(ZoneKind.SAFEZONE, X0 + 23, Y + 1, Z0 + 23);
             plan = new SurvivorCampPlan(id, seed, X0, Z0, turns);
             pregenerate(w, plan);
             long t0 = System.nanoTime();
@@ -115,9 +123,7 @@ public class CampTest extends DevTestMode
             }
             DevTestResults.check(name(), "clashes and refusals", problems, problems == 0, "0");
             // as Slices does for a generated plan: the zone box 6 around, the residents
-            int x0 = plan.minX() - 6, z0 = plan.minZ() - 6, x1 = plan.maxX() + 6, z1 = plan.maxZ() + 6;
-            zone = ZoneStore.add(ZoneKind.SAFEZONE, x0, Y - 4, z0, x1, Y + plan.height() + 12, z1);
-            SafezoneSites.add(id, x0, Y - 4, z0, x1, Y + plan.height() + 12, z1, plan.residents(Y));
+            plan.register(Y);
             dump(w, plan);
             p.playerNetServerHandler.setPlayerLocation((plan.minX() + plan.maxX()) / 2.0, Y + 1, (plan.minZ() + plan.maxZ()) / 2.0, 0, 0);
             for (Map.Entry<String, float[]> e : plan.pointsOfInterest().entrySet())
@@ -163,8 +169,7 @@ public class CampTest extends DevTestMode
             DevTestResults.check(name(), "site filled", s.filled, s.filled, "true");
             boolean in = Deci.isPlayerInZone(p, ZoneKind.SAFEZONE);
             DevTestResults.value(name(), "player at", (int) p.posX + "," + (int) p.posY + "," + (int) p.posZ + " combat "
-                + Deci.player(p).combatTimer() + " zone " + zone.zoneX1 + "," + zone.zoneY1 + "," + zone.zoneZ1 + ".."
-                + zone.zoneX2 + "," + zone.zoneY2 + "," + zone.zoneZ2 + " live " + Deci.zoneList().zoneList.contains(zone));
+                + Deci.player(p).combatTimer());
             DevTestResults.check(name(), "player inside counts as safezone", in, in, "true");
             if (trader != null)
             {
@@ -175,7 +180,6 @@ public class CampTest extends DevTestMode
             }
             built = true;
         }
-        int end = FILL + 20 + shots.size() * SHOT;
         if (built)
         {
             int i = (t - FILL - 20) / SHOT;
@@ -184,19 +188,6 @@ public class CampTest extends DevTestMode
                 float[] s = shots.get(i);
                 p.playerNetServerHandler.setPlayerLocation(s[0], s[1] - 1.62, s[2], s[3], s[4]);
                 p.motionX = p.motionY = p.motionZ = 0;
-            }
-            if (t == end + 10)
-            {
-                ZoneStore.remove(zone);
-                SafezoneSites.remove(id);
-                for (Object o : w.loadedEntityList)
-                {
-                    Entity e = (Entity) o;
-                    if (id.equals(e.getEntityData().getString(SafezoneSites.SITE_TAG)))
-                    {
-                        e.setDead();
-                    }
-                }
             }
         }
     }

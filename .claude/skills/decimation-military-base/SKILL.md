@@ -110,6 +110,10 @@ props placement".
     hands its posts to worldgen/SafezoneSites with its zone; a keeper spawns them when a player
     comes near (entities spawned during population get lost or doubled). Check every post kind
     in the dev test.
+16. A test site the user can visit must look like the real thing when the test ends: never
+    remove its people or zone afterwards (remove an earlier run's at the start instead). And
+    check Decimation's server side resets of NPCs (traders wiped every 3000 ticks on a
+    dedicated server) when residents depend on Decimation classes.
 15. A 1 x 1 stall (outhouse, booth) needs two free cells above its floor: a seat block on the
     floor left no head room (walkcheck DOOR finding).
 
@@ -196,3 +200,13 @@ props placement".
   the stalls) and an outhouse seat with no head room; walkcheck counted closed fence gates as
   walls (now opened like doors). After the fixes: clashes 0, propclash 0, walkcheck 0, turns 0
   and 1. Evidence docs/shots/safezone_camp_v0.47.0/.
+
+### Case 8: "the npc is missing" (v0.47.0 -> v0.47.1, 11 Oktober 2026)
+- User shot docs/shots/safezone_camp_v0.47.0_review/user_119.png: the sky test camp's market
+  empty; the user suspected Decimation's trader reset countdown (from setting up its server).
+- Cause: the camp test removed the residents and site at its end; the user visited the test
+  world afterwards. The reset exists only on a dedicated server (ServerTickHandler, stripped in
+  singleplayer); handled anyway (keeper respawns traders / guards at once there).
+- Also seen in the shot: awnings white from the street (the white stripe was the front column).
+- Fix: test camp stays populated, keeper dedicated server respawn, front edge coloured,
+  `/deciworldgen camp`.
