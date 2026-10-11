@@ -11,6 +11,22 @@ How shots are made: `./gradlew runClient -Pautotest` (street views),
 `-Paudit` (building audit), `-Pgallery` (prop gallery); output in
 `dev/run/client/screenshots/`, then copied here into a versioned folder.
 
+## lc_bridge_v0.45.1/ (bridges as streets over water, 11 Oktober 2026)
+User review of 0.45.0: "the bridge show up, just need change the design so the bridge match with other
+road". Dev test `bridge` at 30144,64,1696 (along z, dev world), all PASS.
+- bridge_deck.png: standing on the land street looking onto the bridge: the same DeceasedCraft
+  asphalt, dashed centre line and raised sidewalks run on across the canal without a step; iron bar
+  railings on the sidewalk edges; a parked wreck on the street.
+- bridge_aerial.png: from above, the street crossing the canal at street height, the canal running
+  on beside a hotel between quay walls.
+- bridge_side.png: from the canal side: stone brick quay wall with railings, the bridge's railing
+  and lamps on the street level behind.
+- bridge_under.png: at water level under the deck: stone brick deck, a pier, canal water.
+- sheet_bridge.png: the 4 shots as one sheet.
+Server check (seed 1 fresh, not shot, read with worldcheck): straight and crossing bridges carry the
+land street's blocks row by row; broken wasteland bridges (120,64,136) have an open hole across
+5..10 / along 4..11 down to the water, sidewalks kept.
+
 ## lc_bridge_v0.45.0/ (rivers through cities and bridges, 11 Oktober 2026)
 - seed1_worldmap.png (tools/worldmap.py, fresh seed 1 server world, city rivers on): the natural
   winding rivers outside, one enters the spawn city at the top middle and leaves at the bottom:

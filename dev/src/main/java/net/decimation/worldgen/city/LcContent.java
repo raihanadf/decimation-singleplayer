@@ -77,7 +77,6 @@ public final class LcContent
     private static final Map<String, List<String>> stairs = new HashMap<String, List<String>>();
     private static final Map<String, List<String>> highways = new HashMap<String, List<String>>();
     private static final Map<String, List<String>> rails = new HashMap<String, List<String>>();
-    private static final Map<String, List<String>> bridges = new HashMap<String, List<String>>();
     private static final Map<String, List<String>> decor = new HashMap<String, List<String>>();
     private static final Map<String, List<String>> streets = new HashMap<String, List<String>>();
     private static final Map<Integer, Block> remap = new HashMap<Integer, Block>();
@@ -115,13 +114,6 @@ public final class LcContent
     public static List<String> rails(String kind)
     {
         List<String> l = rails.get(kind);
-        return l != null ? l : new ArrayList<String>();
-    }
-
-    /** Bridge part files: "default" (DeceasedCraft's bridge_1) or "deadzone" (its broken one). */
-    public static List<String> bridges(String kind)
-    {
-        List<String> l = bridges.get(kind);
         return l != null ? l : new ArrayList<String>();
     }
 
@@ -185,7 +177,6 @@ public final class LcContent
             byStyle(o, "streets", streets);
             byKind(o, "highways", highways);
             byKind(o, "rails", rails);
-            byKind(o, "bridges", bridges);
             FMLLog.info("[deciworldgen] Lost Cities content: %d buildings, %d stairs styles, %d highway kinds, "
                         + "%d rail kinds", buildings.size(), stairs.size(), highways.size(), rails.size());
         }

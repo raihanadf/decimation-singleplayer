@@ -270,10 +270,13 @@ surface stations off), tunnels linking nearby cities.
   highway deck above); dev test all PASS at region 69,6 (street level 70,
   three staircase parts).
 
-## Rivers and bridges (v0.45.0, `city/CityRivers.java`, `city/RiverPlan.java`)
+## Rivers and bridges (v0.45.0, v0.45.1, `city/CityRivers.java`, `city/RiverPlan.java`)
 
 User choice 11 Oktober 2026 (after the railway): rivers allowed through
-cities, streets crossing them become DeceasedCraft's bridge parts. Lost
+cities, streets crossing them become bridges. Since v0.45.1 (user review
+of 0.45.0: "change the design so the bridge match with other road") a
+bridge is the street itself carried over the water, no DeceasedCraft
+bridge part. Lost
 Cities builds a bridge where a level 0 street has to cross non city chunks
 (water) to reach another street (BuildingInfo.calculateXBridge, bridges at
 level 0 only); our cities had no such gaps (rivers kept 32 blocks off).
@@ -296,24 +299,36 @@ level 0 only); our cities had no such gaps (rivers kept 32 blocks off).
   up to the street level on every side that meets land (a city chunk not on
   the river, or outside the city a chunk the natural river does not touch),
   iron railings on them. Building chunks on the river: canal, no building
-  (multi buildings fit around them). Street chunks on the river: the
-  district's bridge part (lcpack index "bridges": "default" = bridge_1,
-  "deadzone" = bridge_deadzone_1, the wasteland district's broken bridge with
-  only its sidewalks) along the street, slice 0 = the road at the street
-  level (bottom slabs: half a block below the street), two stone brick piers
-  across the middle. A crossing on the river: a road deck on a stone brick
-  underside and four piers. Log line "lc bridge [crossing] at x,y,z".
+  (multi buildings fit around them). Street chunks on the river (bridges
+  and crossings): LcCity.street builds the same StreetPlan as on land
+  (the district's street part by connections, paint, sidewalks, lamps,
+  benches, wrecks; no stairs part, no street scene, no building fronts:
+  StreetPlan onWater) and RiverPlan writes it at the street level over a
+  stone brick deck at street - 1, two stone brick piers across the middle
+  of a bridge (along 7 / 8, across 2, 3, 12, 13), four on a crossing.
+  Iron bar railings on every chunk edge whose neighbour is not a street
+  (water or a lot): at street + 1, or on top of a raised sidewalk (the DC
+  street parts have slab sidewalks at street + 1, railing at street + 2).
+  Wasteland district (style ":deadzone"): broken, the road's middle
+  (across 5..10, along 4..11; a crossing 5..10 both ways) and the deck
+  under it are open down to the water, sidewalks kept. Log line
+  "lc bridge [crossing] [broken] at x,y,z". v0.45.0 used DeceasedCraft's
+  bridge_1 / bridge_deadzone_1 parts (quartz deck of bottom slabs half a
+  block below the street, white railings); the user wanted the road look.
 - Railway: a station never on a segment touching the river (the next of the
   three segments, else none); tunnels pass under the canals (bed 56, tunnel
   top 54). tools/hwmap.py --rails ignores rivers.
-- Content: `tools/lcpack.py OUT_DIR --rails dc=<data>:deceasedcraft` now adds
-  the bridges too (" " keeps what is there; above the canal that is air).
+- Content: none since v0.45.1 (`tools/lcpack.py --rails` no longer exports
+  bridge parts; an old "bridges" entry in a pack's index.json is ignored).
 - Dev test `bridge`: switches city rivers on for the session, takes the first
   bridge (dev world from region 40 on row 6, `-Prx`, `-Prz`) whose chunk was
   never generated and whose span has city streets at both ends; checks the
   deck at the street level over every span chunk, water in every canal chunk
-  around, nothing built over the canals, no water above 62 in city chunks, a
-  player walks across from street to street; shots aerial, deck, side, under.
+  around, nothing built over the canals, no water above 62 in street and
+  canal chunks (buildings have their own pools: the sunken club holds 194
+  water blocks), the road block (across 4, along 8) of every span chunk is
+  the land street's, a player walks across from street to street; shots
+  aerial, deck, side, under.
 - Checked: seed 1 server world (pregen 20 chunks): 23 bridges logged, every
   generated one has its deck and water under it (the 3 without a road
   middle are the wasteland district's broken bridges); top down renders
@@ -321,6 +336,12 @@ level 0 only); our cities had no such gaps (rivers kept 32 blocks off).
   (picked a span at the city edge; its deck shot was inside the hill).
   Water at 64 / 65 in the spawn city: small fountain clusters in parks
   `[inferred]`, not canal water.
+- Checked v0.45.1: seed 1 server world (pregen 20): 29 bridges logged, 3
+  broken; layers read with worldcheck: bridge rows identical to the land
+  street rows (asphalt, centre line, sidewalks), stone brick deck at 63,
+  water 57..62, railings on the edges, the broken bridge at 120,64,136 open
+  over across 5..10 / along 4..11. Dev test all PASS at 30144,64,1696
+  (docs/shots_index.md "lc_bridge_v0.45.1").
 
 ## Verified (seed 1, Decimation world type, fresh server world)
 

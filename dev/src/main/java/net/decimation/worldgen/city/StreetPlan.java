@@ -36,11 +36,14 @@ final class StreetPlan implements net.decimation.worldgen.FixedBase
     /** The district's street part (slice 0 = street surface) and its turns, or null for our own street. */
     private final LcContent.Shape piece;
     private final int pieceTurns;
+    /** Carried over a canal (RiverPlan): no fronts of the buildings beside it. */
+    private final boolean onWater;
 
     StreetPlan(String id, int minX, int minZ, int ground, Block road, LcContent.Shape stairs, int turns,
                int kind, StreetProps props, long seed, LcCity city, String style, LcContent.Shape scene,
-               LcContent.Shape piece, int pieceTurns)
+               LcContent.Shape piece, int pieceTurns, boolean onWater)
     {
+        this.onWater = onWater;
         this.piece = piece;
         this.pieceTurns = pieceTurns;
         this.city = city;
@@ -58,6 +61,8 @@ final class StreetPlan implements net.decimation.worldgen.FixedBase
         this.turns = turns;
     }
 
+    /** 0 = north-south street, 1 = east-west, 2 = crossing. */
+    int kind() { return kind; }
     public int fixedBaseY() { return ground; }
     public String id() { return id; }
     public int minX() { return minX; }
@@ -85,7 +90,7 @@ final class StreetPlan implements net.decimation.worldgen.FixedBase
             return fronts;
         }
         fronts = new LcContent.Shape[4];
-        if (kind == 2 || stairs != null)
+        if (kind == 2 || stairs != null || onWater)
         {
             return fronts;
         }

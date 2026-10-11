@@ -321,7 +321,10 @@ Status values: `Done` / `Decided` (direction agreed, not built yet) /
   waiting for the user's look in game (docs/city_engine.md "Railway",
   shots lc_rail_v0.44.0). Bridges DONE v0.45.0 (rivers through cities in
   new worlds, canals, DeceasedCraft's bridges; docs/city_engine.md "Rivers
-  and bridges"), waiting for the user's look in game.
+  and bridges"). User look at 0.45.0: "the bridge show up just need change
+  the design so the bridge match with other road"; v0.45.1: the bridge is
+  the street part itself over the water (same blocks, same height, railings,
+  broken hole in the wasteland), waiting for the user's look.
 
 ---
 

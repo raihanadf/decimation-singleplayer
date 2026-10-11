@@ -33,9 +33,10 @@ or `[not decided]`.
 2. Lost Cities parts not used yet (user, 11 Oktober 2026: "start 6, except giant building"):
    - **Rail**: DONE v0.44.0, waiting for the user's look in game: underground subway on the
      highway lines, a station per city, tunnels between cities (docs/city_engine.md "Railway").
-   - **Bridges**: DONE v0.45.0, waiting for the user's look in game (new worlds only): rivers
-     through cities as canals, streets across them DeceasedCraft's bridge parts (the broken one in
-     the wasteland district), crossings on decks (docs/city_engine.md "Rivers and bridges").
+   - **Bridges**: DONE v0.45.0, revised v0.45.1 after the user's look ("match with other road"):
+     rivers through cities as canals, bridges are the street itself over the water (same parts,
+     same height), broken in the wasteland district (docs/city_engine.md "Rivers and bridges");
+     waiting for the user's look at 0.45.1 (new worlds only).
    Building rotation only uses the variants the data lists.
 3. apocalypsenow structures (.nbt) converter for military and other sites
    outside cities `[not decided]`. docs/references/deceasedcraft_buildings.md.
@@ -60,7 +61,8 @@ or `[not decided]`.
 ## Zones, factions and world (user list 9 Oktober 2026, "later", no order yet)
 
 Details and starting points: new_feature.md "Zones, factions and world".
-1. **Advanced safezone.**
+1. **Advanced safezone.** NEXT (user, 11 Oktober 2026: "create safezone maybe that have trader +
+   guard inside?"): design session with the user first.
 2. **Zone areas claimable by the player.**
 3. **Advanced zone claims**: a claimed zone can be lost now and then when
    NPCs claim it.
@@ -182,6 +184,8 @@ docs/gun_model_spec.md); every user review goes into its lessons and casebook.
   rail.
 - v0.41.0 / 0.41.1 EOTech 558 and ACOG TA11 of our own, reticles in the glass swaying with the
   gun, Mk18 IMI TS stock, HK416 front sight folds away; accepted.
+- v0.45.1 bridges are the streets carried over the canals (same road, sidewalks, lamps; railings;
+  broken ones in the wasteland).
 - v0.45.0 rivers through cities (new worlds): canals with quay walls, DeceasedCraft's bridges on
   the streets across them, stations kept off the river.
 - v0.44.0 underground railway: subway tracks and a station per city, tunnels between cities,

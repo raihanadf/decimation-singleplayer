@@ -763,6 +763,10 @@ of the last session:
   "!cityRivers"; -Ddeciworldgen.cityrivers overrides). Dev test `bridge`
   (forces them on for the session). Check for the user's game as its own
   step before any live test (bridge run 1 ran beside it).
+  v0.45.1: bridges are the street (StreetPlan onWater) carried over the canal by
+  RiverPlan: same road / paint / sidewalks / lamps, deck and piers below, railings
+  on non street edges, wasteland bridges broken (hole in the road); DC bridge parts
+  dropped (user review). City work: skill decimation-city.
   Gun study (10 Oktober 2026): docs/gun_style_guide.md, tools/guns/study.py
   (renders / measures Decimation's guns from the jar, `attach` adds
   attachments as the game places them), dev test mode `gunview` (hip, aim

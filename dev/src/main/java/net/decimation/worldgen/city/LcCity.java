@@ -479,7 +479,7 @@ public final class LcCity
                 if (CityRivers.chunk(seed, chx, chz))
                 {
                     used[i][j] = true;
-                    out.add(new RiverPlan("lcr_" + chx + "_" + chz, seed, chx, chz, g, null, 0, false));
+                    out.add(new RiverPlan("lcr_" + chx + "_" + chz, seed, chx, chz, g, null, false));
                 }
             }
         }
@@ -593,27 +593,13 @@ public final class LcCity
      */
     private Plan street(long seed, int cellX, int cellZ, int lx, int lz, int chx, int chz, int g, String style)
     {
-        if (CityRivers.chunk(seed, chx, chz))
-        {
-            // a bridge along the street (DeceasedCraft's bridge parts run along x unturned); a
-            // crossing gets a plain deck on piers
-            boolean crossing = lx == 0 && lz == 0;
-            List<String> files = LcContent.bridges(style.endsWith(":deadzone") ? "deadzone" : "default");
-            if (files.isEmpty())
-            {
-                files = LcContent.bridges("default");
-            }
-            LcContent.Shape part = crossing || files.isEmpty() ? null
-                : LcContent.shape(files.get((int) (hl(seed ^ 0x42524447L, chx, chz) % files.size())));
-            cpw.mods.fml.common.FMLLog.info("[deciworldgen] lc bridge%s at %d,%d,%d", crossing ? " crossing" : "",
-                                            (chx << 4) + 8, g, (chz << 4) + 8);
-            return new RiverPlan("lcr_" + chx + "_" + chz, seed, chx, chz, g, part, lx == 0 ? 1 : 0, crossing);
-        }
+        // a street on the river: the same street part as on land, carried over the canal on a deck
+        boolean river = CityRivers.chunk(seed, chx, chz);
         // neighbours along the street grid: the street continues west / north
         // across the cell edge (and east / south from the cell's last street chunk)
         int[][] dirs = {{-1, 0}, {0, -1}, {1, 0}, {0, 1}}; // west, north, east, south
         int turns = -1;
-        for (int d = 0; d < 4; d++)
+        for (int d = 0; d < 4 && !river; d++)
         {
             int nx = chx + dirs[d][0], nz = chz + dirs[d][1];
             int ncx = Math.floorDiv(nx, CELL), ncz = Math.floorDiv(nz, CELL);
@@ -701,15 +687,25 @@ public final class LcCity
                 piece = LcContent.shape(files.get((int) (hl(seed ^ 0x53545250L, chx, chz) % files.size())));
             }
         }
-        LcContent.Shape scene = kind != 2 && stairs == null && h(seed ^ 0x5343454EL, chx, chz) < SCENE_CHANCE
+        LcContent.Shape scene = !river && kind != 2 && stairs == null && h(seed ^ 0x5343454EL, chx, chz) < SCENE_CHANCE
             ? decor(seed, style, "fountains", chx, chz, 0x464F554EL) : null;
         if (scene != null)
         {
             cpw.mods.fml.common.FMLLog.info("[deciworldgen] lc street scene (%s) at %d,%d,%d", style, chx << 4, g,
                                             chz << 4);
         }
-        return new StreetPlan("lcs_" + chx + "_" + chz, chx << 4, chz << 4, g, road, stairs, Math.max(0, turns),
-                              kind, props, seed, this, style, scene, piece, pieceTurns);
+        StreetPlan street = new StreetPlan("lcs_" + chx + "_" + chz, chx << 4, chz << 4, g, road, stairs,
+                                           Math.max(0, turns), kind, props, seed, this, style, scene, piece,
+                                           pieceTurns, river);
+        if (!river)
+        {
+            return street;
+        }
+        // the wasteland district's bridges have lost the middle of their road
+        boolean broken = style.endsWith(":deadzone");
+        cpw.mods.fml.common.FMLLog.info("[deciworldgen] lc bridge%s%s at %d,%d,%d", kind == 2 ? " crossing" : "",
+                                        broken ? " broken" : "", (chx << 4) + 8, g, (chz << 4) + 8);
+        return new RiverPlan("lcr_" + chx + "_" + chz, seed, chx, chz, g, street, broken);
     }
 
     // ------------------------------------------------------------ plans

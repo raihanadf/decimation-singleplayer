@@ -222,9 +222,10 @@ docs/city_engine.md "Railway".
 ## Rivers through cities (v0.45, new worlds only)
 
 In worlds created with 0.45 or later, rivers flow on through cities as canals: stone quay
-walls with railings, streets crossing them on bridges (a plain road deck at crossings). In the
-wasteland district next to military zones the bridges are broken: only their sidewalks are
-left. Older worlds keep their cities as they were. Details: docs/city_engine.md "Rivers and
+walls with railings, streets crossing them on bridges. Since 0.45.1 a bridge is the street
+itself carried over the water: the same road, paint, sidewalks and lamps at the same height,
+iron railings on the edges. In the wasteland district next to military zones the middle of the
+road has fallen into the canal: walk across on the sidewalks, no driving. Older worlds keep their cities as they were. Details: docs/city_engine.md "Rivers and
 bridges".
 
 ## Bug and feature tracking

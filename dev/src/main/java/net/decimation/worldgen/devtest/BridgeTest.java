@@ -18,7 +18,7 @@ import net.minecraft.world.World;
  * them), finds the first city region from rx 40 (or -Prx) on region row -Prz (default 6) with a
  * bridge whose chunk was never generated, generates around it, then checks: the bridge deck at
  * the street level, water in the canals, nothing built over a canal, a player can walk across
- * from street to street, no water above the canal level. Shots bridge_<view>.png.
+ * from street to street, no water above the canal level, the road block the land street's (a bridge is the street carried over). Shots bridge_<view>.png.
  */
 public class BridgeTest extends DevTestMode
 {
@@ -139,15 +139,33 @@ public class BridgeTest extends DevTestMode
             decks += n >= 64 ? 1 : 0;
         }
         DevTestResults.check(name(), "deck at street level", decks, decks == a + e + 1, (a + e + 1) + " chunks");
+        // the bridge is the street carried over: its road lane block is the land street's (across 4,
+        // along 8: road on straight streets and crossings alike; a broken bridge's hole is across 5..10)
+        int same = 0;
+        for (int k = -a; k <= e; k++)
+        {
+            int x0 = (cx + k * dx) << 4, z0 = (cz + k * dz) << 4, l0x = sx << 4, l0z = sz << 4;
+            boolean match = true;
+            for (int across : new int[] {4})
+            {
+                int ox = alongX ? 8 : across, oz = alongX ? across : 8;
+                match &= w.getBlock(x0 + ox, g, z0 + oz) == w.getBlock(l0x + ox, g, l0z + oz)
+                    && w.getBlockMetadata(x0 + ox, g, z0 + oz) == w.getBlockMetadata(l0x + ox, g, l0z + oz);
+            }
+            same += match ? 1 : 0;
+        }
+        DevTestResults.check(name(), "road block as the street", same, same == a + e + 1,
+                             (a + e + 1) + " chunks");
         // canals around: water, nothing built over them, no water above the canal
         int canals = 0, wet = 0, built = 0, spill = 0;
         for (int i = cx - R; i <= cx + R; i++)
         {
             for (int k = cz - R; k <= cz + R; k++)
             {
-                if (!net.decimation.worldgen.city.LcCity.isCity(seed, Math.floorDiv(i, 4), Math.floorDiv(k, 4)))
+                if (!net.decimation.worldgen.city.LcCity.isCity(seed, Math.floorDiv(i, 4), Math.floorDiv(k, 4))
+                    || !CityRivers.chunk(seed, i, k) && !net.decimation.worldgen.city.LcCity.streetChunk(seed, i, k))
                 {
-                    continue; // natural ponds outside may lie higher
+                    continue; // natural ponds outside may lie higher; buildings have their own pools (sunken club)
                 }
                 for (int x = i << 4; x < (i << 4) + 16; x++)
                 {
@@ -179,7 +197,7 @@ public class BridgeTest extends DevTestMode
         }
         DevTestResults.check(name(), "canal chunks with water", wet, wet == canals, canals + " canal chunks");
         DevTestResults.check(name(), "blocks over the canals (street + 6 .. 20)", built, built == 0, "0");
-        DevTestResults.check(name(), "water above the canal level (city chunks)", spill, spill == 0, "0");
+        DevTestResults.check(name(), "water above the canal level (streets, canals)", spill, spill == 0, "0");
         int across = walk(w, sx, sz, ex, ez, g);
         DevTestResults.check(name(), "street to street across on foot", across, across > 0, "far street cells reached > 0");
         // shots: from above, along the deck, from the canal side, under it
