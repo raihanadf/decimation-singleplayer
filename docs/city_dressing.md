@@ -121,6 +121,15 @@ Pending, in order:
    placer rule), road signs W N E S, cars / trucks / police cars headlights W N E S, bicycle W N E S,
    mailbox / newspaper box / bench / street light / dumpster / cabinet E S W N, CCTV is a ceiling
    prop, flat TV and phone booth hang on walls, decals and graffiti E S W N (meta 3 on the north wall).
+   DONE 11 Oktober 2026: the audit finished (41 agents, 192 props: 165 both readers agreed, 27 judged,
+   0 unresolved); raw result docs/references/prop_facing_audit.json, table written by
+   tools/props/facing_table.py to docs/references/prop_facing.tsv and the game resource (190 rows,
+   low confidence left out). PICTURE CHECK before using: the judge gave road signs 20 / 30 / 40 / 50 /
+   parking / stop front E S W N but 60 / one way W N E S (same family, opposite: suspicious); body
+   bags black / orange E S W N, blue / green W N E S; work light tower S S N N; generator S W N E.
+   Place one of each in the gallery and photograph it before the dressing uses them.
+   Traffic lights (both readers agree): lenses N E S W at meta 2..5, arm E S W N (lenses 90 degrees
+   left of the arm); StreetDress's corner table matches (NE pole lenses S = meta 4, arm W).
 2. Check StreetDress / BuildingDress against the final table (front vs arm of the traffic light,
    power pole crossarm axis, CCTV facing table looked odd: N S S N).
 3. servertest seed 1 with -Ddeciworldgen.dress=true, worlddump + propclash (no new findings),
