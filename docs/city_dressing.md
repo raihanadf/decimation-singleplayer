@@ -1,4 +1,4 @@
-# City dressing: Decimation props through the whole city (v0.50.0, design)
+# City dressing: Decimation props through the whole city (v0.50.0)
 
 User request 11 Oktober 2026: "do that for all city until its fully really like real world full of
 props, check small detail ... make sure all props and all decoration decimation all placed on city
@@ -163,3 +163,22 @@ Pending, in order:
 - Still to do: road scenes (jams toward exits, crashes, checkpoints, cone tapers), facade graffiti
   and shop signs (the wall is in the neighbour plan), parks / lots, power poles are rare (13),
   performance check (props per chunk about +60 %), then the switch on by default, skills.
+
+### 12 Oktober 2026: ON by default (v0.50.0)
+
+- `Dress.ON` defaults to on; `-Ddeciworldgen.dress=false` switches it off (servertest `dress`,
+  devtest `--dress` are no longer needed but harmless). New chunks only: places already generated
+  keep what they have; a building split between old and new chunks is dressed in its new part only.
+- Road scenes added (StreetDress.roadScene): police roadblock (car across the road, sawhorses,
+  cones), wasteland checkpoint (jersey barriers with a gap, hedgehogs, sandbags), crash (car in its
+  lane headlights the lane's way, a second car across it, debris downstream, a skeleton in the
+  wasteland), road works (sign trailer facing the traffic, cone taper, sawhorse). Seed 1: 0
+  findings from them. Shots docs/shots/city_dressing_v0.50/cell132_*.
+- Performance: dev test cityview on a dressed street vs an undressed one: fps varies more between
+  repeats (47..89) than between props drawn / not drawn; props within render distance about the
+  same (3155..3603) because the dressed cell is a small part of the render area. A fully dressed
+  area has about 57 % more props per chunk [not verified in a whole dressed city].
+- Skills: decimation-city-street, -vehicles, -interior, -decay, decimation-worldgen (index);
+  decimation-props and decimation-city updated. decimation-military-interior still to split.
+- Still open: facade graffiti and shop signs (the wall is in the neighbour plan), parks and lots,
+  traffic jams toward city exits, crossing crashes, power poles are few.

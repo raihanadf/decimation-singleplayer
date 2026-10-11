@@ -116,6 +116,8 @@ Knowledge index:
   work in singleplayer; safezone sites and the "destroyed by the player" plan.
 - `docs/safezone.md`: safezone sites: survivor camps (layout, residents and their keeper,
   placement, test) and city refuges (our fortified building, one per city region, section 7).
+- `docs/city_dressing.md`: Decimation props through the whole city (streets, road scenes,
+  interiors, story layer), rules in directions, verified facing table, checks, status / handoff.
 - `docs/city_engine.md`: the Lost Cities style city from converted
   DeceasedCraft content (tools/lcpack.py, city/LcContent, city/LcCity).
 - `docs/worldgen_architecture.md`: worldgen v3 design (engine + data
@@ -802,6 +804,12 @@ of the last session:
   street parts turned (LcCity.partAt), one centred fit-tested wreck per DC street chunk; seed 1
   propclash findings 2901 -> 30 (docs/city_engine.md "Props fitted to their drawn size").
   Check a generated world: tools/props/worlddump.py + propclash.py; dev test `cityprops` (shots).
+  v0.50.0: city dressing ON (docs/city_dressing.md; city/Dress, StreetDress, BuildingDress,
+  StreetLayout, BuildingLayout, PropFacing, PropGeom): Decimation props through all streets and
+  buildings by real world rules (docs/references/city_dressing_research.md) with the VERIFIED facing
+  table of all 192 props (docs/references/prop_facing.tsv; corrections prop_facing_overrides.tsv; dev
+  test `facing`). Off: -Ddeciworldgen.dress=false. servertest `dress` / devtest `--dress` flags.
+  Skills: decimation-worldgen (index), decimation-city-street / -vehicles / -interior / -decay.
   Gun study (10 Oktober 2026): docs/gun_style_guide.md, tools/guns/study.py
   (renders / measures Decimation's guns from the jar, `attach` adds
   attachments as the game places them), dev test mode `gunview` (hip, aim

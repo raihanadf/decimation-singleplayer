@@ -192,6 +192,10 @@ docs/gun_model_spec.md); every user review goes into its lessons and casebook.
   rail.
 - v0.41.0 / 0.41.1 EOTech 558 and ACOG TA11 of our own, reticles in the glass swaying with the
   gun, Mk18 IMI TS stock, HK416 front sight folds away; accepted.
+- v0.50.0 city dressing: every street and building gets Decimation props by real world rules with
+  verified facing (traffic lights, signs, mailboxes, newspaper boxes, benches, bicycles, poles, road
+  scenes, EXIT / CCTV / TVs / cabinets / kind props inside, bodies, decals); facing table of all 192
+  props (docs/city_dressing.md). New chunks only.
 - v0.49.0 converted city props fitted to their drawn size (ceiling lights, shelf ledges, crates
   turned or made chests, seats turned to their desks), props of turned street parts turned, one
   centred car per street chunk (new chunks).

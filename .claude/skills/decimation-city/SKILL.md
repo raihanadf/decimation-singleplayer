@@ -9,6 +9,10 @@ The facts live in docs/city_engine.md (one section per feature: what it does, co
 was checked); this skill is the order of work, the checks and the lessons from the user's
 reviews.
 
+Sub-skills: decimation-city-street (sidewalks, crossings), decimation-city-vehicles (wrecks, road
+scenes), decimation-city-interior (inside buildings), decimation-city-decay (story layer); props in
+general: decimation-props; all of them: decimation-worldgen.
+
 ## 0. Read first
 1. docs/city_engine.md (the section of the feature, plus "Open"), docs/roadmap.md "Worldgen and
    cities", docs/shots_index.md for what earlier shots show (do not re-shoot what is described).

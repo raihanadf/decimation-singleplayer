@@ -11,6 +11,14 @@ not something we introduced or need to fix) see `documentation.md`.
 ## Open
 
 
+### Thin props passed every overlap check (found 12 Oktober 2026, FIXED v0.50.0)
+- Found while checking the city dressing: wall TVs (drawn 0.125 deep) hung into door cells and
+  nothing refused them.
+- Cause: drawn boxes were shrunk by 0.08 per side before testing (the propclash tolerance); a box
+  thinner than 0.16 turned inside out and overlapped nothing. Affected PropFit and the dressing.
+- Fix: PropGeom.shrink keeps at least 0.04 per axis. Checked: seed 1 dressed world, 0 findings
+  from the dressing.
+
 ### Converted city props drawn into walls, floating, facing walls; cars in the sidewalks (found 11 Oktober 2026, FIXED v0.49.0)
 - Found measuring a seed 1 world (tools/props/worlddump.py + propclash.py): 3609 findings over
   11009 props, 93 % inside converted DeceasedCraft buildings.

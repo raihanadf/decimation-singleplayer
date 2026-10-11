@@ -22,6 +22,15 @@ bases, 11 Oktober 2026, 28 screenshots). Everything learned is in docs/prop_plac
    front matters and is not on the checked list: check it in the gallery shots
    (docs/shots/gallery_v0.16, views.txt; camera south, metadata 3) or the model parts first.
 
+## 1b. Facing: the verified table (since v0.50.0)
+- docs/references/prop_facing.tsv: for all 192 props, decals and signs the front direction at meta 2..5,
+  the mount (floor / wall / ceiling / road / flat picture) and the long axis; two independent
+  readers per family, a judge for disagreements, in game picture corrections in
+  prop_facing_overrides.tsv (dev test `facing`). In code: city/PropFacing.meta(block, dir) /
+  along(block, axis) / front(block, meta). Rules speak in directions, never in metadata numbers.
+- In code, city props go through city/Dress.place (drawn box clear, inside the plan, support, door
+  walkway, front not into a wall, long props around checked), PropGeom for the shapes.
+
 ## 2. Writing the placement
 - Lay rows by drawn length (tables and large cases step 2, stretchers 3, military / medical
   crates and footlockers 1). Long props along walls with their long side along the wall.
@@ -61,6 +70,14 @@ bases, 11 Oktober 2026, 28 screenshots). Everything learned is in docs/prop_plac
 7. A checker's false positives hide the real findings: before fixing props, check the checker
    on a sample (trapdoors were counted as doors, props beside a door along the wall as blocking).
 
+8. Verify facing per prop: the placer rule (2 E, 3 S, 4 W, 5 N) is wrong for traffic lights, road
+   signs, cars, trucks, bicycles, the CCTV camera and more (v0.50.0 audit). A judge can be wrong:
+   settle doubts with the `facing` picture test; same model = same table.
+9. A thin prop (flat TV 0.125 deep) shrunk by the test margin turns inside out and passes every
+   check: keep a minimum thickness when shrinking (PropGeom.shrink).
+10. The placer and the checker must judge alike (thresholds, front rule, which blocks are solid:
+   beds, liquids, decals, open trapdoors are not floors): every difference became findings.
+
 ## Casebook
 ### Case 1: military base props (v0.42.0 review -> v0.42.1, 11 Oktober 2026)
 - User shots: docs/shots/milbase_v0.42_review/user_72..99 (shots_index.md).
@@ -82,3 +99,12 @@ bases, 11 Oktober 2026, 28 screenshots). Everything learned is in docs/prop_plac
 - Fix: city/PropFit at load (ceiling light, ledge, turn to fit, chest, drop, remove clutter,
   turn seats), partAt turns props, one centred fit-tested car per chunk. Findings 30.
 - Evidence: docs/shots/city_props_v0.49.0/ (shots_index.md), dev test cityprops.
+
+### Case 3: facing of every prop and the city dressing (v0.50.0, 12 Oktober 2026)
+- User: "make sure all props and all decoration decimation all placed on city and put properly ...
+  dont forget the direction since this always missed by you".
+- Facing audit (workflow, 41 agents): table for 192 props; the judge erred on road signs 60 / one way
+  and body bag colours; pictures (dev test facing) corrected them.
+- Dressing checks found: thin props passing every test, props on open trapdoors, decals overlapped by
+  tall props, beds / water / skip cells seen as air; all fixed in Dress / PropGeom.
+- Evidence: docs/shots/facing_v0.50/, docs/shots/city_dressing_v0.50/, docs/city_dressing.md.

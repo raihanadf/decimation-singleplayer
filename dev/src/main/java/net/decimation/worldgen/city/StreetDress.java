@@ -261,6 +261,227 @@ final class StreetDress
                 }
             }
         }
+        roadScene(alongZ);
+    }
+
+    // ------------------------------------------------------------------ road scenes
+
+    /**
+     * At most one scene in the road of a straight chunk (research "abandoned city": scenes that
+     * explain themselves, at most one hero scene per chunk, 1 chunk in 3 quiet): a police roadblock,
+     * a military checkpoint in the wasteland, a crash with its debris, road works. Cars and trucks
+     * point their headlights the way their lane runs (right hand traffic); a car across the road
+     * lies with its long axis across it.
+     */
+    private void roadScene(boolean alongZ)
+    {
+        if (p.dressScene())
+        {
+            return;                                      // a district scene already stands in this road
+        }
+        int lo = -1, hi = -1;
+        for (int k = 0; k < 16; k++)
+        {
+            int x = alongZ ? k : 8, z = alongZ ? 8 : k;
+            if (lay.type[x][z] == StreetLayout.ROAD)
+            {
+                if (lo < 0)
+                {
+                    lo = k;
+                }
+                hi = k;
+            }
+        }
+        if (lo < 0 || hi - lo < 5)
+        {
+            return;
+        }
+        int mid = (lo + hi) / 2;
+        int r = roll(0x524F4144L);
+        if (district == WASTELAND)
+        {
+            if (r < 140)
+            {
+                checkpoint(alongZ, lo, hi);
+            }
+            else if (r < 300)
+            {
+                crash(alongZ, lo, hi, true);
+            }
+            return;
+        }
+        if (r < 45)
+        {
+            roadblock(alongZ, lo, hi);
+        }
+        else if (r < 130)
+        {
+            crash(alongZ, lo, hi, false);
+        }
+        else if (r < 175)
+        {
+            roadWorks(alongZ, lo, hi);
+        }
+    }
+
+    /** A road prop at (across, along) of this straight chunk; m = metadata (from PropFacing). */
+    private boolean road(String name, int across, int along, boolean alongZ, int m)
+    {
+        Block b = deci(name);
+        int x = alongZ ? across : along, z = alongZ ? along : across;
+        if (b == null || m < 0 || x < 0 || z < 0 || x > 15 || z > 15 || lay.type[x][z] != StreetLayout.ROAD)
+        {
+            return false;
+        }
+        return d.place(b, m, x, lay.stand[x][z], z, 2);
+    }
+
+    /** Direction the lane at across runs (right hand traffic): low across half one way, high the other. */
+    private int laneDir(boolean alongZ, int across, int mid)
+    {
+        boolean low = across <= mid;
+        return alongZ ? (low ? 1 : 3) : (low ? 2 : 0);
+    }
+
+    /**
+     * Police roadblock: a police car across the road, a sawhorse line and cones closing the rest, one
+     * lane left open on the right of the approaching traffic (research: block the lane plus one).
+     */
+    private void roadblock(boolean alongZ, int lo, int hi)
+    {
+        String car = roll(0x504F4CL) < 500 ? "BlockWreckagePolice1" : "BlockWreckagePolice3";
+        Block c = deci(car);
+        int across = (lo + hi) / 2;
+        // long axis across the road
+        if (c == null || !road(car, across, 7, alongZ, PropFacing.along(c, alongZ, roll(0x504F4C49L))))
+        {
+            return;
+        }
+        Block hb = deci("BlockHazardbarrier");
+        for (int k = lo; k <= hi; k++)
+        {
+            road("BlockHazardbarrier", k, 3, alongZ, hb == null ? -1 : PropFacing.along(hb, alongZ, 0));
+            if (k % 2 == 0)
+            {
+                road("BlockCone", k, 11, alongZ, 2);
+            }
+        }
+    }
+
+    /**
+     * Wasteland checkpoint: a jersey barrier line across the road with a gap a car's width, hedgehogs
+     * before it, sandbag stacks at the ends on the sidewalk.
+     */
+    private void checkpoint(boolean alongZ, int lo, int hi)
+    {
+        Block bar = deci("BlockBarrier");
+        if (bar == null)
+        {
+            return;
+        }
+        int gap = roll(0x474150L) < 500 ? lo + 1 : hi - 2;   // 2 wide gap on one side
+        for (int k = lo; k <= hi; k += 2)
+        {
+            if (k == gap || k + 1 == gap)
+            {
+                continue;
+            }
+            road("BlockBarrier", k, 8, alongZ, PropFacing.along(bar, alongZ, 0));
+        }
+        for (int k = lo + 1; k <= hi; k += 3)
+        {
+            road("BlockHedgehog", k, 3, alongZ, 2);
+        }
+        Block sand = deci("BlockSandbagStack");
+        if (sand != null)
+        {
+            for (int s = 0; s < 2; s++)
+            {
+                int across = s == 0 ? lo - 1 : hi + 1;
+                int x = alongZ ? across : 8, z = alongZ ? 8 : across;
+                if (walk(x, z))
+                {
+                    d.place(sand, 0, x, lay.stand[x][z], z, 0);
+                }
+            }
+        }
+    }
+
+    /**
+     * A crash: one car stopped in its lane at an angle of 90 degrees to another (T bone), or a car
+     * against the curb, with debris spilled ahead of it (tyres, boxes, a bag; research "debris cone
+     * downstream"); in the wasteland a body nearby.
+     */
+    private void crash(boolean alongZ, int lo, int hi, boolean wasteland)
+    {
+        int mid = (lo + hi) / 2;
+        String[] cars = {"BlockWreckage1", "BlockWreckage2", "BlockWreckage3", "BlockWreckage4", "BlockWreckage5",
+                         "BlockTruckWreckage1", "BlockTruckWreckage3", "BlockTruckWreckage5"};
+        String name = cars[roll(0x43415221L) % cars.length];
+        Block c = deci(name);
+        if (c == null)
+        {
+            return;
+        }
+        int lane = roll(0x4C414E45L) < 500 ? mid - 1 : mid + 2;
+        int dir = laneDir(alongZ, lane, mid);
+        if (!road(name, lane, 7, alongZ, PropFacing.meta(c, dir)))
+        {
+            return;
+        }
+        // the second car across the road, nose into the first one's side
+        String other = cars[roll(0x43415222L) % 5];
+        Block o = deci(other);
+        if (o != null && roll(0x54424F4EL) < 600)
+        {
+            int across = lane < mid ? hi - 1 : lo + 1;
+            road(other, across, 7, alongZ, PropFacing.along(o, alongZ, roll(0x54424FL)));
+        }
+        // debris downstream of the travel direction
+        int ahead = dir == 1 || dir == 0 ? 1 : -1;
+        String[] junk = {"BlockTire", "BlockCardboardBoxes1", "BlockTrashBag1", "BlockTire", "BlockCardboardBoxes3"};
+        int n = 2 + roll(0x4A554E4BL) % 3;
+        for (int k = 0; k < n; k++)
+        {
+            int along = 7 + ahead * (4 + k);
+            int across = lane + (k % 3) - 1;
+            road(junk[(k + roll(0x4A55L)) % junk.length], across, along, alongZ, 2 + (roll(0x4AL + k) & 3));
+        }
+        if (wasteland && roll(0x424F4459L) < 400)
+        {
+            Block bag = deci("BlockSkeletonGround");
+            if (bag != null)
+            {
+                road("BlockSkeletonGround", lane + (lane < mid ? -1 : 1), 7 - ahead * 4, alongZ, PropFacing.meta(bag, (dir + 2) & 3));
+            }
+        }
+    }
+
+    /** Road works: the sign trailer, a cone taper closing one lane, a sawhorse at its end. */
+    private void roadWorks(boolean alongZ, int lo, int hi)
+    {
+        int mid = (lo + hi) / 2;
+        boolean lowLane = roll(0x574F524BL) < 500;
+        int lane = lowLane ? lo + 1 : hi - 1;
+        int dir = laneDir(alongZ, lane, mid);
+        Block screen = deci("BlockMaintenanceScreen");
+        // the sign trailer faces the traffic coming at it
+        if (screen != null)
+        {
+            int along = dir == 1 || dir == 0 ? 3 : 12;
+            road("BlockMaintenanceScreen", lane, along, alongZ, PropFacing.meta(screen, (dir + 2) & 3));
+        }
+        for (int k = 0; k < 5; k++)
+        {
+            int along = dir == 1 || dir == 0 ? 6 + k * 2 : 9 - k * 2;
+            int across = lowLane ? lo + Math.min(k, 2) : hi - Math.min(k, 2);
+            road("BlockCone", across, along, alongZ, 2);
+        }
+        Block hb = deci("BlockHazardbarrier");
+        if (hb != null)
+        {
+            road("BlockHazardbarrier", lane, dir == 1 || dir == 0 ? 14 : 1, alongZ, PropFacing.along(hb, alongZ, 0));
+        }
     }
 
     /** Along offsets tried in order: the part may already have a lamp, a bench or a planter on the first. */

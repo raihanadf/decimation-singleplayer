@@ -35,8 +35,8 @@ final class Dress
         int meta(int x, int y, int z);
     }
 
-    /** City dressing switch: off until checked (-Ddeciworldgen.dress=true turns it on). WORK IN PROGRESS. */
-    static final boolean ON = Boolean.getBoolean("deciworldgen.dress");
+    /** City dressing switch: on (since v0.50.0); -Ddeciworldgen.dress=false turns it off. */
+    static final boolean ON = !"false".equals(System.getProperty("deciworldgen.dress"));
 
     private static final int[][] SIDES = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
 

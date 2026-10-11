@@ -159,6 +159,13 @@ boot. Falls straight through to the mod's own (re-skinned) main menu after that.
   snipers spot enemies up to `sniperRange` 70 blocks (was 96); the Barrett tiers (juggernaut
   sniper 60 hp, elite sniper 38 hp) die to one 30 round 5.56 magazine (8 per player hit x their
   damage share). Config version 3: older files take these new defaults once.
+- **City full of props (v0.50.0, newly generated city chunks)**: crossings get traffic lights (or
+  stop signs in quiet districts) facing the traffic, sidewalks get mailboxes, newspaper boxes,
+  benches, bins, bicycles and power poles, roads get the odd crash, police roadblock, road works or
+  (in the wasteland) a checkpoint. Inside buildings: EXIT signs over doors, security cameras,
+  electrical cabinets, TVs showing the emergency broadcast, vending machines, and props by the kind
+  of building (shop displays, police crates, medical crates, weapon cabinets...), plus bodies, blood,
+  trash and graffiti. Off switch: start Java with -Ddeciworldgen.dress=false.
 - **City furniture (v0.49.0, newly generated city chunks)**: lamps that hung from ceilings in the
   original buildings are ceiling lights again (no lanterns floating in the air), wall shelves are
   plank ledges, crates no longer stick into walls (some became chests, Decimation loot too),
