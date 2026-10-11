@@ -112,7 +112,7 @@
   "CLAUDE.md": {
     "mtime": 1791750258.5652566,
     "ast_hash": "bd0974eb684f78166c581fd42db43f7c",
-    "semantic_hash": "bd0974eb684f78166c581fd42db43f7c"
+    "semantic_hash": ""
   },
   "DECIMATION_MOD_TASK.md": {
     "mtime": 1784958353.0126374,
@@ -327,7 +327,7 @@
   "docs/shots_index.md": {
     "mtime": 1791750258.5662537,
     "ast_hash": "97c189043e5ba66ff1097703f7444e41",
-    "semantic_hash": "97c189043e5ba66ff1097703f7444e41"
+    "semantic_hash": ""
   },
   "docs/interior_spec.md": {
     "mtime": 1791385593.9436893,
@@ -1228,5 +1228,10 @@
     "mtime": 1791750032.6654038,
     "ast_hash": "7cc8efb8f5cd5b39991aeaf2e96ea06f",
     "semantic_hash": "7cc8efb8f5cd5b39991aeaf2e96ea06f"
+  },
+  "docs/ideas.md": {
+    "mtime": 1791751032.338714,
+    "ast_hash": "e90b978e6ced47dbc968aefbecc664b0",
+    "semantic_hash": "e90b978e6ced47dbc968aefbecc664b0"
   }
 }
