@@ -270,6 +270,58 @@ surface stations off), tunnels linking nearby cities.
   highway deck above); dev test all PASS at region 69,6 (street level 70,
   three staircase parts).
 
+## Rivers and bridges (v0.45.0, `city/CityRivers.java`, `city/RiverPlan.java`)
+
+User choice 11 Oktober 2026 (after the railway): rivers allowed through
+cities, streets crossing them become DeceasedCraft's bridge parts. Lost
+Cities builds a bridge where a level 0 street has to cross non city chunks
+(water) to reach another street (BuildingInfo.calculateXBridge, bridges at
+level 0 only); our cities had no such gaps (rivers kept 32 blocks off).
+- Terrain (terrain/BiomeMap): with city rivers on, the river contour also
+  runs through city sectors (river biome there) and keeps its 32 block
+  clearance from military sectors only, so the natural river outside flows
+  on into the city.
+- On for worlds created since v0.45.0 only (CityRivers.onWorldLoad: a world
+  that never ticked; stored in StructureData "!cityRivers"). An older world
+  would get canals only in the chunks it generates from now on, beside city
+  chunks built without them. `-Ddeciworldgen.cityrivers=true|false`
+  overrides it for a session; dev tests use CityRivers.force.
+- River chunk (CityRivers.chunk): a city chunk the contour touches at one of
+  3 x 3 points (2, 8, 13). The middle point alone turned a diagonal river
+  into chunks touching at their corners: ponds.
+- City levels: a cell with a river chunk is level 0, and counts like a non
+  city cell for its neighbours' levels (they ramp up from it).
+- RiverPlan (FixedBase at BED = 56, above the railway tunnels): clay bed,
+  water up to 62 (sea level, as the river outside), stone brick quay walls
+  up to the street level on every side that meets land (a city chunk not on
+  the river, or outside the city a chunk the natural river does not touch),
+  iron railings on them. Building chunks on the river: canal, no building
+  (multi buildings fit around them). Street chunks on the river: the
+  district's bridge part (lcpack index "bridges": "default" = bridge_1,
+  "deadzone" = bridge_deadzone_1, the wasteland district's broken bridge with
+  only its sidewalks) along the street, slice 0 = the road at the street
+  level (bottom slabs: half a block below the street), two stone brick piers
+  across the middle. A crossing on the river: a road deck on a stone brick
+  underside and four piers. Log line "lc bridge [crossing] at x,y,z".
+- Railway: a station never on a segment touching the river (the next of the
+  three segments, else none); tunnels pass under the canals (bed 56, tunnel
+  top 54). tools/hwmap.py --rails ignores rivers.
+- Content: `tools/lcpack.py OUT_DIR --rails dc=<data>:deceasedcraft` now adds
+  the bridges too (" " keeps what is there; above the canal that is air).
+- Dev test `bridge`: switches city rivers on for the session, takes the first
+  bridge (dev world from region 40 on row 6, `-Prx`, `-Prz`) whose chunk was
+  never generated and whose span has city streets at both ends; checks the
+  deck at the street level over every span chunk, water in every canal chunk
+  around, nothing built over the canals, no water above 62 in city chunks, a
+  player walks across from street to street; shots aerial, deck, side, under.
+- Checked: seed 1 server world (pregen 20 chunks): 23 bridges logged, every
+  generated one has its deck and water under it (the 3 without a road
+  middle are the wasteland district's broken bridges); top down renders
+  (docs/shots_index.md "lc_bridge_v0.45.0"). Dev test run 1 all PASS
+  (picked a span at the city edge; its deck shot was inside the hill).
+  Water at 64 / 65 in the spawn city: small fountain clusters in parks
+  `[inferred]`, not canal water.
+
 ## Verified (seed 1, Decimation world type, fresh server world)
 
 119 converted buildings placed in the spawn area (102 current, 17
@@ -301,9 +353,8 @@ building fronts, several stairs designs joining levels.
   and tree tops. It still reads as 1 block grass terraces from the street
   (shots lc_edge_v0.24.4b), which is plain Minecraft terrain.
 - Fronts, parks and street scenes since v0.26.0, district street parts
-  since v0.27.0, highways since v0.25.0, the railway since v0.44.0. Not
-  used yet: Lost Cities bridges (our cities have no gaps for them; next:
-  rivers through cities, user choice 11 Oktober 2026).
+  since v0.27.0, highways since v0.25.0, the railway since v0.44.0, rivers
+  through cities with bridges since v0.45.0 (new worlds).
 - Superblocks (v0.24.2): 30% of aligned 2 x 2 city cell groups (all 4
   city) become one block: streets only on its first chunk row / column,
   7 x 7 building chunks, one level (the lowest of the 4), a landmark

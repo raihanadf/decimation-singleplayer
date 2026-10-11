@@ -11,6 +11,23 @@ How shots are made: `./gradlew runClient -Pautotest` (street views),
 `-Paudit` (building audit), `-Pgallery` (prop gallery); output in
 `dev/run/client/screenshots/`, then copied here into a versioned folder.
 
+## lc_bridge_v0.45.0/ (rivers through cities and bridges, 11 Oktober 2026)
+- seed1_worldmap.png (tools/worldmap.py, fresh seed 1 server world, city rivers on): the natural
+  winding rivers outside, one enters the spawn city at the top middle and leaves at the bottom:
+  inside the city its course is canal chunks (blue squares) under the buildings' grid.
+- seed1_top_96_96.png / seed1_top_-16_-48.png (top block per column, 3 px per block; blue water,
+  red iron bars, dark road, light grey stone brick, grid line every chunk): canal chunks with
+  railings on their land sides, bridge decks on the street chunks across them, a black road deck
+  on the crossing at 200,200. First version (middle point only) gave a diagonal chain of chunks
+  touching at corners: ponds; the 3 x 3 sample version is continuous.
+- run1_top_24256_1488.png: the first dev test bridge (24336,64,1536, dev world region 95,6): city
+  corner, a highway arriving at a crossing deck, canals, bridges on both streets.
+- run1_bridge_aerial / side / under.png: bridge_1 from above (quartz deck, lamps, canal beside);
+  from the street side (iron bar railing with hedge, lamp posts); from under the deck at water
+  level (canal, stone brick quay walls, deck above). run1_bridge_deck.png is wrong: that span
+  started at the city edge, the camera stood inside the hill outside (the test now picks spans
+  with city streets at both ends). run1_sheet_bridge.png: the four.
+
 ## lc_rail_v0.44.0/ (underground railway, dev test `rail`, 11 Oktober 2026)
 Station 17768,47,1672 (region 69,6 of the dev world, seed 1, street level 70), fresh chunks.
 - rail_entrance.png: the street from 10 blocks west at street + 8: the Lost Cities station

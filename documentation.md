@@ -219,6 +219,14 @@ cities along the highways, dead ends with rubble where a line stops. A powered r
 blocks keeps a minecart going between cities. Only in newly generated chunks. Details:
 docs/city_engine.md "Railway".
 
+## Rivers through cities (v0.45, new worlds only)
+
+In worlds created with 0.45 or later, rivers flow on through cities as canals: stone quay
+walls with railings, streets crossing them on bridges (a plain road deck at crossings). In the
+wasteland district next to military zones the bridges are broken: only their sidewalks are
+left. Older worlds keep their cities as they were. Details: docs/city_engine.md "Rivers and
+bridges".
+
 ## Bug and feature tracking
 
 Dated history moved out of this file - see `bug.md` (fixed/open/pending bugs)

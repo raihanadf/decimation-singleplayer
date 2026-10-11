@@ -55,8 +55,9 @@ public final class Rails
     /**
      * The station's middle chunk x of a city region's row (its street
      * segment 0..2 by hash: chunks 4k+1..4k+3, never a crossing, never a
-     * line end, never a stairs chunk between city levels); Integer.MIN_VALUE
-     * when the region is no city.
+     * line end, never a stairs chunk between city levels, never on the
+     * river); Integer.MIN_VALUE when the region is no city or all three
+     * segments touch the river.
      */
     public static int stationX(long seed, int rx, int rz)
     {
@@ -64,7 +65,17 @@ public final class Rails
         {
             return Integer.MIN_VALUE;
         }
-        return rx * Sectors.REGION + 4 * (int) (LcCity.hl(seed ^ SALT_STATION, rx, rz) % 3) + 2;
+        // the hashed segment, else the next one clear of the river (its street chunks are bridges)
+        int cz = Highways.line(seed, rz, Highways.SALT_X), first = (int) (LcCity.hl(seed ^ SALT_STATION, rx, rz) % 3);
+        for (int i = 0; i < 3; i++)
+        {
+            int sx = rx * Sectors.REGION + 4 * ((first + i) % 3) + 2;
+            if (!CityRivers.chunk(seed, sx - 1, cz) && !CityRivers.chunk(seed, sx, cz) && !CityRivers.chunk(seed, sx + 1, cz))
+            {
+                return sx;
+            }
+        }
+        return Integer.MIN_VALUE;
     }
 
     /** A city region's station: {track x, y, z (middle of the station chunk), street ground}, or null. */

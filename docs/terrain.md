@@ -23,7 +23,9 @@ Code: `dev/src/main/java/net/decimation/worldgen/terrain/`.
     generator, so cities always sit on flat urban ground);
   - CIV sector: Decimated Suburbs, edge warped by noise up to 56 blocks;
   - rivers: a noise contour (`|simplex| < 0.022` at scale 520, domain
-    warped), kept 32+ blocks from city and military sectors;
+    warped), kept 32+ blocks from city and military sectors; in worlds
+    created since v0.45.0 they run through city sectors (canals and bridges,
+    docs/city_engine.md "Rivers and bridges") and keep off military ones only;
   - wilderness within about 100 blocks (+-48 noise) of a city or military
     sector: Decimated Plains or Burnt Forest; further out: Overgrown Plains,
     Overgrown Forest (vine covered trees), Overgrown Hills.

@@ -757,6 +757,12 @@ of the last session:
   `rail` (needs never generated chunks: each run moves on), hwmap --rails.
   Deci.homeMenu is @SideOnly(CLIENT): a client type in Deci broke the
   dedicated server (servertest.py) since v0.42.2.
+  v0.45.0: rivers through cities (city/CityRivers, city/RiverPlan,
+  docs/city_engine.md "Rivers and bridges"): canals, DeceasedCraft bridges,
+  river cells level 0; ON ONLY FOR WORLDS CREATED SINCE 0.45 (StructureData
+  "!cityRivers"; -Ddeciworldgen.cityrivers overrides). Dev test `bridge`
+  (forces them on for the session). Check for the user's game as its own
+  step before any live test (bridge run 1 ran beside it).
   Gun study (10 Oktober 2026): docs/gun_style_guide.md, tools/guns/study.py
   (renders / measures Decimation's guns from the jar, `attach` adds
   attachments as the game places them), dev test mode `gunview` (hip, aim

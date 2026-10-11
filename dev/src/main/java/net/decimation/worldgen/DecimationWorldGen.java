@@ -70,6 +70,8 @@ public class DecimationWorldGen
             new net.decimation.worldgen.terrain.DecimationWorldType();
         net.minecraftforge.common.MinecraftForge.TERRAIN_GEN_BUS.register(
             new net.decimation.worldgen.terrain.TerrainEvents());
+        // rivers through cities: on for worlds created since 0.45 (stored per world)
+        net.minecraftforge.common.MinecraftForge.EVENT_BUS.register(new net.decimation.worldgen.city.CityRivers());
 
         // cheap scope: view zoom instead of Decimation's picture in picture
         // scope (tools/patches/PatchScope.java gates the old one); client only

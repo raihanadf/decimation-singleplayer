@@ -190,10 +190,30 @@ def export_rails(pack, out, key, ids, index):
     print("%s: rail parts %s" % (key, sorted(index["rails"])))
 
 
+BRIDGES = {"default": "deceasedcraft:bridge_1", "deadzone": "deceasedcraft:bridge_deadzone_1"}
+
+
+def export_bridges(pack, out, key, ids, index):
+    """DeceasedCraft's city bridge parts into index["bridges"] = {"default" | "deadzone": [file]}
+    (slice 0 = the road, laid at the street level; " " keeps what is there)."""
+    index["bridges"] = {}
+    for kind, ref in BRIDGES.items():
+        sl = lc.part_slices(pack, ref, {}, {}, pack.palette(pack.ns + ":common"))
+        if not sl:
+            continue
+        sl = [[[("SKIP" if st is None else st) for st in row] for row in s] for s in sl]
+        W, H, L, b, a, m = rasterise({(0, 0): sl}, 1, 1, ids, road_override)
+        name = "bridge__" + ref.split(":")[-1]
+        lc.write_schematic(os.path.join(out, key, name + ".schematic"), W, H, L, b, a, m)
+        index["bridges"][kind] = [key + "/" + name + ".schematic"]
+    print("%s: bridge parts %s" % (key, sorted(index["bridges"])))
+
+
 def main():
     out = sys.argv[1]
-    if sys.argv[2] == "--rails":
-        # add the railway parts to an existing pack: python3 tools/lcpack.py OUT_DIR --rails dc=DATA:deceasedcraft
+    if sys.argv[2] in ("--rails", "--bridges"):
+        # add the railway and bridge parts to an existing pack:
+        # python3 tools/lcpack.py OUT_DIR --rails dc=DATA:deceasedcraft
         # ids of the pack's own table (it may come from another world than REGISTRY_WORLD)
         index = json.load(open(os.path.join(out, "index.json")))
         ids = {n: int(i) for i, n in index["names"].items()}
@@ -201,6 +221,7 @@ def main():
         key, _, rest = sys.argv[3].partition("=")
         data, ns = rest.split(":")[:2]
         export_rails(lc.Pack(data, ns), out, key, ids, index)
+        export_bridges(lc.Pack(data, ns), out, key, ids, index)
         json.dump(index, open(os.path.join(out, "index.json"), "w"), indent=1)
         return
     reg = ms.registry(REGISTRY_WORLD)

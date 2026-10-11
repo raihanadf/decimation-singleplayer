@@ -33,8 +33,9 @@ or `[not decided]`.
 2. Lost Cities parts not used yet (user, 11 Oktober 2026: "start 6, except giant building"):
    - **Rail**: DONE v0.44.0, waiting for the user's look in game: underground subway on the
      highway lines, a station per city, tunnels between cities (docs/city_engine.md "Railway").
-   - **Bridges** next (user choice): rivers allowed through some cities, streets crossing them
-     become DeceasedCraft's bridge parts (bridge_1, bridge_deadzone_1 in wasteland districts).
+   - **Bridges**: DONE v0.45.0, waiting for the user's look in game (new worlds only): rivers
+     through cities as canals, streets across them DeceasedCraft's bridge parts (the broken one in
+     the wasteland district), crossings on decks (docs/city_engine.md "Rivers and bridges").
    Building rotation only uses the variants the data lists.
 3. apocalypsenow structures (.nbt) converter for military and other sites
    outside cities `[not decided]`. docs/references/deceasedcraft_buildings.md.
@@ -181,6 +182,8 @@ docs/gun_model_spec.md); every user review goes into its lessons and casebook.
   rail.
 - v0.41.0 / 0.41.1 EOTech 558 and ACOG TA11 of our own, reticles in the glass swaying with the
   gun, Mk18 IMI TS stock, HK416 front sight folds away; accepted.
+- v0.45.0 rivers through cities (new worlds): canals with quay walls, DeceasedCraft's bridges on
+  the streets across them, stations kept off the river.
 - v0.44.0 underground railway: subway tracks and a station per city, tunnels between cities,
   minecart boost rails; springs and lakes kept off the tunnels; dedicated server starts again
   (Deci.homeMenu was loading a client class there since v0.42.2).

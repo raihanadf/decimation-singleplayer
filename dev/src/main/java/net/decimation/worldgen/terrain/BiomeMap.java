@@ -18,7 +18,10 @@ import net.minecraft.world.gen.NoiseGeneratorSimplex;
  *   blocks of a city or military sector, overgrown (plains, forest, hills)
  *   further out. The border is warped by noise so it is not a straight line.
  * - Rivers: a winding noise contour, kept 32+ blocks away from city and
- *   military sectors. No oceans.
+ *   military sectors. No oceans. With city rivers on (new worlds since
+ *   v0.45.0, city.CityRivers) the contour also runs through city sectors
+ *   (canals and bridges there, city.RiverPlan) and keeps its clearance
+ *   from military sectors only.
  */
 public final class BiomeMap
 {
@@ -31,9 +34,35 @@ public final class BiomeMap
     private final long seed;
     private final NoiseGeneratorSimplex warpX, warpZ, variety, river;
     private final ConcurrentHashMap<Long, Integer> sectors = new ConcurrentHashMap<Long, Integer>();
+    /** The map of each seed a Decimation world was created with (city code asks for river chunks). */
+    private static final ConcurrentHashMap<Long, BiomeMap> MAPS = new ConcurrentHashMap<Long, BiomeMap>();
+    private volatile boolean cityRivers;
+
+    /** The map of a Decimation world's seed, or null (no Decimation world with that seed this session). */
+    public static BiomeMap of(long seed)
+    {
+        return MAPS.get(seed);
+    }
+
+    public boolean cityRivers()
+    {
+        return cityRivers;
+    }
+
+    public void setCityRivers(boolean on)
+    {
+        cityRivers = on;
+    }
+
+    /** True on the river contour (whatever the sector). */
+    public boolean riverAt(int x, int z)
+    {
+        return isRiver(x, z);
+    }
 
     public BiomeMap(long seed)
     {
+        MAPS.put(seed, this);
         this.seed = seed;
         Random r = new Random(seed ^ 0x7E44A1BL);
         warpX = new NoiseGeneratorSimplex(r);
@@ -48,14 +77,14 @@ public final class BiomeMap
         int s = sector(rx, rz);
         if (s == StructureGenerator.CITY)
         {
-            return DecimationBiomes.urban;
+            return cityRivers && isRiver(x, z) ? DecimationBiomes.river : DecimationBiomes.urban;
         }
         if (s == StructureGenerator.MIL)
         {
             return DecimationBiomes.military;
         }
-        double dead = deadDistance(x, z, rx, rz);
-        if (dead > RIVER_CLEARANCE && isRiver(x, z))
+        double dead = deadDistance(x, z, rx, rz, false);
+        if ((cityRivers ? deadDistance(x, z, rx, rz, true) : dead) > RIVER_CLEARANCE && isRiver(x, z))
         {
             return DecimationBiomes.river;
         }
@@ -88,8 +117,8 @@ public final class BiomeMap
         return Math.abs(river.func_151605_a(wx / 520.0, wz / 520.0)) < RIVER_WIDTH;
     }
 
-    /** Distance in blocks to the nearest city or military sector (searched 2 regions out). */
-    private double deadDistance(int x, int z, int rx, int rz)
+    /** Distance in blocks to the nearest city or military sector (searched 2 regions out), or military only. */
+    private double deadDistance(int x, int z, int rx, int rz, boolean militaryOnly)
     {
         double best = Double.MAX_VALUE;
         for (int i = -2; i <= 2; i++)
@@ -97,7 +126,7 @@ public final class BiomeMap
             for (int k = -2; k <= 2; k++)
             {
                 int s = sector(rx + i, rz + k);
-                if (s != StructureGenerator.CITY && s != StructureGenerator.MIL)
+                if (s != StructureGenerator.MIL && (militaryOnly || s != StructureGenerator.CITY))
                 {
                     continue;
                 }

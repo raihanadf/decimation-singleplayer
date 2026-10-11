@@ -59,6 +59,15 @@ public final class LcCity
     {
         props = p;
     }
+    /** Bumped when the layout rules change at run time (city rivers switched): cached plans are dropped. */
+    private static volatile int plansEpoch;
+    private int epoch;
+
+    static void clearPlans()
+    {
+        plansEpoch++;
+    }
+
     private final Map<Long, List<Plan>> cache = new LinkedHashMap<Long, List<Plan>>(64, 0.75f, true)
     {
         protected boolean removeEldestEntry(Map.Entry<Long, List<Plan>> e)
@@ -243,7 +252,7 @@ public final class LcCity
         return false;
     }
 
-    static boolean isCity(long seed, int cellX, int cellZ)
+    public static boolean isCity(long seed, int cellX, int cellZ)
     {
         return Sectors.sector(seed, cellX * CELL, cellZ * CELL) == StructureGenerator.CITY;
     }
@@ -251,7 +260,11 @@ public final class LcCity
     /** City level of a cell: smooth noise over a 3 cell lattice, 0 at the city's edge, rising inward. */
     public static int level(long seed, int cellX, int cellZ)
     {
-        // distance (in cells, up to MAX_LEVEL) to the nearest non city cell
+        if (CityRivers.cell(seed, cellX, cellZ))
+        {
+            return 0; // bridges stay at level 0 (Lost Cities: no bridges at higher levels)
+        }
+        // distance (in cells, up to MAX_LEVEL) to the nearest non city or river cell
         int edge = MAX_LEVEL;
         for (int r = 1; r <= MAX_LEVEL && edge == MAX_LEVEL; r++)
         {
@@ -259,7 +272,8 @@ public final class LcCity
             {
                 for (int dz = -r; dz <= r; dz++)
                 {
-                    if (Math.max(Math.abs(dx), Math.abs(dz)) == r && !isCity(seed, cellX + dx, cellZ + dz))
+                    if (Math.max(Math.abs(dx), Math.abs(dz)) == r && (!isCity(seed, cellX + dx, cellZ + dz)
+                        || CityRivers.cell(seed, cellX + dx, cellZ + dz)))
                     {
                         edge = r - 1;
                         break;
@@ -375,6 +389,12 @@ public final class LcCity
         return new int[] {cellX, cellZ, 1};
     }
 
+    /** Street chunk of a city (dev tests). */
+    public static boolean streetChunk(long seed, int chx, int chz)
+    {
+        return isStreetChunk(seed, chx, chz);
+    }
+
     /** True for a chunk in the first chunk row or column of its block (a street chunk). */
     static boolean isStreetChunk(long seed, int chx, int chz)
     {
@@ -402,6 +422,11 @@ public final class LcCity
         if (blk[0] != cellX || blk[1] != cellZ)
         {
             return plan(seed, blk[0], blk[1]); // a superblock is planned from its origin cell
+        }
+        if (epoch != plansEpoch)
+        {
+            cache.clear();
+            epoch = plansEpoch;
         }
         long key = ((long) cellX << 32) ^ (cellZ & 0xffffffffL);
         List<Plan> out = cache.get(key);
@@ -445,6 +470,19 @@ public final class LcCity
         // the building block (3 x 3 chunks, 7 x 7 in a superblock)
         Random r = new Random(seed ^ (cellX * 341873128712L + cellZ * 132897987541L) ^ 0x4C4342L);
         boolean[][] used = new boolean[size][size];
+        // river chunks: a canal, no building (multi buildings fit around them)
+        for (int i = 1; i < size; i++)
+        {
+            for (int j = 1; j < size; j++)
+            {
+                int chx = cellX * CELL + i, chz = cellZ * CELL + j;
+                if (CityRivers.chunk(seed, chx, chz))
+                {
+                    used[i][j] = true;
+                    out.add(new RiverPlan("lcr_" + chx + "_" + chz, seed, chx, chz, g, null, 0, false));
+                }
+            }
+        }
         List<LcContent.Building> pool = new ArrayList<LcContent.Building>();
         List<LcContent.Building> big = new ArrayList<LcContent.Building>();
         for (LcContent.Building b : LcContent.buildings())
@@ -555,6 +593,22 @@ public final class LcCity
      */
     private Plan street(long seed, int cellX, int cellZ, int lx, int lz, int chx, int chz, int g, String style)
     {
+        if (CityRivers.chunk(seed, chx, chz))
+        {
+            // a bridge along the street (DeceasedCraft's bridge parts run along x unturned); a
+            // crossing gets a plain deck on piers
+            boolean crossing = lx == 0 && lz == 0;
+            List<String> files = LcContent.bridges(style.endsWith(":deadzone") ? "deadzone" : "default");
+            if (files.isEmpty())
+            {
+                files = LcContent.bridges("default");
+            }
+            LcContent.Shape part = crossing || files.isEmpty() ? null
+                : LcContent.shape(files.get((int) (hl(seed ^ 0x42524447L, chx, chz) % files.size())));
+            cpw.mods.fml.common.FMLLog.info("[deciworldgen] lc bridge%s at %d,%d,%d", crossing ? " crossing" : "",
+                                            (chx << 4) + 8, g, (chz << 4) + 8);
+            return new RiverPlan("lcr_" + chx + "_" + chz, seed, chx, chz, g, part, lx == 0 ? 1 : 0, crossing);
+        }
         // neighbours along the street grid: the street continues west / north
         // across the cell edge (and east / south from the cell's last street chunk)
         int[][] dirs = {{-1, 0}, {0, -1}, {1, 0}, {0, 1}}; // west, north, east, south

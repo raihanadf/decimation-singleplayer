@@ -319,7 +319,9 @@ Status values: `Done` / `Decided` (direction agreed, not built yet) /
   building"; choices: rail first, underground subway with tunnels between
   cities, then bridges over rivers through cities): railway DONE v0.44.0,
   waiting for the user's look in game (docs/city_engine.md "Railway",
-  shots lc_rail_v0.44.0). Bridges next.
+  shots lc_rail_v0.44.0). Bridges DONE v0.45.0 (rivers through cities in
+  new worlds, canals, DeceasedCraft's bridges; docs/city_engine.md "Rivers
+  and bridges"), waiting for the user's look in game.
 
 ---
 

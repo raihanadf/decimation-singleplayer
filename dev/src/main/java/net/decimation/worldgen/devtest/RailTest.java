@@ -311,7 +311,7 @@ public class RailTest extends DevTestMode
         return reached;
     }
 
-    private static boolean openColumn(World w, int x, int y0, int y1, int z)
+    static boolean openColumn(World w, int x, int y0, int y1, int z)
     {
         for (int y = y0; y <= y1; y++)
         {
@@ -323,17 +323,17 @@ public class RailTest extends DevTestMode
         return true;
     }
 
-    private static boolean stand(World w, int x, int y, int z)
+    static boolean stand(World w, int x, int y, int z)
     {
         return open(w, x, y, z) && open(w, x, y + 1, z) && !open(w, x, y - 1, z);
     }
 
-    private static boolean open(World w, int x, int y, int z)
+    static boolean open(World w, int x, int y, int z)
     {
         return !w.getBlock(x, y, z).getMaterial().blocksMovement();
     }
 
-    private static long key(int x, int y, int z)
+    static long key(int x, int y, int z)
     {
         return ((long) x << 38) ^ ((long) (y & 255) << 30) ^ (z & 0x3FFFFFFFL);
     }
