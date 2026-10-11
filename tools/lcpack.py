@@ -137,8 +137,72 @@ def rasterise(cols, cx, cz, ids, translate=None):
     return W, H, L, blocks, add, meta
 
 
+RAIL_KINDS = ("station_underground", "station_underground_stairs", "station_staircase", "station_staircase_surface",
+              "rails_horizontal", "rails_horizontal_end", "rails_horizontal_water", "rails_vertical",
+              "rails_vertical_water", "rails_3split")
+RAIL_SHAPES = {"north_south": 0, "east_west": 1, "ascending_east": 2, "ascending_west": 3, "ascending_north": 4,
+               "ascending_south": 5, "south_east": 6, "south_west": 7, "north_west": 8, "north_east": 9}
+
+
+def rail_override(state):
+    """Railway parts: Create tracks and vanilla rails become 1.7.10 rails (meta 1 along x, 0 along z;
+    a crossing is laid along x), structure void (Lost Cities' hard air) becomes air. The staircase's
+    water wall becomes light blue glass: its frame does not hold water here and it flooded the
+    station (seed 1 server test, 11 Oktober 2026)."""
+    name, _, rest = state.partition("[")
+    props = dict(p.split("=", 1) for p in rest.rstrip("]").split(",") if "=" in p)
+    if name == "minecraft:structure_void":
+        return ("minecraft:air", 0)
+    if name == "minecraft:water":
+        return ("minecraft:stained_glass", 3)
+    if name == "create:track":
+        shape = props.get("shape", "xo")
+        return ("minecraft:rail", 0 if shape.startswith("z") else 1)
+    if name in ("minecraft:rail", "minecraft:powered_rail", "minecraft:detector_rail"):
+        meta = RAIL_SHAPES.get(props.get("shape", "east_west"), 1)
+        if name == "minecraft:rail":
+            return ("minecraft:rail", meta)
+        meta = min(meta, 5) | (8 if props.get("powered") == "true" else 0)
+        return ("minecraft:golden_rail" if name == "minecraft:powered_rail" else "minecraft:detector_rail", meta)
+    return road_override(state)
+
+
+def export_rails(pack, out, key, ids, index):
+    """Lost Cities railway parts (RailwayParts.DEFAULT names, the pack's own versions) into
+    index["rails"] = {kind: [file]}. In these parts " " keeps the world (bedrock marker) and
+    structure void is air (Lost Cities generates them with HardAirSetting.AIR)."""
+    index["rails"] = {}
+    for kind in RAIL_KINDS:
+        sl = lc.part_slices(pack, "lostcities:" + kind, {}, {}, pack.palette(pack.ns + ":common"))
+        if not sl:
+            continue
+        sl = [[[("SKIP" if st is None else st) for st in row] for row in s] for s in sl]
+        if kind == "rails_horizontal_end":
+            # its tunnel is " " (keep) inside, so the track ran into rock: carve rows 4..11 of the
+            # four layers above the floor, leaving the part's rubble pile and buffer at the end
+            for y in range(1, 5):
+                for z in range(4, 12):
+                    sl[y][z] = ["minecraft:air" if st == "SKIP" else st for st in sl[y][z]]
+        W, H, L, b, a, m = rasterise({(0, 0): sl}, 1, 1, ids, rail_override)
+        path = os.path.join(out, key, "rail__" + kind + ".schematic")
+        lc.write_schematic(path, W, H, L, b, a, m)
+        index["rails"][kind] = [key + "/rail__" + kind + ".schematic"]
+    print("%s: rail parts %s" % (key, sorted(index["rails"])))
+
+
 def main():
     out = sys.argv[1]
+    if sys.argv[2] == "--rails":
+        # add the railway parts to an existing pack: python3 tools/lcpack.py OUT_DIR --rails dc=DATA:deceasedcraft
+        # ids of the pack's own table (it may come from another world than REGISTRY_WORLD)
+        index = json.load(open(os.path.join(out, "index.json")))
+        ids = {n: int(i) for i, n in index["names"].items()}
+        ids["minecraft:air"] = 0
+        key, _, rest = sys.argv[3].partition("=")
+        data, ns = rest.split(":")[:2]
+        export_rails(lc.Pack(data, ns), out, key, ids, index)
+        json.dump(index, open(os.path.join(out, "index.json"), "w"), indent=1)
+        return
     reg = ms.registry(REGISTRY_WORLD)
     ids = {n: i for i, n in reg.items()}
     ids["minecraft:air"] = 0

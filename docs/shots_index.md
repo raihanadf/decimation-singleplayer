@@ -11,6 +11,29 @@ How shots are made: `./gradlew runClient -Pautotest` (street views),
 `-Paudit` (building audit), `-Pgallery` (prop gallery); output in
 `dev/run/client/screenshots/`, then copied here into a versioned folder.
 
+## lc_rail_v0.44.0/ (underground railway, dev test `rail`, 11 Oktober 2026)
+Station 17768,47,1672 (region 69,6 of the dev world, seed 1, street level 70), fresh chunks.
+- rail_entrance.png: the street from 10 blocks west at street + 8: the Lost Cities station
+  entrance plaza across the street (two white kiosks with iron bar fronts, stairs down on both
+  sidewalk sides, grass strip and planters in the middle); the road ends at it.
+- rail_platform.png: from the west platform chunk looking east along the north platform: quartz
+  platform, track trench with the rail, cobwebs, hedges, the station hall lit by our ceiling
+  glowstone (before the lights it was black: the parts' glowstone sits under slabs).
+- rail_stairs.png: from the track looking north and up: quartz stair flight under the glowstone.
+- rail_shaft.png: from the street looking down into a stairwell: iron bar railings, quartz
+  steps, the light blue glass water wall (was water, flooded the station).
+- rail_tunnel.png: a straight tunnel chunk east of the station, looking east: one track on
+  road blocks, slab walkways both sides, terracotta walls, glowstone every 4 blocks; the bright
+  far end is client render lag (the world there is rock).
+- rail_end_1..4.png: the four line ends (west, east, north, south) from 10 blocks inside: two
+  tracks, benches, crate, cobwebs and a rubble pile with the buffer at the closed side, so every
+  turn is right; the single tunnel track does not meet the end part's two tracks (DeceasedCraft's
+  parts). Sky seen through the rubble in end_1 / end_3 is again render lag (rock behind, checked
+  with section.py).
+- rail_crossing.png: the crossing looking south along the north south line: x rail across.
+- sheet_rail.png: all of the above. Earlier runs (not kept): flooded tunnels with stranded water
+  and lava diamonds from springs (fixed by denying springs and lakes near rails).
+
 ## aimdrift_v0.43.1/ (gun creeps off screen while aiming, 11 Oktober 2026)
 - user_116.png: the user's dev client, AK-74 + ACOG aimed: the scope sits down right of the
   screen centre, a sniper NPC in view at the centre. user_117.png: two minutes later the gun is

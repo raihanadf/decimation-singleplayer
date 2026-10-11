@@ -132,6 +132,7 @@ public class DevAutoTest
         if (name.equals("aimdrift")) return new net.decimation.worldgen.devtest.AimDriftTest();
         if (name.equals("census")) return new net.decimation.worldgen.devtest.CensusTest();
         if (name.equals("cityview")) return new net.decimation.worldgen.devtest.CityViewTest();
+        if (name.equals("rail")) return new net.decimation.worldgen.devtest.RailTest();
         return null;
     }
 

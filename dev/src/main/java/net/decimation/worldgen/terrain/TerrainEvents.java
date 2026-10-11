@@ -4,6 +4,7 @@ import cpw.mods.fml.common.eventhandler.Event;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.gen.layer.GenLayer;
+import net.minecraftforge.event.terraingen.DecorateBiomeEvent;
 import net.minecraftforge.event.terraingen.InitMapGenEvent;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.event.terraingen.WorldTypeEvent;
@@ -56,6 +57,13 @@ public class TerrainEvents
         {
             return;
         }
+        // a lake spans the 2 x 2 chunks from this one: none over a railway tunnel
+        int bx = event.chunkX << 4, bz = event.chunkZ << 4;
+        if (net.decimation.worldgen.city.Rails.near(event.world.getSeed(), bx, bz, bx + 31, bz + 31))
+        {
+            event.setResult(Event.Result.DENY);
+            return;
+        }
         BiomeGenBase b = event.world.getBiomeGenForCoords(event.chunkX * 16 + 16, event.chunkZ * 16 + 16);
         if (!(b instanceof DeciBiome))
         {
@@ -66,6 +74,25 @@ public class TerrainEvents
         boolean city = b == DecimationBiomes.urban || b == DecimationBiomes.military;
         if (event.type == PopulateChunkEvent.Populate.EventType.LAVA || city
             || dead && ((event.chunkX * 31 + event.chunkZ * 17) & 3) != 0)
+        {
+            event.setResult(Event.Result.DENY);
+        }
+    }
+
+    /**
+     * Springs (vanilla's 50 water and 20 lava sources per chunk, set where
+     * stone has one open side) never next to a railway tunnel: a tunnel
+     * chunk is written in two population windows, a neighbour's springs
+     * found the open face of the first half and flooded the tunnel, and the
+     * second half then removed the source and left the flow standing (rail
+     * test, 11 Oktober 2026). Springs land at x + 8 .. x + 23 (block coords).
+     */
+    @SubscribeEvent
+    public void onDecorate(DecorateBiomeEvent.Decorate event)
+    {
+        if (event.type == DecorateBiomeEvent.Decorate.EventType.LAKE
+            && net.decimation.worldgen.city.Rails.near(event.world.getSeed(), event.chunkX + 7, event.chunkZ + 7,
+                                                        event.chunkX + 24, event.chunkZ + 24))
         {
             event.setResult(Event.Result.DENY);
         }

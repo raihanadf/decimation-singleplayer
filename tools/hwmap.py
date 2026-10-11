@@ -9,7 +9,8 @@ its chunk range. Same rule as Highways.java: one line per region row /
 column (offset 0 or 8 chunks), joining two city regions at most 3 non city
 regions apart, plus an L link from every isolated city to its nearest
 diagonal city (link(), printed as ('L', A, B, x first)). edgescan.py uses
-at() to skip highway chunks.
+at() to skip highway chunks. With --rails also the railway (city/Rails.java):
+every station (block position of its track) and the chunk kinds.
 """
 import os
 import sys
@@ -82,6 +83,33 @@ def at(seed, cx, cz):
     return xh(seed, cx, cz) or zh(seed, cx, cz)
 
 
+# underground railway (city/Rails.java): same lines, every city region plus the highway gaps
+RAIL=64-18
+def xrail(seed,cx,cz):
+    rz,rx=cz//16,cx//16
+    return cz==line(seed,rz,0x48575958) and (city(seed,rx,rz) or spans(seed,rx,rz,True))
+def zrail(seed,cx,cz):
+    rz,rx=cz//16,cx//16
+    return cx==line(seed,rx,0x4857595A) and (city(seed,rx,rz) or spans(seed,rz,rx,False))
+def station_x(seed,rx,rz):
+    return rx*16+4*(hl(seed^0x5354414E,rx,rz)%3)+2 if city(seed,rx,rz) else None
+def rail_kind(seed,cx,cz):
+    """Rails.kind: none, x, z, crossing, end west/east/north/south, station, platform."""
+    x,z=xrail(seed,cx,cz),zrail(seed,cx,cz)
+    if x and z:
+        xa=xrail(seed,cx-1,cz) or xrail(seed,cx+1,cz); za=zrail(seed,cx,cz-1) or zrail(seed,cx,cz+1)
+        if xa and za: return 'crossing'
+        x,z=xa,not xa
+    if x:
+        sx=station_x(seed,cx//16,cz//16)
+        if cx==sx: return 'station'
+        if sx is not None and abs(cx-sx)==1: return 'platform'
+        return 'end west' if not xrail(seed,cx-1,cz) else 'end east' if not xrail(seed,cx+1,cz) else 'x'
+    if z:
+        return 'end north' if not zrail(seed,cx,cz-1) else 'end south' if not zrail(seed,cx,cz+1) else 'z'
+    return 'none'
+
+
 if __name__=='__main__':
     seed=int(sys.argv[1]); R=int(sys.argv[2])
     for rz in range(-R,R+1):
@@ -95,6 +123,18 @@ if __name__=='__main__':
         for rz in range(-R,R+1):
             l=link(seed,rx,rz)
             if l: print(('L',(rx,rz),l[:2],'x first' if l[2] else 'z first'))
+    if '--rails' in sys.argv:
+        for rx in range(-R,R+1):
+            for rz in range(-R,R+1):
+                sx=station_x(seed,rx,rz)
+                if sx is not None:
+                    print('station', (sx*16+8, RAIL+1, line(seed,rz,0x48575958)*16+8))
+        kinds={}
+        for cx in range(-R*16,R*16):
+            for cz in range(-R*16,R*16):
+                k=rail_kind(seed,cx,cz)
+                if k!='none': kinds.setdefault(k,[]).append((cx*16,cz*16))
+        for k,v in sorted(kinds.items()): print('rail',k,len(v),v[:4])
     for s in sorted(segs):
         cs=[c for c in range(-R*16,R*16) if (xh(seed,c,s[1]) if s[0]=='x' else zh(seed,s[1],c))]
         print(s, 'chunks',min(cs),'..',max(cs),len(cs))

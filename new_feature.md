@@ -315,6 +315,11 @@ Status values: `Done` / `Decided` (direction agreed, not built yet) /
   Step 2 DONE v0.22.1 (Building split into worldgen/building/, identical
   output). Offices and shops 6 high DONE v0.23.0. Next: step 3 (types
   as JSON, rotated stair core).
+  Lost Cities leftovers (user, 11 Oktober 2026: "start 6, except giant
+  building"; choices: rail first, underground subway with tunnels between
+  cities, then bridges over rivers through cities): railway DONE v0.44.0,
+  waiting for the user's look in game (docs/city_engine.md "Railway",
+  shots lc_rail_v0.44.0). Bridges next.
 
 ---
 

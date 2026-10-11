@@ -750,6 +750,13 @@ of the last session:
   v0.43.3: Decimation never clears an NPC's entityToAttack (the last enemy
   seen); only getAITarget (revenge, expires) means "fighting". GunNoise
   reads that. noise test: -Ptier / -Pfar, stale target held, hit counter.
+  v0.44.0: underground railway (city/Rails.java, docs/city_engine.md
+  "Railway"): tracks on the highway lines at y 46, a station per city,
+  pack rail parts via `lcpack.py OUT --rails dc=...`; springs / lakes
+  denied near rails (a tunnel written by two windows got flooded); dev test
+  `rail` (needs never generated chunks: each run moves on), hwmap --rails.
+  Deci.homeMenu is @SideOnly(CLIENT): a client type in Deci broke the
+  dedicated server (servertest.py) since v0.42.2.
   Gun study (10 Oktober 2026): docs/gun_style_guide.md, tools/guns/study.py
   (renders / measures Decimation's guns from the jar, `attach` adds
   attachments as the game places them), dev test mode `gunview` (hip, aim

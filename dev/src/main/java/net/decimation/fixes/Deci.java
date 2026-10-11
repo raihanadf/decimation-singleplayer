@@ -442,7 +442,11 @@ public final class Deci
         deci.b.i.cf = false;
     }
 
-    /** Decimation's home menu screen (GuiMenuHome deci.i.e), e.g. for a dev test picture. */
+    /**
+     * Decimation's home menu screen (GuiMenuHome deci.i.e), e.g. for a dev test picture. Client
+     * only: verifying it on a dedicated server loads GuiScreen, and Deci failed to load there.
+     */
+    @cpw.mods.fml.relauncher.SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)
     public static net.minecraft.client.gui.GuiScreen homeMenu()
     {
         return new deci.i.e(deci.a.b.a());

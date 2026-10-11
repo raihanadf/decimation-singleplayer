@@ -211,6 +211,14 @@ The TOC door is locked: a military keycard on the screen beside it opens it (or 
 lockpick); military crates, military wrecks and care packages can drop that keycard.
 Details: docs/military_base.md.
 
+## Underground railway (v0.44, our world generation)
+
+Cities have a subway 18 blocks under the street: one station per city (an entrance plaza with
+stairs on a street, two platforms below), tracks under the main streets and tunnels to nearby
+cities along the highways, dead ends with rubble where a line stops. A powered rail every 16
+blocks keeps a minecart going between cities. Only in newly generated chunks. Details:
+docs/city_engine.md "Railway".
+
 ## Bug and feature tracking
 
 Dated history moved out of this file - see `bug.md` (fixed/open/pending bugs)

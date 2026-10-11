@@ -60,7 +60,7 @@ public final class Highways
     }
 
     /** True when the regions a (exclusive) .. b (exclusive) along a line hold no city and the ends are cities. */
-    private static boolean spans(long seed, int r, int other, boolean alongX)
+    static boolean spans(long seed, int r, int other, boolean alongX)
     {
         int lo = r - 1, hi = r + 1;
         while (lo >= r - MAX_GAP && !(alongX ? cityRegion(seed, lo, other) : cityRegion(seed, other, lo)))

@@ -76,6 +76,7 @@ public final class LcContent
     private static final List<Building> buildings = new ArrayList<Building>();
     private static final Map<String, List<String>> stairs = new HashMap<String, List<String>>();
     private static final Map<String, List<String>> highways = new HashMap<String, List<String>>();
+    private static final Map<String, List<String>> rails = new HashMap<String, List<String>>();
     private static final Map<String, List<String>> decor = new HashMap<String, List<String>>();
     private static final Map<String, List<String>> streets = new HashMap<String, List<String>>();
     private static final Map<Integer, Block> remap = new HashMap<Integer, Block>();
@@ -106,6 +107,13 @@ public final class LcContent
     public static List<String> highways(String kind)
     {
         List<String> l = highways.get(kind);
+        return l != null ? l : new ArrayList<String>();
+    }
+
+    /** Railway part files of a kind (Lost Cities RailwayParts names: rails_horizontal, station_underground...). */
+    public static List<String> rails(String kind)
+    {
+        List<String> l = rails.get(kind);
         return l != null ? l : new ArrayList<String>();
     }
 
@@ -167,25 +175,33 @@ public final class LcContent
             }
             byStyle(o, "decor", decor);
             byStyle(o, "streets", streets);
-            if (o.has("highways"))
-            {
-                for (Map.Entry<String, JsonElement> e : o.getAsJsonObject("highways").entrySet())
-                {
-                    List<String> files = new ArrayList<String>();
-                    for (JsonElement f : (JsonArray) e.getValue())
-                    {
-                        files.add(f.getAsString());
-                    }
-                    highways.put(e.getKey(), files);
-                }
-            }
-            FMLLog.info("[deciworldgen] Lost Cities content: %d buildings, %d stairs styles, %d highway kinds",
-                        buildings.size(), stairs.size(), highways.size());
+            byKind(o, "highways", highways);
+            byKind(o, "rails", rails);
+            FMLLog.info("[deciworldgen] Lost Cities content: %d buildings, %d stairs styles, %d highway kinds, "
+                        + "%d rail kinds", buildings.size(), stairs.size(), highways.size(), rails.size());
         }
         catch (Exception e)
         {
             buildings.clear();
             FMLLog.warning("[deciworldgen] Lost Cities content not loaded: %s", e);
+        }
+    }
+
+    /** {kind: [file, ...]} into map kind -> files. */
+    private static void byKind(JsonObject o, String key, Map<String, List<String>> into)
+    {
+        if (!o.has(key))
+        {
+            return;
+        }
+        for (Map.Entry<String, JsonElement> e : o.getAsJsonObject(key).entrySet())
+        {
+            List<String> files = new ArrayList<String>();
+            for (JsonElement f : (JsonArray) e.getValue())
+            {
+                files.add(f.getAsString());
+            }
+            into.put(e.getKey(), files);
         }
     }
 

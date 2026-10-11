@@ -30,7 +30,11 @@ or `[not decided]`.
 1. **Giant buildings that are skipped**: casino (276 high), oasis condo
    (top above 250 with its cellars), laboratory (90 deep cellars); fit them
    by trimming cellars or capping height. docs/city_engine.md "Open".
-2. Lost Cities parts not used yet: bridges (no gaps in our cities), rail.
+2. Lost Cities parts not used yet (user, 11 Oktober 2026: "start 6, except giant building"):
+   - **Rail**: DONE v0.44.0, waiting for the user's look in game: underground subway on the
+     highway lines, a station per city, tunnels between cities (docs/city_engine.md "Railway").
+   - **Bridges** next (user choice): rivers allowed through some cities, streets crossing them
+     become DeceasedCraft's bridge parts (bridge_1, bridge_deadzone_1 in wasteland districts).
    Building rotation only uses the variants the data lists.
 3. apocalypsenow structures (.nbt) converter for military and other sites
    outside cities `[not decided]`. docs/references/deceasedcraft_buildings.md.
@@ -177,6 +181,9 @@ docs/gun_model_spec.md); every user review goes into its lessons and casebook.
   rail.
 - v0.41.0 / 0.41.1 EOTech 558 and ACOG TA11 of our own, reticles in the glass swaying with the
   gun, Mk18 IMI TS stock, HK416 front sight folds away; accepted.
+- v0.44.0 underground railway: subway tracks and a station per city, tunnels between cities,
+  minecart boost rails; springs and lakes kept off the tunnels; dedicated server starts again
+  (Deci.homeMenu was loading a client class there since v0.42.2).
 - v0.43.1 gun no longer creeps off screen while aiming a scope with a scoped NPC in view.
 - v0.43.2 NPCs that had killed something react to gunshots again; NPCs ignore creative players
   (Decimation's rule); aim test covers gun / sight changes.

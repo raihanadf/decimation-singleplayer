@@ -64,6 +64,9 @@ short branches, sometimes a 2 to 3 block stump.
   city and military biomes. After: city ground 63+, worst lot edge 6.
 - Lakes: none in city / military (buildings cancel on water), 1 in 4 in the
   other dead biomes, vanilla rate in overgrown ones; no surface lava pools.
+  Since v0.44.0 no lakes and no springs (vanilla's water / lava sources in
+  stone) where their area touches a railway chunk (docs/city_engine.md
+  "Railway": they flooded the tunnels).
 - Spawn search: suburb, wasteland, overgrown plains and forest are added to
   `WorldChunkManager.allowedBiomes`.
 

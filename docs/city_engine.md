@@ -199,6 +199,77 @@ between cities do the job instead.
     fix of 9 Oktober); a corner hedge is thin from above `[not verified]`
     in game by the user.
 
+## Railway (v0.44.0, `city/Rails.java`)
+
+User choice 11 Oktober 2026 (roadmap worldgen item 2: rail first, then
+bridges over rivers through cities): an underground subway like
+DeceasedCraft's Lost Cities profile (railways and underground stations on,
+surface stations off), tunnels linking nearby cities.
+- Lost Cities' design (read from its source, Railway.java / Railways.java):
+  tracks at RAILWAY_LEVEL_OFFSET -3 city levels on a station grid,
+  station_underground_stairs with station_staircase parts per level up to
+  station_staircase_surface on the street, station extensions beside it,
+  buffer ends, ramps for surface stations, rail dungeons. Parts are run
+  with HardAirSetting.AIR: " " keeps the world, structure void is air.
+- Ours: track floor RAIL = 46 (rail at 47), 3 levels below the level 0
+  street. Lines are the highway lines (Highways.line): a city region's
+  highway row and column carry track over the whole region (always street
+  chunks: never under a building, never in a cellar); between city regions
+  wherever a highway would span the gap (Highways.spans, up to 3 regions,
+  no L links). Both lines on one chunk: crossing (rails_3split, a 4 way in
+  DeceasedCraft's version; an arm without a line beyond is walled off). A
+  line with nothing beyond the city: buffer end (rails_horizontal_end, open
+  west unturned, turned per side). One station per city region on its row:
+  street segment 0..2 by hash (chunks 4k+1 .. 4k+3 of the region: never a
+  crossing, a line end or a stairs chunk), the middle chunk with the
+  stairs and the street entrance (replaces that street chunk with the
+  plaza), the two beside it plain platforms (station_underground).
+- Content: `tools/lcpack.py OUT_DIR --rails dc=<data>:deceasedcraft` adds
+  index.json "rails" (RAIL_KINDS) to an existing pack with the pack's own
+  id table. Translation (rail_override): Create tracks and vanilla rails to
+  1.7.10 rails (meta 1 along x, 0 along z, crossings along x), structure
+  void to air, " " to the keep marker; the staircase's water wall to light
+  blue stained glass (its frame does not hold water here, it flooded the
+  station); the end part's interior (rows 4..11, layers 1..4) carved to air
+  (" " there kept the rock and buried the track).
+- Placement: per population window like the highways (only the chunk's
+  part inside the window). Rails keep the part's metadata (placing a rail
+  reshapes it toward its neighbours). A powered rail on a redstone block in
+  the middle of every straight chunk (minecarts keep speed between
+  cities). Station and platform chunks get glowstone in the ceiling
+  between the beams (the parts' own glowstone sits under slabs, which block
+  light in 1.7.10: the station was black). Water variants
+  (rails_*_water) when the six Lost Cities sample points at track height
+  are liquid, decided once per chunk (StructureData "rw_X_Z") `[not seen
+  yet]`.
+- Springs and lakes stay off the tunnels (TerrainEvents): a tunnel chunk
+  is written by two population windows; between them a neighbour's
+  decoration found the open stone face of the first half, put a spring
+  there (WorldGenLiquids: stone with one open side) and flooded the tunnel
+  at once; the second half then replaced the source and left diamonds of
+  standing water and lava. Now Decorate LAKE (springs) and Populate LAKE /
+  LAVA are denied where their area touches a rail chunk (Rails.near).
+  City cellars could meet the same springs `[not checked]`.
+- Not used: surface stations and ramps (rails_down1/2, station_open),
+  rail dungeons, rails_bend (our lines only cross). The tunnel's single
+  track does not meet the end part's two tracks (DeceasedCraft's parts as
+  they are).
+- Tools: `tools/hwmap.py SEED R --rails` prints every station and the
+  chunk kinds (Python copy of Rails.kind). Dev test `rail`: the first
+  station east of region 40 on region row 6 (or `-Prx=N`, `-Prz=N`) whose
+  chunk was never generated; generates around it; checks the 48 rails
+  through the station, no liquid in 11 tunnel chunks, a player can walk
+  from the street down to the platform (flood fill in the station chunk);
+  shots entrance, platform, stairs, shaft, tunnel, every line end of the
+  region, crossing (docs/shots_index.md "lc_rail_v0.44.0"). Each run
+  moves on to the next fresh region (the camera's view distance
+  generates chunks too).
+- Checked: seed 1 server world, stations at -152,47,8 and 40,47,8 as
+  hwmap predicted, station section (track 47, platforms, stairwells 52..63,
+  entrance at 64), the gap line x 256..511 complete (256 rails, no liquid,
+  highway deck above); dev test all PASS at region 69,6 (street level 70,
+  three staircase parts).
+
 ## Verified (seed 1, Decimation world type, fresh server world)
 
 119 converted buildings placed in the spawn area (102 current, 17
@@ -230,8 +301,9 @@ building fronts, several stairs designs joining levels.
   and tree tops. It still reads as 1 block grass terraces from the street
   (shots lc_edge_v0.24.4b), which is plain Minecraft terrain.
 - Fronts, parks and street scenes since v0.26.0, district street parts
-  since v0.27.0, highways since v0.25.0. Not used yet: Lost Cities
-  bridges (our cities have no gaps for them), rail parts.
+  since v0.27.0, highways since v0.25.0, the railway since v0.44.0. Not
+  used yet: Lost Cities bridges (our cities have no gaps for them; next:
+  rivers through cities, user choice 11 Oktober 2026).
 - Superblocks (v0.24.2): 30% of aligned 2 x 2 city cell groups (all 4
   city) become one block: streets only on its first chunk row / column,
   7 x 7 building chunks, one level (the lowest of the 4), a landmark

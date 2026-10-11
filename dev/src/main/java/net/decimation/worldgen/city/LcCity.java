@@ -113,6 +113,7 @@ public final class LcCity
             }
         }
         highways.populate(world, w);
+        Rails.populate(world, w);
     }
 
     /**

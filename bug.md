@@ -11,6 +11,27 @@ not something we introduced or need to fix) see `documentation.md`.
 ## Open
 
 
+### Railway tunnels flooded with standing water and lava (11 Oktober 2026, found in testing, FIXED v0.44.0)
+- Dev test `rail` (first runs): diamonds of standing water and lava on the track, no source
+  block anywhere, rails washed out (43 of 48 through a station).
+- Cause: a tunnel chunk is written by two population windows (Slices.window, offset 8). Between
+  them a neighbour chunk's decoration found the open stone face of the first half: vanilla
+  springs (BiomeDecorator, 50 water and 20 lava per chunk, WorldGenLiquids) go into stone with
+  exactly one open side, and they flow at once (immediate updates during worldgen). The second
+  half then wrote its tunnel over the spring block and left the flow standing.
+- Fix (terrain/TerrainEvents): Decorate LAKE (the springs) and Populate LAKE / LAVA denied where
+  their area touches a rail chunk (city/Rails.near). Checked: liquid in 11 tunnel chunks 0 (fresh
+  region), seed 1 gap line 0. A second, unrelated flood: the station staircase's water wall
+  (DeceasedCraft part) does not hold its water in 1.7.10; it became light blue glass.
+- City cellars could meet the same springs `[not checked]`.
+
+### Dedicated server crashed at start since v0.42.2 (found 11 Oktober 2026, FIXED v0.44.0)
+- tools/servertest.py: "NoClassDefFoundError: net/minecraft/client/gui/GuiScreen" from
+  Magazines.register (the first call into fixes/Deci).
+- Cause: Deci.homeMenu() (v0.42.2, for the stats test picture) returns a GuiScreen; verifying Deci
+  on a server loads that client class. Singleplayer was never affected.
+- Fix: @SideOnly(CLIENT) on homeMenu (stripped on the server). servertest runs again.
+
 ### Enemy NPCs ignored gunshots, juggernaut too (11 Oktober 2026, FIXED v0.43.3)
 - User on 0.43.2: "even on survival mode the juggernaut dont react when i shooting when there is
   no zombies". v0.43.2 (below) fixed only dead targets.
