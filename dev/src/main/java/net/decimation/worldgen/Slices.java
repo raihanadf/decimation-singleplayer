@@ -70,6 +70,10 @@ public final class Slices
             {
                 ZoneStore.add(p.zone(), p.minX() - 2, baseY - 4, p.minZ() - 2,
                               p.maxX() + 2, baseY + p.height() + 8, p.maxZ() + 2);
+                if (p instanceof NamedPlace)
+                {
+                    PlaceNames.store(world, p.id(), (NamedPlace) p, p.minX() - 2, p.minZ() - 2, p.maxX() + 2, p.maxZ() + 2);
+                }
                 if (p instanceof Residents)
                 {
                     SafezoneSites.add(p.id(), p.minX() - 2, baseY - 4, p.minZ() - 2, p.maxX() + 2,
@@ -98,6 +102,10 @@ public final class Slices
                 {
                     ZoneStore.add(p.zone(), p.minX() - 6, baseY - 4, p.minZ() - 6,
                                   p.maxX() + 6, baseY + p.height() + 12, p.maxZ() + 6);
+                    if (p instanceof NamedPlace)
+                    {
+                        PlaceNames.store(world, p.id(), (NamedPlace) p, p.minX() - 6, p.minZ() - 6, p.maxX() + 6, p.maxZ() + 6);
+                    }
                     if (p instanceof Residents)
                     {
                         SafezoneSites.add(p.id(), p.minX() - 6, baseY - 4, p.minZ() - 6, p.maxX() + 6,

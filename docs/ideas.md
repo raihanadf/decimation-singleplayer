@@ -32,7 +32,7 @@ first (questions with options) before any code. Priority now: finish the current
     yet": count, strength, variants all open).
 
 ## World
-12. **City zone names**: entering a city shows its name on screen, generated as "[district] -
+12. **City zone names**: DONE v0.52.0 (docs/zones.md "Place names"). Was: entering a city shows its name on screen, generated as "[district] -
     [number]", the number taken from the chunk / cell location (zones: docs/zones.md; client zone
     lists exist since v0.46.0).
 13. **City safezone as a police building**: our city refuge (v0.48.0, docs/safezone.md section 7) is

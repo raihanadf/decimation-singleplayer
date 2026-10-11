@@ -23,6 +23,8 @@ public class StructureData extends WorldSavedData
     public static final int CANCELLED = Integer.MIN_VALUE;
 
     private final Map<String, Integer> baseY = new HashMap<String, Integer>();
+    /** Named places of this world (military bases): id -> turf entry "x1/y1/z1=x2/y2/z2=owner=name". */
+    private final Map<String, String> places = new HashMap<String, String>();
 
     public StructureData(String name)
     {
@@ -52,9 +54,26 @@ public class StructureData extends WorldSavedData
         markDirty();
     }
 
+    public void setPlace(String id, String turf)
+    {
+        places.put(id, turf);
+        markDirty();
+    }
+
+    public java.util.Collection<String> places()
+    {
+        return places.values();
+    }
+
     @Override
     public void readFromNBT(NBTTagCompound tag)
     {
+        places.clear();
+        NBTTagCompound pl = tag.getCompoundTag("places");
+        for (Object key : pl.func_150296_c())
+        {
+            places.put((String) key, pl.getString((String) key));
+        }
         baseY.clear();
         NBTTagCompound map = tag.getCompoundTag("baseY");
         for (Object key : map.func_150296_c()) // getKeySet
@@ -72,5 +91,11 @@ public class StructureData extends WorldSavedData
             map.setInteger(e.getKey(), e.getValue());
         }
         tag.setTag("baseY", map);
+        NBTTagCompound pl = new NBTTagCompound();
+        for (Map.Entry<String, String> e : places.entrySet())
+        {
+            pl.setString(e.getKey(), e.getValue());
+        }
+        tag.setTag("places", pl);
     }
 }

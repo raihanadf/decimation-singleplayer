@@ -159,6 +159,10 @@ boot. Falls straight through to the mod's own (re-skinned) main menu after that.
   snipers spot enemies up to `sniperRange` 70 blocks (was 96); the Barrett tiers (juggernaut
   sniper 60 hp, elite sniper 38 hp) die to one 30 round 5.56 magazine (8 per player hit x their
   damage share). Config version 3: older files take these new defaults once.
+- **Place names (v0.52.0)**: walking into a city district shows Decimation's "ENTERING LOCATION"
+  banner and chat line with its name, like "Hollowhaven: Downtown - 5" (wasteland districts are
+  controlled by the Military); military bases are named too ("FOB Viper", "COP Thunder"). Leaving
+  every named place says "Now entering the Wilderness". Works in existing worlds for cities.
 - **City full of props, part 2 (v0.51.0)**: shop signs over shop doors and graffiti on outer walls,
   parks with bins, chess tables and lamps, empty lots with parked cars, a survivor's camp spot or a
   dumping ground, traffic jams of abandoned cars heading out of the city near its edges, and the

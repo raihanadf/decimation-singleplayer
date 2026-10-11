@@ -10,8 +10,12 @@ import net.decimation.worldgen.ZoneKind;
  * graded) with a MILITARY zone. The canvas is built once per base and cached (plans are asked for
  * by every chunk around them).
  */
-public final class MilitaryBasePlan extends CanvasPlan
+public final class MilitaryBasePlan extends CanvasPlan implements net.decimation.worldgen.NamedPlace
 {
+    /** US style callsigns for base names ("FOB Viper"). */
+    private static final String[] CALLSIGNS = {"Viper", "Raven", "Falcon", "Hammer", "Bastion", "Warrior", "Eagle",
+        "Lightning", "Phoenix", "Sentinel", "Wolfhound", "Ironhorse", "Thunder", "Spartan", "Gator", "Liberty", "Anvil",
+        "Cobra", "Durango", "Outlaw", "Patriot", "Reaper", "Saber", "Tomahawk"};
     private static final Map<String, MilitaryBase> CACHE = new LinkedHashMap<String, MilitaryBase>(16, 0.75f, true)
     {
         @Override
@@ -75,6 +79,19 @@ public final class MilitaryBasePlan extends CanvasPlan
 
     public int maxSpread() { return size == MilitaryBase.SMALL ? 9 : 11; }
     public ZoneKind zone() { return ZoneKind.MILITARY; }
+
+    /** COP (outpost), FOB, Camp (large) + a callsign from the seed and position. */
+    public String placeName()
+    {
+        String kind = size == MilitaryBase.SMALL ? "COP" : size == MilitaryBase.SIZE_NAME.length - 1 ? "Camp" : "FOB";
+        long h = (seed ^ minX * 341873128712L ^ minZ * 132897987541L) * 0x9E3779B97F4A7C15L;
+        return kind + " " + CALLSIGNS[(int) ((h >>> 33) % CALLSIGNS.length)];
+    }
+
+    public String placeOwner()
+    {
+        return "Military";
+    }
 
     public String describe()
     {

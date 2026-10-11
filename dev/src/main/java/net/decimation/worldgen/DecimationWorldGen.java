@@ -284,6 +284,9 @@ public class DecimationWorldGen
         cpw.mods.fml.common.FMLCommonHandler.instance().bus().register(store);
         net.minecraftforge.common.MinecraftForge.EVENT_BUS.register(
             new net.decimation.fixes.ZoneSpawnHandler());
+        // place names (city districts, military bases) through Decimation's turf banner (docs/zones.md)
+        cpw.mods.fml.common.FMLCommonHandler.instance().bus().register(new PlaceNames());
+        FMLLog.info("[%s] place names registered", MODID);
         // Decimation's zone rules in singleplayer, safezones protecting everyone friendly (docs/zones.md)
         zoneRules = new net.decimation.fixes.ZoneRules();
         net.minecraftforge.common.MinecraftForge.EVENT_BUS.register(zoneRules);

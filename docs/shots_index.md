@@ -11,6 +11,12 @@ How shots are made: `./gradlew runClient -Pautotest` (street views),
 `-Paudit` (building audit), `-Pgallery` (prop gallery); output in
 `dev/run/client/screenshots/`, then copied here into a versioned folder.
 
+## place_names_v0.52/ (dev test places, 12 Oktober 2026)
+- sheet_places.png: places_0 Decimation's banner "HOLLOWHAVEN: DOWNTOWN - 5" / "ENTERING LOCATION"
+  over the city and the chat line "Now entering Hollowhaven: Downtown - 5" (spaces shown);
+  places_1 walking into the next district: "HOLLOWHAVEN: SUBURBS - 6" and a second chat line;
+  places_2 outside the city: "Now entering the Wilderness". Night rain in the dev world.
+
 ## city_dressing_v0.51/ (12 Oktober 2026)
 - topdown_jam_crash.png (tools/props/topdown.py on the dressed seed 1 server world; road dark, walk
   light grey, grass green, buildings grey; red boxes cars, orange signs / traffic lights, blue other

@@ -238,6 +238,26 @@ public final class Deci
         return deci.aJ.b.aAc;
     }
 
+    /** Boxes {x1, z1, x2, z2} (x1 <= x2, z1 <= z2) of every live zone of a kind (Decimation's and ours). */
+    public static java.util.List<int[]> zoneBoxes(net.decimation.worldgen.ZoneKind kind)
+    {
+        java.util.List<int[]> out = new java.util.ArrayList<int[]>();
+        net.decimation.mod.server.zones.ObjectZoneList list = deci.aJ.b.aAc;
+        if (list == null || list.zoneList == null)
+        {
+            return out;
+        }
+        for (net.decimation.mod.server.zones.ObjectZone z : list.zoneList)
+        {
+            if (isZone(z, kind))
+            {
+                out.add(new int[] {Math.min(z.zoneX1, z.zoneX2), Math.min(z.zoneZ1, z.zoneZ2),
+                                   Math.max(z.zoneX1, z.zoneX2), Math.max(z.zoneZ1, z.zoneZ2)});
+            }
+        }
+        return out;
+    }
+
     public static void setZoneList(net.decimation.mod.server.zones.ObjectZoneList list)
     {
         deci.aJ.b.aAc = list;
@@ -317,11 +337,48 @@ public final class Deci
         deci.aF.a.a.a.gB().sendTo(new deci.aE.a.ax(safe, military, radiation, scary, police, border), player);
     }
 
+    /**
+     * Sends PacketSetClientStringList (deci.aE.a$w) to one player: the client's turf list
+     * (ClientState.bY, deci.b.i) becomes these entries "x1/y1/z1=x2/y2/z2=owner=name". IngameHud
+     * shows "ENTERING LOCATION" + the name, the chat line "Now entering NAME [controlled by OWNER]"
+     * (no owner part for "unknown") and the newturf sound when the player walks into one, "Now
+     * entering the Wilderness" when out of every turf and safezone. Spaces are stripped by the
+     * client: write them as underscores (PatchTurfNames shows them as spaces).
+     */
+    public static void sendTurfList(net.minecraft.entity.player.EntityPlayerMP player, java.util.ArrayList<String> turfs)
+    {
+        deci.aF.a.a.a.gB().sendTo(new deci.aE.a.w(turfs), player);
+    }
+
+    /** Decimation's own clan turfs (ServerConfig.turfList, dedicated servers) in the turf list format. */
+    public static java.util.List<String> decimationTurfs()
+    {
+        java.util.List<String> out = new java.util.ArrayList<String>();
+        net.decimation.mod.server.turf.ObjectTurfList list = deci.aJ.b.aAd;
+        if (list == null || list.turfList == null)
+        {
+            return out;
+        }
+        for (net.decimation.mod.server.turf.ObjectTurf t : list.turfList)
+        {
+            out.add(t.posX1 + "/" + t.posY1 + "/" + t.posZ1 + "=" + t.posX2 + "/" + t.posY2 + "/" + t.posZ2 + "="
+                    + t.currentClanName + "=" + t.turfName);
+        }
+        return out;
+    }
+
     /** The client's safezone list (ClientState.bS, deci.b.i), filled by PacketZoneLists. */
     @cpw.mods.fml.relauncher.SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)
     public static java.util.List<String> clientSafezones()
     {
         return deci.b.i.bS;
+    }
+
+    /** The client's turf list (ClientState.bY), filled by PacketSetClientStringList. */
+    @cpw.mods.fml.relauncher.SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)
+    public static java.util.List<String> clientTurfs()
+    {
+        return deci.b.i.bY;
     }
 
     // ---- zone related entity kinds

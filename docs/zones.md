@@ -87,6 +87,28 @@ Rules in the code, and whether they run in singleplayer (SP) before v0.46.0:
   server only. Leaving every turf and safezone prints "Now entering the Wilderness". A later
   step can send our own named places (city names, safezone names) this way `[not decided]`.
 
+### Place names (ours, v0.52.0; user choices 12 Oktober 2026)
+- What: every city district (the 2 x 2 cell square, 128 x 128 blocks, that shares one style) is
+  named "City: District - number", e.g. "Hollowhaven: Downtown - 5"; military bases "FOB Viper" /
+  "COP Thunder" / "Camp Sentinel" (controlled by Military). Out of every place: Decimation's own
+  "Now entering the Wilderness". Camps and refuges keep Decimation's safezone line.
+- How (worldgen/PlaceNames, city/CityNames, NamedPlace): every 40 server ticks per player, the
+  districts within 3 of the player's (from the seed: a city is the 4-neighbour group of city regions,
+  named from its first region, "... City" from 4 regions; district label from the style: Downtown,
+  Hotel District, Uptown, Market District, Suburbs, Old Town, Residential, Wasteland (owner
+  Military); number = region index in the city * 4 + quarter), named places within 600 stored in
+  StructureData (bases, stored by Slices on their first slice), and Decimation's own clan turfs
+  (ServerConfig.turfList) go to the player as the turf list (PacketSetClientStringList,
+  Deci.sendTurfList) when it changed. IngameHud then shows its "ENTERING LOCATION" banner, the chat
+  line and the newturf sound. Works in singleplayer (integrated server) and on servers, in old worlds
+  too (districts follow from the seed; bases only once generated with v0.52).
+- Traps: the client strips every space from turf entries (names travel with "_"; the banner turns
+  "_" into spaces, PatchTurfNames makes the chat line do the same, three jars); a turf box inside a
+  safezone box makes IngameHud switch between the two messages every frame, so safezone boxes are
+  cut out of district boxes (PlaceNames.cut); turf boxes span y 0..255.
+- Check: dev test `places` (two neighbouring districts and the wilderness: client list has the
+  names, shots docs/shots/place_names_v0.52/); servertest log "place NAME (OWNER) at x,z".
+
 ## 4. The client side
 
 - `PacketZoneLists` (deci.aE.a$ax): five string lists (safezone, military, radiation, scary,
