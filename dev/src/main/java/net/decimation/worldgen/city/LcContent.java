@@ -226,6 +226,20 @@ public final class LcContent
         }
     }
 
+    private static final Map<String, BuildingLayout> layouts = new HashMap<String, BuildingLayout>();
+
+    /** The inside of a building schematic (BuildingLayout), read once per file. */
+    static synchronized BuildingLayout layout(String file, Shape s)
+    {
+        BuildingLayout l = layouts.get(file);
+        if (l == null && s != null)
+        {
+            l = new BuildingLayout(s);
+            layouts.put(file, l);
+        }
+        return l;
+    }
+
     /** The schematic of a file, remapped to this world's blocks (cached). */
     public static synchronized Shape shape(String file)
     {

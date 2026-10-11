@@ -9,6 +9,9 @@ deci: prop is given its DRAWN box from docs/references/prop_geometry.tsv
 (tools/props/propgeom.py, computed from Decimation's renderers), every other
 block a simple shape (full cube, slab, carpet, fence post, thin door ...).
 
+Facing: the verified table docs/references/prop_facing.tsv (front per prop and metadata, from the
+renderers, models and gallery photos) when present, else the placer rule (2 E, 3 S, 4 W, 5 N).
+
 Reports, per finding, the prop, its cell, metadata and the nearest camera
 point so it can be found in the base:
   WALL   the drawn box goes into a full block (not the floor under it)
@@ -45,6 +48,27 @@ MULTI = {"BlockBarrierTall", "BlockStreetBarrier", "BlockMetalShelf", "BlockMeta
 NOT_SOLID = ("air", "tallgrass", "double_plant", "red_flower", "yellow_flower", "web", "torch", "ladder",
              "vine", "deadbush", "snow_layer", "BlockConcertinaWire", "rail", "lever", "redstone_wire",
              "flower_pot", "wall_sign", "standing_sign", "tripwire", "skull")
+
+
+FACING = os.path.join(ROOT, "docs", "references", "prop_facing.tsv")
+LETTER = {"E": (1, 0), "S": (0, 1), "W": (-1, 0), "N": (0, -1)}
+
+
+def load_facing():
+    """Verified front per prop and metadata (tools/props/facing_table.py): {(prop, meta): (dx, dz)},
+    and the props whose front matters (not symmetric). Empty when the table is not there yet."""
+    fronts, fronted = {}, set()
+    if not os.path.isfile(FACING):
+        return fronts, fronted
+    with open(FACING) as f:
+        next(f)
+        for line in f:
+            c = line.rstrip("\n").split("\t")
+            for k in range(4):
+                if c[2 + k] in LETTER:
+                    fronts[(c[0], k + 2)] = LETTER[c[2 + k]]
+                    fronted.add(c[0])
+    return fronts, fronted
 
 
 def load_geometry():
@@ -103,6 +127,7 @@ def main():
     path = sys.argv[1]
     show_all = "--all" in sys.argv
     geom = load_geometry()
+    fronts, verified = load_facing()
     cells, pois, origin = {}, [], (0.0, 0.0, 0.0)
     for line in open(path):
         if line.startswith("# origin"):
@@ -174,8 +199,9 @@ def main():
                         if min(ov) > 0:
                             report("WALL", short, (x, y, z), meta, "into %s at %d %d %d (%.2f deep)"
                                    % (hit[1], cx, cy, cz, min(ov) + TOL), min(ov) + TOL)
-        if short in FRONTED and meta in DIRS:
-            fx, fz = DIRS[meta]
+        if (short in FRONTED or short in verified) and (fronts.get((short, meta)) or meta in DIRS) \
+                and not (verified and short not in verified):
+            fx, fz = fronts.get((short, meta), DIRS.get(meta))
             hit = solids.get((x + fx, y, z + fz))
             above = solids.get((x + fx, y + 1, z + fz))
             if hit and above and hit[0][3] - hit[0][2] > 0.6 and "glass" not in hit[1]:

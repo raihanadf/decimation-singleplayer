@@ -44,8 +44,8 @@ import net.minecraft.init.Blocks;
  */
 final class PropFit
 {
-    private static final float TOL = 0.08f;
-    private static final float SMALL = 0.15f - TOL;
+    private static final float TOL = PropGeom.TOL;
+    private static final float SMALL = PropGeom.SMALL;
     private static final int[][] FRONT = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};   // metadata 2 E, 3 S, 4 W, 5 N
 
     /** Props whose front matters (a seat, a screen, a door of a cabinet): never turned to fit. */
@@ -228,7 +228,7 @@ final class PropFit
             for (int dy = 0; dy >= -1; dy--)
             {
                 Block k = at(x + f[0], y + dy, z + f[1]);
-                if (k == null || !isDoor(k))
+                if (k == null || !PropGeom.isDoor(k))
                 {
                     continue;
                 }
@@ -236,7 +236,7 @@ final class PropFit
                 if ((m & 8) != 0)
                 {
                     Block low = at(x + f[0], y + dy - 1, z + f[1]);
-                    m = low != null && isDoor(low) ? metaAt(x + f[0], y + dy - 1, z + f[1]) : 0;
+                    m = low != null && PropGeom.isDoor(low) ? metaAt(x + f[0], y + dy - 1, z + f[1]) : 0;
                 }
                 if (((m & 1) == 0) == (f[0] != 0))      // vanilla door meta: even = walked through along x
                 {
@@ -247,17 +247,11 @@ final class PropFit
         return false;
     }
 
-    private static boolean isDoor(Block k)
-    {
-        String n = String.valueOf(Block.blockRegistry.getNameForObject(k));
-        return (n.contains("door") || n.contains("Door")) && !n.contains("trapdoor");
-    }
-
     /** A full block: a wall, a floor, a ceiling. */
     private boolean solid(int x, int y, int z)
     {
         Block b = at(x, y, z);
-        return b != null && (b.isOpaqueCube() || b instanceof BlockLeaves || fullGlass(b)
+        return b != null && (b.isOpaqueCube() || b instanceof BlockLeaves || PropGeom.fullGlass(b)
                              || (b instanceof BlockSlab && (metaAt(x, y, z) & 8) != 0));
     }
 
@@ -273,12 +267,6 @@ final class PropFit
     {
         Block b = at(x, y, z);
         return b instanceof BlockPane && b.getMaterial() != Material.glass || b instanceof BlockFence || b instanceof BlockWall;
-    }
-
-    /** Glass and stained glass blocks (not panes): full cubes that are not opaque. */
-    private static boolean fullGlass(Block b)
-    {
-        return b.getMaterial() == Material.glass && !(b instanceof BlockPane);
     }
 
     /** Something a standing prop rests on (the cell below it), as propclash.py counts it. */
@@ -309,7 +297,7 @@ final class PropFit
         for (int k = 1; k < top; k++)
         {
             Block a = at(x, y + k, z);
-            float[] q = a == null ? null : shape(a, metaAt(x, y + k, z));
+            float[] q = a == null ? null : PropGeom.shape(a, metaAt(x, y + k, z));
             if (q != null && q[2] < top - k - SMALL)
             {
                 return true;
@@ -338,12 +326,12 @@ final class PropFit
                     {
                         continue;
                     }
-                    float[] q = shape(k, metaAt(cx, cy, cz));
+                    float[] q = PropGeom.shape(k, metaAt(cx, cy, cz));
                     if (q == null)
                     {
                         continue;
                     }
-                    if (overlap(p, cx + q[0], cx + q[1], cy + q[2], cy + q[3], cz + q[4], cz + q[5], isDoor(k) ? 0 : SMALL))
+                    if (PropGeom.overlap(p, cx + q[0], cx + q[1], cy + q[2], cy + q[3], cz + q[4], cz + q[5], PropGeom.isDoor(k) ? 0 : SMALL))
                     {
                         return true;
                     }
@@ -351,66 +339,6 @@ final class PropFit
             }
         }
         return false;
-    }
-
-    /** Where a neighbour stands in its cell: a prop's drawn box (shrunk), a block's shape, null for nothing. */
-    private static float[] shape(Block k, int m)
-    {
-        float[] d = PropBoxes.box(k, m);
-        if (d != null)
-        {
-            return new float[] {d[0] + TOL, d[1] - TOL, d[2] + TOL, d[3] - TOL, d[4] + TOL, d[5] - TOL};
-        }
-        if (isDoor(k))
-        {
-            return new float[] {0, 1, 0, 1, 0, 1};
-        }
-        String n = String.valueOf(Block.blockRegistry.getNameForObject(k));
-        if (n.endsWith("pressure_plate"))
-        {
-            return new float[] {0, 1, 0, 0.0625f, 0, 1};
-        }
-        if (n.endsWith("daylight_detector"))
-        {
-            return new float[] {0, 1, 0, 0.375f, 0, 1};
-        }
-        if (k instanceof BlockTrapDoor)
-        {
-            return (m & 4) != 0 ? null : (m & 8) != 0 ? new float[] {0, 1, 0.8125f, 1, 0, 1} : new float[] {0, 1, 0, 0.1875f, 0, 1};
-        }
-        if (k instanceof BlockCauldron)
-        {
-            return new float[] {0, 1, 0, 0.8f, 0, 1};
-        }
-        if (k instanceof BlockPane)
-        {
-            return new float[] {0.4375f, 0.5625f, 0, 1, 0.4375f, 0.5625f};
-        }
-        if (k instanceof BlockChest)
-        {
-            return new float[] {0.0625f, 0.9375f, 0, 0.875f, 0.0625f, 0.9375f};
-        }
-        if (k instanceof BlockFence || k instanceof BlockWall)
-        {
-            return new float[] {0.375f, 0.625f, 0, 1, 0.375f, 0.625f};
-        }
-        if (k instanceof BlockSlab && !k.isOpaqueCube())
-        {
-            return (m & 8) != 0 ? new float[] {0, 1, 0.5f, 1, 0, 1} : new float[] {0, 1, 0, 0.5f, 0, 1};
-        }
-        if (k.isOpaqueCube() || fullGlass(k) || k instanceof BlockStairs || k instanceof BlockLeaves)
-        {
-            return new float[] {0, 1, 0, 1, 0, 1};
-        }
-        return null;
-    }
-
-    private static boolean overlap(float[] p, float x0, float x1, float y0, float y1, float z0, float z1, float min)
-    {
-        float ox = Math.min(p[1], x1) - Math.max(p[0], x0);
-        float oy = Math.min(p[3], y1) - Math.max(p[2], y0);
-        float oz = Math.min(p[5], z1) - Math.max(p[4], z0);
-        return ox > 0 && oy > 0 && oz > 0 && Math.min(ox, Math.min(oy, oz)) > min;   // doors: never
     }
 
     /** A chest here would not make a run of three (vanilla pairs only two). */

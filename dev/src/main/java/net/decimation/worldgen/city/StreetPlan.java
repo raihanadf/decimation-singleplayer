@@ -126,7 +126,42 @@ final class StreetPlan implements net.decimation.worldgen.FixedBase
         return fronts;
     }
 
+    /** Props added by the city dressing (StreetDress), built on first use. */
+    private Dress dress;
+
     public Block blockAt(int lx, int ly, int lz, int[] meta)
+    {
+        Dress d = dress();
+        if (d != null)
+        {
+            Block b = d.at(lx, ly, lz, meta);
+            if (b != null)
+            {
+                return b == Blocks.air ? null : b;
+            }
+        }
+        return baseAt(lx, ly, lz, meta);
+    }
+
+    private synchronized Dress dress()
+    {
+        if (dress == null && stairs == null && Dress.ON)
+        {
+            dress = StreetDress.dress(this);
+        }
+        return dress;
+    }
+
+    // what StreetDress reads: this street's own blocks without the dressing
+    int dressKind() { return kind; }
+    long dressSeed() { return seed; }
+    String dressStyle() { return style; }
+    boolean dressOnWater() { return onWater; }
+    boolean dressScene() { return scene != null; }
+    boolean dressPiece() { return piece != null; }
+    Block dressSidewalk() { return piece == null ? props.sidewalk : null; }
+
+    Block baseAt(int lx, int ly, int lz, int[] meta)
     {
         meta[0] = 0;
         // across = position across the street (0..15), along = along it

@@ -60,8 +60,29 @@ final class BuildingPlan implements net.decimation.worldgen.FixedBase
             + b.groundY + ")";
     }
 
+    /** Props added by the city dressing (BuildingDress), built on first use. */
+    private Dress dress;
+
+    private synchronized Dress dress()
+    {
+        if (dress == null && Dress.ON)
+        {
+            dress = BuildingDress.dress(this, s, b);
+        }
+        return dress;
+    }
+
     public Block blockAt(int lx, int ly, int lz, int[] meta)
     {
+        Dress d = dress();
+        if (d != null)
+        {
+            Block x = d.at(lx, ly, lz, meta);
+            if (x != null)
+            {
+                return x == Blocks.air ? null : x;
+            }
+        }
         meta[0] = 0;
         if (lx < 0 || lz < 0 || lx >= s.width || lz >= s.length || ly < 0 || ly >= s.height)
         {
