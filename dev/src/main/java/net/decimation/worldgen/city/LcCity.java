@@ -544,7 +544,7 @@ public final class LcCity
                 {
                     used[i][j] = true;
                     out.add(new LotPlan("lcl_" + cellX + "_" + cellZ + "_" + i + "_" + j, minX, minZ, g,
-                                        decor(seed, style, "parks", minX >> 4, minZ >> 4, 0x5041524BL)));
+                                        decor(seed, style, "parks", minX >> 4, minZ >> 4, 0x5041524BL), seed, style));
                     continue;
                 }
                 for (int a = 0; a < pick.cx; a++)
@@ -557,7 +557,7 @@ public final class LcCity
                 LcContent.Shape s = LcContent.shape(pick.file);
                 if (s == null)
                 {
-                    out.add(new LotPlan("lcl_" + cellX + "_" + cellZ + "_" + i + "_" + j, minX, minZ, g, null));
+                    out.add(new LotPlan("lcl_" + cellX + "_" + cellZ + "_" + i + "_" + j, minX, minZ, g, null, seed, style));
                     continue;
                 }
                 out.add(new BuildingPlan("lcb_" + cellX + "_" + cellZ + "_" + i + "_" + j, pick, s, minX, minZ,

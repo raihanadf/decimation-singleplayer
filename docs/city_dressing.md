@@ -182,3 +182,36 @@ Pending, in order:
   decimation-props and decimation-city updated. decimation-military-interior still to split.
 - Still open: facade graffiti and shop signs (the wall is in the neighbour plan), parks and lots,
   traffic jams toward city exits, crossing crashes, power poles are few.
+
+### 12 Oktober 2026: the open items (v0.51.0)
+
+- Facades: BuildingDress.exterior puts a shop's sign (Decimation's logos: Minedonalds / Mineway for
+  food, Gunsrus / Decimunition for gun shops, Minebay for other shops) over its door or window, and
+  graffiti low on blank outer walls, on the building's outdoor ground storey spots. StreetDress.facades
+  does the same from the street side for walls right at the chunk edge (read through
+  StreetPlan.neighbourBuilding / BuildingPlan.baseBlockAt). Most converted buildings stand back from
+  their chunk edge, so the building side does nearly all of it (seed 1: 214 outer wall graffiti, 1
+  facade graffiti from the street; 1 sign: only 2 shops in that area).
+- Parks and lots (LotDress, LotPlan now knows seed and district): parks get a bin beside each bench,
+  a chess table, a street light, a bicycle, trash, now and then a body; bare lots one scene or none
+  (rows of parked cars all one way, a survivor's spot round a fire can, a dumping ground with a
+  dumpster). Seed 1's area has parks only (the wasteland district has no park parts and no lots
+  there), so the bare lot scenes were not seen yet [not verified in game].
+- Traffic jams (StreetDress.jam): within 3 chunks of where a street leaves the city, the outbound
+  lane holds cars headlights toward the exit, 2 per chunk (anchors 3 and 11), 80 % of such chunks
+  (half that in the wasteland); log "dress jam at x,z heading D". Seed 1: 6 jams.
+- Crossing crash (StreetDress.crossingCrash): 11 % of crossings (25 % wasteland): a car through the
+  middle, a second one from the side with its nose toward it (gap 4..8), debris; log "dress
+  crossing crash at x,z".
+- Power poles: every residential street chunk on the line's side (was every second): 31 placed.
+- DC gutters (the flush sandstone cell between the road and a raised sidewalk) count as road now:
+  curb props stood in them before.
+- New tool tools/props/topdown.py DUMP X0 Z0 X1 Z1 OUT.png: top down map of a dump with every
+  prop's drawn box and its front as an arrow (from the facing table): checks the direction of cars in
+  jams and crashes without the game. docs/shots/city_dressing_v0.51/topdown_jam_crash.png: jam
+  cars all pointing south / east toward the exits, the crash car through the crossing, traffic light
+  arms over the roads.
+- Check: seed 1 dressed vs undressed: the dressing adds 1 finding, a weapon cabinet in the air at
+  -19 41 220 under a bunker: the building's floor there is gone in the world (carved by the railway
+  tunnel or a cave after the building was written [inferred]).
+- Still open: bare lot scenes seen in game; a whole dressed city walked by the user.

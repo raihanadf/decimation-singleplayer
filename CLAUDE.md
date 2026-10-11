@@ -810,6 +810,9 @@ of the last session:
   table of all 192 props (docs/references/prop_facing.tsv; corrections prop_facing_overrides.tsv; dev
   test `facing`). Off: -Ddeciworldgen.dress=false. servertest `dress` / devtest `--dress` flags.
   Skills: decimation-worldgen (index), decimation-city-street / -vehicles / -interior / -decay.
+  v0.51.0: facades (shop signs, graffiti: BuildingDress.exterior, StreetDress.facades), parks and lots
+  (LotDress), jams toward exits, crossing crashes, poles every chunk, DC gutters are road;
+  tools/props/topdown.py draws a dump with each prop's front as an arrow (direction check, no game).
   Gun study (10 Oktober 2026): docs/gun_style_guide.md, tools/guns/study.py
   (renders / measures Decimation's guns from the jar, `attach` adds
   attachments as the game places them), dev test mode `gunview` (hip, aim

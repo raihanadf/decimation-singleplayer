@@ -129,6 +129,34 @@ final class StreetPlan implements net.decimation.worldgen.FixedBase
     /** Props added by the city dressing (StreetDress), built on first use. */
     private Dress dress;
 
+    /**
+     * The building beside this street chunk on side d (0 west, 1 north, 2 east, 3 south) at this
+     * street's level, or null (the dressing hangs signs and graffiti on its facade).
+     */
+    BuildingPlan neighbourBuilding(int d)
+    {
+        int[][] dirs = {{-1, 0}, {0, -1}, {1, 0}, {0, 1}};
+        int nx = (minX >> 4) + dirs[d][0], nz = (minZ >> 4) + dirs[d][1];
+        int ncx = Math.floorDiv(nx, CELL), ncz = Math.floorDiv(nz, CELL);
+        if (!isCity(seed, ncx, ncz))
+        {
+            return null;
+        }
+        int[] nb = block(seed, ncx, ncz);
+        for (Plan q : city.plan(seed, nb[0], nb[1]))
+        {
+            if (q instanceof BuildingPlan && q.minX() <= nx * 16 && q.maxX() >= nx * 16 + 15
+                && q.minZ() <= nz * 16 && q.maxZ() >= nz * 16 + 15)
+            {
+                BuildingPlan b = (BuildingPlan) q;
+                return b.ground == ground ? b : null;
+            }
+        }
+        return null;
+    }
+
+    int dressGround() { return ground; }
+
     public Block blockAt(int lx, int ly, int lz, int[] meta)
     {
         Dress d = dress();

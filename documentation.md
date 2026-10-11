@@ -159,6 +159,10 @@ boot. Falls straight through to the mod's own (re-skinned) main menu after that.
   snipers spot enemies up to `sniperRange` 70 blocks (was 96); the Barrett tiers (juggernaut
   sniper 60 hp, elite sniper 38 hp) die to one 30 round 5.56 magazine (8 per player hit x their
   damage share). Config version 3: older files take these new defaults once.
+- **City full of props, part 2 (v0.51.0)**: shop signs over shop doors and graffiti on outer walls,
+  parks with bins, chess tables and lamps, empty lots with parked cars, a survivor's camp spot or a
+  dumping ground, traffic jams of abandoned cars heading out of the city near its edges, and the
+  odd crash in a crossing.
 - **City full of props (v0.50.0, newly generated city chunks)**: crossings get traffic lights (or
   stop signs in quiet districts) facing the traffic, sidewalks get mailboxes, newspaper boxes,
   benches, bins, bicycles and power poles, roads get the odd crash, police roadblock, road works or

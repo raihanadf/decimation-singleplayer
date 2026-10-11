@@ -21,6 +21,11 @@ roadScene / roadblock / checkpoint / crash / roadWorks, StreetPlan.carFits (the 
 - Wasteland checkpoint: jersey barriers (step 2 along their long axis) with a 2 wide gap,
   hedgehogs before it, sandbags at the ends.
 
+- Jams: within 3 chunks of a city exit, the outbound lane, cars headlights toward the exit, 2 per
+  chunk. Crossing crash: a car through the middle, the second from the side nose first.
+- Lots: parked cars in rows all the same way (LotDress), never at angles.
+- Check direction without the game: tools/props/topdown.py on a dump (arrows = fronts).
+
 ## Check
 Same as decimation-city-street (servertest dress + worlddump + propclash diff; cityprops shots with
 kinds policecar, sawhorse, cone, roadworks, checkpoint, truck, wreck).

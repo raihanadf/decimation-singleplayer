@@ -205,6 +205,10 @@ final class Dress
         {
             return (m & 4) == 0;
         }
+        if (b == Blocks.bedrock)
+        {
+            return false;                                 // BuildingDress's "keep the world" marker: unknown ground
+        }
         return b.isOpaqueCube() || b instanceof BlockSlab || b instanceof BlockStairs || PropGeom.fullGlass(b)
             || b instanceof net.minecraft.block.BlockLeaves || b instanceof net.minecraft.block.BlockGrass
             || b instanceof net.minecraft.block.BlockFarmland || b instanceof net.minecraft.block.BlockSoulSand;

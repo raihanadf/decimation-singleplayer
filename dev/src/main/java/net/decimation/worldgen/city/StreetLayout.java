@@ -59,6 +59,34 @@ final class StreetLayout
                 classify(base, legacySidewalk, x, z);
             }
         }
+        // a gutter: a flush cell between the road and a raised sidewalk belongs to the road
+        boolean[][] gutter = new boolean[16][16];
+        for (int x = 0; x < 16; x++)
+        {
+            for (int z = 0; z < 16; z++)
+            {
+                if (type[x][z] != WALK || stand[x][z] != 1)
+                {
+                    continue;
+                }
+                for (int d = 0; d < 4 && !gutter[x][z]; d++)
+                {
+                    int ax = x + DIR[d][0], az = z + DIR[d][1], bx = x - DIR[d][0], bz = z - DIR[d][1];
+                    gutter[x][z] = in(ax, az) && in(bx, bz) && type[ax][az] == ROAD
+                        && base.block(bx, 1, bz) != null;
+                }
+            }
+        }
+        for (int x = 0; x < 16; x++)
+        {
+            for (int z = 0; z < 16; z++)
+            {
+                if (gutter[x][z])
+                {
+                    type[x][z] = ROAD;
+                }
+            }
+        }
         for (int x = 0; x < 16; x++)
         {
             for (int z = 0; z < 16; z++)
@@ -138,6 +166,11 @@ final class StreetLayout
     {
         String n = String.valueOf(Block.blockRegistry.getNameForObject(b));
         return n.contains("BlockRoad") || n.equals("minecraft:quartz_block");
+    }
+
+    private static boolean in(int x, int z)
+    {
+        return x >= 0 && z >= 0 && x < 16 && z < 16;
     }
 
     boolean curb(int x, int z)

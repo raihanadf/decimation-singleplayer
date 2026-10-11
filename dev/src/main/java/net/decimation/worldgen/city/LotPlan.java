@@ -24,8 +24,15 @@ final class LotPlan implements net.decimation.worldgen.FixedBase
     /** Park part on the grass (layer 1 up), or null for a plain lot. */
     private final LcContent.Shape park;
 
-    LotPlan(String id, int minX, int minZ, int ground, LcContent.Shape park)
+    final long seed;
+    final String style;
+    /** Props added by the city dressing (LotDress), built on first use. */
+    private Dress dress;
+
+    LotPlan(String id, int minX, int minZ, int ground, LcContent.Shape park, long seed, String style)
     {
+        this.seed = seed;
+        this.style = style;
         this.park = park;
         this.id = id;
         this.minX = minX;
@@ -46,7 +53,32 @@ final class LotPlan implements net.decimation.worldgen.FixedBase
     public net.decimation.worldgen.ZoneKind zone() { return null; }
     public String describe() { return park != null ? "lc park" : null; }
 
+    boolean hasPark() { return park != null; }
+
     public Block blockAt(int lx, int ly, int lz, int[] meta)
+    {
+        Dress d = dress();
+        if (d != null)
+        {
+            Block b = d.at(lx, ly, lz, meta);
+            if (b != null)
+            {
+                return b == Blocks.air ? null : b;
+            }
+        }
+        return baseAt(lx, ly, lz, meta);
+    }
+
+    private synchronized Dress dress()
+    {
+        if (dress == null && Dress.ON)
+        {
+            dress = LotDress.dress(this);
+        }
+        return dress;
+    }
+
+    Block baseAt(int lx, int ly, int lz, int[] meta)
     {
         meta[0] = 0;
         if (ly == 0)

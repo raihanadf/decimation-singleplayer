@@ -30,11 +30,13 @@ final class BuildingDress
     private final BuildingLayout lay;
     private final long seed;
     private final int kind;
+    private final String name;
     private final Map<Long, BuildingLayout.Spot> at = new HashMap<Long, BuildingLayout.Spot>();
     private int salt;
 
-    private BuildingDress(Dress d, BuildingLayout lay, long seed, int kind)
+    private BuildingDress(Dress d, BuildingLayout lay, long seed, int kind, String name)
     {
+        this.name = name.toLowerCase();
         this.d = d;
         this.lay = lay;
         this.seed = seed;
@@ -120,7 +122,7 @@ final class BuildingDress
             return d;
         }
         long seed = hl(0x4255494CL ^ p.minX() * 31L, p.minX(), p.minZ());
-        new BuildingDress(d, lay, seed, kind(b.name)).run();
+        new BuildingDress(d, lay, seed, kind(b.name), b.name).run();
         Dress.logTotals();
         return d;
     }
@@ -217,6 +219,7 @@ final class BuildingDress
     private void run()
     {
         doorProps();
+        exterior();
         Map<Integer, List<BuildingLayout.Spot>> storeys = new HashMap<Integer, List<BuildingLayout.Spot>>();
         for (BuildingLayout.Spot s : lay.spots)
         {
@@ -275,6 +278,90 @@ final class BuildingDress
                 }
             }
         }
+    }
+
+    /**
+     * The outside of the ground storey: a shop's sign over its door or window (research: the sign
+     * band over the shop door at y + 3, flush on the facade, facing the street) and graffiti low on
+     * blank outer walls; both on outdoor spots (open sky above) against an outer wall.
+     */
+    private void exterior()
+    {
+        int minY = Integer.MAX_VALUE;
+        for (BuildingLayout.Spot s : lay.spots)
+        {
+            if (s.outside && s.wallCount() > 0)
+            {
+                minY = Math.min(minY, s.y);
+            }
+        }
+        if (minY == Integer.MAX_VALUE)
+        {
+            return;
+        }
+        boolean shop = kind == SHOP || kind == FOOD;
+        int signs = 0, tags = 0, maxTags = kind == HOME || kind == INDUSTRY || kind == CIVIC ? 3 : 1;
+        List<BuildingLayout.Spot> outer = new ArrayList<BuildingLayout.Spot>();
+        for (BuildingLayout.Spot s : lay.spots)
+        {
+            if (s.outside && s.wallCount() > 0 && s.y <= minY + 1 && !s.doorway)
+            {
+                outer.add(s);
+            }
+        }
+        for (int t = 0; t < outer.size() * 2 && (signs == 0 && shop || tags < maxTags); t++)
+        {
+            BuildingLayout.Spot s = outer.get(roll() % outer.size());
+            int w = firstWall(s, roll() & 3);
+            if (w < 0)
+            {
+                continue;
+            }
+            int wx = s.x + BuildingLayout.DIR[w][0], wz = s.z + BuildingLayout.DIR[w][1];
+            if (shop && signs == 0)
+            {
+                // over an opening: a door or glass in this wall within 1 to the side, at the walk level
+                boolean opening = false;
+                for (int o = -1; o <= 1 && !opening; o++)
+                {
+                    int ox = wx + (BuildingLayout.DIR[w][1] != 0 ? o : 0), oz = wz + (BuildingLayout.DIR[w][0] != 0 ? o : 0);
+                    Block b0 = lay.at(ox, s.y, oz), b1 = lay.at(ox, s.y + 1, oz);
+                    opening = b0 != null && (PropGeom.isDoor(b0) || b0.getMaterial() == net.minecraft.block.material.Material.glass)
+                        || b1 != null && b1.getMaterial() == net.minecraft.block.material.Material.glass;
+                }
+                if ((opening || t > outer.size()) && lay.wall(wx, s.y + 2, wz) && d.block(s.x, s.y + 2, s.z) == null
+                    && hang(signName(), s.x, s.y + 2, s.z, w))
+                {
+                    signs++;
+                    Dress.note("~exterior shop sign");
+                    continue;
+                }
+            }
+            if (tags < maxTags && roll() < 600)
+            {
+                String[] art = {"BlockGraffiti_1", "BlockGraffiti_2", "BlockGraffiti_3", "BlockGraffiti_4", "BlockGraffiti_5",
+                                "BlockGraffiti_6", "BlockGraffiti_7", "BlockGraffiti_8", "BlockGraffiti_9", "BlockGraffiti_10",
+                                "BlockGraffiti_11", "BlockGraffiti_12"};
+                if (lay.wall(wx, s.y, wz) && hang(art[roll() % art.length], s.x, s.y + 1, s.z, w))
+                {
+                    tags++;
+                    Dress.note("~exterior graffiti");
+                }
+            }
+        }
+    }
+
+    private String signName()
+    {
+        if (name.contains("gun"))
+        {
+            return roll() < 500 ? "BlockSign_Gunsrus" : "BlockSign_Decimunition";
+        }
+        if (kind == FOOD)
+        {
+            return roll() < 500 ? "BlockSign_Minedonalds" : "BlockSign_Mineway";
+        }
+        return "BlockSign_Minebay";
     }
 
     /** One storey of a building: furniture its kind lacks, then the story. */

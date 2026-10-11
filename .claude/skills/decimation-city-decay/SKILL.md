@@ -17,9 +17,12 @@ Code: BuildingDress.story, StreetDress (trash clusters, wasteland skeletons, cra
   (biohazard in medical / lab, chemical storage in industry, watch your step / slippery floor).
 - Never decal.notegeneric or decal.imagegeneric (see decimation-city-interior).
 
+- Outer walls: graffiti low on blank walls of the ground storey (BuildingDress.exterior), shop signs
+  over doors / windows of shops and food places.
+- Lots: a survivor's spot round a fire can, a dumping ground; parks: a body now and then.
+
 ## Open
-Facade graffiti and shop signs (the wall is in the neighbour plan), looted spills around open
-containers, overgrowth from tree pits: not done yet (docs/city_dressing.md handoff).
+Looted spills around open containers, overgrowth from tree pits: not done yet.
 
 ## Casebook (never delete a case)
 ### Case 1: first story layer (v0.50.0, 12 Oktober 2026)

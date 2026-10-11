@@ -163,7 +163,10 @@ public class CityPropsTest extends DevTestMode
         {"deci:BlockBodyBag", "bodybag", 1, 3}, {"deci:BlockWreckagePolice", "policecar", 2, 7},
         {"deci:BlockHazardbarrier", "sawhorse", 1, 5}, {"deci:BlockCone", "cone", 1, 5},
         {"deci:BlockMaintenanceScreen", "roadworks", 1, 6}, {"deci:BlockHedgehog", "checkpoint", 1, 6},
-        {"deci:BlockTruckWreckage", "truck", 1, 7}, {"deci:BlockWreckage", "wreck", 2, 7}};
+        {"deci:BlockTruckWreckage", "truck", 1, 7}, {"deci:BlockWreckage", "wreck", 2, 7},
+        {"deci:BlockSign_", "shopsign", 2, 4}, {"deci:BlockChesstable", "chesstable", 1, 3},
+        {"deci:BlockCanFire", "camp", 1, 3}, {"deci:BlockDumpster", "dumpster", 1, 4},
+        {"deci:BlockPowerPole", "pole", 1, 6}};
 
     private void survey(World w, int mx, int mz)
     {
@@ -272,7 +275,8 @@ public class CityPropsTest extends DevTestMode
                     MovingObjectPosition hit = w.rayTraceBlocks(Vec3.createVectorHelper(ex, ey, ez),
                                                                 Vec3.createVectorHelper(gx, gy, gz));
                     if (hit != null && (Math.abs(hit.blockX - tx) > 1 || Math.abs(hit.blockY - ty) > 1
-                                        || Math.abs(hit.blockZ - tz) > 1))
+                                        || Math.abs(hit.blockZ - tz) > 1
+                                        || w.getBlock(hit.blockX, hit.blockY, hit.blockZ) instanceof net.minecraft.block.BlockLeaves))
                     {
                         continue;
                     }

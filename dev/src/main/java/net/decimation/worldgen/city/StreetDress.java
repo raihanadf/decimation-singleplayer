@@ -234,7 +234,7 @@ final class StreetDress
                 int a = 11 + roll(0x424943L ^ sideSalt) % 3;
                 placeAlong("BlockBicycle", curb, a, alongZ, alongZ ? false : true, roll(0x4249L ^ sideSalt));
             }
-            if (district == RESIDENTIAL && poleSide(alongZ) == side && ((alongZ ? chz : chx) & 1) == 0)
+            if (district == RESIDENTIAL && poleSide(alongZ) == side)
             {
                 placeAlong("BlockPowerPole", curb, 8, alongZ, alongZ, 0);   // crossarm across the street
             }
@@ -261,7 +261,184 @@ final class StreetDress
                 }
             }
         }
-        roadScene(alongZ);
+        facades(alongZ);
+        if (!jam(alongZ))
+        {
+            roadScene(alongZ);
+        }
+    }
+
+    // ------------------------------------------------------------------ facades
+
+    /**
+     * Shop signs and graffiti on the buildings beside the street (research "Street facing ground
+     * floors": the sign over the shop door at y + 3 facing the road; graffiti low on blank walls).
+     * The wall belongs to the building's chunk, the air in front of it to this street: the picture
+     * hangs in this street's frontage cell, its back on the building's wall (read through
+     * StreetPlan.neighbourBuilding), its front toward the road.
+     */
+    private void facades(boolean alongZ)
+    {
+        int ground = p.dressGround();
+        for (int side = 0; side < 2; side++)
+        {
+            // toward the buildings: street along z, side 0 is the west side
+            int away = side == 0 ? (alongZ ? 2 : 3) : (alongZ ? 0 : 1);
+            int[] toFronts = {2, 3, 0, 1};               // DIR (E S W N) -> neighbourBuilding side (W N E S order)
+            BuildingPlan b = p.neighbourBuilding(toFronts[away]);
+            if (b == null)
+            {
+                continue;
+            }
+            int edge = side == 0 ? 0 : 15;
+            int wx = StreetLayout.DIR[away][0], wz = StreetLayout.DIR[away][1];
+            int kindB = b.dressKind();
+            boolean shop = kindB == BuildingDress.SHOP || kindB == BuildingDress.FOOD;
+            Dress.note(shop ? "~facade shop" : "~facade other");
+            int signs = 0, tags = 0;
+            int maxTags = district == WASTELAND ? 3 : district == DOWNTOWN ? 1 : 2;
+            for (int k = 0; k < 16; k++)
+            {
+                int along = (k * 7 + roll(0x46414341L ^ side)) & 15;   // a shuffled order along the facade
+                int x = alongZ ? edge : along, z = alongZ ? along : edge;
+                if (!walk(x, z))
+                {
+                    continue;
+                }
+                int s = lay.stand[x][z];
+                int worldX = p.minX() + x + wx, worldZ = p.minZ() + z + wz, y0 = ground + s;
+                Block w0 = b.baseBlockAt(worldX, y0, worldZ), w1 = b.baseBlockAt(worldX, y0 + 1, worldZ);
+                Block w2 = b.baseBlockAt(worldX, y0 + 2, worldZ), w3 = b.baseBlockAt(worldX, y0 + 3, worldZ);
+                boolean door = w0 != null && PropGeom.isDoor(w0);
+                boolean opening = door || w0 != null && w0.getMaterial() == net.minecraft.block.material.Material.glass
+                    || w1 != null && w1.getMaterial() == net.minecraft.block.material.Material.glass;
+                // the shop sign: over the door or the shop window if the facade has one here, else
+                // (second pass) on any solid stretch at sign height
+                if (shop && signs == 0 && opaque(w2) && opaque(w3) && (opening || k >= 12))
+                {
+                    if (wallPicture(shopSign(b), x, s + 2, z, away))
+                    {
+                        signs++;
+                        Dress.note("~facade shop sign");
+                    }
+                }
+                else if (tags < maxTags && opaque(w0) && opaque(w1) && roll(0x54414753L, k + side * 16) < 220)
+                {
+                    String[] art = {"BlockGraffiti_1", "BlockGraffiti_2", "BlockGraffiti_3", "BlockGraffiti_4",
+                                    "BlockGraffiti_5", "BlockGraffiti_6", "BlockGraffiti_7", "BlockGraffiti_8",
+                                    "BlockGraffiti_9", "BlockGraffiti_10", "BlockGraffiti_11", "BlockGraffiti_12"};
+                    if (wallPicture(art[roll(0x415254L, k) % art.length], x, s + 1, z, away))
+                    {
+                        tags++;
+                        Dress.note("~facade graffiti");
+                    }
+                }
+            }
+        }
+    }
+
+    private static boolean opaque(Block b)
+    {
+        return b != null && b.isOpaqueCube();
+    }
+
+    /** A flat picture in (x, y, z) of this chunk, its back on the wall toward wallDir. */
+    private boolean wallPicture(String name, int x, int y, int z, int wallDir)
+    {
+        Block b = deci(name);
+        if (b == null || d.block(x, y, z) != null)
+        {
+            return false;
+        }
+        int m = PropFacing.meta(b, (wallDir + 2) & 3);
+        return m >= 0 && d.place(b, m, x, y, z, 1);
+    }
+
+    /** The sign of the shop kind (Decimation's logos): food chains for food, the gun shops for guns. */
+    private String shopSign(BuildingPlan b)
+    {
+        String n = b.describe().toLowerCase();
+        if (n.contains("gun"))
+        {
+            return roll(0x47554EL) < 500 ? "BlockSign_Gunsrus" : "BlockSign_Decimunition";
+        }
+        if (b.dressKind() == BuildingDress.FOOD)
+        {
+            return roll(0x464F4F44L) < 500 ? "BlockSign_Minedonalds" : "BlockSign_Mineway";
+        }
+        return "BlockSign_Minebay";
+    }
+
+    // ------------------------------------------------------------------ traffic jams
+
+    /**
+     * Near a city exit (the street runs out of the city within 3 chunks) the outbound lane is a
+     * queue of abandoned cars (research: outbound lanes 70..90 % full toward the exit, a car per 7..8
+     * blocks), headlights toward the exit. Returns true when this chunk is part of a jam.
+     */
+    private boolean jam(boolean alongZ)
+    {
+        int dx = alongZ ? 0 : 1, dz = alongZ ? 1 : 0;
+        int exit = 0;                                     // +1: the exit lies toward +along, -1 toward -along
+        for (int k = 1; k <= 3 && exit == 0; k++)
+        {
+            if (!isCity(seed, Math.floorDiv(chx + dx * k, CELL), Math.floorDiv(chz + dz * k, CELL)))
+            {
+                exit = 1;
+            }
+            else if (!isCity(seed, Math.floorDiv(chx - dx * k, CELL), Math.floorDiv(chz - dz * k, CELL)))
+            {
+                exit = -1;
+            }
+        }
+        if (exit == 0 || district == WASTELAND && roll(0x4A414DL) < 500 || roll(0x4A414D32L) >= 800)
+        {
+            return false;
+        }
+        int lo = -1, hi = -1;
+        for (int k = 0; k < 16; k++)
+        {
+            int x = alongZ ? k : 8, z = alongZ ? 8 : k;
+            if (lay.type[x][z] == StreetLayout.ROAD)
+            {
+                if (lo < 0)
+                {
+                    lo = k;
+                }
+                hi = k;
+            }
+        }
+        if (lo < 0 || hi - lo < 5)
+        {
+            return false;
+        }
+        // outbound direction and its lane (right hand traffic); a 6 wide road holds one car centred
+        int dir = alongZ ? (exit > 0 ? 1 : 3) : (exit > 0 ? 0 : 2);
+        int mid = (lo + hi) / 2;
+        int lane = hi - lo >= 8 ? (laneDir(alongZ, lo + 1, mid) == dir ? mid - 2 : mid + 3) : (hi - lo >= 6 ? mid : mid + 1);
+        String[] cars = {"BlockWreckage1", "BlockWreckage2", "BlockWreckage3", "BlockWreckage4", "BlockWreckage5",
+                         "BlockTruckWreckage2", "BlockTruckWreckage4", "BlockTruckWreckage6"};
+        int placed = 0;
+        for (int along : new int[] {3, 11})
+        {
+            String name = cars[roll(0x4A43L, along) % cars.length];
+            Block c = deci(name);
+            if (c != null && road(name, lane, along, alongZ, PropFacing.meta(c, dir)))
+            {
+                placed++;
+            }
+        }
+        // a stalled driver's things beside a car now and then
+        if (placed > 0 && roll(0x5354414CL) < 250)
+        {
+            road(roll(0x53544CL) < 500 ? "BlockCardboardBoxes1" : "BlockTrashBag2", lane + (lane <= mid ? -2 : 2), 7, alongZ, 2);
+        }
+        Dress.note("~jam chunk");
+        if (placed > 0)
+        {
+            cpw.mods.fml.common.FMLLog.info("[deciworldgen] dress jam at %d,%d heading %s", chx << 4, chz << 4, "ESWN".charAt(dir));
+        }
+        return placed > 0;
     }
 
     // ------------------------------------------------------------------ road scenes
@@ -632,6 +809,7 @@ final class StreetDress
                 stopSign(c);
             }
         }
+        crossingCrash();
         // a mailbox on one corner downtown
         if (district == DOWNTOWN && roll(0x4D41494CL) < 400)
         {
@@ -642,6 +820,55 @@ final class StreetDress
                 put("BlockMailbox", cell[0], cell[1], cornerAway(corner[c][0], corner[c][1], cell));
             }
         }
+    }
+
+    /**
+     * A T-bone crash in the middle of the crossing (research: 4 in 10 crashes at intersections):
+     * one car along one street, a second along the other with its nose at the first one's side.
+     */
+    private void crossingCrash()
+    {
+        if (roll(0x58435241L) >= (district == WASTELAND ? 250 : 110))
+        {
+            return;
+        }
+        String[] cars = {"BlockWreckage1", "BlockWreckage2", "BlockWreckage3", "BlockWreckage4", "BlockWreckage5",
+                         "BlockWreckagePolice2", "BlockTruckWreckage1"};
+        String a = cars[roll(0x58434131L) % cars.length], b = cars[roll(0x58434132L) % 5];
+        Block ca = deci(a), cb = deci(b);
+        if (ca == null || cb == null)
+        {
+            return;
+        }
+        boolean aAlongX = roll(0x584158L) < 500;
+        int dirA = aAlongX ? (roll(0x5844L) < 500 ? 0 : 2) : (roll(0x5844L) < 500 ? 1 : 3);
+        if (!crossRoad(ca, PropFacing.meta(ca, dirA), 8, 8))
+        {
+            return;
+        }
+        cpw.mods.fml.common.FMLLog.info("[deciworldgen] dress crossing crash at %d,%d", chx << 4, chz << 4);
+        // the other car comes from one side, nose toward the first: try a few gaps
+        int side = roll(0x58534944L) < 500 ? 1 : -1;
+        int dirB = aAlongX ? (side > 0 ? 3 : 1) : (side > 0 ? 2 : 0);
+        for (int gap = 4; gap <= 8; gap++)
+        {
+            int bx = aAlongX ? 8 : 8 + side * gap, bz = aAlongX ? 8 + side * gap : 8;
+            if (crossRoad(cb, PropFacing.meta(cb, dirB), bx, bz))
+            {
+                break;
+            }
+        }
+        for (int k = 0; k < 3; k++)
+        {
+            int x = 8 + (roll(0x44454231L, k) % 7) - 3, z = 8 + (roll(0x44454232L, k) % 7) - 3;
+            crossRoad(deci(k == 0 ? "BlockTire" : k == 1 ? "BlockCardboardBoxes3" : "BlockTrashBag1"), 2 + k, x, z);
+        }
+    }
+
+    private boolean crossRoad(Block b, int m, int x, int z)
+    {
+        return b != null && m >= 0 && x >= 0 && z >= 0 && x <= 15 && z <= 15 && lay.type[x][z] == StreetLayout.ROAD
+            && d.place(b, m, x, lay.stand[x][z], z, 2);
     }
 
     /**

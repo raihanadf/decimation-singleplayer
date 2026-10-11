@@ -43,6 +43,21 @@ final class BuildingPlan implements net.decimation.worldgen.FixedBase
     }
 
     public int fixedBaseY() { return baseY; }
+
+    /** Building kind for the dressing of the street beside it (BuildingDress.kind). */
+    int dressKind() { return BuildingDress.kind(b.name); }
+
+    /** The building's own block at world (x, y, z) without its dressing; null outside it or for air. */
+    Block baseBlockAt(int x, int y, int z)
+    {
+        int lx = x - minX, ly = y - baseY, lz = z - minZ;
+        if (lx < 0 || lz < 0 || lx >= s.width || lz >= s.length || ly < 0 || ly >= s.height)
+        {
+            return null;
+        }
+        int i = s.index(lx, ly, lz);
+        return s.skip[i] ? null : s.blocks[i];
+    }
     public String id() { return id; }
     public int minX() { return minX; }
     public int minZ() { return minZ; }

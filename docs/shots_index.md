@@ -11,6 +11,16 @@ How shots are made: `./gradlew runClient -Pautotest` (street views),
 `-Paudit` (building audit), `-Pgallery` (prop gallery); output in
 `dev/run/client/screenshots/`, then copied here into a versioned folder.
 
+## city_dressing_v0.51/ (12 Oktober 2026)
+- topdown_jam_crash.png (tools/props/topdown.py on the dressed seed 1 server world; road dark, walk
+  light grey, grass green, buildings grey; red boxes cars, orange signs / traffic lights, blue other
+  props; yellow line = front): left a jam at x 0 z 200..247, three cars in a column all pointing south
+  toward the city exit; middle the crossing at 0,128: a car through the middle pointing east, traffic
+  light arms (orange) from the corners over the roads; right a jam car at 240,128 pointing east.
+- sheet_cell180.png: cityprops cell 180,6: a power pole and a bicycle at the curb, graffiti on an
+  outer wall at the street, a skeleton against a garage wall, TVs, washers, EXIT lights, stop and
+  speed signs; three shots still behind hedges (camera fixed after: leaves block the view).
+
 ## facing_v0.50/ (dev test facing, 12 Oktober 2026)
 - facing_<prop>_s.png / _n.png: each prop at metadata 2, 3, 4, 5 west to east on wool pads magenta,
   light blue, yellow, lime; camera south (fronts pointing S show their face) / north. Road signs 20,

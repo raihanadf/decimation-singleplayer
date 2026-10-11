@@ -36,6 +36,11 @@ Code: worldgen/city/StreetDress (rules), StreetLayout (what a street chunk is ma
 - Not on the curb: the payphone cabinet (wall prop: lobbies), the small junction box pole (wall
   prop), the tall phone box (no verified front).
 
+- Facades: shop signs and graffiti hang on the building's wall; done by BuildingDress.exterior on
+  the building's outdoor spots (most buildings stand back from the chunk edge), by
+  StreetDress.facades only where the wall stands at the edge (StreetPlan.neighbourBuilding).
+- A DC gutter (flush cell between road and raised sidewalk) is road, never a curb spot.
+
 ## 2. Check (all before handing over)
 - `python3 tools/servertest.py 1 type=decimation pregen=128,128,9 dress`, then
   `python3 tools/props/worlddump.py dev/run/server/world OUT.tsv` and `tools/props/propclash.py`;
