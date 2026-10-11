@@ -110,9 +110,9 @@
     "semantic_hash": "de153d1f8408971d6190e16a7d4256f9"
   },
   "CLAUDE.md": {
-    "mtime": 1791748781.221585,
-    "ast_hash": "36f34c61a34865e4873d9b62a8420bab",
-    "semantic_hash": ""
+    "mtime": 1791750258.5652566,
+    "ast_hash": "bd0974eb684f78166c581fd42db43f7c",
+    "semantic_hash": "bd0974eb684f78166c581fd42db43f7c"
   },
   "DECIMATION_MOD_TASK.md": {
     "mtime": 1784958353.0126374,
@@ -145,9 +145,9 @@
     "semantic_hash": "5ec10a4c3f93750361afcbaae6df524a"
   },
   "documentation.md": {
-    "mtime": 1791748781.220474,
-    "ast_hash": "965831efb9f425d1d296ec7f6993efc1",
-    "semantic_hash": ""
+    "mtime": 1791750258.5639982,
+    "ast_hash": "bf0048aefd956aa2e869d613ff79e5b7",
+    "semantic_hash": "bf0048aefd956aa2e869d613ff79e5b7"
   },
   "new_feature.md": {
     "mtime": 1791719243.5742908,
@@ -325,9 +325,9 @@
     "semantic_hash": "0145e0863788d451e8ae4273d3c2abdd"
   },
   "docs/shots_index.md": {
-    "mtime": 1791748244.583671,
-    "ast_hash": "fe5a6a9552ba948fde5600e534cb19ce",
-    "semantic_hash": ""
+    "mtime": 1791750258.5662537,
+    "ast_hash": "97c189043e5ba66ff1097703f7444e41",
+    "semantic_hash": "97c189043e5ba66ff1097703f7444e41"
   },
   "docs/interior_spec.md": {
     "mtime": 1791385593.9436893,
@@ -655,9 +655,9 @@
     "semantic_hash": "d154b3e4611ca9f79a59cd33b625d68f"
   },
   "docs/roadmap.md": {
-    "mtime": 1791748781.2187493,
-    "ast_hash": "a368c8b943151cd288578cd96736d4e0",
-    "semantic_hash": ""
+    "mtime": 1791750258.5631332,
+    "ast_hash": "196402cc4ab935d88c048189f541d2b4",
+    "semantic_hash": "196402cc4ab935d88c048189f541d2b4"
   },
   "dev/src/main/java/net/decimation/worldgen/LegacyStreets.java": {
     "mtime": 1791487239.5087948,
@@ -1185,9 +1185,9 @@
     "semantic_hash": "1e79cc3c4ade6ed5cbdf2c60845beadc"
   },
   ".claude/skills/decimation-city-decay/SKILL.md": {
-    "mtime": 1791748743.6399028,
-    "ast_hash": "6283ea1155e1457bbc147f050eaa0407",
-    "semantic_hash": ""
+    "mtime": 1791750258.5627484,
+    "ast_hash": "7f6cf0730f8534132f729b69746dcc29",
+    "semantic_hash": "7f6cf0730f8534132f729b69746dcc29"
   },
   ".claude/skills/decimation-city-interior/SKILL.md": {
     "mtime": 1791748743.6351538,
@@ -1195,14 +1195,14 @@
     "semantic_hash": "4339c8252d80bb3360c9c156358c9c8e"
   },
   ".claude/skills/decimation-city-street/SKILL.md": {
-    "mtime": 1791748743.623838,
-    "ast_hash": "1306f624576fb6023e001a4f4648f973",
-    "semantic_hash": ""
+    "mtime": 1791750258.5619216,
+    "ast_hash": "19d900bc41f78a697488e77a8b4f787e",
+    "semantic_hash": "19d900bc41f78a697488e77a8b4f787e"
   },
   ".claude/skills/decimation-city-vehicles/SKILL.md": {
-    "mtime": 1791748743.627454,
-    "ast_hash": "84496e75feb6ff511a491145a24d9d25",
-    "semantic_hash": ""
+    "mtime": 1791750258.5623748,
+    "ast_hash": "de5e5ea0f4037878f66b049c3e0ebd4e",
+    "semantic_hash": "de5e5ea0f4037878f66b049c3e0ebd4e"
   },
   ".claude/skills/decimation-worldgen/SKILL.md": {
     "mtime": 1791748743.6435378,
