@@ -10,7 +10,9 @@ agreed (merged) or a judge that settled a disagreement (judged). Output:
   dev/src/main/resources/assets/deciworldgen/prop_facing.tsv  (read by city/PropFacing)
 Columns: prop mount front_m2 front_m3 front_m4 front_m5 axis_m2 axis_m3 axis_m4 axis_m5 symmetric
 confidence source looks_like front_feature wall_side meta_note evidence.
-Front letters E S W N, "-" symmetric or unknown; axis x z or "-".
+Front letters E S W N, "-" symmetric or unknown; axis x z or "-". Rows in
+docs/references/prop_facing_overrides.tsv (corrections checked in game with the dev test
+`facing`) replace the audit's front.
 """
 import json
 import os
@@ -43,6 +45,14 @@ def main():
     for src, items in (("agreed", data.get("merged", [])), ("judged", data.get("judged", []))):
         for p in items:
             rows[p["name"]] = (p, src)
+    over = os.path.join(ROOT, "docs/references/prop_facing_overrides.tsv")
+    fixes = {}
+    if os.path.isfile(over):
+        for line in open(over):
+            if line.startswith("#") or not line.strip():
+                continue
+            c = line.rstrip("\n").split("\t")
+            fixes[c[0]] = c[1:5]
     head = ["prop", "mount", "front_m2", "front_m3", "front_m4", "front_m5", "axis_m2", "axis_m3", "axis_m4", "axis_m5",
             "symmetric", "confidence", "source", "looks_like", "front_feature", "wall_side", "meta_note", "evidence"]
     out = ["\t".join(head)]
@@ -54,6 +64,9 @@ def main():
         fr = [letter(f.get(k)) for k in ("m2", "m3", "m4", "m5")]
         if p.get("symmetric"):
             fr = ["-"] * 4
+        if name in fixes:
+            fr = fixes[name]
+            src = "in game"
         ax = [axis(a.get(k)) for k in ("m2", "m3", "m4", "m5")]
         row = [name, p.get("mount", "")] + fr + ax + [str(bool(p.get("symmetric"))).lower(), p.get("confidence", ""), src,
                clean(p.get("looks_like")), clean(p.get("front_feature")), clean(p.get("wall_side_at_meta")),

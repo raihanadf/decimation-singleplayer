@@ -58,17 +58,19 @@ def load_facing():
     """Verified front per prop and metadata (tools/props/facing_table.py): {(prop, meta): (dx, dz)},
     and the props whose front matters (not symmetric). Empty when the table is not there yet."""
     fronts, fronted = {}, set()
+    mounts = {}
     if not os.path.isfile(FACING):
-        return fronts, fronted
+        return fronts, fronted, mounts
     with open(FACING) as f:
         next(f)
         for line in f:
             c = line.rstrip("\n").split("\t")
+            mounts[c[0]] = c[1]
             for k in range(4):
                 if c[2 + k] in LETTER:
                     fronts[(c[0], k + 2)] = LETTER[c[2 + k]]
                     fronted.add(c[0])
-    return fronts, fronted
+    return fronts, fronted, mounts
 
 
 def load_geometry():
@@ -127,7 +129,9 @@ def main():
     path = sys.argv[1]
     show_all = "--all" in sys.argv
     geom = load_geometry()
-    fronts, verified = load_facing()
+    fronts, verified, mounts = load_facing()
+    wall_props = {n for n, m in mounts.items() if m in ("wall", "flat_picture")}
+    ceiling_props = {n for n, m in mounts.items() if m == "ceiling"}
     cells, pois, origin = {}, [], (0.0, 0.0, 0.0)
     for line in open(path):
         if line.startswith("# origin"):
@@ -188,7 +192,8 @@ def main():
                 for cz in range(int(b[4] // 1), int(b[5] // 1) + 1):
                     if (cx, cy, cz) == (x, y, z) or cy < y:
                         continue    # its own cell, or the ground it stands in (models sink a little)
-                    if short in MOUNTED and (cx - x, cz - z) == back and cy == y:
+                    wf = fronts.get((short, meta)) if short in wall_props else None
+                    if (short in MOUNTED or wf) and (cx - x, cz - z) == ((-wf[0], -wf[1]) if wf else back) and cy == y:
                         continue
                     if (cx, cy, cz) in doors:
                         report("DOOR", short, (x, y, z), meta, "drawn into the door at %d %d %d" % (cx, cy, cz))
@@ -200,19 +205,24 @@ def main():
                             report("WALL", short, (x, y, z), meta, "into %s at %d %d %d (%.2f deep)"
                                    % (hit[1], cx, cy, cz, min(ov) + TOL), min(ov) + TOL)
         if (short in FRONTED or short in verified) and (fronts.get((short, meta)) or meta in DIRS) \
-                and not (verified and short not in verified):
+                and not (verified and short not in verified) and short not in ceiling_props:
             fx, fz = fronts.get((short, meta), DIRS.get(meta))
             hit = solids.get((x + fx, y, z + fz))
             above = solids.get((x + fx, y + 1, z + fz))
             if hit and above and hit[0][3] - hit[0][2] > 0.6 and "glass" not in hit[1]:
                 # a wall, not a sill under a window nor the window itself (a seat may look out)
                 report("FACE", short, (x, y, z), meta, "front looks into %s" % hit[1])
-        if short in MOUNTED and meta in BACK:
-            bx, bz = BACK[meta]
+        if short in ceiling_props:
+            if (x, y + 1, z) not in solids:
+                report("MOUNT", short, (x, y, z), meta, "no ceiling above it")
+        elif (short in MOUNTED or short in wall_props) and (fronts.get((short, meta)) or meta in BACK):
+            f = fronts.get((short, meta))
+            bx, bz = (-f[0], -f[1]) if f else BACK[meta]
             if (x + bx, y, z + bz) not in solids:
                 report("MOUNT", short, (x, y, z), meta, "no wall behind it (%s side)"
                        % {(-1, 0): "W", (1, 0): "E", (0, -1): "N", (0, 1): "S"}[(bx, bz)])
-        if short not in MOUNTED and short not in CEILING and box[2] > -0.5:
+        if short not in MOUNTED and short not in CEILING and short not in wall_props and short not in ceiling_props \
+                and box[2] > -0.5:
             below = (x, y - 1, z)
             held = any(q[3][0] <= x + 0.5 <= q[3][1] and q[3][4] <= z + 0.5 <= q[3][5] and abs(q[3][3] - y) < 0.3
                        for q in props)               # standing on another prop's top (a table's overhang)

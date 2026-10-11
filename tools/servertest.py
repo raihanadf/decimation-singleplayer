@@ -29,6 +29,8 @@ for a in sys.argv[2:]:
         args.append("-Ppregen=" + a.split("=", 1)[1])
     if a == "debugsets":
         args.append("-Pdebugsets")
+    if a == "dress":
+        args.append("-Pdress")      # city dressing on (docs/city_dressing.md)
 p = subprocess.Popen(args,
                      cwd=DEV, stdout=log, stderr=subprocess.STDOUT, stdin=subprocess.PIPE,
                      start_new_session=True)

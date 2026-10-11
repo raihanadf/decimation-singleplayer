@@ -148,14 +148,24 @@ public class CityPropsTest extends DevTestMode
         return null;
     }
 
+    /** What to photograph: block name prefix, label, how many, camera distance (street props further). */
+    private static final Object[][] KINDS = {
+        {"minecraft:chest", "chest", 1, 3}, {"deci:BlockTrafficLights", "trafficlight", 2, 6},
+        {"deci:BlockRoadsignStop", "stopsign", 2, 4}, {"deci:BlockRoadsign", "speedsign", 1, 4},
+        {"deci:BlockMailbox", "mailbox", 2, 3}, {"deci:BlockNewsStand", "newsstand", 2, 3},
+        {"deci:BlockStreetBench", "bench", 2, 3}, {"deci:BlockBicycle", "bicycle", 1, 3},
+        {"deci:BlockPowerPole", "powerpole", 1, 6}, {"deci:BlockExitLight", "exitlight", 2, 3},
+        {"deci:BlockCCTV", "cctv", 1, 3}, {"deci:BlockFlatscreenTV", "tv", 2, 3},
+        {"deci:BlockVendingMachine", "vending", 2, 3}, {"deci:BlockSkeletonWall", "skeleton", 2, 3},
+        {"deci:BlockElectricBoxBin", "cabinet", 1, 3}, {"deci:BlockPhonebooth", "payphone", 1, 3},
+        {"deci:BlockWashingMachine", "washer", 1, 3}, {"deci:BlockShopDisplay_1", "shopdisplay", 1, 3},
+        {"deci:BlockGraffiti", "graffiti", 1, 3}, {"deci:decal.", "decal", 1, 3},
+        {"deci:BlockBodyBag", "bodybag", 1, 3}, {"deci:BlockWreckage", "wreck", 1, 7}};
+
     private void survey(World w, int mx, int mz)
     {
-        Block light = Block.getBlockFromName("deci:BlockLightOff");
-        Block chair = Block.getBlockFromName("deci:BlockChair");
-        int chests = 0, lights = 0, ledges = 0;
         List<int[]> found = new ArrayList<int[]>();
-        String[] kinds = {"chest", "light", "ledge", "chair", "wreck"};
-        int[] want = {3, 2, 2, 2, 1}, got = new int[5];
+        int[] got = new int[KINDS.length], total = new int[KINDS.length];
         for (int x = (mx - R) << 4; x < (mx + R + 1) << 4; x++)
         {
             for (int z = (mz - R) << 4; z < (mz + R + 1) << 4; z++)
@@ -163,51 +173,46 @@ public class CityPropsTest extends DevTestMode
                 for (int y = 40; y < 160; y++)
                 {
                     Block b = w.getBlock(x, y, z);
-                    int k = -1;
-                    if (b == Blocks.chest)
-                    {
-                        chests++;
-                        k = 0;
-                    }
-                    else if (b == light)
-                    {
-                        lights++;
-                        k = 1;
-                    }
-                    else if (b == Blocks.wooden_slab && w.getBlockMetadata(x, y, z) == 8 && w.isAirBlock(x, y - 1, z)
-                             && !LcCity.streetChunk(w.getSeed(), x >> 4, z >> 4))
-                    {
-                        ledges++;
-                        k = 2;
-                    }
-                    else if (b == chair)
-                    {
-                        k = 3;
-                    }
-                    else if (String.valueOf(Block.blockRegistry.getNameForObject(b)).startsWith("deci:BlockWreckage")
-                             && LcCity.streetChunk(w.getSeed(), x >> 4, z >> 4))
-                    {
-                        k = 4;
-                    }
-                    if (k < 0 || got[k] >= want[k] || far(found, x, z))
+                    if (b == Blocks.air)
                     {
                         continue;
                     }
-                    float[] cam = camera(w, x, y, z, k == 4 ? 7 : 3);
+                    String n = String.valueOf(Block.blockRegistry.getNameForObject(b));
+                    int k = -1;
+                    for (int i = 0; i < KINDS.length && k < 0; i++)
+                    {
+                        if (n.startsWith((String) KINDS[i][0]))
+                        {
+                            k = i;
+                        }
+                    }
+                    if (k < 0)
+                    {
+                        continue;
+                    }
+                    total[k]++;
+                    if (got[k] >= (Integer) KINDS[k][2] || far(found, x, z))
+                    {
+                        continue;
+                    }
+                    int front = net.decimation.worldgen.city.PropFacingAccess.front(b, w.getBlockMetadata(x, y, z));
+                    float[] cam = camera(w, x, y, z, (Integer) KINDS[k][3], front);
                     if (cam != null)
                     {
                         found.add(new int[] {x, z});
                         got[k]++;
                         shots.add(cam);
-                        names.add(kinds[k] + "_" + got[k]);
-                        DevTestResults.value(name(), kinds[k] + " " + got[k], x + "," + y + "," + z);
+                        names.add(KINDS[k][1] + "_" + got[k]);
+                        DevTestResults.value(name(), KINDS[k][1] + " " + got[k], x + "," + y + "," + z + " meta "
+                            + w.getBlockMetadata(x, y, z) + " front " + (front < 0 ? "-" : "ESWN".charAt(front)));
                     }
                 }
             }
         }
-        DevTestResults.value(name(), "chests (wood crates that fit nowhere)", chests);
-        DevTestResults.value(name(), "ceiling lights", lights);
-        DevTestResults.value(name(), "plank ledges (wall shelves)", ledges);
+        for (int i = 0; i < KINDS.length; i++)
+        {
+            DevTestResults.value(name(), "count " + KINDS[i][1], total[i]);
+        }
     }
 
     /** Different examples come from different places (another room or building). */
@@ -224,9 +229,30 @@ public class CityPropsTest extends DevTestMode
     }
 
     /** A standing spot r (2 .. r + 2) away that sees the target: {eyeX, eyeY, eyeZ, yaw, pitch}. */
-    private static float[] camera(World w, int tx, int ty, int tz, int r)
+    private static float[] camera(World w, int tx, int ty, int tz, int r, int front)
     {
-        int[][] dirs = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}, {1, 1}, {-1, 1}, {1, -1}, {-1, -1}};
+        int[][] base = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}, {1, 1}, {-1, 1}, {1, -1}, {-1, -1}};
+        // in front of the prop first (its face shows if its facing is right), then the rest
+        int[][] dirs = new int[8][];
+        int n = 0;
+        if (front >= 0)
+        {
+            dirs[n++] = base[front];
+            dirs[n++] = new int[] {base[front][0] + base[(front + 1) & 3][0], base[front][1] + base[(front + 1) & 3][1]};
+            dirs[n++] = new int[] {base[front][0] + base[(front + 3) & 3][0], base[front][1] + base[(front + 3) & 3][1]};
+        }
+        for (int[] d : base)
+        {
+            boolean dup = false;
+            for (int k = 0; k < n; k++)
+            {
+                dup |= dirs[k][0] == d[0] && dirs[k][1] == d[1];
+            }
+            if (!dup && n < 8)
+            {
+                dirs[n++] = d;
+            }
+        }
         for (int d = r; d <= r + 2; d++)
         {
             for (int[] dir : dirs)

@@ -17,6 +17,7 @@ import static net.decimation.worldgen.city.LcCity.*;
 final class StreetDress
 {
     static final int DOWNTOWN = 0, RESIDENTIAL = 1, WASTELAND = 2;
+    private static int debugLeft = 8;
 
     private final StreetPlan p;
     private final Dress d;
@@ -76,6 +77,7 @@ final class StreetDress
         }
         StreetLayout lay = new StreetLayout(base, p.dressSidewalk());
         StreetDress s = new StreetDress(p, d, lay);
+        Dress.note("~street kind" + s.kind + (p.dressPiece() ? " part" : " ours") + " district" + s.district);
         if (s.kind == 2)
         {
             s.crossing();
@@ -84,6 +86,7 @@ final class StreetDress
         {
             s.straight();
         }
+        Dress.logTotals();
         return d;
     }
 
@@ -150,6 +153,25 @@ final class StreetDress
             int[] rows = rows(side, alongZ);           // {curb across, frontage across}, -1 when missing
             if (rows == null)
             {
+                Dress.note("~street side without walk");
+                if (debugLeft-- > 0)
+                {
+                    StringBuilder sb = new StringBuilder();
+                    for (int k = 0; k < 6; k++)
+                    {
+                        int across = side == 0 ? k : 15 - k;
+                        int x = alongZ ? across : 8, z = alongZ ? 8 : across;
+                        sb.append(" [").append(lay.type[x][z]);
+                        for (int y = 0; y < 3; y++)
+                        {
+                            Block b = d.block(x, y, z);
+                            sb.append(' ').append(b == null ? "." : String.valueOf(Block.blockRegistry.getNameForObject(b)).replace("minecraft:", ""));
+                        }
+                        sb.append(']');
+                    }
+                    cpw.mods.fml.common.FMLLog.info("[deciworldgen] dress no walk at %d,%d kind %d %s:%s", chx << 4, chz << 4,
+                                                    kind, p.dressStyle(), sb);
+                }
                 continue;
             }
             int curb = rows[0], front = rows[1];
@@ -157,6 +179,7 @@ final class StreetDress
             int awayRoad = side == 0 ? (alongZ ? 2 : 3) : (alongZ ? 0 : 1);   // toward the buildings
             int toRoad = (awayRoad + 2) & 3;
             int towardNear = nearCrossing(alongZ);           // -1 none, else the along index of the crossing end
+            Dress.note(towardNear >= 0 ? "~street side next to a crossing" : "~street side mid block");
             long sideSalt = side * 0x9E3779B97F4A7C15L;
             // speed limit sign: right curb of the traffic leaving the crossing, facing that traffic
             if (towardNear >= 0 && district != WASTELAND && roll(0x5350454544L ^ sideSalt) < 300)
@@ -197,11 +220,8 @@ final class StreetDress
                     place(district == DOWNTOWN ? "BlockStreetBin" : "BlockTrashcan", curb, a, alongZ, awayRoad);
                 }
             }
-            // mid block: phone downtown on wide walks, bench + bin, bicycle, power poles residential
-            if (district == DOWNTOWN && width >= 4 && roll(0x50484F4EL ^ sideSalt) < 150)
-            {
-                place(roll(0x50484FL ^ sideSalt) < 500 ? "BlockPhonebox" : "BlockPhonebooth", curb, 8, alongZ, awayRoad);
-            }
+            // mid block: bench + bin, bicycle, power poles residential. No phones here: the payphone cabinet
+            // hangs on a wall (prop_facing.tsv mount "wall") and the tall phone box has no verified front.
             if (width >= 4 && district != WASTELAND && roll(0x42454E43L ^ sideSalt) < 220)
             {
                 if (place("BlockStreetBench", curb, 6, alongZ, awayRoad))
@@ -216,11 +236,7 @@ final class StreetDress
             }
             if (district == RESIDENTIAL && poleSide(alongZ) == side && ((alongZ ? chz : chx) & 1) == 0)
             {
-                placeAlong("BlockPowerPole", curb, 8, alongZ, alongZ, 0);
-                if (roll(0x45424F58L ^ sideSalt) < 400)
-                {
-                    place("BlockElectricBox2", curb, 10, alongZ, awayRoad);
-                }
+                placeAlong("BlockPowerPole", curb, 8, alongZ, alongZ, 0);   // crossarm across the street
             }
             // trash: a cluster of bags against the frontage or a bin
             if (roll(0x42414753L ^ sideSalt) < (district == WASTELAND ? 600 : district == DOWNTOWN ? 350 : 200))
@@ -247,17 +263,34 @@ final class StreetDress
         }
     }
 
-    /** A prop on (across, along) of a straight chunk, front toward dir. */
+    /** Along offsets tried in order: the part may already have a lamp, a bench or a planter on the first. */
+    private static final int[] NEAR = {0, 1, -1, 2, -2, 3, -3};
+
+    /** A prop on (across, along) of a straight chunk, front toward dir; slides up to 3 along to fit. */
     private boolean place(String name, int across, int along, boolean alongZ, int dir)
     {
-        int x = alongZ ? across : along, z = alongZ ? along : across;
-        return walk(x, z) && put(name, x, z, dir);
+        for (int o : NEAR)
+        {
+            int a = along + o, x = alongZ ? across : a, z = alongZ ? a : across;
+            if (walk(x, z) && put(name, x, z, dir))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     private boolean placeAlong(String name, int across, int along, boolean alongZ, boolean longAlongX, int turn)
     {
-        int x = alongZ ? across : along, z = alongZ ? along : across;
-        return walk(x, z) && putAlong(name, x, z, longAlongX, turn);
+        for (int o : NEAR)
+        {
+            int a = along + o, x = alongZ ? across : a, z = alongZ ? a : across;
+            if (walk(x, z) && putAlong(name, x, z, longAlongX, turn))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

@@ -144,7 +144,7 @@ final class BuildingLayout
     {
         Block b = at(x, y, z);
         return b != null && !cover(b) && net.decimation.worldgen.military.PropBoxes.box(b, meta(x, y, z)) == null
-            && (b.isOpaqueCube() || b.getMaterial().isSolid());
+            && Dress.floorBlock(b, meta(x, y, z));
     }
 
     boolean wall(int x, int y, int z)

@@ -161,6 +161,13 @@ tasks.matching { it.name == "runServer" }.configureEach {
     }
 }
 
+// `-Pdress` (runServer / runClient): city dressing on (city/Dress.ON, docs/city_dressing.md)
+tasks.matching { it.name == "runServer" || it.name.startsWith("runClient") }.configureEach {
+    if (project.hasProperty("dress")) {
+        jvmArgs("-Ddeciworldgen.dress=true")
+    }
+}
+
 // `gradlew runClient -Pangelica -PforceEnableMixins=true` (or tools/devtest.py --live --angelica):
 // Angelica, the GTNH rendering overhaul (Sodium style chunk meshing, modern GL), in the dev
 // client only, to measure it against the plain renderer (docs/performance.md). Never in the

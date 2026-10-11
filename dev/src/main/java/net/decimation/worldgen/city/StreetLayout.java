@@ -25,8 +25,33 @@ final class StreetLayout
     /** Distance to that road (1 = curb). */
     final int[][] roadDist = new int[16][16];
 
+    /** The road surface of this chunk: the commonest flush block in its middle (a suburb part's road is dirt). */
+    private Block road;
+
     StreetLayout(Dress.Base base, Block legacySidewalk)
     {
+        java.util.Map<Block, Integer> middle = new java.util.HashMap<Block, Integer>();
+        for (int x = 6; x <= 9; x++)
+        {
+            for (int z = 6; z <= 9; z++)
+            {
+                Block b0 = base.block(x, 0, z);
+                if (b0 != null && base.block(x, 1, z) == null && b0 != legacySidewalk)
+                {
+                    Integer n = middle.get(b0);
+                    middle.put(b0, n == null ? 1 : n + 1);
+                }
+            }
+        }
+        int most = 0;
+        for (java.util.Map.Entry<Block, Integer> e : middle.entrySet())
+        {
+            if (e.getValue() > most || e.getValue() == most && roadish(e.getKey()))
+            {
+                most = e.getValue();
+                road = e.getKey();
+            }
+        }
         for (int x = 0; x < 16; x++)
         {
             for (int z = 0; z < 16; z++)
@@ -104,7 +129,15 @@ final class StreetLayout
             return;
         }
         stand[x][z] = 1;
-        type[x][z] = b0 == legacySidewalk ? WALK : ROAD;
+        // flush: the road block or road paint is road, anything else level with it (paving, a grass verge,
+        // our own slab sidewalk) is walk
+        type[x][z] = b0 != legacySidewalk && (b0 == road || roadish(b0)) ? ROAD : WALK;
+    }
+
+    private static boolean roadish(Block b)
+    {
+        String n = String.valueOf(Block.blockRegistry.getNameForObject(b));
+        return n.contains("BlockRoad") || n.equals("minecraft:quartz_block");
     }
 
     boolean curb(int x, int z)

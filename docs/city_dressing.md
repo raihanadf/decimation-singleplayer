@@ -138,3 +138,28 @@ Pending, in order:
 5. Skills: decimation-city-street, -vehicles, -interior, -decay, decimation-military-interior,
    decimation-worldgen index (user agreed the tree 11 Oktober 2026); roadway scenes (jams, crashes,
    checkpoints) still to write.
+
+### 12 Oktober 2026: first working version (still behind the switch)
+
+- Facing picture check (dev test `facing`, shots docs/shots/facing_v0.50): road signs all E S W N,
+  body bags all E S W N; corrections in docs/references/prop_facing_overrides.tsv (applied by
+  tools/props/facing_table.py, rows marked "in game").
+- Rules fixed against the table: shop display front is its closed panel (shelves face the room:
+  front toward the wall); the payphone cabinet hangs on a wall (lobbies only, not the curb); the
+  small junction box pole is a wall prop (not on the curb); the tall phone box has no verified
+  front (not used); CCTV only looks north or south (east / west doors get none).
+- Fit fixes found by checking a dressed seed 1 world (servertest dress, worlddump, propclash,
+  diff against the undressed world): thin props (a flat TV is 0.125 deep) turned inside out when
+  shrunk by 0.08 a side and passed every check (PropGeom.shrink keeps 0.04); decals and graffiti
+  are solid to other props; liquids, beds solid; skip ("keep the world") cells solid; floors are
+  real tops only (open trapdoors, wire are not); a front never looks into anything over 0.6 high
+  with something above it (as propclash FACE); long base props (cars) are checked 5 around; the
+  threshold sits just under propclash's 0.15. Converted ceiling lights hung from nothing move up
+  to the ceiling or go (PropFit). Street layout: flush sidewalks (suburb parts: paving and grass on
+  a dirt road) found by the chunk's own road block; props slide up to 3 along the curb to fit.
+- Result on seed 1 (pregen 128,128,9): undressed 8406 props / 39 findings, dressed 13216 props /
+  50 findings of which ONE is caused by the dressing (a cabinet into water, fixed since: liquids).
+  Totals per prop and refusal reasons: log line "dress totals after N plans" (Dress.logTotals).
+- Still to do: road scenes (jams toward exits, crashes, checkpoints, cone tapers), facade graffiti
+  and shop signs (the wall is in the neighbour plan), parks / lots, power poles are rare (13),
+  performance check (props per chunk about +60 %), then the switch on by default, skills.

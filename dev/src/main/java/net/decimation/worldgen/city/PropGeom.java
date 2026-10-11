@@ -22,7 +22,7 @@ import net.minecraft.block.material.Material;
 final class PropGeom
 {
     static final float TOL = 0.08f;
-    static final float SMALL = 0.15f - TOL;
+    static final float SMALL = 0.15f - TOL - 0.005f;   // propclash reports from 0.15: stay just under
 
     private PropGeom()
     {
@@ -43,8 +43,25 @@ final class PropGeom
     /** A prop's drawn box at (x, y, z), shrunk by TOL: {x0, x1, y0, y1, z0, z1}. */
     static float[] box(Block b, int m, int x, int y, int z)
     {
-        float[] d = PropBoxes.box(b, m);
-        return new float[] {x + d[0] + TOL, x + d[1] - TOL, y + d[2] + TOL, y + d[3] - TOL, z + d[4] + TOL, z + d[5] - TOL};
+        return shrink(PropBoxes.box(b, m), x, y, z);
+    }
+
+    /**
+     * A drawn box moved to (x, y, z) and shrunk by TOL per side, but never thinner than 0.04: a flat TV
+     * (0.125 deep) shrunk by 0.08 a side turned inside out and overlapped nothing at all.
+     */
+    static float[] shrink(float[] d, int x, int y, int z)
+    {
+        float[] o = {x, y, z};
+        float[] r = new float[6];
+        for (int a = 0; a < 3; a++)
+        {
+            float lo = d[2 * a], hi = d[2 * a + 1];
+            float t = Math.min(TOL, Math.max(0f, (hi - lo - 0.04f) / 2f));
+            r[2 * a] = o[a] + lo + t;
+            r[2 * a + 1] = o[a] + hi - t;
+        }
+        return r;
     }
 
     /** Where a neighbour stands in its cell: a prop's drawn box (shrunk), a block's shape, null for nothing. */
@@ -53,7 +70,12 @@ final class PropGeom
         float[] d = PropBoxes.box(k, m);
         if (d != null)
         {
-            return new float[] {d[0] + TOL, d[1] - TOL, d[2] + TOL, d[3] - TOL, d[4] + TOL, d[5] - TOL};
+            return shrink(d, 0, 0, 0);
+        }
+        String nm = String.valueOf(Block.blockRegistry.getNameForObject(k));
+        if (nm.startsWith("deci:decal.") || nm.startsWith("deci:BlockGraffiti"))
+        {
+            return new float[] {0, 1, 0, 1, 0, 1};      // a picture on the wall: nothing else draws in its cell
         }
         if (isDoor(k))
         {
@@ -71,6 +93,14 @@ final class PropGeom
         if (k instanceof BlockTrapDoor)
         {
             return (m & 4) != 0 ? null : (m & 8) != 0 ? new float[] {0, 1, 0.8125f, 1, 0, 1} : new float[] {0, 1, 0, 0.1875f, 0, 1};
+        }
+        if (k.getMaterial().isLiquid())
+        {
+            return new float[] {0, 1, 0, 1, 0, 1};      // never drawn into water or lava
+        }
+        if (k instanceof net.minecraft.block.BlockBed)
+        {
+            return new float[] {0, 1, 0, 0.5625f, 0, 1};
         }
         if (k instanceof BlockCauldron)
         {
@@ -104,6 +134,6 @@ final class PropGeom
         float ox = Math.min(p[1], x1) - Math.max(p[0], x0);
         float oy = Math.min(p[3], y1) - Math.max(p[2], y0);
         float oz = Math.min(p[5], z1) - Math.max(p[4], z0);
-        return ox > 0 && oy > 0 && oz > 0 && Math.min(ox, Math.min(oy, oz)) > min;
+        return ox > 0 && oy > 0 && oz > 0 && Math.min(ox, Math.min(oy, oz)) >= min;   // propclash reports from 0.15
     }
 }

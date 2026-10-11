@@ -11,6 +11,25 @@ How shots are made: `./gradlew runClient -Pautotest` (street views),
 `-Paudit` (building audit), `-Pgallery` (prop gallery); output in
 `dev/run/client/screenshots/`, then copied here into a versioned folder.
 
+## facing_v0.50/ (dev test facing, 12 Oktober 2026)
+- facing_<prop>_s.png / _n.png: each prop at metadata 2, 3, 4, 5 west to east on wool pads magenta,
+  light blue, yellow, lime; camera south (fronts pointing S show their face) / north. Road signs 20,
+  60, one way, stop: meta 3 shows the face from the south, meta 5 the back from the south: all road
+  signs E S W N (the judge's W N E S for 60 / one way was wrong). Body bags black and blue: same model,
+  identical at every meta. Work light tower and generator: not readable from these two sides.
+  Rain and wandering NPCs in some shots (no weather / mob control in that test yet).
+
+## city_dressing_v0.50/ (city dressing on, dev test cityprops, cell 92,6, 12 Oktober 2026)
+- sheet_cityprops.png and cityprops_<kind>_<n>.png, each taken from where the prop's verified front
+  points (a wrong facing would show its back). newsstand_1: four newspaper boxes in the curb row,
+  windows toward the buildings, road behind. stopsign_1 / _2: STOP on the right curb before the
+  crossing, face toward the approaching lane. speedsign_1: 30 on the right curb facing traffic.
+  trafficlight_1: corner pole, lenses toward the camera; mailbox_1: blue mailbox beside newspaper
+  boxes, front to the buildings. exitlight_1: EXIT over a door, facing into the room. tv_1 / tv_2,
+  vending_1 / _2, payphone_1: on / against walls facing the room. skeleton_2: a skeleton against a
+  wall beside a chest and trash bags. graffiti_1: a tag on an inner wall. Camera misses (not the
+  props): newsstand_2, bench_2, mailbox_2 behind a hedge; washer_1 / cctv_1 too small to judge.
+
 ## city_props_v0.49.0/ (converted city props fitted to their drawn size, dev test cityprops, 11 Oktober 2026)
 - sheet_cityprops.png and cityprops_<kind>_<n>.png, city cell 76,6 (blocks 4896,416) of the dev
   world, gamma raised (unlit rooms). chest_1: a vanilla dungeon chest under the city (not ours).

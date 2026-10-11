@@ -47,6 +47,50 @@ final class Dress
     private final List<float[]> boxes = new ArrayList<float[]>();
     /** Props placed, refused (did not fit) per prop name: the dev test and the log read it. */
     final Map<String, int[]> tally = new HashMap<String, int[]>();
+    /** Refusal reasons (index = fits() result): placed, taken, out of plan, no support, doorway, block, prop, faces a wall. */
+    static final String[] WHY = {"placed", "taken", "outside", "unsupported", "doorway", "block", "prop", "faces wall"};
+    private static final Map<String, int[]> TOTAL = new java.util.TreeMap<String, int[]>();
+    private static int built;
+
+    /** Counts an event in the totals log (debugging the rules: chunks per kind, sides without walk). */
+    static void note(String key)
+    {
+        synchronized (TOTAL)
+        {
+            int[] all = TOTAL.get(key);
+            if (all == null)
+            {
+                all = new int[WHY.length];
+                TOTAL.put(key, all);
+            }
+            all[0]++;
+        }
+    }
+
+    /** Logs the placed / refused totals of all props so far (every 100 dressed plans). */
+    static void logTotals()
+    {
+        synchronized (TOTAL)
+        {
+            if (++built % 100 != 0)
+            {
+                return;
+            }
+            StringBuilder sb = new StringBuilder();
+            for (Map.Entry<String, int[]> e : TOTAL.entrySet())
+            {
+                sb.append(' ').append(e.getKey().replace("deci:", "")).append('=');
+                for (int k = 0; k < WHY.length; k++)
+                {
+                    if (e.getValue()[k] > 0)
+                    {
+                        sb.append(k == 0 ? "" : "/" + WHY[k] + ":").append(e.getValue()[k]);
+                    }
+                }
+            }
+            cpw.mods.fml.common.FMLLog.info("[deciworldgen] dress totals after %d plans:%s", built, sb);
+        }
+    }
 
     Dress(Base base, int w, int h, int l)
     {
@@ -122,6 +166,19 @@ final class Dress
                              || b instanceof BlockSlab && (meta(x, y, z) & 8) != 0);
     }
 
+    /** Something a front must not look straight into, as propclash.py's FACE: any block over 0.6 high
+     * that is not glass (a seat may look out of a window), not a prop. */
+    boolean blocksFront(int x, int y, int z)
+    {
+        Block k = block(x, y, z);
+        if (k == null || PropBoxes.box(k, meta(x, y, z)) != null || k.getMaterial() == net.minecraft.block.material.Material.glass)
+        {
+            return false;
+        }
+        float[] q = PropGeom.shape(k, meta(x, y, z));
+        return q != null && q[3] - q[2] > 0.6f;
+    }
+
     /** Something a standing prop rests on (as propclash.py counts it). */
     boolean supports(int x, int y, int z)
     {
@@ -135,8 +192,22 @@ final class Dress
         {
             return box[3] >= 0.7f;
         }
-        return b.getMaterial().isSolid() && !(b instanceof BlockWeb) || b instanceof BlockSlab || b instanceof BlockStairs
-            || b instanceof BlockFence || b instanceof BlockWall || b instanceof BlockChest;
+        return floorBlock(b, meta(x, y, z)) || b instanceof BlockFence || b instanceof BlockWall || b instanceof BlockChest;
+    }
+
+    /**
+     * A block with a top a prop can stand on: a full block, a slab, stairs, glass, leaves, a closed
+     * trapdoor. Not an open trapdoor (it stands upright against a side), wire, a fence gate, a plant.
+     */
+    static boolean floorBlock(Block b, int m)
+    {
+        if (b instanceof net.minecraft.block.BlockTrapDoor)
+        {
+            return (m & 4) == 0;
+        }
+        return b.isOpaqueCube() || b instanceof BlockSlab || b instanceof BlockStairs || PropGeom.fullGlass(b)
+            || b instanceof net.minecraft.block.BlockLeaves || b instanceof net.minecraft.block.BlockGrass
+            || b instanceof net.minecraft.block.BlockFarmland || b instanceof net.minecraft.block.BlockSoulSand;
     }
 
     /** Is (x, y, z) in front of or behind a door (its walkway)? */
@@ -180,7 +251,18 @@ final class Dress
             t = new int[2];
             tally.put(name, t);
         }
-        if (b == null || !fits(b, m, x, y, z, mount))
+        int why = b == null ? 1 : fits(b, m, x, y, z, mount);
+        synchronized (TOTAL)
+        {
+            int[] all = TOTAL.get(name);
+            if (all == null)
+            {
+                all = new int[WHY.length];
+                TOTAL.put(name, all);
+            }
+            all[why]++;
+        }
+        if (why != 0)
         {
             t[1]++;
             return false;
@@ -220,22 +302,47 @@ final class Dress
         return null;
     }
 
-    private boolean fits(Block b, int m, int x, int y, int z, int mount)
+    private int fits(Block b, int m, int x, int y, int z, int mount)
     {
         Block here = inside(x, y, z) ? block(x, y, z) : null;
         if (!inside(x, y, z) || here != null && !BuildingLayout.cover(here))
         {
-            return false;                                  // taken (a carpet, a plate, a plant is replaced)
+            return 1;                                      // taken (a carpet, a plate, a plant is replaced)
         }
         float[] d = PropBoxes.box(b, m);
         if (d == null)
         {
-            return true;                                   // a plain block: its own cell only
+            // a plain block or a flat picture: its own cell, which no prop may reach into
+            float[] cell = {x, x + 1, y, y + 1, z, z + 1};
+            for (float[] q : boxes)
+            {
+                if (PropGeom.overlap(cell, q[0], q[1], q[2], q[3], q[4], q[5], PropGeom.SMALL))
+                {
+                    return 6;
+                }
+            }
+            for (int cy = y - 3; cy <= y; cy++)
+            {
+                for (int cz = z - 2; cz <= z + 2; cz++)
+                {
+                    for (int cx = x - 2; cx <= x + 2; cx++)
+                    {
+                        Block k = block(cx, cy, cz);
+                        float[] q = k == null || PropBoxes.box(k, meta(cx, cy, cz)) == null ? null : PropGeom.shape(k, meta(cx, cy, cz));
+                        if (q != null && (cx != x || cy != y || cz != z)
+                            && PropGeom.overlap(cell, cx + q[0], cx + q[1], cy + q[2], cy + q[3], cz + q[4], cz + q[5], PropGeom.SMALL))
+                        {
+                            return 6;
+                        }
+                    }
+                }
+            }
+            return 0;
         }
         float[] p = PropGeom.box(b, m, x, y, z);
         if (p[0] < -PropGeom.SMALL || p[4] < -PropGeom.SMALL || p[1] > w + PropGeom.SMALL || p[5] > l + PropGeom.SMALL)
         {
-            return false;                                  // drawn into the next chunk's plan
+            return 2;                                      // drawn into the next chunk's plan
         }
         if (mount != 1)
         {
@@ -243,12 +350,27 @@ final class Dress
             boolean halfSlab = below instanceof BlockSlab && (meta(x, y - 1, z) & 8) == 0 && wholeSlab(below) != null;
             if (!supports(x, y - 1, z) && !halfSlab)
             {
-                return false;
+                return 3;
             }
             if (inDoorway(x, y, z))
             {
-                return false;
+                return 4;
             }
+        }
+        // a front (screen, seat, door, sign face) never looks straight into a wall
+        int front = PropFacing.front(b, m);
+        int bx = Integer.MIN_VALUE, bz = 0;
+        if (front >= 0)
+        {
+            int fx = SIDES[front][0], fz = SIDES[front][1];
+            Block above = block(x + fx, y + 1, z + fz);
+            if (blocksFront(x + fx, y, z + fz)
+                && (mount == 1 || above != null && PropGeom.shape(above, meta(x + fx, y + 1, z + fz)) != null))
+            {
+                return 7;
+            }
+            bx = x - fx;
+            bz = z - fz;
         }
         for (int cy = Math.max(0, (int) Math.floor(p[2])); cy <= Math.min(h - 1, (int) Math.floor(p[3])); cy++)
         {
@@ -265,15 +387,17 @@ final class Dress
                     {
                         continue;
                     }
-                    if (mount == 1 && cy == y && (PropBoxes.box(k, meta(cx, cy, cz)) == null))
+                    if (mount == 1 && PropBoxes.box(k, meta(cx, cy, cz)) == null
+                        && (cx == x && cz == z && cy == y + 1                      // the ceiling over it
+                            || cy == y && (bx == Integer.MIN_VALUE || cx == bx && cz == bz)))   // the wall behind it
                     {
-                        continue;                          // the wall / ceiling it hangs on
+                        continue;
                     }
                     float[] q = PropGeom.shape(k, meta(cx, cy, cz));
                     if (q != null && PropGeom.overlap(p, cx + q[0], cx + q[1], cy + q[2], cy + q[3], cz + q[4], cz + q[5],
                                                       PropGeom.isDoor(k) ? 0 : PropGeom.SMALL))
                     {
-                        return false;
+                        return 5;
                     }
                 }
             }
@@ -282,9 +406,29 @@ final class Dress
         {
             if (PropGeom.overlap(p, q[0], q[1], q[2], q[3], q[4], q[5], PropGeom.SMALL))
             {
-                return false;
+                return 6;
             }
         }
-        return true;
+        // the plan's own props further away whose drawn box is long (a car reaches 3.4 from its block)
+        for (int cy = Math.max(0, y - 1); cy <= Math.min(h - 1, y + 2); cy++)
+        {
+            for (int cz = Math.max(0, z - 5); cz <= Math.min(l - 1, z + 5); cz++)
+            {
+                for (int cx = Math.max(0, x - 5); cx <= Math.min(w - 1, x + 5); cx++)
+                {
+                    Block k = base.block(cx, cy, cz);
+                    float[] q = k == null ? null : PropBoxes.box(k, base.meta(cx, cy, cz));
+                    if (q != null && (cx != x || cy != y || cz != z))
+                    {
+                        float[] s = PropGeom.shrink(q, cx, cy, cz);
+                        if (PropGeom.overlap(p, s[0], s[1], s[2], s[3], s[4], s[5], PropGeom.SMALL))
+                        {
+                            return 6;
+                        }
+                    }
+                }
+            }
+        }
+        return 0;
     }
 }

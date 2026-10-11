@@ -105,7 +105,7 @@ final class BuildingDress
                     return null;
                 }
                 int i = s.index(x, y, z);
-                return s.skip[i] ? null : s.blocks[i];
+                return s.skip[i] ? Blocks.bedrock : s.blocks[i];   // "keep the world": terrain we cannot see
             }
 
             public int meta(int x, int y, int z)
@@ -121,6 +121,7 @@ final class BuildingDress
         }
         long seed = hl(0x4255494CL ^ p.minX() * 31L, p.minX(), p.minZ());
         new BuildingDress(d, lay, seed, kind(b.name)).run();
+        Dress.logTotals();
         return d;
     }
 
@@ -327,16 +328,16 @@ final class BuildingDress
                 if (r < 200) return stand(pick("BlockVendingMachine_1", "BlockVendingMachine_2"), s, room);
                 if (r < 350) return stand("BlockElectricBoxBin", s, room);
                 if (r < 500) return hang(pick("BlockFlatscreenTV_News", "BlockFlatscreenTV_Emergency"), s.x, s.y + 1, s.z, w);
-                if (r < 650) return hang("BlockWaterfountain", s.x, s.y, s.z, w);
+                if (r < 650) return hang(pick("BlockWaterfountain", "BlockPhonebooth"), s.x, s.y, s.z, w);
                 if (r < 800) return stand("BlockMetalShelf_Empty", s, room);
                 return stand(pick("BlockCardboardBoxes1", "BlockCardboardBoxes3"), s, room);
             case SHOP:
-                if (r < 350) return stand("BlockShopDisplay_1", s, room);
+                if (r < 350) return stand("BlockShopDisplay_1", s, w);   // its front is the closed panel: shelves to the room
                 if (r < 600) return stand(pick("BlockMetalShelf", "BlockMetalShelf_Empty"), s, room);
                 if (r < 750) return stand(pick("BlockVendingMachine_1", "BlockVendingMachine_2"), s, room);
                 return stand(pick("BlockCardboardBoxes1", "BlockCardboardBoxes2"), s, room);
             case FOOD:
-                if (r < 400) return stand("BlockShopDisplay_1", s, room);
+                if (r < 400) return stand("BlockShopDisplay_1", s, w);
                 if (r < 650) return stand(pick("BlockVendingMachine_1", "BlockVendingMachine_2"), s, room);
                 return stand("BlockCardboardBoxes3", s, room);
             case MEDICAL:
@@ -368,7 +369,7 @@ final class BuildingDress
                 return stand("BlockAcidPit", s, room);
             default:
                 if (r < 300) return stand(pick("BlockVendingMachine_1", "BlockVendingMachine_2"), s, room);
-                if (r < 500) return hang("BlockWaterfountain", s.x, s.y, s.z, w);
+                if (r < 500) return hang(pick("BlockWaterfountain", "BlockPhonebooth"), s.x, s.y, s.z, w);
                 return stand(pick("BlockCardboardBoxes1", "BlockCardboardBoxes3"), s, room);
         }
     }

@@ -9,8 +9,8 @@ BlockBarrier	road	-	-	-	-	z	x	z	x
 BlockBarrierTall	floor_multiblock	-	-	-	-	z	x	z	x
 BlockBicycle	floor	W	N	E	S	x	z	x	z
 BlockBodyBagBlack	floor	E	S	W	N	x	z	x	z
-BlockBodyBagBlue	floor	W	N	E	S	x	z	x	z
-BlockBodyBagGreen	floor	W	N	E	S	x	z	x	z
+BlockBodyBagBlue	floor	E	S	W	N	x	z	x	z
+BlockBodyBagGreen	floor	E	S	W	N	x	z	x	z
 BlockBodyBagOrange	floor	E	S	W	N	x	z	x	z
 BlockCCTV	ceiling	N	S	S	N	-	-	-	-
 BlockCanFire	floor	-	-	-	-	-	-	-	-
@@ -101,8 +101,8 @@ BlockRoadsign20	floor	E	S	W	N	z	x	z	x
 BlockRoadsign30	floor	E	S	W	N	z	x	z	x
 BlockRoadsign40	floor	E	S	W	N	z	x	z	x
 BlockRoadsign50	floor	E	S	W	N	z	x	z	x
-BlockRoadsign60	floor	W	N	E	S	z	x	z	x
-BlockRoadsignOneway	floor	W	N	E	S	z	x	z	x
+BlockRoadsign60	floor	E	S	W	N	z	x	z	x
+BlockRoadsignOneway	floor	E	S	W	N	z	x	z	x
 BlockRoadsignParking	floor	E	S	W	N	z	x	z	x
 BlockRoadsignStop	floor	E	S	W	N	z	x	z	x
 BlockRope	other	-	-	-	-	-	-	-	-

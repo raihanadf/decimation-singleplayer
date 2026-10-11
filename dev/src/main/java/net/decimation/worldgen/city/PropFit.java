@@ -59,6 +59,9 @@ final class PropFit
         "BlockExitLight", "BlockElectricBox1", "BlockWaterfountain", "BlockHazardScreen_1", "BlockHazardScreen_2",
         "BlockLight", "BlockLightOff", "BlockCeilingVent", "BlockCeilingVentCorner", "BlockBarrierTall",
         "BlockStreetBarrier", "BlockMetalShelf", "BlockMetalShelf_Empty", "BlockWreckageMilitary2", "BlockPhonebox"));
+    /** Props hung under a ceiling. */
+    private static final Set<String> CEILING = new HashSet<String>(Arrays.asList(
+        "BlockLight", "BlockLightOff", "BlockCeilingVent", "BlockCeilingVentCorner"));
     /** Seats: removed from a door's walkway (DeceasedCraft porches put a chair before the door). */
     private static final Set<String> SEATS = new HashSet<String>(Arrays.asList(
         "BlockChair", "BlockOfficeChair", "BlockStreetBench"));
@@ -105,6 +108,24 @@ final class PropFit
                         continue;
                     }
                     String name = Block.blockRegistry.getNameForObject(b).substring(5);
+                    if (CEILING.contains(name) && !solid(x, y + 1, z))
+                    {
+                        // hung from nothing (the 1.20 lamp hung on a chain or a block we do not have): up to
+                        // the ceiling if it is within 3, else it goes
+                        int u = 1;
+                        while (u <= 3 && y + u < s.height && at(x, y + u, z) == null && !solid(x, y + u + 1, z))
+                        {
+                            u++;
+                        }
+                        boolean up = u <= 3 && y + u < s.height && at(x, y + u, z) == null && solid(x, y + u + 1, z);
+                        if (up)
+                        {
+                            set(s.index(x, y + u, z), b, m);
+                        }
+                        set(i, null, 0);
+                        count[up ? 5 : 6]++;
+                        continue;
+                    }
                     if (LEAVE.contains(name))
                     {
                         continue;
@@ -310,7 +331,7 @@ final class PropFit
     private boolean clashes(int x, int y, int z, Block b, int m)
     {
         float[] d = PropBoxes.box(b, m);
-        float[] p = {x + d[0] + TOL, x + d[1] - TOL, y + d[2] + TOL, y + d[3] - TOL, z + d[4] + TOL, z + d[5] - TOL};
+        float[] p = PropGeom.shrink(d, x, y, z);
         for (int cy = Math.max(y, (int) Math.floor(p[2])); cy <= (int) Math.floor(p[3]); cy++)
         {
             for (int cz = (int) Math.floor(p[4]) - 1; cz <= (int) Math.floor(p[5]) + 1; cz++)
