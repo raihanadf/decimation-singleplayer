@@ -288,6 +288,10 @@ public class DecimationWorldGen
         zoneRules = new net.decimation.fixes.ZoneRules();
         net.minecraftforge.common.MinecraftForge.EVENT_BUS.register(zoneRules);
         cpw.mods.fml.common.FMLCommonHandler.instance().bus().register(zoneRules);
+        // safezone sites: their residents, kept by a server tick (docs/safezone.md)
+        SafezoneSites sites = new SafezoneSites();
+        net.minecraftforge.common.MinecraftForge.EVENT_BUS.register(sites);
+        cpw.mods.fml.common.FMLCommonHandler.instance().bus().register(sites);
         FMLLog.info("[%s] zone store, zone spawn fix and zone rules registered", MODID);
 
         net.minecraftforge.common.MinecraftForge.EVENT_BUS.register(

@@ -11,6 +11,33 @@ How shots are made: `./gradlew runClient -Pautotest` (street views),
 `-Paudit` (building audit), `-Pgallery` (prop gallery); output in
 `dev/run/client/screenshots/`, then copied here into a versioned folder.
 
+## safezone_camp_v0.47.0/ (survivor camp, a safezone outside the cities, 11 Oktober 2026)
+Dev test `camp`, sky build at -20000, 230, -19700, turned 90 degrees (turns=1), seed 42, all
+PASS. Files camp_<point>_turn1.png and the sheet.
+- gate_outside: the scrap wall (rusty and dark metal panels, spruce boards, log posts with
+  torches), concertina rings with a gap before the gate, the log gate frame with 5 closed fence
+  gates, "Entering Safezone!" floating over the lintel; inside, the market awnings.
+- gate_inside: two guards (marine forest camo) behind sandbag stacks beside the gate.
+- tower_ladder / tower_deck: the ladder up the plank tower on the camp side; the deck railing,
+  log corner posts, the next tower across the camp, tents below.
+- main_road / market: the street of 6 stalls with striped awnings (red, blue, green, orange,
+  yellow, brown with white), a trader behind each counter, trader icons over their heads.
+- stall_<trade>: one stall each (ammunition, medical, heavy guns, guns, convenience, food):
+  the counter of two wood trestle tables, the trader behind it, goods at the back.
+- plaza / campfire: the fire in its slab ring with benches, civilians and an armed survivor
+  around, the medical tent and a watchtower behind (the campfire camera was 2 blocks behind a
+  bench: its back filled the frame; moved back and up after this run).
+- medical_inside: white tent, stretchers both sides, medical crates at the far end.
+- tent_inside: a family tent: bed, footlocker. latrines: two outhouses and a wash cauldron.
+- generator: generator, barrels, tyres, crate, a light tower by the wall.
+- garden: fenced plot of carrots / potatoes / wheat around a water channel.
+- aerial: the whole camp from the south: wall ring, towers, market street, plaza, tents.
+- seed1_S6_3_top.png (tools: worldcheck top block per column, 4 px per block, real worldgen,
+  seed 1 server world at 790..890, 375..475): the camp turned 90 (gate west), red wall ring
+  (Decimation metal panels), brown towers in the corners, grey market street from the west, white
+  tents and medical tent, the garden with its water line bottom left; grass and trees around,
+  untouched outside the graded ring.
+
 ## lc_bridge_v0.45.1/ (bridges as streets over water, 11 Oktober 2026)
 User review of 0.45.0: "the bridge show up, just need change the design so the bridge match with other
 road". Dev test `bridge` at 30144,64,1696 (along z, dev world), all PASS.

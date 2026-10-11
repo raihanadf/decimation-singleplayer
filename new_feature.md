@@ -892,6 +892,12 @@ the user before building.
    attacks someone protected inside: no damage, guards and soldiers within 64 blocks fire on them
    for 60 s after the last offence, their combat timer runs (no safezone protection). Dev test
    `zones` 19 PASS.
+   Step 2 DONE v0.47.0 (docs/safezone.md): survivor camps in wild / civilian sectors (5 % of
+   sites, new worlds only): scrap wall, 4 watchtowers, guarded gate with safezone signs, market
+   street of 6 traders, plaza with campfire and water, medical tent, family tents, latrines,
+   generator, garden; residents 6 guards, 6 traders, 5 civilians, 3 armed survivors (tier
+   "survivor"), kept by SafezoneSites. Dev test `camp` all PASS, propclash and walkcheck 0.
+   Next: fortified city building.
 2. Player claimable zone areas. Exists: Decimation's TURF system
    (net.decimation.mod.server.turf: TurfManager add / remove / owner /
    isCapturable, turfs json, TurfCommands), server proxy only, so likely

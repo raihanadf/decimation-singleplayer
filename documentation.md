@@ -238,6 +238,11 @@ protected and nothing happens to them, but the guards open fire on you for a min
 safezone stops protecting you. Radiation zones irradiate you without a gas mask. Entering a
 safezone prints "Now entering a Safezone" and the GPS map shows the zones. Details: docs/zones.md.
 
+Since 0.47, new worlds have survivor camps in the countryside: walled safezones with a gate and
+watchtowers manned by guards, a market street of six traders, a campfire plaza, a medical tent,
+family tents, a garden, civilians and a few armed survivors. Fallen residents come back after a
+while when nobody is watching. Details: docs/safezone.md.
+
 ## Bug and feature tracking
 
 Dated history moved out of this file - see `bug.md` (fixed/open/pending bugs)

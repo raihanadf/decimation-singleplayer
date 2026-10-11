@@ -106,6 +106,13 @@ props placement".
     reserve was silent. Every essential module logs its refusal with the blocking cell
     (blockedAt) and the dev test fails on it.
 
+14. People belong to the site, not to generation: a compound with residents (safezone camp)
+    hands its posts to worldgen/SafezoneSites with its zone; a keeper spawns them when a player
+    comes near (entities spawned during population get lost or doubled). Check every post kind
+    in the dev test.
+15. A 1 x 1 stall (outhouse, booth) needs two free cells above its floor: a seat block on the
+    floor left no head room (walkcheck DOOR finding).
+
 ## Casebook (never delete a case)
 
 ### Case 1: first FOB generator (v0.42.0, 10 Oktober 2026)
@@ -179,3 +186,13 @@ props placement".
   props from their drawn boxes, loot placement, reachable towers, the walk test. Path that
   worked: research -> build -> sky test pictures -> user review -> fix the mechanism (prop
   geometry, walk test, refusal logs), not the single symptom.
+
+### Case 7: survivor camp, first build (v0.47.0, 11 Oktober 2026)
+- Request: safezone with traders and guards (user choices: camps outside cities, walled camp of
+  our own generator, guards friendly unless provoked, civilians and armed survivors).
+- Built on the same pipeline: CanvasPlan now shared (MilitaryBasePlan moved onto it, military
+  test all PASS after), military/SurvivorCamp, residents via SafezoneSites.
+- First run: 6 clashes (stretchers into the tent end wall; ammo cases / cabinets 1 cell apart in
+  the stalls) and an outhouse seat with no head room; walkcheck counted closed fence gates as
+  walls (now opened like doors). After the fixes: clashes 0, propclash 0, walkcheck 0, turns 0
+  and 1. Evidence docs/shots/safezone_camp_v0.47.0/.

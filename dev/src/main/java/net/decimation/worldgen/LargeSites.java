@@ -21,6 +21,10 @@ public class LargeSites
     public static final int SITE = 8;               // chunks
     public static final int MAX_SIZE = SITE * 16 - 8;
     private static final float[] CHANCE = {0.15f, 0.30f, 0.0f, 0.50f}; // wild civ city mil
+    /** Share of wild / civilian sites with a survivor camp (worlds created since v0.47). */
+    static final float CAMP_CHANCE = 0.05f;
+    /** Camp sites already logged (one line per site). */
+    private static final java.util.Set<String> CAMP_LOGGED = java.util.Collections.synchronizedSet(new java.util.HashSet<String>());
 
     private final List<Schematic> schematics;
     private final Map<Integer, StructureGenerator.Sub> subs;
@@ -41,6 +45,19 @@ public class LargeSites
     public Plan plan(World world, int siteX, int siteZ, StructureGenerator gen)
     {
         int sector = gen.sectorOf(world, siteX * SITE, siteZ * SITE);
+        if ((sector == StructureGenerator.WILD || sector == StructureGenerator.CIV) && SafezoneSites.camps())
+        {
+            // survivor camps (safezones) in the countryside, own roll so the other sites stay as they were
+            Random cr = new Random(world.getSeed() ^ (siteX * 918273645L + siteZ * 129384756L) ^ 0x5AFEL);
+            if (cr.nextFloat() < CAMP_CHANCE)
+            {
+                Plan camp = camp(world, siteX, siteZ, cr);
+                if (camp != null)
+                {
+                    return camp;
+                }
+            }
+        }
         Random r = new Random(world.getSeed() ^ (siteX * 192837465L + siteZ * 564738291L) ^ 0x1A26E5L);
         if (r.nextFloat() >= CHANCE[sector])
         {
@@ -110,6 +127,40 @@ public class LargeSites
         }
         long seed = world.getSeed() ^ (siteX * 341873128712L + siteZ * 132897987541L) ^ 0xF0B5L;
         return new net.decimation.worldgen.military.MilitaryBasePlan("M" + siteX + "_" + siteZ, size, seed, x, z, turns);
+    }
+
+    /** A walled survivor camp, a safezone (docs/safezone.md), turned 0..270 inside the site. */
+    private Plan camp(World world, int siteX, int siteZ, Random r)
+    {
+        int turns = r.nextInt(4);
+        int[] f = net.decimation.worldgen.military.SurvivorCampPlan.footprint();
+        int span = SITE * 16;
+        // up to 6 spots inside the site: highways and city edges leave free room in most sites
+        for (int k = 0; k < 6; k++)
+        {
+            int x = siteX * span + 12 + r.nextInt(Math.max(1, span - 24 - f[0]));
+            int z = siteZ * span + 12 + r.nextInt(Math.max(1, span - 24 - f[1]));
+            boolean blocked = net.decimation.worldgen.city.LcCity.enabled()
+                && (net.decimation.worldgen.city.LcCity.nearCity(world.getSeed(), x - 10, z - 10, x + f[0] + 9, z + f[1] + 9)
+                    || net.decimation.worldgen.city.Highways.near(world.getSeed(), x - 10, z - 10, x + f[0] + 9, z + f[1] + 9));
+            if (blocked)
+            {
+                continue;
+            }
+            if (CAMP_LOGGED.add(siteX + "_" + siteZ))
+            {
+                cpw.mods.fml.common.FMLLog.info("[deciworldgen] camp site S%d_%d planned at %d,%d (spot %d)", siteX, siteZ,
+                                                x, z, k + 1);
+            }
+            long seed = world.getSeed() ^ (siteX * 341873128712L + siteZ * 132897987541L) ^ 0x5AFEL;
+            return new net.decimation.worldgen.military.SurvivorCampPlan("S" + siteX + "_" + siteZ, seed, x, z, turns);
+        }
+        if (CAMP_LOGGED.add(siteX + "_" + siteZ))
+        {
+            cpw.mods.fml.common.FMLLog.info("[deciworldgen] camp site S%d_%d skipped (city or highway near every spot)",
+                                            siteX, siteZ);
+        }
+        return null;
     }
 
     /** Write the slices of every large plan crossing this chunk's window. */

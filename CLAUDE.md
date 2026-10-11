@@ -114,6 +114,8 @@ Knowledge index:
 - `docs/zones.md`: Decimation's zone system end to end (safezone, military, police,
   radiation, scary, border; checks, handlers, client lists) and what fixes/ZoneRules makes
   work in singleplayer; safezone sites and the "destroyed by the player" plan.
+- `docs/safezone.md`: safezone sites: survivor camps (layout, residents and their keeper,
+  placement, test), fortified city buildings next.
 - `docs/city_engine.md`: the Lost Cities style city from converted
   DeceasedCraft content (tools/lcpack.py, city/LcContent, city/LcCity).
 - `docs/worldgen_architecture.md`: worldgen v3 design (engine + data
@@ -773,6 +775,10 @@ of the last session:
   v0.46.0: zones work in singleplayer (fixes/ZoneRules, docs/zones.md): copies of the
   server only zone handlers, safezones protect every friendly entity, provocation (guards fire
   on a player who attacks someone protected), client zone lists; dev test `zones` (19 checks).
+  v0.47.0: survivor camps (docs/safezone.md): military/SurvivorCamp on the shared CanvasPlan
+  (MilitaryBasePlan moved onto it), SAFEZONE + residents (SafezoneSites keeper spawns traders,
+  guards, civilians, survivor tier) in wild / civilian sites, new worlds only
+  ("!safezoneCamps"); dev test `camp`; walkcheck opens fence gates.
   Gun study (10 Oktober 2026): docs/gun_style_guide.md, tools/guns/study.py
   (renders / measures Decimation's guns from the jar, `attach` adds
   attachments as the game places them), dev test mode `gunview` (hip, aim

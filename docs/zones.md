@@ -135,12 +135,11 @@ and map markers drawn from the client list `[inferred from IngameHud / MapRender
 Test trap: a condition the player already has stays (the rule stops new ones only); the dev
 player was bleeding from earlier runs.
 
-## 7. Safezone sites (planned, new_feature.md "Zones, factions and world" item 1)
+## 7. Safezone sites (docs/safezone.md)
 
-Walled survivor camps (our own generator, FOB style) and fortified city buildings, one per city
-and camps outside; traders, guards (GuardTrader: static, M16 / M4, shoots infected and bandits
-within 32 blocks), civilians, armed survivors; the SAFEZONE box tight around the walls (loot
-containers within 10 blocks of it give nothing).
+Survivor camps outside the cities since v0.47.0 (walled, market of traders, guards, civilians,
+armed survivors; residents kept by worldgen/SafezoneSites); fortified city buildings next. The
+SAFEZONE box is the camp +6 blocks (loot containers within 10 blocks of it give nothing).
 
 ## 8. Safezones destroyed by the player (plan only, user 11 Oktober 2026: "later i figure it out")
 

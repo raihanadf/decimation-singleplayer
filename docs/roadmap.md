@@ -66,7 +66,8 @@ Details and starting points: new_feature.md "Zones, factions and world".
    city AND camps outside, walled camp AND fortified city building, guards friendly unless
    provoked, traders + guards + unarmed civilians + armed survivors. Step 1 DONE v0.46.0: zones
    work in singleplayer, safezones protect every friendly entity, provocation (docs/zones.md).
-   Next: the safezone sites (camp and fortified building) with their people. Destroy by the
+   Step 2 DONE v0.47.0: survivor camps outside cities (docs/safezone.md), waiting for the user's
+   look (new worlds only). Next: the fortified city building, one per city. Destroy by the
    player: plan in docs/zones.md section 8 (later, user).
 2. **Zone areas claimable by the player.**
 3. **Advanced zone claims**: a claimed zone can be lost now and then when
@@ -189,6 +190,10 @@ docs/gun_model_spec.md); every user review goes into its lessons and casebook.
   rail.
 - v0.41.0 / 0.41.1 EOTech 558 and ACOG TA11 of our own, reticles in the glass swaying with the
   gun, Mk18 IMI TS stock, HK416 front sight folds away; accepted.
+- v0.47.0 survivor camps: walled safezones outside the cities with a market of traders, guards,
+  civilians and armed survivors (new worlds).
+- v0.46.0 zones work in singleplayer; safezones protect every friendly NPC; guards fire on a
+  player who attacks someone there.
 - v0.45.1 bridges are the streets carried over the canals (same road, sidewalks, lamps; railings;
   broken ones in the wasteland).
 - v0.45.0 rivers through cities (new worlds): canals with quay walls, DeceasedCraft's bridges on

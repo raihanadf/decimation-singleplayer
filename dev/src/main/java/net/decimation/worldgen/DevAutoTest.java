@@ -135,6 +135,7 @@ public class DevAutoTest
         if (name.equals("rail")) return new net.decimation.worldgen.devtest.RailTest();
         if (name.equals("bridge")) return new net.decimation.worldgen.devtest.BridgeTest();
         if (name.equals("zones")) return new net.decimation.worldgen.devtest.ZonesTest();
+        if (name.equals("camp")) return new net.decimation.worldgen.devtest.CampTest();
         return null;
     }
 

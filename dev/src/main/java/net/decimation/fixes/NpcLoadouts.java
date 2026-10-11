@@ -222,6 +222,11 @@ public class NpcLoadouts
             "barrett", "barrett", "barrett", "barrett", "l115a3", "jng90", "sv98", "m110").spread(0.8f)
             .heavy(0.27, 0.5).elite(2.0f, "nvgoggles", new String[0],
                 new String[] {"sight=8x", "barrel=arSuppressor", "grip=laser"}));
+        // armed survivors of the safezone camps (docs/safezone.md): friendly soldiers in civilian
+        // clothes with a minimal weapon, only from SafezoneSites and their egg
+        tiers.add(new Tier("survivor", NpcKind.SOLDIER, 0, 0, 20, 1.0f,
+            new String[][] {CAPS, CASUAL_CHEST, CASUAL_LEGS, CASUAL_BOOTS},
+            "makarov", "colt", "glock17", "dbarrel", "r870", "mosinnagant", "sks").delay(5, 20).spread(1.6f));
 
         load(new File(configDir, "deciworldgen_npc.cfg"));
     }
@@ -413,6 +418,18 @@ public class NpcLoadouts
                 FMLLog.info("[deciworldgen] data watcher slot %d taken on %s", GUN_SLOT, event.entity);
             }
         }
+    }
+
+    /** Gives an NPC a tier by name before it is spawned (safezone survivors); false when unknown. */
+    public boolean equipTier(EntityLiving npc, String name)
+    {
+        Tier t = byName(name);
+        if (t == null || npc == null)
+        {
+            return false;
+        }
+        equip(npc, t, npc.getEntityData());
+        return true;
     }
 
     @SubscribeEvent

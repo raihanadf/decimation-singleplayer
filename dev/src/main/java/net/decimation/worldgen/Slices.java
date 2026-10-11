@@ -70,6 +70,11 @@ public final class Slices
             {
                 ZoneStore.add(p.zone(), p.minX() - 2, baseY - 4, p.minZ() - 2,
                               p.maxX() + 2, baseY + p.height() + 8, p.maxZ() + 2);
+                if (p instanceof Residents)
+                {
+                    SafezoneSites.add(p.id(), p.minX() - 2, baseY - 4, p.minZ() - 2, p.maxX() + 2,
+                                      baseY + p.height() + 8, p.maxZ() + 2, ((Residents) p).residents(baseY));
+                }
             }
             if (p.describe() != null)
             {
@@ -92,6 +97,11 @@ public final class Slices
                 {
                     ZoneStore.add(p.zone(), p.minX() - 6, baseY - 4, p.minZ() - 6,
                                   p.maxX() + 6, baseY + p.height() + 12, p.maxZ() + 6);
+                    if (p instanceof Residents)
+                    {
+                        SafezoneSites.add(p.id(), p.minX() - 6, baseY - 4, p.minZ() - 6, p.maxX() + 6,
+                                          baseY + p.height() + 12, p.maxZ() + 6, ((Residents) p).residents(baseY));
+                    }
                 }
                 FMLLog.info("[%s] %s %s at %d,%d,%d", DecimationWorldGen.MODID,
                             p.describe(), p.id(), p.minX(), baseY, p.minZ());

@@ -1942,7 +1942,7 @@ public final class MilitaryBase
             redLight, light, monitor;
         Block waterPallet, waterPalletTarp, barrel, tire, tireStack, cardboard, trashBag, trashBag2, trashcan,
             canFire, bodyBag, stretcher, cooking, chessTable;
-        Block metalTable, woodTable, chair, officeChair, shelf, shelfEmpty, policeCrate, toolLocker;
+        Block metalTable, woodTable, chair, officeChair, shelf, shelfEmpty, policeCrate, toolLocker, bench;
         Block jeep, apc, helicopter;
         Block metalGreen, metalRust, metalPlate, concrete, concreteFloor, metalDoor, lockedDoor, powerBox;
 
@@ -2009,6 +2009,7 @@ public final class MilitaryBase
             toolLocker = d("BlockElectricBoxBin", null);     // tall grey cabinet: a tool locker
             woodTable = d("BlockWoodTable", null);
             chair = d("BlockChair", null);
+            bench = d("BlockStreetBench", null);
             officeChair = d("BlockOfficeChair", null);
             jeep = d("BlockWreckageMilitary1", null);
             apc = d("BlockWreckageMilitary2", null);

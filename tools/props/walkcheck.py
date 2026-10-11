@@ -9,7 +9,7 @@ after the user could not climb a guard tower: 5 of 6 ladders had a wall or sandb
 them, and checking each ladder's own cells had passed.
 
 A player here: 2 cells tall, climbs a rise of 1 (a jump or a step), drops up to 3, climbs
-ladders, walks through doors (the locked TOC door too, flagged) and open trapdoors, over carpet
+ladders, walks through doors (the locked TOC door too, flagged), fence gates and open trapdoors, over carpet
 and props whose collision box is low (<= 0.5) or that are walk through (setClippable). Fences,
 walls, panes, concertina wire and every other prop block are in the way (a prop's collision box
 is its block cell; the drawn overhang does not block).
@@ -84,6 +84,8 @@ def main():
             return "door"
         if n == "trapdoor":
             return "free" if m & 4 else "slab"
+        if n == "fence_gate":
+            return "free"           # a player opens it like a door (survivor camp gate, garden)
         if any(n == k or n.startswith(k) for k in NEVER_PASS):
             return "wire"
         if any(n == k or n.startswith(k) for k in PASS_VANILLA):
