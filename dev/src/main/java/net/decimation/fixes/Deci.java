@@ -172,6 +172,31 @@ public final class Deci
         public void removeHumanity(int n) { data.J(n); }
         /** getBounty (cc). */
         public long bounty() { return data.cc(); }
+        /** getWater (bN) / setWater (v). */
+        public int water() { return data.bN(); }
+        public void setWater(int n) { data.v(n); }
+        /** isIrradiated (co) / setIrradiated (i). */
+        public boolean irradiated() { return data.co(); }
+        public void setIrradiated(boolean b) { data.i(b); }
+        /** isInScaryZone (cQ) / setInScaryZone (n). */
+        public boolean inScaryZone() { return data.cQ(); }
+        public void setInScaryZone(boolean b) { data.n(b); }
+        /** getCombatTimer (cf) / setCombatTimer (l): ticks; a running timer ends safezone protection. */
+        public long combatTimer() { return data.cf(); }
+        public void setCombatTimer(long t) { data.l(t); }
+        /** getSafezoneGraceTicks (dn): protection left after leaving a safezone. */
+        public long safezoneGrace() { return data.dn(); }
+        /** isInfected (cm) / setInfected (f), isBleeding (cn) / setBleeding (g), hasBrokenLeg (cl) / setBrokenLeg (e). */
+        public boolean infected() { return data.cm(); }
+        public void setInfected(boolean b) { data.f(b); }
+        public boolean bleeding() { return data.cn(); }
+        public void setBleeding(boolean b) { data.g(b); }
+        public boolean brokenLeg() { return data.cl(); }
+        public void setBrokenLeg(boolean b) { data.e(b); }
+        /** getCreativeFlag (cP) / setCreativeFlag (m), healFully (bH). */
+        public boolean creativeFlag() { return data.cP(); }
+        public void setCreativeFlag(boolean b) { data.m(b); }
+        public void healFully() { data.bH(); }
     }
 
     // ---- server config: ServerConfig = deci.aJ.b (static fields)
@@ -234,6 +259,105 @@ public final class Deci
     public static boolean isInfectedInZone(net.minecraft.entity.Entity infected, net.decimation.worldgen.ZoneKind kind)
     {
         return net.decimation.mod.server.zones.b.a((deci.ag.d) infected, zoneType(kind));
+    }
+
+    /** ZoneManager.isPlayerInZone (b.a(EntityPlayer, a)): false for SAFEZONE while the player's combat timer runs. */
+    public static boolean isPlayerInZone(EntityPlayer player, net.decimation.worldgen.ZoneKind kind)
+    {
+        return net.decimation.mod.server.zones.b.a(player, zoneType(kind));
+    }
+
+    /** ZoneManager.isPlayerNearZone (b.b(EntityPlayer, a)): the box grown by 10 blocks. */
+    public static boolean isPlayerNearZone(EntityPlayer player, net.decimation.worldgen.ZoneKind kind)
+    {
+        return net.decimation.mod.server.zones.b.b(player, zoneType(kind));
+    }
+
+    /** ZoneManager.isEntityInZone (b.a(Entity, a)). */
+    public static boolean isEntityInZone(net.minecraft.entity.Entity e, net.decimation.worldgen.ZoneKind kind)
+    {
+        return net.decimation.mod.server.zones.b.a(e, zoneType(kind));
+    }
+
+    /** ZoneManager.isEntityNearZone (b.b(Entity, a)): the box grown by 10 blocks. */
+    public static boolean isEntityNearZone(net.minecraft.entity.Entity e, net.decimation.worldgen.ZoneKind kind)
+    {
+        return net.decimation.mod.server.zones.b.b(e, zoneType(kind));
+    }
+
+    /** ServerConfig.enableIrradiation (aAn). */
+    public static boolean irradiationEnabled()
+    {
+        return deci.aJ.b.aAn;
+    }
+
+    /** ServerConfig.enableSafezoneGrace (aAJ). */
+    public static boolean safezoneGraceEnabled()
+    {
+        return deci.aJ.b.aAJ;
+    }
+
+    /** ServerConfig.enableWorldBorder (aAL). */
+    public static boolean worldBorderEnabled()
+    {
+        return deci.aJ.b.aAL;
+    }
+
+    /**
+     * Sends PacketZoneLists (deci.aE.a$ax) to one player: zone boxes "x1/y1/z1=x2/y2/z2" per type
+     * (safezone, military, radiation, scary, police) and the border box text. The client replaces
+     * its lists (ClientState bS..bW, ca) with them.
+     */
+    public static void sendZoneLists(net.minecraft.entity.player.EntityPlayerMP player, java.util.ArrayList<String> safe,
+                                     java.util.ArrayList<String> military, java.util.ArrayList<String> radiation,
+                                     java.util.ArrayList<String> scary, java.util.ArrayList<String> police, String border)
+    {
+        deci.aF.a.a.a.gB().sendTo(new deci.aE.a.ax(safe, military, radiation, scary, police, border), player);
+    }
+
+    /** The client's safezone list (ClientState.bS, deci.b.i), filled by PacketZoneLists. */
+    @cpw.mods.fml.relauncher.SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)
+    public static java.util.List<String> clientSafezones()
+    {
+        return deci.b.i.bS;
+    }
+
+    // ---- zone related entity kinds
+
+    /** A trader NPC (TraderEntity deci.ai.a, guards included): never attackable in Decimation. */
+    public static boolean isTrader(net.minecraft.entity.Entity e)
+    {
+        return e instanceof deci.ai.a;
+    }
+
+    /** An armed trader (ArmedTraderEntity deci.ai.v): guards, guns / ammo / armor / medical traders. */
+    public static boolean isArmedTrader(net.minecraft.entity.Entity e)
+    {
+        return e instanceof deci.ai.v;
+    }
+
+    /** A civilian human: HumanEntity2 (deci.ah.d) that is neither a bandit kind (deci.ag.a) nor a trader. */
+    public static boolean isCivilian(net.minecraft.entity.Entity e)
+    {
+        return e instanceof deci.ah.d && !(e instanceof deci.ag.a) && !(e instanceof deci.ai.a);
+    }
+
+    /** A trap Decimation keeps away from safezones: landmine, campfire, punji sticks, barbed wire (deci.aj.c / b / e / a). */
+    public static boolean isTrap(net.minecraft.entity.Entity e)
+    {
+        return e instanceof deci.aj.c || e instanceof deci.aj.b || e instanceof deci.aj.e || e instanceof deci.aj.a;
+    }
+
+    /** A projectile Decimation keeps away from safezones: crossbow bolt, rocket, grenade, mortar round (deci.ak.b / f / c / e). */
+    public static boolean isSafezoneProjectile(net.minecraft.entity.Entity e)
+    {
+        return e instanceof deci.ak.b || e instanceof deci.ak.f || e instanceof deci.ak.c || e instanceof deci.ak.e;
+    }
+
+    /** A mech (MechEntity deci.ag.k). */
+    public static boolean isMech(net.minecraft.entity.Entity e)
+    {
+        return e instanceof deci.ag.k;
     }
 
     // ---- registry: ItemRegistry = deci.aD.k, BlockRegistry = deci.aD.c, DamageSources = deci.aD.h

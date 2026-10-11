@@ -56,6 +56,13 @@ public class DecimationWorldGen
     private final List<Schematic> largeSchematics = new ArrayList<Schematic>();
 
     private net.decimation.fixes.NpcLoadouts npcLoadouts;
+    /** Zone rules (dev tests read the provocation state). */
+    static net.decimation.fixes.ZoneRules zoneRules;
+
+    public static net.decimation.fixes.ZoneRules zoneRules()
+    {
+        return zoneRules;
+    }
     private net.decimation.fixes.MilitarySpawner militarySpawner;
     private net.decimation.fixes.VanillaMobs vanillaMobs;
     private net.decimation.fixes.InfectedVariants infectedVariants;
@@ -277,7 +284,11 @@ public class DecimationWorldGen
         cpw.mods.fml.common.FMLCommonHandler.instance().bus().register(store);
         net.minecraftforge.common.MinecraftForge.EVENT_BUS.register(
             new net.decimation.fixes.ZoneSpawnHandler());
-        FMLLog.info("[%s] zone store and zone spawn fix registered", MODID);
+        // Decimation's zone rules in singleplayer, safezones protecting everyone friendly (docs/zones.md)
+        zoneRules = new net.decimation.fixes.ZoneRules();
+        net.minecraftforge.common.MinecraftForge.EVENT_BUS.register(zoneRules);
+        cpw.mods.fml.common.FMLCommonHandler.instance().bus().register(zoneRules);
+        FMLLog.info("[%s] zone store, zone spawn fix and zone rules registered", MODID);
 
         net.minecraftforge.common.MinecraftForge.EVENT_BUS.register(
             new net.decimation.fixes.VehicleHitHandler());

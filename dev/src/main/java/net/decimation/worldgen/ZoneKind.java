@@ -8,5 +8,5 @@ package net.decimation.worldgen;
  */
 public enum ZoneKind
 {
-    MILITARY, POLICE, SAFEZONE
+    MILITARY, POLICE, SAFEZONE, RADIATION, SCARY, BORDER
 }

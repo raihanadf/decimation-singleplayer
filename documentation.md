@@ -228,6 +228,16 @@ iron railings on the edges. In the wasteland district next to military zones the
 road has fallen into the canal: walk across on the sidewalks, no driving. Older worlds keep their cities as they were. Details: docs/city_engine.md "Rivers and
 bridges".
 
+## Zones and safezones (v0.46)
+
+Decimation's zones now work in singleplayer as on its old server: inside a safezone your water
+stays full, no new bleeding, infection or broken leg, no traps or explosives within 10 blocks,
+and nobody friendly can be hurt: you, traders, guards, civilians and friendly soldiers. Hostiles
+(infected, bandits, Soviets) can still be shot there, so the guards defend it. Shoot at someone
+protected and nothing happens to them, but the guards open fire on you for a minute and the
+safezone stops protecting you. Radiation zones irradiate you without a gas mask. Entering a
+safezone prints "Now entering a Safezone" and the GPS map shows the zones. Details: docs/zones.md.
+
 ## Bug and feature tracking
 
 Dated history moved out of this file - see `bug.md` (fixed/open/pending bugs)

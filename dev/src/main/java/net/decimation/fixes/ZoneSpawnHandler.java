@@ -16,23 +16,46 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
  * replicates the infected part 1:1 using the mod's own zone checks
  * ({@code net.decimation.mod.server.zones.b}).
  *
- * On a dedicated server the original handler IS registered, so this one
- * steps aside.
+ * Since v0.46.0 also the rest of that handler (landmines, campfires, punji
+ * sticks, barbed wire, crossbow bolts, rockets, grenades and mortar rounds
+ * within 10 blocks of a safezone are cancelled) and, ours on both sides,
+ * no bandit, Soviet or mech spawns inside a safezone (docs/zones.md).
+ *
+ * On a dedicated server the original handler IS registered, so the copied
+ * parts step aside.
  */
 public class ZoneSpawnHandler
 {
     @SubscribeEvent
     public void onEntityJoinWorld(EntityJoinWorldEvent event)
     {
-        if (FMLCommonHandler.instance().getSide().isServer())
-        {
-            return; // dedicated server: original deci.aK.d handles it
-        }
-        if (event.world.isRemote || !Deci.isInfected(event.entity))
+        if (event.world.isRemote)
         {
             return;
         }
-        net.minecraft.entity.Entity infected = event.entity;
+        net.minecraft.entity.Entity e = event.entity;
+        // ours, on both sides: no hostile NPC spawns inside a safezone (Decimation only stops infected)
+        if ((Deci.npcKind(e) == NpcKind.BANDIT || Deci.npcKind(e) == NpcKind.SOVIET || Deci.isMech(e))
+            && Deci.isEntityInZone(e, ZoneKind.SAFEZONE))
+        {
+            event.setCanceled(true);
+            return;
+        }
+        if (FMLCommonHandler.instance().getSide().isServer())
+        {
+            return; // dedicated server: original deci.aK.d handles the rest
+        }
+        // traps and explosives within 10 blocks of a safezone (EntitySpawnZoneHandler)
+        if ((Deci.isTrap(e) || Deci.isSafezoneProjectile(e)) && Deci.isEntityNearZone(e, ZoneKind.SAFEZONE))
+        {
+            event.setCanceled(true);
+            return;
+        }
+        if (!Deci.isInfected(e))
+        {
+            return;
+        }
+        net.minecraft.entity.Entity infected = e;
         double roll = Math.random();
         if (Deci.isInfectedInZone(infected, ZoneKind.MILITARY))
         {

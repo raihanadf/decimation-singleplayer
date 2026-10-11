@@ -884,6 +884,14 @@ the user before building.
    attack inside, while the user wants guards to turn on a player who
    shoots or hits someone inside; the plan must say what "provoked" means
    (a shot fired inside, an attack attempt on a trader / civilian).
+   User answer (11 Oktober 2026): "since there is safezone zones in decimation, you can use that so
+   if player shot, the trader or any npc or any player can be safe. learn how zone working ...
+   end by end"; destroying a safezone later, plan in docs (docs/zones.md section 8).
+   Step 1 DONE v0.46.0 (fixes/ZoneRules, docs/zones.md): Decimation's zone rules working in
+   singleplayer plus protection of every friendly entity in a safezone; provoked = a player
+   attacks someone protected inside: no damage, guards and soldiers within 64 blocks fire on them
+   for 60 s after the last offence, their combat timer runs (no safezone protection). Dev test
+   `zones` 19 PASS.
 2. Player claimable zone areas. Exists: Decimation's TURF system
    (net.decimation.mod.server.turf: TurfManager add / remove / owner /
    isCapturable, turfs json, TurfCommands), server proxy only, so likely

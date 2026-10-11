@@ -835,3 +835,18 @@ bullet impacts on blocks (until now only player shots made them).
   10 = vanilla, 0 = every hit lands) replaces `npcHitsSkipCooldown`. An
   NPC hit 4 ticks after the last is dropped, 5 ticks after lands
   (checks mode); a group lands at most about 4 hits a second.
+
+## Zone rules dead in singleplayer: safezone PvP / water / traps, radiation, scary, client zone lists (found 11 Oktober 2026, FIXED v0.46.0)
+
+Found while studying the zone system for the safezone feature (docs/zones.md). Decimation's zone
+handlers that are not about plain damage live in the server proxy with @SideOnly(SERVER) methods
+(PlayerZoneTickHandler deci.aK.m, SafezoneAttackHandler deci.aK.g, FriendlyFireHandler
+deci.aK.i, most of EntitySpawnZoneHandler deci.aK.d), so in singleplayer: radiation zones never
+irradiated anyone, safezones never refilled water, traps / rockets / grenades were not kept away,
+the grace timer protected nobody, conditions could start inside a safezone (PlayerData setters
+check the zone only on a dedicated server), and the client never got any zone list (only
+ZoneManager.refreshZones sends one, with the json file zones only), so no "Now entering a
+Safezone" line and no map markers, on a server too for our generated zones.
+Fix: fixes/ZoneRules (copies of the server handlers, stepping aside on a dedicated server, plus
+the client zone list sync on both) and ZoneSpawnHandler (traps, projectiles; ours: no bandits,
+Soviets, mechs spawning inside a safezone). Checked: dev test `zones`, 19 checks PASS.

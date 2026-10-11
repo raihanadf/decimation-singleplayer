@@ -45,13 +45,13 @@ public class ZoneStore
     private static boolean dirty;
     private static int tick;
 
-    /** Called by the structure generator after a structure is placed. */
-    public static synchronized void add(ZoneKind type,
+    /** Called by the structure generator after a structure is placed; the zone, or null without a world. */
+    public static synchronized ObjectZone add(ZoneKind type,
                                         int x1, int y1, int z1, int x2, int y2, int z2)
     {
         if (file == null)
         {
-            return; // no overworld loaded (should not happen during generation)
+            return null; // no overworld loaded (should not happen during generation)
         }
         ObjectZone zone = new ObjectZone();
         zone.zoneType = net.decimation.fixes.Deci.zoneType(type);
@@ -64,6 +64,20 @@ public class ZoneStore
         zones.add(zone);
         live().zoneList.add(zone);
         dirty = true;
+        return zone;
+    }
+
+    /** Takes a zone of ours out of this world and the live list (dev tests; later a fallen safezone). */
+    public static synchronized boolean remove(ObjectZone zone)
+    {
+        ObjectZoneList live = net.decimation.fixes.Deci.zoneList();
+        if (live != null && live.zoneList != null)
+        {
+            live.zoneList.remove(zone);
+        }
+        boolean had = zones.remove(zone);
+        dirty |= had;
+        return had;
     }
 
     public static synchronized int size()

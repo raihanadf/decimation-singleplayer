@@ -111,6 +111,9 @@ Knowledge index:
 - `docs/interior_spec.md`: design spec for interiors and exteriors
   (surfaces, doors, room programs, story / decay layer, exterior, how to
   verify, building categories); round 2 step 4c, approved 2026-10-07.
+- `docs/zones.md`: Decimation's zone system end to end (safezone, military, police,
+  radiation, scary, border; checks, handlers, client lists) and what fixes/ZoneRules makes
+  work in singleplayer; safezone sites and the "destroyed by the player" plan.
 - `docs/city_engine.md`: the Lost Cities style city from converted
   DeceasedCraft content (tools/lcpack.py, city/LcContent, city/LcCity).
 - `docs/worldgen_architecture.md`: worldgen v3 design (engine + data
@@ -767,6 +770,9 @@ of the last session:
   RiverPlan: same road / paint / sidewalks / lamps, deck and piers below, railings
   on non street edges, wasteland bridges broken (hole in the road); DC bridge parts
   dropped (user review). City work: skill decimation-city.
+  v0.46.0: zones work in singleplayer (fixes/ZoneRules, docs/zones.md): copies of the
+  server only zone handlers, safezones protect every friendly entity, provocation (guards fire
+  on a player who attacks someone protected), client zone lists; dev test `zones` (19 checks).
   Gun study (10 Oktober 2026): docs/gun_style_guide.md, tools/guns/study.py
   (renders / measures Decimation's guns from the jar, `attach` adds
   attachments as the game places them), dev test mode `gunview` (hip, aim
