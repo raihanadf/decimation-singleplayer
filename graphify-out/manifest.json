@@ -55,9 +55,9 @@
     "semantic_hash": "a8275a2346aba150ede02e93b8d62196"
   },
   "dev/src/main/java/net/decimation/worldgen/DevAutoTest.java": {
-    "mtime": 1791705297.2657776,
-    "ast_hash": "af87bee93c5eecb1ba15dacb00fa1c5f",
-    "semantic_hash": "af87bee93c5eecb1ba15dacb00fa1c5f"
+    "mtime": 1791709847.3658576,
+    "ast_hash": "1fd846439bcfa9108063b35fc6348c4d",
+    "semantic_hash": "1fd846439bcfa9108063b35fc6348c4d"
   },
   "dev/src/main/java/net/decimation/worldgen/Rotation.java": {
     "mtime": 1791315242.0110583,
@@ -110,9 +110,9 @@
     "semantic_hash": "de153d1f8408971d6190e16a7d4256f9"
   },
   "CLAUDE.md": {
-    "mtime": 1791706352.2004554,
-    "ast_hash": "8591694b722467f3aace6a8038d96bbe",
-    "semantic_hash": "8591694b722467f3aace6a8038d96bbe"
+    "mtime": 1791709915.1702464,
+    "ast_hash": "64b3c7227256bd9d0dcd0765db21ed54",
+    "semantic_hash": "64b3c7227256bd9d0dcd0765db21ed54"
   },
   "DECIMATION_MOD_TASK.md": {
     "mtime": 1784958353.0126374,
@@ -120,9 +120,9 @@
     "semantic_hash": "aa4550575e47e7c1d0b020a51afbb501"
   },
   "bug.md": {
-    "mtime": 1791709334.269507,
-    "ast_hash": "59cabda68176f931834b283107f2ca7c",
-    "semantic_hash": "59cabda68176f931834b283107f2ca7c"
+    "mtime": 1791709915.1697388,
+    "ast_hash": "bb3f8fc08e29699a897fd1a75f90732e",
+    "semantic_hash": "bb3f8fc08e29699a897fd1a75f90732e"
   },
   "create_weapons.md": {
     "mtime": 1791653625.5948887,
@@ -325,9 +325,9 @@
     "semantic_hash": "0145e0863788d451e8ae4273d3c2abdd"
   },
   "docs/shots_index.md": {
-    "mtime": 1791709334.3296776,
-    "ast_hash": "0f58bd083a2e4194bda1d8881f9d7f7c",
-    "semantic_hash": "0f58bd083a2e4194bda1d8881f9d7f7c"
+    "mtime": 1791709915.168895,
+    "ast_hash": "650b689bd1fecbd2ba43af0ea93fe9e2",
+    "semantic_hash": "650b689bd1fecbd2ba43af0ea93fe9e2"
   },
   "docs/interior_spec.md": {
     "mtime": 1791385593.9436893,
@@ -1085,8 +1085,13 @@
     "semantic_hash": "4a94e1b5ab540e7b3d1944382ae5fb57"
   },
   "docs/safezone.md": {
-    "mtime": 1791709334.2688582,
-    "ast_hash": "6c2805f4fb0c940d062b187a6f2f1236",
-    "semantic_hash": "6c2805f4fb0c940d062b187a6f2f1236"
+    "mtime": 1791709915.169218,
+    "ast_hash": "c563b61e064047850e84eb921a54b731",
+    "semantic_hash": "c563b61e064047850e84eb921a54b731"
+  },
+  "dev/src/main/java/net/decimation/worldgen/devtest/CampCommandTest.java": {
+    "mtime": 1791709840.3908079,
+    "ast_hash": "025217fd397a4bde832ba8a01f111a92",
+    "semantic_hash": "025217fd397a4bde832ba8a01f111a92"
   }
 }

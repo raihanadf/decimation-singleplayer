@@ -91,6 +91,9 @@ No loot: Decimation gives no loot from containers inside or within 10 blocks of 
   `-Pturns=0..3`, `-Pseed=N`. Since v0.47.1 the camp keeps its zone and people after the test
   (an earlier run's are removed first): the user visited the sky camp and found it empty
   (11 Oktober 2026, docs/shots/safezone_camp_v0.47.0_review/user_119.png).
+- Dev test `campcmd` (devtest/CampCommandTest): runs `/deciworldgen camp 1` as the player on
+  real ground at -21000, -19700 in the test world, checks the site and its 20 residents, one
+  aerial shot.
 - `python3 tools/props/propclash.py dev/run/client/devtest/camp.tsv` and
   `python3 tools/props/walkcheck.py dev/run/client/devtest/camp.tsv`: both 0 (walkcheck opens
   fence gates since v0.47.0).
@@ -100,6 +103,10 @@ No loot: Decimation gives no loot from containers inside or within 10 blocks of 
 Checked v0.47.0 (11 Oktober 2026): turns 0 and 1 all PASS (6 guards, 6 traders, 5 civilians,
 3 survivors), propclash 0 (60 props), walkcheck 0; first build had 6 clashes (stretchers into
 the tent end, long cases 1 cell apart: now 2) and an outhouse seat leaving no head room.
+Checked v0.47.1: camp test turns 0 all PASS (residents 6 / 6 / 5 / 3), the site and all 20
+residents saved in the test world after the test (deciworldgen_safezones.json, entity data in
+the region files), awning fronts coloured; campcmd PASS (20 residents). Not tested: the dedicated
+server respawn after Decimation's trader reset `[not verified]`.
 Real worldgen: seed 1 fresh server world, `pregen=832,448,9`: camp S6_3 at 816,70,399, turned
 90, 20 residents registered; top down render seed1_S6_3_top.png: the camp on grass, ground
 graded around it, trees cleared. Residents spawn only with a player near (not in servertest).

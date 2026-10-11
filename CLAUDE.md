@@ -779,6 +779,9 @@ of the last session:
   (MilitaryBasePlan moved onto it), SAFEZONE + residents (SafezoneSites keeper spawns traders,
   guards, civilians, survivor tier) in wild / civilian sites, new worlds only
   ("!safezoneCamps"); dev test `camp`; walkcheck opens fence gates.
+  v0.47.1: camp test keeps its camp populated, trader / guard respawn at once after a dedicated
+  server's trader reset (Decimation wipes all traders every 3000 ticks there), awning fronts
+  coloured, `/deciworldgen camp [turns]` (dev test `campcmd`).
   Gun study (10 Oktober 2026): docs/gun_style_guide.md, tools/guns/study.py
   (renders / measures Decimation's guns from the jar, `attach` adds
   attachments as the game places them), dev test mode `gunview` (hip, aim

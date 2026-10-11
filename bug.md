@@ -861,5 +861,6 @@ decimation_traders.json), stripped in singleplayer. The camp shown was the dev t
 in deciworldgen_devtest (the user's game had that world open, log "survivor camps off"), whose
 residents and site the camp test removed at its end. Fixes: the test keeps its camp populated;
 on a dedicated server the keeper respawns traders and guards at once after a reset; awning
-front edges coloured; `/deciworldgen camp` to place a populated camp anywhere. Peaceful
+front edges coloured; `/deciworldgen camp` to place a populated camp anywhere. Checked: camp
+test all PASS, all 20 residents saved in the world after the test, campcmd 20 residents. Peaceful
 difficulty removes Decimation humans (EntityMob) `[inferred]`, documented in docs/safezone.md.

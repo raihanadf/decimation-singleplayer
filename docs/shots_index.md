@@ -11,6 +11,15 @@ How shots are made: `./gradlew runClient -Pautotest` (street views),
 `-Paudit` (building audit), `-Pgallery` (prop gallery); output in
 `dev/run/client/screenshots/`, then copied here into a versioned folder.
 
+## safezone_camp_v0.47.1/ (camp people kept, awning fronts, camp command, 11 Oktober 2026)
+- camp_market.png (dev test camp, turns 0): the market street, awning front edges coloured
+  (green, blue, red left; orange, yellow, brown right), a trader behind every counter, guards
+  and civilians further up the street.
+- campcmd_aerial.png (dev test campcmd, /deciworldgen camp 1 on real ground at -21000, 67,
+  -19700): the camp turned 90 on grass land, graded, people on the plaza and street, a highway
+  passing north of it (the command does not avoid highways); the lower half of the frame is the
+  camera inside the hillside south of it.
+
 ## safezone_camp_v0.47.0_review/ (user review of the survivor camp, 11 Oktober 2026)
 - user_119.png (user's dev client, creative, the dev test sky camp in deciworldgen_devtest):
   the market street from the gate end, both rows of stalls with counters, goods (medical cases
