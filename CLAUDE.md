@@ -297,6 +297,8 @@ SRG→MCP from the old root `src/` via `mcp_stable/12` CSVs; the root `src/` +
   sight is attached (deci/K/b, deci/n/f on top of PatchScope; Javassist
   reads a class path as a jar only if it ends in `.jar`, so feed it
   dist/Decimation.jar, not Decimation.jar.patched);
+  `PatchVehicleArrows.java` (2026-10-11, bug.md vehicle entry): indirect player hits
+  (arrows, thrown, TNT) on deci/ad/e take the health path, not pickup;
   `PatchInfectedAI.java` (2026-10-10, docs/performance.md): infected
   wander path search server side once a second instead of every tick on
   both sides, horde scan every 10 ticks (deci/ag/d);
@@ -791,6 +793,10 @@ of the last session:
   ("!cityRefuges"); dev test `refuge`. Canvas metadata 0 now turns (gates / stairs in rotated
   compounds). One launch devtest runs ignore key=value: rotations through `--live MODE turns=N`.
   walkcheck climbs stairs; propclash skips multiblock upper parts.
+  v0.48.1: arrows / thrown items / player TNT no longer pick up an empty vehicle
+  (tools/patches/PatchVehicleArrows.java, three jars; checks "vehicle arrow"). Test trap: a live
+  `checks` run right after camp / refuge leaves the player in a safezone (damage and spawn checks
+  FAIL): run an arena mode first (`--live zombies checks`).
   Gun study (10 Oktober 2026): docs/gun_style_guide.md, tools/guns/study.py
   (renders / measures Decimation's guns from the jar, `attach` adds
   attachments as the game places them), dev test mode `gunview` (hip, aim

@@ -22,8 +22,6 @@ or `[not decided]`.
    impact; height can differ between two new worlds of one seed near the
    edge of the generated area). bug.md "Building base height depends on
    chunk generation order".
-4. **Arrows still pick up empty vehicles** (punching was fixed in v0.8.1).
-   bug.md "Military jeep/tank/helicopter destroyed in one hit".
 
 ## Worldgen and cities
 
@@ -192,6 +190,8 @@ docs/gun_model_spec.md); every user review goes into its lessons and casebook.
   rail.
 - v0.41.0 / 0.41.1 EOTech 558 and ACOG TA11 of our own, reticles in the glass swaying with the
   gun, Mk18 IMI TS stock, HK416 front sight folds away; accepted.
+- v0.48.1 arrows, thrown items and the player's TNT no longer pick up an empty vehicle
+  (tools/patches/PatchVehicleArrows.java).
 - v0.48.0 city refuges: one fortified building per city region (walled yard, chicane gate,
   market hall of 6 traders, clinic, canteen, dormitory, armory, roof guards; new worlds).
 - v0.47.0 survivor camps: walled safezones outside the cities with a market of traders, guards,

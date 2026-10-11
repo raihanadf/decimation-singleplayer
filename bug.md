@@ -673,6 +673,19 @@ at the end of this file.)
   Not covered: projectiles (arrows) fired by a player still trigger pickup.
   Verified by the unattended singleplayer test: survival punch leaves a
   hummer alive, sneak punch picks it up.
+- **Arrows FIXED in v0.48.1 (11 Oktober 2026)**: the body's pickup test is
+  `getEntity() instanceof EntityPlayer`, and an arrow's source entity is the
+  shooter (indirect source), so arrows, thrown items and the player's own TNT
+  picked an empty vehicle up (TNT `[inferred]` from vanilla Explosion: its source is
+  indirect with the placer as the entity; not tested). No Forge event covers damage to a non living
+  entity, so `tools/patches/PatchVehicleArrows.java` (Javassist, three jars,
+  only vanilla names) swaps an indirect player source for
+  `DamageSource.generic` at the start of `deci.ad.e.func_70097_a`: those hits
+  now take the health path. Melee, sneak pickup, creative punch and gun
+  bullets unchanged. Dev test `checks` "vehicle arrow" (arrow and snowball
+  damage with the player as shooter): FAIL before the patch (picked up), PASS
+  after. A real bow shot in game not tried `[not verified]` (the test calls
+  attackEntityFrom with the same source EntityArrow builds).
 
 ### Bottlecaps only work as a plain item in singleplayer, not as currency
 - **Reported**: 27 Juli 2026

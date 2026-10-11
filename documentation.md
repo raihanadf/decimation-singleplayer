@@ -159,6 +159,9 @@ boot. Falls straight through to the mod's own (re-skinned) main menu after that.
   snipers spot enemies up to `sniperRange` 70 blocks (was 96); the Barrett tiers (juggernaut
   sniper 60 hp, elite sniper 38 hp) die to one 30 round 5.56 magazine (8 per player hit x their
   damage share). Config version 3: older files take these new defaults once.
+- **Vehicles and arrows (v0.48.1)**: an arrow, a thrown item or (not tested) your own TNT hitting an empty
+  jeep, tank or helicopter damages it instead of picking it up. Sneak + punch still picks an
+  empty vehicle up; a plain punch in survival does nothing (v0.8.1).
 - **Military wrecks (v0.42.5)**: the jeep, APC and helicopter wrecks take 50 s to break by hand
   (were one punch).
 - **NPC burst rate (v0.39.2)**: NPC automatic fire is capped at 600 rounds a minute

@@ -492,11 +492,26 @@ public class ServerChecks extends DevTestMode
         boolean pickedUpSneaking = vehicle.isDead;
         p.setSneaking(false);
         vehicle.setDead();
-        p.setGameType(WorldSettings.GameType.CREATIVE);
         FMLLog.info("[%s] AUTOTEST vehicle: survives survival punch=%s, sneak punch picks up=%s",
                     DecimationWorldGen.MODID, survivedPunch, pickedUpSneaking);
         DevTestResults.check("checks", "vehicle punch", "survives=" + survivedPunch + " sneak pickup=" + pickedUpSneaking,
                              survivedPunch && pickedUpSneaking, "survives a punch, sneak punch picks up");
+
+        // arrows and thrown things hit with the shooter as the source entity (PatchVehicleArrows)
+        net.minecraft.entity.Entity target = net.decimation.fixes.Deci.newHummer(p.worldObj, p.posX + 3, p.posY, p.posZ);
+        p.worldObj.spawnEntityInWorld(target);
+        net.minecraft.entity.projectile.EntityArrow arrow = new net.minecraft.entity.projectile.EntityArrow(p.worldObj, p, 1.0F);
+        target.attackEntityFrom(net.minecraft.util.DamageSource.causeArrowDamage(arrow, p), 6.0F);
+        boolean survivedArrow = !target.isDead;
+        net.minecraft.entity.projectile.EntitySnowball ball = new net.minecraft.entity.projectile.EntitySnowball(p.worldObj, p);
+        target.attackEntityFrom(net.minecraft.util.DamageSource.causeThrownDamage(ball, p), 0.0F);
+        boolean survivedThrown = !target.isDead;
+        target.setDead();
+        p.setGameType(WorldSettings.GameType.CREATIVE);
+        FMLLog.info("[%s] AUTOTEST vehicle: survives arrow=%s, thrown=%s",
+                    DecimationWorldGen.MODID, survivedArrow, survivedThrown);
+        DevTestResults.check("checks", "vehicle arrow", "arrow=" + survivedArrow + " thrown=" + survivedThrown,
+                             survivedArrow && survivedThrown, "an arrow or a snowball does not pick it up");
     }
 
     private void run(WorldServer world)
