@@ -920,6 +920,13 @@ the user before building.
    Update: since v0.42.0 / v0.42.1 our own US FOB style bases replace the
    mil_ schematics (docs/military_base.md).
 8. Advanced bandits. Exists: bandit tiers (light / medium / heavy / rpg).
+   Step 3 DONE v0.48.0 (docs/safezone.md section 7): city refuges. User choice (11 Oktober
+   2026): our own building on a whole city block (not a fortified DeceasedCraft building), on
+   the block nearest each city region's middle. 48 x 48: barriers and wire at the street, a
+   concrete wall, gate with a sandbag chicane and two guards, a three storey concrete building
+   (lobby with registration desk, market hall of 6 stalls, clinic, canteen; dormitory; armory,
+   guard bunks, command; roof with 4 guard nests, spotlight, flag), yard with tents, aid
+   distribution, APC, generator, water, garden; 22 residents. New worlds only ("!cityRefuges").
 
 ### More zombie variants, 60 round magazines, NPC bullet impacts (9 Oktober 2026, "later")
 #### Zombie variants design (started 9 Oktober 2026, user choice)

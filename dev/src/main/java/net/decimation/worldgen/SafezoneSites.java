@@ -65,6 +65,8 @@ public class SafezoneSites
         public String id;
         public int x0, y0, z0, x1, y1, z1;
         public boolean filled;
+        /** Box edge to wall line (Residents.wallInset); 0 in sites saved before v0.48 = 8 (camps). */
+        public int inset;
         public List<Post> posts = new ArrayList<Post>();
     }
 
@@ -85,6 +87,13 @@ public class SafezoneSites
     /** Called by Slices when a resident plan's first slice is written. */
     public static synchronized void add(String id, int x0, int y0, int z0, int x1, int y1, int z1, List<Post> posts)
     {
+        add(id, x0, y0, z0, x1, y1, z1, posts, 8);
+    }
+
+    /** As above, with the wall line inset cells inside the box (Residents.wallInset). */
+    public static synchronized void add(String id, int x0, int y0, int z0, int x1, int y1, int z1, List<Post> posts,
+                                        int inset)
+    {
         if (file == null || find(id) != null)
         {
             return;
@@ -97,6 +106,7 @@ public class SafezoneSites
         s.x1 = Math.max(x0, x1);
         s.y1 = Math.max(y0, y1);
         s.z1 = Math.max(z0, z1);
+        s.inset = inset;
         s.posts.addAll(posts);
         sites.add(s);
         dirty = true;
@@ -160,6 +170,25 @@ public class SafezoneSites
     public static void forceCamps(boolean on)
     {
         camps = on;
+    }
+
+    /** City refuges in this world (LcCity): worlds created since v0.48 (StructureData REFUGES_KEY). */
+    private static volatile boolean refuges;
+    static final String REFUGES_KEY = "!cityRefuges";
+
+    public static boolean refuges()
+    {
+        return refuges;
+    }
+
+    /** Switches city refuges for this session (dev tests); not stored. Cached city plans are dropped. */
+    public static void setRefuges(boolean on)
+    {
+        if (refuges != on)
+        {
+            refuges = on;
+            net.decimation.worldgen.city.LcCity.layoutChanged();
+        }
     }
 
     /** True when the world stored survivor camps on. */
@@ -258,14 +287,16 @@ public class SafezoneSites
      * Puts a resident back where it belongs (user review 11 Oktober 2026: a guard "flying" on the
      * wall): traders and guards stand on their post; civilians and survivors walk about, but back
      * to their post when found higher than a step above it (a wall, a roof, a tower) or outside the
-     * camp's inner area (the site box less the 6 block zone margin and the wall).
+     * site's inner area (the site box less the zone margin and the wall: Site.inset).
      */
     static void reseat(Site s, Post p, EntityLiving e)
     {
         boolean fixed = p.kind.startsWith("trader:") || p.kind.equals("guard");
         double d = Math.hypot(e.posX - p.x, e.posZ - p.z);
+        int in = s.inset > 0 ? s.inset : 8;
         boolean off = fixed ? d > 0.7 || Math.abs(e.posY - p.y) > 0.6
-            : e.posY > p.y + 1.6 || e.posX < s.x0 + 9 || e.posX > s.x1 - 8 || e.posZ < s.z0 + 9 || e.posZ > s.z1 - 8;
+            : e.posY > p.y + 1.6 || e.posX < s.x0 + in + 1 || e.posX > s.x1 - in || e.posZ < s.z0 + in + 1
+              || e.posZ > s.z1 - in;
         if (!off)
         {
             return;
@@ -384,6 +415,17 @@ public class SafezoneSites
         String force = System.getProperty("deciworldgen.camps");
         camps = force != null ? "true".equals(force) : v == 1;
         FMLLog.info("[%s] survivor camps %s", DecimationWorldGen.MODID, camps ? "on" : "off");
+        // city refuges (one fortified building per city region): worlds created since v0.48 only,
+        // an older world would get a refuge cut into a block whose other chunks hold buildings
+        Integer rv = data.baseY(REFUGES_KEY);
+        if (rv == null)
+        {
+            rv = world.getTotalWorldTime() == 0 ? 1 : 0;
+            data.setBaseY(REFUGES_KEY, rv);
+        }
+        String rforce = System.getProperty("deciworldgen.refuges");
+        setRefuges(rforce != null ? "true".equals(rforce) : rv == 1);
+        FMLLog.info("[%s] city refuges %s", DecimationWorldGen.MODID, refuges ? "on" : "off");
         synchronized (SafezoneSites.class)
         {
             sites.clear();

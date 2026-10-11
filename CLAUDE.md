@@ -115,7 +115,7 @@ Knowledge index:
   radiation, scary, border; checks, handlers, client lists) and what fixes/ZoneRules makes
   work in singleplayer; safezone sites and the "destroyed by the player" plan.
 - `docs/safezone.md`: safezone sites: survivor camps (layout, residents and their keeper,
-  placement, test), fortified city buildings next.
+  placement, test) and city refuges (our fortified building, one per city region, section 7).
 - `docs/city_engine.md`: the Lost Cities style city from converted
   DeceasedCraft content (tools/lcpack.py, city/LcContent, city/LcCity).
 - `docs/worldgen_architecture.md`: worldgen v3 design (engine + data
@@ -785,6 +785,12 @@ of the last session:
   v0.47.2: no provocation (user: friendlies get hit by accident), keeper fills a camp only when
   its chunks are populated and puts residents back (a guard hung over the wall), entry sign one
   block out, cosmetic props (jeeps, car, care packages, crates, barrels, tyres, table).
+  v0.48.0: city refuges (docs/safezone.md section 7): military/CityRefuge on the block nearest each
+  city region's middle (LcCity.refuge), walled yard, chicane gate, three storey building with a
+  market hall, clinic, canteen, dormitory, armory, roof guards; 22 residents; new worlds only
+  ("!cityRefuges"); dev test `refuge`. Canvas metadata 0 now turns (gates / stairs in rotated
+  compounds). One launch devtest runs ignore key=value: rotations through `--live MODE turns=N`.
+  walkcheck climbs stairs; propclash skips multiblock upper parts.
   Gun study (10 Oktober 2026): docs/gun_style_guide.md, tools/guns/study.py
   (renders / measures Decimation's guns from the jar, `attach` adds
   attachments as the game places them), dev test mode `gunview` (hip, aim

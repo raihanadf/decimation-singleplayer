@@ -86,6 +86,8 @@ def main():
             return "free" if m & 4 else "slab"
         if n == "fence_gate":
             return "free"           # a player opens it like a door (survivor camp gate, garden)
+        if n.endswith("_stairs") and not m & 4:
+            return "stairs"         # a stair climbs one storey after another (city refuge)
         if any(n == k or n.startswith(k) for k in NEVER_PASS):
             return "wire"
         if any(n == k or n.startswith(k) for k in PASS_VANILLA):
@@ -105,7 +107,7 @@ def main():
         return kind(x, y, z) in ("free", "door", "ladder")
 
     def support(x, y, z):
-        return kind(x, y, z) in ("solid", "slab")
+        return kind(x, y, z) in ("solid", "slab", "stairs")
 
     def standable(x, y, z):
         if not (passable(x, y, z) and passable(x, y + 1, z)):
@@ -128,7 +130,9 @@ def main():
             # up 1: the block jumped onto must be a full support, room for the head on the way
             # (never up to y 4 or higher: walls, roofs and decks are reached by ladders only; a
             # route over a slumped HESCO cell onto the wall top is real, but not the way in)
-            if y + 1 < 4 and standable(nx, y + 1, nz) and passable(x, y + 2, z) and kind(nx, y, nz) != "fence":
+            # (a stair step is the exception: stairs climb storeys)
+            if (y + 1 < 4 or kind(nx, y, nz) == "stairs") and standable(nx, y + 1, nz) and passable(x, y + 2, z) \
+                    and kind(nx, y, nz) != "fence":
                 out.append((nx, y + 1, nz))
             if standable(nx, y, nz):
                 out.append((nx, y, nz))

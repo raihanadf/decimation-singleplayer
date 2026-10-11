@@ -53,9 +53,10 @@ final class Canvas
         set(x, y, z, b, 0, PLAIN);
     }
 
+    /** A vanilla block with metadata, turned with the canvas (Rotation; metadata 0 too: stairs east, fence gates). */
     void set(int x, int y, int z, Block b, int m)
     {
-        set(x, y, z, b, m, m == 0 ? PLAIN : VANILLA);
+        set(x, y, z, b, m, VANILLA);
     }
 
     /** A Decimation prop facing east 2, south 3, west 4, north 5 (its front). */

@@ -22,6 +22,28 @@ How shots are made: `./gradlew runClient -Pautotest` (street views),
   logs it stood on; inside, the market with traders, guards behind sandbags, a civilian lying on
   the street.
 
+## city_refuge_v0.48.0/ (city refuge, dev test refuge, turns 0, 11 Oktober 2026)
+- sheet_turns0.png: all 26 camera points. refuge_gate_outside.png: the wall with jersey barriers
+  and wire along the apron, the gate with the green "Entering Safezone!" sign, the three storey
+  concrete building behind. refuge_main_road.png: the closed fence gates from inside.
+  refuge_chicane.png: the entry channel from above, sandbag walls, two staggered barrier lines,
+  a guard each side, the red exit sign over the gate.
+- refuge_front.png: the entrance, double metal door, sandbag vestibule, wall flag, boarded
+  ground floor windows. refuge_aerial.png: the whole block in the sky test, roof with bulkhead,
+  flag and water tank, tents (sand / brown / green / grey) south west, asphalt yard.
+- refuge_market.png and refuge_stall_*.png: the hall along the stone brick aisle, striped
+  awnings, a trader behind each two table counter, goods at the back. refuge_lobby.png: the
+  registration desk with monitor and chair, the desk guard, the door. refuge_clinic.png:
+  stretchers, patient beds, a shelf. refuge_canteen.png: tables with chairs, kitchen behind.
+- refuge_dormitory.png: rows of beds, civilians. refuge_command.png: radio desks in the second
+  floor hall. refuge_armory.png: shelves, weapon cabinets, ammunition. refuge_bunks.png: guard
+  beds and crates. refuge_roof.png: spotlight, flag, bulkhead door, sandbag nests with guards.
+  refuge_stair.png (reshot after moving the camera): run A of the stair climbing along the north
+  wall through the opened slab, the hall's first stall on the right.
+- refuge_tent_inside.png, refuge_distribution.png (tables, supplies, sawhorses, the car),
+  refuge_west_yard.png (generator, barrels, locker), refuge_east_yard.png (raised beds),
+  refuge_north_yard.png (the narrow strip behind the building, bins).
+
 ## safezone_camp_v0.47.2/ (after the review)
 - gate_outside.png: the entry sign now one block outside the lintel (its stripes over the gate).
 - clutter_west.png: a black civilian car wreck parked along the west wall, the generator yard and

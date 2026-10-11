@@ -1,12 +1,12 @@
-# Safezone sites: survivor camps (and fortified city buildings, next)
+# Safezone sites: survivor camps and city refuges
 
 User request 11 Oktober 2026: "create safezone maybe that have trader + guard inside?"; choices
 (new_feature.md "Zones, factions and world" item 1): one per city AND camps outside, a walled
 camp of our own generator AND a fortified city building, guards friendly unless provoked
 (provocation removed later, v0.47.2: friendlies get hit by accident),
 traders, guards, unarmed civilians and armed survivors. The zone rules are docs/zones.md
-(v0.46.0). This doc: the sites. v0.47.0 builds the survivor camps outside cities; the fortified
-city building is the next step `[not built]`.
+(v0.46.0). This doc: the sites. v0.47.0 builds the survivor camps outside cities; v0.48.0 the
+fortified city building ("city refuge", section 7), one per city region.
 
 ## 1. References (research 11 Oktober 2026)
 
@@ -123,7 +123,82 @@ Shots: docs/shots/safezone_camp_v0.47.0/ (shots_index.md).
 
 ## 6. Next
 
-- Fortified city building, one per city (user choice): a converted building chosen near the
-  city centre, barricaded (sandbags, boarded windows, wire), traders on the ground floor, guards
-  at the doors, the SAFEZONE box tight around its lot `[not built]`.
 - Destroyed by the player: plan in docs/zones.md section 8.
+
+## 7. City refuge: the fortified city building (v0.48.0, 11 Oktober 2026)
+
+User choices (11 Oktober 2026, "start the fortified city building now"): OUR OWN building on one
+whole city block (not a fortified DeceasedCraft building: their interiors differ per building
+and rotation, the community centre is a campus with a pool and garden, so trader posts would be
+hand picked per building), on the block nearest the middle of each city region.
+
+References (research 11 Oktober 2026): entry control points are built as segments (approach,
+identity check, inspection, a way to turn back) with barriers that slow the way in and a guard
+post; standoff from the street by barriers before the wall
+(https://breakingac.com/news/2026/jan/05/designing-safer-access-control-points-for-military-and-government-sites/,
+UFC 4-022-01 cited there; the numbers are FOUO `[not verified]`). Shelters in public buildings:
+reception / registration at a controlled entrance, dormitory, medical area, cafeteria, command,
+distribution point, generators away from the rooms (NJ shelter field guide
+https://nj.gov/humanservices/oem/documents/Shelter_Field_Guide_508_f3.pdf, Virginia MRC shelter
+training https://www.vdh.virginia.gov/content/uploads/sites/17/2022/02/MRC-Shelter-Training-Slides.pdf).
+
+Code: worldgen/military/CityRefuge (canvas 48 x 48 x 21, gate south) and CityRefugePlan
+(CanvasPlan + FixedBase + Residents: ground floor at the city ground, no grading, Slices adds the
+SAFEZONE box 2 around and the residents with wall inset 4). Placement: LcCity.refuge(seed, rx,
+rz) picks, per city region (4 x 4 cells), the plain block (no superblock, no river chunk)
+nearest the region's middle (ties by hash), turned so the gate opens on a street at the block's
+own ground (west / north are its own streets, east / south only when the next cell is at the
+same level), toward the region's middle when possible. LcCity.plan() then puts the refuge plan
+on the 3 x 3 building chunks instead of buildings (id lcz_<cellX>_<cellZ>, log "city refuge
+(safezone) rot N lcz_.. at x,y,z").
+| Part | Where (canvas) | Blocks |
+| Apron | rows 0..1 along the street | jersey barriers (BlockBarrier, drawn 2 long) every 3 with gaps, concertina wire behind, none before the gate |
+| Wall | lines 2 / 45 | concrete (BlockStone_7) 3 high, stone brick posts every 6 one higher with a torch, wire on top here and there |
+| Gate | south, x 21..26 | 6 closed fence gates, stone brick pillars, concrete lintel at 4, entry sign one out and one up, exit sign inside |
+| Entry channel | x 19..28, z 38..44 | sandbag walls 2 high on x 18 / 29, jersey lines at z 42 (open east) and z 39 (open west): a chicane, a sandbagged guard each side of the gate |
+| Building | x 9..38, z 6..29, floors 0 / 5 / 10, roof 15 | concrete walls, stone brick corners and floor bands, parapet; windows every 3rd column: ground floor boards + iron bars, upper floors glass, some sandbagged (more on the top floor) |
+| Entrance | south face x 23..24 | double metal door (Door_Metal_3), sandbag vestibule, stone brick lintel, wall flag above |
+| Ground floor | lobby z 24..28; market hall x 17..30 | registration desk (metal table, office chair, monitor, guard), waiting benches; six stalls along a stone brick aisle (x 22..25): plank floor, two wood table counter, trader, goods by trade, striped wool awning under the ceiling |
+| Clinic / canteen | x 10..15 / 32..37, doors at z 26 | stretchers, patient beds, medical crates, a shelf, desk / cooking stations, serving counter, three tables with chairs, water |
+| Stair | north wall, x 25..29, rows 7 / 8 | switchback of 5 step runs (stone brick stairs) hall -> first floor -> second floor -> roof bulkhead (x 24..31, z 6..9, door south) |
+| First floor | whole floor | dormitory: 4 rows of beds (head north), footlockers, middle aisle free, lights |
+| Second floor | rooms like the ground floor | armory west (shelves, weapon cabinets, ammunition, work table, tool locker), guard bunks east (beds, crates), command in the hall (radio desks, big radio, monitor), stores north |
+| Roof | parapet at 16 | four sandbag nests (2 high L) with a guard each, spotlight over the entrance, flag pole, water tank, radio tower |
+| Yard (asphalt) | around the building | forecourt (fire barrel, benches, light towers), 4 tents south west (back row opens north), aid distribution (3 tables, supplies, queue sawhorses, a car) south east, APC + generator yard west, water tanks + 3 raised garden beds east, jeep, crates, bins north |
+Residents: 7 guards (2 at the gate, 1 at the registration desk, 4 on the roof), 6 traders
+(guns, ammunition, food, medical + 2 of the extras, as the camp), 6 civilians (forecourt,
+dormitory, canteen, tents), 3 armed survivors. Kept by SafezoneSites as the camp's (section 3);
+civilians and survivors are put back when found more than a step above their post (a
+dormitory civilian may walk down, a yard one may not climb) or on / past the wall (Site.inset 4:
+site box margin 2 + wall line 2).
+On: worlds created since v0.48 (StructureData "!cityRefuges"; -Ddeciworldgen.refuges=true|false
+overrides; SafezoneSites.setRefuges for dev tests); older worlds would get a refuge cut into a
+block whose other chunks already hold buildings.
+
+How to test:
+- Dev test `refuge` (devtest/RefugeTest, the camp test on CityRefugePlan): sky build at
+  -20000, 230, -19400, same checks as the camp, writes run/client/devtest/refuge.tsv. Rotations:
+  `python3 tools/devtest.py --live refuge turns=N points=none` (one launch runs ignore key=value
+  options: only the live game forwards them). The test clears the box first (see below).
+- `python3 tools/props/propclash.py dev/run/client/devtest/refuge.tsv` and walkcheck.py: 0 / 0
+  (walkcheck climbs stairs storey by storey since v0.48.0).
+- Real worldgen: `python3 tools/servertest.py 1 type=decimation pregen=128,128,9`: log "city
+  refuges on", "city refuge (safezone) rot 270 lcz_1_2 at 80,64,144" and its safezone site with
+  22 residents; ground at 64 like the streets on both sides (cross section from the region file).
+
+Checked v0.48.0 (11 Oktober 2026): turns 0 / 1 / 2 / 3 all PASS (residents 7 / 6 / 6 / 3, filled,
+inside counts as safezone, trader shot unhurt, 0 off post after 30 s, survivors in survivor
+gear), propclash 0 (222 props), walkcheck 0 (3445 reachable cells: every floor, the roof and its
+nests, every door and loot container). Rotations checked in the dump: stairs, gate, doors, beds,
+wrecks turn with the plan. Seed 1 server: two refuges planned (regions 0,0 and -1,0); the one
+inside the pregenerated area complete (signs, 15 stairs, 6 metal door halves, shelves, beds,
+vehicles), its ground level with the streets; the other half written (its chunks were outside
+the pregenerated area, residents spawn only once all its chunks are populated).
+Found on the way: the first build had 3 prop clashes (goods drawn into the gaps between stalls),
+upper floors unreachable in walkcheck (it never climbed above y 4: stairs added), tents of the
+back row opening into the wall, a light tower facing a tent, cameras inside furniture, a crate
+drawn into the second floor partition. A rebuild over an earlier test build at another rotation
+lost a tent: writing over a multiblock prop (the APC) breaks its parts, which took freshly
+written cells with it; the test now clears the box first. The same holds for /deciworldgen camp
+over an earlier camp `[inferred]`.
+Shots: docs/shots/city_refuge_v0.48.0/ (shots_index.md).

@@ -33,6 +33,17 @@ public abstract class CanvasPlan implements Graded
 
     abstract Canvas canvas();
 
+    /** Clash / refusal log of the generator (dev tests); empty when the generator keeps none. */
+    public java.util.List<String> debugLog()
+    {
+        return new java.util.ArrayList<String>();
+    }
+
+    /** Registers the zone and residents of a plan placed by hand (dev tests, commands); none by default. */
+    public void register(int baseY)
+    {
+    }
+
     /** Canvas size before turning, known without building it (extents are asked for often). */
     abstract int canvasWidth();
 

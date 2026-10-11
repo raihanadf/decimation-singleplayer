@@ -140,8 +140,9 @@ player was bleeding from earlier runs.
 ## 7. Safezone sites (docs/safezone.md)
 
 Survivor camps outside the cities since v0.47.0 (walled, market of traders, guards, civilians,
-armed survivors; residents kept by worldgen/SafezoneSites); fortified city buildings next. The
-SAFEZONE box is the camp +6 blocks (loot containers within 10 blocks of it give nothing).
+armed survivors; residents kept by worldgen/SafezoneSites); city refuges since v0.48.0 (our
+fortified building on one block per city region). The SAFEZONE box is the camp +6 blocks, the
+refuge's block +2 (loot containers within 10 blocks of a safezone give nothing).
 
 ## 8. Safezones destroyed by the player (plan only, user 11 Oktober 2026: "later i figure it out")
 

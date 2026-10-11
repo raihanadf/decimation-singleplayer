@@ -120,6 +120,18 @@ props placement".
     (positions, put back count) and keep friendly fire harmless in safezones (no retaliation).
 15. A 1 x 1 stall (outhouse, booth) needs two free cells above its floor: a seat block on the
     floor left no head room (walkcheck DOOR finding).
+18. A building with storeys is only done when walkcheck reaches every floor and the roof (it climbs
+    stairs since v0.48.0; it used to stop at y 4): place stair runs with the slab above opened where
+    a head passes, and give every floor its loot / beds a reachable cell.
+19. Test every rotation through the LIVE game (`--live MODE turns=N`): a one launch run ignores
+    key=value options and silently tests turns 0. Read the turned dump for stairs, gates, doors,
+    beds and wrecks: Canvas.set(x, y, z, block, 0) used to skip rotation for metadata 0 (stairs
+    ascending east, fence gates spanning x).
+20. Put camera points where a person would stand to look at the room, not in the furniture: read
+    every shot, move the point when a chair or table fills the frame.
+21. A rebuild over an earlier build at another rotation breaks multiblock props of the old one
+    (APC, shelves) and their parts take new cells with them: clear the box before rebuilding in
+    tests and commands.
 
 ## Casebook (never delete a case)
 
@@ -226,3 +238,20 @@ props placement".
   turned along x into the wall: military wrecks lie along z at 2 / 3 and along x at 4 / 5; crates
   drawn 1.4 across their front side by side), fixed. Camp test with a 30 s watch: 0 off post,
   0 put back, survivors in survivor gear; zones test all PASS; propclash 0 (91 props), walkcheck 0.
+
+### Case 10: city refuge, first build (v0.48.0, 11 Oktober 2026)
+- Request: "start the fortified city building now"; choices: our own building on a whole city
+  block (Recommended over fortifying a DeceasedCraft building: their interiors differ per building
+  and rotation), on the block nearest each city region's middle. User away: "check check all
+  details correctly okay? from layout, props and anything on it".
+- Built: worldgen/military/CityRefuge (48 x 48, three storeys + roof, walled yard, chicane gate,
+  22 residents) and CityRefugePlan (FixedBase, no grading, zone box 2 around), LcCity.refuge.
+- Found and fixed in the rounds: 3 clashes (stall goods drawn into the gaps), walkcheck never
+  climbed above y 4 (stairs added to the tool), back row tents opening into the wall, a light
+  tower facing a tent, cameras inside furniture, a crate drawn into a partition, the stair camera
+  facing away, Canvas metadata 0 not turned (gates and stairs in rotated compounds; camp and bases
+  rechecked turned: propclash and walkcheck 0), propclash counting a shelf's upper part as a
+  floating prop when it crossed a 4 block bucket, one launch runs ignoring turns=N, a turned
+  rebuild losing a tent to the old APC's multiblock break.
+- Check: turns 0..3 all PASS, propclash 0 (222 props), walkcheck 0; seed 1 server: refuge at
+  80,64,144 complete and level with the streets. Evidence: docs/shots/city_refuge_v0.48.0/.

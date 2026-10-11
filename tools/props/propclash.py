@@ -131,9 +131,13 @@ def main():
                      % (kind, prop, cell[0], cell[1], cell[2], meta, text, near(cell[0], cell[2])))
 
     multi_seen = set()
+    multi_at = {(short, x, y, z) for short, meta, (x, y, z), box in props if short in MULTI}
     for short, meta, (x, y, z), box in props:
         if short in MULTI:
-            # only the master draws: take the first part met in each connected run
+            # only the master draws: an upper part (same block below) never does, then the first part
+            # met in each connected run (a run crossing a 4 block bucket upward was counted twice)
+            if (short, x, y - 1, z) in multi_at:
+                continue
             key = (short, x // 4, y // 4, z // 4)
             if key in multi_seen:
                 continue

@@ -137,6 +137,7 @@ public class DevAutoTest
         if (name.equals("zones")) return new net.decimation.worldgen.devtest.ZonesTest();
         if (name.equals("camp")) return new net.decimation.worldgen.devtest.CampTest();
         if (name.equals("campcmd")) return new net.decimation.worldgen.devtest.CampCommandTest();
+        if (name.equals("refuge")) return new net.decimation.worldgen.devtest.RefugeTest();
         return null;
     }
 

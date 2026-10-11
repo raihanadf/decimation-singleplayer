@@ -68,6 +68,12 @@ public final class LcCity
         plansEpoch++;
     }
 
+    /** Layout rules changed outside the city package (city refuges switched): cached plans are dropped. */
+    public static void layoutChanged()
+    {
+        plansEpoch++;
+    }
+
     private final Map<Long, List<Plan>> cache = new LinkedHashMap<Long, List<Plan>>(64, 0.75f, true)
     {
         protected boolean removeEldestEntry(Map.Entry<Long, List<Plan>> e)
@@ -483,6 +489,21 @@ public final class LcCity
                 }
             }
         }
+        // the city refuge of this region (docs/safezone.md): our fortified building on the whole block
+        int[] refuge = blk[2] == 1 && net.decimation.worldgen.SafezoneSites.refuges()
+            ? refuge(seed, Math.floorDiv(cellX * CELL, Sectors.REGION), Math.floorDiv(cellZ * CELL, Sectors.REGION)) : null;
+        if (refuge != null && refuge[0] == cellX && refuge[1] == cellZ)
+        {
+            for (int i = 1; i < size; i++)
+            {
+                for (int j = 1; j < size; j++)
+                {
+                    used[i][j] = true;
+                }
+            }
+            out.add(new net.decimation.worldgen.military.CityRefugePlan("lcz_" + cellX + "_" + cellZ,
+                seed ^ hl(seed ^ 0x52454655L, cellX, cellZ), bx + 16, bz + 16, refuge[2], g));
+        }
         List<LcContent.Building> pool = new ArrayList<LcContent.Building>();
         List<LcContent.Building> big = new ArrayList<LcContent.Building>();
         for (LcContent.Building b : LcContent.buildings())
@@ -538,6 +559,91 @@ public final class LcCity
         }
         cache.put(key, out);
         return out;
+    }
+
+    /**
+     * The city refuge of a city region (one per region, docs/safezone.md): {cell x, cell z, turns}
+     * of the building block nearest the region's middle that is a plain block (no superblock) with
+     * no river chunk; turns put the gate (canvas south) on a street at the block's own ground, toward
+     * the region's middle when possible (0 south, 1 west, 2 north, 3 east). Null when the region is
+     * no city or no block qualifies.
+     */
+    public static int[] refuge(long seed, int rx, int rz)
+    {
+        if (!Highways.cityRegion(seed, rx, rz))
+        {
+            return null;
+        }
+        int cells = Sectors.REGION / CELL;
+        List<int[]> order = new ArrayList<int[]>();
+        for (int i = 0; i < cells; i++)
+        {
+            for (int j = 0; j < cells; j++)
+            {
+                order.add(new int[] {i, j});
+            }
+        }
+        final double mid = cells / 2.0;
+        final long s = seed;
+        final int bx = rx * cells, bz = rz * cells;
+        java.util.Collections.sort(order, new java.util.Comparator<int[]>()
+        {
+            public int compare(int[] a, int[] b)
+            {
+                double da = Math.hypot(a[0] + 0.5 - mid, a[1] + 0.5 - mid), db = Math.hypot(b[0] + 0.5 - mid, b[1] + 0.5 - mid);
+                if (Math.abs(da - db) > 1e-9)
+                {
+                    return da < db ? -1 : 1;
+                }
+                return Long.compare(hl(s ^ 0x52454647L, bx + a[0], bz + a[1]), hl(s ^ 0x52454647L, bx + b[0], bz + b[1]));
+            }
+        });
+        for (int[] o : order)
+        {
+            int cx = bx + o[0], cz = bz + o[1];
+            int[] blk = block(seed, cx, cz);
+            if (blk[2] != 1 || !isCity(seed, cx, cz))
+            {
+                continue;
+            }
+            boolean river = false;
+            for (int i = 1; i < CELL && !river; i++)
+            {
+                for (int j = 1; j < CELL; j++)
+                {
+                    if (CityRivers.chunk(seed, cx * CELL + i, cz * CELL + j))
+                    {
+                        river = true;
+                        break;
+                    }
+                }
+            }
+            if (river)
+            {
+                continue;
+            }
+            // sides with a street at this block's ground: west / north are its own streets, east /
+            // south the next cells' (they may sit a level up or down)
+            int g = ground(seed, cx, cz);
+            boolean[] ok = {isCity(seed, cx, cz + 1) && ground(seed, cx, cz + 1) == g, true, true,
+                isCity(seed, cx + 1, cz) && ground(seed, cx + 1, cz) == g};      // south, west, north, east
+            boolean[] toward = {o[1] + 0.5 < mid, o[0] + 0.5 > mid, o[1] + 0.5 > mid, o[0] + 0.5 < mid};
+            List<Integer> best = new ArrayList<Integer>(), any = new ArrayList<Integer>();
+            for (int t = 0; t < 4; t++)
+            {
+                if (ok[t])
+                {
+                    any.add(t);
+                    if (toward[t])
+                    {
+                        best.add(t);
+                    }
+                }
+            }
+            List<Integer> from = best.isEmpty() ? any : best;
+            return new int[] {cx, cz, from.get((int) (hl(seed ^ 0x47415445L, cx, cz) % from.size()))};
+        }
+        return null;
     }
 
     /** Weighted pick of a building whose chunks all fit free at (i, j) in the block. */

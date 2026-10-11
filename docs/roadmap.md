@@ -67,8 +67,10 @@ Details and starting points: new_feature.md "Zones, factions and world".
    provoked, traders + guards + unarmed civilians + armed survivors. Step 1 DONE v0.46.0: zones
    work in singleplayer, safezones protect every friendly entity, provocation (docs/zones.md).
    Step 2 DONE v0.47.0: survivor camps outside cities (docs/safezone.md), waiting for the user's
-   look (new worlds only). Next: the fortified city building, one per city. Destroy by the
-   player: plan in docs/zones.md section 8 (later, user).
+   look (new worlds only). Step 3 DONE v0.48.0: the city refuge, our own fortified building on
+   the block nearest each city region's middle (docs/safezone.md section 7), waiting for the
+   user's look (new worlds only). Destroy by the player: plan in docs/zones.md section 8 (later,
+   user).
 2. **Zone areas claimable by the player.**
 3. **Advanced zone claims**: a claimed zone can be lost now and then when
    NPCs claim it.
@@ -190,6 +192,8 @@ docs/gun_model_spec.md); every user review goes into its lessons and casebook.
   rail.
 - v0.41.0 / 0.41.1 EOTech 558 and ACOG TA11 of our own, reticles in the glass swaying with the
   gun, Mk18 IMI TS stock, HK416 front sight folds away; accepted.
+- v0.48.0 city refuges: one fortified building per city region (walled yard, chicane gate,
+  market hall of 6 traders, clinic, canteen, dormitory, armory, roof guards; new worlds).
 - v0.47.0 survivor camps: walled safezones outside the cities with a market of traders, guards,
   civilians and armed survivors (new worlds).
 - v0.47.2 camp review: no retaliation in safezones, residents kept on their posts, entry sign

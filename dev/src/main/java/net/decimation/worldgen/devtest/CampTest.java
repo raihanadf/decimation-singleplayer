@@ -10,6 +10,7 @@ import net.decimation.worldgen.SafezoneSites;
 import net.decimation.worldgen.Slices;
 import net.decimation.worldgen.ZoneKind;
 import net.decimation.worldgen.ZoneStore;
+import net.decimation.worldgen.military.CanvasPlan;
 import net.decimation.worldgen.military.SurvivorCampPlan;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
@@ -30,7 +31,26 @@ public class CampTest extends DevTestMode
 {
     public String name() { return "camp"; }
 
-    private static final int Y = 230, X0 = -20000, Z0 = -19700;
+    private static final int Y = 230;
+    protected final int X0 = -20000, Z0 = origin();
+
+    /** z of the test site (each mode its own spot). */
+    protected int origin()
+    {
+        return -19700;
+    }
+
+    /** The plan under test, at the test site. */
+    protected CanvasPlan makePlan(String id, long seed, int x, int z, int turns)
+    {
+        return new SurvivorCampPlan(id, seed, x, z, turns);
+    }
+
+    /** Site id prefix of this mode's test sites (an earlier run's are removed first). */
+    protected String prefix()
+    {
+        return "TC_";
+    }
     private static final int BUILD = 10, FILL = 140, SETTLE = 40, SHOT = 70;
 
     private final int turns = Integer.parseInt(System.getProperty("deciworldgen.autotest.turns", "0"));
@@ -42,7 +62,7 @@ public class CampTest extends DevTestMode
     private volatile int ticks;
     private volatile boolean built;
     private int taken = -1;
-    private SurvivorCampPlan plan;
+    private CanvasPlan plan;
     private String id;
     private int reseatStart;
 
@@ -73,7 +93,7 @@ public class CampTest extends DevTestMode
         if (u >= SETTLE && taken != i)
         {
             taken = i;
-            DevTestUtil.screenshot(mc, name(), "camp_" + names.get(i));
+            DevTestUtil.screenshot(mc, name(), name() + "_" + names.get(i));
         }
         return true;
     }
@@ -99,20 +119,35 @@ public class CampTest extends DevTestMode
         }
         if (t == BUILD)
         {
-            id = "TC_" + seed + "_" + turns;
+            id = prefix() + seed + "_" + turns;
             // an earlier run's camp here: its people, site and zone go; this run's stay afterwards (the
             // user visits the sky camp: it was empty when the test removed them at the end)
             for (SafezoneSites.Site old : SafezoneSites.all())
             {
-                if (old.id.startsWith("TC_"))
+                if (old.id.startsWith(prefix()))
                 {
                     SafezoneSites.clearResidents(w, old.id);
                     SafezoneSites.remove(old.id);
                 }
             }
             ZoneStore.removeAt(ZoneKind.SAFEZONE, X0 + 23, Y + 1, Z0 + 23);
-            plan = new SurvivorCampPlan(id, seed, X0, Z0, turns);
+            plan = makePlan(id, seed, X0, Z0, turns);
             pregenerate(w, plan);
+            // an earlier run's build goes first: writing over a multiblock prop (APC, shelves) breaks
+            // its parts, which took freshly written cells of a turned rebuild with them (refuge test)
+            for (int x = plan.minX() - 2; x <= plan.maxX() + 2; x++)
+            {
+                for (int z = plan.minZ() - 2; z <= plan.maxZ() + 2; z++)
+                {
+                    for (int y = Y; y <= Y + plan.height() + 12; y++)
+                    {
+                        if (!w.isAirBlock(x, y, z))
+                        {
+                            w.setBlock(x, y, z, net.minecraft.init.Blocks.air, 0, 2);
+                        }
+                    }
+                }
+            }
             long t0 = System.nanoTime();
             Slices.placeAt(w, plan, Y, false);
             DevTestResults.value(name(), "built ms", (System.nanoTime() - t0) / 1000000);
@@ -125,7 +160,7 @@ public class CampTest extends DevTestMode
             DevTestResults.check(name(), "clashes and refusals", problems, problems == 0, "0");
             // as Slices does for a generated plan: the zone box 6 around, the residents
             plan.register(Y);
-            dump(w, plan);
+            dump(w, plan, name());
             p.playerNetServerHandler.setPlayerLocation((plan.minX() + plan.maxX()) / 2.0, Y + 1, (plan.minZ() + plan.maxZ()) / 2.0, 0, 0);
             for (Map.Entry<String, float[]> e : plan.pointsOfInterest().entrySet())
             {
@@ -228,7 +263,7 @@ public class CampTest extends DevTestMode
         }
     }
 
-    private static void pregenerate(World w, SurvivorCampPlan p)
+    private static void pregenerate(World w, CanvasPlan p)
     {
         net.minecraft.world.gen.ChunkProviderServer cps = (net.minecraft.world.gen.ChunkProviderServer) w.getChunkProvider();
         for (int cx = (p.minX() >> 4) - 3; cx <= (p.maxX() >> 4) + 3; cx++)
@@ -240,13 +275,13 @@ public class CampTest extends DevTestMode
         }
     }
 
-    /** Every block of the camp to run/client/devtest/camp.tsv ("x y z name meta" from the plan corner and Y). */
-    private static void dump(World w, SurvivorCampPlan plan)
+    /** Every block of the plan to run/client/devtest/<mode>.tsv ("x y z name meta" from the plan corner and Y). */
+    private static void dump(World w, CanvasPlan plan, String mode)
     {
-        java.io.File f = new java.io.File(Minecraft.getMinecraft().mcDataDir, "devtest/camp.tsv");
+        java.io.File f = new java.io.File(Minecraft.getMinecraft().mcDataDir, "devtest/" + mode + ".tsv");
         try (java.io.PrintWriter out = new java.io.PrintWriter(f, "UTF-8"))
         {
-            out.println("# origin " + plan.minX() + " " + Y + " " + plan.minZ() + " camp");
+            out.println("# origin " + plan.minX() + " " + Y + " " + plan.minZ() + " " + mode);
             for (Map.Entry<String, float[]> e : plan.pointsOfInterest().entrySet())
             {
                 float[] q = e.getValue();
@@ -271,7 +306,7 @@ public class CampTest extends DevTestMode
         }
         catch (java.io.IOException e)
         {
-            DevTestResults.value("camp", "dump failed", e.toString());
+            DevTestResults.value(mode, "dump failed", e.toString());
         }
     }
 }

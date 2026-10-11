@@ -877,3 +877,22 @@ the keeper waits until every chunk under the site and one around is populated, a
 trader / guard off its post, or any civilian / survivor on a wall, roof or outside the walls,
 back to its post every 2 s (logged). Same review: provocation removed, entry sign one block out,
 more cosmetic props.
+
+## Canvas metadata 0 never turned with a rotated compound (found 11 Oktober 2026, FIXED v0.48.0)
+
+Canvas.set(x, y, z, block, meta) marked a cell VANILLA (turned by Rotation) only when meta was not
+0, so blocks whose metadata 0 has a direction stayed unturned in a plan rotated by 90 / 270:
+stairs ascending east, fence gates spanning x (the survivor camp gate and garden gate in camps at
+turns 1 / 3 spanned across their wall line) `[inferred from the code; not looked at in game]`.
+Found building the city refuge (its stair runs ascend east). Fix: every set with metadata is
+VANILLA (Rotation leaves blocks without a table unchanged). Checked: refuge turns 1 dump (stairs
+meta 2, gate meta 1), camp turns 1 and bases turns 1 propclash / walkcheck 0.
+
+## Dev tools: walkcheck stopped at y 4, propclash counted shelf tops as floating (found 11 Oktober 2026, FIXED v0.48.0)
+
+tools/props/walkcheck.py allowed a climb of one only below y 4 (towers and decks by ladder), so
+the refuge's upper floors read as unreachable; stairs now climb at any height. propclash.py took
+the first multiblock part per 4 block bucket as the master, so a shelf standing at y 11 had its
+top part (y 12, next bucket) reported "nothing under it"; an upper part (same block below) is now
+skipped. Also: `devtest.py MODE key=value` in a one launch run does not pass the option (only
+-P flags the Gradle script knows); use `--live MODE key=value`.
