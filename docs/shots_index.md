@@ -11,6 +11,19 @@ How shots are made: `./gradlew runClient -Pautotest` (street views),
 `-Paudit` (building audit), `-Pgallery` (prop gallery); output in
 `dev/run/client/screenshots/`, then copied here into a versioned folder.
 
+## city_props_v0.49.0/ (converted city props fitted to their drawn size, dev test cityprops, 11 Oktober 2026)
+- sheet_cityprops.png and cityprops_<kind>_<n>.png, city cell 76,6 (blocks 4896,416) of the dev
+  world, gamma raised (unlit rooms). chest_1: a vanilla dungeon chest under the city (not ours).
+  chest_2: a vanilla chest (a wood crate that fit nowhere) in a corner with a wood crate standing on
+  it. chest_3 and ledge_2: the camera ended outside a wall (test camera, nothing to judge).
+  light_1 / light_2: a DeceasedCraft street lamp's hanging lantern now a ceiling light under the
+  lamp head (was a floor lantern in the air). chair_1: two chairs facing their desks; chair_2: a
+  chair facing a counter. ledge_1: a pergola of upper slabs and fences (DC's own, not a ledge we
+  made). wreck_1: one car centred in a DC street part's road, clear of the raised sidewalks.
+- An earlier run (cell 48,6, dark, not kept) showed a plank ledge on a brick wall with a lantern
+  standing on it (a DC wall shelf with a lamp), a vanilla chest in a stone corner, a ceiling light
+  in a wooden room and a centred car.
+
 ## safezone_camp_v0.47.1_review/ (user review, 11 Oktober 2026)
 - user_120.png (night, the sky test camp): a guard standing in the air over the scrap wall left
   of a watchtower (another guard correctly on the tower deck), civilians and survivors crowding at

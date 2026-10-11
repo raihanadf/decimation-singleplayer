@@ -53,6 +53,13 @@ bases, 11 Oktober 2026, 28 screenshots). Everything learned is in docs/prop_plac
 5. A plain looking prop can be very costly: every BlockProp is a tile entity with its own model
    render. For anything placed by the hundreds (walls, HESCO), use a plain block
    (deciworldgen:hesco replaced BlockMilitaryBarrier: tile entities per base 2007 -> 381).
+6. Converted content (DeceasedCraft buildings, any 1.20 schematic) needs the same check as our
+   own placers: a cell by cell block translation knows neither the drawn size nor what held the
+   furniture (a lamp hung from a ceiling, a shelf on a wall). Measure the generated world
+   (tools/props/worlddump.py + propclash.py), group findings by prop and by source building,
+   read a few neighbourhoods, then fix by rule at load (city/PropFit), not piece by piece.
+7. A checker's false positives hide the real findings: before fixing props, check the checker
+   on a sample (trapdoors were counted as doors, props beside a door along the wall as blocking).
 
 ## Casebook
 ### Case 1: military base props (v0.42.0 review -> v0.42.1, 11 Oktober 2026)
@@ -65,3 +72,13 @@ bases, 11 Oktober 2026, 28 screenshots). Everything learned is in docs/prop_plac
   trapdoor shutters reading as shelves.
 - Fix: PropBoxes + Canvas.validateProps in the generator, each module re-laid from the drawn
   sizes (docs/military_base.md section 3); 0 clashes, 0 checker findings.
+
+### Case 2: converted city props (v0.48.1 -> v0.49.0, 11 Oktober 2026)
+- User picked "City prop overlap" from the roadmap. Seed 1 world: 3609 propclash findings over
+  11009 props (2901 after checker fixes), 93 % in converted DC buildings: wood crates 1.38 long
+  into walls / crate rows, hung lamps and wall shelves as floor props in the air, seats facing
+  walls, props of turned street parts not turned, our wrecks 3.85 wide on lanes 6 / 9 of a 6 wide
+  road.
+- Fix: city/PropFit at load (ceiling light, ledge, turn to fit, chest, drop, remove clutter,
+  turn seats), partAt turns props, one centred fit-tested car per chunk. Findings 30.
+- Evidence: docs/shots/city_props_v0.49.0/ (shots_index.md), dev test cityprops.

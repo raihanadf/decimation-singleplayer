@@ -13,7 +13,7 @@ Reports, per finding, the prop, its cell, metadata and the nearest camera
 point so it can be found in the base:
   WALL   the drawn box goes into a full block (not the floor under it)
   PROP   two drawn boxes overlap
-  DOOR   a drawn box covers a door cell, or the cell in front of a door
+  DOOR   a drawn box covers a door cell, or stands in front of / behind a door (its walkway)
   FACE   the front (2 E, 3 S, 4 W, 5 N) looks straight into a full block
   MOUNT  a wall mounted prop (keycard, wall flag) has no wall behind it
   FLOAT  nothing under a standing prop
@@ -62,12 +62,14 @@ def shape(name, meta):
     short = name.split(":")[-1]
     if any(short == n or short.startswith(n) for n in NOT_SOLID):
         return None
-    if "door" in short.lower():
+    if "door" in short.lower() and short != "trapdoor":
         return "door"
     if short.endswith("_slab") or short in ("stone_slab", "wooden_slab", "stone_slab2"):
         return [0, 1, 0.5, 1, 0, 1] if meta & 8 else [0, 1, 0, 0.5, 0, 1]
-    if short == "carpet":
+    if short == "carpet" or short.endswith("pressure_plate"):
         return [0, 1, 0, 0.0625, 0, 1]
+    if short in ("chest", "trapped_chest", "ender_chest"):
+        return [0.0625, 0.9375, 0, 0.875, 0.0625, 0.9375]
     if short == "trapdoor":
         return [0, 1, 0, 0.1875, 0, 1] if not meta & 4 else None
     if short in ("fence", "nether_brick_fence", "cobblestone_wall", "fence_gate"):
@@ -79,6 +81,18 @@ def shape(name, meta):
     if short in ("cauldron", "anvil", "enchanting_table", "brewing_stand", "cake", "hopper"):
         return [0, 1, 0, 0.8, 0, 1]
     return [0, 1, 0, 1, 0, 1]
+
+
+def passage(doors, cell):
+    """True when a door at this cell is walked through along x, False along z, None: no door.
+    Vanilla door metadata (Decimation's doors use it too): the lower half's bits 0..1 are its
+    facing, even = along x; the upper half (bit 3) takes the lower half's."""
+    meta = doors.get(cell)
+    if meta is None:
+        return None
+    if meta & 8:
+        meta = doors.get((cell[0], cell[1] - 1, cell[2]), 0)
+    return meta & 1 == 0
 
 
 def overlap(a, b):
@@ -108,7 +122,7 @@ def main():
         best = min(pois, key=lambda p: (p[1] - x) ** 2 + (p[3] - z) ** 2) if pois else None
         return best[0] if best else "-"
 
-    props, solids, doors = [], {}, set()
+    props, solids, doors = [], {}, {}
     for (x, y, z), (name, meta) in cells.items():
         short = name.split(":")[-1]
         if name.startswith("deci:") and (short, meta if meta in DIRS else 3) in geom:
@@ -118,7 +132,7 @@ def main():
             continue
         s = shape(name, meta)
         if s == "door":
-            doors.add((x, y, z))
+            doors[(x, y, z)] = meta
         elif s is not None:
             solids[(x, y, z)] = ([x + s[0], x + s[1], y + s[2], y + s[3], z + s[4], z + s[5]], short)
 
@@ -164,7 +178,8 @@ def main():
             fx, fz = DIRS[meta]
             hit = solids.get((x + fx, y, z + fz))
             above = solids.get((x + fx, y + 1, z + fz))
-            if hit and above and hit[0][3] - hit[0][2] > 0.6:     # a wall, not a sill under a window
+            if hit and above and hit[0][3] - hit[0][2] > 0.6 and "glass" not in hit[1]:
+                # a wall, not a sill under a window nor the window itself (a seat may look out)
                 report("FACE", short, (x, y, z), meta, "front looks into %s" % hit[1])
         if short in MOUNTED and meta in BACK:
             bx, bz = BACK[meta]
@@ -178,10 +193,11 @@ def main():
             if below not in solids and not held and y > 0:
                 report("FLOAT", short, (x, y, z), meta, "nothing under it")
         for dx, dz in DIRS.values():
-            if (x + dx, y, z + dz) in doors or (x + dx, y - 1, z + dz) in doors:
-                if short not in MOUNTED:
-                    report("DOOR", short, (x, y, z), meta, "stands right beside a doorway at %d %d %d"
-                           % (x + dx, y, z + dz))
+            # only the door's walkway (the cells it opens onto), not the wall beside it
+            if short not in MOUNTED and short not in CEILING and any(passage(doors, (x + dx, y + dy, z + dz)) == (dx != 0)
+                                            for dy in (0, -1)):
+                report("DOOR", short, (x, y, z), meta, "stands in a doorway's way at %d %d %d"
+                       % (x + dx, y, z + dz))
                 break
 
     for i in range(len(props)):

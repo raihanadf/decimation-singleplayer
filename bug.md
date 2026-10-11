@@ -11,6 +11,21 @@ not something we introduced or need to fix) see `documentation.md`.
 ## Open
 
 
+### Converted city props drawn into walls, floating, facing walls; cars in the sidewalks (found 11 Oktober 2026, FIXED v0.49.0)
+- Found measuring a seed 1 world (tools/props/worlddump.py + propclash.py): 3609 findings over
+  11009 props, 93 % inside converted DeceasedCraft buildings.
+- Causes: tools/lctranslate.py maps 1.20 furniture to a Decimation prop per cell (wood crates
+  are drawn 1.38 long; hung lamps and wall shelves became floor props in the air; facing kept
+  from the 1.20 state); props of turned street parts / scenes / fronts / parks were not turned
+  (Rotation leaves Decimation blocks); our wrecks in DC street parts sat on lanes 6 and 9 of a
+  6 wide road although a car is drawn 3.85 wide.
+- Fix: city/PropFit at load (docs/city_engine.md "Props fitted to their drawn size"), props
+  turned in LcCity.partAt, one centred and fit-tested wreck per chunk (StreetPlan.carFits).
+  Same area after: 30 findings. Checker fixes on the way (trapdoors counted as doors, doors
+  flagged for props beside them along the wall, pressure plates as full blocks).
+- New chunks only. Left: about 14 crates in crate runs with a 0.19 overhang (loot kept rather
+  than a third chest in a row), lamp arm false positives.
+
 ### Railway tunnels flooded with standing water and lava (11 Oktober 2026, found in testing, FIXED v0.44.0)
 - Dev test `rail` (first runs): diamonds of standing water and lava on the track, no source
   block anywhere, rails washed out (43 of 48 through a station).

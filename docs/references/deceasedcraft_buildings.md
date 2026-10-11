@@ -113,8 +113,10 @@ street parts). Matches our planned "types per sector / district".
 (single or multi) into a raw .schematic with this instance's block ids;
 `tools/lctranslate.py` translates 1.20 states by rules (shape words:
 stairs / slab / wall / pane / door / trapdoor; materials; colours;
-furniture categories to ONE CELL Decimation props or vanilla stand-ins, so
-no model draws over its neighbours, see docs/prop_footprints.tsv).
+furniture categories to ONE CELL Decimation props or vanilla stand-ins;
+the eyeballed footprints were wrong for some (wood crate 1.38 long, boxes
+reach 0.22 out), so city/PropFit fits them to their drawn size at load
+since v0.49.0, docs/city_engine.md "Props fitted to their drawn size").
 5 buildings: about 98% of blocks translated; leftovers are small decor
 (soap dish, plush toys, food). `/deciworldgen paste NAME X Y Z` writes
 `config/decimation_worldgen/paste/NAME.schematic` raw. Result in

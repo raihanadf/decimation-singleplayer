@@ -251,6 +251,12 @@ public final class LcContent
                     s.meta[i] = raw.data[i];
                 }
             }
+            int[] c = PropFit.fit(s);
+            if (c[0] + c[1] + c[2] + c[3] + c[4] + c[5] + c[6] > 0)
+            {
+                FMLLog.info("[deciworldgen] lc props fitted %s: lights %d, ledges %d, turned %d, chests %d, faced %d,"
+                            + " dropped %d, removed %d", file, c[0], c[1], c[2], c[3], c[4], c[5], c[6]);
+            }
         }
         catch (Exception e)
         {

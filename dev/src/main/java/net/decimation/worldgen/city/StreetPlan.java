@@ -272,18 +272,64 @@ final class StreetPlan implements net.decimation.worldgen.FixedBase
             return b;
         }
         meta[0] = 0;
-        if (ly != 1 || kind == 2 || scene != null || props.cars.length == 0
-            || (across != 6 && across != 9) || along != 7)
+        // one wreck per chunk: a car is drawn 3.85 wide (BlockWreckage1..5, docs/prop_placement.md), the
+        // part's road 6 (part across 5..10): only centred, anchored on lane 7 (heading north / west) or
+        // lane 8 (south / east), does it stay off the raised sidewalks, hedges and the other lane's car
+        if (ly != 1 || kind == 2 || scene != null || props.cars.length == 0 || (across != 7 && across != 8)
+            || along != 7)
         {
             return null;
         }
-        long hv = hl(seed ^ 0x5354524545L, minX + lx, minZ + lz);
-        if ((hv & 0xFF) >= 18)
+        long hv = hl(seed ^ 0x5354524545L, minX + (kind == 1 ? lx : 0), minZ + (kind == 1 ? 0 : lz));
+        if ((hv & 0xFF) >= 34 || (across == 7) != (((hv >>> 16) & 1) == 0))
         {
             return null;
         }
-        meta[0] = kind == 0 ? (across == 6 ? 5 : 3) : (across == 6 ? 4 : 2);
-        return props.cars[(int) ((hv >>> 8) % props.cars.length)];
+        int m = kind == 0 ? (across == 7 ? 5 : 3) : (across == 7 ? 4 : 2);
+        Block car = props.cars[(int) ((hv >>> 8) % props.cars.length)];
+        if (!carFits(lx, lz, car, m))
+        {
+            return null;                                  // a narrower road, a bay, a planter in this part
+        }
+        meta[0] = m;
+        return car;
+    }
+
+    /** Is everything the car is drawn over (beyond 0.15 of a cell) empty in the part, the scene and the fronts? */
+    private boolean carFits(int lx, int lz, Block car, int m)
+    {
+        float[] d = net.decimation.worldgen.military.PropBoxes.box(car, m);
+        if (d == null)
+        {
+            return true;
+        }
+        int[] tmp = new int[1];
+        LcContent.Shape[] f = fronts();
+        for (int cx = (int) Math.floor(lx + d[0] + 0.15f); cx <= (int) Math.floor(lx + d[1] - 0.15f); cx++)
+        {
+            for (int cz = (int) Math.floor(lz + d[4] + 0.15f); cz <= (int) Math.floor(lz + d[5] - 0.15f); cz++)
+            {
+                if (cx < 0 || cz < 0 || cx > 15 || cz > 15)
+                {
+                    return false;
+                }
+                for (int ly = 1; ly <= 2; ly++)
+                {
+                    if ((cx != lx || cz != lz || ly != 1) && partAt(piece, pieceTurns, cx, ly, cz, tmp) != null)
+                    {
+                        return false;
+                    }
+                    for (int k = 0; k < 4; k++)
+                    {
+                        if (f[k] != null && partAt(f[k], k, cx, ly - 1, cz, tmp) != null)
+                        {
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+        return true;
     }
 
     private static boolean contains(Block[] l, Block b)

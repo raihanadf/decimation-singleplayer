@@ -15,13 +15,13 @@ import net.minecraft.block.Block;
  * top down photos (204 of 221 props within 0.2 blocks, the rest are thin parts photos miss).
  * docs/prop_placement.md explains the numbers and the placement rules.
  */
-final class PropBoxes
+public final class PropBoxes
 {
     private static Map<String, float[][]> boxes;
     private static Map<String, int[]> turns;
 
     /** The drawn box of a prop block at a metadata (2..5), or null when it is not a known prop. */
-    static float[] box(Block b, int meta)
+    public static float[] box(Block b, int meta)
     {
         if (boxes == null)
         {
@@ -41,7 +41,7 @@ final class PropBoxes
      * step +1 (2 -> 3 -> 4 -> 5 -> 2); renderers with their own tables do not (military wrecks
      * 2 -> 5 -> 3 -> 4 -> 2, the storage crate, hazard screens).
      */
-    static int turn(Block b, int meta)
+    public static int turn(Block b, int meta)
     {
         if (boxes == null)
         {

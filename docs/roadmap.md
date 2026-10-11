@@ -40,8 +40,10 @@ or `[not decided]`.
    outside cities `[not decided]`. docs/references/deceasedcraft_buildings.md.
 4. Reserve the real footprint of wide props (bicycles, cars) in placers so
    they do not overlap. Done for the military bases (v0.42.1: PropBoxes +
-   Canvas.validateProps, docs/prop_placement.md); city placers (Slices,
-   furniture sets, street dressing) still to do with the same table.
+   Canvas.validateProps, docs/prop_placement.md). Converted city DONE v0.49.0 (city/PropFit at
+   load, one centred wreck per DC street chunk; seed 1 findings 2901 -> 30, docs/city_engine.md
+   "Props fitted to their drawn size"), waiting for the user's look (new chunks only). Still open:
+   the procedural city's furniture sets (used only without the lc pack) [not checked].
 
 ## NPCs and combat (user plan, "later")
 
@@ -190,6 +192,9 @@ docs/gun_model_spec.md); every user review goes into its lessons and casebook.
   rail.
 - v0.41.0 / 0.41.1 EOTech 558 and ACOG TA11 of our own, reticles in the glass swaying with the
   gun, Mk18 IMI TS stock, HK416 front sight folds away; accepted.
+- v0.49.0 converted city props fitted to their drawn size (ceiling lights, shelf ledges, crates
+  turned or made chests, seats turned to their desks), props of turned street parts turned, one
+  centred car per street chunk (new chunks).
 - v0.48.1 arrows, thrown items and the player's TNT no longer pick up an empty vehicle
   (tools/patches/PatchVehicleArrows.java).
 - v0.48.0 city refuges: one fortified building per city region (walled yard, chicane gate,

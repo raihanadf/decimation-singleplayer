@@ -4,8 +4,10 @@
 translate("minecraft:oak_stairs[facing=north,half=bottom]") -> ("minecraft:oak_stairs", 3)
 Returns ("skip", 0) for "leave the world as is" (structure void), ("minecraft:air", 0)
 for air, None when nothing matches (reported by the caller).
-Only one cell props are used for furniture (docs/prop_footprints.tsv), so a
-translated model never draws over its neighbours.
+Only one cell props are used for furniture (docs/prop_footprints.tsv). Their drawn boxes are larger
+than those photos showed for some (wood crate, cardboard boxes), and wall / ceiling furniture
+lands in the air: city/PropFit fixes both when the game loads a piece (docs/city_engine.md
+"Props fitted to their drawn size").
 """
 import re
 

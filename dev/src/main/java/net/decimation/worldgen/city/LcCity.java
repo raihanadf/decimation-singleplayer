@@ -223,6 +223,13 @@ public final class LcCity
             return null;
         }
         meta[0] = net.decimation.worldgen.Rotation.rotateMeta(Block.getIdFromBlock(b), s.meta[i] & 15, turns);
+        if (net.decimation.worldgen.military.PropBoxes.box(b, meta[0]) != null)
+        {
+            for (int k = 0; k < turns; k++)
+            {
+                meta[0] = net.decimation.worldgen.military.PropBoxes.turn(b, meta[0]);   // Rotation leaves props
+            }
+        }
         if ((turns & 1) == 1 && b == roadLine())
         {
             meta[0] ^= 2; // painted line: meta % 4 0 / 1 runs north south, 2 / 3 east west

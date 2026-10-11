@@ -55,9 +55,9 @@
     "semantic_hash": "a8275a2346aba150ede02e93b8d62196"
   },
   "dev/src/main/java/net/decimation/worldgen/DevAutoTest.java": {
-    "mtime": 1791717917.491865,
-    "ast_hash": "732c6d655f5950015c0bb39437e5afc9",
-    "semantic_hash": "732c6d655f5950015c0bb39437e5afc9"
+    "mtime": 1791730968.7937243,
+    "ast_hash": "79c9ee19809fd5a61553751da3a2273f",
+    "semantic_hash": "79c9ee19809fd5a61553751da3a2273f"
   },
   "dev/src/main/java/net/decimation/worldgen/Rotation.java": {
     "mtime": 1791315242.0110583,
@@ -110,9 +110,9 @@
     "semantic_hash": "de153d1f8408971d6190e16a7d4256f9"
   },
   "CLAUDE.md": {
-    "mtime": 1791729464.8256319,
-    "ast_hash": "ad74b1883606f155e7eb0036622f063b",
-    "semantic_hash": "ad74b1883606f155e7eb0036622f063b"
+    "mtime": 1791731312.6977615,
+    "ast_hash": "7c4d053ab5a02418a0f416ee2b368dfd",
+    "semantic_hash": "7c4d053ab5a02418a0f416ee2b368dfd"
   },
   "DECIMATION_MOD_TASK.md": {
     "mtime": 1784958353.0126374,
@@ -120,9 +120,9 @@
     "semantic_hash": "aa4550575e47e7c1d0b020a51afbb501"
   },
   "bug.md": {
-    "mtime": 1791729473.110039,
-    "ast_hash": "564a23395a0aca75862a83503c4adec5",
-    "semantic_hash": "564a23395a0aca75862a83503c4adec5"
+    "mtime": 1791731312.6951296,
+    "ast_hash": "7dc7c9f116e3290a0df0abc1cb741084",
+    "semantic_hash": "7dc7c9f116e3290a0df0abc1cb741084"
   },
   "create_weapons.md": {
     "mtime": 1791653625.5948887,
@@ -145,9 +145,9 @@
     "semantic_hash": "5ec10a4c3f93750361afcbaae6df524a"
   },
   "documentation.md": {
-    "mtime": 1791729473.1102781,
-    "ast_hash": "e5df190730a007d980894abe8197e5d8",
-    "semantic_hash": "e5df190730a007d980894abe8197e5d8"
+    "mtime": 1791731312.6968331,
+    "ast_hash": "1858a06cf1e826eb6b366a249e0a31e9",
+    "semantic_hash": "1858a06cf1e826eb6b366a249e0a31e9"
   },
   "new_feature.md": {
     "mtime": 1791719243.5742908,
@@ -325,9 +325,9 @@
     "semantic_hash": "0145e0863788d451e8ae4273d3c2abdd"
   },
   "docs/shots_index.md": {
-    "mtime": 1791719363.946803,
-    "ast_hash": "856a119a45b747c67bce89e5dfc66d5d",
-    "semantic_hash": "856a119a45b747c67bce89e5dfc66d5d"
+    "mtime": 1791731312.6943593,
+    "ast_hash": "41a9f4e4c7b4985aadea3b6095f8a875",
+    "semantic_hash": "41a9f4e4c7b4985aadea3b6095f8a875"
   },
   "docs/interior_spec.md": {
     "mtime": 1791385593.9436893,
@@ -395,9 +395,9 @@
     "semantic_hash": "6a2c0646abcc3e50827598c21c88e247"
   },
   "docs/references/deceasedcraft_buildings.md": {
-    "mtime": 1791488707.603035,
-    "ast_hash": "59ee7c5cdac491a1591ad3f41622fecc",
-    "semantic_hash": "59ee7c5cdac491a1591ad3f41622fecc"
+    "mtime": 1791731270.7751899,
+    "ast_hash": "bbddd26476461ca0e3b0633cff94bcae",
+    "semantic_hash": "bbddd26476461ca0e3b0633cff94bcae"
   },
   "docs/references/decimation_maps.md": {
     "mtime": 1791394862.7311602,
@@ -520,9 +520,9 @@
     "semantic_hash": "f6e4b40bc807c3989e96cf8be850d7eb"
   },
   "tools/lctranslate.py": {
-    "mtime": 1791488528.8155727,
-    "ast_hash": "686c615c7bed92c66392cdb434a0671b",
-    "semantic_hash": "686c615c7bed92c66392cdb434a0671b"
+    "mtime": 1791731270.7759204,
+    "ast_hash": "daebd3dbf23fab71814b93a896692ef4",
+    "semantic_hash": "daebd3dbf23fab71814b93a896692ef4"
   },
   "dev/src/main/java/net/decimation/worldgen/FixedBase.java": {
     "mtime": 1791407455.7750478,
@@ -530,14 +530,14 @@
     "semantic_hash": "4754c787c15ae49542d1bf2159b29b75"
   },
   "dev/src/main/java/net/decimation/worldgen/city/LcCity.java": {
-    "mtime": 1791717880.3607564,
-    "ast_hash": "aab8ff201ca7bc9ff0b196bd832f5d76",
-    "semantic_hash": "aab8ff201ca7bc9ff0b196bd832f5d76"
+    "mtime": 1791730210.6712587,
+    "ast_hash": "66d5e3dd9f1392ed1784df79245303d0",
+    "semantic_hash": "66d5e3dd9f1392ed1784df79245303d0"
   },
   "dev/src/main/java/net/decimation/worldgen/city/LcContent.java": {
-    "mtime": 1791700445.364967,
-    "ast_hash": "5f4d76ea51431f49cd324af1fa2ba48a",
-    "semantic_hash": "5f4d76ea51431f49cd324af1fa2ba48a"
+    "mtime": 1791730502.0259671,
+    "ast_hash": "d06533ccff7e4aa478cec881b3ff4288",
+    "semantic_hash": "d06533ccff7e4aa478cec881b3ff4288"
   },
   "tools/anvil118.py": {
     "mtime": 1791403859.5383677,
@@ -555,9 +555,9 @@
     "semantic_hash": "87d7c5deb01bdf730025e901597a1efa"
   },
   "docs/city_engine.md": {
-    "mtime": 1791701050.8206182,
-    "ast_hash": "c371e6b97bfc03bf21f08f175b3b0c5a",
-    "semantic_hash": "c371e6b97bfc03bf21f08f175b3b0c5a"
+    "mtime": 1791731270.7734702,
+    "ast_hash": "6ce972c5d852975e88343f7dfe159324",
+    "semantic_hash": "6ce972c5d852975e88343f7dfe159324"
   },
   "tools/edgescan.py": {
     "mtime": 1791419321.0102901,
@@ -655,9 +655,9 @@
     "semantic_hash": "fcaf65f43d983d02c0fb54297bfc77a4"
   },
   "docs/roadmap.md": {
-    "mtime": 1791729452.117487,
-    "ast_hash": "fd37332b626c5ea0e950d94ea8eda5c0",
-    "semantic_hash": "fd37332b626c5ea0e950d94ea8eda5c0"
+    "mtime": 1791731312.6956065,
+    "ast_hash": "665f75a8cf754e5fe8b7b463d38a5704",
+    "semantic_hash": "665f75a8cf754e5fe8b7b463d38a5704"
   },
   "dev/src/main/java/net/decimation/worldgen/LegacyStreets.java": {
     "mtime": 1791487239.5087948,
@@ -680,9 +680,9 @@
     "semantic_hash": "3068533f34e61c1cb3cb3d9b2f6e4e37"
   },
   "dev/src/main/java/net/decimation/worldgen/city/StreetPlan.java": {
-    "mtime": 1791700392.424742,
-    "ast_hash": "a91dc03066380b3f3e68d724ef3b94cb",
-    "semantic_hash": "a91dc03066380b3f3e68d724ef3b94cb"
+    "mtime": 1791730690.8171275,
+    "ast_hash": "335b2f54f1f6ad2e45e266b138d627c7",
+    "semantic_hash": "335b2f54f1f6ad2e45e266b138d627c7"
   },
   "dev/src/main/java/net/decimation/worldgen/city/StreetProps.java": {
     "mtime": 1791487239.5103052,
@@ -935,9 +935,9 @@
     "semantic_hash": "baf685bd8819c81eb582aa1a224c17c3"
   },
   "dev/src/main/java/net/decimation/worldgen/military/PropBoxes.java": {
-    "mtime": 1791652347.9493918,
-    "ast_hash": "5975a2e63ecd3efd31a967814ad603cd",
-    "semantic_hash": "5975a2e63ecd3efd31a967814ad603cd"
+    "mtime": 1791730156.5224102,
+    "ast_hash": "93f60571c0c9d29c88d4b77a0dd2fef2",
+    "semantic_hash": "93f60571c0c9d29c88d4b77a0dd2fef2"
   },
   "tools/props/hesco_textures.py": {
     "mtime": 1791651266.772026,
@@ -945,9 +945,9 @@
     "semantic_hash": "ad372a54da88e970267b9463304a38d4"
   },
   "tools/props/propclash.py": {
-    "mtime": 1791718417.6502311,
-    "ast_hash": "eb9aca748e0dc1c7838e5c6ca6b27714",
-    "semantic_hash": "eb9aca748e0dc1c7838e5c6ca6b27714"
+    "mtime": 1791730502.0266297,
+    "ast_hash": "bf730766f6ea4c8e68c045d0238af451",
+    "semantic_hash": "bf730766f6ea4c8e68c045d0238af451"
   },
   "tools/props/propgeom.py": {
     "mtime": 1791652326.6049495,
@@ -955,14 +955,14 @@
     "semantic_hash": "78c8404f3311e4b061e46c72e8db82b2"
   },
   ".claude/skills/decimation-props/SKILL.md": {
-    "mtime": 1791664831.417609,
-    "ast_hash": "a52e4704cbacfa50a4960e522817dc68",
-    "semantic_hash": "a52e4704cbacfa50a4960e522817dc68"
+    "mtime": 1791731319.7889357,
+    "ast_hash": "58b715e90c07f7939f504cd6dd530922",
+    "semantic_hash": "58b715e90c07f7939f504cd6dd530922"
   },
   "docs/prop_placement.md": {
-    "mtime": 1791664831.4183497,
-    "ast_hash": "431ff3b7ece371b460f42ae4874b978a",
-    "semantic_hash": "431ff3b7ece371b460f42ae4874b978a"
+    "mtime": 1791731270.7744167,
+    "ast_hash": "8e25d4b7172b4bbb696b1c03f73eac3d",
+    "semantic_hash": "8e25d4b7172b4bbb696b1c03f73eac3d"
   },
   "dev/src/main/java/net/decimation/fixes/LocalStats.java": {
     "mtime": 1791659217.0406108,
@@ -1113,5 +1113,20 @@
     "mtime": 1791729078.3753738,
     "ast_hash": "930eef21b7111b20593b099b0d403938",
     "semantic_hash": "930eef21b7111b20593b099b0d403938"
+  },
+  "dev/src/main/java/net/decimation/worldgen/city/PropFit.java": {
+    "mtime": 1791730814.8264909,
+    "ast_hash": "bc1587e9fa9e891e2474fb3720c10011",
+    "semantic_hash": "bc1587e9fa9e891e2474fb3720c10011"
+  },
+  "dev/src/main/java/net/decimation/worldgen/devtest/CityPropsTest.java": {
+    "mtime": 1791731078.584132,
+    "ast_hash": "939c27bf2abba8bc28cf706443063a56",
+    "semantic_hash": "939c27bf2abba8bc28cf706443063a56"
+  },
+  "tools/props/worlddump.py": {
+    "mtime": 1791729737.1836808,
+    "ast_hash": "046f45f2185af65189fc60f7098e6c96",
+    "semantic_hash": "046f45f2185af65189fc60f7098e6c96"
   }
 }

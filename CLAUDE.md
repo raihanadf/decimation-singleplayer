@@ -797,6 +797,11 @@ of the last session:
   (tools/patches/PatchVehicleArrows.java, three jars; checks "vehicle arrow"). Test trap: a live
   `checks` run right after camp / refuge leaves the player in a safezone (damage and spawn checks
   FAIL): run an arena mode first (`--live zombies checks`).
+  v0.49.0: converted city props fitted to their drawn size at load (city/PropFit: ceiling lights,
+  shelf ledges, crates turned or chests, seats turned, floating props dropped), props of turned
+  street parts turned (LcCity.partAt), one centred fit-tested wreck per DC street chunk; seed 1
+  propclash findings 2901 -> 30 (docs/city_engine.md "Props fitted to their drawn size").
+  Check a generated world: tools/props/worlddump.py + propclash.py; dev test `cityprops` (shots).
   Gun study (10 Oktober 2026): docs/gun_style_guide.md, tools/guns/study.py
   (renders / measures Decimation's guns from the jar, `attach` adds
   attachments as the game places them), dev test mode `gunview` (hip, aim

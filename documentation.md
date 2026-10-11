@@ -159,6 +159,10 @@ boot. Falls straight through to the mod's own (re-skinned) main menu after that.
   snipers spot enemies up to `sniperRange` 70 blocks (was 96); the Barrett tiers (juggernaut
   sniper 60 hp, elite sniper 38 hp) die to one 30 round 5.56 magazine (8 per player hit x their
   damage share). Config version 3: older files take these new defaults once.
+- **City furniture (v0.49.0, newly generated city chunks)**: lamps that hung from ceilings in the
+  original buildings are ceiling lights again (no lanterns floating in the air), wall shelves are
+  plank ledges, crates no longer stick into walls (some became chests, Decimation loot too),
+  chairs face their desks, benches face the street, and street wrecks stay on the road.
 - **Vehicles and arrows (v0.48.1)**: an arrow, a thrown item or (not tested) your own TNT hitting an empty
   jeep, tank or helicopter damages it instead of picking it up. Sneak + punch still picks an
   empty vehicle up; a plain punch in survival does nothing (v0.8.1).

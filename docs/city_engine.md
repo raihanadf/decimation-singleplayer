@@ -88,14 +88,20 @@ deadzone and the legacy towns keep our own dressed streets (v0.24.1).
   chunks keep our road + stairs part.
 - Parts: 16 x 16, 5 wide sidewalks raised by half slabs, a 6 wide road
   (part z 5..10), lamps and benches of their own. Our furniture is not
-  added; scenes and fronts still are; wrecks in lanes 6 / 9 (7%).
+  added; scenes and fronts still are. Wrecks: since v0.49.0 one car per
+  chunk (13%), centred on lane 7 or 8 (a wreck is drawn 3.85 wide, the
+  road 6), only where the part, its scene and fronts leave its drawn box
+  empty (`StreetPlan.carFits`); before, lanes 6 / 9 (7% each) put cars into
+  the raised sidewalks, hedges and each other.
 - Road paint: the refueled mod's decals (side, corner, side_corner, zebra,
   about 1800 blocks over the 61 parts) are converted by lcpack.py
   `paint()` into the layer below: lines -> deci:BlockRoad_CenterLine
   (meta 2 along x for paint facing east / west, 4 along z), zebra ->
   white quartz. Turning a part by an odd number of turns flips the line
   meta (XOR 2) in `LcCity.partAt` (Rotation leaves Decimation blocks
-  unchanged). Translator additions: oxeye daisy, lily pads, ochrum,
+  unchanged; since v0.49.0 partAt turns every Decimation prop with
+  `PropBoxes.turn`, so benches and lamps of turned parts, scenes, fronts
+  and parks face as the part does). Translator additions: oxeye daisy, lily pads, ochrum,
   construction barricade (hazard barrier), command block / observer skip.
 - Shots lc_streets_v0.27.0 (shots_index); autotest all pass, 0 generator
   errors.
@@ -269,6 +275,52 @@ surface stations off), tunnels linking nearby cities.
   entrance at 64), the gap line x 256..511 complete (256 rails, no liquid,
   highway deck above); dev test all PASS at region 69,6 (street level 70,
   three staircase parts).
+
+## Props fitted to their drawn size (v0.49.0, `city/PropFit.java`)
+
+User choice 11 Oktober 2026 ("City prop overlap", roadmap worldgen item 4).
+`tools/lctranslate.py` maps 1.20 furniture to Decimation props cell by
+cell, but the models are not cell sized (docs/prop_placement.md) and much
+1.20 furniture hung on walls and ceilings.
+- Measured on seed 1 (fresh `servertest.py 1 type=decimation
+  pregen=128,128,9`, then `tools/props/worlddump.py` + `propclash.py`):
+  11009 props, 3609 findings (2901 with the corrected checker below), 93 %
+  inside converted buildings: wood crates (drawn 1.38 long) into walls and
+  each other 1065 + 94, hanging lamps turned floor lanterns in the air 389,
+  wall shelves turned cardboard box stacks in the air 507, seats and screens
+  facing walls, our own wrecks into sidewalks and hedges.
+- `PropFit.fit(shape)` runs once per schematic in `LcContent.shape` (all
+  DC pieces: buildings, street parts, scenes, fronts, parks), twice over
+  so a prop sees its neighbour's change; log line "lc props fitted FILE:
+  lights, ledges, turned, chests, faced, dropped, removed":
+  - lantern with nothing under it: ceiling light (BlockLightOff) if a
+    ceiling is above, else removed (wall lamp, chain link);
+  - cardboard boxes with nothing under them: upper oak slab ledge (what
+    stood on the shelf still stands);
+  - other floating props drop up to 3 to a floor; clutter that cannot is
+    removed;
+  - seats / screens / machines (FRONTED) with the front against a wall and
+    open space or a desk / counter behind: turned around; a bench facing a
+    railing too; a machine taller than its room removed;
+  - a prop drawn into a wall, a door (any touch), a slab, glass, a sink or
+    another prop by more than 0.15: first facing that fits; a wood crate
+    that fits none becomes a vanilla chest facing the room (Decimation loot
+    too), never a third chest in a row; clutter (boxes, barrels, trash
+    bags) that fits none is removed;
+  - seats and clutter in a door's walkway are removed.
+- Result, same seed and area: 30 findings (from 2901): about 14 wood
+  crates in crate runs keep a 0.19 overhang (a chest there would make a
+  run of three), 7 street lamp arms over a car or railing (the drawn box
+  is the whole lamp, the arm hangs above; false positives), 5 chairs facing
+  stairs / a bank counter fence, a few 0.2 to 0.3 overlaps with trapdoors.
+  Per run of the area: 226 ceiling lights, 310 ledges, 168 turned, 462
+  chests, 234 faced, 69 dropped, 58 removed.
+- Dev test `cityprops` (devtest/CityPropsTest): generates a never
+  generated city cell (from -Prx / -Prz, each run moves on), counts
+  chests / ceiling lights / ledges and photographs examples (chest, light,
+  ledge, chair, wreck); shots docs/shots/city_props_v0.49.0 (shots_index).
+  Applies to chunks generated from now on; already generated chunks keep
+  their props.
 
 ## Rivers and bridges (v0.45.0, v0.45.1, `city/CityRivers.java`, `city/RiverPlan.java`)
 

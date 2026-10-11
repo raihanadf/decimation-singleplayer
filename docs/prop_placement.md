@@ -128,6 +128,12 @@ Exceptions (from the model geometry and the gallery):
 - Offline: the `milbase` test writes run/client/devtest/milbase_<size>.tsv (every block) and
   `python3 tools/props/propclash.py FILE` reports WALL / PROP / DOOR / FACE (front into a full
   height wall) / MOUNT (wall prop without a wall) / FLOAT (nothing under a standing prop).
+- A generated world: `python3 tools/props/worlddump.py WORLD OUT.tsv [X0 Z0 X1 Z1]` dumps every
+  prop with the blocks 3 around it (chunks whose 8 neighbours exist) for propclash.py; used for
+  the converted city (docs/city_engine.md "Props fitted to their drawn size"). Checker fixes
+  found there (v0.49.0): a trapdoor is not a door; DOOR flags only a door's walkway (the cells
+  it opens onto), not the wall beside it, and never a ceiling light; pressure plates are flat,
+  chests 0.875 high; a seat looking at glass is a window view, not a FACE finding.
 - Walk test: `python3 tools/props/walkcheck.py DUMP` (ladders, doors, floor areas, loot, traps
   reachable from the gate; docs/military_base.md section 6).
 - Pictures: the milbase camera points (tower_roof, toc_door, guard_booth, fighting_position,
