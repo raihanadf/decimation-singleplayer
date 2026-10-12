@@ -280,3 +280,18 @@ Answer to the review above (BuildingDress palettes, themes, stories):
   neighbours when placed and ignores the metadata we give it (4 fronts into walls on seed 1). Not
   used by the dressing; vanilla chests have the same habit.
 - Pictures: docs/shots/city_dressing_v0.53/ (desk, dining table, squatters' lantern, present).
+
+### 12 Oktober 2026: the wasteland as the military area (v0.54.0)
+
+Full rules and checks in docs/wasteland.md. What changed in the dressing classes:
+- BuildingDress: a `waste` flag (the building's district style). Containers of the converted building
+  swapped to military loot (supplies(): per building store type), the SUPPLY palette in every non
+  military building, denser military buildings, war stories (massacre 22 %, quarantine 20 %,
+  barricade 28 %), sandbag barricades, "no trespassing" / Soviet / hazard signs.
+- BuildingDress for every district: barricades only at entrances (they piled every inner door);
+  building_lab* is LAB (was read as an office).
+- StreetDress: zone entry checkpoints (entry), parked military vehicles and convoys
+  (militaryVehicles), sandbag fighting positions at crossings, sandbags / wire / military crates on
+  the sidewalks, military jeeps in crashes.
+- LotDress: military scenes on bare lots (motor pool, supply dump, helicopter crash, casualties).
+- tools/props/dressbalance.py reports wasteland buildings as their own rows (kind (w)).

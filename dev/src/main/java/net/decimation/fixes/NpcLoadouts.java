@@ -391,10 +391,11 @@ public class NpcLoadouts
         }
     }
 
-    static boolean military(net.minecraft.world.World world, double x, double z)
+    /** A military area: a military sector, or a city's wasteland district (docs/wasteland.md). */
+    public static boolean military(net.minecraft.world.World world, double x, double z)
     {
         return Sectors.sector(world.getSeed(), (int) Math.floor(x) >> 4, (int) Math.floor(z) >> 4)
-            == StructureGenerator.MIL;
+            == StructureGenerator.MIL || net.decimation.worldgen.city.Wasteland.at(world.getSeed(), x, z);
     }
 
     /** Decimation's items, or ours (guns and magazines of our own register as deciworldgen:NAME). */

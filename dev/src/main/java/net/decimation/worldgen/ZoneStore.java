@@ -67,6 +67,22 @@ public class ZoneStore
         return zone;
     }
 
+    /** True when a zone of ours of this kind contains the point (dev tests). */
+    public static synchronized boolean has(ZoneKind kind, int x, int y, int z)
+    {
+        for (ObjectZone zone : zones)
+        {
+            if (net.decimation.fixes.Deci.isZone(zone, kind)
+                && x >= Math.min(zone.zoneX1, zone.zoneX2) && x <= Math.max(zone.zoneX1, zone.zoneX2)
+                && y >= Math.min(zone.zoneY1, zone.zoneY2) && y <= Math.max(zone.zoneY1, zone.zoneY2)
+                && z >= Math.min(zone.zoneZ1, zone.zoneZ2) && z <= Math.max(zone.zoneZ1, zone.zoneZ2))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /** Removes every zone of ours of this kind containing the point; how many (dev tests, commands). */
     public static synchronized int removeAt(ZoneKind kind, int x, int y, int z)
     {

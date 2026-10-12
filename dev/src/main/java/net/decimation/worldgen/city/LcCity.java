@@ -113,6 +113,7 @@ public final class LcCity
                 {
                     continue;
                 }
+                Wasteland.zone(world, cx, cz);
                 int[] b = block(seed, cx, cz);
                 if (!done.add(((long) b[0] << 32) ^ (b[1] & 0xffffffffL)))
                 {
@@ -337,18 +338,7 @@ public final class LcCity
     public static String style(long seed, int cellX, int cellZ)
     {
         int gx = Math.floorDiv(cellX, 2) * 2, gz = Math.floorDiv(cellZ, 2) * 2;
-        List<String> styles = new ArrayList<String>();
-        for (LcContent.Building b : LcContent.buildings())
-        {
-            for (String s : b.styles.keySet())
-            {
-                if (!styles.contains(s))
-                {
-                    styles.add(s);
-                }
-            }
-        }
-        java.util.Collections.sort(styles);
+        List<String> styles = new ArrayList<String>(styleList());
         if (styles.isEmpty())
         {
             return "";
@@ -383,6 +373,35 @@ public final class LcCity
             }
         }
         return styles.get(styles.size() - 1);
+    }
+
+    private static volatile List<String> styleList;
+    private static volatile int styleListOf = -1;
+
+    /** Every district style of the installed content, sorted (built once: the NPC checks ask often). */
+    private static List<String> styleList()
+    {
+        List<LcContent.Building> all = LcContent.buildings();
+        List<String> l = styleList;
+        if (l != null && styleListOf == all.size())
+        {
+            return l;
+        }
+        l = new ArrayList<String>();
+        for (LcContent.Building b : all)
+        {
+            for (String s : b.styles.keySet())
+            {
+                if (!l.contains(s))
+                {
+                    l.add(s);
+                }
+            }
+        }
+        java.util.Collections.sort(l);
+        styleList = l;
+        styleListOf = all.size();
+        return l;
     }
 
     /**
@@ -525,8 +544,8 @@ public final class LcCity
                 }
             }
         }
-        net.decimation.worldgen.ZoneKind zone = style.endsWith(":deadzone")
-            ? net.decimation.worldgen.ZoneKind.MILITARY : net.decimation.worldgen.ZoneKind.POLICE;
+        // the wasteland district is one military zone as a whole (Wasteland.zone), not per building
+        net.decimation.worldgen.ZoneKind zone = style.endsWith(":deadzone") ? null : net.decimation.worldgen.ZoneKind.POLICE;
         for (int i = 1; i < size; i++)
         {
             for (int j = 1; j < size; j++)
@@ -684,7 +703,7 @@ public final class LcCity
             if (free)
             {
                 fit.add(b);
-                total += b.styles.get(style);
+                total += Wasteland.weight(b, style);
             }
         }
         if (fit.isEmpty())
@@ -694,7 +713,7 @@ public final class LcCity
         int t = r.nextInt(total);
         for (LcContent.Building b : fit)
         {
-            t -= b.styles.get(style);
+            t -= Wasteland.weight(b, style);
             if (t < 0)
             {
                 return b;

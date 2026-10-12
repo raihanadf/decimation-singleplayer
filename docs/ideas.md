@@ -40,7 +40,9 @@ first (questions with options) before any code. Priority now: finish the current
     keep the refuge feature, but in cities use a structure we already have, a police building,
     barricaded, as the safezone; so police buildings come in 3 kinds: normal, abandoned, and a
     barricaded safezone with people inside.
-14. **Wasteland district = military area**: the user says DeceasedCraft's wasteland area with its
+14. **Wasteland district = military area**: DONE v0.54.0 (docs/wasteland.md; DeceasedCraft checked:
+    partly right, its wasteland holds the military base, camp and bunker with military loot but is
+    mostly industry; the whole district is military in ours). Was: the user says DeceasedCraft's wasteland area with its
     wasteland buildings is really a military zone / sector, to be stocked with military loot. User:
     "if you dont trust me you can check it up on deceased craft directly" [not verified yet: check
     DeceasedCraft's city style data (legacy deadzone) and its loot before acting]. Today our

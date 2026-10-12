@@ -309,6 +309,21 @@ final class Dress
         return null;
     }
 
+    /** A prop beside (x, y, z) at the same height whose front looks straight at it. */
+    private boolean faced(int x, int y, int z)
+    {
+        for (int k = 0; k < 4; k++)
+        {
+            int px = x - SIDES[k][0], pz = z - SIDES[k][1];
+            Block p = block(px, y, pz);
+            if (p != null && PropBoxes.box(p, meta(px, y, pz)) != null && PropFacing.front(p, meta(px, y, pz)) == k)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private int fits(Block b, int m, int x, int y, int z, int mount)
     {
         Block here = inside(x, y, z) ? block(x, y, z) : null;
@@ -343,6 +358,14 @@ final class Dress
                         }
                     }
                 }
+            }
+            // a solid block (sandbags) right in front of a prop's face: propclash FACE for the prop beside it
+            // (v0.54 first run: a fighting position bagged a traffic light's lenses)
+            float[] own = PropGeom.shape(b, m);
+            if (own != null && own[3] - own[2] > 0.6f && b.getMaterial() != net.minecraft.block.material.Material.glass
+                && faced(x, y, z))
+            {
+                return 7;
             }
             return 0;
         }

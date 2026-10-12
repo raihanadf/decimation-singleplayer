@@ -172,6 +172,11 @@ final class LotDress
     /** Bare lot: one scene or nothing. */
     private void bare()
     {
+        if (district == StreetDress.WASTELAND)
+        {
+            militaryLot();
+            return;
+        }
         int r = roll();
         cpw.mods.fml.common.FMLLog.info("[deciworldgen] dress lot %s at %d,%d", r < 280 ? "cars" : r < 450 ? "camp"
             : r < 620 ? "dump" : "empty", p.minX(), p.minZ());
@@ -235,6 +240,150 @@ final class LotDress
                 String name = cars[roll() % cars.length];
                 face(name, x, z, dir);
             }
+        }
+    }
+
+    // ------------------------------------------------------------------ the military area
+
+    /**
+     * A bare lot of the wasteland district, the city's military area (docs/wasteland.md): a motor
+     * pool (vehicles side by side, all one way, fuel and spares at the edge), a supply dump (rows of
+     * military crates, ammo cases, care packages, water pallets, a spotlight), a crashed
+     * helicopter with its dead, a casualty collection point (body bags in rows, stretchers, medical
+     * crates, a hazard light), or nothing. Crates and cases are Decimation loot.
+     */
+    private void militaryLot()
+    {
+        int r = roll();
+        String scene = r < 250 ? "motorpool" : r < 520 ? "supplies" : r < 680 ? "helicopter" : r < 850 ? "casualties" : "empty";
+        cpw.mods.fml.common.FMLLog.info("[deciworldgen] dress lot military %s at %d,%d", scene, p.minX(), p.minZ());
+        if (r < 250)
+        {
+            motorPool();
+        }
+        else if (r < 520)
+        {
+            supplyDump();
+        }
+        else if (r < 680)
+        {
+            helicopter();
+        }
+        else if (r < 850)
+        {
+            casualties();
+        }
+    }
+
+    /** Jeeps and an APC side by side, long axis one way, noses the same way; fuel drums and tyres at one edge. */
+    private void motorPool()
+    {
+        boolean rowAlongX = roll() < 500;                // vehicles stand side by side along x, long along z
+        int dir = rowAlongX ? (roll() < 500 ? 1 : 3) : (roll() < 500 ? 0 : 2);
+        int[] anchors = {3, 8, 13};
+        for (int k = 0; k < anchors.length; k++)
+        {
+            if (roll() < 200)
+            {
+                continue;                                 // an empty bay
+            }
+            String name = k == 1 && roll() < 500 ? "BlockWreckageMilitary2" : "BlockWreckageMilitary1";
+            int x = rowAlongX ? anchors[k] : 8, z = rowAlongX ? 8 : anchors[k];
+            face(name, x, z, dir);
+        }
+        String[] spares = {"BlockBarrel", "BlockBarrel", "BlockTireStack", "BlockTire", "BlockPowerGenerator"};
+        int edge = rowAlongX ? (dir == 1 ? 3 : 1) : (dir == 0 ? 2 : 0);   // behind the vehicles' tails
+        for (int k = 0; k < 5; k++)
+        {
+            int a = 2 + roll() % 12;
+            int x = edge == 0 ? 14 : edge == 2 ? 1 : a, z = edge == 1 ? 14 : edge == 3 ? 1 : a;
+            put(spares[k], x, z, 2 + (roll() & 3));
+        }
+    }
+
+    /** Two rows of military crates, ammo cases, care packages, water pallets, a spotlight. */
+    private void supplyDump()
+    {
+        boolean alongX = roll() < 500;
+        int placed = 0;
+        for (int row = 0; row < 2; row++)
+        {
+            int across = row == 0 ? 5 : 10;
+            int front = alongX ? (row == 0 ? 3 : 1) : (row == 0 ? 2 : 0);   // labels toward the aisle between the rows
+            for (int a = 3; a <= 12; a++)
+            {
+                if (roll() < 250)
+                {
+                    continue;
+                }
+                int x = alongX ? a : across, z = alongX ? across : a;
+                // never stacked: a crate is drawn 1.15 high, one on another would overlap it by 0.15
+                placed += face("BlockMilitaryCrate", x, z, front) ? 1 : 0;
+            }
+        }
+        somewhere("BlockAmmoCrateLarge", roll() & 3, 10);
+        somewhere("BlockAmmoCrate", roll() & 3, 10);
+        for (int k = 0; k < 2; k++)
+        {
+            somewhere("BlockCarePackage", -1, 10);
+        }
+        somewhere("BlockWaterPalletTarp", -1, 10);
+        somewhere("BlockSpotlight", roll() & 3, 10);
+        if (placed == 0)
+        {
+            somewhere("BlockMilitaryCrate", roll() & 3, 10);
+        }
+    }
+
+    /** A crashed helicopter in the middle, two dead beside it, an ammo case and debris thrown ahead. */
+    private void helicopter()
+    {
+        Block heli = deci("BlockWreckageMilitary3");
+        if (heli == null || !face("BlockWreckageMilitary3", 8, 8, roll() & 3))
+        {
+            Dress.note("~wasteland helicopter did not fit");
+            return;
+        }
+        for (int k = 0; k < 2; k++)
+        {
+            somewhere("BlockSkeletonGround", roll() & 3, 12);
+        }
+        somewhere("BlockAmmoCrate", roll() & 3, 10);
+        String[] junk = {"BlockTire", "BlockCardboardBoxes3", "BlockBarrel"};
+        for (int k = 0; k < 3; k++)
+        {
+            somewhere(junk[k], -1, 8);
+        }
+    }
+
+    /** Body bags in rows, stretchers, medical crates and a hazard light by the edge. */
+    private void casualties()
+    {
+        String[] bags = {"BlockBodyBagBlack", "BlockBodyBagGreen", "BlockBodyBagBlue", "BlockBodyBagOrange"};
+        boolean alongX = roll() < 500;
+        for (int row = 0; row < 3; row++)
+        {
+            int across = 4 + row * 3;
+            for (int a = 3; a <= 12; a += 2)
+            {
+                if (roll() < 300)
+                {
+                    continue;
+                }
+                int x = alongX ? a : across, z = alongX ? across : a;
+                face(bags[roll() % bags.length], x, z, alongX ? 1 : 0);
+            }
+        }
+        for (int k = 0; k < 2; k++)
+        {
+            somewhere("BlockStretcher", roll() & 3, 10);
+        }
+        somewhere("BlockMedicalCrate", roll() & 3, 10);
+        somewhere("BlockMedicalCrate", roll() & 3, 10);
+        somewhere("BlockHazardLight", roll() & 3, 10);
+        if (roll() < 500)
+        {
+            somewhere("BlockSkeletonGround", roll() & 3, 10);
         }
     }
 }

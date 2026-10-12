@@ -31,13 +31,18 @@ final class BuildingDress
     private final long seed;
     private final int kind;
     private final String name;
+    /** In the wasteland district, the city's military area (docs/wasteland.md): military supplies and loot. */
+    private final boolean waste;
+    /** What supplies() did to the building's containers, for the log. */
+    private String lootLog;
     private final Map<Long, BuildingLayout.Spot> at = new HashMap<Long, BuildingLayout.Spot>();
     private int salt;
     /** One log line per dressed building (prop counts): tools/props/dressbalance.py reads them. */
     static final boolean LOG = Boolean.getBoolean("deciworldgen.dresslog");
 
-    private BuildingDress(Dress d, BuildingLayout lay, long seed, int kind, String name)
+    private BuildingDress(Dress d, BuildingLayout lay, long seed, int kind, String name, boolean waste)
     {
+        this.waste = waste;
         this.name = name.toLowerCase();
         this.d = d;
         this.lay = lay;
@@ -69,9 +74,9 @@ final class BuildingDress
         {
             return MILITARY;
         }
-        if (n.contains("laborator"))
+        if (n.contains("laborator") || n.startsWith("building_lab"))
         {
-            return LAB;
+            return LAB;                                   // building_lab1 (wasteland) read as an office before v0.54
         }
         if (n.contains("factory") || n.contains("warehous") || n.contains("carservic") || n.contains("workshop")
             || n.contains("derrick") || n.contains("pumpjack") || n.contains("gasstation"))
@@ -124,7 +129,13 @@ final class BuildingDress
             return d;
         }
         long seed = hl(0x4255494CL ^ p.minX() * 31L, p.minX(), p.minZ());
-        new BuildingDress(d, lay, seed, kind(b.name), b.name).run();
+        boolean waste = Wasteland.district(p.style);
+        BuildingDress bd = new BuildingDress(d, lay, seed, kind(b.name), b.name, waste);
+        bd.run();
+        if (LOG && bd.lootLog != null)
+        {
+            cpw.mods.fml.common.FMLLog.info("[deciworldgen] wasteland loot %s at %d,%d: %s", b.name, p.minX(), p.minZ(), bd.lootLog);
+        }
         if (LOG)
         {
             StringBuilder sb = new StringBuilder();
@@ -135,8 +146,8 @@ final class BuildingDress
                     sb.append(' ').append(e.getKey().replace("deci:", "")).append('=').append(e.getValue()[0]);
                 }
             }
-            cpw.mods.fml.common.FMLLog.info("[deciworldgen] dressed building %s kind %d at %d,%d spots %d:%s", b.name,
-                                            kind(b.name), p.minX(), p.minZ(), lay.spots.size(), sb);
+            cpw.mods.fml.common.FMLLog.info("[deciworldgen] dressed building %s kind %d at %d,%d spots %d%s:%s", b.name,
+                                            kind(b.name), p.minX(), p.minZ(), lay.spots.size(), waste ? " wasteland" : "", sb);
         }
         Dress.logTotals();
         return d;
@@ -233,6 +244,10 @@ final class BuildingDress
 
     private void run()
     {
+        if (waste)
+        {
+            supplies();
+        }
         doorProps();
         exterior();
         Map<Integer, List<BuildingLayout.Spot>> storeys = new java.util.TreeMap<Integer, List<BuildingLayout.Spot>>();
@@ -359,7 +374,9 @@ final class BuildingDress
                 String[] art = {"BlockGraffiti_1", "BlockGraffiti_2", "BlockGraffiti_3", "BlockGraffiti_4", "BlockGraffiti_5",
                                 "BlockGraffiti_6", "BlockGraffiti_7", "BlockGraffiti_8", "BlockGraffiti_9", "BlockGraffiti_10",
                                 "BlockGraffiti_11", "BlockGraffiti_12"};
-                if (lay.wall(wx, s.y, wz) && hang(art[roll() % art.length], s.x, s.y + 1, s.z, w))
+                // the military area: "no trespassing" signs beside the graffiti (docs/wasteland.md)
+                String pic = waste && roll() < 300 ? "decal.warningtrespass" : art[roll() % art.length];
+                if (lay.wall(wx, s.y, wz) && hang(pic, s.x, s.y + 1, s.z, w))
                 {
                     tags++;
                     Dress.note("~exterior graffiti");
@@ -487,7 +504,9 @@ final class BuildingDress
             core(STAND, 20, 3, "BlockMilitaryCrate", "BlockAmmoCrate"), it(STAND, 10, 1, "BlockWeaponCabinet"),
             desk(15, 1, false, "BlockMetalTable", "BlockMilitaryRadioSmall", CHAIR),
             it(STAND, 10, 1, "BlockWaterPallet", "BlockWaterPalletTarp"), it(STAND, 10, 2, "BlockWoodCrate"),
-            it(STAND, 6, 1, "BlockAmmoCrateLarge"), it(STAND, 6, 1, "BlockPowerGenerator")};
+            it(STAND, 6, 1, "BlockAmmoCrateLarge"), it(STAND, 6, 1, "BlockPowerGenerator"),
+            it(HANG, 5, 1, "decal.usflag"), it(STAND, 6, 1, "BlockMedicalCrate"), it(STAND, 4, 1, "BlockMilitaryRadio"),
+            it(STAND, 4, 1, "BlockStretcher")};
         PALETTE[LAB] = new Item[] {
             it(STAND, 12, 1, "BlockMedicalCrate"), desk(15, 2, true, "BlockMetalTable", PC, OCHAIR),
             it(STAND, 6, 1, "BlockCookingStation"), it(HANG, 10, 1, "decal.hazardbio", "decal.warningxray", "decal.hazardnuclear"),
@@ -499,6 +518,16 @@ final class BuildingDress
             desk(10, 2, false, "BlockChesstable", null, CHAIR), it(STAND, 8, 1, "BlockTrashcan"), it(HANG, 6, 1, TVS),
             it(HANG, 4, 1, "decal.usflag")};
     }
+
+    /**
+     * Military supplies left in every building of the wasteland district, the city's military area
+     * (docs/wasteland.md): the army held the district, so offices, factories and labs keep its crates
+     * (Decimation's loot is per block: military crates, ammo cases, weapon cabinets hold military loot).
+     */
+    private static final Item[] SUPPLY = {
+        core(STAND, 14, 2, "BlockMilitaryCrate"), it(STAND, 8, 1, "BlockAmmoCrate"), it(STAND, 5, 1, "BlockAmmoCrateLarge"),
+        it(STAND, 5, 1, "BlockWeaponCabinet"), it(STAND, 6, 1, "BlockMedicalCrate"),
+        desk(6, 1, false, "BlockMetalTable", "BlockMilitaryRadioSmall", CHAIR), it(STAND, 4, 1, "BlockWaterPalletTarp")};
 
     /** What happened in this building (one per building): the story layer follows it. */
     private static final int CALM = 0, LOOTED = 1, SQUAT = 2, MASSACRE = 3, QUARANTINE = 4, BARRICADE = 5;
@@ -540,10 +569,39 @@ final class BuildingDress
             // most buildings stick to one variant (one TV model, one crate kind), some mix them
             variant[k] = roll() < 700 ? i.names[roll() % i.names.length] : null;
         }
+        if (waste && kind != MILITARY)
+        {
+            // the military area: part of the army's supplies in every building, its crate always
+            for (Item i : SUPPLY)
+            {
+                if (i.core || roll() < 600)
+                {
+                    theme.add(i);
+                }
+            }
+            int k0 = themeWeight.length;
+            themeWeight = java.util.Arrays.copyOf(themeWeight, theme.size());
+            variant = java.util.Arrays.copyOf(variant, theme.size());
+            for (int k = k0; k < theme.size(); k++)
+            {
+                Item i = theme.get(k);
+                themeWeight[k] = Math.max(1, i.weight * (50 + roll() % 101) / 100);
+                variant[k] = i.names[roll() % i.names.length];
+            }
+        }
         density = 50 + roll() % 91;                          // 50 .. 140 % of the usual furniture
+        if (waste && kind == MILITARY)
+        {
+            density += 30;                                   // a military building of the military area is stocked
+        }
         int r = roll();
         boolean grim = kind == MEDICAL || kind == POLICE || kind == MILITARY || kind == LAB;
-        if (grim)
+        if (waste)
+        {
+            // the district was held and overrun: mostly bodies, barricades and quarantine, few calm rooms
+            story = r < 100 ? CALM : r < 250 ? LOOTED : r < 300 ? SQUAT : r < 520 ? MASSACRE : r < 720 ? QUARANTINE : BARRICADE;
+        }
+        else if (grim)
         {
             story = r < 200 ? CALM : r < 380 ? LOOTED : r < 480 ? SQUAT : r < 640 ? MASSACRE : r < 840 ? QUARANTINE : BARRICADE;
         }
@@ -746,7 +804,7 @@ final class BuildingDress
             stand("BlockSkeletonGround", s, roll() & 3);
         }
         int bags = story == QUARANTINE ? 1 + roll() % 3
-            : (kind == MEDICAL || kind == POLICE || kind == MILITARY) && roll() < 250 ? 1 : 0;
+            : (kind == MEDICAL || kind == POLICE || kind == MILITARY || waste) && roll() < 250 ? 1 : 0;
         for (int b = 0; b < bags; b++)
         {
             BuildingLayout.Spot s = floor.get(roll() % floor.size());
@@ -811,7 +869,10 @@ final class BuildingDress
             int w = firstWall(s, roll() & 3);
             if (w >= 0)
             {
-                String pic = kind == HOME || kind == INDUSTRY || kind == CIVIC || story == SQUAT || story == LOOTED
+                String pic = waste ? (kind == LAB && roll() < 400 ? pick("decal.hazardbio", "decal.hazardnuclear")
+                                      : pick("decal.warningtrespass", "decal.sovietsymbol", "decal.hazardbio",
+                                             "BlockGraffiti_3", "BlockGraffiti_7", "BlockGraffiti_9", "BlockGraffiti_12"))
+                    : kind == HOME || kind == INDUSTRY || kind == CIVIC || story == SQUAT || story == LOOTED
                     ? pick("BlockGraffiti_1", "BlockGraffiti_2", "BlockGraffiti_3", "BlockGraffiti_4", "BlockGraffiti_5",
                            "BlockGraffiti_6", "BlockGraffiti_7", "BlockGraffiti_8", "BlockGraffiti_9", "BlockGraffiti_10",
                            "BlockGraffiti_12")
@@ -854,7 +915,10 @@ final class BuildingDress
         }
     }
 
-    /** Barricaded entrances: crates, barrels and boxes in the cells beside each ground door (not in its walkway). */
+    /**
+     * Barricaded entrances: crates, barrels and boxes in the cells beside each ground door (not in its
+     * walkway); in the wasteland sandbag walls two high (the army held the doors) with a crate behind.
+     */
     private void barricade()
     {
         String[] pile = {"BlockWoodCrate", "BlockBarrel", "BlockCardboardBoxes2", "BlockWoodCrate"};
@@ -862,6 +926,18 @@ final class BuildingDress
         for (int[] door : lay.doors)
         {
             boolean alongX = (door[3] & 1) == 0;
+            // an entrance only: one side of the door outdoors (or no floor there), the other inside
+            // (v0.53 piled every door, inner ones too: sandbags were a third of a bunker's props)
+            int inside = 0;
+            for (int side = -1; side <= 1; side += 2)
+            {
+                BuildingLayout.Spot q = at.get(key(door[0] + (alongX ? side : 0), door[1], door[2] + (alongX ? 0 : side)));
+                inside += q != null && !q.outside ? 1 : 0;
+            }
+            if (inside != 1)
+            {
+                continue;
+            }
             for (int side = -1; side <= 1; side += 2)
             {
                 int ix = door[0] + (alongX ? side : 0), iz = door[2] + (alongX ? 0 : side);
@@ -874,7 +950,7 @@ final class BuildingDress
                 {
                     int bx = ix + (alongX ? 0 : o), bz = iz + (alongX ? o : 0);
                     BuildingLayout.Spot t = at.get(key(bx, door[1], bz));
-                    if (t != null && !t.doorway && !t.outside && stand(pile[roll() % pile.length], t, roll() & 3))
+                    if (t != null && !t.doorway && !t.outside && (waste ? sandbags(t) : stand(pile[roll() % pile.length], t, roll() & 3)))
                     {
                         done++;
                     }
@@ -885,5 +961,110 @@ final class BuildingDress
         {
             Dress.note("~story barricade");
         }
+    }
+
+    /** A sandbag wall two high on a spot (plain blocks, Decimation's sandbag cubes); true when the first went in. */
+    private boolean sandbags(BuildingLayout.Spot t)
+    {
+        Block bag = deci(roll() < 500 ? "BlockSandbagStack" : "BlockSandbagStackBeige");
+        if (bag == null || !d.place(bag, 0, t.x, t.y, t.z, 0))
+        {
+            return false;
+        }
+        if (t.room >= 3)
+        {
+            d.place(bag, 0, t.x, t.y + 1, t.z, 0);
+        }
+        return true;
+    }
+
+    /**
+     * Wasteland district (the city's military area, docs/wasteland.md): the building's own containers
+     * (the converted chests: Decimation wood crates, or vanilla chests where a crate did not fit) hold
+     * military loot instead. Decimation's loot is per block, so the container becomes a military crate,
+     * an ammo case, a weapon cabinet or (labs, clinics) a medical crate, front toward the room, where it
+     * fits as the old one did (the store's other items, then a military crate, when the first pick
+     * does not); otherwise the old one
+     * stays. Each building draws from its own kind of store (a military building: armory, ammunition
+     * store, aid station or supply room). Military buildings swap all of them, factories and
+     * warehouses half (their own stores stay), the rest 7 in 10.
+     */
+    private void supplies()
+    {
+        Block wood = deci("BlockWoodCrate");
+        // each building its own kind of store, so two bunkers of the district differ (v0.54 first run: one
+        // mix everywhere made military crates a third of every military building)
+        String[][] stores = kind == LAB || kind == MEDICAL
+            ? new String[][] {{"BlockMedicalCrate", "BlockMedicalCrate", "BlockMilitaryCrate"}, {"BlockMedicalCrate", "BlockMilitaryCrate"}}
+            : kind == MILITARY ? new String[][] {
+                {"BlockWeaponCabinet", "BlockAmmoCrate", "BlockMilitaryCrate"},             // armory
+                {"BlockAmmoCrate", "BlockAmmoCrate", "BlockAmmoCrateLarge", "BlockMilitaryCrate"},   // ammunition store
+                {"BlockMedicalCrate", "BlockMedicalCrate", "BlockMilitaryCrate"},           // aid station
+                {"BlockMilitaryCrate"}}                                                     // supply room
+            : new String[][] {{"BlockMilitaryCrate", "BlockAmmoCrate"}, {"BlockMilitaryCrate", "BlockMedicalCrate"},
+                              {"BlockMilitaryCrate"}};
+        String[] mil = stores[roll() % stores.length];
+        int share = kind == MILITARY ? 1000 : kind == INDUSTRY ? 500 : 700;
+        int swapped = 0, kept = 0;
+        for (int y = 1; y < d.h; y++)
+        {
+            for (int z = 0; z < d.l; z++)
+            {
+                for (int x = 0; x < d.w; x++)
+                {
+                    Block b = d.block(x, y, z);
+                    if (b == null || b != wood && b != Blocks.chest)
+                    {
+                        continue;
+                    }
+                    if (roll() >= share)
+                    {
+                        kept++;
+                        continue;
+                    }
+                    int m0 = d.meta(x, y, z);
+                    // the front: a chest's own facing (meta 2 N, 3 S, 4 W, 5 E), else the first open side
+                    int dir = b == Blocks.chest && m0 >= 2 && m0 <= 5 ? new int[] {3, 1, 2, 0}[m0 - 2] : -1;
+                    for (int k = 0; k < 4 && dir < 0; k++)
+                    {
+                        int o = (k + roll()) & 3;
+                        if (lay.open(x + BuildingLayout.DIR[o][0], y, z + BuildingLayout.DIR[o][1]))
+                        {
+                            dir = o;
+                        }
+                    }
+                    if (dir < 0)
+                    {
+                        kept++;
+                        continue;
+                    }
+                    d.put(null, 0, x, y, z);
+                    // the store's items from a random one on (a tall cabinet or a long case often does
+                    // not fit where a crate stood), a military crate last
+                    int start = roll() % mil.length;
+                    boolean ok = false;
+                    for (int t = 0; t <= mil.length && !ok; t++)
+                    {
+                        Block c = deci(t < mil.length ? mil[(start + t) % mil.length] : "BlockMilitaryCrate");
+                        int m = c == null ? -1 : PropFacing.meta(c, dir);
+                        ok = m >= 0 && d.place(c, m, x, y, z, 0);
+                    }
+                    if (ok)
+                    {
+                        swapped++;
+                    }
+                    else
+                    {
+                        d.put(b, m0, x, y, z);                    // the old container stays
+                        kept++;
+                    }
+                }
+            }
+        }
+        if (swapped > 0)
+        {
+            Dress.note("~wasteland loot swapped");
+        }
+        lootLog = swapped + kept > 0 ? swapped + " containers military, " + kept + " kept" : null;
     }
 }

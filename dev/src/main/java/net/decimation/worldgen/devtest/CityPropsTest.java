@@ -225,7 +225,7 @@ public class CityPropsTest extends DevTestMode
     }
 
     /** Different examples come from different places (another room or building). */
-    private static boolean far(List<int[]> found, int x, int z)
+    static boolean far(List<int[]> found, int x, int z)
     {
         for (int[] f : found)
         {
@@ -238,7 +238,7 @@ public class CityPropsTest extends DevTestMode
     }
 
     /** A standing spot r (2 .. r + 2) away that sees the target: {eyeX, eyeY, eyeZ, yaw, pitch}. */
-    private static float[] camera(World w, int tx, int ty, int tz, int r, int front)
+    static float[] camera(World w, int tx, int ty, int tz, int r, int front)
     {
         int[][] base = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}, {1, 1}, {-1, 1}, {1, -1}, {-1, -1}};
         // in front of the prop first (its face shows if its facing is right), then the rest

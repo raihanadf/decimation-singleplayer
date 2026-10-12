@@ -60,7 +60,9 @@ Rules in the code, and whether they run in singleplayer (SP) before v0.46.0:
 - Infected spawning inside: 25 % get the military (marine set) or police (NYPD) variant
   (EntitySpawnZoneHandler; ours since v0.7.0).
 - Map: military zones drawn on the GPS map (client list).
-- Our generator tags military sites and bases MILITARY, city streets / police places POLICE.
+- Our generator tags military sites and bases MILITARY, city streets / police places POLICE, and
+  since v0.54.0 each city's wasteland district as one MILITARY box (128 x 128, y 0 to 255; city/
+  Wasteland.zone, docs/wasteland.md).
 
 ### RADIATION
 - PlayerZoneTickHandler (SERVER): inside, not creative, `enableIrradiation` (default true):

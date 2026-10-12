@@ -248,7 +248,8 @@ final class StreetDress
                     place(k % 2 == 0 ? "BlockTrashBag1" : "BlockTrashBag2", front, a + k, alongZ, (k + roll(0x42L ^ sideSalt)) & 3);
                 }
             }
-            // wasteland: barrels, burnt clutter, a skeleton now and then
+            // wasteland (the city's military area, docs/wasteland.md): barrels, a skeleton now and then,
+            // sandbags left on the curb, wire coils and a military crate (loot) against the frontage
             if (district == WASTELAND)
             {
                 if (roll(0x4241524CL ^ sideSalt) < 400)
@@ -259,13 +260,206 @@ final class StreetDress
                 {
                     place("BlockSkeletonGround", front, 3 + roll(0x534B45L ^ sideSalt) % 10, alongZ, toRoad);
                 }
+                if (roll(0x53414E44L ^ sideSalt) < 250)
+                {
+                    int a = 3 + roll(0x53414EL ^ sideSalt) % 9, n = 2 + roll(0x5341L ^ sideSalt) % 2;
+                    for (int k = 0; k < n; k++)
+                    {
+                        plain(k % 2 == 0 ? "BlockSandbagStack" : "BlockSandbagStackBeige", curb, a + k, alongZ);
+                    }
+                }
+                if (roll(0x57495245L ^ sideSalt) < 150)
+                {
+                    int a = 2 + roll(0x574952L ^ sideSalt) % 11;
+                    plain("BlockConcertinaWire", front, a, alongZ);
+                    plain("BlockConcertinaWire", front, a + 1, alongZ);
+                }
+                if (roll(0x4D494C43L ^ sideSalt) < 120)
+                {
+                    place("BlockMilitaryCrate", front, 3 + roll(0x4D494CL ^ sideSalt) % 10, alongZ, toRoad);
+                }
             }
         }
         facades(alongZ);
+        if (district == WASTELAND && entry(alongZ))
+        {
+            return;                                      // the zone's checkpoint takes the road
+        }
         if (!jam(alongZ))
         {
             roadScene(alongZ);
         }
+    }
+
+    /** A plain block (sandbags, wire) on a walk cell of a straight chunk; slides up to 3 along to fit. */
+    private boolean plain(String name, int across, int along, boolean alongZ)
+    {
+        Block b = deci(name);
+        for (int o : NEAR)
+        {
+            int a = along + o, x = alongZ ? across : a, z = alongZ ? a : across;
+            if (b != null && walk(x, z) && d.place(b, 0, x, lay.stand[x][z], z, 0))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // ------------------------------------------------------------------ the military area
+
+    /**
+     * The zone's checkpoint where a street enters the wasteland district (docs/wasteland.md): from
+     * another district always, from outside the city 6 times in 10. From the boundary inward: a stop
+     * sign facing the arriving traffic, hedgehogs, a concertina line and a jersey barrier line across
+     * the road with a 2 wide gap in the inbound lane, sandbag walls two high on both sidewalks beside
+     * the barrier (the frontage row stays open), a spotlight and a flag pole behind, a jeep parked in
+     * the outbound lane. Returns true when the barrier line went in.
+     */
+    private boolean entry(boolean alongZ)
+    {
+        int dx = alongZ ? 0 : 1, dz = alongZ ? 1 : 0;
+        int end = 0;
+        for (int sgn = 1; sgn >= -1 && end == 0; sgn -= 2)
+        {
+            int nx = chx + dx * sgn, nz = chz + dz * sgn;
+            int ncx = Math.floorDiv(nx, CELL), ncz = Math.floorDiv(nz, CELL);
+            boolean edge = isCity(seed, ncx, ncz) ? !Wasteland.district(style(seed, ncx, ncz))
+                : roll(0x45584954L ^ sgn) < 600;
+            if (edge)
+            {
+                end = sgn;
+            }
+        }
+        if (end == 0)
+        {
+            return false;
+        }
+        int lo = -1, hi = -1;
+        for (int k = 0; k < 16; k++)
+        {
+            int x = alongZ ? k : 8, z = alongZ ? 8 : k;
+            if (lay.type[x][z] == StreetLayout.ROAD)
+            {
+                if (lo < 0)
+                {
+                    lo = k;
+                }
+                hi = k;
+            }
+        }
+        if (lo < 0 || hi - lo < 5)
+        {
+            return false;
+        }
+        int mid = (lo + hi) / 2;
+        int outer = end > 0 ? 15 : 0, step = -end;           // along from the boundary inward: outer + step * k
+        int out = alongZ ? (end > 0 ? 1 : 3) : (end > 0 ? 0 : 2);   // direction toward the boundary
+        int in = (out + 2) & 3;                               // inbound traffic
+        // the inbound lane holds the gap: its across cells next to the middle
+        int gap = laneDir(alongZ, mid - 1, mid) == in ? mid - 2 : mid + 1;
+        Block bar = deci("BlockBarrier");
+        int bm = bar == null ? -1 : PropFacing.along(bar, alongZ, 0), bars = 0;
+        // a barrier covers its cell and the next: laid outward from the gap, so the gap stays 2 wide
+        for (int k = gap - 2; k >= lo; k -= 2)
+        {
+            bars += road("BlockBarrier", k, outer + step * 5, alongZ, bm) ? 1 : 0;
+        }
+        for (int k = gap + 2; k <= hi; k += 2)
+        {
+            bars += road("BlockBarrier", k, outer + step * 5, alongZ, bm) ? 1 : 0;
+        }
+        if (bars == 0)
+        {
+            return false;
+        }
+        for (int k = lo + 1; k <= hi; k += 3)
+        {
+            if (k < gap - 1 || k > gap + 2)                  // drawn 1.5 wide: none beside the gap either
+            {
+                road("BlockHedgehog", k, outer + step, alongZ, 2);
+            }
+        }
+        for (int k = lo; k <= hi; k++)
+        {
+            if (k < gap || k > gap + 1)
+            {
+                road("BlockConcertinaWire", k, outer + step * 3, alongZ, 0);
+            }
+        }
+        // sandbag walls on both sidewalks at the barrier line, the frontage row open
+        for (int side = 0; side < 2; side++)
+        {
+            int[] rows = rows(side, alongZ);
+            if (rows == null)
+            {
+                continue;
+            }
+            int a = outer + step * 5, st = rows[1] > rows[0] ? 1 : -1;   // from the curb toward the frontage
+            for (int across = rows[0]; across != rows[1]; across += st)
+            {
+                int x = alongZ ? across : a, z = alongZ ? a : across;
+                Block bag = deci(across % 2 == 0 ? "BlockSandbagStack" : "BlockSandbagStackBeige");
+                if (bag != null && walk(x, z) && d.place(bag, 0, x, lay.stand[x][z], z, 0))
+                {
+                    d.place(bag, 0, x, lay.stand[x][z] + 1, z, 0);
+                }
+            }
+        }
+        // the stop sign on the curb of the inbound side, facing the arriving drivers
+        int inSide = trafficOnSide(0, alongZ) == in ? 0 : 1;
+        int[] inRows = rows(inSide, alongZ);
+        if (inRows != null)
+        {
+            place("BlockRoadsignStop", inRows[0], outer + step * 2, alongZ, out);
+        }
+        int[] outRows = rows(1 - inSide, alongZ);
+        if (outRows != null && !place("BlockSpotlight", outRows[0], outer + step * 8, alongZ, out))
+        {
+            placeAlong("BlockFlagPollUAHD", outRows[0], outer + step * 8, alongZ, !alongZ, 0);   // cloth along the walk
+        }
+        // a jeep in the outbound lane, nose toward the boundary (ready to leave)
+        Block jeep = deci("BlockWreckageMilitary1");
+        int lane = gap < mid ? mid + 2 : mid - 1;
+        if (jeep != null)
+        {
+            road("BlockWreckageMilitary1", lane, outer + step * 11, alongZ, PropFacing.meta(jeep, out));
+        }
+        cpw.mods.fml.common.FMLLog.info("[deciworldgen] dress zone entry at %d,%d facing %s", chx << 4, chz << 4,
+                                        "ESWN".charAt(out));
+        return true;
+    }
+
+    /**
+     * Military vehicles left in the district: one jeep or APC parked in a lane (headlights the lane's
+     * way), or a convoy of two jeeps one behind the other in the same lane.
+     */
+    private boolean militaryVehicles(boolean alongZ, int lo, int hi, boolean convoy)
+    {
+        int mid = (lo + hi) / 2;
+        int lane = roll(0x4D56454CL) < 500 ? mid - 1 : mid + 2;
+        int dir = laneDir(alongZ, lane, mid);
+        int placed = 0;
+        if (convoy)
+        {
+            Block jeep = deci("BlockWreckageMilitary1");
+            for (int along : new int[] {3, 11})
+            {
+                placed += jeep != null && road("BlockWreckageMilitary1", lane, along, alongZ, PropFacing.meta(jeep, dir)) ? 1 : 0;
+            }
+        }
+        else
+        {
+            String name = roll(0x4D564B49L) < 600 ? "BlockWreckageMilitary1" : "BlockWreckageMilitary2";
+            Block v = deci(name);
+            placed += v != null && road(name, lane, 7, alongZ, PropFacing.meta(v, dir)) ? 1 : 0;
+        }
+        if (placed > 0)
+        {
+            cpw.mods.fml.common.FMLLog.info("[deciworldgen] dress military %s at %d,%d", convoy ? "convoy" : "vehicle",
+                                            chx << 4, chz << 4);
+        }
+        return placed > 0;
     }
 
     // ------------------------------------------------------------------ facades
@@ -485,6 +679,14 @@ final class StreetDress
             {
                 crash(alongZ, lo, hi, true);
             }
+            else if (r < 450)
+            {
+                militaryVehicles(alongZ, lo, hi, false);
+            }
+            else if (r < 550)
+            {
+                militaryVehicles(alongZ, lo, hi, true);
+            }
             return;
         }
         if (r < 45)
@@ -594,7 +796,7 @@ final class StreetDress
         int mid = (lo + hi) / 2;
         String[] cars = {"BlockWreckage1", "BlockWreckage2", "BlockWreckage3", "BlockWreckage4", "BlockWreckage5",
                          "BlockTruckWreckage1", "BlockTruckWreckage3", "BlockTruckWreckage5"};
-        String name = cars[roll(0x43415221L) % cars.length];
+        String name = wasteland && roll(0x43414A50L) < 400 ? "BlockWreckageMilitary1" : cars[roll(0x43415221L) % cars.length];
         Block c = deci(name);
         if (c == null)
         {
@@ -810,6 +1012,10 @@ final class StreetDress
             }
         }
         crossingCrash();
+        if (district == WASTELAND)
+        {
+            fightingPosition(corner);
+        }
         // a mailbox on one corner downtown
         if (district == DOWNTOWN && roll(0x4D41494CL) < 400)
         {
@@ -866,6 +1072,80 @@ final class StreetDress
             int x = 8 + (roll(0x44454231L, k) % 7) - 3, z = 8 + (roll(0x44454232L, k) % 7) - 3;
             crossRoad(deci(k == 0 ? "BlockTire" : k == 1 ? "BlockCardboardBoxes3" : "BlockTrashBag1"), 2 + k, x, z);
         }
+    }
+
+    /**
+     * A sandbag fighting position on one corner of a wasteland crossing (35 %): sandbags along both
+     * road sides of the 3 x 3 corner square (a second course on every other cell: firing gaps), a
+     * military crate (loot) in the inner cell facing the crossing, an ammo case beside it. The corner
+     * cells away from the roads stay open, so the walk round the corner still goes through.
+     */
+    private void fightingPosition(int[][] corner)
+    {
+        if (roll(0x46494748L) >= 350)
+        {
+            return;
+        }
+        // a corner whose square holds no prop yet (a traffic light, its cabinet, a stop sign)
+        int c = -1, first = roll(0x464947L) % 4;
+        for (int t = 0; t < 4 && c < 0; t++)
+        {
+            int k = (first + t) & 3, qx = corner[k][0] > 0 ? 13 : 0, qz = corner[k][1] > 0 ? 13 : 0;
+            boolean free = true;
+            for (int x = qx; x < qx + 3 && free; x++)
+            {
+                for (int z = qz; z < qz + 3 && free; z++)
+                {
+                    for (int y = Math.max(0, lay.stand[x][z]); y < lay.stand[x][z] + 2 && free; y++)
+                    {
+                        Block b = d.block(x, y, z);
+                        free = b == null || net.decimation.worldgen.military.PropBoxes.box(b, d.meta(x, y, z)) == null;
+                    }
+                }
+            }
+            c = free ? k : -1;
+        }
+        if (c < 0)
+        {
+            return;
+        }
+        int sx = corner[c][0], sz = corner[c][1];
+        int x0 = sx > 0 ? 13 : 0, z0 = sz > 0 ? 13 : 0;
+        int ex = sx > 0 ? 13 : 2, ez = sz > 0 ? 13 : 2;     // the square's column / row along the roads
+        int bags = 0;
+        for (int x = x0; x < x0 + 3; x++)
+        {
+            for (int z = z0; z < z0 + 3; z++)
+            {
+                if ((x == ex || z == ez) && walk(x, z))
+                {
+                    Block bag = deci((x + z) % 3 == 0 ? "BlockSandbagStackBeige" : "BlockSandbagStack");
+                    if (bag != null && d.place(bag, 0, x, lay.stand[x][z], z, 0))
+                    {
+                        bags++;
+                        if ((x + z) % 2 == 0)
+                        {
+                            d.place(bag, 0, x, lay.stand[x][z] + 1, z, 0);
+                        }
+                    }
+                }
+            }
+        }
+        if (bags < 3)
+        {
+            return;
+        }
+        int ix = ex + sx, iz = ez + sz, toward = sx > 0 ? 2 : 0;   // inner cell, front toward the crossing (x)
+        if (walk(ix, iz))
+        {
+            put("BlockMilitaryCrate", ix, iz, toward);
+        }
+        // an ammo case (0.25 high: walked over) beside it, away from the road along z
+        if (walk(ix, iz + sz))
+        {
+            put("BlockAmmoCrate", ix, iz + sz, toward);
+        }
+        cpw.mods.fml.common.FMLLog.info("[deciworldgen] dress fighting position at %d,%d corner %d", chx << 4, chz << 4, c);
     }
 
     private boolean crossRoad(Block b, int m, int x, int z)

@@ -837,6 +837,15 @@ private class, lists awC), then pools (init).
   60; hotbar photo npc_mags (names, icons). Reloading a gun with one in
   game `[not verified]`.
 
+### Wasteland district = military area (DONE v0.54.0, 12 Oktober 2026)
+User: "go with 1, wasteland military area. do full system now" (docs/ideas.md item 14). Full
+design, checks and code map: docs/wasteland.md. DeceasedCraft checked first (legacy 5.5.5 data):
+its wasteland holds the military base, camp and bunker with military loot, the rest industry with
+industrial loot. Ours: the whole district one MILITARY zone, military buildings more often (new
+worlds), military loot in its containers, army supplies, wartime stories, zone entry checkpoints,
+military vehicles, fighting positions, military lot scenes, enemy military groups on its streets.
+Dev test `wasteland`. Waiting for the user's look.
+
 ### Zones, factions and world (user list 9 Oktober 2026, "later")
 Only the list and starting points; scope of each is `[not decided]`, ask
 the user before building.

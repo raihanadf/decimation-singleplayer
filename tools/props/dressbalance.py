@@ -13,7 +13,8 @@ building kind:
     (1.0 = every building has the same mix; the user's "mostly similar" complaint);
   - "same set": share of building pairs whose sets of furniture props are identical.
 Door props (EXIT light, CCTV) are left out of shares and similarity: every building has them by
-rule. Whole run summary at the end (the numbers to compare before / after a change).
+rule. Buildings of the wasteland district (the city's military area, docs/wasteland.md) are their own
+rows, marked (w). Whole run summary at the end (the numbers to compare before / after a change).
 """
 import itertools
 import math
@@ -23,7 +24,7 @@ from collections import Counter, defaultdict
 
 KINDS = ["home", "office", "shop", "food", "medical", "police", "industry", "military", "lab", "civic"]
 DOOR = {"BlockExitLight", "BlockCCTV"}
-LINE = re.compile(r"dressed building (\S+) kind (\d+) at (-?\d+),(-?\d+) spots (\d+):(.*)")
+LINE = re.compile(r"dressed building (\S+) kind (\d+) at (-?\d+),(-?\d+) spots (\d+)( wasteland)?:(.*)")
 
 
 def load(path):
@@ -37,11 +38,12 @@ def load(path):
             continue
         seen.add(key)
         props = Counter()
-        for part in m.group(6).split():
+        for part in m.group(7).split():
             k, v = part.rsplit("=", 1)
             if k not in DOOR:
                 props[k] += int(v)
-        out.append({"name": m.group(1), "kind": int(m.group(2)), "spots": int(m.group(5)), "props": props})
+        out.append({"name": m.group(1), "kind": int(m.group(2)), "spots": int(m.group(5)), "props": props,
+                    "waste": bool(m.group(6))})
     return out
 
 
@@ -61,9 +63,9 @@ def main():
         return
     by = defaultdict(list)
     for r in rows:
-        by[r["kind"]].append(r)
+        by[(r["kind"], r["waste"])].append(r)
     all_sim, all_same, all_pairs, all_props = [], 0, 0, Counter()
-    print("kind      bldg  per100  spread  distinct  sim   same  top props (share)")
+    print("kind         bldg  per100  spread  distinct  sim   same  top props (share)")
     for k in sorted(by):
         rs = by[k]
         tot = Counter()
@@ -84,8 +86,9 @@ def main():
         all_pairs += pairs
         mean = sum(dens) / len(dens)
         sd = math.sqrt(sum((d - mean) ** 2 for d in dens) / len(dens))
-        print("%-9s %4d  %6.1f  %6.1f  %8d  %4s  %4s  %s" % (
-            KINDS[k] if k < len(KINDS) else k, len(rs), mean, sd, len(tot),
+        label = (KINDS[k[0]] if k[0] < len(KINDS) else str(k[0])) + (" (w)" if k[1] else "")
+        print("%-12s %4d  %6.1f  %6.1f  %8d  %4s  %4s  %s" % (
+            label, len(rs), mean, sd, len(tot),
             "%.2f" % (sum(sims) / len(sims)) if sims else "-",
             "%d%%" % round(100.0 * same / pairs) if pairs else "-", top))
     n = sum(all_props.values()) or 1

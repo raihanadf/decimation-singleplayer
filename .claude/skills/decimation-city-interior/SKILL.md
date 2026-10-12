@@ -44,6 +44,15 @@ cctv, tv, vending, skeleton, cabinet, payphone, washer, shopdisplay, graffiti, d
    matters: it turns itself from its neighbours when placed and ignores the metadata.
 6. Furniture reads real in groups, not single props: a desk is table + monitor + chair looking at
    it, a waiting area is a row of chairs, a shop is runs of shelves.
+7. Loot is per block in Decimation: to change what a building gives, swap its containers in place
+   (Dress.put air, then Dress.place the new one with its front toward the open side; put the old one
+   back when it does not fit). A military crate is drawn 1.15 high: never stack two, and it fails
+   where a wood crate stood under a shelf (the base kept 24 of 87).
+8. Per building variety needs per building choices in EVERY layer, loot too: one swap mix for all
+   military buildings made their crates a third of their props (similarity 0.79); a store type per
+   building (armory, ammunition, aid, supply) breaks it.
+9. A rule written for "the entrance" must test that it is one: barricade() piled every door, inner
+   ones too (sandbags a third of a bunker's props). Entrance = one side of the door outdoors.
 
 ## Casebook (never delete a case)
 ### Case 1: first interior dressing (v0.50.0, 12 Oktober 2026)

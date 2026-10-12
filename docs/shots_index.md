@@ -23,6 +23,32 @@ How shots are made: `./gradlew runClient -Pautotest` (street views),
   places_1 walking into the next district: "HOLLOWHAVEN: SUBURBS - 6" and a second chat line;
   places_2 outside the city: "Now entering the Wilderness". Night rain in the dev world.
 
+## wasteland_v0.54/ (the wasteland as the city's military area, 12 Oktober 2026; docs/wasteland.md)
+Dev test `wasteland` (live, deciworldgen_devtest). Run 2, district 30,-4 (blocks 1920,-256 to
+2047,-129), all checks PASS; flag_1 is from run 1 (district 36,12, blocks 2304,768).
+- sheet.png: run 2 contact sheet (19 shots).
+- wasteland_entry_1.png, wasteland_entry_2.png: zone entries seen from inside: jersey barrier line
+  across the road, hedgehogs beyond it, sandbag wall two high on the sidewalk (entry_2), wire.
+- wasteland_spotlight_1.png: an entry from the side: barrier, concertina coil on the road, sandbag
+  stack on the sidewalk, the spotlight behind, a jeep in the outbound lane.
+- wasteland_jeep_1.png, wasteland_jeep_2.png: military jeeps parked in their lanes, headlights the
+  lane's way; wasteland_apc_1.png: an APC in a lane, facing the camera (its lane's way).
+- wasteland_supplies_1.png: supply dump lot: a row of military crates, a care package behind.
+- wasteland_milcrate_1/2/3.png: military crates swapped in for the converted chests, against walls,
+  front into the room (2: a row of three with boxes; 3: beside a table in a camp tent).
+- wasteland_medcrate_1.png: a medical crate (aid station store) between wood crates in a corner.
+- wasteland_cabinet_1.png: a weapon cabinet in a corridor, front out; wasteland_ammo_1.png: an ammo
+  case on a step against a wall.
+- wasteland_casualties_1.png: a camp tent with a table, chair and radio; the target body bag
+  (orange, on the floor left of the chair) is half hidden by the table (weak shot).
+- wasteland_trespass_1.png: two "WARNING no trespassing" signs on a plank wall outside.
+- wasteland_wire_1.png: concertina coils and a trash bag against a wall on the sidewalk.
+- wasteland_sandbags_2.png: sandbags left on a curb, wrecks and a jeep beyond.
+- wasteland_flag_1.png: the US flag decal on a military building's wall over a counter (run 1).
+- wasteland_aerial.png: the district from 80 above: streets, rooftops, water to the east.
+- topdown_entry_0_240.png, topdown_convoy.png, topdown_motorpool.png, topdown_fighting_0_192.png:
+  seed 1 server world, prop boxes with fronts as arrows (described in docs/wasteland.md section 5).
+
 ## city_dressing_v0.53/ (dev test cityprops, city cell 368,6, 12 Oktober 2026)
 - sheet_cityprops.png: 27 shots of the fresh cell (street props as before plus the new interior kinds).
 - cityprops_desk_1.png: office desk: grey metal table along the wall, beige CRT monitor on it facing

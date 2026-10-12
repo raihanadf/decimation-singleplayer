@@ -159,6 +159,14 @@ boot. Falls straight through to the mod's own (re-skinned) main menu after that.
   snipers spot enemies up to `sniperRange` 70 blocks (was 96); the Barrett tiers (juggernaut
   sniper 60 hp, elite sniper 38 hp) die to one 30 round 5.56 magazine (8 per player hit x their
   damage share). Config version 3: older files take these new defaults once.
+- **Wasteland = military area (v0.54.0)**: the wasteland district of a city (next to military
+  zones) is now the city's military area: one military zone over the whole district, DeceasedCraft's
+  military base, camp and bunker more often (new worlds only), the buildings' crates hold military
+  loot (military crates, ammo cases, weapon cabinets, medical crates in labs), army supplies and
+  bodies, sandbagged entrances inside, checkpoints with barriers, wire, sandbags and a jeep where
+  streets enter the district, parked jeeps and APCs, convoys, sandbag fighting positions at
+  crossings, motor pools, supply dumps, a crashed helicopter or a casualty point on empty lots, and
+  enemy military patrols spawning on its streets. Newly generated chunks.
 - **Building props varied (v0.53.0)**: two buildings of the same kind no longer look alike. Each
   building picks its own share of its kind's props (offices get desks with a computer and an office
   chair, diners dining tables, shops shelf runs, clinics waiting chairs) and its own story: calm,

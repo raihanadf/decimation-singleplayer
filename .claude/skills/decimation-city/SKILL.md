@@ -56,6 +56,18 @@ general: decimation-props; all of them: decimation-worldgen.
    between: deny springs / lakes near anything open underground (TerrainEvents, Rails.near).
 3. Sample the river at 3 x 3 points per chunk, not the middle: a diagonal course otherwise
    becomes chunks touching at their corners (ponds).
+4. A district's role (the wasteland as the military area, v0.54.0) is a layer over the district:
+   zone, dressing, loot and NPC rules follow from the seed and apply to new chunks of any world.
+   Only a change to WHICH building, canal or refuge stands where needs a per world flag set when a
+   new world first loads (StructureData "!cityRivers", "!cityRefuges", "!militaryWasteland"): an old
+   world would get it cut at the edge of its generated chunks.
+5. Check a claim about the source content at the source (the user: "check it up on deceased craft
+   directly"): read the pack's data (loot conditions, building weights), write the verdict with
+   numbers into the doc, then design on top. DeceasedCraft's wasteland held its military base, camp
+   and bunker but mostly industry (docs/wasteland.md section 1).
+6. Weight a building by how it fits, not only by its share: a 1 x 1 building fits every free chunk,
+   a 3 x 2 one only an empty block corner. Raising all military buildings x 3 made bunkers a third of
+   the district and the base rare; per building factors (base 6, camp 4, bunker 2) fixed it.
 
 ## Casebook (never delete a case)
 
@@ -73,3 +85,16 @@ general: decimation-props; all of them: decimation-worldgen.
 - Check: seed 1 server layers (bridge rows identical to street rows, deck at 63, water below,
   hole open), dev test bridge all PASS with the new "road block as the street" check.
 - Evidence: docs/shots/lc_bridge_v0.45.1/ (shots_index.md).
+
+### Case 2: the wasteland as the city's military area (v0.54.0, 12 Oktober 2026)
+- User: "go with 1, wasteland military area. do full system now" (docs/ideas.md item 14: "the
+  wasteland area ... is really a military zone ... stocked with military loot").
+- Checked at the source first (lesson 5): DeceasedCraft legacy deadzone = 23 % military buildings
+  with military loot, 37 % industry with industrial loot (docs/wasteland.md section 1).
+- Built (docs/wasteland.md section 2): one MILITARY zone per district (city/Wasteland.zone), military
+  building pick (new worlds only, lesson 4), loot swap in the buildings' containers, army supplies
+  and wartime stories, zone entry checkpoints, military vehicles, fighting positions, military lot
+  scenes, enemy military spawner and bandit tiers in the district (groups on its streets only).
+- First run found the bunker flood (lesson 6) and the barricade piling sandbags at every inner door
+  (BuildingDress.barricade now takes entrances only, for every district).
+

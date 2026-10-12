@@ -119,6 +119,8 @@ Knowledge index:
 - `docs/ideas.md`: the user's future feature ideas (12 Oktober 2026), not designed yet.
 - `docs/city_dressing.md`: Decimation props through the whole city (streets, road scenes,
   interiors, story layer), rules in directions, verified facing table, checks, status / handoff.
+- `docs/wasteland.md`: the wasteland district as the city's military area (DeceasedCraft check,
+  one MILITARY zone per district, military buildings, loot, dressing, enemy military, how to test).
 - `docs/city_engine.md`: the Lost Cities style city from converted
   DeceasedCraft content (tools/lcpack.py, city/LcContent, city/LcCity).
 - `docs/worldgen_architecture.md`: worldgen v3 design (engine + data
@@ -831,6 +833,14 @@ of the last session:
   building, DESK / ROW groups; measure with servertest dress + tools/props/dressbalance.py
   (-Pdress logs one "dressed building" line each). Never place a BlockChest subclass where facing
   matters (it re-aims itself).
+  v0.54.0: the wasteland district is the city's military area (docs/wasteland.md, city/Wasteland):
+  one MILITARY zone per district, DeceasedCraft's military buildings x 3 in its pick (new worlds only,
+  StructureData "!militaryWasteland"), the buildings' containers swapped to military loot, army
+  supplies and wartime stories inside, zone entry checkpoints, military vehicles, corner fighting
+  positions, military lot scenes; the enemy military spawner and bandit tiers count it as military
+  (groups on its streets only). Dev test `wasteland`. A running dev game uses
+  build/libs/deciworldgen-<tag>-dev.jar: with uncommitted changes Gradle names its build
+  ...-dirty-dev.jar, so servertest runs beside it without touching that jar.
   Gun study (10 Oktober 2026): docs/gun_style_guide.md, tools/guns/study.py
   (renders / measures Decimation's guns from the jar, `attach` adds
   attachments as the game places them), dev test mode `gunview` (hip, aim

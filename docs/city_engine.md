@@ -64,7 +64,9 @@ Cellar padding under multi building chunks with fewer cellars is bedrock
     street's (prop front east 2, south 3, west 4, north 5). Stairs chunks
     get no furniture or cars. Chances use a full 64 bit integer hash (a
     double scaled to a long had zero low bits: every chance passed).
-  - Zones: POLICE per building, MILITARY in the deadzone district.
+  - Zones: POLICE per building; the deadzone (wasteland) district is one MILITARY zone as a whole
+    since v0.54.0, the city's military area (docs/wasteland.md: zone, military building pick in new
+    worlds, loot, dressing, enemy military).
 - Rules taken from Lost Cities' source: street surface at G, ground floor
   floor layer at G, cellars below, stairs at G + 1 toward the higher
   neighbour (LostCityTerrainFeature.generateStreet / generateBuilding /

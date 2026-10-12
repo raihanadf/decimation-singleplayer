@@ -114,10 +114,10 @@ docs/gun_model_spec.md); every user review goes into its lessons and casebook.
 docs/ideas.md: more crate / loot block types, more military NPC outfits, a sniper bandit egg, harder
 zombies, more zombie variants, zombies with melee weapons, smarter zombies (follow the shooter),
 armour against zombies, 5 stages of infection, demons in the wasteland / military zones, zombies
-growing from day 1 to 100, city names on entering ("[district] - [number]"), a barricaded police
-building as the city safezone (3 police building kinds), the wasteland district as a military area
-with military loot (check DeceasedCraft first), story, a GitHub link on the home menu. Not designed:
-each needs a design talk first. Current work comes first (user).
+growing from day 1 to 100, city names on entering ("[district] - [number]", DONE v0.52.0), a
+barricaded police building as the city safezone (3 police building kinds), the wasteland district as
+a military area with military loot (DONE v0.54.0, docs/wasteland.md), story, a GitHub link on the home
+menu. Not designed: each needs a design talk first. Current work comes first (user).
 
 ## Last: only when nothing else is left (user 9 Oktober 2026)
 
@@ -202,6 +202,11 @@ each needs a design talk first. Current work comes first (user).
   rail.
 - v0.41.0 / 0.41.1 EOTech 558 and ACOG TA11 of our own, reticles in the glass swaying with the
   gun, Mk18 IMI TS stock, HK416 front sight folds away; accepted.
+- v0.54.0 the wasteland district is the city's military area (docs/wasteland.md): one military zone,
+  DeceasedCraft's military buildings more often (new worlds), military loot in its buildings, army
+  supplies and wartime stories, checkpoints where streets enter it, military vehicles, sandbag
+  fighting positions, motor pools / supply dumps / a crashed helicopter / casualties on its lots,
+  enemy military patrols on its streets; waiting for the user's look (new chunks / new worlds).
 - v0.53.0 building props varied and balanced (user review of v0.51.2): palettes per building kind,
   a theme and a story per building, desks / dining tables / chair rows (docs/city_dressing.md
   "variety and balance"); waiting for the user's look (new chunks only).

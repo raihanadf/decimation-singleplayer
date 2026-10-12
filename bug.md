@@ -11,6 +11,14 @@ not something we introduced or need to fix) see `documentation.md`.
 ## Open
 
 
+### Small lab read as an office; barricades at every inner door (found 12 Oktober 2026, FIXED v0.54.0)
+- Found while building the wasteland military area (docs/wasteland.md).
+- BuildingDress.kind matched "building_la" (meant for office names) before the lab rule, so
+  DeceasedCraft's building_lab1 got office furniture. Now building_lab* is LAB.
+- BuildingDress.barricade piled crates (v0.53.0) at every door of the building, inner ones too; in a
+  bunker the sandbag version made a third of its props. Now only entrances (one side of the door
+  outdoors, the other inside), as the doc always said ("ground floor doors").
+
 ### Thin props passed every overlap check (found 12 Oktober 2026, FIXED v0.50.0)
 - Found while checking the city dressing: wall TVs (drawn 0.125 deep) hung into door cells and
   nothing refused them.
