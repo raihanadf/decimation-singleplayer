@@ -159,6 +159,10 @@ boot. Falls straight through to the mod's own (re-skinned) main menu after that.
   snipers spot enemies up to `sniperRange` 70 blocks (was 96); the Barrett tiers (juggernaut
   sniper 60 hp, elite sniper 38 hp) die to one 30 round 5.56 magazine (8 per player hit x their
   damage share). Config version 3: older files take these new defaults once.
+- **Building props varied (v0.53.0)**: two buildings of the same kind no longer look alike. Each
+  building picks its own share of its kind's props (offices get desks with a computer and an office
+  chair, diners dining tables, shops shelf runs, clinics waiting chairs) and its own story: calm,
+  looted, squatters' camp, massacre, quarantine or barricaded doors. New chunks only.
 - **Place names (v0.52.0)**: walking into a city district shows Decimation's "ENTERING LOCATION"
   banner and chat line with its name, like "Hollowhaven: Downtown - 5" (wasteland districts are
   controlled by the Military); military bases are named too ("FOB Viper", "COP Thunder"). Leaving

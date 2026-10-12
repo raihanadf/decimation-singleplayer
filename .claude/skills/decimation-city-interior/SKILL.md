@@ -37,6 +37,13 @@ cctv, tv, vending, skeleton, cabinet, payphone, washer, shopdisplay, graffiti, d
 4. Variety and balance (user review of v0.51.2): one short prop list per building kind made
    buildings of a kind look alike and some props too common. Give each building its own pick of
    the kind's palette (seeded subset, a theme), and cap each prop per building / room size.
+   Done in v0.53.0 (BuildingDress.PALETTE / theme / story). Measure before and after:
+   `servertest.py 1 type=decimation dress` then `tools/props/dressbalance.py` (mean similarity of
+   two buildings of a kind under about 0.45, no prop over about 10 % of all).
+5. Never place a BlockChest subclass (vanilla chest, BlockStorageCrate footlocker) where its facing
+   matters: it turns itself from its neighbours when placed and ignores the metadata.
+6. Furniture reads real in groups, not single props: a desk is table + monitor + chair looking at
+   it, a waiting area is a row of chairs, a shop is runs of shelves.
 
 ## Casebook (never delete a case)
 ### Case 1: first interior dressing (v0.50.0, 12 Oktober 2026)
@@ -49,3 +56,13 @@ cctv, tv, vending, skeleton, cabinet, payphone, washer, shopdisplay, graffiti, d
 - User walked a new world: refuge accepted ("really nice and fit with other structure"); props
   "nice improvement but still need learning more ... not balanced and mostly similar between other
   building". Open: per building palettes and caps (lesson 4).
+
+### Case 3: variety and balance (v0.53.0, 12 Oktober 2026)
+- Fix for case 2: palettes per kind with weights, caps and placement kinds (ROW, DESK), a theme per
+  building (kept entries, weights, variant, density) and a story per building (calm, looted,
+  squatters, massacre, quarantine, barricade).
+- Numbers (seed 1, tools/props/dressbalance.py): similarity 0.61 -> 0.39, distinct props 51 -> 73,
+  top prop 11 % -> 8 %; propclash 25 findings, none from the new dressing after two fixes found on
+  the way: the footlocker's chest re-aiming (lesson 5) and a table into a hopper (PropGeom.shape
+  now counts hoppers whole, as propclash does).
+- Evidence: docs/shots/city_dressing_v0.53/ (desk, dining table). Waiting for the user's look.

@@ -166,7 +166,10 @@ public class CityPropsTest extends DevTestMode
         {"deci:BlockTruckWreckage", "truck", 1, 7}, {"deci:BlockWreckage", "wreck", 2, 7},
         {"deci:BlockSign_", "shopsign", 2, 4}, {"deci:BlockChesstable", "chesstable", 1, 3},
         {"deci:BlockCanFire", "camp", 1, 3}, {"deci:BlockDumpster", "dumpster", 1, 4},
-        {"deci:BlockPowerPole", "pole", 1, 6}};
+        {"deci:BlockPowerPole", "pole", 1, 6}, {"deci:BlockMonitor", "desk", 2, 3}, {"deci:BlockLantern", "squat", 1, 3},
+        {"deci:BlockWoodTable", "table", 2, 3}, {"deci:BlockWoodCrateOpen", "looted", 1, 3},
+        {"deci:BlockStretcher", "stretcher", 1, 3}, {"deci:BlockOfficeChair", "officechair", 1, 3},
+        {"deci:BlockPresent", "present", 1, 3}};
 
     private void survey(World w, int mx, int mz)
     {

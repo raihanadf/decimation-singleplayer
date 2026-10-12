@@ -23,6 +23,18 @@ How shots are made: `./gradlew runClient -Pautotest` (street views),
   places_1 walking into the next district: "HOLLOWHAVEN: SUBURBS - 6" and a second chat line;
   places_2 outside the city: "Now entering the Wilderness". Night rain in the dev world.
 
+## city_dressing_v0.53/ (dev test cityprops, city cell 368,6, 12 Oktober 2026)
+- sheet_cityprops.png: 27 shots of the fresh cell (street props as before plus the new interior kinds).
+- cityprops_desk_1.png: office desk: grey metal table along the wall, beige CRT monitor on it facing
+  the room, black office chair in front looking at it. Right.
+- cityprops_desk_2.png: a monitor on a white stone counter in a kitchen like room, a wood table and
+  chair to the right (likely converted furniture with our monitor counted) [inferred].
+- cityprops_table_1.png: wooden trestle table with a dining chair facing it in a grey room. Right.
+- cityprops_squat_1.png: squatters' lantern on the floor at the end of a narrow aisle between white
+  fixtures (a washroom); the rest of the camp kit did not fit there. Odd spot, harmless.
+- cityprops_present_1.png: a red present on the floor and a lantern on a wooden counter in a flat.
+- cityprops_officechair_1.png: an office chair beside a grey counter by a window.
+
 ## city_dressing_v0.51/ (12 Oktober 2026)
 - topdown_jam_crash.png (tools/props/topdown.py on the dressed seed 1 server world; road dark, walk
   light grey, grass green, buildings grey; red boxes cars, orange signs / traffic lights, blue other

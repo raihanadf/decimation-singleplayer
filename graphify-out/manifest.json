@@ -20,9 +20,9 @@
     "semantic_hash": "f6d0ec3d1c5bb5c1802a7544eafa4896"
   },
   "dev/dependencies.gradle": {
-    "mtime": 1791746710.6109796,
-    "ast_hash": "36db3b0272a79cbc09228e1bfcdbb092",
-    "semantic_hash": "36db3b0272a79cbc09228e1bfcdbb092"
+    "mtime": 1791802411.015876,
+    "ast_hash": "dbf13c69d04dfc65603f6159e8e94ecf",
+    "semantic_hash": "dbf13c69d04dfc65603f6159e8e94ecf"
   },
   "dev/repositories.gradle": {
     "mtime": 1791314872.0,
@@ -110,9 +110,9 @@
     "semantic_hash": "de153d1f8408971d6190e16a7d4256f9"
   },
   "CLAUDE.md": {
-    "mtime": 1791782115.7734492,
-    "ast_hash": "b102209243369c57d754cec987bfb5a8",
-    "semantic_hash": "b102209243369c57d754cec987bfb5a8"
+    "mtime": 1791803379.876248,
+    "ast_hash": "c99cc3dbeb6ce469304bd1a54397b9ce",
+    "semantic_hash": "c99cc3dbeb6ce469304bd1a54397b9ce"
   },
   "DECIMATION_MOD_TASK.md": {
     "mtime": 1784958353.0126374,
@@ -145,9 +145,9 @@
     "semantic_hash": "5ec10a4c3f93750361afcbaae6df524a"
   },
   "documentation.md": {
-    "mtime": 1791782122.9139068,
-    "ast_hash": "51c1cf46e987118b70e489d128f74dd3",
-    "semantic_hash": "51c1cf46e987118b70e489d128f74dd3"
+    "mtime": 1791803379.8753574,
+    "ast_hash": "c3c89469e2b046ef5689570c83f67a34",
+    "semantic_hash": "c3c89469e2b046ef5689570c83f67a34"
   },
   "new_feature.md": {
     "mtime": 1791719243.5742908,
@@ -325,9 +325,9 @@
     "semantic_hash": "0145e0863788d451e8ae4273d3c2abdd"
   },
   "docs/shots_index.md": {
-    "mtime": 1791782276.3498154,
-    "ast_hash": "5464b81312976143c50b51a069ebc6d0",
-    "semantic_hash": "5464b81312976143c50b51a069ebc6d0"
+    "mtime": 1791803354.369803,
+    "ast_hash": "4b1c211e7c04de10293118d1708b3f3e",
+    "semantic_hash": "4b1c211e7c04de10293118d1708b3f3e"
   },
   "docs/interior_spec.md": {
     "mtime": 1791385593.9436893,
@@ -655,9 +655,9 @@
     "semantic_hash": "d154b3e4611ca9f79a59cd33b625d68f"
   },
   "docs/roadmap.md": {
-    "mtime": 1791782122.9141347,
-    "ast_hash": "f4ad574f33f098ae5a90685abd852d7c",
-    "semantic_hash": "f4ad574f33f098ae5a90685abd852d7c"
+    "mtime": 1791803379.875082,
+    "ast_hash": "d369f572a44ce095ba2db609040a2a1a",
+    "semantic_hash": "d369f572a44ce095ba2db609040a2a1a"
   },
   "dev/src/main/java/net/decimation/worldgen/LegacyStreets.java": {
     "mtime": 1791487239.5087948,
@@ -1120,9 +1120,9 @@
     "semantic_hash": "e92070d4b29da67ecbc569812c1e4977"
   },
   "dev/src/main/java/net/decimation/worldgen/devtest/CityPropsTest.java": {
-    "mtime": 1791749877.8017735,
-    "ast_hash": "300de399a501244d0e9c342af0639bc1",
-    "semantic_hash": "300de399a501244d0e9c342af0639bc1"
+    "mtime": 1791803123.495089,
+    "ast_hash": "6c3a59786e55a9d9d44837a02e18c96b",
+    "semantic_hash": "6c3a59786e55a9d9d44837a02e18c96b"
   },
   "tools/props/worlddump.py": {
     "mtime": 1791729737.1836808,
@@ -1130,9 +1130,9 @@
     "semantic_hash": "046f45f2185af65189fc60f7098e6c96"
   },
   "dev/src/main/java/net/decimation/worldgen/city/BuildingDress.java": {
-    "mtime": 1791749615.0518522,
-    "ast_hash": "9bc67933f37d35341db746d1da40e126",
-    "semantic_hash": "9bc67933f37d35341db746d1da40e126"
+    "mtime": 1791803040.5027606,
+    "ast_hash": "44d4d2bb3786cb54bf4a484fa51dc669",
+    "semantic_hash": "44d4d2bb3786cb54bf4a484fa51dc669"
   },
   "dev/src/main/java/net/decimation/worldgen/city/BuildingLayout.java": {
     "mtime": 1791747811.5999827,
@@ -1155,9 +1155,9 @@
     "semantic_hash": "0008cb26c5711970053ce06bbf9891e4"
   },
   "dev/src/main/java/net/decimation/worldgen/city/PropGeom.java": {
-    "mtime": 1791750514.8228192,
-    "ast_hash": "643b893d04ff5e67658cff673a788503",
-    "semantic_hash": "643b893d04ff5e67658cff673a788503"
+    "mtime": 1791803040.503594,
+    "ast_hash": "9813e742f1bfb06986afd391fe5506c8",
+    "semantic_hash": "9813e742f1bfb06986afd391fe5506c8"
   },
   "dev/src/main/java/net/decimation/worldgen/city/StreetDress.java": {
     "mtime": 1791750387.6105356,
@@ -1190,9 +1190,9 @@
     "semantic_hash": "7f6cf0730f8534132f729b69746dcc29"
   },
   ".claude/skills/decimation-city-interior/SKILL.md": {
-    "mtime": 1791752991.4542837,
-    "ast_hash": "ee3d8cd1d06a1459a2bbbae5cf07f771",
-    "semantic_hash": "ee3d8cd1d06a1459a2bbbae5cf07f771"
+    "mtime": 1791803366.2114546,
+    "ast_hash": "678dc5bbf41e7e2f70630e72b6f1050b",
+    "semantic_hash": "678dc5bbf41e7e2f70630e72b6f1050b"
   },
   ".claude/skills/decimation-city-street/SKILL.md": {
     "mtime": 1791750258.5619216,
@@ -1210,9 +1210,9 @@
     "semantic_hash": "6109a8933c56e5af2a1eeb2678b52d7c"
   },
   "docs/city_dressing.md": {
-    "mtime": 1791752991.4536765,
-    "ast_hash": "42031f2f7c7bec3f2807df8e2e6ded9e",
-    "semantic_hash": "42031f2f7c7bec3f2807df8e2e6ded9e"
+    "mtime": 1791803345.5704267,
+    "ast_hash": "68ea929e6eacad107154d8a51f1f3b9e",
+    "semantic_hash": "68ea929e6eacad107154d8a51f1f3b9e"
   },
   "docs/references/city_dressing_research.md": {
     "mtime": 1791734106.144288,
@@ -1258,5 +1258,10 @@
     "mtime": 1791779456.162797,
     "ast_hash": "73101205352182731d0e18eacc823065",
     "semantic_hash": "73101205352182731d0e18eacc823065"
+  },
+  "tools/props/dressbalance.py": {
+    "mtime": 1791802589.5772152,
+    "ast_hash": "970b265e184b4a996785d789faa26c69",
+    "semantic_hash": "970b265e184b4a996785d789faa26c69"
   }
 }

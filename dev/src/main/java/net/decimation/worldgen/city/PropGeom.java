@@ -86,6 +86,10 @@ final class PropGeom
         {
             return new float[] {0, 1, 0, 0.0625f, 0, 1};
         }
+        if (n.endsWith("hopper"))
+        {
+            return new float[] {0, 1, 0, 1, 0, 1};      // not an opaque cube, but propclash counts it whole
+        }
         if (n.endsWith("daylight_detector"))
         {
             return new float[] {0, 1, 0, 0.375f, 0, 1};

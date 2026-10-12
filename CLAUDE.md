@@ -826,6 +826,11 @@ of the last session:
   safezones cut out of district boxes. Dev test `places`.
   v0.52.1: the floating turf name over a district's middle (ClanTurfLayer) shows spaces too
   (PatchTurfNames layer, three jars).
+  v0.53.0: building props varied and balanced (docs/city_dressing.md "variety and balance"):
+  BuildingDress palettes per kind, a theme (kept entries, weights, variant, density) and a story per
+  building, DESK / ROW groups; measure with servertest dress + tools/props/dressbalance.py
+  (-Pdress logs one "dressed building" line each). Never place a BlockChest subclass where facing
+  matters (it re-aims itself).
   Gun study (10 Oktober 2026): docs/gun_style_guide.md, tools/guns/study.py
   (renders / measures Decimation's guns from the jar, `attach` adds
   attachments as the game places them), dev test mode `gunview` (hip, aim

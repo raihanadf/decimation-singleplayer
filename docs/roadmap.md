@@ -202,6 +202,9 @@ each needs a design talk first. Current work comes first (user).
   rail.
 - v0.41.0 / 0.41.1 EOTech 558 and ACOG TA11 of our own, reticles in the glass swaying with the
   gun, Mk18 IMI TS stock, HK416 front sight folds away; accepted.
+- v0.53.0 building props varied and balanced (user review of v0.51.2): palettes per building kind,
+  a theme and a story per building, desks / dining tables / chair rows (docs/city_dressing.md
+  "variety and balance"); waiting for the user's look (new chunks only).
 - v0.52.0 place names: city districts "City: District - number" and military bases "FOB Viper"
   through Decimation's own "ENTERING LOCATION" banner, chat line and sound; wilderness outside.
   v0.52.1: floating district name with spaces (user report: "_" showed there).

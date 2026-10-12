@@ -164,7 +164,7 @@ tasks.matching { it.name == "runServer" }.configureEach {
 // `-Pdress` (runServer / runClient): city dressing on (city/Dress.ON, docs/city_dressing.md)
 tasks.matching { it.name == "runServer" || it.name.startsWith("runClient") }.configureEach {
     if (project.hasProperty("dress")) {
-        jvmArgs("-Ddeciworldgen.dress=true")
+        jvmArgs("-Ddeciworldgen.dress=true", "-Ddeciworldgen.dresslog=true")
     }
 }
 

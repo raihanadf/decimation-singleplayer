@@ -252,4 +252,31 @@ Pending, in order:
 - Props: "nice improvement but still need learning more and the props is not balanced and mostly
   similar between other building." To do: variety between buildings of one kind (today every
   building of a kind draws from the same short list with the same weights) and balance (how many
-  of each prop per building / room size). Not started.
+  of each prop per building / room size). Done in v0.53.0 (section below), waiting for the user's look.
+
+### 12 Oktober 2026: variety and balance (v0.53.0)
+
+Answer to the review above (BuildingDress palettes, themes, stories):
+- Each kind has a palette (BuildingDress.PALETTE): 7 to 13 entries, each with a weight, a cap per
+  storey (a building may use 3 x that) and how it goes in: STAND, HANG (1 up), LOW (wall at floor
+  level), DISPLAY (shop display, closed panel to the wall), ROW (2 or 3 along the wall: shelf runs,
+  waiting chairs), DESK (a table along the wall, maybe a monitor or radio on its top, a chair in
+  front looking at it). New props: metal / wood tables, chess tables, chairs, office chairs, CRT
+  monitors, trash cans, wood crates, open crates, generators, junction boxes, targets, presents,
+  water pallets with tarp, large ammo crates, the studio camera, lanterns.
+- Each building keeps its own part of the palette (theme(): core entries always, the rest 55 %, at
+  least 4), its own weights (x 0.5 .. 1.5), mostly one variant per entry (one TV model, one crate
+  kind; 30 % mix them) and its own density (50 .. 140 % of the usual furniture).
+- One story per building: calm, looted (open crates, boxes, more trash and graffiti), squatters (a
+  camp on one storey: lantern, radio or stereo, boxes, a crate), massacre (1 or 2 bodies with blood
+  per storey), quarantine (medical / police / military / lab: body bags, stretchers, biohazard
+  signs), barricade (crates, barrels, boxes beside the ground floor doors, off the walkway).
+- Measured with tools/props/dressbalance.py on seed 1 (servertest dress, -Pdress logs one line per
+  building): mean similarity of two buildings of a kind 0.61 -> 0.39 (police 0.82 -> 0.50, office
+  0.71 -> 0.44), distinct props 51 -> 73, the most used prop 11 % (electrical cabinet) -> 8 % (trash
+  bags). propclash on the dump: 25 findings (dressing before: about 30); the ones left are converted
+  building props (the same cell every storey, crates in walls, water flowed in later).
+- Trap: BlockStorageCrate (the footlocker) extends BlockChest, which turns itself from its
+  neighbours when placed and ignores the metadata we give it (4 fronts into walls on seed 1). Not
+  used by the dressing; vanilla chests have the same habit.
+- Pictures: docs/shots/city_dressing_v0.53/ (desk, dining table, squatters' lantern, present).
