@@ -23,6 +23,12 @@ or `[not decided]`.
    edge of the generated area). bug.md "Building base height depends on
    chunk generation order".
 
+## Master plan (13 Oktober 2026)
+
+Every open feature of the sections below (loot, NPCs, zombies, world and zones, ideas) is planned
+together in docs/systems_plan.md: shared core first, then loot, NPCs, zombies, world (section 7).
+Open questions per step there (section 8).
+
 ## Worldgen and cities
 
 1. **Giant buildings that are skipped**: casino (276 high), oasis condo

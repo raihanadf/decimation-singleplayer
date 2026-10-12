@@ -5,6 +5,8 @@ already know. Nothing here is planned or designed yet: each needs a design talk 
 first (questions with options) before any code. Priority now: finish the current work first
 (user: "we figure it out previous feature now, prioritize that!"). Listed in docs/roadmap.md
 "Ideas (later)".
+PLANNED TOGETHER 13 Oktober 2026 (user choices taken, no code yet): docs/systems_plan.md covers
+every item below that is not DONE.
 
 ## Loot and items
 1. **More crate types**: industrial, civilian and more, each with its own loot.

@@ -117,7 +117,10 @@ Knowledge index:
 - `docs/safezone.md`: safezone sites: survivor camps (layout, residents and their keeper,
   placement, test) and city refuges (our fortified building, one per city region, section 7).
 - `docs/ideas.md`: the user's future feature ideas (12 Oktober 2026), not designed yet.
-- `docs/loot_levels.md`: DRAFT design of crate levels (kind x level 1..3) and NPC loot bodies; how
+- `docs/systems_plan.md`: PLAN of every open feature together (loot, human NPCs, zombies, world and
+  zones) with the shared core (world clock, pools, body entity, tier table, areas, protection
+  table, group spawner) and the build order; user choices of 13 Oktober 2026.
+- `docs/loot_levels.md`: DRAFT design of crate levels (kind x 4 levels by content type) and NPC loot bodies; how
   Decimation's loot works (33 blocks, 12 lists, 1 .. n-1 items per open, rarity per item).
 - `docs/porting.md`: PARKED plan for a port to modern Minecraft (three paths: modpack, gun pack for a
   modern gun mod, full NeoForge rewrite; model conversion; first spike), for later only (user).
