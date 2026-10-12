@@ -74,6 +74,12 @@ general: decimation-props; all of them: decimation-worldgen.
    Use a solid block (double stone slab for a concrete pad).
 8. A scene that is rare in generation must still be seen: force it in a dev test (a preview writer
    such as Wasteland.previewLot, in the sky away from other tests' builds) and photograph it.
+9. A scene is the key prop plus what tells its story: a wreck on clean grass reads parked (burnt
+   ground, debris, a cordon make it a crash site); vehicles in the middle of a pad read dumped (lines
+   nose to the way out, a workshop and a fuel point make a motor pool). Lay it out from the street side
+   (LotDress.streetSide). Ground colours: podzol and dirt read orange from above; use dark stained
+   clay. A huge prop's drawn box (helicopter rotor disc 9.4 x 14) takes every cell under it: put the
+   detail beside it.
 
 ## Casebook (never delete a case)
 
@@ -112,4 +118,14 @@ general: decimation-props; all of them: decimation-worldgen.
   enemy group spots (bug.md), the forced lot preview in the dev test (lesson 8).
 - Measured on seed 1: military buildings 23 -> 10, military lots 2 -> 8, propclash 40 -> 31 in the
   same box; similarity of military buildings 0.75 with their loot crates, 0.17 without.
+
+### Case 4: lot scenes that did not tell their story (v0.54.1 -> v0.54.2, 13 Oktober 2026)
+- User: "okey nice catch, lets continue fixing military" (after the v0.54.1 report). No new user
+  shots; the weak spots came from my own v0.54.1 preview shots (docs/shots/wasteland_v0.54.1/
+  lots_sheet.png): two jeeps in the middle of an empty motor pool pad, a helicopter on a lawn.
+- Fix (lesson 9): LotDress.motorPool lines from the street side with a second line, workshop, fuel
+  point, work light, launcher; LotDress.helicopter burnt clay along the hull, debris, cordon. Tried and
+  dropped: podzol (orange from above), cobblestone slab lumps (inside the rotor disc's drawn box).
+- Check: seed 1 server topdowns (docs/shots/wasteland_v0.54.2/topdown_lots.png), propclash 0 in the
+  lots, dev test wasteland all PASS with the preview shots.
 

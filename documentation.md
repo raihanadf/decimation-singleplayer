@@ -171,6 +171,10 @@ boot. Falls straight through to the mod's own (re-skinned) main menu after that.
   bunkers as in DeceasedCraft), has more military yards (motor pools and supply dumps on concrete,
   helicopter crashes, casualty points), every building mixes its crates differently, and patrols
   also appear in the big blocks without inner streets.
+  v0.54.2: motor pools look like motor pools (vehicles in lines nose to the street, a workshop with
+  shelves, a workbench, tyres and a generator, a fuel point, a work light, sometimes a towed missile
+  launcher), and a crashed helicopter has burnt ground along its hull and an army cordon of
+  sawhorses and cones.
 - **Building props varied (v0.53.0)**: two buildings of the same kind no longer look alike. Each
   building picks its own share of its kind's props (offices get desks with a computer and an office
   chair, diners dining tables, shops shelf runs, clinics waiting chairs) and its own story: calm,

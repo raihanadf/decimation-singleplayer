@@ -110,9 +110,9 @@
     "semantic_hash": "de153d1f8408971d6190e16a7d4256f9"
   },
   "CLAUDE.md": {
-    "mtime": 1791822892.3803582,
-    "ast_hash": "1d279e9b5b46324328f250d0c0ac272a",
-    "semantic_hash": "1d279e9b5b46324328f250d0c0ac272a"
+    "mtime": 1791831000.6363347,
+    "ast_hash": "a5fbfdeaea7ec65359c3e2726dd4d7fc",
+    "semantic_hash": "a5fbfdeaea7ec65359c3e2726dd4d7fc"
   },
   "DECIMATION_MOD_TASK.md": {
     "mtime": 1784958353.0126374,
@@ -120,9 +120,9 @@
     "semantic_hash": "aa4550575e47e7c1d0b020a51afbb501"
   },
   "bug.md": {
-    "mtime": 1791822892.3822653,
-    "ast_hash": "52f98986678e884c4eea0dc7529552ff",
-    "semantic_hash": "52f98986678e884c4eea0dc7529552ff"
+    "mtime": 1791830969.5900435,
+    "ast_hash": "9e36c30d46e2b691b732f4a749922f05",
+    "semantic_hash": "9e36c30d46e2b691b732f4a749922f05"
   },
   "create_weapons.md": {
     "mtime": 1791653625.5948887,
@@ -145,14 +145,14 @@
     "semantic_hash": "5ec10a4c3f93750361afcbaae6df524a"
   },
   "documentation.md": {
-    "mtime": 1791822892.3814483,
-    "ast_hash": "7572e4e0232f94f5172d0ee9c9eed97c",
-    "semantic_hash": "7572e4e0232f94f5172d0ee9c9eed97c"
+    "mtime": 1791830969.5849397,
+    "ast_hash": "8513bddb7814b8f44c4257872ca361cc",
+    "semantic_hash": "8513bddb7814b8f44c4257872ca361cc"
   },
   "new_feature.md": {
-    "mtime": 1791822892.381856,
-    "ast_hash": "b9b35663787df166a4bd1b2114c4b6b2",
-    "semantic_hash": "b9b35663787df166a4bd1b2114c4b6b2"
+    "mtime": 1791830969.5884554,
+    "ast_hash": "26235d4618d3ee896cca36fd8945182f",
+    "semantic_hash": "26235d4618d3ee896cca36fd8945182f"
   },
   "tools/graph_update.py": {
     "mtime": 1791348965.63658,
@@ -325,9 +325,9 @@
     "semantic_hash": "0145e0863788d451e8ae4273d3c2abdd"
   },
   "docs/shots_index.md": {
-    "mtime": 1791822919.4619353,
-    "ast_hash": "f0614675994ccac2695fd2843e9f73a7",
-    "semantic_hash": "f0614675994ccac2695fd2843e9f73a7"
+    "mtime": 1791831000.6336782,
+    "ast_hash": "80500e25298b5a38c738180be6f2a56e",
+    "semantic_hash": "80500e25298b5a38c738180be6f2a56e"
   },
   "docs/interior_spec.md": {
     "mtime": 1791385593.9436893,
@@ -655,9 +655,9 @@
     "semantic_hash": "d154b3e4611ca9f79a59cd33b625d68f"
   },
   "docs/roadmap.md": {
-    "mtime": 1791822892.380761,
-    "ast_hash": "2731956910253d6317aafe26c471619d",
-    "semantic_hash": "2731956910253d6317aafe26c471619d"
+    "mtime": 1791830969.5869043,
+    "ast_hash": "6db60ebb843b03b5f8ae24d3ea8c1a06",
+    "semantic_hash": "6db60ebb843b03b5f8ae24d3ea8c1a06"
   },
   "dev/src/main/java/net/decimation/worldgen/LegacyStreets.java": {
     "mtime": 1791487239.5087948,
@@ -1035,9 +1035,9 @@
     "semantic_hash": "770611c7084665680f154a2baca3debc"
   },
   ".claude/skills/decimation-city/SKILL.md": {
-    "mtime": 1791822912.7256496,
-    "ast_hash": "bd958769f1011cbceb453f24bd6af422",
-    "semantic_hash": "bd958769f1011cbceb453f24bd6af422"
+    "mtime": 1791831000.6383255,
+    "ast_hash": "d4f5f5f6bcc90e48c9136ebf3ce2cdff",
+    "semantic_hash": "d4f5f5f6bcc90e48c9136ebf3ce2cdff"
   },
   "dev/src/main/java/net/decimation/fixes/ZoneRules.java": {
     "mtime": 1791710914.5760295,
@@ -1220,14 +1220,14 @@
     "semantic_hash": "dc8cb43cbc639011275db66c50290ab9"
   },
   "dev/src/main/java/net/decimation/worldgen/city/LotDress.java": {
-    "mtime": 1791822626.4632897,
-    "ast_hash": "1c4a99d36af7b4c80f1cab5c46cf589d",
-    "semantic_hash": "1c4a99d36af7b4c80f1cab5c46cf589d"
+    "mtime": 1791831021.1112502,
+    "ast_hash": "bb54a4e854de5538379694df14dc5415",
+    "semantic_hash": "bb54a4e854de5538379694df14dc5415"
   },
   "tools/props/topdown.py": {
-    "mtime": 1791750032.6654038,
-    "ast_hash": "7cc8efb8f5cd5b39991aeaf2e96ea06f",
-    "semantic_hash": "7cc8efb8f5cd5b39991aeaf2e96ea06f"
+    "mtime": 1791830380.2035518,
+    "ast_hash": "8a3ad8dda4604fb188e87f47efc3db90",
+    "semantic_hash": "8a3ad8dda4604fb188e87f47efc3db90"
   },
   "docs/ideas.md": {
     "mtime": 1791820008.3278463,
@@ -1275,8 +1275,8 @@
     "semantic_hash": "81f0eadd37d8ec5b07ef4c9731c286ce"
   },
   "docs/wasteland.md": {
-    "mtime": 1791822892.3623405,
-    "ast_hash": "9dc168645b09599bc22b0397ccf3eada",
-    "semantic_hash": "9dc168645b09599bc22b0397ccf3eada"
+    "mtime": 1791830969.5834668,
+    "ast_hash": "401d64f514cb5f59a7795ec187f894c8",
+    "semantic_hash": "401d64f514cb5f59a7795ec187f894c8"
   }
 }

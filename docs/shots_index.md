@@ -23,6 +23,23 @@ How shots are made: `./gradlew runClient -Pautotest` (street views),
   places_1 walking into the next district: "HOLLOWHAVEN: SUBURBS - 6" and a second chat line;
   places_2 outside the city: "Now entering the Wilderness". Night rain in the dev world.
 
+## wasteland_v0.54.2/ (motor pool and crash site reworked, 13 Oktober 2026; docs/wasteland.md "v0.54.2")
+- wasteland_lot_motorpool.png: forced preview in the sky (dev test `wasteland`): two jeeps in the bay
+  line at the near edge, noses toward the camera (the preview's random street side), middle bay out;
+  on the far edge the workshop row (metal shelves, workbench, tyre stack, generator), fuel drums and a
+  cone in the far left corner, a work light. The preview's seed rolls no second line. Magenta at the
+  left edge: another test's wool floor under the lot.
+- wasteland_lot_helicopter.png: the crash site preview: helicopter on burnt ground (black, dark brown,
+  grey clay cells along the hull), a line of sawhorse barriers and cones across the near edge with a
+  military crate in it. wasteland_lot_supplies / _casualties.png: unchanged scenes.
+- sheet.png: contact sheet of the last run (district 18,30).
+- topdown_lots.png (seed 1 server, tools/props/topdown.py; red = vehicles with the front as a yellow
+  line from the block centre, blue = other props, dark brown = burnt clay): motor pools at -240,176,
+  -48,144 and -32,240 with two lines of three jeeps, noses toward the west street, the workshop on the
+  east edge, drums in a corner; -144,192 a line of three jeeps nose east, the missile launcher behind
+  them, the workshop on the west edge; the crash site at -224,160 (burnt strip along the hull, cordon
+  on the north and south edges). topdown_<scene>_<x>_<z>.png are the single lots.
+
 ## wasteland_v0.54.1/ (wasteland weak spots, 12 Oktober 2026; docs/wasteland.md "v0.54.1")
 Dev test `wasteland` (live, deciworldgen_devtest), district 58,18 (blocks 3712,1152), all PASS.
 - lots_sheet.png: the four forced lot scenes (Wasteland.previewLot, sky at -21000, 200, -21000),

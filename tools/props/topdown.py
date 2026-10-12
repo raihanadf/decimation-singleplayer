@@ -7,7 +7,8 @@ DUMP: tools/props/worlddump.py output. Every column is coloured by its top block
 light, grass green, building grey); every Decimation prop is drawn as its drawn box
 (docs/references/prop_geometry.tsv) and, if its front matters, an arrow from its centre toward
 its front (docs/references/prop_facing.tsv). Used to check facing of cars in jams, crashes and
-lots without the game (docs/city_dressing.md).
+lots without the game (docs/city_dressing.md). Podzol (dirt 2) is brown, stained clay
+(the burnt ground of a crash site) dark brown.
 """
 import os
 import sys
@@ -47,12 +48,13 @@ def main():
             props.append((short, m, x, y, z))
             continue
         if (x, z) not in top or y > top[(x, z)][0]:
-            top[(x, z)] = (y, short)
+            top[(x, z)] = (y, short, m)
     W, H = (x1 - x0 + 1) * scale, (z1 - z0 + 1) * scale
     img = Image.new("RGB", (W, H), (255, 255, 255))
     dr = ImageDraw.Draw(img)
-    for (x, z), (y, n) in top.items():
-        col = (60, 60, 64) if "Road" in n else (90, 140, 70) if n in ("grass", "leaves", "dirt") else \
+    for (x, z), (y, n, m) in top.items():
+        col = (60, 60, 64) if "Road" in n else (70, 50, 40) if n == "stained_hardened_clay" else (115, 80, 50) if n == "dirt" and m == 2 else \
+            (90, 140, 70) if n in ("grass", "leaves", "dirt") else \
             (205, 205, 200) if "slab" in n or "Stone_6" in n or "Stone_7" in n else (150, 150, 150)
         px, pz = (x - x0) * scale, (z - z0) * scale
         dr.rectangle([px, pz, px + scale - 1, pz + scale - 1], fill=col)

@@ -1,4 +1,4 @@
-# The wasteland district: the city's military area (v0.54.0, v0.54.1)
+# The wasteland district: the city's military area (v0.54.0 to v0.54.2)
 
 User request (12 Oktober 2026, docs/ideas.md item 14, picked from the "what's next" list): "go
 with 1, wasteland military area. do full system now". The user's claim from the idea list:
@@ -41,7 +41,7 @@ DEADZONE_RANGE (2) cells of a military sector (LcCity.style). On top:
 | Stories | Held and overrun: calm 10 %, looted 15 %, squatters 5 %, massacre 22 % (1 or 2 bodies), quarantine 20 %, barricade 28 % (sandbag walls two high beside the entrances, inside); body bags anywhere; "no trespassing" signs (outer walls 3 in 10 of the tags), Soviet symbols, biohazard / nuclear signs in labs | BuildingDress.theme, story, barricade, sandbags |
 | Zone entries | Every street entering the district from another district (and 6 in 10 from outside the city): from the boundary in, a stop sign facing arriving drivers, hedgehogs, a concertina line, a jersey barrier line with a 2 wide gap in the inbound lane, sandbag walls two high on both sidewalks (frontage row open), a spotlight (or a flag pole), a jeep in the outbound lane nose out. Log "dress zone entry at x,z facing D" | StreetDress.entry |
 | Streets | Road scenes: inner checkpoint 14 %, crash 16 % (a military jeep 4 in 10), a parked jeep or APC 15 %, a convoy of two jeeps 10 %. Sidewalks: barrels, skeletons, sandbags left on the curb, wire coils, a military crate (loot). Crossings: crash 25 %, a sandbag fighting position on one corner 35 % (military crate and ammo case inside, the walk round the corner open) | StreetDress.roadScene, militaryVehicles, straight, fightingPosition |
-| Lots | Bare lots: motor pool (jeeps and an APC side by side, fuel and spares behind) and supply dump (rows of military crates, ammo cases, care packages, water pallets, spotlight) on a concrete pad (double stone slab, grass border), crashed helicopter with its dead, casualty collection point (body bags in rows, stretchers, medical crates, hazard light), or nothing; bushes cleared under every scene. The helicopter (drawn 9.4 x 14, lopsided) tries every heading with a shifted anchor (v0.54.0 lost half of them off the lot). Log "dress lot military SCENE at x,z" | LotDress.militaryLot, groundWork, helicopter |
+| Lots | Bare lots: motor pool and supply dump (rows of military crates, ammo cases, care packages, water pallets, spotlight) on a concrete pad (double stone slab, grass border), crash site, casualty collection point (body bags in rows, stretchers, medical crates, hazard light), or nothing; bushes cleared under every scene. Motor pool (v0.54.2): three bays along the street side (LotDress.streetSide), noses to the street, an APC in the middle bay half the time, a second line of jeeps behind in 6 of 10, a workshop row on the back edge (parts shelves, workbench, tyres, generator), a fuel point of drums in a back corner, a work light, a towed missile launcher where no second line stands. Crash site (v0.54.2): the helicopter (drawn 9.4 x 14, lopsided) tries every heading with a shifted anchor, burnt ground along its hull (stained clay black, dark brown, grey), its dead, a body bag, a military crate, an ammo case, a wheel, a cordon of sawhorses and cones (street side, else the hull's long sides) and a work light. Log "dress lot military SCENE at x,z" | LotDress.militaryLot, groundWork, motorPool, helicopter |
 | NPCs | The district counts as a military area: bandits roll the heavier military weights, the enemy military spawner (Soviet groups of 2 to 3) runs for a player in it; in a city a group spawns only on the top block at street level (a street, yard, lot or park; never a roof or inside), each member on a free good cell of its own or on the group's spot (v0.54.1: v0.54.0 spread members one block round the spot, into a building's wall at a street chunk's edge, and asked for a street chunk, which a superblock district has only on its edge) | fixes/NpcLoadouts.military, MilitarySpawner, Wasteland.streetSpot |
 | Name | Unchanged since v0.52.0: "City: Wasteland - n", controlled by Military | city/CityNames |
 
@@ -64,6 +64,8 @@ Crates are never stacked: a military crate is drawn 1.15 high, one on another ov
   sandbag barricades, signs. `kind`: building_lab* is LAB (was read as an office before v0.54).
 - `city/StreetDress`: `entry`, `militaryVehicles`, `fightingPosition`, `plain`, sidewalk clutter.
 - `city/LotDress`: `militaryLot`, `groundWork`, `motorPool`, `supplyDump`, `helicopter`, `casualties`;
+  `streetSide` (the lot side a city street runs along) and `ux` / `uz` / `faceUv` / `alongUv` (cells
+  counted from that side: u along the street edge, v in from it);
   `force` (dev test only) with `Wasteland.previewLot` writes a lot with a chosen scene into the world.
 - `fixes/NpcLoadouts.military` (public), `fixes/MilitarySpawner` (street spots, 16 tries).
 - `ZoneStore.has` (dev tests), devtest `WastelandTest` (mode `wasteland`).
@@ -144,3 +146,24 @@ Crates are never stacked: a military crate is drawn 1.15 high, one on another ov
   side.
 - Not seen in game yet: casualty lots from generation (only the forced preview); the user's look.
 
+### v0.54.2 (13 Oktober 2026, user: "lets continue fixing military")
+- Weak spots from my own v0.54.1 shots (docs/shots/wasteland_v0.54.1/lots_sheet.png): the motor pool
+  was two jeeps in the middle of an empty pad; the crashed helicopter stood on clean grass and read as
+  parked. Both reworked (table above). A first try with podzol for the torn ground read orange from
+  above (the colour the user rejected for base ground): stained clay instead. A second try put
+  cobblestone slab lumps beside the hull: propclash counted them inside the helicopter, whose drawn box
+  is the whole rotor disc, so no lumps; for the same reason the cordon falls back to the hull's long
+  sides, where the disc leaves 3 cells.
+- Seed 1 server (`servertest.py 1 type=decimation dress pregen=-64,192,12`), same 8 military lots: 4
+  motor pools (3 with a second line, 6 jeeps each; 1 with the missile launcher and a 3 jeep line),
+  noses toward the lot's street side in all of them (tools/props/topdown.py, docs/shots/wasteland_v0.54.2/
+  topdown_lots.png); the crash site with its burnt strip and the cordon on its two long sides.
+  propclash on x -256..149, z 0..255: 31 findings, as v0.54.1, 0 inside a military lot.
+- Dev test `wasteland` (live): all PASS on districts 18,24, 48,-16 and 18,30; the forced lot shots
+  show the new scenes (wasteland_lot_motorpool / _helicopter). A generated crash site in district
+  18,24 (lot 1232,1616) checked from the region file: burnt cells along the hull, cordon on its west
+  side.
+- The magenta line along the floating preview lot (v0.54.1) is magenta wool of another test's floor at
+  y 199 under the lot's west edge (region file), not a missing texture.
+- Not seen yet: a casualty lot from generation (still none in seed 1's 8 military lots, 17 % each
+  [inferred: chance]); the user's look.

@@ -10,6 +10,14 @@ not something we introduced or need to fix) see `documentation.md`.
 
 ## Open
 
+### Dev test game crashed once in vanilla grass ticking (seen 13 Oktober 2026, Open, not reproduced)
+- Live `wasteland` run 1 after v0.54.2's lot changes: "Exception getting block type in world"
+  (NullPointerException in World.getBlock from BlockGrass.updateTick) at 1256,68,-465, outside the
+  tested district and away from any lot; crash report dev/run/client/crash-reports/
+  crash-2026-10-13_01.35.07-server.txt. The block there on disk is grass under air. The next three
+  runs did not crash. Cause unknown [not verified]; the lot code only plans blocks, it touches no
+  world. Watch for it again (an "Entity is already tracked" error came just before).
+
 
 ### Enemy military group members spawned beside their spot, into walls; none in superblock districts (found 12 Oktober 2026, FIXED v0.54.1)
 - Found by the dev test `wasteland` (docs/wasteland.md section 5).

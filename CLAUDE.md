@@ -846,6 +846,10 @@ of the last session:
   loot mix, concrete pads (never gravel: it falls) under motor pools and supply dumps, the helicopter
   tries every heading, enemy groups on any open spot at street level, each member on a good cell.
   The `wasteland` dev test also forces the four lot scenes in the sky (Wasteland.previewLot).
+  v0.54.2: motor pools as the army lays them out (vehicle lines nose to the street, LotDress.streetSide;
+  workshop, fuel point, work light, missile launcher), crash sites with burnt ground (stained clay, not
+  podzol: it reads orange) and a cordon; a huge prop's drawn box (the helicopter's rotor disc) takes
+  every cell under it, so put scene detail beside it, not under.
   Gun study (10 Oktober 2026): docs/gun_style_guide.md, tools/guns/study.py
   (renders / measures Decimation's guns from the jar, `attach` adds
   attachments as the game places them), dev test mode `gunview` (hip, aim
