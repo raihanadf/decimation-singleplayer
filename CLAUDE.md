@@ -850,6 +850,12 @@ of the last session:
   workshop, fuel point, work light, missile launcher), crash sites with burnt ground (stained clay, not
   podzol: it reads orange) and a cordon; a huge prop's drawn box (the helicopter's rotor disc) takes
   every cell under it, so put scene detail beside it, not under.
+  v0.55.0 (user 13 Oktober 2026): juggernaut / elite rifles 6 in 10 (fixes/NpcLoadouts AUTO_RIFLE,
+  MARKSMAN, rifleAttachments: none 1 in 2, else full or half a set); NEVER a vanilla door in anything
+  we generate (worldgen/Doors swaps them in Slices and the small placer, style by building); city edge
+  worn ground (EdgePlan.wear; dev test `cityedge`); wasteland buildings locked by loot
+  (BuildingDress.lockDoors: Door_Emergency_1_Locked + military keycard screen; BuildingLayout.outdoors
+  finds entrances by a flood fill from the plot edge). Crate levels idea: docs/ideas.md item 17.
   Gun study (10 Oktober 2026): docs/gun_style_guide.md, tools/guns/study.py
   (renders / measures Decimation's guns from the jar, `attach` adds
   attachments as the game places them), dev test mode `gunview` (hip, aim

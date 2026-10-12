@@ -80,6 +80,15 @@ general: decimation-props; all of them: decimation-worldgen.
    (LotDress.streetSide). Ground colours: podzol and dirt read orange from above; use dark stained
    clay. A huge prop's drawn box (helicopter rotor disc 9.4 x 14) takes every cell under it: put the
    detail beside it.
+10. Where the city meets the land, fade the city's own material into it (the sidewalk's slab, stone,
+   cobblestone, mossy cobblestone, in patches, densest at the city: EdgePlan.wear); dirt and coarse
+   dirt read orange from above in this world, never use them for worn ground.
+11. An entrance is where walking in from the plot's edge reaches one side of a door and not the other
+   (BuildingLayout.outdoors flood fill). "Open sky above the outer cell" missed doors under canopies,
+   earth cover and on the plot edge (18 of 35 buildings found).
+12. Never a vanilla door in anything we generate (user 13 Oktober 2026): worldgen/Doors swaps them at
+   write time, styled by building; locked buildings use Door_Emergency_1_Locked + a military keycard
+   screen within 3 blocks.
 
 ## Casebook (never delete a case)
 
@@ -128,4 +137,12 @@ general: decimation-props; all of them: decimation-worldgen.
   dropped: podzol (orange from above), cobblestone slab lumps (inside the rotor disc's drawn box).
 - Check: seed 1 server topdowns (docs/shots/wasteland_v0.54.2/topdown_lots.png), propclash 0 in the
   lots, dev test wasteland all PASS with the preview shots.
+
+### Case 5: edge, doors, locked wasteland (v0.54.2 -> v0.55.0, 13 Oktober 2026)
+- User: "add gradient texture block on border of wildneres cause its looks not natural when see from
+  my view. door never use vanilla ones ... for wasteland, 80% most building its locked door" (plus NPC
+  rifles). Asked: which border (city edge), how locked doors open (keycard screen + lockpick).
+- Edge (lesson 10): coarse dirt first, orange in the shots (docs/shots/v0.55_cityedge/ describes the
+  kept grey version). Doors (lesson 12): 0 vanilla doors in seed 1's area. Locked (lesson 11): 27 of 35
+  entrance buildings locked, 49 doors, 48 keycard screens; 17 buildings have no entrance door at all.
 

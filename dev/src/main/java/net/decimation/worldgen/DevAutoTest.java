@@ -136,6 +136,7 @@ public class DevAutoTest
         if (name.equals("bridge")) return new net.decimation.worldgen.devtest.BridgeTest();
         if (name.equals("cityprops")) return new net.decimation.worldgen.devtest.CityPropsTest();
         if (name.equals("wasteland")) return new net.decimation.worldgen.devtest.WastelandTest();
+        if (name.equals("cityedge")) return new net.decimation.worldgen.devtest.CityEdgeTest();
         if (name.equals("facing")) return new net.decimation.worldgen.devtest.FacingTest();
         if (name.equals("places")) return new net.decimation.worldgen.devtest.PlacesTest();
         if (name.equals("zones")) return new net.decimation.worldgen.devtest.ZonesTest();

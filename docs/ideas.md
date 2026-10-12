@@ -12,6 +12,13 @@ first (questions with options) before any code. Priority now: finish the current
    definition"); a new crate type means a new block of ours plus a pool registered through Deci, or
    reusing an existing pool [not checked how].
 2. **More loot type blocks** (same direction as 1: more containers with their own loot).
+17. **Crate levels** (user, 13 Oktober 2026: "new custom crate we make later, maybe the crate system
+    will be based on level, example crate level 1,2,3 like that with different loot reward"): our own
+    crates in levels 1, 2, 3, each level a richer loot pool. Ties to the wasteland locked doors
+    (v0.55.0): the buildings behind a locked door are the ones with the most and best loot, so the
+    higher level crates would go there first. Not designed yet (how many levels, which pools, how the
+    level shows on the crate, where each level spawns); same notes as item 1 on Decimation's
+    hardcoded pools.
 
 ## NPCs
 3. **More military NPC outfits** (skins / armour looks per tier).

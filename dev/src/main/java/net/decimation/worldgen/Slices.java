@@ -279,6 +279,7 @@ public final class Slices
                     }
                     else
                     {
+                        block = Doors.swap(block, p);             // never a vanilla door (Doors)
                         world.setBlock(x, y, z, block, meta[0], 2);
                         if (block.hasTileEntity(meta[0]))
                         {

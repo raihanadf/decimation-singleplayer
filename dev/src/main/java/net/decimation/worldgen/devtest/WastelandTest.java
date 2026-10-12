@@ -294,7 +294,8 @@ public class WastelandTest extends DevTestMode
         {"deci:BlockSandbagStack", "sandbags", 2, 5}, {"deci:BlockConcertinaWire", "wire", 1, 4},
         {"deci:BlockCarePackage", "supplies", 1, 6}, {"deci:BlockBodyBag", "casualties", 1, 5},
         {"deci:BlockSpotlight", "spotlight", 1, 5}, {"deci:decal.warningtrespass", "trespass", 1, 3},
-        {"deci:decal.usflag", "flag", 1, 4}};
+        {"deci:decal.usflag", "flag", 1, 4}, {"deci:Door_Emergency_1_Locked", "locked", 2, 4},
+        {"deci:BlockKeycardScreenMilitary", "keycard", 1, 3}};
 
     private void survey(World w, int gx, int gz)
     {
@@ -303,7 +304,7 @@ public class WastelandTest extends DevTestMode
         int g = LcCity.ground(seed, gx, gz);
         List<int[]> found = new ArrayList<int[]>();
         int[] got = new int[KINDS.length], total = new int[KINDS.length];
-        int wood = 0, chests = 0;
+        int wood = 0, chests = 0, vanillaDoors = 0;
         for (int x = x0; x < x0 + size; x++)
         {
             for (int z = z0; z < z0 + size; z++)
@@ -324,6 +325,11 @@ public class WastelandTest extends DevTestMode
                     if (n.equals("deci:BlockWoodCrate"))
                     {
                         wood++;
+                        continue;
+                    }
+                    if (b == Blocks.wooden_door || b == Blocks.iron_door)
+                    {
+                        vanillaDoors++;
                         continue;
                     }
                     int k = -1;
@@ -369,5 +375,11 @@ public class WastelandTest extends DevTestMode
         int loot = total[4] + total[5] + total[6] + total[7];
         DevTestResults.check(name(), "military loot containers", loot, loot >= 10, "10 or more");
         DevTestResults.check(name(), "zone entry checkpoints", total[0], total[0] > 0, "hedgehogs at an entry");
+        // v0.55: most buildings locked (Door_Emergency_1_Locked, both halves counted), keycard screens beside
+        // them, no vanilla door anywhere
+        int locked = total[KINDS.length - 2] / 2, screens = total[KINDS.length - 1];
+        DevTestResults.check(name(), "locked doors, keycard screens", locked + ", " + screens, locked > 0 && screens > 0,
+                             "both present");
+        DevTestResults.check(name(), "vanilla doors", vanillaDoors, vanillaDoors == 0, "0 (Decimation doors only)");
     }
 }

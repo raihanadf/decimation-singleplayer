@@ -18,6 +18,10 @@ description: Index of the worldgen skills for our Decimation mod - which skill t
 
 Planned (user, 11 Oktober 2026): decimation-military-interior (split from decimation-military-base).
 
+## Rules for everything we generate
+- No vanilla doors (user 13 Oktober 2026): worldgen/Doors swaps them in Slices and the small placer;
+  a new writer that bypasses both must call Doors.swap too.
+
 ## How worldgen is tested
 1. Server, no window: `python3 tools/servertest.py 1 type=decimation pregen=128,128,9 [dress]`.
 2. Blocks from the region files: tools/worldcheck.py, tools/props/worlddump.py + propclash.py,

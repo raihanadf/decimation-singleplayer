@@ -2,6 +2,7 @@ package net.decimation.fixes;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -67,6 +68,8 @@ public class NpcLoadouts
         /** Attachments per gun class ("sight=4x", "barrel=mgSuppressor", "grip=laser") and a mask item. */
         String[] mgKit = {}, sniperKit = {}, rifleKit = {};
         String mask;
+        /** Share of NPCs of the tier that carry a rifle (AUTO_RIFLE or MARKSMAN) instead of a gun of guns. */
+        float rifleShare;
         final String[][] armor; // helmet, chest, legs, boots: registry names to pick from
         final String[] guns;
 
@@ -105,6 +108,13 @@ public class NpcLoadouts
             return this;
         }
 
+        /** Rifles for this share of the tier (user 2026-10-13), attachments by rifleAttachments. */
+        Tier rifles(float share)
+        {
+            rifleShare = share;
+            return this;
+        }
+
         Tier heavy(double speed, double knockbackResistance)
         {
             this.speed = speed;
@@ -117,6 +127,12 @@ public class NpcLoadouts
     static final String[] MG = {"pkm", "pkp", "m240", "m60", "rpd", "mk48", "mg3", "m1919a6"};
     /** Rocket launchers NPCs fire as real rockets (NpcShots); grenade launchers are not used. */
     static final String[] ROCKET = {"rpg7", "rpg18"};
+    /**
+     * Rifles of the elite and the juggernaut (user 2026-10-13: "elite npc and juggernaut have rifle now,
+     * from marksman and normal automatic rifle"); ours (hk416, mk18) only where their models were built.
+     */
+    static final String[] AUTO_RIFLE = {"ak74", "ak12", "akm", "m4a4", "hk416", "mk18", "fnscarl", "g36c", "acr", "aug3"};
+    static final String[] MARKSMAN = {"m110", "svd", "m14", "galilsar", "fnscarssr"};
     static final String[] SNIPER = {"sv98", "svd", "mosinnagant", "kar98k", "l115a3", "jng90", "barrett",
                                             "m110", "m1garand", "svt40"};
 
@@ -199,7 +215,7 @@ public class NpcLoadouts
         tiers.add(new Tier("juggernaut", NpcKind.SOVIET, 0, 0, 200, 0.25f,
             new String[][] {{"juggernautHelm", "juggernautHelmGray"}, {"juggernautVest", "juggernautVestGray"},
                             {"juggernautPants", "juggernautPantsGray"}, {"juggernautBoots", "juggernautBootsGray"}},
-            "pkm", "pkp", "m240", "mk48").spread(1.0f).heavy(0.18, 1.0));
+            "pkm", "pkp", "m240", "mk48").spread(1.0f).heavy(0.18, 1.0).rifles(0.6f));
         // elite military (user 2026-10-09): marine black + night vision, heavy machine guns or sniper
         // rifles with every attachment, about 2 magazines to kill, x2 damage; only MilitarySpawner
         // (eliteChance) and its egg
@@ -208,7 +224,7 @@ public class NpcLoadouts
             "pkp", "m240", "mk48", "mg3", "pkm").spread(0.8f).delay(2, 6)
             .heavy(0.27, 0.5).elite(2.0f, "nvgoggles",
                 new String[] {"sight=4x", "barrel=mgSuppressor", "grip=laser"},
-                new String[] {"sight=8x", "barrel=arSuppressor", "grip=laser"}));
+                new String[] {"sight=8x", "barrel=arSuppressor", "grip=laser"}).rifles(0.6f));
         // sniper versions (user 2026-10-09: "split eggs for sniper on juggernaut and elite, don't make it
         // rare"): MilitarySpawner picks them for sniperShare of its juggernauts / elites
         // the Barrett tiers die to one 30 round 5.56 magazine (user 2026-10-11; dev test npckill: a
@@ -278,6 +294,11 @@ public class NpcLoadouts
                 "its gun hits on a player x this (on top of npcDamageToPlayer)");
             t.spread = cfg.getFloat("spread", cat, t.spread, 0, 45,
                 "aim spread in degrees: about 85% hits at 10 blocks with 1.2, 50% at 20 (machine guns x1.4)");
+            if (t.rifleShare > 0)
+            {
+                t.rifleShare = cfg.getFloat("rifleShare", cat, t.rifleShare, 0, 1,
+                    "share carrying a rifle (automatic or marksman, attachments 1 in 2) instead of a machine gun");
+            }
         }
         npcDamageToPlayer = cfg.getFloat("npcDamageToPlayer", "player", npcDamageToPlayer, 0, 100,
             "NPC gun hits on a player: damage x this, after armor (user 2026-10-09: 5, hardcore; 1 = Decimation)");
@@ -680,12 +701,26 @@ public class NpcLoadouts
             }
         }
         String gun = tier.guns[random.nextInt(tier.guns.length)];
+        boolean rifle = random.nextFloat() < tier.rifleShare;
+        if (rifle)
+        {
+            // automatic rifles 6 in 10, marksman rifles the rest; a gun not registered here is drawn again
+            for (int k = 0; k < 8; k++)
+            {
+                String[] pool = random.nextFloat() < 0.6f ? AUTO_RIFLE : MARKSMAN;
+                gun = pool[random.nextInt(pool.length)];
+                if (item(gun) != null)
+                {
+                    break;
+                }
+            }
+        }
         if (item(gun) == null)
         {
             gun = "ak74";
         }
         // the gun spec "name;sight=4x;barrel=...;mask=nvgoggles" (gunStack / applySpec read it)
-        String[] kit = contains(MG, gun) ? tier.mgKit : contains(SNIPER, gun) ? tier.sniperKit : tier.rifleKit;
+        String[] kit = rifle ? rifleAttachments(gun) : contains(MG, gun) ? tier.mgKit : contains(SNIPER, gun) ? tier.sniperKit : tier.rifleKit;
         StringBuilder spec = new StringBuilder(gun);
         for (String k : kit)
         {
@@ -708,6 +743,45 @@ public class NpcLoadouts
         npc.setHealth(tier.health);
         data.setString(TAG, tier.name);
         data.setString(GUN_TAG, gun);
+    }
+
+    /**
+     * Attachments of an elite's or juggernaut's rifle (user 2026-10-13: "combined with attachement (50%
+     * change) full or half attachment"): 1 in 2 none (iron sights); else a full set (sight, suppressor,
+     * grip) or half of one (1 or 2 of the 3 slots, at random). Marksman rifles take magnified sights
+     * (the SVD its own Dragunov scope), automatic rifles close ones; no sight on a gun with a built in
+     * scope; only attachments registered here.
+     */
+    String[] rifleAttachments(String gun)
+    {
+        if (random.nextBoolean())
+        {
+            return new String[0];
+        }
+        boolean marksman = contains(MARKSMAN, gun);
+        String[] sights = gun.equals("svd") ? new String[] {"dragunovScope", "4x", "ta11acog"}
+            : marksman ? new String[] {"4x", "8x", "ta11acog"} : new String[] {"reddot", "2x", "eotech558", "ta11acog", "4x"};
+        String[] grips = {"foregrip", "laser", "flashlight"};
+        List<String> kit = new ArrayList<String>();
+        String sight = sights[random.nextInt(sights.length)], grip = grips[random.nextInt(grips.length)];
+        if (item(sight) != null && !Deci.hasIntegratedScope(item(gun)))
+        {
+            kit.add("sight=" + sight);
+        }
+        if (item("arSuppressor") != null)
+        {
+            kit.add("barrel=arSuppressor");
+        }
+        if (item(grip) != null)
+        {
+            kit.add("grip=" + grip);
+        }
+        if (random.nextBoolean())
+        {
+            Collections.shuffle(kit, random);              // half a set: 1 or 2 of the slots
+            kit = new ArrayList<String>(kit.subList(0, Math.min(kit.size(), 1 + random.nextInt(2))));
+        }
+        return kit.toArray(new String[0]);
     }
 
     /** Gun in hand (server field + watcher for the client) and a fire rate that fits it. */

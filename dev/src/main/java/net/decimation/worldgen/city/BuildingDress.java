@@ -25,6 +25,8 @@ final class BuildingDress
 {
     static final int HOME = 0, OFFICE = 1, SHOP = 2, FOOD = 3, MEDICAL = 4, POLICE = 5, INDUSTRY = 6, MILITARY = 7,
         LAB = 8, CIVIC = 9;
+    static final String[] KIND_NAMES = {"home", "office", "shop", "food", "medical", "police", "industry", "military",
+                                        "lab", "civic"};
 
     private final Dress d;
     private final BuildingLayout lay;
@@ -35,6 +37,8 @@ final class BuildingDress
     private final boolean waste;
     /** What supplies() did to the building's containers, for the log. */
     private String lootLog;
+    /** What lockDoors() did, for the log. */
+    private String doorLog;
     private final Map<Long, BuildingLayout.Spot> at = new HashMap<Long, BuildingLayout.Spot>();
     private int salt;
     /** One log line per dressed building (prop counts): tools/props/dressbalance.py reads them. */
@@ -135,6 +139,10 @@ final class BuildingDress
         if (LOG && bd.lootLog != null)
         {
             cpw.mods.fml.common.FMLLog.info("[deciworldgen] wasteland loot %s at %d,%d: %s", b.name, p.minX(), p.minZ(), bd.lootLog);
+        }
+        if (LOG && bd.doorLog != null)
+        {
+            cpw.mods.fml.common.FMLLog.info("[deciworldgen] wasteland doors %s at %d,%d: %s", b.name, p.minX(), p.minZ(), bd.doorLog);
         }
         if (LOG)
         {
@@ -274,6 +282,105 @@ final class BuildingDress
                 storey(floor, index++);
             }
         }
+        if (waste)
+        {
+            lockDoors();                                  // last: the loot counted is all in
+        }
+    }
+
+    /** Loot containers (Decimation's loot is per block): what makes a building worth locking. */
+    private static final String[] LOOT = {"deci:BlockMilitaryCrate", "deci:BlockAmmoCrate", "deci:BlockAmmoCrateLarge",
+        "deci:BlockWeaponCabinet", "deci:BlockMedicalCrate", "deci:BlockPoliceCrate", "deci:BlockCarePackage"};
+
+    /**
+     * Wasteland district (user, 13 Oktober 2026: "80% most building its locked door, so if the building
+     * has more loots + high value in there, you put locked door decimation in there"): most of its
+     * buildings are locked, the richer the likelier (loot containers placed, military buildings and labs
+     * most, clinics and police stations more). A locked building gets Decimation's only locked door
+     * (Door_Emergency_1_Locked, same metadata) in every entrance, and a military keycard screen on the
+     * outer wall 1 or 2 beside the doorway, 1 up, where the building's plot has an outdoor cell there
+     * (a door on the plot's edge has none: a lockpick then): a military keycard on it opens doors within 3 blocks
+     * (docs/military_base.md), a lockpick opens one. Military crates, wrecks and care packages drop the
+     * keycard. Inner doors stay open.
+     */
+    private void lockDoors()
+    {
+        Block locked = deci("Door_Emergency_1_Locked");
+        if (locked == null)
+        {
+            return;
+        }
+        // an entrance: walking in from the plot's edge reaches one side of the door and not the other
+        // (open sky above the cell, as barricade() asks, missed doors under canopies and earth cover:
+        // 30 of 48 wasteland buildings with doors in seed 1 had none)
+        List<int[]> entrances = new ArrayList<int[]>();
+        Map<Integer, boolean[][]> outdoors = new HashMap<Integer, boolean[][]>();
+        List<Integer> outerSide = new ArrayList<Integer>();
+        for (int[] door : lay.doors)
+        {
+            boolean alongX = (door[3] & 1) == 0;
+            boolean[][] out = outdoors.get(door[1]);
+            if (out == null)
+            {
+                out = lay.outdoors(door[1]);
+                outdoors.put(door[1], out);
+            }
+            int reached = 0, side0 = 0;
+            for (int side = -1; side <= 1; side += 2)
+            {
+                int x = door[0] + (alongX ? side : 0), z = door[2] + (alongX ? 0 : side);
+                boolean offPlot = x < 0 || z < 0 || x >= out.length || z >= out[0].length;
+                if (offPlot || out[x][z])
+                {
+                    reached++;
+                    side0 = side;
+                }
+            }
+            Block upper = lay.at(door[0], door[1] + 1, door[2]);
+            if (reached == 1 && upper != null && PropGeom.isDoor(upper))
+            {
+                entrances.add(door);
+                outerSide.add(side0);
+            }
+        }
+        if (entrances.isEmpty())
+        {
+            doorLog = "no entrance door (" + lay.doors.size() + " doors)";
+            return;
+        }
+        int loot = 0;
+        for (String n : LOOT)
+        {
+            int[] t = d.tally.get(n);
+            loot += t == null ? 0 : t[0];
+        }
+        int chance = loot >= 20 ? 1000                    // the richest always (a base with 49 rolled open once)
+            : Math.min(970, 700 + 30 * loot + (kind == MILITARY || kind == LAB ? 250 : kind == MEDICAL || kind == POLICE ? 120 : 0));
+        if (roll() >= chance)
+        {
+            Dress.note("~wasteland building open");
+            doorLog = "open, loot " + loot;
+            return;
+        }
+        int screens = 0;
+        for (int i = 0; i < entrances.size(); i++)
+        {
+            int[] door = entrances.get(i);
+            d.put(locked, door[3], door[0], door[1], door[2]);
+            d.put(locked, lay.meta(door[0], door[1] + 1, door[2]), door[0], door[1] + 1, door[2]);
+            // the screen outside, on the door's wall 1 or 2 beside the doorway, 1 up
+            boolean alongX = (door[3] & 1) == 0, done = false;
+            int side = outerSide.get(i);
+            int ox = door[0] + (alongX ? side : 0), oz = door[2] + (alongX ? 0 : side);
+            int w = alongX ? (side > 0 ? 2 : 0) : (side > 0 ? 3 : 1);   // from the outer cell back to the wall
+            for (int o : new int[] {-1, 1, -2, 2})           // within 3 of the door, as the screen needs
+            {
+                done = done || hang("BlockKeycardScreenMilitary", ox + (alongX ? 0 : o), door[1] + 1, oz + (alongX ? o : 0), w);
+            }
+            screens += done ? 1 : 0;
+        }
+        Dress.note("~wasteland building locked");
+        doorLog = "locked " + entrances.size() + " doors, " + screens + " keycard screens, loot " + loot;
     }
 
     /**

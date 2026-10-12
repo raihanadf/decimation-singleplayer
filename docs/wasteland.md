@@ -1,4 +1,4 @@
-# The wasteland district: the city's military area (v0.54.0 to v0.54.2)
+# The wasteland district: the city's military area (v0.54.0 to v0.55.0)
 
 User request (12 Oktober 2026, docs/ideas.md item 14, picked from the "what's next" list): "go
 with 1, wasteland military area. do full system now". The user's claim from the idea list:
@@ -43,6 +43,7 @@ DEADZONE_RANGE (2) cells of a military sector (LcCity.style). On top:
 | Streets | Road scenes: inner checkpoint 14 %, crash 16 % (a military jeep 4 in 10), a parked jeep or APC 15 %, a convoy of two jeeps 10 %. Sidewalks: barrels, skeletons, sandbags left on the curb, wire coils, a military crate (loot). Crossings: crash 25 %, a sandbag fighting position on one corner 35 % (military crate and ammo case inside, the walk round the corner open) | StreetDress.roadScene, militaryVehicles, straight, fightingPosition |
 | Lots | Bare lots: motor pool and supply dump (rows of military crates, ammo cases, care packages, water pallets, spotlight) on a concrete pad (double stone slab, grass border), crash site, casualty collection point (body bags in rows, stretchers, medical crates, hazard light), or nothing; bushes cleared under every scene. Motor pool (v0.54.2): three bays along the street side (LotDress.streetSide), noses to the street, an APC in the middle bay half the time, a second line of jeeps behind in 6 of 10, a workshop row on the back edge (parts shelves, workbench, tyres, generator), a fuel point of drums in a back corner, a work light, a towed missile launcher where no second line stands. Crash site (v0.54.2): the helicopter (drawn 9.4 x 14, lopsided) tries every heading with a shifted anchor, burnt ground along its hull (stained clay black, dark brown, grey), its dead, a body bag, a military crate, an ammo case, a wheel, a cordon of sawhorses and cones (street side, else the hull's long sides) and a work light. Log "dress lot military SCENE at x,z" | LotDress.militaryLot, groundWork, motorPool, helicopter |
 | NPCs | The district counts as a military area: bandits roll the heavier military weights, the enemy military spawner (Soviet groups of 2 to 3) runs for a player in it; in a city a group spawns only on the top block at street level (a street, yard, lot or park; never a roof or inside), each member on a free good cell of its own or on the group's spot (v0.54.1: v0.54.0 spread members one block round the spot, into a building's wall at a street chunk's edge, and asked for a street chunk, which a superblock district has only on its edge) | fixes/NpcLoadouts.military, MilitarySpawner, Wasteland.streetSpot |
+| Locked doors (v0.55.0) | Most buildings locked, the richer the likelier: chance 700 + 30 per loot container per mille (military buildings and labs + 250, clinics and police + 120, at most 970), always from 20 loot containers. Every entrance (flood fill from the plot's edge at the door's storey reaches one side and not the other) gets Door_Emergency_1_Locked and a BlockKeycardScreenMilitary on the outer wall 1 or 2 beside it, 1 up, where the plot has an outdoor cell there. Opens with a military keycard on the screen (doors within 3 blocks) or a lockpick. Log "wasteland doors NAME at x,z: locked n doors, k keycard screens, loot L" / "open" / "no entrance door" | BuildingDress.lockDoors, BuildingLayout.outdoors |
 | Name | Unchanged since v0.52.0: "City: Wasteland - n", controlled by Military | city/CityNames |
 
 Crates are never stacked: a military crate is drawn 1.15 high, one on another overlaps it by 0.15
@@ -167,3 +168,17 @@ Crates are never stacked: a military crate is drawn 1.15 high, one on another ov
   y 199 under the lot's west edge (region file), not a missing texture.
 - Not seen yet: a casualty lot from generation (still none in seed 1's 8 military lots, 17 % each
   [inferred: chance]); the user's look.
+
+### v0.55.0 (13 Oktober 2026, user: "for wasteland, 80% most building its locked door, so if the building has more loots + high value in there, you put locked door decimation in there")
+- Seed 1 server, same area: of the 52 wasteland buildings, 35 have an entrance door: 27 locked (77 %),
+  8 open; 17 have no entrance door (open doorways, or doors only inside) and cannot be locked.
+  49 locked doors, 48 keycard screens; 0 vanilla doors (all doors Decimation's since v0.55.0,
+  worldgen/Doors). propclash 29 findings, none from a door or a screen.
+- First entrance test (one side of the door under open sky, as barricade() asks) found entrances in
+  only 18 buildings: doors under canopies, earth cover or on the plot's edge were missed. The flood fill
+  from the plot's edge (BuildingLayout.outdoors) found 35.
+- Dev test `wasteland` (live, district 20,-20): 23 locked doors, 22 screens, 0 vanilla doors, all PASS.
+  Shots docs/shots/v0.55_locked/: the locked door says "This door needs a lockpick", the screen
+  "Right click to use a key card". Opening with a keycard in game: not tried [not verified].
+- Ties to the crate levels idea (docs/ideas.md item 17): higher level crates behind the locked doors.
+

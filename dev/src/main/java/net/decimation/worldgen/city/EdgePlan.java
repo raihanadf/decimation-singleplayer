@@ -145,11 +145,49 @@ final class EdgePlan implements net.decimation.worldgen.FixedBase, net.decimatio
         int width = Math.max(6, Math.min(EDGE, 2 * Math.abs(natural - ground) + 4));
         // contours wander +-4 blocks so the 1 block steps do not run parallel to the street
         double t = Math.max(0, d + 4 * wobble(x, z)) / (width + 1);
-        if (t >= 1)
+        int top = natural;
+        if (t < 1)
+        {
+            t = t * t * (3 - 2 * t);
+            top = ground + (int) Math.round((natural - ground) * t);
+            reshape(world, x, z, natural, top);
+        }
+        wear(world, x, z, top, d);
+    }
+
+    /** Width of the worn ground beside a city (wear). */
+    static final int WEAR = 10;
+
+    /**
+     * Worn ground along the city (user, 13 Oktober 2026: the city edge "looks not natural when see from
+     * my view"; chosen: a gradient at the edge): the grass top of a column within WEAR of the city turns
+     * into broken pavement the more often the closer it is, in patches, fading from the sidewalk's grey
+     * into the grass: next to the city the sidewalk's own double stone slab and stone, then cobblestone,
+     * then mossy cobblestone thinning out. Coarse dirt was tried first: it read orange from above (the
+     * colour the user rejected for base ground). Never a falling block (gravel falls into whatever opens
+     * under it). A plant on a worn top goes.
+     */
+    private static void wear(World world, int x, int z, int y, double d)
+    {
+        if (d >= WEAR || world.getBlock(x, y, z) != Blocks.grass)
         {
             return;
         }
-        t = t * t * (3 - 2 * t);
-        reshape(world, x, z, natural, ground + (int) Math.round((natural - ground) * t));
+        double f = 1 - d / WEAR;
+        double p = 0.85 * Math.pow(f, 1.5);
+        double r = 0.65 * (wobble(x * 2 - 31, z * 2 + 17) + 1) / 2 + 0.35 * (lattice(x * 7 + 3, z * 5 - 11) + 1) / 2;
+        double k = (lattice(x * 11 - 5, z * 13 + 7) + 1) / 2;
+        if (r >= p)
+        {
+            return;
+        }
+        Block b = d <= 2 ? (k < 0.45 ? Blocks.double_stone_slab : k < 0.75 ? Blocks.stone : Blocks.cobblestone)
+            : d <= 5 ? (k < 0.2 ? Blocks.stone : k < 0.65 ? Blocks.cobblestone : Blocks.mossy_cobblestone)
+            : (k < 0.4 ? Blocks.cobblestone : Blocks.mossy_cobblestone);
+        world.setBlock(x, y, z, b, 0, 2);
+        if (world.getBlock(x, y + 1, z) instanceof net.minecraft.block.BlockBush)
+        {
+            world.setBlock(x, y + 1, z, Blocks.air, 0, 2);
+        }
     }
 }

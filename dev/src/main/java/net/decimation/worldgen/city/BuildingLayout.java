@@ -128,6 +128,48 @@ final class BuildingLayout
     }
 
     /** Air, or a floor covering a prop may replace. */
+    /**
+     * The cells at storey y (a player stands in y and y + 1) reached by walking in from the plot's edge
+     * without passing a door: the outdoors, porches and canopies included ([x][z]).
+     */
+    boolean[][] outdoors(int y)
+    {
+        int w = s.width, l = s.length;
+        boolean[][] seen = new boolean[w][l];
+        java.util.ArrayDeque<int[]> todo = new java.util.ArrayDeque<int[]>();
+        for (int x = 0; x < w; x++)
+        {
+            for (int z = 0; z < l; z++)
+            {
+                if ((x == 0 || z == 0 || x == w - 1 || z == l - 1) && walkable(x, y, z))
+                {
+                    seen[x][z] = true;
+                    todo.add(new int[] {x, z});
+                }
+            }
+        }
+        while (!todo.isEmpty())
+        {
+            int[] c = todo.poll();
+            for (int[] d : DIR)
+            {
+                int x = c[0] + d[0], z = c[1] + d[1];
+                if (x >= 0 && z >= 0 && x < w && z < l && !seen[x][z] && walkable(x, y, z))
+                {
+                    seen[x][z] = true;
+                    todo.add(new int[] {x, z});
+                }
+            }
+        }
+        return seen;
+    }
+
+    /** Open 2 high (a door is not). */
+    private boolean walkable(int x, int y, int z)
+    {
+        return open(x, y, z) && open(x, y + 1, z);
+    }
+
     boolean open(int x, int y, int z)
     {
         Block b = at(x, y, z);

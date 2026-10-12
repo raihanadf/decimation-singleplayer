@@ -73,10 +73,19 @@ public class NpcTest extends DevTestMode
                         clientMatch++;
                         if (e.getValue().contains("mask="))
                         {
-                            // elite: goggles on the face and the attachments on the client's gun
+                            // elite: goggles on the face and the server's attachments on the client's gun (a
+                            // rifle may have none since v0.55: 1 in 2, user 2026-10-13)
                             ItemStack m = Deci.npcMask(c);
-                            boolean kit = g.stackTagCompound != null && !g.stackTagCompound.getString("sightAttach").isEmpty()
-                                && !g.stackTagCompound.getString("barrelAttach").isEmpty();
+                            boolean kit = true;
+                            for (String part : e.getValue().split(";"))
+                            {
+                                int eq = part.indexOf('=');
+                                if (eq > 0 && !part.startsWith("mask="))
+                                {
+                                    kit &= g.stackTagCompound != null
+                                        && part.substring(eq + 1).equals(g.stackTagCompound.getString(part.substring(0, eq) + "Attach"));
+                                }
+                            }
                             eliteTotal++;
                             eliteOk += m != null && m.getItem() == NpcLoadoutsAccess.item("nvgoggles") && kit ? 1 : 0;
                         }
@@ -262,7 +271,8 @@ public class NpcTest extends DevTestMode
         DevTestResults.check(name(), "barrett hit 6 on a marine body set", String.format("%.2f (normal %.2f)", piercing, normal),
                              piercing > normal * 2, "more than twice a normal hit (armor at half strength)");
 
-        // sniper versions: juggernaut_sniper always a Barrett, elite_sniper only sniper rifles, base ones none
+        // sniper versions: juggernaut_sniper always a Barrett, elite_sniper only sniper rifles, base ones no bolt
+        // action sniper rifle (since v0.55 they may carry a marksman rifle, the m110 among them)
         int jugBarrett = 0, eliteSnipers = 0, baseSnipers = 0, n = 40;
         for (int k = 0; k < n; k++)
         {
@@ -274,9 +284,35 @@ public class NpcTest extends DevTestMode
                 boolean sniper = java.util.Arrays.asList("barrett", "l115a3", "jng90", "sv98", "m110").contains(g);
                 jugBarrett += tn.equals("juggernaut_sniper") && g.equals("barrett") ? 1 : 0;
                 eliteSnipers += tn.equals("elite_sniper") && sniper ? 1 : 0;
-                baseSnipers += !tn.endsWith("sniper") && sniper ? 1 : 0;
+                baseSnipers += !tn.endsWith("sniper") && sniper && !g.equals("m110") ? 1 : 0;
             }
         }
+        // rifles (user 2026-10-13): juggernaut and elite carry a rifle 6 in 10 (automatic or marksman); a
+        // rifle's attachments: none 1 in 2, else a full set (3) or half of one (1 or 2)
+        int rifles = 0, total = 0, bare = 0, full = 0, half = 0;
+        List<String> autoRifle = java.util.Arrays.asList("ak74", "ak12", "akm", "m4a4", "hk416", "mk18", "fnscarl", "g36c", "acr", "aug3");
+        List<String> marksman = java.util.Arrays.asList("m110", "svd", "m14", "galilsar", "fnscarssr");
+        for (int k = 0; k < 100; k++)
+        {
+            for (String tn : new String[] {"juggernaut", "elite_military"})
+            {
+                EntityLiving e = Deci.newSoviet(world);
+                loadouts.equip(e, loadouts.byName(tn), e.getEntityData());
+                String spec = e.getEntityData().getString(NpcLoadouts.GUN_TAG), g = NpcLoadouts.gunName(spec);
+                total++;
+                if (autoRifle.contains(g) || marksman.contains(g))
+                {
+                    rifles++;
+                    int parts = spec.split(";").length - 1 - (spec.contains("mask=") ? 1 : 0);
+                    bare += parts == 0 ? 1 : 0;
+                    full += parts == 3 ? 1 : 0;
+                    half += parts == 1 || parts == 2 ? 1 : 0;
+                }
+            }
+        }
+        DevTestResults.check(name(), "juggernaut / elite rifles of 200", rifles + " (none " + bare + ", half " + half + ", full " + full + ")",
+                             rifles > 90 && rifles < 150 && bare > rifles / 4 && full > 5 && half > 5,
+                             "about 120, about half of them without attachments, the rest full or half");
         DevTestResults.check(name(), "sniper tiers (jugg Barrett, elite snipers, base snipers)",
                              jugBarrett + " / " + eliteSnipers + " / " + baseSnipers,
                              jugBarrett == n && eliteSnipers == n && baseSnipers == 0, n + " / " + n + " / 0");

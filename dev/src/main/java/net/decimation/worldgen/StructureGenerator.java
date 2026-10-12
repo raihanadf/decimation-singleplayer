@@ -390,6 +390,8 @@ public class StructureGenerator implements IWorldGenerator
                         continue; // id not registered in this save
                     }
                     int meta = Rotation.rotateMeta(id, s.data[i] & 0xFF, turns);
+                    // never a vanilla door (Doors); military schematics get metal ones
+                    block = Doors.swap(block, s.name.startsWith("mil_") ? "military" : "home", s.name + originX + "_" + originZ);
                     world.setBlock(wx, wy, wz, block, meta, 2);
                 }
             }

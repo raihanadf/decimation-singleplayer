@@ -159,6 +159,12 @@ boot. Falls straight through to the mod's own (re-skinned) main menu after that.
   snipers spot enemies up to `sniperRange` 70 blocks (was 96); the Barrett tiers (juggernaut
   sniper 60 hp, elite sniper 38 hp) die to one 30 round 5.56 magazine (8 per player hit x their
   damage share). Config version 3: older files take these new defaults once.
+- **v0.55.0**: juggernauts and elite military carry rifles 6 times in 10 (automatic or marksman),
+  half of them with attachments (a full set or half of one), their machine guns otherwise. Every
+  door in generated structures is a Decimation door (style by building), no vanilla doors in new
+  chunks. The city's edge frays into broken pavement before the grass. In the wasteland most
+  buildings are locked (the richest always): Decimation's locked door at every entrance and a military
+  keycard screen beside it; a military keycard on the screen or a lockpick opens it.
 - **Wasteland = military area (v0.54.0)**: the wasteland district of a city (next to military
   zones) is now the city's military area: one military zone over the whole district, DeceasedCraft's
   military base, camp and bunker more often (new worlds only), the buildings' crates hold military

@@ -848,6 +848,35 @@ Dev test `wasteland`. v0.54.1: the weak spots (alike military buildings, few lot
 scenes, patrol spots) fixed, docs/wasteland.md "v0.54.1". v0.54.2: motor pool and crash site
 scenes reworked (docs/wasteland.md "v0.54.2"). Waiting for the user's look.
 
+### Rifles for the elite and the juggernaut, Decimation doors, city edge, locked wasteland (DONE v0.55.0, 13 Oktober 2026)
+User: "elite npc and juggernaut have rifle now, from marksman and normal automatic rifle, combined with
+attachement (50% change) full or half attachment. and add gradient texture block on border of
+wildneres cause its looks not natural when see from my view. door never use vanilla ones, use
+decimation door instead on all world in decimation. for wasteland, 80% most building its locked door,
+so if the building has more loots + high value in there, you put locked door decimation in there".
+Choices asked: the border is the city edge (not dead land vs overgrown), locked doors open with a
+keycard screen or a lockpick, all four in one release.
+- Rifles (fixes/NpcLoadouts): juggernaut and elite_military carry a rifle 6 in 10 (config
+  `rifleShare` per tier): automatic (ak74, ak12, akm, m4a4, hk416, mk18, fnscarl, g36c, acr, aug3) 6 in
+  10, marksman (m110, svd, m14, galilsar, fnscarssr) the rest; their machine guns otherwise. A rifle's
+  attachments (rifleAttachments): none 1 in 2, else a full set (sight, arSuppressor, grip) or half of
+  one (1 or 2 slots); marksman sights 4x / 8x / TA11 ACOG (the SVD its Dragunov scope), automatic red
+  dot / 2x / EOTech / ACOG / 4x; grips foregrip / laser / flashlight; no sight on a gun with a built in
+  scope. Dev test `npc`: 121 of 200 with a rifle (none 62, half 35, full 24), the client gets the
+  server's attachments; `gunview guns=m110,ak12 attach=4x,arSuppressor,foregrip`: attachments drawn on
+  the NPC's gun. Snipers tiers unchanged (the Barrett, elite_sniper).
+- Decimation doors everywhere we generate (worldgen/Doors): every vanilla wooden / iron door written
+  by Slices or the small schematic placer becomes a Decimation door with the same metadata, styled
+  per structure (city buildings by kind: homes dark wood / blue / orange / green, offices dark wood /
+  blue, shops coloured with windows, clinics green / emergency, police blue / security, industry and
+  military metal / security / emergency, labs security; bases metal, camps dark wood, the refuge
+  emergency / metal; iron doors metal). Seed 1 area: 0 vanilla doors. Chunks generated before keep
+  theirs.
+- City edge (city/EdgePlan.wear): the ramp's grass within 10 of the city turns into broken pavement
+  in patches, denser at the city: the sidewalk's slab and stone next to it, then cobblestone, then
+  mossy cobblestone. Dev test `cityedge`: worn tops by distance 62 53 41 26 14 7 1 0 of 64.
+- Locked wasteland (BuildingDress.lockDoors, docs/wasteland.md "v0.55.0").
+
 ### Zones, factions and world (user list 9 Oktober 2026, "later")
 Only the list and starting points; scope of each is `[not decided]`, ask
 the user before building.

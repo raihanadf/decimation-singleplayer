@@ -427,6 +427,13 @@ building fronts, several stairs designs joining levels.
   (v0.24.3) -> 0.3% (v0.24.4); the 3 block steps left are natural hills
   and tree tops. It still reads as 1 block grass terraces from the street
   (shots lc_edge_v0.24.4b), which is plain Minecraft terrain.
+  v0.55.0 (user: the edge "looks not natural when see from my view"): EdgePlan.wear turns the grass
+  tops within WEAR = 10 of the city into broken pavement in patches, denser at the city (sidewalk slab
+  and stone, then cobblestone, then mossy cobblestone). Coarse dirt was tried first: orange from
+  above. Dev test `cityedge` (cell 16,-16): worn tops by distance 1..10 of 64: 62 53 41 26 14 7 1 0 0 0;
+  shots docs/shots/v0.55_cityedge/. The terraces' grass sides stay.
+- Doors (v0.55.0, worldgen/Doors): the pack's vanilla doors (tools/lctranslate.py writes wooden / iron
+  doors) become Decimation doors when Slices writes them, styled by building kind.
 - Fronts, parks and street scenes since v0.26.0, district street parts
   since v0.27.0, highways since v0.25.0, the railway since v0.44.0, rivers
   through cities with bridges since v0.45.0 (new worlds).

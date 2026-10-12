@@ -23,6 +23,28 @@ How shots are made: `./gradlew runClient -Pautotest` (street views),
   places_1 walking into the next district: "HOLLOWHAVEN: SUBURBS - 6" and a second chat line;
   places_2 outside the city: "Now entering the Wilderness". Night rain in the dev world.
 
+## v0.55_cityedge/ (city edge worn ground, 13 Oktober 2026; dev test `cityedge`, cell 16,-16)
+- cityedge_out.png: from the north sidewalk looking out: the sidewalk's slab tiles fray into stone and
+  cobblestone cells, then dead grass, a 1 block grass terrace beyond, dead trees.
+- cityedge_in.png: from 22 blocks out looking at the city: grass terraces in front, a big building
+  behind the street; the pavement band is hidden behind the terrace.
+- cityedge_along.png: along the band: grey broken pavement beside the sidewalk, mossy cobblestone
+  cells thinning into the grass. cityedge_aerial.png: from above, the frayed grey edge along the
+  street and grass beyond. sheet.png: the four. (An earlier try with coarse dirt read orange: not kept.)
+
+## v0.55_locked/ (wasteland locked doors, 13 Oktober 2026; dev test `wasteland`, district 20,-20)
+- wasteland_locked_1.png: a red brown Decimation locked door seen from inside a building (crates and
+  military cases before it), hover text "This door needs a lockpick".
+- wasteland_locked_2.png: a locked door in a dark brick wall with the green military keycard screen
+  beside it, 1 up. wasteland_keycard_1.png: the screen on an outer wall beside a locked door, hover
+  text "Right click to use a key card". sheet_wasteland.png: the run's contact sheet.
+
+## v0.55_npc_rifles/ (elite and juggernaut rifles, 13 Oktober 2026)
+- sheet_npc.png (dev test `npc`): lineups; npc_3.png juggernauts with rifles (one tan stock),
+  npc_4.png elites (night vision) with rifles.
+- sheet_gunview.png (`gunview guns=m110,ak12 attach=4x,arSuppressor,foregrip`): hip / aim / NPC side
+  view; the NPC's AK-12 shows the suppressor and the scope.
+
 ## wasteland_v0.54.2/ (motor pool and crash site reworked, 13 Oktober 2026; docs/wasteland.md "v0.54.2")
 - wasteland_lot_motorpool.png: forced preview in the sky (dev test `wasteland`): two jeeps in the bay
   line at the near edge, noses toward the camera (the preview's random street side), middle bay out;

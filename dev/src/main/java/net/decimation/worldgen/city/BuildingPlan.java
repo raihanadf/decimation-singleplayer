@@ -17,7 +17,7 @@ import net.minecraft.world.World;
 import static net.decimation.worldgen.city.LcCity.*;
 
 /** A converted building: its ground floor layer at the city ground. */
-final class BuildingPlan implements net.decimation.worldgen.FixedBase
+final class BuildingPlan implements net.decimation.worldgen.FixedBase, net.decimation.worldgen.Doors.Styled
 {
     private final String id;
     private final LcContent.Building b;
@@ -46,6 +46,9 @@ final class BuildingPlan implements net.decimation.worldgen.FixedBase
 
     /** Building kind for the dressing of the street beside it (BuildingDress.kind). */
     int dressKind() { return BuildingDress.kind(b.name); }
+
+    /** Door style by building kind: Doors turns the pack's vanilla doors into Decimation's. */
+    public String doorStyle() { return BuildingDress.KIND_NAMES[dressKind()]; }
 
     /** The building's own block at world (x, y, z) without its dressing; null outside it or for air. */
     Block baseBlockAt(int x, int y, int z)
