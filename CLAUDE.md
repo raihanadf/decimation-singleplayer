@@ -117,6 +117,8 @@ Knowledge index:
 - `docs/safezone.md`: safezone sites: survivor camps (layout, residents and their keeper,
   placement, test) and city refuges (our fortified building, one per city region, section 7).
 - `docs/ideas.md`: the user's future feature ideas (12 Oktober 2026), not designed yet.
+- `docs/porting.md`: PARKED plan for a port to modern Minecraft (three paths: modpack, gun pack for a
+  modern gun mod, full NeoForge rewrite; model conversion; first spike), for later only (user).
 - `docs/city_dressing.md`: Decimation props through the whole city (streets, road scenes,
   interiors, story layer), rules in directions, verified facing table, checks, status / handoff.
 - `docs/wasteland.md`: the wasteland district as the city's military area (DeceasedCraft check,

@@ -107,7 +107,8 @@ docs/gun_model_spec.md); every user review goes into its lessons and casebook.
 
 ## Code and tools
 
-(nothing open)
+1. **Port to modern Minecraft**: PARKED (user, 13 Oktober 2026: only when there is time and the
+   skills for it). Three paths and a first spike in docs/porting.md.
 
 ## Ideas (later, user 12 Oktober 2026)
 

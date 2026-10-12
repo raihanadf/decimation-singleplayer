@@ -110,9 +110,9 @@
     "semantic_hash": "de153d1f8408971d6190e16a7d4256f9"
   },
   "CLAUDE.md": {
-    "mtime": 1791840206.7408981,
-    "ast_hash": "7078c4637309170370312cb72b0f70c8",
-    "semantic_hash": "7078c4637309170370312cb72b0f70c8"
+    "mtime": 1791844679.3887496,
+    "ast_hash": "8a5287d03e14c198e893419d61e378e7",
+    "semantic_hash": "8a5287d03e14c198e893419d61e378e7"
   },
   "DECIMATION_MOD_TASK.md": {
     "mtime": 1784958353.0126374,
@@ -655,9 +655,9 @@
     "semantic_hash": "d154b3e4611ca9f79a59cd33b625d68f"
   },
   "docs/roadmap.md": {
-    "mtime": 1791840206.737933,
-    "ast_hash": "e4a93400d14968c4f9f93c4f0fdf8a0b",
-    "semantic_hash": "e4a93400d14968c4f9f93c4f0fdf8a0b"
+    "mtime": 1791844679.389569,
+    "ast_hash": "005dfed1d8267c3f95732dff313d3419",
+    "semantic_hash": "005dfed1d8267c3f95732dff313d3419"
   },
   "dev/src/main/java/net/decimation/worldgen/LegacyStreets.java": {
     "mtime": 1791487239.5087948,
@@ -1298,5 +1298,10 @@
     "mtime": 1791838703.1587644,
     "ast_hash": "038a2d2b60bdb5660b5667a9728d32e1",
     "semantic_hash": "038a2d2b60bdb5660b5667a9728d32e1"
+  },
+  "docs/porting.md": {
+    "mtime": 1791844669.0772715,
+    "ast_hash": "16b23b426e34b8777cc1bfc3e712e7f1",
+    "semantic_hash": "16b23b426e34b8777cc1bfc3e712e7f1"
   }
 }
