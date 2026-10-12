@@ -17,7 +17,8 @@ import net.minecraft.world.World;
 import static net.decimation.worldgen.city.LcCity.*;
 
 /** A converted building: its ground floor layer at the city ground. */
-final class BuildingPlan implements net.decimation.worldgen.FixedBase, net.decimation.worldgen.Doors.Styled
+final class BuildingPlan implements net.decimation.worldgen.FixedBase, net.decimation.worldgen.Doors.Styled,
+    net.decimation.worldgen.Garrisons.Garrisoned
 {
     private final String id;
     private final LcContent.Building b;
@@ -76,6 +77,25 @@ final class BuildingPlan implements net.decimation.worldgen.FixedBase, net.decim
     {
         return "lc " + b.pack + "/" + b.name + " (" + b.cx + "x" + b.cz + " chunks, " + s.height + " high, cellars "
             + b.groundY + ")";
+    }
+
+    /** The garrison the dressing laid out (a wasteland bunker) in world cells, or null. */
+    public int[] garrison(int baseY)
+    {
+        Dress d = dress();
+        int[] g = d == null ? null : d.garrison;
+        if (g == null)
+        {
+            return null;
+        }
+        int[] w = g.clone();
+        for (int i = 1; i + 2 < w.length; i += 3)
+        {
+            w[i] += minX;
+            w[i + 1] += baseY;
+            w[i + 2] += minZ;
+        }
+        return w;
     }
 
     /** Props added by the city dressing (BuildingDress), built on first use. */

@@ -513,6 +513,12 @@ public final class Deci
         return e != null && e.getClass() == deci.ag.d.class;
     }
 
+    /** A landmine (LandmineEntity, deci.aj.c) lying at (x, y, z): goes off (power 4, no block damage) under a player. */
+    public static net.minecraft.entity.Entity newLandmine(net.minecraft.world.World world, double x, double y, double z)
+    {
+        return new deci.aj.c(world, x, (float) y, z);
+    }
+
     public static net.minecraft.entity.EntityLiving newInfected(net.minecraft.world.World world)
     {
         return new deci.ag.d(world);

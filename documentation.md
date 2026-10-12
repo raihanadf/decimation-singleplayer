@@ -159,6 +159,13 @@ boot. Falls straight through to the mod's own (re-skinned) main menu after that.
   snipers spot enemies up to `sniperRange` 70 blocks (was 96); the Barrett tiers (juggernaut
   sniper 60 hp, elite sniper 38 hp) die to one 30 round 5.56 magazine (8 per player hit x their
   damage share). Config version 3: older files take these new defaults once.
+- **v0.56.0**: in new worlds the wasteland is its own city ("Fort ...") standing apart in open land,
+  closed by a chain link fence with barbed wire, landmines outside it, and a guard booth and barriers
+  (military post or toll gate) on every road in. The bunker has a concrete blockhouse with a locked door
+  over its hatch, the richest loot, a spawner of infected in military gear and a garrison of
+  juggernauts and elite soldiers. Street stairs between city levels are now asphalt ramps, broken
+  wasteland bridges look naturally damaged, and metro stations open from the sidewalk instead of
+  cutting the road.
 - **v0.55.0**: juggernauts and elite military carry rifles 6 times in 10 (automatic or marksman),
   half of them with attachments (a full set or half of one), their machine guns otherwise. Every
   door in generated structures is a Decimation door (style by building), no vanilla doors in new

@@ -54,6 +54,124 @@ public final class Wasteland
     }
     static final String KEY = "!militaryWasteland";
     private static volatile boolean layout;
+    /** Worlds since v0.56: the wasteland district stands apart, its own city (ring of open land, fence). */
+    static final String APART_KEY = "!wastelandCity";
+    private static volatile boolean apart;
+    private static final java.util.Map<Long, Boolean> DEAD = new java.util.concurrent.ConcurrentHashMap<Long, Boolean>(),
+        RING = new java.util.concurrent.ConcurrentHashMap<Long, Boolean>();
+    private static volatile long cachedSeed;
+
+    /** Wasteland city apart from the rest (worlds created since v0.56, or forced for a session). */
+    public static boolean apart()
+    {
+        return apart;
+    }
+
+    /** Switches the wasteland city apart for this session (dev tests); not stored. Cached plans are dropped. */
+    public static void setApart(boolean on)
+    {
+        if (apart != on)
+        {
+            apart = on;
+            RING.clear();
+            LcCity.layoutChanged();
+        }
+    }
+
+    private static long cell(long seed, int cx, int cz)
+    {
+        if (seed != cachedSeed)
+        {
+            DEAD.clear();
+            RING.clear();
+            cachedSeed = seed;
+        }
+        return ((long) cx << 32) ^ (cz & 0xffffffffL);
+    }
+
+    /**
+     * A cell of a wasteland district on the city sectors: its 2 x 2 group is within DEADZONE_RANGE of a
+     * military sector (LcCity.style's rule, without its list copies: isCity asks this all the time).
+     */
+    static boolean deadCell(long seed, int cx, int cz)
+    {
+        if (!LcCity.sectorCity(seed, cx, cz))
+        {
+            return false;
+        }
+        int gx = Math.floorDiv(cx, 2) * 2, gz = Math.floorDiv(cz, 2) * 2;
+        long k = cell(seed, gx, gz);
+        Boolean v = DEAD.get(k);
+        if (v == null)
+        {
+            boolean dead = false;
+            if (LcCity.hasDeadzone())
+            {
+                for (int dx = -DEADZONE_RANGE; dx <= DEADZONE_RANGE + 1 && !dead; dx++)
+                {
+                    for (int dz = -DEADZONE_RANGE; dz <= DEADZONE_RANGE + 1 && !dead; dz++)
+                    {
+                        dead = net.decimation.worldgen.Sectors.sector(seed, (gx + dx) * CELL, (gz + dz) * CELL)
+                            == net.decimation.worldgen.StructureGenerator.MIL;
+                    }
+                }
+            }
+            v = dead;
+            DEAD.put(k, v);
+        }
+        return v;
+    }
+
+    /**
+     * A city sector cell of another district beside a wasteland district (one of its 8 neighbours): open
+     * land when the wasteland stands apart (user, 13 Oktober 2026: "split out the wasteland city with other
+     * city and make the wasteland as individual city without other city building").
+     */
+    static boolean ring(long seed, int cx, int cz)
+    {
+        if (!apart)
+        {
+            return false;
+        }
+        long k = cell(seed, cx, cz);
+        Boolean v = RING.get(k);
+        if (v == null)
+        {
+            boolean r = false;
+            if (LcCity.sectorCity(seed, cx, cz) && !deadCell(seed, cx, cz))
+            {
+                for (int dx = -1; dx <= 1 && !r; dx++)
+                {
+                    for (int dz = -1; dz <= 1 && !r; dz++)
+                    {
+                        r = (dx != 0 || dz != 0) && deadCell(seed, cx + dx, cz + dz);
+                    }
+                }
+            }
+            v = r;
+            RING.put(k, v);
+        }
+        return v;
+    }
+
+    /** Chebyshev distance in blocks from (x, z) to the nearest wasteland cell within one cell of (cx, cz); MAX if none. */
+    static int fenceDistance(long seed, int cx, int cz, int x, int z)
+    {
+        int best = Integer.MAX_VALUE;
+        for (int i = -1; i <= 1; i++)
+        {
+            for (int j = -1; j <= 1; j++)
+            {
+                if (deadCell(seed, cx + i, cz + j))
+                {
+                    int x0 = (cx + i) * CELL * 16, z0 = (cz + j) * CELL * 16, x1 = x0 + CELL * 16 - 1, z1 = z0 + CELL * 16 - 1;
+                    int d = Math.max(Math.max(0, Math.max(x0 - x, x - x1)), Math.max(0, Math.max(z0 - z, z - z1)));
+                    best = Math.min(best, d);
+                }
+            }
+        }
+        return best;
+    }
 
     /** True for a chunk of a wasteland district (a city chunk of the deadzone style). */
     public static boolean chunk(long seed, int chx, int chz)
@@ -210,5 +328,14 @@ public final class Wasteland
         String force = System.getProperty("deciworldgen.milwaste");
         setLayout(force != null ? "true".equals(force) : v == 1);
         FMLLog.info("[%s] wasteland military building pick %s", DecimationWorldGen.MODID, layout ? "on" : "off");
+        Integer a = data.baseY(APART_KEY);
+        if (a == null)
+        {
+            a = world.getTotalWorldTime() == 0 ? 1 : 0;
+            data.setBaseY(APART_KEY, a);
+        }
+        String forceApart = System.getProperty("deciworldgen.wasteapart");
+        setApart(forceApart != null ? "true".equals(forceApart) : a == 1);
+        FMLLog.info("[%s] wasteland city apart %s", DecimationWorldGen.MODID, apart ? "on" : "off");
     }
 }

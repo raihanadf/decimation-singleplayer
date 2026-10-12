@@ -44,7 +44,7 @@ public class WastelandTest extends DevTestMode
     private volatile boolean built;
     private int taken = -1;
     private float gamma = -1;
-    private boolean layoutBefore;
+    private boolean layoutBefore, apartBefore;
 
     public boolean client(Minecraft mc)
     {
@@ -62,6 +62,7 @@ public class WastelandTest extends DevTestMode
                 mc.gameSettings.gammaSetting = gamma;
             }
             Wasteland.setLayout(layoutBefore);
+            Wasteland.setApart(apartBefore);
             return false;
         }
         if (i < 0)
@@ -104,6 +105,8 @@ public class WastelandTest extends DevTestMode
             w.getWorldInfo().setThundering(false);
             layoutBefore = Wasteland.layout();
             Wasteland.setLayout(true);
+            apartBefore = Wasteland.apart();
+            Wasteland.setApart(true);
         }
         if (t == BUILD)
         {
@@ -116,6 +119,8 @@ public class WastelandTest extends DevTestMode
             {
                 checks((WorldServer) w, p, g[0], g[1]);
                 survey(w, g[0], g[1]);
+                bunkers(w, g[0], g[1]);
+                fence(w, g[0], g[1]);
                 lots(w, p);
             }
             built = true;
@@ -283,6 +288,168 @@ public class WastelandTest extends DevTestMode
             shots.add(cam);
             names.add("lot_" + scene[k]);
         }
+    }
+
+    /**
+     * v0.56: the district's bunkers (BuildingDress.bunker, worldgen/Garrisons): each has a garrison
+     * registered; the first one is manned now (juggernauts and elite military on its posts), 4 infected
+     * spawned beside its spawner cage must wear the military outfit; shots of its blockhouse (keycard
+     * screen), its spawner and a garrison post.
+     */
+    private void bunkers(World w, int gx, int gz)
+    {
+        int x0 = gx * LcCity.CELL * 16, z0 = gz * LcCity.CELL * 16, size = 2 * LcCity.CELL * 16;
+        int found = 0, manned = 0, military = 0, tried = 0;
+        for (String id : net.decimation.worldgen.Garrisons.ids(w))
+        {
+            int[] v = net.decimation.worldgen.StructureData.get(w).list(id);
+            int first = 2 + 3 * v[1];
+            if (v.length < first + 3 || v[first] < x0 || v[first] >= x0 + size || v[first + 2] < z0 || v[first + 2] >= z0 + size)
+            {
+                continue;
+            }
+            if (++found > 1)
+            {
+                continue;
+            }
+            int px = v[first], py = v[first + 1], pz = v[first + 2];
+            manned = net.decimation.worldgen.Garrisons.manNow(w, id);
+            if (v[1] > 0)
+            {
+                int sx = v[2], sy = v[3], sz = v[4];
+                for (int[] o : new int[][] {{1, 0}, {-1, 0}, {0, 1}, {0, -1}})
+                {
+                    int x = sx + o[0], z = sz + o[1];
+                    if (tried < 4 && w.isAirBlock(x, sy, z) && w.isAirBlock(x, sy + 1, z))
+                    {
+                        EntityLiving inf = Deci.newInfected(w);
+                        inf.setLocationAndAngles(x + 0.5, sy, z + 0.5, 0, 0);
+                        if (w.spawnEntityInWorld(inf))
+                        {
+                            tried++;
+                            military += Deci.infectedVariant(inf) == 1 ? 1 : 0;
+                        }
+                    }
+                }
+                float[] cam = CityPropsTest.camera(w, sx, sy, sz, 2, -1);
+                if (cam != null)
+                {
+                    shots.add(cam);
+                    names.add("bunker_spawner");
+                }
+            }
+            float[] cam = CityPropsTest.camera(w, px, py, pz, 3, -1);
+            if (cam != null)
+            {
+                shots.add(cam);
+                names.add("bunker_garrison");
+            }
+            // the blockhouse: its keycard screen in the bunker's chunk
+            Block screen = Block.getBlockFromName("deci:BlockKeycardScreenMilitary");
+            search:
+            for (int x = (px >> 4) << 4; x < ((px >> 4) << 4) + 16; x++)
+            {
+                for (int z = (pz >> 4) << 4; z < ((pz >> 4) << 4) + 16; z++)
+                {
+                    for (int y = py; y < py + 16; y++)
+                    {
+                        if (w.getBlock(x, y, z) == screen)
+                        {
+                            int fr = net.decimation.worldgen.city.PropFacingAccess.front(screen, w.getBlockMetadata(x, y, z));
+                            float[] c = CityPropsTest.camera(w, x, y, z, 7, fr);
+                            if (c != null)
+                            {
+                                shots.add(c);
+                                names.add("bunker_blockhouse");
+                            }
+                            DevTestResults.value(name(), "bunker blockhouse screen", x + "," + y + "," + z);
+                            break search;
+                        }
+                    }
+                }
+            }
+        }
+        if (found == 0)
+        {
+            DevTestResults.value(name(), "bunkers", "none in this district (a bunker is a random pick)");
+            return;
+        }
+        DevTestResults.check(name(), "bunkers with a garrison, NPCs manned", found + ", " + manned, manned >= 4,
+                             "4 or 5 NPCs");
+        DevTestResults.check(name(), "spawner infected in the military outfit", military + " of " + tried, tried > 0 && military == tried,
+                             "all");
+    }
+
+    /**
+     * v0.56: the fence round the wasteland city standing apart (city/WastelandFence): chain link and
+     * barbed wire, a gate (striped barriers across a street), landmines outside; shots of the fence and a
+     * gate. Only sides facing open land: a district whose neighbour districts were generated before
+     * (this world is older than the ring) has no fence there.
+     */
+    private void fence(World w, int gx, int gz)
+    {
+        int x0 = gx * LcCity.CELL * 16, z0 = gz * LcCity.CELL * 16, size = 2 * LcCity.CELL * 16;
+        int g = LcCity.ground(w.getSeed(), gx, gz);
+        Block wire = Block.getBlockFromName("deci:BlockConcertinaWire"), bar = Block.getBlockFromName("deci:BlockHazardbarrier");
+        int bars = 0, wires = 0, barriers = 0;
+        float[] fenceCam = null, gateCam = null;
+        for (int x = x0 - 8; x < x0 + size + 8; x++)
+        {
+            for (int z = z0 - 8; z < z0 + size + 8; z++)
+            {
+                if (x >= x0 && x < x0 + size && z >= z0 && z < z0 + size)
+                {
+                    continue;
+                }
+                for (int y = g - 8; y < g + 12; y++)
+                {
+                    Block b = w.getBlock(x, y, z);
+                    if (b == Blocks.iron_bars)
+                    {
+                        bars++;
+                    }
+                    else if (b == wire && w.getBlock(x, y - 1, z) == Blocks.iron_bars)
+                    {
+                        wires++;
+                        if (fenceCam == null && wires > 20)
+                        {
+                            fenceCam = CityPropsTest.camera(w, x, y - 2, z, 7, -1);
+                        }
+                    }
+                    else if (b == bar)
+                    {
+                        barriers++;
+                        if (gateCam == null)
+                        {
+                            gateCam = CityPropsTest.camera(w, x, y, z, 9, -1);
+                        }
+                    }
+                }
+            }
+        }
+        if (fenceCam != null)
+        {
+            shots.add(fenceCam);
+            names.add("fence");
+        }
+        if (gateCam != null)
+        {
+            shots.add(gateCam);
+            names.add("gate");
+        }
+        int mines = 0;
+        for (Object o : w.loadedEntityList)
+        {
+            net.minecraft.entity.Entity e = (net.minecraft.entity.Entity) o;
+            if ("deci.Landmine".equals(net.minecraft.entity.EntityList.getEntityString(e)) && e.posX > x0 - 24
+                && e.posX < x0 + size + 24 && e.posZ > z0 - 24 && e.posZ < z0 + size + 24)
+            {
+                mines++;
+            }
+        }
+        DevTestResults.value(name(), "fence iron bars, wire on top, gate barriers", bars + ", " + wires + ", " + barriers);
+        DevTestResults.check(name(), "fence and mines round the district", wires + " wire, " + mines + " mines",
+                             wires > 20 && mines > 0, "a wired fence and landmines");
     }
 
     /** What to photograph: block name prefix, label, how many, camera distance. */

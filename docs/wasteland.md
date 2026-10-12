@@ -1,4 +1,4 @@
-# The wasteland district: the city's military area (v0.54.0 to v0.55.0)
+# The wasteland district: the city's military area (v0.54.0 to v0.56.0)
 
 User request (12 Oktober 2026, docs/ideas.md item 14, picked from the "what's next" list): "go
 with 1, wasteland military area. do full system now". The user's claim from the idea list:
@@ -44,6 +44,9 @@ DEADZONE_RANGE (2) cells of a military sector (LcCity.style). On top:
 | Lots | Bare lots: motor pool and supply dump (rows of military crates, ammo cases, care packages, water pallets, spotlight) on a concrete pad (double stone slab, grass border), crash site, casualty collection point (body bags in rows, stretchers, medical crates, hazard light), or nothing; bushes cleared under every scene. Motor pool (v0.54.2): three bays along the street side (LotDress.streetSide), noses to the street, an APC in the middle bay half the time, a second line of jeeps behind in 6 of 10, a workshop row on the back edge (parts shelves, workbench, tyres, generator), a fuel point of drums in a back corner, a work light, a towed missile launcher where no second line stands. Crash site (v0.54.2): the helicopter (drawn 9.4 x 14, lopsided) tries every heading with a shifted anchor, burnt ground along its hull (stained clay black, dark brown, grey), its dead, a body bag, a military crate, an ammo case, a wheel, a cordon of sawhorses and cones (street side, else the hull's long sides) and a work light. Log "dress lot military SCENE at x,z" | LotDress.militaryLot, groundWork, motorPool, helicopter |
 | NPCs | The district counts as a military area: bandits roll the heavier military weights, the enemy military spawner (Soviet groups of 2 to 3) runs for a player in it; in a city a group spawns only on the top block at street level (a street, yard, lot or park; never a roof or inside), each member on a free good cell of its own or on the group's spot (v0.54.1: v0.54.0 spread members one block round the spot, into a building's wall at a street chunk's edge, and asked for a street chunk, which a superblock district has only on its edge) | fixes/NpcLoadouts.military, MilitarySpawner, Wasteland.streetSpot |
 | Locked doors (v0.55.0) | Most buildings locked, the richer the likelier: chance 700 + 30 per loot container per mille (military buildings and labs + 250, clinics and police + 120, at most 970), always from 20 loot containers. Every entrance (flood fill from the plot's edge at the door's storey reaches one side and not the other) gets Door_Emergency_1_Locked and a BlockKeycardScreenMilitary on the outer wall 1 or 2 beside it, 1 up, where the plot has an outdoor cell there. Opens with a military keycard on the screen (doors within 3 blocks) or a lockpick. Log "wasteland doors NAME at x,z: locked n doors, k keycard screens, loot L" / "open" / "no entrance door" | BuildingDress.lockDoors, BuildingLayout.outdoors |
+| City apart (v0.56.0) | New worlds only (StructureData `!wastelandCity`, `-Ddeciworldgen.wasteapart`; dev tests: Wasteland.setApart): the other districts' cells touching a wasteland district (8 neighbours) are open land (LcCity.isCity false, Wasteland.ring), so the wasteland stands alone, its districts side by side one city "Fort <name>: Wasteland - n" (CityNames.wasteland); ring districts get no name | Wasteland.ring / deadCell, LcCity.isCity, CityNames |
+| Fence (v0.56.0) | On the land round the wasteland city (EdgePlan.grade, WastelandFence), by Chebyshev distance d to it: d 4 chain link (iron bars 3 high) between dark metal posts every 4 with barbed wire on top, d 5 barbed wire at the foot every second cell, d 6 to 16 Decimation's landmines (about 1 in 28 columns: entities "deci.Landmine", go off under a player, power 4, no block damage); every street running out of the district goes on through a gate (the street to d 9, striped barriers across the road at the fence between taller posts, a stone guard booth with windows and a metal door on the sidewalk inside: one = military post, both sides = toll gate) | WastelandFence, Deci.newLandmine |
+| Bunker (v0.56.0) | DeceasedCraft's bunker (underground, a trapdoor hatch): a 5 x 5 stone brick blockhouse over the hatch with the locked door and a keycard screen; every container military, up to 8 more (weapon cabinets, ammo cases, military crates); a mob spawner cage breeding infected in the military outfit (Garrisons.onJoin within 6 blocks); 5 posts manned by juggernauts and elite military on the first visit (within 40 blocks), never despawning | BuildingDress.bunker / blockhouse, worldgen/Garrisons, StructureData lists "!gar_<id>" |
 | Name | Unchanged since v0.52.0: "City: Wasteland - n", controlled by Military | city/CityNames |
 
 Crates are never stacked: a military crate is drawn 1.15 high, one on another overlaps it by 0.15
@@ -182,3 +185,21 @@ Crates are never stacked: a military crate is drawn 1.15 high, one on another ov
   "Right click to use a key card". Opening with a keycard in game: not tried [not verified].
 - Ties to the crate levels idea (docs/ideas.md item 17): higher level crates behind the locked doors.
 
+
+
+### v0.56.0 (13 Oktober 2026, user: bunker "highest loot ... most harder place ... elite npc + juggernaut and full military outfit zombie spawner"; "split out the wasteland city with other city"; "full covered fence ... barbed wire and full of landmine"; "toll gate and military post gate")
+- Seed 1 server (fresh): the three wasteland districts stand alone in open land (docs/shots/
+  v0.56_wasteland_city/topdown_seed1.png), "wasteland city apart on"; the fence round them (iron bars,
+  wire on top: about 2 000 wire props, 1 100 iron bars, 1 300 post blocks), gates at the streets running
+  out (topdown_gate.png), 380 landmines saved in the chunks; 3 bunkers each with "blockhouse locked,
+  keycard screen yes, armory 5 to 8, spawners 1, posts 5" and a garrison registered.
+- Dev test `wasteland` (live; the dev world is older, so the session turns the ring on): all PASS on
+  district 28,34: bunker manned with 5 NPCs, the infected beside its spawner in the military outfit
+  (1 tried: the other cells were taken), fence 242 wire on bars and 164 mines round the district.
+  District 12,22 had no bunker (a random pick: the check now accepts none). Shots: blockhouse (concrete
+  hut, red brown locked door, green keycard screen), garrison (elites with night vision in a bunker
+  room; flames are particles: the save holds no fire block), fence, gate.
+- The first bunker check found "no entrance door" for all 3 bunkers: the bunker is entered by a hatch
+  and a ladder (layers read from the world), hence the blockhouse.
+- Not measured: the fps cost of the barbed wire props (about 2 000 per wasteland city; small props draw
+  only within 24 blocks since v0.38.2) [not verified]; opening the locked door with a keycard in game.

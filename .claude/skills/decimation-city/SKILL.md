@@ -89,6 +89,15 @@ general: decimation-props; all of them: decimation-worldgen.
 12. Never a vanilla door in anything we generate (user 13 Oktober 2026): worldgen/Doors swaps them at
    write time, styled by building; locked buildings use Door_Emergency_1_Locked + a military keycard
    screen within 3 blocks.
+13. Read a building's real shape before changing how it is entered (layers from the world with
+   worldcheck): the wasteland bunker has no door at all, only a hatch and a ladder, so "lockable" meant
+   building a blockhouse over the hatch.
+14. Cutting land out of a city (the wasteland's ring) changes which chunk is city: new worlds only
+   (a StructureData flag), and cache it: LcCity.isCity is asked thousands of times per chunk.
+15. Keep the street whole: anything placed in a street chunk (a metro entrance, a gate) goes into its
+   sidewalk or beside it, never across the road (the DeceasedCraft station plaza cut the road).
+16. A dev test check on something random (a bunker in this district) must accept its absence and say
+   so, or every unlucky district fails.
 
 ## Casebook (never delete a case)
 
@@ -145,4 +154,14 @@ general: decimation-props; all of them: decimation-worldgen.
 - Edge (lesson 10): coarse dirt first, orange in the shots (docs/shots/v0.55_cityedge/ describes the
   kept grey version). Doors (lesson 12): 0 vanilla doors in seed 1's area. Locked (lesson 11): 27 of 35
   entrance buildings locked, 49 doors, 48 keycard screens; 17 buildings have no entrance door at all.
+
+### Case 6: wasteland city apart, bunker, ramps, bridges, stations (v0.55.0 -> v0.56.0, 13 Oktober 2026)
+- User (screenshots of the edge, a checkpoint, bridge holes, the street stairs, a station): bunker
+  lockable with the highest loot and a garrison of elites, juggernauts and a military zombie spawner;
+  the wasteland its own city with a fence, wire, landmines and gates; "make it gradient, dont put
+  retacle hole"; an asphalt ramp for the stairs; stations "on side building instead on road".
+- Done (lessons 13 to 16): ring + fence + gates + mines (WastelandFence), blockhouse + Garrisons,
+  StreetPlan.rampAt, RiverPlan.damage, Rails.entrance. Checks: seed 1 server (fence round 3 districts,
+  380 mines, 3 bunkers garrisoned), dev tests wasteland / cityedge / rail / bridge PASS; shots
+  docs/shots/v0.56_wasteland_city/, v0.56_city/.
 

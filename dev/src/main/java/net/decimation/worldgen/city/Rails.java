@@ -204,11 +204,13 @@ public final class Rails
                             (cz << 4) + 8);
             }
             int g = LcCity.ground(seed, Math.floorDiv(cx, LcCity.CELL), Math.floorDiv(cz, LcCity.CELL));
+            // the staircase up to just under the street (its top layer would replace the street's), no
+            // surface plaza: the street stays whole and the stairs come out in its south sidewalk
             for (int y = RAIL + LcCity.LEVEL; y < g; y += LcCity.LEVEL)
             {
-                write(world, "station_staircase", 0, cx, cz, y, w);
+                write(world, "station_staircase", 0, cx, cz, y, w, g);
             }
-            write(world, "station_staircase_surface", 0, cx, cz, g, w);
+            entrance(world, cx, cz, g, w);
         }
         if (k == X || k == Z)
         {
@@ -262,6 +264,12 @@ public final class Rails
      */
     private static boolean write(World world, String kind, int turns, int cx, int cz, int y0, int[] w)
     {
+        return write(world, kind, turns, cx, cz, y0, w, Integer.MAX_VALUE);
+    }
+
+    /** As above, writing only below maxY. */
+    private static boolean write(World world, String kind, int turns, int cx, int cz, int y0, int[] w, int maxY)
+    {
         List<String> files = LcContent.rails(kind);
         LcContent.Shape s = files.isEmpty() ? null : LcContent.shape(files.get(0));
         if (s == null)
@@ -275,7 +283,7 @@ public final class Rails
         {
             for (int z = z0; z <= z1; z++)
             {
-                for (int y = 0; y < s.height; y++)
+                for (int y = 0; y < s.height && y0 + y < maxY; y++)
                 {
                     if (keep(s, turns, x - (cx << 4), y, z - (cz << 4)))
                     {
@@ -291,6 +299,45 @@ public final class Rails
             }
         }
         return true;
+    }
+
+    /**
+     * The station's way up (user, 13 Oktober 2026: "make sure the placement of the subway station
+     * properly on side building instead on road"; DeceasedCraft's surface part paved the whole street
+     * chunk into a plaza and cut the road): the staircase's last flight comes up under the south
+     * sidewalk (cells x 10..11, z 13..14 of the chunk, the top step at the street level), so the
+     * sidewalk opens there as a metro entrance: the top step, a 6 x 2 well over the flight below it, the
+     * street's props cleared above, iron railings round the well on the road side, the far end and the
+     * building side, open at the top step toward the sidewalk east of it.
+     */
+    private static void entrance(World world, int cx, int cz, int g, int[] w)
+    {
+        int bx = cx << 4, bz = cz << 4;
+        for (int lx = 3; lx <= 12; lx++)
+        {
+            for (int lz = 12; lz <= 15; lz++)
+            {
+                int x = bx + lx, z = bz + lz;
+                if (x < w[0] || x > w[2] || z < w[1] || z > w[3])
+                {
+                    continue;
+                }
+                boolean well = lz >= 13 && lz <= 14 && lx >= 4 && lx <= 9, step = lz >= 13 && lz <= 14 && lx >= 10 && lx <= 11;
+                boolean rail = lx <= 11 && (lz == 12 || lz == 15) && lx >= 3 || lx == 3 && (lz == 13 || lz == 14);
+                if (well || step)
+                {
+                    world.setBlock(x, g, z, well ? Blocks.air : Blocks.stone_slab, 0, 2);
+                    for (int y = g + 1; y <= g + 3; y++)
+                    {
+                        world.setBlock(x, y, z, Blocks.air, 0, 2);
+                    }
+                }
+                else if (rail && lx <= 10)
+                {
+                    world.setBlock(x, g + 1, z, Blocks.iron_bars, 0, 2);
+                }
+            }
+        }
     }
 
     /** True where the part keeps the world (outside its bounds too). */

@@ -266,9 +266,25 @@ public final class LcCity
         return false;
     }
 
+    /**
+     * A city cell: on a city sector, and (worlds since v0.56, Wasteland.apart) not in the ring of open land
+     * that sets a wasteland district apart from the rest of its city.
+     */
     public static boolean isCity(long seed, int cellX, int cellZ)
     {
+        return sectorCity(seed, cellX, cellZ) && !Wasteland.ring(seed, cellX, cellZ);
+    }
+
+    /** On a city sector (the city before the wasteland's ring is cut out of it). */
+    static boolean sectorCity(long seed, int cellX, int cellZ)
+    {
         return Sectors.sector(seed, cellX * CELL, cellZ * CELL) == StructureGenerator.CITY;
+    }
+
+    /** The installed content has the wasteland style (legacy deadzone). */
+    static boolean hasDeadzone()
+    {
+        return styleList().contains("legacy:deadzone");
     }
 
     /** City level of a cell: smooth noise over a 3 cell lattice, 0 at the city's edge, rising inward. */
@@ -832,7 +848,7 @@ public final class LcCity
         }
         StreetPlan street = new StreetPlan("lcs_" + chx + "_" + chz, chx << 4, chz << 4, g, road, stairs,
                                            Math.max(0, turns), kind, props, seed, this, style, scene, piece,
-                                           pieceTurns, river);
+                                           pieceTurns, river, turns >= 0);
         if (!river)
         {
             return street;

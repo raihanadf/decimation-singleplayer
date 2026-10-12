@@ -23,6 +23,27 @@ How shots are made: `./gradlew runClient -Pautotest` (street views),
   places_1 walking into the next district: "HOLLOWHAVEN: SUBURBS - 6" and a second chat line;
   places_2 outside the city: "Now entering the Wilderness". Night rain in the dev world.
 
+## v0.56_wasteland_city/ (wasteland city apart, fence, bunker; 13 Oktober 2026)
+- topdown_seed1.png: seed 1 server world from above (2 px per block): the three wasteland districts in a
+  row, open grass all round (the other districts gone from the ring), the fence line as red dots (wire)
+  and black posts, street stubs out through gates, a river east. topdown_gate.png: one corner enlarged:
+  the street going north through the fence with orange barriers across it, a west gate the same.
+- wasteland_fence.png: from inside: dark metal posts, chain link of iron bars, coils of barbed wire on
+  top, grass beyond, a landmine disc on the ground.
+- wasteland_gate.png: a gate: a stone brick guard booth with glass windows and a metal door at the
+  roadside, striped sawhorse barriers across the road at the fence.
+- wasteland_bunker_blockhouse.png: the bunker's blockhouse: a stone brick hut on the bunker's concrete
+  roof with the red brown locked door and a green keycard screen beside it. wasteland_bunker_garrison.png:
+  inside, elite military with night vision and machine guns between bookshelves and crates; flames are
+  particles (spawner cage and gunfire), no fire in the save. sheet_wasteland.png: the run's sheet.
+
+## v0.56_city/ (13 Oktober 2026)
+- ramp.png (dev test `cityedge`): the asphalt ramp: road slab steps climbing to the higher street,
+  iron railings on the high side, the dashed line on the road.
+- sheet_rail.png: rail test: rail_entrance the street through the station chunk intact, the railed stair
+  well in the right sidewalk; platform, stairs, shaft, tunnel, line end, crossing as before.
+- sheet_bridge.png: bridge test (a non wasteland bridge): aerial, deck, side, under.
+
 ## v0.55_cityedge/ (city edge worn ground, 13 Oktober 2026; dev test `cityedge`, cell 16,-16)
 - cityedge_out.png: from the north sidewalk looking out: the sidewalk's slab tiles fray into stone and
   cobblestone cells, then dead grass, a 1 block grass terrace beyond, dead trees.

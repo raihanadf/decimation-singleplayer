@@ -39,10 +39,18 @@ final class StreetPlan implements net.decimation.worldgen.FixedBase
     /** Carried over a canal (RiverPlan): no fronts of the buildings beside it. */
     private final boolean onWater;
 
+    /**
+     * The street climbs one city level toward side turns (0 W, 1 N, 2 E, 3 S) as an asphalt ramp
+     * (rampAt) instead of DeceasedCraft's stairs part (user, 13 Oktober 2026: the stairway "doesnt match
+     * with asphalt normal road like we have"; chosen: an asphalt ramp).
+     */
+    private final boolean climb;
+
     StreetPlan(String id, int minX, int minZ, int ground, Block road, LcContent.Shape stairs, int turns,
                int kind, StreetProps props, long seed, LcCity city, String style, LcContent.Shape scene,
-               LcContent.Shape piece, int pieceTurns, boolean onWater)
+               LcContent.Shape piece, int pieceTurns, boolean onWater, boolean climb)
     {
+        this.climb = climb;
         this.onWater = onWater;
         this.piece = piece;
         this.pieceTurns = pieceTurns;
@@ -69,7 +77,7 @@ final class StreetPlan implements net.decimation.worldgen.FixedBase
     public int minZ() { return minZ; }
     public int maxX() { return minX + 15; }
     public int maxZ() { return minZ + 15; }
-    public int height() { return stairs != null ? stairs.height + 1 : Math.max(13, piece != null ? piece.height : 0); }
+    public int height() { return climb ? LcCity.LEVEL + 3 : stairs != null ? stairs.height + 1 : Math.max(13, piece != null ? piece.height : 0); }
     public int clearAbove() { return 14; }
     public int maxSpread() { return 255; }
     public Block foundation() { return Blocks.stone; }
@@ -90,7 +98,7 @@ final class StreetPlan implements net.decimation.worldgen.FixedBase
             return fronts;
         }
         fronts = new LcContent.Shape[4];
-        if (kind == 2 || stairs != null || onWater)
+        if (kind == 2 || stairs != null || climb || onWater)
         {
             return fronts;
         }
@@ -173,7 +181,7 @@ final class StreetPlan implements net.decimation.worldgen.FixedBase
 
     private synchronized Dress dress()
     {
-        if (dress == null && stairs == null && Dress.ON)
+        if (dress == null && stairs == null && !climb && Dress.ON)
         {
             dress = StreetDress.dress(this);
         }
@@ -192,6 +200,10 @@ final class StreetPlan implements net.decimation.worldgen.FixedBase
     Block baseAt(int lx, int ly, int lz, int[] meta)
     {
         meta[0] = 0;
+        if (climb)
+        {
+            return rampAt(lx, ly, lz, meta);
+        }
         // across = position across the street (0..15), along = along it
         int across = kind == 1 ? lz : lx, along = kind == 1 ? lx : lz;
         boolean sidewalk = kind == 2 ? (lx < SIDEWALK || lx > 15 - SIDEWALK) && (lz < SIDEWALK || lz > 15 - SIDEWALK)
@@ -405,6 +417,71 @@ final class StreetPlan implements net.decimation.worldgen.FixedBase
             }
         }
         return false;
+    }
+
+    private static Block roadSlab, roadSlabLine;
+
+    /**
+     * The ramp: the street rises LEVEL blocks across the chunk in half block steps (2 x LEVEL steps over
+     * 16 cells, the first half a block over the lower street, the last flush with the higher one): road
+     * blocks and Decimation's road slabs (the dashed centre line on both) between sidewalks of stone slab,
+     * stone brick under it (a retaining wall where a lot lies beside it), iron railings on the outer edge
+     * once the ramp stands 2 blocks above the ground.
+     */
+    private Block rampAt(int lx, int ly, int lz, int[] meta)
+    {
+        if (roadSlab == null)
+        {
+            roadSlab = Block.getBlockFromName("deci:BlockRoadSlab");
+            roadSlabLine = Block.getBlockFromName("deci:BlockRoadSlab_CenterLine");
+        }
+        boolean alongX = turns == 0 || turns == 2;
+        int t = turns == 0 ? 15 - lx : turns == 2 ? lx : turns == 1 ? 15 - lz : lz;   // 0 low side .. 15 high side
+        int across = alongX ? lz : lx;
+        int steps = ((t + 1) * 2 * LcCity.LEVEL + 15) / 16;                       // half blocks above the street
+        int full = steps / 2;                                                     // full blocks above ly 0
+        boolean slab = (steps & 1) == 1;
+        boolean walk = across < LcCity.SIDEWALK || across > 15 - LcCity.SIDEWALK;
+        boolean line = !walk && across == 7 && (t & 3) < 2;
+        int lineMeta = alongX ? 2 : 4;
+        if (ly < full)
+        {
+            return Blocks.stonebrick;
+        }
+        if (ly == full)
+        {
+            if (walk)
+            {
+                return Blocks.double_stone_slab;
+            }
+            if (line && props.centreLine != null)
+            {
+                meta[0] = lineMeta;
+                return props.centreLine;
+            }
+            return road;
+        }
+        if (ly == full + 1 && slab)
+        {
+            if (walk)
+            {
+                return Blocks.stone_slab;
+            }
+            Block b = line && roadSlabLine != null && roadSlabLine != Blocks.air ? roadSlabLine : roadSlab;
+            if (b != null && b != Blocks.air)
+            {
+                meta[0] = line ? lineMeta : 0;
+                return b;
+            }
+            return Blocks.stone_slab;
+        }
+        // railings on the outer edge, on top of the surface, once it stands 2 above the street
+        int above = full + (slab ? 2 : 1);
+        if (ly == above && (across == 0 || across == 15) && steps >= 4)
+        {
+            return Blocks.iron_bars;
+        }
+        return null;
     }
 
     private Block stairsAt(int lx, int ly, int lz, int[] meta)

@@ -39,6 +39,8 @@ final class BuildingDress
     private String lootLog;
     /** What lockDoors() did, for the log. */
     private String doorLog;
+    /** A wasteland bunker (DeceasedCraft's building_bunker1): the hardest place (bunker()). */
+    private final boolean bunker;
     private final Map<Long, BuildingLayout.Spot> at = new HashMap<Long, BuildingLayout.Spot>();
     private int salt;
     /** One log line per dressed building (prop counts): tools/props/dressbalance.py reads them. */
@@ -48,6 +50,7 @@ final class BuildingDress
     {
         this.waste = waste;
         this.name = name.toLowerCase();
+        this.bunker = waste && this.name.contains("bunker");
         this.d = d;
         this.lay = lay;
         this.seed = seed;
@@ -282,10 +285,188 @@ final class BuildingDress
                 storey(floor, index++);
             }
         }
-        if (waste)
+        if (bunker)
+        {
+            bunker();
+        }
+        else if (waste)
         {
             lockDoors();                                  // last: the loot counted is all in
         }
+    }
+
+    /**
+     * The wasteland bunker, the hardest place of the district (user, 13 Oktober 2026: "since its one
+     * highest loots building, make it highest loot in there but make it most harder place building with
+     * full of high tier enemy npc in there. elite npc + juggernaut and full military outfit zombie
+     * spawner"). DeceasedCraft's bunker lies wholly underground, entered by a trapdoor hatch and a
+     * ladder, so it had no door to lock: a concrete blockhouse (5 x 5, 3 high) now stands over the hatch
+     * with Decimation's locked door and a military keycard screen beside it outside. Inside: every
+     * container military (supplies(): no old crate kept), an armory of up to 8 more (weapon cabinets,
+     * ammo cases, military crates), a mob spawner cage breeding infected in the military outfit, and 5
+     * garrison posts manned by juggernauts and elite military on the first visit (worldgen/Garrisons).
+     */
+    private void bunker()
+    {
+        int[] hatch = null;
+        for (int y = lay.height() - 2; y > 0 && hatch == null; y--)
+        {
+            for (int z = 0; z < lay.length() && hatch == null; z++)
+            {
+                for (int x = 0; x < lay.width() && hatch == null; x++)
+                {
+                    if (d.block(x, y, z) == Blocks.trapdoor && d.block(x, y - 1, z) == Blocks.ladder)
+                    {
+                        hatch = new int[] {x, y, z};
+                    }
+                }
+            }
+        }
+        StringBuilder log = new StringBuilder();
+        if (hatch != null && blockhouse(hatch[0], hatch[1], hatch[2]))
+        {
+            log.append("blockhouse locked, keycard screen ").append(blockhouseScreen ? "yes" : "no");
+        }
+        else
+        {
+            log.append("no blockhouse (hatch ").append(hatch == null ? "not found" : "too near the edge").append(')');
+        }
+        // the inside: storeys below the hatch
+        int top = hatch != null ? hatch[1] : Integer.MAX_VALUE;
+        List<BuildingLayout.Spot> inside = new ArrayList<BuildingLayout.Spot>();
+        for (BuildingLayout.Spot s : lay.spots)
+        {
+            if (!s.outside && !s.doorway && s.y < top && d.block(s.x, s.y, s.z) == null && d.block(s.x, s.y + 1, s.z) == null)
+            {
+                inside.add(s);
+            }
+        }
+        // armory along the walls, fronts into the room
+        String[] armory = {"BlockWeaponCabinet", "BlockAmmoCrateLarge", "BlockAmmoCrate", "BlockMilitaryCrate",
+                           "BlockWeaponCabinet", "BlockAmmoCrate", "BlockMilitaryCrate", "BlockMedicalCrate"};
+        int added = 0;
+        for (int t = 0; t < inside.size() * 2 && added < armory.length; t++)
+        {
+            BuildingLayout.Spot s = inside.get(roll() % inside.size());
+            int w = firstWall(s, roll() & 3);
+            if (w >= 0 && d.block(s.x, s.y, s.z) == null && stand(armory[added], s, (w + 2) & 3))
+            {
+                added++;
+            }
+        }
+        // the spawner cage in a corner (2 walls), then the posts spread out (3 apart), on free cells
+        List<Integer> cells = new ArrayList<Integer>();
+        int spawners = 0;
+        for (int t = 0; t < inside.size() * 2 && spawners < 1; t++)
+        {
+            BuildingLayout.Spot s = inside.get(roll() % inside.size());
+            if (s.wallCount() >= 2 && d.block(s.x, s.y, s.z) == null && d.place(Blocks.mob_spawner, 0, s.x, s.y, s.z, 0))
+            {
+                cells.add(s.x);
+                cells.add(s.y);
+                cells.add(s.z);
+                spawners++;
+            }
+        }
+        List<int[]> posts = new ArrayList<int[]>();
+        for (int t = 0; t < inside.size() * 3 && posts.size() < 5; t++)
+        {
+            BuildingLayout.Spot s = inside.get(roll() % inside.size());
+            boolean apart = d.block(s.x, s.y, s.z) == null && d.block(s.x, s.y + 1, s.z) == null;
+            for (int[] q : posts)
+            {
+                apart &= Math.abs(q[0] - s.x) + Math.abs(q[2] - s.z) >= 3 || q[1] != s.y;
+            }
+            if (apart)
+            {
+                posts.add(new int[] {s.x, s.y, s.z});
+            }
+        }
+        int[] g = new int[1 + cells.size() + 3 * posts.size()];
+        g[0] = spawners;
+        for (int i = 0; i < cells.size(); i++)
+        {
+            g[1 + i] = cells.get(i);
+        }
+        for (int i = 0; i < posts.size(); i++)
+        {
+            System.arraycopy(posts.get(i), 0, g, 1 + cells.size() + 3 * i, 3);
+        }
+        d.garrison = g;
+        Dress.note("~wasteland bunker");
+        doorLog = log + ", armory " + added + ", spawners " + spawners + ", posts " + posts.size();
+    }
+
+    private boolean blockhouseScreen;
+
+    /**
+     * A concrete blockhouse over the bunker's hatch at (hx, hy, hz) (the hatch in its floor): stone brick
+     * walls 3 high on the ring 2 out, a slab roof, Decimation's locked door in the middle of the side with
+     * the most open ground before it, a military keycard screen outside beside the door, 1 up.
+     */
+    private boolean blockhouse(int hx, int hy, int hz)
+    {
+        if (hx < 3 || hz < 3 || hx > lay.width() - 4 || hz > lay.length() - 4 || hy + 4 >= lay.height())
+        {
+            return false;
+        }
+        int side = 0, best = -1;
+        for (int s = 0; s < 4; s++)
+        {
+            int[] f = BuildingLayout.DIR[s];
+            int free = 0;
+            for (int o = -1; o <= 1; o++)
+            {
+                int x = hx + 3 * f[0] + (f[0] == 0 ? o : 0), z = hz + 3 * f[1] + (f[1] == 0 ? o : 0);
+                free += lay.open(x, hy + 1, z) && lay.open(x, hy + 2, z) ? 1 : 0;
+            }
+            if (free > best)
+            {
+                best = free;
+                side = s;
+            }
+        }
+        Block locked = deci("Door_Emergency_1_Locked");
+        for (int dy = 1; dy <= 4; dy++)
+        {
+            for (int dz = -2; dz <= 2; dz++)
+            {
+                for (int dx = -2; dx <= 2; dx++)
+                {
+                    int x = hx + dx, y = hy + dy, z = hz + dz;
+                    boolean ring = Math.max(Math.abs(dx), Math.abs(dz)) == 2;
+                    if (dy == 4)
+                    {
+                        d.put(Blocks.double_stone_slab, 0, x, y, z);
+                    }
+                    else if (ring)
+                    {
+                        d.put(Blocks.stonebrick, roll() < 150 ? 2 : 0, x, y, z);   // a cracked brick now and then
+                    }
+                    else
+                    {
+                        d.put(null, 0, x, y, z);
+                    }
+                }
+            }
+        }
+        int[] f = BuildingLayout.DIR[side];
+        int dx0 = hx + 2 * f[0], dz0 = hz + 2 * f[1];
+        if (locked != null)
+        {
+            // vanilla door metadata: even = walked through along x; the panel on the outer edge of the cell
+            int meta = side == 0 ? 2 : side == 2 ? 0 : side == 1 ? 3 : 1;
+            d.put(locked, meta, dx0, hy + 1, dz0);
+            d.put(locked, 8, dx0, hy + 2, dz0);
+        }
+        Block screen = deci("BlockKeycardScreenMilitary");
+        for (int o = -1; o <= 1 && screen != null && !blockhouseScreen; o += 2)
+        {
+            int x = dx0 + f[0] + (f[0] == 0 ? o : 0), z = dz0 + f[1] + (f[1] == 0 ? o : 0);
+            int m = PropFacing.meta(screen, side);
+            blockhouseScreen = m >= 0 && d.block(x, hy + 2, z) == null && d.place(screen, m, x, hy + 2, z, 1);
+        }
+        return true;
     }
 
     /** Loot containers (Decimation's loot is per block): what makes a building worth locking. */
@@ -1108,7 +1289,8 @@ final class BuildingDress
             : kind == MILITARY ? pick("BlockWeaponCabinet", "BlockAmmoCrate", "BlockMedicalCrate", "BlockMilitaryCrate")
             : pick("BlockAmmoCrate", "BlockMedicalCrate", "BlockMilitaryCrate");
         int wLead = 20 + roll() % 60, wMil = 15 + roll() % 60, wMed = roll() % 40;
-        int wKeep = (kind == MILITARY ? 15 : kind == INDUSTRY ? 70 : 25) + roll() % 40;   // factories keep their stores
+        int wKeep = bunker ? 0                           // the bunker: every container military (the richest place)
+            : (kind == MILITARY ? 15 : kind == INDUSTRY ? 70 : 25) + roll() % 40;   // factories keep their stores
         int total = wLead + wMil + wMed + wKeep;
         int gone = story == LOOTED ? 250 : story == MASSACRE ? 120 : 0;
         int swapped = 0, kept = 0, removed = 0;

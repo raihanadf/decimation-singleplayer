@@ -10,6 +10,12 @@ not something we introduced or need to fix) see `documentation.md`.
 
 ## Open
 
+### Water spread over a wasteland crossing once in the bridge test (seen 13 Oktober 2026, Open, not reproduced)
+- Live `bridge` run (district at 31664,1536): 100 water blocks at street level on a crossing beside
+  the test bridge (flowing on the road from its west part, no source found in the chunk layers read).
+  The next run passed (0). Cause unknown [not verified]: a spring decorated into a neighbouring
+  chunk (as in Rails lesson 2) or the new bridge damage of v0.56.0.
+
 ### Dev test game crashed once in vanilla grass ticking (seen 13 Oktober 2026, Open, not reproduced)
 - Live `wasteland` run 1 after v0.54.2's lot changes: "Exception getting block type in world"
   (NullPointerException in World.getBlock from BlockGrass.updateTick) at 1256,68,-465, outside the

@@ -164,6 +164,21 @@ final class BuildingLayout
         return seen;
     }
 
+    int width()
+    {
+        return s.width;
+    }
+
+    int length()
+    {
+        return s.length;
+    }
+
+    int height()
+    {
+        return s.height;
+    }
+
     /** Open 2 high (a door is not). */
     private boolean walkable(int x, int y, int z)
     {

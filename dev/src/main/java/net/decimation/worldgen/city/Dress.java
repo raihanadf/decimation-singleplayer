@@ -49,6 +49,8 @@ final class Dress
     private final List<Object[]> boxOwners = new ArrayList<Object[]>();
     /** Props placed, refused (did not fit) per prop name: the dev test and the log read it. */
     final Map<String, int[]> tally = new HashMap<String, int[]>();
+    /** A garrison the dressing laid out (wasteland bunker), local cells: {spawners, s..., posts...}; null none. */
+    int[] garrison;
     /** Refusal reasons (index = fits() result): placed, taken, out of plan, no support, doorway, block, prop, faces a wall. */
     static final String[] WHY = {"placed", "taken", "outside", "unsupported", "doorway", "block", "prop", "faces wall"};
     private static final Map<String, int[]> TOTAL = new java.util.TreeMap<String, int[]>();

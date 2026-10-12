@@ -96,6 +96,45 @@ public final class CityNames
         return city.size() >= 4 ? n + " City" : n;
     }
 
+    /**
+     * A wasteland city standing apart (Wasteland.apart): its wasteland districts joined side by side are
+     * one city named "Fort <name>" after its first district, numbered north to south, west to east.
+     */
+    static synchronized String[] wasteland(long seed, int dx, int dz)
+    {
+        List<long[]> c = new ArrayList<long[]>();
+        ArrayDeque<int[]> q = new ArrayDeque<int[]>();
+        java.util.Set<Long> seen = new java.util.HashSet<Long>();
+        q.add(new int[] {dx, dz});
+        seen.add(key(dx, dz));
+        while (!q.isEmpty() && c.size() < MAX_REGIONS)
+        {
+            int[] r = q.poll();
+            c.add(new long[] {r[0], r[1]});
+            for (int[] s : new int[][] {{1, 0}, {-1, 0}, {0, 1}, {0, -1}})
+            {
+                int nx = r[0] + s[0], nz = r[1] + s[1];
+                if (Wasteland.deadCell(seed, nx * 2, nz * 2) && seen.add(key(nx, nz)))
+                {
+                    q.add(new int[] {nx, nz});
+                }
+            }
+        }
+        Collections.sort(c, (a, b) -> a[1] != b[1] ? Long.compare(a[1], b[1]) : Long.compare(a[0], b[0]));
+        int number = 1;
+        for (long[] r : c)
+        {
+            if (r[0] == dx && r[1] == dz)
+            {
+                break;
+            }
+            number++;
+        }
+        long h = LcCity.hl(seed ^ 0x464F5254L, (int) c.get(0)[0], (int) c.get(0)[1]);
+        String n = "Fort " + FIRST[(int) (h % FIRST.length)] + LAST[(int) ((h >>> 20) % LAST.length)];
+        return new String[] {n + ": Wasteland - " + number, "Military"};
+    }
+
     /** What a district of this style is called. */
     static String label(String style)
     {
@@ -120,6 +159,26 @@ public final class CityNames
      */
     public static String[] district(long seed, int dx, int dz)
     {
+        if (Wasteland.apart())
+        {
+            // the wasteland stands apart (v0.56): the ring around it is open land, the wasteland its own city
+            boolean any = false;
+            for (int i = 0; i < 2 && !any; i++)
+            {
+                for (int j = 0; j < 2 && !any; j++)
+                {
+                    any = LcCity.isCity(seed, dx * 2 + i, dz * 2 + j);
+                }
+            }
+            if (!any)
+            {
+                return null;
+            }
+            if (Wasteland.deadCell(seed, dx * 2, dz * 2))
+            {
+                return wasteland(seed, dx, dz);
+            }
+        }
         int rx = Math.floorDiv(dx, 2), rz = Math.floorDiv(dz, 2);
         List<long[]> city = city(seed, rx, rz);
         if (city == null)

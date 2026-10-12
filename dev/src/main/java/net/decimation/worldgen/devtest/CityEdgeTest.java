@@ -126,11 +126,56 @@ public class CityEdgeTest extends DevTestMode
                         }
                     }
                     survey(w, cx, cz);
+                    ramp(w, cps, cx, cz);
                     return;
                 }
             }
         }
         DevTestResults.value(name(), "edge", "none found");
+    }
+
+    /**
+     * v0.56 asphalt ramp between city levels (StreetPlan.rampAt): the first road slab in the cells south
+     * of the edge cell (generated here), photographed from its low side.
+     */
+    private void ramp(World w, net.minecraft.world.gen.ChunkProviderServer cps, int cx, int cz)
+    {
+        Block slab = Block.getBlockFromName("deci:BlockRoadSlab");
+        for (int dz = 0; dz < 3; dz++)
+        {
+            for (int dx = -1; dx <= 1; dx++)
+            {
+                int c0x = (cx + dx) * LcCity.CELL, c0z = (cz + dz) * LcCity.CELL;
+                for (int a = c0x - 1; a <= c0x + LcCity.CELL; a++)
+                {
+                    for (int b = c0z - 1; b <= c0z + LcCity.CELL; b++)
+                    {
+                        cps.loadChunk(a, b);
+                    }
+                }
+                for (int x = c0x * 16; x < (c0x + LcCity.CELL) * 16; x++)
+                {
+                    for (int z = c0z * 16; z < (c0z + LcCity.CELL) * 16; z++)
+                    {
+                        for (int y = 60; y < 110; y++)
+                        {
+                            if (w.getBlock(x, y, z) == slab)
+                            {
+                                float[] cam = CityPropsTest.camera(w, x, y, z, 10, -1);
+                                if (cam != null)
+                                {
+                                    shots.add(cam);
+                                    names.add("ramp");
+                                }
+                                DevTestResults.value(name(), "ramp", x + "," + y + "," + z);
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        DevTestResults.value(name(), "ramp", "none in the 9 cells south of the edge");
     }
 
     private void survey(World w, int cx, int cz)

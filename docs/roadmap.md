@@ -203,6 +203,9 @@ menu. Not designed: each needs a design talk first. Current work comes first (us
   rail.
 - v0.41.0 / 0.41.1 EOTech 558 and ACOG TA11 of our own, reticles in the glass swaying with the
   gun, Mk18 IMI TS stock, HK416 front sight folds away; accepted.
+- v0.56.0 wasteland city apart with fence, wire, mines and gates (new worlds), bunker blockhouse with
+  garrison and military infected spawner, asphalt ramps, natural bridge damage, metro entrances on the
+  sidewalk (user 13 Oktober 2026); waiting for the user's look.
 - v0.55.0 rifles with attachments for juggernauts and elites, Decimation doors in everything we
   generate, worn ground at the city edge, locked wasteland buildings with keycard screens (user
   13 Oktober 2026); waiting for the user's look (new chunks / new worlds).

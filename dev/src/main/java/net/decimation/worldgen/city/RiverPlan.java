@@ -93,19 +93,43 @@ final class RiverPlan implements net.decimation.worldgen.FixedBase
         return (along == 7 || along == 8) && (across == 2 || across == 3 || across == 12 || across == 13);
     }
 
-    /** The fallen middle of a broken bridge's road. */
+    /** The fallen middle of a broken bridge's road: the deck gone too (damage 3). */
     private boolean hole(int lx, int lz)
+    {
+        return damage(lx, lz) == 3;
+    }
+
+    /**
+     * Damage of a broken bridge's road (user, 13 Oktober 2026, after v0.45.1's rectangle hole in every
+     * chunk: "make it gradient, dont put retacle hole in there is not natural"): 0 whole, 1 cracked
+     * (cobblestone, cracked stone brick), 2 the road fallen onto the deck, 3 a hole through to the water.
+     * Each chunk its own centre and size on the road, the edge ragged by noise; 3 chunks in 10 only
+     * crack. Holes and sunk road stay on the road; cracks reach the sidewalks.
+     */
+    private int damage(int lx, int lz)
     {
         if (!broken || street == null)
         {
-            return false;
-        }
-        if (street.kind() == 2)
-        {
-            return lx >= 5 && lx <= 10 && lz >= 5 && lz <= 10;
+            return 0;
         }
         int along = street.kind() == 1 ? lx : lz, across = street.kind() == 1 ? lz : lx;
-        return across >= 5 && across <= 10 && along >= 4 && along <= 11;
+        long h = LcCity.hl(seed ^ 0x44414D47L, cx, cz);
+        double ca = 3 + h % 10, cc = 5 + (h >>> 8) % 6;                  // centre: along 3..12, across 5..10
+        double r = (h >>> 16) % 10 < 3 ? 1.6 : 2.6 + ((h >>> 20) % 20) / 10.0;   // crack only, or a hole 2.6..4.5
+        double dist = Math.sqrt((along - ca) * (along - ca) + (across - cc) * (across - cc));
+        double v = 1 - dist / (r * 1.8) + 0.3 * EdgePlan.wobble((cx << 4) * 3 + lx * 3, (cz << 4) * 3 + lz * 3);
+        boolean road = street.kind() == 2 ? lx >= LcCity.SIDEWALK && lx <= 15 - LcCity.SIDEWALK
+            && lz >= LcCity.SIDEWALK && lz <= 15 - LcCity.SIDEWALK
+            : across >= LcCity.SIDEWALK && across <= 15 - LcCity.SIDEWALK;
+        if (r > 2 && road && v > 0.62)
+        {
+            return 3;
+        }
+        if (r > 2 && road && v > 0.45)
+        {
+            return 2;
+        }
+        return v > 0.22 ? 1 : 0;
     }
 
     public Block blockAt(int lx, int ly, int lz, int[] meta)
@@ -128,14 +152,30 @@ final class RiverPlan implements net.decimation.worldgen.FixedBase
             {
                 return Blocks.water;
             }
-            return street != null && y == ground - 1 && !hole(lx, lz) ? Blocks.stonebrick : null;
+            if (street != null && y == ground - 1 && !hole(lx, lz))
+            {
+                meta[0] = damage(lx, lz) == 2 ? 2 : 0;               // the deck under fallen road cracked
+                return Blocks.stonebrick;
+            }
+            return null;
         }
         int k = y - ground;
         if (street != null)
         {
-            if (hole(lx, lz))
+            int dmg = damage(lx, lz);
+            if (dmg >= 2)
             {
-                return null;
+                return null;                                     // fallen: nothing stands on it either
+            }
+            if (dmg == 1 && k == 0)
+            {
+                // cracked: a cobblestone or cracked stone brick patch in the road or the walk
+                long c = LcCity.hl(seed ^ 0x4352434BL, (cx << 4) + lx, (cz << 4) + lz);
+                if (c % 10 < 6)
+                {
+                    meta[0] = c % 3 == 0 ? 2 : 0;
+                    return c % 3 == 0 ? Blocks.stonebrick : Blocks.cobblestone;
+                }
             }
             Block b = street.blockAt(lx, k, lz, meta);
             if (b != null)

@@ -59,6 +59,7 @@ public final class Slices
         if (p instanceof FixedBase && baseY == null && p.zone() == null && p.describe() == null)
         {
             // a plain city piece (street chunk): its height is computed, nothing to store
+            Garrisons.register(world, p, ((FixedBase) p).fixedBaseY());   // a wasteland bunker's garrison, once
             write(world, p, ((FixedBase) p).fixedBaseY(), x0, z0, x1, z1);
             return;
         }
@@ -66,6 +67,7 @@ public final class Slices
         {
             baseY = ((FixedBase) p).fixedBaseY();
             data.setBaseY(p.id(), baseY);
+            Garrisons.register(world, p, baseY);          // a wasteland bunker's garrison, once
             if (p.zone() != null)
             {
                 ZoneStore.add(p.zone(), p.minX() - 2, baseY - 4, p.minZ() - 2,
@@ -294,6 +296,10 @@ public final class Slices
         for (int[] q : props)
         {
             net.decimation.fixes.MultiblockRepairHandler.complete(world, q[0], q[1], q[2]);
+            if (world.getBlock(q[0], q[1], q[2]) == Blocks.mob_spawner)
+            {
+                Garrisons.setupSpawner(world, q[0], q[1], q[2]);
+            }
         }
     }
 }

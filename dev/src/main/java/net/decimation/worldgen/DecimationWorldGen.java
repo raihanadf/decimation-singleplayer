@@ -297,6 +297,10 @@ public class DecimationWorldGen
         SafezoneSites sites = new SafezoneSites();
         net.minecraftforge.common.MinecraftForge.EVENT_BUS.register(sites);
         cpw.mods.fml.common.FMLCommonHandler.instance().bus().register(sites);
+        // garrisons of the hardest places (wasteland bunkers): NPCs on first visit, military infected spawners
+        Garrisons garrisons = new Garrisons();
+        net.minecraftforge.common.MinecraftForge.EVENT_BUS.register(garrisons);
+        cpw.mods.fml.common.FMLCommonHandler.instance().bus().register(garrisons);
         FMLLog.info("[%s] zone store, zone spawn fix and zone rules registered", MODID);
 
         net.minecraftforge.common.MinecraftForge.EVENT_BUS.register(

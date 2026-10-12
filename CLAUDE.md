@@ -856,6 +856,11 @@ of the last session:
   worn ground (EdgePlan.wear; dev test `cityedge`); wasteland buildings locked by loot
   (BuildingDress.lockDoors: Door_Emergency_1_Locked + military keycard screen; BuildingLayout.outdoors
   finds entrances by a flood fill from the plot edge). Crate levels idea: docs/ideas.md item 17.
+  v0.56.0: wasteland city apart (new worlds, `!wastelandCity`: LcCity.isCity cuts a ring round wasteland
+  districts) with WastelandFence (chain link, wire, landmines via Deci.newLandmine, gates); bunker
+  blockhouse + worldgen/Garrisons (posts manned on first visit, spawner infected in military outfit;
+  StructureData int lists); StreetPlan.rampAt replaces DC stairs parts; RiverPlan.damage; Rails.entrance
+  (station stairs in the sidewalk).
   Gun study (10 Oktober 2026): docs/gun_style_guide.md, tools/guns/study.py
   (renders / measures Decimation's guns from the jar, `attach` adds
   attachments as the game places them), dev test mode `gunview` (hip, aim

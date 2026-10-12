@@ -432,6 +432,16 @@ building fronts, several stairs designs joining levels.
   and stone, then cobblestone, then mossy cobblestone). Coarse dirt was tried first: orange from
   above. Dev test `cityedge` (cell 16,-16): worn tops by distance 1..10 of 64: 62 53 41 26 14 7 1 0 0 0;
   shots docs/shots/v0.55_cityedge/. The terraces' grass sides stay.
+- v0.56.0 (user 13 Oktober 2026, shots docs/shots/v0.56_city/): (1) the street stairs between city
+  levels are an asphalt ramp (StreetPlan.rampAt: road blocks and Decimation's road slabs with the
+  dashed line, 12 half block steps over the chunk, stone slab sidewalks, stone brick under it, iron
+  railings once it stands 2 above the street; the dev test `cityedge` photographs one: ramp.png);
+  DeceasedCraft's stairs parts are no longer drawn. (2) The wasteland's broken bridges are damaged
+  naturally (RiverPlan.damage: per chunk a centre and size, a ragged hole to the water, road sunk to the
+  deck round it, cracked cobblestone and stone brick fading out, 3 in 10 chunks cracks only), not a
+  rectangle hole in every chunk. (3) Stations keep the street whole: the staircase stops under the
+  street, no surface plaza, the stairs come out in the south sidewalk (Rails.entrance: the top step, a
+  6 x 2 well, railings); the rail walk test reaches the platform from the street.
 - Doors (v0.55.0, worldgen/Doors): the pack's vanilla doors (tools/lctranslate.py writes wooden / iron
   doors) become Decimation doors when Slices writes them, styled by building kind.
 - Fronts, parks and street scenes since v0.26.0, district street parts

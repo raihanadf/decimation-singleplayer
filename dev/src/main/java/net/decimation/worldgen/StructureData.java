@@ -25,6 +25,8 @@ public class StructureData extends WorldSavedData
     private final Map<String, Integer> baseY = new HashMap<String, Integer>();
     /** Named places of this world (military bases): id -> turf entry "x1/y1/z1=x2/y2/z2=owner=name". */
     private final Map<String, String> places = new HashMap<String, String>();
+    /** Int lists by id (bunker garrisons: city/Garrisons). */
+    private final Map<String, int[]> lists = new HashMap<String, int[]>();
 
     public StructureData(String name)
     {
@@ -65,6 +67,31 @@ public class StructureData extends WorldSavedData
         return places.values();
     }
 
+    public int[] list(String id)
+    {
+        return lists.get(id);
+    }
+
+    public void setList(String id, int[] v)
+    {
+        lists.put(id, v);
+        markDirty();
+    }
+
+    /** Ids of the int lists starting with prefix. */
+    public java.util.List<String> lists(String prefix)
+    {
+        java.util.List<String> out = new java.util.ArrayList<String>();
+        for (String k : lists.keySet())
+        {
+            if (k.startsWith(prefix))
+            {
+                out.add(k);
+            }
+        }
+        return out;
+    }
+
     @Override
     public void readFromNBT(NBTTagCompound tag)
     {
@@ -73,6 +100,12 @@ public class StructureData extends WorldSavedData
         for (Object key : pl.func_150296_c())
         {
             places.put((String) key, pl.getString((String) key));
+        }
+        lists.clear();
+        NBTTagCompound li = tag.getCompoundTag("lists");
+        for (Object key : li.func_150296_c())
+        {
+            lists.put((String) key, li.getIntArray((String) key));
         }
         baseY.clear();
         NBTTagCompound map = tag.getCompoundTag("baseY");
@@ -97,5 +130,11 @@ public class StructureData extends WorldSavedData
             pl.setString(e.getKey(), e.getValue());
         }
         tag.setTag("places", pl);
+        NBTTagCompound li = new NBTTagCompound();
+        for (Map.Entry<String, int[]> e : lists.entrySet())
+        {
+            li.setIntArray(e.getKey(), e.getValue());
+        }
+        tag.setTag("lists", li);
     }
 }

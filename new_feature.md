@@ -877,6 +877,16 @@ keycard screen or a lockpick, all four in one release.
   mossy cobblestone. Dev test `cityedge`: worn tops by distance 62 53 41 26 14 7 1 0 of 64.
 - Locked wasteland (BuildingDress.lockDoors, docs/wasteland.md "v0.55.0").
 
+### The wasteland city apart, its fence, the bunker; ramps, bridges, stations (DONE v0.56.0, 13 Oktober 2026)
+User: bunker "photo the bunker and make it lockable ... highest loot ... most harder place building with
+full of high tier enemy npc in there. elite npc + juggernaut and full military outfit zombie spawner";
+"make full covered fence using decimation block? with barbed wire and full of landmine on the edge side
+of city. this is only applicable on wasteland city"; "cars portal in there like toll gate and military
+post gate"; answers: the fence on the wasteland district square, "split out the wasteland city with other
+city", chain link + wire, asphalt ramp for the street stairs, bridge damage "gradient, dont put retacle
+hole"; and the subway station "on side building instead on road". Details: docs/wasteland.md "v0.56.0",
+docs/city_engine.md "Open" (v0.56.0). The city edge gradient of v0.55.0 accepted ("i like it").
+
 ### Zones, factions and world (user list 9 Oktober 2026, "later")
 Only the list and starting points; scope of each is `[not decided]`, ask
 the user before building.

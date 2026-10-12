@@ -50,9 +50,9 @@
     "semantic_hash": "40a108bc09ab115aa0d69f0465c51079"
   },
   "dev/src/main/java/net/decimation/worldgen/DecimationWorldGen.java": {
-    "mtime": 1791819247.0003111,
-    "ast_hash": "4f19da3b2efc6609f882f44cc5449520",
-    "semantic_hash": "4f19da3b2efc6609f882f44cc5449520"
+    "mtime": 1791837959.182328,
+    "ast_hash": "0ca9e33207e58146678970276883dde6",
+    "semantic_hash": "0ca9e33207e58146678970276883dde6"
   },
   "dev/src/main/java/net/decimation/worldgen/DevAutoTest.java": {
     "mtime": 1791835235.3399224,
@@ -110,9 +110,9 @@
     "semantic_hash": "de153d1f8408971d6190e16a7d4256f9"
   },
   "CLAUDE.md": {
-    "mtime": 1791835876.1822126,
-    "ast_hash": "b3682677dd1b0d3406162ddfae4b2585",
-    "semantic_hash": "b3682677dd1b0d3406162ddfae4b2585"
+    "mtime": 1791840206.7408981,
+    "ast_hash": "7078c4637309170370312cb72b0f70c8",
+    "semantic_hash": "7078c4637309170370312cb72b0f70c8"
   },
   "DECIMATION_MOD_TASK.md": {
     "mtime": 1784958353.0126374,
@@ -120,9 +120,9 @@
     "semantic_hash": "aa4550575e47e7c1d0b020a51afbb501"
   },
   "bug.md": {
-    "mtime": 1791830969.5900435,
-    "ast_hash": "9e36c30d46e2b691b732f4a749922f05",
-    "semantic_hash": "9e36c30d46e2b691b732f4a749922f05"
+    "mtime": 1791840206.738639,
+    "ast_hash": "1900ee1a8a18118f23731060fed24f84",
+    "semantic_hash": "1900ee1a8a18118f23731060fed24f84"
   },
   "create_weapons.md": {
     "mtime": 1791653625.5948887,
@@ -145,14 +145,14 @@
     "semantic_hash": "5ec10a4c3f93750361afcbaae6df524a"
   },
   "documentation.md": {
-    "mtime": 1791835876.1779237,
-    "ast_hash": "f2ee557e64ad5225d8087ae3cf18efc7",
-    "semantic_hash": "f2ee557e64ad5225d8087ae3cf18efc7"
+    "mtime": 1791840206.7375455,
+    "ast_hash": "aaa1cdecaba30cb6d409c5dc8850359a",
+    "semantic_hash": "aaa1cdecaba30cb6d409c5dc8850359a"
   },
   "new_feature.md": {
-    "mtime": 1791835876.1772056,
-    "ast_hash": "88de0893220b6098fd701065cad77bde",
-    "semantic_hash": "88de0893220b6098fd701065cad77bde"
+    "mtime": 1791840206.7369788,
+    "ast_hash": "550432a88e9dbc807d6ea3233603345e",
+    "semantic_hash": "550432a88e9dbc807d6ea3233603345e"
   },
   "tools/graph_update.py": {
     "mtime": 1791348965.63658,
@@ -200,14 +200,14 @@
     "semantic_hash": "92fa8638ae9e95f8096424530765a1f3"
   },
   "dev/src/main/java/net/decimation/worldgen/Slices.java": {
-    "mtime": 1791834398.269116,
-    "ast_hash": "42e438764e8f5a8c1fd1bab4e1418abd",
-    "semantic_hash": "42e438764e8f5a8c1fd1bab4e1418abd"
+    "mtime": 1791838077.1952462,
+    "ast_hash": "d89061cc321844710c47eb639088d43d",
+    "semantic_hash": "d89061cc321844710c47eb639088d43d"
   },
   "dev/src/main/java/net/decimation/worldgen/StructureData.java": {
-    "mtime": 1791753400.727451,
-    "ast_hash": "32ad18c02586fc44553c5a7816b70d71",
-    "semantic_hash": "32ad18c02586fc44553c5a7816b70d71"
+    "mtime": 1791837888.155639,
+    "ast_hash": "81ddb6337833f0e3edf2b373b42e42e6",
+    "semantic_hash": "81ddb6337833f0e3edf2b373b42e42e6"
   },
   "docs/worldgen.md": {
     "mtime": 1791653327.6906598,
@@ -325,9 +325,9 @@
     "semantic_hash": "0145e0863788d451e8ae4273d3c2abdd"
   },
   "docs/shots_index.md": {
-    "mtime": 1791835876.1808848,
-    "ast_hash": "8454e7cbcb38572d4351bb34a8a599af",
-    "semantic_hash": "8454e7cbcb38572d4351bb34a8a599af"
+    "mtime": 1791840206.7391782,
+    "ast_hash": "1682c05afe63a8df1b92bde1a331baab",
+    "semantic_hash": "1682c05afe63a8df1b92bde1a331baab"
   },
   "docs/interior_spec.md": {
     "mtime": 1791385593.9436893,
@@ -530,9 +530,9 @@
     "semantic_hash": "4754c787c15ae49542d1bf2159b29b75"
   },
   "dev/src/main/java/net/decimation/worldgen/city/LcCity.java": {
-    "mtime": 1791822777.919348,
-    "ast_hash": "980c743153bfa45b619019a11d4ab536",
-    "semantic_hash": "980c743153bfa45b619019a11d4ab536"
+    "mtime": 1791839088.1424668,
+    "ast_hash": "a5f499cb47d43c3760db96fd13ce1ec4",
+    "semantic_hash": "a5f499cb47d43c3760db96fd13ce1ec4"
   },
   "dev/src/main/java/net/decimation/worldgen/city/LcContent.java": {
     "mtime": 1791734512.8675733,
@@ -555,9 +555,9 @@
     "semantic_hash": "87d7c5deb01bdf730025e901597a1efa"
   },
   "docs/city_engine.md": {
-    "mtime": 1791835876.1802096,
-    "ast_hash": "394055ad624d8ae9637b35f225e032a8",
-    "semantic_hash": "394055ad624d8ae9637b35f225e032a8"
+    "mtime": 1791840206.736102,
+    "ast_hash": "087710fbd683b7214b2c9a5b044d210d",
+    "semantic_hash": "087710fbd683b7214b2c9a5b044d210d"
   },
   "tools/edgescan.py": {
     "mtime": 1791419321.0102901,
@@ -575,9 +575,9 @@
     "semantic_hash": "9425c3d999231c499db9409aa6aa35ca"
   },
   "dev/src/main/java/net/decimation/fixes/Deci.java": {
-    "mtime": 1791753631.173918,
-    "ast_hash": "be49e0979b79a1770cb0b4009cbe5c44",
-    "semantic_hash": "be49e0979b79a1770cb0b4009cbe5c44"
+    "mtime": 1791838653.689627,
+    "ast_hash": "fe5a37521e77abf70da571ae228772fc",
+    "semantic_hash": "fe5a37521e77abf70da571ae228772fc"
   },
   "dev/src/main/java/net/decimation/fixes/ScopeZoom.java": {
     "mtime": 1791670156.1796086,
@@ -655,9 +655,9 @@
     "semantic_hash": "d154b3e4611ca9f79a59cd33b625d68f"
   },
   "docs/roadmap.md": {
-    "mtime": 1791835876.1785545,
-    "ast_hash": "7d7a08946c8c55476ba9d00b5ed8edc9",
-    "semantic_hash": "7d7a08946c8c55476ba9d00b5ed8edc9"
+    "mtime": 1791840206.737933,
+    "ast_hash": "e4a93400d14968c4f9f93c4f0fdf8a0b",
+    "semantic_hash": "e4a93400d14968c4f9f93c4f0fdf8a0b"
   },
   "dev/src/main/java/net/decimation/worldgen/LegacyStreets.java": {
     "mtime": 1791487239.5087948,
@@ -665,14 +665,14 @@
     "semantic_hash": "e31eef356f032479200cd888a90a0014"
   },
   "dev/src/main/java/net/decimation/worldgen/city/BuildingPlan.java": {
-    "mtime": 1791834417.6254976,
-    "ast_hash": "c9002381dc4f8be1611b637bfc64e98e",
-    "semantic_hash": "c9002381dc4f8be1611b637bfc64e98e"
+    "mtime": 1791838077.1943772,
+    "ast_hash": "fd0562abf4cd3ecc8d4402e6b6b9da61",
+    "semantic_hash": "fd0562abf4cd3ecc8d4402e6b6b9da61"
   },
   "dev/src/main/java/net/decimation/worldgen/city/EdgePlan.java": {
-    "mtime": 1791835527.0431378,
-    "ast_hash": "5b5c58bfb8d9317ce33f06ac9b152d33",
-    "semantic_hash": "5b5c58bfb8d9317ce33f06ac9b152d33"
+    "mtime": 1791838703.1595266,
+    "ast_hash": "02c4815cee4eae89cef2be00b79c9007",
+    "semantic_hash": "02c4815cee4eae89cef2be00b79c9007"
   },
   "dev/src/main/java/net/decimation/worldgen/city/LotPlan.java": {
     "mtime": 1791749352.601338,
@@ -680,9 +680,9 @@
     "semantic_hash": "40b893a7c8fd14dc4ff6caac9fc69de5"
   },
   "dev/src/main/java/net/decimation/worldgen/city/StreetPlan.java": {
-    "mtime": 1791749200.1648796,
-    "ast_hash": "72f524ea9056d62319a23fd908ac47c9",
-    "semantic_hash": "72f524ea9056d62319a23fd908ac47c9"
+    "mtime": 1791839088.1416063,
+    "ast_hash": "e267a3fbffa79cfb1af7f20070e9965d",
+    "semantic_hash": "e267a3fbffa79cfb1af7f20070e9965d"
   },
   "dev/src/main/java/net/decimation/worldgen/city/StreetProps.java": {
     "mtime": 1791487239.5103052,
@@ -1010,9 +1010,9 @@
     "semantic_hash": "56ae48dcabf32ca01a6914c1cf69f259"
   },
   "dev/src/main/java/net/decimation/worldgen/city/Rails.java": {
-    "mtime": 1791684036.0474713,
-    "ast_hash": "1f5c7d5f0d73bf8e1f1cc1f4353f974d",
-    "semantic_hash": "1f5c7d5f0d73bf8e1f1cc1f4353f974d"
+    "mtime": 1791839298.4227517,
+    "ast_hash": "101399b93335b1bea986246ae26319bd",
+    "semantic_hash": "101399b93335b1bea986246ae26319bd"
   },
   "dev/src/main/java/net/decimation/worldgen/devtest/RailTest.java": {
     "mtime": 1791684514.51989,
@@ -1025,9 +1025,9 @@
     "semantic_hash": "ef95069f589e8817d361eccddd96d9a3"
   },
   "dev/src/main/java/net/decimation/worldgen/city/RiverPlan.java": {
-    "mtime": 1791700733.3431528,
-    "ast_hash": "9d01b5c871fb78ae8824117b183fa384",
-    "semantic_hash": "9d01b5c871fb78ae8824117b183fa384"
+    "mtime": 1791838968.7631195,
+    "ast_hash": "df1f3296572d2d5637f97f7dcdc02d22",
+    "semantic_hash": "df1f3296572d2d5637f97f7dcdc02d22"
   },
   "dev/src/main/java/net/decimation/worldgen/devtest/BridgeTest.java": {
     "mtime": 1791700932.3578944,
@@ -1035,9 +1035,9 @@
     "semantic_hash": "770611c7084665680f154a2baca3debc"
   },
   ".claude/skills/decimation-city/SKILL.md": {
-    "mtime": 1791835890.1931295,
-    "ast_hash": "34fd181a46fbc70033e942efe4c90d60",
-    "semantic_hash": "34fd181a46fbc70033e942efe4c90d60"
+    "mtime": 1791840224.8844624,
+    "ast_hash": "5c40c1b960eed86ff239fb33fddf8405",
+    "semantic_hash": "5c40c1b960eed86ff239fb33fddf8405"
   },
   "dev/src/main/java/net/decimation/fixes/ZoneRules.java": {
     "mtime": 1791710914.5760295,
@@ -1130,19 +1130,19 @@
     "semantic_hash": "046f45f2185af65189fc60f7098e6c96"
   },
   "dev/src/main/java/net/decimation/worldgen/city/BuildingDress.java": {
-    "mtime": 1791835092.2580793,
-    "ast_hash": "308e0443489a0c5fc9022061980197f5",
-    "semantic_hash": "308e0443489a0c5fc9022061980197f5"
+    "mtime": 1791838065.0230834,
+    "ast_hash": "2087bfbea13536dd3837a0318e547f9a",
+    "semantic_hash": "2087bfbea13536dd3837a0318e547f9a"
   },
   "dev/src/main/java/net/decimation/worldgen/city/BuildingLayout.java": {
-    "mtime": 1791834955.546679,
-    "ast_hash": "31e7362c338386302e7403efb7643990",
-    "semantic_hash": "31e7362c338386302e7403efb7643990"
+    "mtime": 1791838077.1929743,
+    "ast_hash": "e8e13d570d6546102a82635c07f41463",
+    "semantic_hash": "e8e13d570d6546102a82635c07f41463"
   },
   "dev/src/main/java/net/decimation/worldgen/city/Dress.java": {
-    "mtime": 1791820374.9771547,
-    "ast_hash": "cb99035ff613bbe4d3521fe4190dd444",
-    "semantic_hash": "cb99035ff613bbe4d3521fe4190dd444"
+    "mtime": 1791838037.0218353,
+    "ast_hash": "f3c76560c5106247588456d14d4d1ecb",
+    "semantic_hash": "f3c76560c5106247588456d14d4d1ecb"
   },
   "dev/src/main/java/net/decimation/worldgen/city/PropFacing.java": {
     "mtime": 1791733114.0682964,
@@ -1245,9 +1245,9 @@
     "semantic_hash": "328db5e1f32e39d63fb51bf95825a717"
   },
   "dev/src/main/java/net/decimation/worldgen/city/CityNames.java": {
-    "mtime": 1791753453.329788,
-    "ast_hash": "2eec7338720d728d55ae12d4cb76d7c2",
-    "semantic_hash": "2eec7338720d728d55ae12d4cb76d7c2"
+    "mtime": 1791838576.5942776,
+    "ast_hash": "2cd152a262a22c29c171776f2aa82d10",
+    "semantic_hash": "2cd152a262a22c29c171776f2aa82d10"
   },
   "dev/src/main/java/net/decimation/worldgen/devtest/PlacesTest.java": {
     "mtime": 1791782187.1476636,
@@ -1265,19 +1265,19 @@
     "semantic_hash": "95ecd6f46239a9714421db881304ab2e"
   },
   "dev/src/main/java/net/decimation/worldgen/city/Wasteland.java": {
-    "mtime": 1791822323.2340002,
-    "ast_hash": "2518344321596cef7e65a3c6298844ac",
-    "semantic_hash": "2518344321596cef7e65a3c6298844ac"
+    "mtime": 1791838507.7190745,
+    "ast_hash": "aaad1caf9fa4da1617bd0568193bae74",
+    "semantic_hash": "aaad1caf9fa4da1617bd0568193bae74"
   },
   "dev/src/main/java/net/decimation/worldgen/devtest/WastelandTest.java": {
-    "mtime": 1791835197.4394882,
-    "ast_hash": "69b0e0291772d2093689316d8d8fcb6f",
-    "semantic_hash": "69b0e0291772d2093689316d8d8fcb6f"
+    "mtime": 1791839734.756814,
+    "ast_hash": "51bc52fd1dba6d1557b10e823ad76ff4",
+    "semantic_hash": "51bc52fd1dba6d1557b10e823ad76ff4"
   },
   "docs/wasteland.md": {
-    "mtime": 1791835876.1795957,
-    "ast_hash": "3da1a27544d1a5b29c651e183d302ce9",
-    "semantic_hash": "3da1a27544d1a5b29c651e183d302ce9"
+    "mtime": 1791840211.4008193,
+    "ast_hash": "f2f98812205d7365716e2c5096be6d3e",
+    "semantic_hash": "f2f98812205d7365716e2c5096be6d3e"
   },
   "dev/src/main/java/net/decimation/worldgen/Doors.java": {
     "mtime": 1791834395.3981872,
@@ -1285,8 +1285,18 @@
     "semantic_hash": "c27497747b58f88bbaf7c202ba9a4add"
   },
   "dev/src/main/java/net/decimation/worldgen/devtest/CityEdgeTest.java": {
-    "mtime": 1791835527.1203353,
-    "ast_hash": "f21a068783265506aabe2333a6990296",
-    "semantic_hash": "f21a068783265506aabe2333a6990296"
+    "mtime": 1791839372.9922779,
+    "ast_hash": "544ee6b9c8752b797fcb3593bedba9bc",
+    "semantic_hash": "544ee6b9c8752b797fcb3593bedba9bc"
+  },
+  "dev/src/main/java/net/decimation/worldgen/Garrisons.java": {
+    "mtime": 1791837959.1832504,
+    "ast_hash": "b23396598a06a9c2a29a5e9d485ea132",
+    "semantic_hash": "b23396598a06a9c2a29a5e9d485ea132"
+  },
+  "dev/src/main/java/net/decimation/worldgen/city/WastelandFence.java": {
+    "mtime": 1791838703.1587644,
+    "ast_hash": "038a2d2b60bdb5660b5667a9728d32e1",
+    "semantic_hash": "038a2d2b60bdb5660b5667a9728d32e1"
   }
 }
