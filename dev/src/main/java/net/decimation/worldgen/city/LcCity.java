@@ -556,7 +556,7 @@ public final class LcCity
                 }
                 // a superblock gets its landmark (a multi building over 3 x 3) first
                 List<LcContent.Building> from = i == 1 && j == 1 && !big.isEmpty() ? big : pool;
-                LcContent.Building pick = from == pool && r.nextFloat() < LOT_CHANCE ? null
+                LcContent.Building pick = from == pool && r.nextFloat() < Wasteland.lotChance(style) ? null
                     : pick(from, style, used, i, j, r);
                 int minX = bx + i * 16, minZ = bz + j * 16;
                 if (pick == null)
@@ -564,7 +564,7 @@ public final class LcCity
                     used[i][j] = true;
                     // a third of the open lots stay bare (parking, a camp, a dump: LotDress) when the city
                     // dressing is on; the rest carry a park part of the district
-                    boolean bare = Dress.ON && hl(seed ^ 0x42415245L, minX >> 4, minZ >> 4) % 100 < 35;
+                    boolean bare = Dress.ON && hl(seed ^ 0x42415245L, minX >> 4, minZ >> 4) % 100 < Wasteland.bareShare(style);
                     out.add(new LotPlan("lcl_" + cellX + "_" + cellZ + "_" + i + "_" + j, minX, minZ, g,
                                         bare ? null : decor(seed, style, "parks", minX >> 4, minZ >> 4, 0x5041524BL),
                                         seed, style));

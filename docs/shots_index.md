@@ -23,6 +23,30 @@ How shots are made: `./gradlew runClient -Pautotest` (street views),
   places_1 walking into the next district: "HOLLOWHAVEN: SUBURBS - 6" and a second chat line;
   places_2 outside the city: "Now entering the Wilderness". Night rain in the dev world.
 
+## wasteland_v0.54.1/ (wasteland weak spots, 12 Oktober 2026; docs/wasteland.md "v0.54.1")
+Dev test `wasteland` (live, deciworldgen_devtest), district 58,18 (blocks 3712,1152), all PASS.
+- lots_sheet.png: the four forced lot scenes (Wasteland.previewLot, sky at -21000, 200, -21000),
+  one per quarter: motor pool (two jeeps, noses the same way, on a concrete pad with a grass border,
+  barrels and a generator at the edge), supply dump (rows of military crates, care packages, a water
+  pallet, a spotlight, an ammo case, on the pad), helicopter crash (camo helicopter with rotor on
+  grass, debris), casualty point (body bags in rows in four colours, medical crates, a stretcher, a
+  hazard light). A magenta line along the motor pool lot's west edge: the floating lot's side
+  [not verified]. wasteland_lot_<scene>.png are the single shots.
+- sheet.png: the run's contact sheet. From generation in the district: wasteland_supplies_1 and
+  wasteland_spotlight_1 (a supply dump lot on its concrete pad among the buildings, crate rows, a
+  care package, a spotlight), wasteland_helicopter_1 (a helicopter crash lot on grass beside a
+  building), wasteland_jeep_1/2 (jeeps in their lanes). Weak shots: milcrate_3 (camera in a corner),
+  entry_1 (a grass mound in front).
+- wasteland_aerial.png: the district from 80 above (streets, rooftops, water to the east).
+- wasteland_milcrate_1.png: a military crate on the sidewalk against a planter, front to the road;
+  wasteland_medcrate_1.png: a medical crate at the edge of a room with boxes and a military radio;
+  wasteland_cabinet_1.png: a weapon cabinet in a camp tent, front out; wasteland_entry_1.png: weak
+  (a grass mound hides the entry).
+- topdown_helicopter.png (seed 1 server, lot -224,160: the helicopter 14 long along x inside the lot,
+  nose east, ammo case and dead around) and topdown_motorpool.png (lot -240,176: a jeep and an APC
+  side by side, both noses west, spares behind their tails on the east edge). Both from the gravel
+  try before the concrete pads.
+
 ## wasteland_v0.54/ (the wasteland as the city's military area, 12 Oktober 2026; docs/wasteland.md)
 Dev test `wasteland` (live, deciworldgen_devtest). Run 2, district 30,-4 (blocks 1920,-256 to
 2047,-129), all checks PASS; flag_1 is from run 1 (district 36,12, blocks 2304,768).

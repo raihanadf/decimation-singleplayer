@@ -65,9 +65,15 @@ general: decimation-props; all of them: decimation-worldgen.
    directly"): read the pack's data (loot conditions, building weights), write the verdict with
    numbers into the doc, then design on top. DeceasedCraft's wasteland held its military base, camp
    and bunker but mostly industry (docs/wasteland.md section 1).
-6. Weight a building by how it fits, not only by its share: a 1 x 1 building fits every free chunk,
-   a 3 x 2 one only an empty block corner. Raising all military buildings x 3 made bunkers a third of
-   the district and the base rare; per building factors (base 6, camp 4, bunker 2) fixed it.
+6. Weight a building by how it fits and by how often the same one may repeat: a 1 x 1 building fits
+   every free chunk, a 3 x 2 one only an empty block corner. All military x 3 made 11 alike bunkers;
+   base x 6 then made 6 alike bases. Count each building in a test area after every change (base and
+   camp x 3, bunker x 1 gave 3 / 4 / 3 in seed 1's three districts).
+7. Never put a falling block (gravel, sand) into a lot or a yard: it holds until a block update
+   reaches it, then falls into whatever is under it (the sky preview lost its whole gravel ground).
+   Use a solid block (double stone slab for a concrete pad).
+8. A scene that is rare in generation must still be seen: force it in a dev test (a preview writer
+   such as Wasteland.previewLot, in the sky away from other tests' builds) and photograph it.
 
 ## Casebook (never delete a case)
 
@@ -97,4 +103,13 @@ general: decimation-props; all of them: decimation-worldgen.
   scenes, enemy military spawner and bandit tiers in the district (groups on its streets only).
 - First run found the bunker flood (lesson 6) and the barricade piling sandbags at every inner door
   (BuildingDress.barricade now takes entrances only, for every district).
+
+### Case 3: wasteland weak spots (v0.54.0 -> v0.54.1, 12 Oktober 2026)
+- User: "noice, do weak spot task now" (the weak spots listed in my v0.54.0 report: military buildings
+  alike, lots rare, helicopter / casualty lots never seen).
+- Fixed: building factors (lesson 6), lots 25 % / 75 % bare in the district (new worlds), a loot mix
+  per building (decimation-city-interior lesson 8), concrete pads (lesson 7), helicopter headings,
+  enemy group spots (bug.md), the forced lot preview in the dev test (lesson 8).
+- Measured on seed 1: military buildings 23 -> 10, military lots 2 -> 8, propclash 40 -> 31 in the
+  same box; similarity of military buildings 0.75 with their loot crates, 0.17 without.
 

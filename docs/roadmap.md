@@ -207,6 +207,8 @@ menu. Not designed: each needs a design talk first. Current work comes first (us
   supplies and wartime stories, checkpoints where streets enter it, military vehicles, sandbag
   fighting positions, motor pools / supply dumps / a crashed helicopter / casualties on its lots,
   enemy military patrols on its streets; waiting for the user's look (new chunks / new worlds).
+  v0.54.1 weak spots: fewer and different military buildings, more military lots (concrete pads),
+  a loot mix per building, the helicopter crash fitting every way, patrols spawning in superblocks.
 - v0.53.0 building props varied and balanced (user review of v0.51.2): palettes per building kind,
   a theme and a story per building, desks / dining tables / chair rows (docs/city_dressing.md
   "variety and balance"); waiting for the user's look (new chunks only).

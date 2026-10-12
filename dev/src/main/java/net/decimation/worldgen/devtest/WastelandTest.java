@@ -116,6 +116,7 @@ public class WastelandTest extends DevTestMode
             {
                 checks((WorldServer) w, p, g[0], g[1]);
                 survey(w, g[0], g[1]);
+                lots(w, p);
             }
             built = true;
         }
@@ -215,14 +216,73 @@ public class WastelandTest extends DevTestMode
                 if (!before.contains(e))
                 {
                     total++;
-                    onStreet += Wasteland.streetSpot(seed, (int) Math.floor(e.posX), (int) Math.floor(e.posY),
-                                                     (int) Math.floor(e.posZ)) && Wasteland.at(seed, e.posX, e.posZ) ? 1 : 0;
+                    boolean st = Wasteland.streetSpot(seed, (int) Math.floor(e.posX), (int) Math.floor(e.posY), (int) Math.floor(e.posZ));
+                    boolean in = Wasteland.at(seed, e.posX, e.posZ);
+                    onStreet += st && in ? 1 : 0;
+                    DevTestResults.value(name(), "group member " + total, String.format("%.1f,%.1f,%.1f street %s district %s",
+                                         e.posX, e.posY, e.posZ, st, in));
                 }
                 e.setDead();                              // the shots follow: no fight with the camera
             }
         }
-        DevTestResults.check(name(), "enemy military group on the district's streets", placed + ", " + onStreet + " of " + total,
-                             placed && total > 0 && onStreet == total, "true, all on a street of the district");
+        DevTestResults.check(name(), "enemy military group on the district's open ground", placed + ", " + onStreet + " of " + total,
+                             placed && total > 0 && onStreet == total, "true, all at street level in the district");
+    }
+
+    /**
+     * The four military lot scenes, forced (Wasteland.previewLot) side by side in the sky far from
+     * everything (x, z -21000, y 200; the shared arena had other tests' builds around it): generation
+     * may not have produced each one in the district; every scene must place its key prop.
+     */
+    private void lots(World w, EntityPlayerMP p)
+    {
+        String[] scene = {"motorpool", "supplies", "helicopter", "casualties"};
+        String[][] key = {{"deci:BlockWreckageMilitary1", "deci:BlockWreckageMilitary2"}, {"deci:BlockMilitaryCrate"},
+                          {"deci:BlockWreckageMilitary3"}, {"deci:BlockBodyBag"}};
+        int y0 = 200, base = -21000;
+        net.minecraft.world.gen.ChunkProviderServer cps = (net.minecraft.world.gen.ChunkProviderServer) w.getChunkProvider();
+        for (int k = 0; k < 4; k++)
+        {
+            int x0 = base + k * 24, z0 = base;
+            for (int a = (x0 >> 4) - 1; a <= (x0 >> 4) + 1; a++)
+            {
+                for (int b = (z0 >> 4) - 1; b <= (z0 >> 4) + 2; b++)
+                {
+                    cps.loadChunk(a, b);
+                }
+            }
+            Wasteland.previewLot(w, x0, y0, z0, k, w.getSeed() + k);
+            int props = 0, hits = 0;
+            for (int x = x0; x < x0 + 16; x++)
+            {
+                for (int z = z0; z < z0 + 16; z++)
+                {
+                    for (int y = y0 + 1; y < y0 + 5; y++)
+                    {
+                        String n = String.valueOf(Block.blockRegistry.getNameForObject(w.getBlock(x, y, z)));
+                        if (n.startsWith("deci:"))
+                        {
+                            props++;
+                            for (String kk : key[k])
+                            {
+                                hits += n.startsWith(kk) ? 1 : 0;
+                            }
+                        }
+                    }
+                }
+            }
+            DevTestResults.check(name(), "lot " + scene[k], props + " props, " + hits + " key", hits > 0, "its key prop placed");
+            // from the south, 11 up, looking down at the lot's middle; the first one twice (the client
+            // is still loading the sky chunks right after the teleport)
+            float[] cam = {x0 + 8.5f, y0 + 11, z0 + 22.5f, 180, 33};
+            if (k == 0)
+            {
+                shots.add(cam);
+                names.add("lot_warmup");
+            }
+            shots.add(cam);
+            names.add("lot_" + scene[k]);
+        }
     }
 
     /** What to photograph: block name prefix, label, how many, camera distance. */

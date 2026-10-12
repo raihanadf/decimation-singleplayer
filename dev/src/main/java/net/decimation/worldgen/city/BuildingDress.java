@@ -244,10 +244,6 @@ final class BuildingDress
 
     private void run()
     {
-        if (waste)
-        {
-            supplies();
-        }
         doorProps();
         exterior();
         Map<Integer, List<BuildingLayout.Spot>> storeys = new java.util.TreeMap<Integer, List<BuildingLayout.Spot>>();
@@ -266,6 +262,10 @@ final class BuildingDress
             l.add(s);
         }
         theme();
+        if (waste)
+        {
+            supplies();                                   // after theme(): a looted building lost some crates
+        }
         int index = 0;
         for (List<BuildingLayout.Spot> floor : storeys.values())
         {
@@ -375,7 +375,7 @@ final class BuildingDress
                                 "BlockGraffiti_6", "BlockGraffiti_7", "BlockGraffiti_8", "BlockGraffiti_9", "BlockGraffiti_10",
                                 "BlockGraffiti_11", "BlockGraffiti_12"};
                 // the military area: "no trespassing" signs beside the graffiti (docs/wasteland.md)
-                String pic = waste && roll() < 300 ? "decal.warningtrespass" : art[roll() % art.length];
+                String pic = waste && roll() < 200 ? "decal.warningtrespass" : art[roll() % art.length];
                 if (lay.wall(wx, s.y, wz) && hang(pic, s.x, s.y + 1, s.z, w))
                 {
                     tags++;
@@ -501,7 +501,9 @@ final class BuildingDress
             it(STAND, 6, 1, "BlockWaterPallet", "BlockWaterPalletTarp"), desk(8, 1, false, "BlockMetalTable", "BlockRadio1", CHAIR),
             it(HANG, 4, 1, "decal.warninglights", "decal.warningwatchstep")};
         PALETTE[MILITARY] = new Item[] {
-            core(STAND, 20, 3, "BlockMilitaryCrate", "BlockAmmoCrate"), it(STAND, 10, 1, "BlockWeaponCabinet"),
+            // not core: the building's own containers already turn into military loot (supplies()); as core it
+            // added three more olive crates to every military building (v0.54.0: 37 % of their props)
+            it(STAND, 12, 2, "BlockMilitaryCrate", "BlockAmmoCrate"), it(STAND, 10, 1, "BlockWeaponCabinet"),
             desk(15, 1, false, "BlockMetalTable", "BlockMilitaryRadioSmall", CHAIR),
             it(STAND, 10, 1, "BlockWaterPallet", "BlockWaterPalletTarp"), it(STAND, 10, 2, "BlockWoodCrate"),
             it(STAND, 6, 1, "BlockAmmoCrateLarge"), it(STAND, 6, 1, "BlockPowerGenerator"),
@@ -636,7 +638,7 @@ final class BuildingDress
         {
             return;
         }
-        int budget = Math.max(2, Math.min(14, floor.size() / 30)) * density / 100;
+        int budget = Math.max(waste && kind == MILITARY ? 4 : 2, Math.min(14, floor.size() / 30)) * density / 100;
         int[] usedHere = new int[theme.size()];
         int placed = 0;
         for (int tries = 0; tries < budget * 4 && placed < budget; tries++)
@@ -983,29 +985,26 @@ final class BuildingDress
      * (the converted chests: Decimation wood crates, or vanilla chests where a crate did not fit) hold
      * military loot instead. Decimation's loot is per block, so the container becomes a military crate,
      * an ammo case, a weapon cabinet or (labs, clinics) a medical crate, front toward the room, where it
-     * fits as the old one did (the store's other items, then a military crate, when the first pick
-     * does not); otherwise the old one
-     * stays. Each building draws from its own kind of store (a military building: armory, ammunition
-     * store, aid station or supply room). Military buildings swap all of them, factories and
-     * warehouses half (their own stores stay), the rest 7 in 10.
+     * fits as the old one did (else a 1 x 1 crate by the building's weights; else the old one stays).
+     * Each building draws its own mix: a lead item by kind (military: weapon cabinet, ammo case,
+     * medical or military crate; labs and clinics medical crates), its own weights for that, military
+     * crates, medical crates and keeping the old crate (military buildings keep few, factories and
+     * warehouses most); a looted building has lost a quarter of its containers, an overrun one some.
      */
     private void supplies()
     {
         Block wood = deci("BlockWoodCrate");
-        // each building its own kind of store, so two bunkers of the district differ (v0.54 first run: one
-        // mix everywhere made military crates a third of every military building)
-        String[][] stores = kind == LAB || kind == MEDICAL
-            ? new String[][] {{"BlockMedicalCrate", "BlockMedicalCrate", "BlockMilitaryCrate"}, {"BlockMedicalCrate", "BlockMilitaryCrate"}}
-            : kind == MILITARY ? new String[][] {
-                {"BlockWeaponCabinet", "BlockAmmoCrate", "BlockMilitaryCrate"},             // armory
-                {"BlockAmmoCrate", "BlockAmmoCrate", "BlockAmmoCrateLarge", "BlockMilitaryCrate"},   // ammunition store
-                {"BlockMedicalCrate", "BlockMedicalCrate", "BlockMilitaryCrate"},           // aid station
-                {"BlockMilitaryCrate"}}                                                     // supply room
-            : new String[][] {{"BlockMilitaryCrate", "BlockAmmoCrate"}, {"BlockMilitaryCrate", "BlockMedicalCrate"},
-                              {"BlockMilitaryCrate"}};
-        String[] mil = stores[roll() % stores.length];
-        int share = kind == MILITARY ? 1000 : kind == INDUSTRY ? 500 : 700;
-        int swapped = 0, kept = 0;
+        // each building its own mix (v0.54.0: one store list per building still made a 3 x 2 base dozens of
+        // olive crates, and military buildings 0.75 alike): a lead item by kind, then this building's own
+        // weights for it, military crates, medical crates and keeping the old crate (a mixed row)
+        String lead = kind == LAB || kind == MEDICAL ? "BlockMedicalCrate"
+            : kind == MILITARY ? pick("BlockWeaponCabinet", "BlockAmmoCrate", "BlockMedicalCrate", "BlockMilitaryCrate")
+            : pick("BlockAmmoCrate", "BlockMedicalCrate", "BlockMilitaryCrate");
+        int wLead = 20 + roll() % 60, wMil = 15 + roll() % 60, wMed = roll() % 40;
+        int wKeep = (kind == MILITARY ? 15 : kind == INDUSTRY ? 70 : 25) + roll() % 40;   // factories keep their stores
+        int total = wLead + wMil + wMed + wKeep;
+        int gone = story == LOOTED ? 250 : story == MASSACRE ? 120 : 0;
+        int swapped = 0, kept = 0, removed = 0;
         for (int y = 1; y < d.h; y++)
         {
             for (int z = 0; z < d.l; z++)
@@ -1017,7 +1016,16 @@ final class BuildingDress
                     {
                         continue;
                     }
-                    if (roll() >= share)
+                    if (roll() < gone && d.block(x, y + 1, z) == null)
+                    {
+                        d.put(null, 0, x, y, z);                  // taken (never one with a crate on it)
+                        removed++;
+                        continue;
+                    }
+                    int r = roll() % total;
+                    String want = r < wLead ? lead : r < wLead + wMil ? "BlockMilitaryCrate"
+                        : r < wLead + wMil + wMed ? "BlockMedicalCrate" : null;
+                    if (want == null)
                     {
                         kept++;
                         continue;
@@ -1039,15 +1047,15 @@ final class BuildingDress
                         continue;
                     }
                     d.put(null, 0, x, y, z);
-                    // the store's items from a random one on (a tall cabinet or a long case often does
-                    // not fit where a crate stood), a military crate last
-                    int start = roll() % mil.length;
+                    // when the pick does not fit (a tall cabinet, a long case): a 1 x 1 crate by this building's
+                    // own weights (always the military crate made a base 43 olive crates)
+                    String small = roll() % (wMil + wMed + 1) < wMed ? "BlockMedicalCrate" : "BlockMilitaryCrate";
                     boolean ok = false;
-                    for (int t = 0; t <= mil.length && !ok; t++)
+                    for (String n : new String[] {want, small})
                     {
-                        Block c = deci(t < mil.length ? mil[(start + t) % mil.length] : "BlockMilitaryCrate");
+                        Block c = deci(n);
                         int m = c == null ? -1 : PropFacing.meta(c, dir);
-                        ok = m >= 0 && d.place(c, m, x, y, z, 0);
+                        ok = ok || m >= 0 && d.place(c, m, x, y, z, 0);
                     }
                     if (ok)
                     {
@@ -1065,6 +1073,6 @@ final class BuildingDress
         {
             Dress.note("~wasteland loot swapped");
         }
-        lootLog = swapped + kept > 0 ? swapped + " containers military, " + kept + " kept" : null;
+        lootLog = swapped + kept + removed > 0 ? swapped + " containers military, " + kept + " kept, " + removed + " taken" : null;
     }
 }

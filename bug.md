@@ -11,6 +11,15 @@ not something we introduced or need to fix) see `documentation.md`.
 ## Open
 
 
+### Enemy military group members spawned beside their spot, into walls; none in superblock districts (found 12 Oktober 2026, FIXED v0.54.1)
+- Found by the dev test `wasteland` (docs/wasteland.md section 5).
+- MilitarySpawner checked one spot, then put each member up to one block off it: at a street chunk's
+  edge that cell belongs to the building chunk beside it (its wall, or a closed room). Now each member
+  takes a free cell with air above, ground below and the same street level rule, else the spot itself.
+- Wasteland.streetSpot asked for a street chunk; a superblock district has streets only on its edge,
+  out of the 24 to 48 ring around a player in its middle, so no group came there. Now any top block
+  at street level counts (street, yard, lot, park; a roof is higher, a ground floor is never the top).
+
 ### Small lab read as an office; barricades at every inner door (found 12 Oktober 2026, FIXED v0.54.0)
 - Found while building the wasteland military area (docs/wasteland.md).
 - BuildingDress.kind matched "building_la" (meant for office names) before the lab rule, so

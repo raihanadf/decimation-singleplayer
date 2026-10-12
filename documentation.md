@@ -167,6 +167,10 @@ boot. Falls straight through to the mod's own (re-skinned) main menu after that.
   streets enter the district, parked jeeps and APCs, convoys, sandbag fighting positions at
   crossings, motor pools, supply dumps, a crashed helicopter or a casualty point on empty lots, and
   enemy military patrols spawning on its streets. Newly generated chunks.
+  v0.54.1: the wasteland no longer repeats one bunker everywhere (bases and camps more often,
+  bunkers as in DeceasedCraft), has more military yards (motor pools and supply dumps on concrete,
+  helicopter crashes, casualty points), every building mixes its crates differently, and patrols
+  also appear in the big blocks without inner streets.
 - **Building props varied (v0.53.0)**: two buildings of the same kind no longer look alike. Each
   building picks its own share of its kind's props (offices get desks with a computer and an office
   chair, diners dining tables, shops shelf runs, clinics waiting chairs) and its own story: calm,

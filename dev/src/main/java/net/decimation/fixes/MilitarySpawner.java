@@ -19,7 +19,7 @@ import net.minecraftforge.common.config.Configuration;
  * "military" in NpcLoadouts) in military areas: every INTERVAL ticks, for
  * each player standing in a military sector or a city's wasteland district
  * (docs/wasteland.md), a group of 2 to 3 may spawn 24 to 48 blocks away on
- * open ground (in a city: on a street, never a roof), as long as fewer than CAP of them
+ * open ground (in a city: at street level, never on a roof or inside), as long as fewer than CAP of them
  * are within 64 blocks. Never in peaceful (Decimation's humans are mobs).
  * Settings: config/deciworldgen_npc.cfg, category "military_spawner".
  */
@@ -123,8 +123,16 @@ public class MilitarySpawner
                 {
                     NpcLoadouts.instance().equip(npc, NpcLoadouts.instance().byName(special), npc.getEntityData());
                 }
-                npc.setLocationAndAngles(x + 0.5 + random.nextInt(3) - 1, y, z + 0.5 + random.nextInt(3) - 1,
-                                         random.nextFloat() * 360, 0);
+                // spread round the spot, but only onto a free cell that is itself a good spot (at a street
+                // chunk's edge one block over is a building chunk, maybe its wall)
+                int mx = x + random.nextInt(3) - 1, mz = z + random.nextInt(3) - 1;
+                if (!world.isAirBlock(mx, y, mz) || !world.isAirBlock(mx, y + 1, mz) || world.isAirBlock(mx, y - 1, mz)
+                    || !net.decimation.worldgen.city.Wasteland.streetSpot(world.getSeed(), mx, y, mz))
+                {
+                    mx = x;
+                    mz = z;
+                }
+                npc.setLocationAndAngles(mx + 0.5, y, mz + 0.5, random.nextFloat() * 360, 0);
                 world.spawnEntityInWorld(npc);
             }
             FMLLog.info("[deciworldgen] enemy military group of %d%s%s at %d,%d,%d", size,

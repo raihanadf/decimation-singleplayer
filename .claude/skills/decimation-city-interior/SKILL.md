@@ -49,8 +49,11 @@ cctv, tv, vending, skeleton, cabinet, payphone, washer, shopdisplay, graffiti, d
    back when it does not fit). A military crate is drawn 1.15 high: never stack two, and it fails
    where a wood crate stood under a shelf (the base kept 24 of 87).
 8. Per building variety needs per building choices in EVERY layer, loot too: one swap mix for all
-   military buildings made their crates a third of their props (similarity 0.79); a store type per
-   building (armory, ammunition, aid, supply) breaks it.
+   military buildings made their crates a third of their props (similarity 0.79). A fixed store type
+   per building did not help (the cabinet / ammo case rarely fit and the fallback was always the
+   olive crate); random weights per building for each item and for keeping the old crate, and a
+   fallback by those weights, did (v0.54.1). Judge the loot layer apart: dressbalance's similarity
+   with the containers is 0.75, without them 0.17.
 9. A rule written for "the entrance" must test that it is one: barricade() piled every door, inner
    ones too (sandbags a third of a bunker's props). Entrance = one side of the door outdoors.
 

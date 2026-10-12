@@ -252,11 +252,18 @@ final class LotDress
      * helicopter with its dead, a casualty collection point (body bags in rows, stretchers, medical
      * crates, a hazard light), or nothing. Crates and cases are Decimation loot.
      */
+    /** Dev test only (Wasteland.previewLot): the military lot scene to build, -1 = by the seed. */
+    static int force = -1;
+
     private void militaryLot()
     {
-        int r = roll();
+        int r = force >= 0 ? new int[] {100, 300, 600, 760}[force & 3] : roll();
         String scene = r < 250 ? "motorpool" : r < 520 ? "supplies" : r < 680 ? "helicopter" : r < 850 ? "casualties" : "empty";
         cpw.mods.fml.common.FMLLog.info("[deciworldgen] dress lot military %s at %d,%d", scene, p.minX(), p.minZ());
+        if (r < 850)
+        {
+            groundWork(r < 520);                          // a concrete pad under the vehicles and the stores
+        }
         if (r < 250)
         {
             motorPool();
@@ -272,6 +279,37 @@ final class LotDress
         else if (r < 850)
         {
             casualties();
+        }
+    }
+
+    /**
+     * The army cleared the lot it used: the dead bushes and flowers on it go (a drawn vehicle or crate
+     * box would run into them); a motor pool and a supply dump stand on a concrete pad (double stone
+     * slab, the sidewalk's block) with a grass border. Never gravel: it falls once a block update
+     * reaches it over a cellar or a cave (the sky test lost its whole gravel ground that way).
+     */
+    private void groundWork(boolean pad)
+    {
+        for (int x = 0; x < 16; x++)
+        {
+            for (int z = 0; z < 16; z++)
+            {
+                int y = stand[x][z];
+                if (y <= 0)
+                {
+                    continue;
+                }
+                Block here = d.block(x, y, z);
+                if (here != null && BuildingLayout.cover(here))
+                {
+                    d.put(null, 0, x, y, z);
+                }
+                Block ground = d.block(x, y - 1, z);
+                if (pad && x > 0 && z > 0 && x < 15 && z < 15 && (ground == Blocks.grass || ground == Blocks.dirt))
+                {
+                    d.put(Blocks.double_stone_slab, 0, x, y - 1, z);
+                }
+            }
         }
     }
 
@@ -338,8 +376,23 @@ final class LotDress
     /** A crashed helicopter in the middle, two dead beside it, an ammo case and debris thrown ahead. */
     private void helicopter()
     {
+        // drawn 9.4 x 14 and lopsided (facing north or west it reaches 8.3 past its block, south or east 6.7):
+        // every heading from a random one, the anchor shifted so the long side stays on the lot
         Block heli = deci("BlockWreckageMilitary3");
-        if (heli == null || !face("BlockWreckageMilitary3", 8, 8, roll() & 3))
+        boolean placed = false;
+        int first = roll() & 3;
+        for (int t = 0; t < 4 && !placed && heli != null; t++)
+        {
+            int dir = (first + t) & 3;
+            for (int a : new int[] {8, 7, 9})
+            {
+                if (!placed && face("BlockWreckageMilitary3", dir == 2 ? a - 1 : a, dir == 3 ? a - 1 : a, dir))
+                {
+                    placed = true;
+                }
+            }
+        }
+        if (!placed)
         {
             Dress.note("~wasteland helicopter did not fit");
             return;

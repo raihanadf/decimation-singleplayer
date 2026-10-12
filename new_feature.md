@@ -844,7 +844,8 @@ its wasteland holds the military base, camp and bunker with military loot, the r
 industrial loot. Ours: the whole district one MILITARY zone, military buildings more often (new
 worlds), military loot in its containers, army supplies, wartime stories, zone entry checkpoints,
 military vehicles, fighting positions, military lot scenes, enemy military groups on its streets.
-Dev test `wasteland`. Waiting for the user's look.
+Dev test `wasteland`. v0.54.1: the weak spots (alike military buildings, few lots, unseen lot
+scenes, patrol spots) fixed, docs/wasteland.md "v0.54.1". Waiting for the user's look.
 
 ### Zones, factions and world (user list 9 Oktober 2026, "later")
 Only the list and starting points; scope of each is `[not decided]`, ask
