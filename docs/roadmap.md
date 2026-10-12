@@ -54,7 +54,9 @@ or `[not decided]`.
    v0.43.0 to v0.43.3 (new_feature.md "Gunshot noise"; NPCs ignore creative players).
 3. **Sniper NPC nerf**: DONE v0.42.5 (documentation.md balance list).
 4. **NPC loot system** (user, 10 Oktober 2026, new feature): what NPCs drop
-   when killed, how it works, the rewards per tier; design first (ask).
+   when killed, how it works, the rewards per tier. DESIGN DRAFT 13 Oktober 2026 with the crate
+   levels (docs/loot_levels.md: a lootable body per NPC, contents per tier); waiting for the user's
+   review of the lists, then build.
 5. **Smart NPCs** (user, 10 Oktober 2026, "later, idk yet like what").
    Ideas to be collected with the user before any design.
 

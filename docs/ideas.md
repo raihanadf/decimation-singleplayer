@@ -19,6 +19,7 @@ first (questions with options) before any code. Priority now: finish the current
     higher level crates would go there first. Not designed yet (how many levels, which pools, how the
     level shows on the crate, where each level spawns); same notes as item 1 on Decimation's
     hardcoded pools.
+    DESIGN DRAFT 13 Oktober 2026 (user choices taken): docs/loot_levels.md.
 
 ## NPCs
 3. **More military NPC outfits** (skins / armour looks per tier).
