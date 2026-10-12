@@ -103,11 +103,14 @@ Rules in the code, and whether they run in singleplayer (SP) before v0.46.0:
   line and the newturf sound. Works in singleplayer (integrated server) and on servers, in old worlds
   too (districts follow from the seed; bases only once generated with v0.52).
 - Traps: the client strips every space from turf entries (names travel with "_"; the banner turns
-  "_" into spaces, PatchTurfNames makes the chat line do the same, three jars); a turf box inside a
+  "_" into spaces, PatchTurfNames makes the chat line do the same, three jars; since v0.52.1 also
+  the floating name ClanTurfLayer (deci.M.l) draws over the middle of the turf the player stands in,
+  at y 130); a turf box inside a
   safezone box makes IngameHud switch between the two messages every frame, so safezone boxes are
   cut out of district boxes (PlaceNames.cut); turf boxes span y 0..255.
 - Check: dev test `places` (two neighbouring districts and the wilderness: client list has the
-  names, shots docs/shots/place_names_v0.52/); servertest log "place NAME (OWNER) at x,z".
+  names, shots docs/shots/place_names_v0.52/; v0.52.1 adds a shot of the floating name over the
+  second district's middle); servertest log "place NAME (OWNER) at x,z".
 
 ## 4. The client side
 

@@ -932,3 +932,13 @@ the first multiblock part per 4 block bucket as the master, so a shelf standing 
 top part (y 12, next bucket) reported "nothing under it"; an upper part (same block below) is now
 skipped. Also: `devtest.py MODE key=value` in a one launch run does not pass the option (only
 -P flags the Gradle script knows); use `--live MODE key=value`.
+
+## District name floating over the city showed "_" for spaces (user report 12 Oktober 2026, FIXED v0.52.1)
+
+User: "underline _ show up on text heading city (not screen text) but actually on the zone it is".
+Besides the banner and the chat line, Decimation's ClanTurfLayer (deci.M.l, a world render layer)
+draws the name of the turf the player stands in as floating text over the turf's middle (x / z
+middle, y 127 + 3 for our 0..255 boxes). Our names travel with "_" (the client strips spaces), and
+that layer printed them raw. Fix: tools/patches/PatchTurfNames.java argument `layer` turns "_"
+into spaces in its 7 text calls (three jars). Check: dev test `places` last shot looks at the
+floating name over the second district.

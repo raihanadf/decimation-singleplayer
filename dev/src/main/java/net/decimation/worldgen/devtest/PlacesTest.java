@@ -12,8 +12,9 @@ import net.minecraft.world.World;
  * Place names (worldgen/PlaceNames, docs/zones.md "Place names"): finds two neighbouring city
  * districts and a spot outside every city near the world's middle, walks the test player into each
  * (3 s apart), checks the client's turf list holds the district names, and takes a shot each time
- * (Decimation's "ENTERING LOCATION" banner and the "Now entering ..." chat line). Shots
- * places_<n>.png.
+ * (Decimation's "ENTERING LOCATION" banner and the "Now entering ..." chat line), then flies up to
+ * the floating name ClanTurfLayer draws over the second district's middle (y 130; v0.52.1: spaces,
+ * not "_"). Shots places_<n>.png.
  */
 public class PlacesTest extends DevTestMode
 {
@@ -75,9 +76,9 @@ public class PlacesTest extends DevTestMode
         {
             double[] s = spots.get(i);
             w.getChunkProvider().loadChunk((int) s[0] >> 4, (int) s[2] >> 4);
-            int y = w.getTopSolidOrLiquidBlock((int) s[0], (int) s[2]) + 1;
+            int y = w.getTopSolidOrLiquidBlock((int) s[0], (int) s[2]) + 7;
             p.capabilities.isFlying = true;
-            p.playerNetServerHandler.setPlayerLocation(s[0], y + 6, s[2], 0, 20);
+            p.playerNetServerHandler.setPlayerLocation(s[0], s[1] > 0 ? s[1] : y, s[2], 0, s.length > 3 ? (float) s[3] : 20);
         }
     }
 
@@ -117,6 +118,13 @@ public class PlacesTest extends DevTestMode
                     break;
                 }
             }
+        }
+        // the floating turf name over the second district's middle (ClanTurfLayer: x / z middle, y 127 + 3)
+        if (spots.size() >= 2)
+        {
+            double[] d = spots.get(1);                  // the second district: downtown towers hid the name
+            spots.add(new double[] {d[0] + 24, 128.4, d[2] + 24 - 10, 0});
+            expect.add(expect.get(1));
         }
         DevTestResults.check(name(), "found districts", spots.size(), spots.size() >= 2, ">= 2");
     }

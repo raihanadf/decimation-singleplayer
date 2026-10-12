@@ -11,6 +11,12 @@ How shots are made: `./gradlew runClient -Pautotest` (street views),
 `-Paudit` (building audit), `-Pgallery` (prop gallery); output in
 `dev/run/client/screenshots/`, then copied here into a versioned folder.
 
+## place_names_v0.52.1/ (dev test places, 12 Oktober 2026)
+- places_3_floating_name.png: flying at y 128 in the Suburbs district looking south at its middle:
+  ClanTurfLayer's floating name "Hollowhaven: Suburbs - 6" over the district with spaces (was "_",
+  user report); chat "Now entering Hollowhaven: Suburbs - 6". A first try in the Downtown district
+  stood inside a tower and the wall hid the name.
+
 ## place_names_v0.52/ (dev test places, 12 Oktober 2026)
 - sheet_places.png: places_0 Decimation's banner "HOLLOWHAVEN: DOWNTOWN - 5" / "ENTERING LOCATION"
   over the city and the chat line "Now entering Hollowhaven: Downtown - 5" (spaces shown);

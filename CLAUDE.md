@@ -301,7 +301,8 @@ SRG→MCP from the old root `src/` via `mcp_stable/12` CSVs; the root `src/` +
   reads a class path as a jar only if it ends in `.jar`, so feed it
   dist/Decimation.jar, not Decimation.jar.patched);
   `PatchTurfNames.java` (2026-10-12, docs/zones.md "Place names"): IngameHud chat lines turn "_"
-  into spaces (turf names travel with "_");
+  into spaces (turf names travel with "_"); argument `layer` (v0.52.1): the same for the floating
+  turf name of ClanTurfLayer (deci/M/l);
   `PatchVehicleArrows.java` (2026-10-11, bug.md vehicle entry): indirect player hits
   (arrows, thrown, TNT) on deci/ad/e take the health path, not pickup;
   `PatchInfectedAI.java` (2026-10-10, docs/performance.md): infected
@@ -823,6 +824,8 @@ of the last session:
   (city/CityNames) and named bases (NamedPlace, StructureData) as Decimation's turf list; banner +
   chat + sound by Decimation's IngameHud; PatchTurfNames (three jars) shows "_" as spaces in chat;
   safezones cut out of district boxes. Dev test `places`.
+  v0.52.1: the floating turf name over a district's middle (ClanTurfLayer) shows spaces too
+  (PatchTurfNames layer, three jars).
   Gun study (10 Oktober 2026): docs/gun_style_guide.md, tools/guns/study.py
   (renders / measures Decimation's guns from the jar, `attach` adds
   attachments as the game places them), dev test mode `gunview` (hip, aim

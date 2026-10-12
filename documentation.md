@@ -163,6 +163,7 @@ boot. Falls straight through to the mod's own (re-skinned) main menu after that.
   banner and chat line with its name, like "Hollowhaven: Downtown - 5" (wasteland districts are
   controlled by the Military); military bases are named too ("FOB Viper", "COP Thunder"). Leaving
   every named place says "Now entering the Wilderness". Works in existing worlds for cities.
+  v0.52.1: the name floating over the middle of the district shows spaces, not "_".
 - **City full of props, part 2 (v0.51.0)**: shop signs over shop doors and graffiti on outer walls,
   parks with bins, chess tables and lamps, empty lots with parked cars, a survivor's camp spot or a
   dumping ground, traffic jams of abandoned cars heading out of the city near its edges, and the
