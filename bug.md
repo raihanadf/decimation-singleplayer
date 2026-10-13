@@ -10,6 +10,24 @@ not something we introduced or need to fix) see `documentation.md`.
 
 ## Open
 
+### Every Decimation mob drawn solid black on a fresh Windows install (reported 13 Oktober 2026, Open)
+- User: on the brother's Windows laptop (fresh Prism, Java provisioned by Prism, first Minecraft ever),
+  "all mobs decimation from zombie, animals, etc is rendered black". The user's Mac renders them fine.
+- What the code says: every mob texture comes from the jar (ModelHuman binds body / eyes / hair / shirt
+  / pants / shoes PNGs per variant; animals use plain RenderLiving), so a missing texture would show
+  Minecraft's purple / black checkerboard, not solid black. Solid black on every mob points at entity
+  LIGHTING: blocks are lit by the lightmap only, mobs and held / dropped items also by OpenGL's fixed
+  function lights (RenderHelper.enableStandardItemLighting); a driver that gets those wrong draws them
+  black while the world looks right [inferred: not reproduced, GPU and log not seen].
+- Our own code: only SightReticle and ScopeZoom touch lighting / texture state, both inside
+  glPushAttrib / glPopAttrib and only while a gun or scope is drawn; nothing of ours runs per mob
+  [checked in code]. Decimation has no shaders (no GL20 / ARB program calls).
+- Needed: logs/fml-client-latest.log and latest.log from that instance, the GPU (Task Manager,
+  Performance), a screenshot; are the player's hand, held items, dropped items and the player in F5 also
+  black; day and night alike. Things to try there: Windows Graphics settings, javaw.exe on the
+  high performance GPU (if the laptop has two), a GPU driver update [not verified as a fix].
+- Possible fix on our side once confirmed: an option to draw mobs without the fixed function lights.
+
 ### Water spread over a wasteland crossing once in the bridge test (seen 13 Oktober 2026, Open, not reproduced)
 - Live `bridge` run (district at 31664,1536): 100 water blocks at street level on a crossing beside
   the test bridge (flowing on the road from its west part, no source found in the chunk layers read).
@@ -50,7 +68,7 @@ not something we introduced or need to fix) see `documentation.md`.
   moves), nothing before a glass was measured. Dev test `scope` PASS, the 2x / red dot glass still shows
   the world (docs/shots/bugs_v0.58/sheet_scope.png). Not measured on a weak GPU.
 
-### Left click does nothing with fists or melee (reported 13 Oktober 2026 by a friend, Open, not reproduced)
+### Left click does nothing with fists or melee (reported 13 Oktober 2026 by a friend, CLOSED: not our bug)
 - User: "left mouse click is not usable, except gun it can shot, but cant click left mouse button with
   melee and hit block too".
 - What Decimation does: while a gun is held it unbinds the attack key (keyBindAttack code 0; the gun
@@ -78,6 +96,8 @@ not something we introduced or need to fix) see `documentation.md`.
   binding is not the left button on that install: rebound to something else (never restored: only 0 is),
   or another control holding the left button (a key conflict: only one binding per code gets it), or
   another mod taking the mouse. [inferred: their options.txt / Controls screen not seen]
+- Closed (user, 13 Oktober 2026): the friend had changed the button binding before ("caused by button
+  type he changed before"); the same release on the user's brother's Windows laptop clicks fine.
 - To check on the friend's game: Options > Controls, "Attack/Destroy" must read "Button 1" with no red
   conflict; or options.txt line `key_key.attack:-100`; and their mods folder.
 
