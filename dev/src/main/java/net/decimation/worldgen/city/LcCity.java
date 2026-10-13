@@ -71,6 +71,12 @@ public final class LcCity
         plansEpoch++;
     }
 
+    /** Dev scan of the wasteland gates around a point (WastelandFence.scan; DevPregen, -Ddeciworldgen.gatescan). */
+    public static void gateScan(long seed, int x, int z, int r)
+    {
+        WastelandFence.scan(seed, x, z, r);
+    }
+
     /** Layout rules changed outside the city package (city refuges switched): cached plans are dropped. */
     public static void layoutChanged()
     {

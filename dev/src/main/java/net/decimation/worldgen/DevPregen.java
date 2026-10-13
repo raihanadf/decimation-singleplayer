@@ -11,7 +11,8 @@ import net.minecraft.world.WorldServer;
  * structures can be checked in the world files without a player walking
  * there. Inert unless the JVM runs with -Ddeciworldgen.pregen=x,z,radius
  * (block coordinates, radius in chunks; set by `gradlew runServer
- * -Ppregen=x,z,r`, see tools/servertest.py). Server side only classes.
+ * -Ppregen=x,z,r`, see tools/servertest.py). -Ddeciworldgen.gatescan=x,z,r (blocks) first logs the
+ * wasteland gates there (city/WastelandFence.scan). Server side only classes.
  */
 public class DevPregen
 {
@@ -26,6 +27,16 @@ public class DevPregen
             return;
         }
         done = true;
+        String scan = System.getProperty("deciworldgen.gatescan");
+        if (scan != null)
+        {
+            // the wasteland gates around a point by the generator's own decisions, nothing generated
+            String[] s = scan.split(",");
+            WorldServer w0 = MinecraftServer.getServer().worldServerForDimension(0);
+            net.decimation.worldgen.city.LcCity.gateScan(w0.getSeed(), Integer.parseInt(s[0].trim()), Integer.parseInt(s[1].trim()),
+                                                         Integer.parseInt(s[2].trim()));
+            FMLLog.info("[%s] GATESCAN done around %s", DecimationWorldGen.MODID, scan);
+        }
         String[] p = System.getProperty(PROPERTY, "").split(",");
         if (p.length != 3)
         {

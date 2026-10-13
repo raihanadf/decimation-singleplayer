@@ -921,6 +921,9 @@ of the last session:
   cannot take a full one (gates on bridge decks too: no plain connector), T junctions at every city edge
   (StreetPlan.arms: our own streets close sides with no street or highway beyond), edge gates of the land fence
   closed with the same closures (WastelandFence.landGate, 1 in 20 a broken gap, no road).
+  Gate checks: `servertest.py SEED type=decimation gatescan=x,z,r` logs every connector and edge gate around a point
+  without generating (then pregen only around a hit); dev test `gatewalk` pushes infected down every lane of the toll
+  and compact toll in each state (shut 0 of 10 through, open > 0; run at night, infected burn by day).
   Gun study (10 Oktober 2026): docs/gun_style_guide.md, tools/guns/study.py
   (renders / measures Decimation's guns from the jar, `attach` adds
   attachments as the game places them), dev test mode `gunview` (hip, aim

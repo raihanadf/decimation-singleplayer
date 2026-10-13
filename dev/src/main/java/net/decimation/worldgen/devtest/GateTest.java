@@ -135,7 +135,7 @@ public class GateTest extends DevTestMode
      * A stone pad 6 around at the street surface (Y), cleared air above, then every cell of the plan written
      * straight (canvas y 0 = Y); landmine markers spawn mines. Returns the mines spawned.
      */
-    private static int build(World w, CityGatePlan plan)
+    static int build(World w, CityGatePlan plan)
     {
         int base = Y, mines = 0;
         // one layer of pad at the surface round the plan (thick pads cost seconds of sky light updates each)

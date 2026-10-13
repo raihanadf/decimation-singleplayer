@@ -374,7 +374,7 @@ public class DecimationWorldGen
             new net.decimation.fixes.MultiblockRepairHandler());
         FMLLog.info("[%s] multiblock prop repair registered", MODID);
 
-        if (System.getProperty(DevPregen.PROPERTY) != null)
+        if (System.getProperty(DevPregen.PROPERTY) != null || System.getProperty("deciworldgen.gatescan") != null)
         {
             cpw.mods.fml.common.FMLCommonHandler.instance().bus().register(new DevPregen());
             FMLLog.info("[%s] PREGEN enabled", MODID);

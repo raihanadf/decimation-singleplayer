@@ -130,6 +130,12 @@ general: decimation-props; all of them: decimation-worldgen.
 25. A trench or anything dug into the street reads as a hole in the road, not a barrier: the user rejected
    the tank ditch. Barriers stand on the road (walls, HESCO, vehicles, wire).
 
+26. Test that a barrier stops bodies, not only that it was built: push mobs down every lane with a step of
+   1.1 (a jump) and count who gets past (dev test gatewalk). Build the surroundings the real place has (the
+   fence beside a gate, else they walk round its end) and test at night (infected burn by day). Rare
+   variants (5 %) are found by scanning the decisions over a large area first (servertest gatescan), then
+   generating only around a hit.
+
 ## Casebook (never delete a case)
 
 ### Case 1: bridges did not match the roads (v0.45.0 -> v0.45.1, 11 Oktober 2026)
@@ -253,3 +259,5 @@ general: decimation-props; all of them: decimation-worldgen.
   to the street, tie break toward the straight side).
 - Check: seed 1 server, 15 connectors none plain, T at the west land edge, edge buses level with posts on
   the line; dev test gates 30 looks x states.
+- Untested items closed after the push: gatescan over 3000 blocks (rates as designed), compact toll and broken
+  edge gate generated and read back, 25 landmines saved at two wire gates, gatewalk all PASS.

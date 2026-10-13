@@ -36,10 +36,14 @@ final class WastelandFence
         return b == null || b == Blocks.air ? null : b;
     }
 
-    /** One column at (x, z) whose top block is at y, owned by the city edge of cell (cx, cz). */
-    static void column(World w, long seed, int cx, int cz, int x, int z, int y)
+    /**
+     * Where column (x, z) lies against the wasteland cells around cell (cx, cz): {d (Chebyshev distance out of
+     * the nearest one), ox, oz (distance along x / z), street level g, gate (1 when the edge street chunk in
+     * front runs out here, straight sides only), nsSide (1 on a north / south side), bchx, bchz (that edge
+     * chunk)}, or null when no wasteland cell is near.
+     */
+    private static int[] edgeInfo(long seed, int cx, int cz, int x, int z)
     {
-        // the nearest wasteland cell, and how far out of it the column lies along x and z
         int best = Integer.MAX_VALUE, ox = 0, oz = 0, ex = 0, ez = 0, g = 0;
         for (int i = -1; i <= 1; i++)
         {
@@ -65,10 +69,9 @@ final class WastelandFence
                 }
             }
         }
-        int d = best;
-        if (d < 1 || d > MINES_TO)
+        if (best == Integer.MAX_VALUE)
         {
-            return;
+            return null;
         }
         // a gate: the edge chunk in front is a street running out (straight sides only, not corners)
         boolean nsSide = oz > 0 && ox == 0, weSide = ox > 0 && oz == 0;
@@ -79,7 +82,20 @@ final class WastelandFence
             int[] b = block(seed, Math.floorDiv(bchx, CELL), Math.floorDiv(bchz, CELL));
             gate = nsSide ? bchx - b[0] * CELL == 0 : bchz - b[1] * CELL == 0;
         }
-        if (gate)
+        return new int[] {best, ox, oz, g, gate ? 1 : 0, nsSide ? 1 : 0, bchx, bchz};
+    }
+
+    /** One column at (x, z) whose top block is at y, owned by the city edge of cell (cx, cz). */
+    static void column(World w, long seed, int cx, int cz, int x, int z, int y)
+    {
+        int[] e = edgeInfo(seed, cx, cz, x, z);
+        if (e == null || e[0] < 1 || e[0] > MINES_TO)
+        {
+            return;
+        }
+        int d = e[0], ox = e[1], oz = e[2], g = e[3], bchx = e[6], bchz = e[7];
+        boolean nsSide = e[5] == 1;
+        if (e[4] == 1)
         {
             int a = nsSide ? x & 15 : z & 15;
             if (a >= SIDEWALK - 1 && a <= 16 - SIDEWALK && landGate(w, seed, x, z, d, nsSide, a, y, g, bchx, bchz))
@@ -384,8 +400,7 @@ final class WastelandFence
      */
     private static boolean landGate(World w, long seed, int x, int z, int d, boolean nsSide, int a, int y, int g, int bchx, int bchz)
     {
-        long h = hl(seed ^ 0x45444745L, bchx, bchz);
-        int state = h % 20 == 0 ? CityGateState.OPEN : 1 + (int) ((h >>> 20) % 4);
+        int state = landState(seed, bchx, bchz);
         boolean post = a == SIDEWALK - 1 || a == 16 - SIDEWALK;
         Block metal = deci("BlockMetal_2"), wire = deci("BlockConcertinaWire");
         boolean solid = state == CityGateState.STEEL || state == CityGateState.HESCO || state == CityGateState.BUS;
@@ -514,6 +529,66 @@ final class WastelandFence
                     return true;
                 }
                 return false;
+        }
+    }
+
+    /** An edge gate's state by its street chunk: 1 in 20 broken open, else one of the four closures. */
+    static int landState(long seed, int bchx, int bchz)
+    {
+        long h = hl(seed ^ 0x45444745L, bchx, bchz);
+        return h % 20 == 0 ? CityGateState.OPEN : 1 + (int) ((h >>> 20) % 4);
+    }
+
+    /**
+     * Dev scan (-Ddeciworldgen.gatescan=x,z,r, blocks; DevPregen): logs every inside gate (through buildGate's own
+     * "lc gate" lines) and every edge gate ("lc edge gate STATE at x,z") within r of (x, z) by the same
+     * decisions the generator makes, without generating anything; then generate only around the hits.
+     */
+    public static void scan(long seed, int x0, int z0, int r)
+    {
+        int reg = net.decimation.worldgen.Sectors.REGION_BLOCKS, cellB = CELL * 16;
+        for (int rx = Math.floorDiv(x0 - r, reg); rx <= Math.floorDiv(x0 + r, reg); rx++)
+        {
+            for (int rz = Math.floorDiv(z0 - r, reg); rz <= Math.floorDiv(z0 + r, reg); rz++)
+            {
+                for (int k = 0; k < reg / 16; k += CELL)
+                {
+                    gateAt(seed, 0, rx * reg, rz * (reg / 16) + k);
+                    gateAt(seed, 1, rz * reg, rx * (reg / 16) + k);
+                }
+            }
+        }
+        java.util.Set<Long> seen = new java.util.HashSet<Long>();
+        for (int cx = Math.floorDiv(x0 - r, cellB); cx <= Math.floorDiv(x0 + r, cellB); cx++)
+        {
+            for (int cz = Math.floorDiv(z0 - r, cellB); cz <= Math.floorDiv(z0 + r, cellB); cz++)
+            {
+                if (!Wasteland.deadCell(seed, cx, cz))
+                {
+                    continue;
+                }
+                for (int k = 0; k < cellB; k++)
+                {
+                    int[][] cols = {{cx * cellB - FENCE, cz * cellB + k}, {cx * cellB + cellB - 1 + FENCE, cz * cellB + k},
+                        {cx * cellB + k, cz * cellB - FENCE}, {cx * cellB + k, cz * cellB + cellB - 1 + FENCE}};
+                    for (int[] c : cols)
+                    {
+                        int ocx = Math.floorDiv(c[0] >> 4, CELL), ocz = Math.floorDiv(c[1] >> 4, CELL);
+                        if (isCity(seed, ocx, ocz) && !Wasteland.deadCell(seed, ocx, ocz))
+                        {
+                            continue;                         // inside the city: not the land fence
+                        }
+                        int[] e = edgeInfo(seed, ocx, ocz, c[0], c[1]);
+                        if (e == null || e[0] != FENCE || e[4] != 1 || !seen.add(((long) e[6] << 32) ^ (e[7] & 0xffffffffL)))
+                        {
+                            continue;
+                        }
+                        int st = landState(seed, e[6], e[7]);
+                        cpw.mods.fml.common.FMLLog.info("[deciworldgen] lc edge gate %s at %d,%d,%d",
+                                                        net.decimation.worldgen.military.CityGate.STATES[st], c[0], e[3], c[1]);
+                    }
+                }
+            }
         }
     }
 

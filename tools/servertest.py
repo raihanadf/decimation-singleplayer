@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Fresh dev dedicated server run: new world with SEED, wait for spawn
 generation, stop (saves), print our placement log lines.
-usage: python3 tools/servertest.py SEED [keep] [pregen=x,z,r] [type=decimation] [cmd="console command;;another"]
+usage: python3 tools/servertest.py SEED [keep] [pregen=x,z,r] [gatescan=x,z,r] [type=decimation] [cmd="console command;;another"]
   keep = reuse the existing world; pregen = also generate chunks around x,z;
   type = level-type (default DEFAULT)"""
 import os, re, shutil, signal, subprocess, sys, time
@@ -27,6 +27,8 @@ args = ["./gradlew", "runServer", "--no-configuration-cache", "-q"]
 for a in sys.argv[2:]:
     if a.startswith("pregen="):
         args.append("-Ppregen=" + a.split("=", 1)[1])
+    if a.startswith("gatescan="):
+        args.append("-Pgatescan=" + a.split("=", 1)[1])   # x,z,r: log the wasteland gates there (WastelandFence.scan)
     if a == "debugsets":
         args.append("-Pdebugsets")
     if a == "dress":
@@ -39,7 +41,8 @@ ok = False
 while time.time() < deadline:
     time.sleep(2)
     s = open(LOG, errors="ignore").read()
-    if "Done (" in s and ("pregen=" not in " ".join(sys.argv) or "PREGEN done" in s):
+    if "Done (" in s and ("pregen=" not in " ".join(sys.argv) or "PREGEN done" in s) \
+            and ("gatescan=" not in " ".join(sys.argv) or "GATESCAN done" in s):
         ok = True
         break
     if p.poll() is not None:

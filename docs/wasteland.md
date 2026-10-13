@@ -153,6 +153,17 @@ edge gates shut with the same closures.
   slope came out jagged); the wire version adds wire both sides and mines one cell in three outside.
   Wasteland cell ties go to the side the column lies straight out from (a gate's first columns took the
   next cell's corner and kept the plain fence).
+- Checked after the user's push (14 Oktober 2026): `servertest.py 1 type=decimation gatescan=0,0,3000` (the gate
+  decisions without generating, city/WastelandFence.scan): 188 connector gates, 21 % open (aim 20 %), 11
+  compact tolls, no plain; 195 edge gates, 4 % open (aim 5 %). Generated and read back: the compact toll
+  (open) at 136,70,-1024 (booth x 134..137 on the line and the crossing's rows, canopy, lamp, door on the far
+  side, lanes clear, scorch, skeleton); the broken edge gate at -896,64,508 (stubs at x -893 / -884,
+  scorched ground both sides, wire scrap, skeleton, the street ending in sidewalk at z 512); the wire gates
+  at 1544,64,512 and 1536,64,520 saved 25 Decimation landmines in their chunks, all in the rows the canvas
+  puts them. Dev test `gatewalk` (infected pushed down every lane with a 1.1 step, at night, line fence beside
+  the gate): every shut toll and compact toll stopped 10 of 10 lanes (two runs); both open ones let 6 of 10
+  through (the two traffic lanes; the booth island blocks the middle). Test traps found on the way: infected
+  burn in daylight in the sky; a sky gate without the line's fence beside it lets bodies walk round its end.
 - Checked: seed 1 server (pregen 1472,448,18): 15 connector gates, no plain; west land edge: the crossing's
   arm toward the land is sidewalk (T); the edge gates at z 320 and 448 are buses level at y 65..67 across
   z 323..332 with posts at both ends on the fence line.

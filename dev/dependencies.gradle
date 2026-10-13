@@ -156,6 +156,9 @@ tasks.matching { it.name == "runServer" }.configureEach {
     if (project.hasProperty("pregen")) {
         jvmArgs("-Ddeciworldgen.pregen=" + project.property("pregen"))
     }
+    if (project.hasProperty("gatescan")) {
+        jvmArgs("-Ddeciworldgen.gatescan=" + project.property("gatescan"))
+    }
     if (project.hasProperty("debugsets")) {
         jvmArgs("-Ddeciworldgen.debugsets=true")
     }
