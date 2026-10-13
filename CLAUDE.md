@@ -910,6 +910,8 @@ of the last session:
   5 x 5 sectors, one compact city each, 1 wasteland sector per 4 beside a military sector; new worlds only
   (`!citySizes`, ON by default: a new world's spawn search runs before WorldEvent.Load). Caches of sector
   answers must carry CityLayout.epoch(). tools/hwmap.py knows only the old layout.
+  v0.60.2: refuges in sized cities 1 per 4 city sectors (round, at least 1, spread apart, never wasteland;
+  LcCity.refugeSectors; user 13 Oktober 2026). Releases are batched (user): no upload per small version.
   Gun study (10 Oktober 2026): docs/gun_style_guide.md, tools/guns/study.py
   (renders / measures Decimation's guns from the jar, `attach` adds
   attachments as the game places them), dev test mode `gunview` (hip, aim

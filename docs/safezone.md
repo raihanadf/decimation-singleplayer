@@ -6,7 +6,8 @@ camp of our own generator AND a fortified city building, guards friendly unless 
 (provocation removed later, v0.47.2: friendlies get hit by accident),
 traders, guards, unarmed civilians and armed survivors. The zone rules are docs/zones.md
 (v0.46.0). This doc: the sites. v0.47.0 builds the survivor camps outside cities; v0.48.0 the
-fortified city building ("city refuge", section 7), one per city region.
+fortified city building ("city refuge", section 7), one per city region (worlds since v0.60.0:
+one per 4 city sectors, docs/city_engine.md "City sizes").
 
 ## 1. References (research 11 Oktober 2026)
 
@@ -145,7 +146,7 @@ training https://www.vdh.virginia.gov/content/uploads/sites/17/2022/02/MRC-Shelt
 Code: worldgen/military/CityRefuge (canvas 48 x 48 x 21, gate south) and CityRefugePlan
 (CanvasPlan + FixedBase + Residents: ground floor at the city ground, no grading, Slices adds the
 SAFEZONE box 2 around and the residents with wall inset 4). Placement: LcCity.refuge(seed, rx,
-rz) picks, per city region (4 x 4 cells), the plain block (no superblock, no river chunk)
+rz) picks, per city region (4 x 4 cells; with city sizes only the regions LcCity.refugeSectors takes), the plain block (no superblock, no river chunk)
 nearest the region's middle (ties by hash), turned so the gate opens on a street at the block's
 own ground (west / north are its own streets, east / south only when the next cell is at the
 same level), toward the region's middle when possible. LcCity.plan() then puts the refuge plan

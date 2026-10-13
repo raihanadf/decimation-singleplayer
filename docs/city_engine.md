@@ -429,8 +429,11 @@ compact blobs, cities and roads less rare, 1 wasteland sector per 4 city sectors
   ...), fence and gates on their edge, streets joined, highways in from the west and north
   (docs/shots/city_sizes_v0.60/topdown_seed1_48districts.png). Live dev world (older): "city sizes off",
   dev test places PASS.
-- Not changed: one refuge per city sector outside the wasteland (a 64 district city can have up to 12;
-  user to decide), rails per highway line. `tools/hwmap.py` and the Python sector copies know only the
+- Refuges (v0.60.2, user 13 Oktober 2026: "1 per 4 sectors"): round(sectors / 4), at least 1, so 1 / 1 / 1 /
+  2 / 3 / 4 for cities of 4 / 8 / 16 / 24 / 48 / 64 districts, never in a wasteland sector, spread apart
+  (LcCity.refugeSectors: the first nearest the city's middle, each next the sector farthest from those taken;
+  a sector with no block that fits is skipped for the next). Older worlds keep one per city sector.
+- Not changed: rails per highway line. `tools/hwmap.py` and the Python sector copies know only the
   old layout [their maps are wrong for new worlds].
 
 ## Verified (seed 1, Decimation world type, fresh server world)

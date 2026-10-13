@@ -6,7 +6,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
+import net.decimation.worldgen.CityLayout;
 import net.decimation.worldgen.Plan;
 import net.decimation.worldgen.Sectors;
 import net.decimation.worldgen.Slices;
@@ -616,11 +619,8 @@ public final class LcCity
     }
 
     /**
-     * The city refuge of a city region (one per region, docs/safezone.md): {cell x, cell z, turns}
-     * of the building block nearest the region's middle that is a plain block (no superblock) with
-     * no river chunk; turns put the gate (canvas south) on a street at the block's own ground, toward
-     * the region's middle when possible (0 south, 1 west, 2 north, 3 east). Null when the region is
-     * no city or no block qualifies.
+     * The city refuge of a city region (docs/safezone.md): {cell x, cell z, turns}, or null. Old layout:
+     * every city region has one. City sizes (CityLayout): only the regions refugeSectors picks.
      */
     public static int[] refuge(long seed, int rx, int rz)
     {
@@ -628,6 +628,111 @@ public final class LcCity
         {
             return null;                                  // no safezone in a wasteland city
         }
+        if (CityLayout.on() && !refugeSectors(seed, rx, rz).contains(CityLayout.key(rx, rz)))
+        {
+            return null;
+        }
+        return refugeBlock(seed, rx, rz);
+    }
+
+    private static final Map<Long, Set<Long>> REFUGES = new ConcurrentHashMap<Long, Set<Long>>();
+    private static volatile long refugesSeed;
+    private static volatile int refugesStamp;
+
+    /**
+     * The regions of a city (CityLayout) that hold a refuge (user, 13 Oktober 2026: "1 per 4 sectors"):
+     * round(size / 4), at least 1, never a wasteland sector, spread apart: the first nearest the city's
+     * middle, each next one farthest from those taken. A region without a block that qualifies is skipped
+     * for the next candidate.
+     */
+    static Set<Long> refugeSectors(long seed, int rx, int rz)
+    {
+        int stamp = CityLayout.epoch() * 31 + plansEpoch;
+        if (seed != refugesSeed || stamp != refugesStamp || REFUGES.size() > 4096)
+        {
+            REFUGES.clear();
+            refugesSeed = seed;
+            refugesStamp = stamp;
+        }
+        long cell = CityLayout.key(Math.floorDiv(rx, CityLayout.CELL), Math.floorDiv(rz, CityLayout.CELL));
+        Set<Long> got = REFUGES.get(cell);
+        if (got == null)
+        {
+            got = pickRefuges(seed, CityLayout.planAt(seed, rx, rz));
+            REFUGES.put(cell, got);
+        }
+        return got;
+    }
+
+    private static Set<Long> pickRefuges(long seed, CityLayout.Plan p)
+    {
+        Set<Long> out = new java.util.HashSet<Long>();
+        List<int[]> left = new ArrayList<int[]>();
+        double mx = 0, mz = 0;
+        for (long k : p.city)
+        {
+            int x = (int) (k >> 32), z = (int) k;
+            mx += x;
+            mz += z;
+            if (!p.waste.contains(k))
+            {
+                left.add(new int[] {x, z});
+            }
+        }
+        if (p.city.isEmpty())
+        {
+            return out;
+        }
+        mx /= p.city.size();
+        mz /= p.city.size();
+        int want = Math.max(1, Math.round(p.size / 4f));
+        List<int[]> taken = new ArrayList<int[]>();
+        while (taken.size() < want && !left.isEmpty())
+        {
+            int[] best = null;
+            double bestScore = 0;
+            long bestTie = 0;
+            for (int[] c : left)
+            {
+                double score;
+                if (taken.isEmpty())
+                {
+                    score = -((c[0] - mx) * (c[0] - mx) + (c[1] - mz) * (c[1] - mz));
+                }
+                else
+                {
+                    score = Double.MAX_VALUE;
+                    for (int[] t : taken)
+                    {
+                        score = Math.min(score, (c[0] - t[0]) * (c[0] - t[0]) + (c[1] - t[1]) * (c[1] - t[1]));
+                    }
+                }
+                long tie = hl(seed ^ 0x52454648L, c[0], c[1]);
+                if (best == null || score > bestScore || score == bestScore && tie < bestTie)
+                {
+                    best = c;
+                    bestScore = score;
+                    bestTie = tie;
+                }
+            }
+            left.remove(best);
+            if (refugeBlock(seed, best[0], best[1]) != null)
+            {
+                taken.add(best);
+                out.add(CityLayout.key(best[0], best[1]));
+            }
+        }
+        return out;
+    }
+
+    /**
+     * The refuge block of a city region: {cell x, cell z, turns} of the building block nearest the
+     * region's middle that is a plain block (no superblock) with no river chunk; turns put the gate
+     * (canvas south) on a street at the block's own ground, toward the region's middle when possible
+     * (0 south, 1 west, 2 north, 3 east). Null when no block qualifies.
+     */
+    private static int[] refugeBlock(long seed, int rx, int rz)
+    {
         int cells = Sectors.REGION / CELL;
         List<int[]> order = new ArrayList<int[]>();
         for (int i = 0; i < cells; i++)

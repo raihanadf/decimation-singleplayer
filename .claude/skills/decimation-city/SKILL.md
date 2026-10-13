@@ -112,6 +112,9 @@ general: decimation-props; all of them: decimation-worldgen.
 20. When the user's numbers and their reason disagree (bigger cities but "the same city land", while
    saying cities are too rare), show the consequence in numbers and ask once; if the answer is still
    unclear, follow the stated reason and make the numbers a config.
+21. When a feature scales up (bigger cities), recount everything placed "one per city part" (refuges were
+   one per sector: 12 in a 64 district city). Ask the user for the count, then spread the picks apart and
+   let a pick that does not fit fall to the next candidate (LcCity.refugeSectors).
 
 ## Casebook (never delete a case)
 
@@ -205,3 +208,10 @@ general: decimation-props; all of them: decimation-worldgen.
 - Check: CityLayout main on seed 1 (24.3 % land, shares as weighted), seed 1 server top down of a 48
   district city (docs/shots/city_sizes_v0.60/), old dev world loads with the layout off (places PASS).
 
+### Case 9: refuges in big cities (v0.60.2, 13 Oktober 2026)
+- Open from case 8: refuges stayed one per city sector. User chose "1 per 4 sectors".
+- Built: round(sectors / 4), at least 1, never wasteland, first nearest the city's middle, then farthest
+  from those taken; a sector with no fitting block (river chunks) passes to the next.
+- Check: seed 1 server, pregen over the 48 district city (x 1280 .. 2303, z 256 .. 1023): 3 refuges
+  (lcz_21_13, lcz_30_9, lcz_33_5) in sectors 5,3 / 7,2 / 8,1, none in its wasteland L; the middle sector
+  6,2 holds a canal (17 bridges) and was passed over [inferred: no block without river chunks there].
