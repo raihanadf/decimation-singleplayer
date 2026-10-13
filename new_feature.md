@@ -7,6 +7,28 @@ Status values: `Done` / `Decided` (direction agreed, not built yet) /
 
 ## Done
 
+### Auto update from our GitHub releases (13 Oktober 2026, v0.59.0)
+- User: "user launch decimation then it trigger check updates on github via api, if there is update,
+  the button on hud show "update" and it will begin install on minecraft with install progress
+  screen. if not it show "play" button"; finish chosen: "Quit game" / "Later".
+- fixes/Updater: at start (client) a background check of the release list
+  (api.github.com/repos/ucilmenangis/decimation-singleplayer/releases, pre-releases included), the
+  newest release with a "Decimation.jar" asset above our mcmod.info version. Decimation's own
+  UpdateChecker.isUpdateRequired (tools/patches/PatchNoUpdate.java v2) answers Updater.required(), so its
+  menu button says "Update" only then, "Play" otherwise. The button's page (GuiMenuUpdates) is swapped
+  for fixes/UpdateScreen (GuiOpenEvent): download at once into "<jar>.download" beside the running jar
+  with a progress bar, checked against GitHub's sha256 digest, then "Quit game" / "Later"; the swap runs
+  when the game closes (fixes/UpdateSwap as its own Java process from a temp copy: Windows locks a
+  loaded jar). config/deciworldgen_update.cfg: enabled, api.
+- Checked: dev test `update` against tools/fake_release_server.py: release found, Decimation's check
+  true, menu Update button, our screen, progress (33 %), ready, the helper replaced a stand in jar
+  (all PASS); a wrong digest: refused, download deleted, old jar kept. The real GitHub check from the dev
+  game: "up to date (0.58.0...)". Shots docs/shots/update_v0.59/sheet_update.png.
+- Not verified: old Java 8 builds bundled by launchers (HTTPS to GitHub), a launcher that kills the game's
+  child processes on exit, a real update between two published releases (first possible from 0.59.0 on).
+- Release rules for it: the asset must be named exactly Decimation.jar, the tag a dotted version above
+  the last one (0.59.0, 0.60.0 ...).
+
 ### Shared core, step 1 of the master plan (13 Oktober 2026, v0.57.0)
 - docs/systems_plan.md section 2: `fixes/WorldClock` (day number, DAY / DUSK / NIGHT / DAWN events
   for every later system), `fixes/LootPools` (16 loot lists, 4 kinds x 4 levels, in

@@ -69,7 +69,8 @@ every item below that is not DONE.
     need models of our own (multiblock props or entities) [not verified: effort]. Built on the
     military base Canvas (docs/military_base.md). A full sector (256 x 256) if a longer runway is
     wanted.
-20. **Auto update** (user, 13 Oktober 2026: "user launch decimation then it trigger check updates on
+20. **Auto update**: DONE v0.59.0 (fixes/Updater, UpdateScreen, UpdateSwap; PatchNoUpdate v2; dev test
+    `update` with tools/fake_release_server.py). Was (user, 13 Oktober 2026: "user launch decimation then it trigger check updates on
     github via api, if there is update, the button on hud show "update" and it will begin install on
     minecraft with install progress screen. if not it show "play" button"; earlier: a Vercel website
     showing the project). Draft: our mod asks GitHub's latest release API at the menu; newer = the

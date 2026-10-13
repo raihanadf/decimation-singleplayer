@@ -11,6 +11,12 @@ How shots are made: `./gradlew runClient -Pautotest` (street views),
 `-Paudit` (building audit), `-Pgallery` (prop gallery); output in
 `dev/run/client/screenshots/`, then copied here into a versioned folder.
 
+## update_v0.59/ (auto update, dev test `update` against the fake release server, 13 Oktober 2026)
+- sheet_update.png: update_menu: Decimation's home menu with a red "Update" button where Resume / Play
+  was; update_progress: our screen "Decimation update 9.9.9", "Downloading 13 of 40 MB", green bar
+  33 %; update_ready: "Ready. Restart the game to play 9.9.9.", full bar, the note on Quit game / Later,
+  buttons Quit game and Later.
+
 ## bugs_v0.58/ (friend's bug reports, 13 Oktober 2026)
 - hitbox_side.png: arena, a Hulk (left) and a Bloater (right) seen from behind with their bounding boxes
   drawn (white): both models stand inside a 1.2 x 2.85 box, the box top level with the head.

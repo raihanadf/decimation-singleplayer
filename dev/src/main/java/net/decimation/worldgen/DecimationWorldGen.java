@@ -39,6 +39,7 @@ import net.minecraft.block.Block;
 @Mod(modid = DecimationWorldGen.MODID,
      name = "Decimation World Generation",
      version = "0.43.0",
+     useMetadata = true, // the real version comes from mcmod.info (Gradle fills it from the git tag)
      dependencies = "required-after:deci")
 public class DecimationWorldGen
 {
@@ -151,6 +152,12 @@ public class DecimationWorldGen
             new net.decimation.fixes.NpcEgg(npcLoadouts), "npc_egg");
         // shared core (docs/systems_plan.md section 2): the world's day and its events, our areas
         configDir = event.getModConfigurationDirectory();
+        // auto update from our GitHub releases (fixes/Updater): Decimation's "Update" button opens ours
+        net.decimation.fixes.Updater.configure(configDir);
+        if (cpw.mods.fml.common.FMLCommonHandler.instance().getSide().isClient())
+        {
+            net.minecraftforge.common.MinecraftForge.EVENT_BUS.register(new net.decimation.fixes.UpdateScreen.Hook());
+        }
         net.decimation.fixes.WorldClock clock = new net.decimation.fixes.WorldClock();
         cpw.mods.fml.common.FMLCommonHandler.instance().bus().register(clock);
         net.minecraftforge.common.MinecraftForge.EVENT_BUS.register(clock);
@@ -254,6 +261,10 @@ public class DecimationWorldGen
         // loot lists and the protection table name items of every mod: all registered by now
         net.decimation.fixes.LootPools.load(configDir);
         net.decimation.fixes.Protection.load(configDir);
+        if (cpw.mods.fml.common.FMLCommonHandler.instance().getSide().isClient())
+        {
+            net.decimation.fixes.Updater.check();     // the menu shows "Update" once a newer release is known
+        }
         net.decimation.worldgen.terrain.DecimationBiomes.copySpawns();
         if (vanillaMobs != null && vanillaMobs.enabled())
         {

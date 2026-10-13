@@ -314,7 +314,9 @@ SRG→MCP from the old root `src/` via `mcp_stable/12` CSVs; the root `src/` +
   into spaces (turf names travel with "_"); argument `layer` (v0.52.1): the same for the floating
   turf name of ClanTurfLayer (deci/M/l);
   `PatchNoUpdate.java` (2026-10-13, bug.md): UpdateChecker.isUpdateRequired (net/decimation/mod/common/utils/h.gI)
-  always false: no "Update" button without mods/DecimationVoiceChat.jar; dev test `menu`;
+  always false: no "Update" button without mods/DecimationVoiceChat.jar; dev test `menu`; v2 (v0.59.0)
+  answers net.decimation.fixes.Updater.required() (our auto update), patched from the original class
+  with our compiled classes on the Javassist path;
   `PatchLootRolls.java` (2026-10-13, bug.md): IntRange.pick (deci/aB/a) inclusive, loot counts 1 .. n;
   `PatchVehicleArrows.java` (2026-10-11, bug.md vehicle entry): indirect player hits
   (arrows, thrown, TNT) on deci/ad/e take the health path, not pickup;
@@ -894,6 +896,10 @@ of the last session:
   ScopeZoom copies only the glass box while aiming / zooming (weak laptop lag). Dev tests `click`
   (left button), `hitbox` (big infected boxes). The dev workspace is unchanged (two mods: dev/libs base
   jar + our classes).
+  v0.59.0: auto update from our GitHub releases (new_feature.md; fixes/Updater, UpdateScreen, UpdateSwap,
+  PatchNoUpdate v2). RELEASE RULES: the asset is named exactly Decimation.jar (the one jar), the tag a
+  dotted version above the last; players see "Update" in Decimation's menu. Dev test `update` needs
+  `python3 tools/fake_release_server.py` running.
   Gun study (10 Oktober 2026): docs/gun_style_guide.md, tools/guns/study.py
   (renders / measures Decimation's guns from the jar, `attach` adds
   attachments as the game places them), dev test mode `gunview` (hip, aim
