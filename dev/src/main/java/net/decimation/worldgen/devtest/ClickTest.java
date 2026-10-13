@@ -24,7 +24,7 @@ public class ClickTest extends DevTestMode
     public String name() { return "click"; }
 
     private static final int LEFT = -100;
-    /** manual=true: no simulated presses; waits (2 minutes per step) for a real mouse click on the target. */
+    /** manual=true: no simulated presses; waits (10 minutes) for a real mouse click on the target. */
     private final boolean manual = "true".equals(System.getProperty("deciworldgen.autotest.manual"));
     private volatile int ticks, phase;          // server phase: 1 dirt placed, 2 dirt again, 3 pig
     private volatile boolean checkDirt, checkPig, done, dirtGone;
@@ -61,7 +61,7 @@ public class ClickTest extends DevTestMode
                         + mc.playerController.isInCreativeMode() + " hand " + mc.thePlayer.getHeldItem() + " on ground "
                         + mc.thePlayer.onGround + " flying " + mc.thePlayer.capabilities.isFlying);
                 }
-                if (wait == (manual ? 2400 : 60) || manual && wait > 40 && dirtGone)
+                if (wait == (manual ? 12000 : 60) || manual && wait > 40 && dirtGone)
                 {
                     press(false);
                     checkDirt = true;

@@ -120,9 +120,9 @@
     "semantic_hash": "aa4550575e47e7c1d0b020a51afbb501"
   },
   "bug.md": {
-    "mtime": 1791884978.4991019,
-    "ast_hash": "7cdf1e91d7c231560cbab0355bcbd20b",
-    "semantic_hash": "7cdf1e91d7c231560cbab0355bcbd20b"
+    "mtime": 1791892158.9100652,
+    "ast_hash": "f0acc3cf041d1d15a07661f7a6883234",
+    "semantic_hash": "f0acc3cf041d1d15a07661f7a6883234"
   },
   "create_weapons.md": {
     "mtime": 1791653625.5948887,
@@ -1385,9 +1385,9 @@
     "semantic_hash": "e20b8d2549ee0d81674d536eadbedef6"
   },
   "dev/src/main/java/net/decimation/worldgen/devtest/ClickTest.java": {
-    "mtime": 1791884777.293491,
-    "ast_hash": "f96c6cb3a9fea04059e1de1d1d8f4d7d",
-    "semantic_hash": "f96c6cb3a9fea04059e1de1d1d8f4d7d"
+    "mtime": 1791891858.1632042,
+    "ast_hash": "b22d7d25af3977464b3deac4e3ea4f27",
+    "semantic_hash": "b22d7d25af3977464b3deac4e3ea4f27"
   },
   "dev/src/main/java/net/decimation/worldgen/devtest/HitboxTest.java": {
     "mtime": 1791879509.2713072,

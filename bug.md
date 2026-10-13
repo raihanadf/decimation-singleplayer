@@ -67,6 +67,19 @@ not something we introduced or need to fix) see `documentation.md`.
   the release jar: all PASS there too (simulated key presses). Our shipped code has no name based
   lookups touching input; Decimation's dev only branch (StanceEntityRenderer) only covers fog colours.
   A real mouse click is still untested (`click manual=true` waits for one).
+- Real click in the production client (user, 13 Oktober 2026, on their Mac): held left button on the
+  dirt, the hand swung, the block broke (`click manual=true` PASS). So on a standard install the whole
+  path works.
+- How the path goes (read in code): the mouse button becomes key code -100; vanilla attacks / digs
+  through the "Attack" key binding with that code. Decimation (ClientEventHandler client tick, no early
+  exit or swallowed error before it) unbinds Attack (code 0) while a gun is held and binds it back to
+  -100 only when its code is 0. Guns never use the Attack binding: they read Mouse.isButtonDown(0)
+  directly. So "guns fire, fists / melee / blocks do nothing" is exactly what happens when the Attack
+  binding is not the left button on that install: rebound to something else (never restored: only 0 is),
+  or another control holding the left button (a key conflict: only one binding per code gets it), or
+  another mod taking the mouse. [inferred: their options.txt / Controls screen not seen]
+- To check on the friend's game: Options > Controls, "Attack/Destroy" must read "Button 1" with no red
+  conflict; or options.txt line `key_key.attack:-100`; and their mods folder.
 
 ### Shots at a big zombie's head miss (reported 13 Oktober 2026 by a friend, Open, not reproduced)
 - User: "big zombie model hit box not hit when its hit head, i think its caused by hitbox issue".
