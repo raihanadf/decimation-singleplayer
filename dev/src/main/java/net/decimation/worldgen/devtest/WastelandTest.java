@@ -44,7 +44,7 @@ public class WastelandTest extends DevTestMode
     private volatile boolean built;
     private int taken = -1;
     private float gamma = -1;
-    private boolean layoutBefore, apartBefore;
+    private boolean layoutBefore, apartBefore, sectorsBefore;
 
     public boolean client(Minecraft mc)
     {
@@ -63,6 +63,7 @@ public class WastelandTest extends DevTestMode
             }
             Wasteland.setLayout(layoutBefore);
             Wasteland.setApart(apartBefore);
+            Wasteland.setSectors(sectorsBefore);
             return false;
         }
         if (i < 0)
@@ -107,6 +108,8 @@ public class WastelandTest extends DevTestMode
             Wasteland.setLayout(true);
             apartBefore = Wasteland.apart();
             Wasteland.setApart(true);
+            sectorsBefore = Wasteland.sectors();
+            Wasteland.setSectors(true);   // v0.57.1: whole sector wasteland cities (this world is older)
         }
         if (t == BUILD)
         {
@@ -448,8 +451,8 @@ public class WastelandTest extends DevTestMode
             }
         }
         DevTestResults.value(name(), "fence iron bars, wire on top, gate barriers", bars + ", " + wires + ", " + barriers);
-        DevTestResults.check(name(), "fence and mines round the district", wires + " wire, " + mines + " mines",
-                             wires > 20 && mines > 0, "a wired fence and landmines");
+        DevTestResults.check(name(), "fence round the district", wires + " wire, " + mines + " mines",
+                             wires > 20, "a wired fence (landmines only where the sector meets open land)");
     }
 
     /** What to photograph: block name prefix, label, how many, camera distance. */

@@ -167,6 +167,23 @@ final class StreetPlan implements net.decimation.worldgen.FixedBase
 
     public Block blockAt(int lx, int ly, int lz, int[] meta)
     {
+        if (Wasteland.sectors() && !onWater && (lx == 0 || lz == 0))
+        {
+            // the fence and gates on a wasteland city's edge inside the city (WastelandFence.inCity)
+            int x = minX + lx, z = minZ + lz;
+            if (WastelandFence.line(seed, x, z) != 0)
+            {
+                Block f = WastelandFence.inCity(seed, x, z, ly, surface(lx, lz), meta);
+                if (f != null)
+                {
+                    return f;
+                }
+                if (ly > surface(lx, lz) && ly <= surface(lx, lz) + 4)
+                {
+                    return null;                          // the gate stays open: no dressing in it
+                }
+            }
+        }
         Dress d = dress();
         if (d != null)
         {
@@ -177,6 +194,20 @@ final class StreetPlan implements net.decimation.worldgen.FixedBase
             }
         }
         return baseAt(lx, ly, lz, meta);
+    }
+
+    /** Highest plan y (0 .. 8) with a block of this street's own at (lx, lz). */
+    private int surface(int lx, int lz)
+    {
+        int[] m = new int[1];
+        for (int y = 8; y > 0; y--)
+        {
+            if (baseAt(lx, y, lz, m) != null)
+            {
+                return y;
+            }
+        }
+        return 0;
     }
 
     private synchronized Dress dress()

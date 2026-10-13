@@ -153,9 +153,13 @@ final class EdgePlan implements net.decimation.worldgen.FixedBase, net.decimatio
             reshape(world, x, z, natural, top);
         }
         wear(world, x, z, top, d);
-        if (Wasteland.apart() && Wasteland.deadCell(world.getSeed(), cellX, cellZ))
+        if (Wasteland.own() && Wasteland.deadCell(world.getSeed(), cellX, cellZ))
         {
             WastelandFence.column(world, world.getSeed(), cellX, cellZ, x, z, top);   // the wasteland city's fence
+        }
+        else if (Wasteland.sectors())
+        {
+            WastelandFence.lineOnLand(world, world.getSeed(), x, z, top);   // the inside fence line meets it
         }
     }
 

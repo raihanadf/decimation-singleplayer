@@ -159,7 +159,7 @@ public final class CityNames
      */
     public static String[] district(long seed, int dx, int dz)
     {
-        if (Wasteland.apart())
+        if (Wasteland.own())
         {
             // the wasteland stands apart (v0.56): the ring around it is open land, the wasteland its own city
             boolean any = false;

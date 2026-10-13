@@ -58,13 +58,66 @@ public final class Wasteland
     static final String APART_KEY = "!wastelandCity";
     private static volatile boolean apart;
     private static final java.util.Map<Long, Boolean> DEAD = new java.util.concurrent.ConcurrentHashMap<Long, Boolean>(),
-        RING = new java.util.concurrent.ConcurrentHashMap<Long, Boolean>();
+        RING = new java.util.concurrent.ConcurrentHashMap<Long, Boolean>(),
+        SECTOR = new java.util.concurrent.ConcurrentHashMap<Long, Boolean>();
     private static volatile long cachedSeed;
 
-    /** Wasteland city apart from the rest (worlds created since v0.56, or forced for a session). */
+    /**
+     * Worlds since v0.57.1: a wasteland city is a whole city sector (256 x 256, its 4 districts all
+     * wasteland), inside the city with its streets joined to the neighbours' and a fence with gates on its
+     * edge (user, 13 Oktober 2026: "wasteland is splited, so its his own city so later it will like city
+     * full of wasteland, not 1 city have 1 sector of wasteland and other sector of resident or high
+     * building"; the v0.56 ring of open land cut its roads off: "thas absurd"). Overrides apart.
+     */
+    static final String SECTOR_KEY = "!wastelandSector";
+    private static volatile boolean sectors;
+
+    /** A wasteland city is a whole city sector (worlds since v0.57.1, or forced for a session). */
+    public static boolean sectors()
+    {
+        return sectors;
+    }
+
+    /** Switches whole sector wasteland cities for this session (dev tests); not stored. Cached plans are dropped. */
+    public static void setSectors(boolean on)
+    {
+        if (sectors != on)
+        {
+            sectors = on;
+            DEAD.clear();
+            RING.clear();
+            LcCity.layoutChanged();
+        }
+    }
+
+    /**
+     * A city sector that is a wasteland city: one of its 4 side neighbours is a military sector, and a
+     * seeded coin says yes (half of them: about 1 city sector in 3 on seed 1, where 63 % touch one).
+     */
+    public static boolean sector(long seed, int regionX, int regionZ)
+    {
+        int c = net.decimation.worldgen.StructureGenerator.CITY, m = net.decimation.worldgen.StructureGenerator.MIL;
+        if (net.decimation.worldgen.Sectors.regionSector(seed, regionX, regionZ) != c || !LcCity.hasDeadzone())
+        {
+            return false;
+        }
+        boolean mil = net.decimation.worldgen.Sectors.regionSector(seed, regionX + 1, regionZ) == m
+            || net.decimation.worldgen.Sectors.regionSector(seed, regionX - 1, regionZ) == m
+            || net.decimation.worldgen.Sectors.regionSector(seed, regionX, regionZ + 1) == m
+            || net.decimation.worldgen.Sectors.regionSector(seed, regionX, regionZ - 1) == m;
+        return mil && LcCity.hl(seed ^ 0x5741535445L, regionX, regionZ) % 2 == 0;
+    }
+
+    /** Wasteland city apart from the rest (worlds created in v0.56 .. v0.57.0, or forced for a session). */
     public static boolean apart()
     {
-        return apart;
+        return apart && !sectors;
+    }
+
+    /** The wasteland has its own fence and city name (v0.56 apart or v0.57.1 sectors). */
+    public static boolean own()
+    {
+        return apart || sectors;
     }
 
     /** Switches the wasteland city apart for this session (dev tests); not stored. Cached plans are dropped. */
@@ -84,6 +137,7 @@ public final class Wasteland
         {
             DEAD.clear();
             RING.clear();
+            SECTOR.clear();
             cachedSeed = seed;
         }
         return ((long) cx << 32) ^ (cz & 0xffffffffL);
@@ -98,6 +152,18 @@ public final class Wasteland
         if (!LcCity.sectorCity(seed, cx, cz))
         {
             return false;
+        }
+        if (sectors)
+        {
+            int per = net.decimation.worldgen.Sectors.REGION / CELL;
+            int rx = Math.floorDiv(cx, per), rz = Math.floorDiv(cz, per);
+            long k = cell(seed, rx, rz);
+            Boolean v = SECTOR.get(k);
+            if (v == null)
+            {
+                SECTOR.put(k, v = sector(seed, rx, rz));
+            }
+            return v;
         }
         int gx = Math.floorDiv(cx, 2) * 2, gz = Math.floorDiv(cz, 2) * 2;
         long k = cell(seed, gx, gz);
@@ -129,7 +195,7 @@ public final class Wasteland
      */
     static boolean ring(long seed, int cx, int cz)
     {
-        if (!apart)
+        if (!apart || sectors)
         {
             return false;
         }
@@ -336,6 +402,15 @@ public final class Wasteland
         }
         String forceApart = System.getProperty("deciworldgen.wasteapart");
         setApart(forceApart != null ? "true".equals(forceApart) : a == 1);
-        FMLLog.info("[%s] wasteland city apart %s", DecimationWorldGen.MODID, apart ? "on" : "off");
+        Integer sct = data.baseY(SECTOR_KEY);
+        if (sct == null)
+        {
+            sct = world.getTotalWorldTime() == 0 ? 1 : 0;
+            data.setBaseY(SECTOR_KEY, sct);
+        }
+        String forceSectors = System.getProperty("deciworldgen.wastesector");
+        setSectors(forceSectors != null ? "true".equals(forceSectors) : sct == 1);
+        FMLLog.info("[%s] wasteland city apart %s, whole sector %s", DecimationWorldGen.MODID, apart() ? "on" : "off",
+                    sectors ? "on" : "off");
     }
 }

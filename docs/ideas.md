@@ -58,6 +58,24 @@ every item below that is not DONE.
     DeceasedCraft's city style data (legacy deadzone) and its loot before acting]. Today our
     wasteland district stands next to military sectors (v0.24.3) and is zoned MILITARY.
 15. **Story** ("story??": open, nothing decided).
+18. **Military airport in a wasteland city** (user, 13 Oktober 2026: "airport military base with
+    barracks, HQ, tower, aircraft park and hangar on wasteland later? and how gonna big it is?").
+    First size estimate [draft]: it takes half a wasteland city sector (2 districts side by side,
+    128 x 256 blocks) instead of city blocks: runway about 220 x 15 along the long side with
+    markings, a parallel taxiway 8 wide, an apron about 64 x 48 as the aircraft park, 2 or 3 hangars
+    about 32 x 24 (our FOB hangar vault, bigger), a control tower about 8 x 8 and 25 high, HQ and
+    barracks rows, a fuel farm; the sector fence already closes it. Aircraft: Decimation has only the
+    crashed helicopter wreck prop (and its flyable helicopter vehicle [not verified]), so parked planes
+    need models of our own (multiblock props or entities) [not verified: effort]. Built on the
+    military base Canvas (docs/military_base.md). A full sector (256 x 256) if a longer runway is
+    wanted.
+19. **City sizes** (user, 13 Oktober 2026: "city have variant size, so its not stuck on 4 district
+    like we have now, we can have 8, 16, 24, 48 or even 64 disctrit inside one city"). Today a city
+    is the CITY sectors that touch (Sectors: 15 % of 256 block sectors, one at random each), so most
+    cities are one sector = 4 districts (seed 1: 1096 of 1509 cities one sector, the biggest 8
+    sectors). Idea: a city layout of its own that grows a city of 2 to 16 sectors (8 to 64
+    districts) from a seed, the wasteland city sectors on its side toward the military. Not
+    designed yet; touches Sectors, highways, rails, names, refuges.
 
 ## Menu
 16. **GitHub repo link on the home screen**: on the menu shown before the player clicks Play (the

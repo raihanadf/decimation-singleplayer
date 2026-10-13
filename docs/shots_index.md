@@ -11,6 +11,25 @@ How shots are made: `./gradlew runClient -Pautotest` (street views),
 `-Paudit` (building audit), `-Pgallery` (prop gallery); output in
 `dev/run/client/screenshots/`, then copied here into a versioned folder.
 
+## v0.57.1_wasteland_sector/ (whole sector wasteland city, seed 1 server; 13 Oktober 2026)
+- topdown_seed1.png (tools/topdown_blocks.py, 2 px per block, x -300 .. 100, z -40 .. 300): the
+  wasteland city sector (x -256 .. -1) with its dark broken streets, red outlined military lots and
+  bunkers, flush against the spawn city at x 0 (lighter DeceasedCraft streets, parks, pools); no grass
+  between them; the land fence (red dots) on its north, west and south sides.
+- topdown_edge_gate.png (8 px per block, x -30 .. 30, z 50 .. 140): the fence along x 0 (red wire, black
+  posts every 4) on the spawn city street's west sidewalk; where the wasteland street z 64 .. 79 meets
+  it a gate: orange barriers on every second cell across the road, posts at the road edges, the street
+  going on into the city's crossing.
+- topdown_corner.png: the south end: the inside line at x 0 carried out to the land fence row at
+  z 259, closed corner.
+- sheet_wasteland.png: dev test `wasteland` in sector mode: fence shot (chain link, posts, wire on a
+  sidewalk), gate (barriers across a road, guard booth), bunker, checkpoints, lots, as in v0.56.
+
+## v0.56_user_review/ (user screenshots of v0.56, 13 Oktober 2026)
+- user_ring_1.png, user_ring_2.png: from the air: a fenced wasteland piece beside normal city blocks
+  with a large square of bare grass between them where city blocks should be; the city's streets end
+  at the grass. The ring the user called absurd.
+
 ## loot_spike_v0.56/ (dev test loot, the two loot spikes, 13 Oktober 2026)
 - sheet_loot.png, three shots. loot_crate: Decimation's inventory screen (clothing slots, player
   model, "Loot" area on the right) showing OUR inventory: apple x3 in slot 0, iron ingot x2 in

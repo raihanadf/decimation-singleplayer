@@ -215,6 +215,10 @@ menu. Not designed: each needs a design talk first. Current work comes first (us
   rail.
 - v0.41.0 / 0.41.1 EOTech 558 and ACOG TA11 of our own, reticles in the glass swaying with the
   gun, Mk18 IMI TS stock, HK416 front sight folds away; accepted.
+- v0.57.1 wasteland city = a whole city sector inside its city, streets joined through gates in the
+  fence (user review of the v0.56 ring: "thas absurd"); new worlds; waiting for the user's look.
+  Next ideas from the same review: a military airport in a wasteland city, cities of 8 to 64 districts
+  (docs/ideas.md items 18, 19).
 - v0.56.0 wasteland city apart with fence, wire, mines and gates (new worlds), bunker blockhouse with
   garrison and military infected spawner, asphalt ramps, natural bridge damage, metro entrances on the
   sidewalk (user 13 Oktober 2026); waiting for the user's look.

@@ -877,6 +877,10 @@ of the last session:
   (config/deciworldgen_protection.json), worldgen/Areas (<world>/deciworldgen_areas.json); dev tests
   `core`, `items` (item dump -> docs/references/decimation_items.tsv). PatchLootRolls (three jars):
   Decimation's loot counts 1 .. n, not 1 .. n-1.
+  v0.57.1 (user review of the v0.56 ring, docs/wasteland.md): a wasteland city is a whole city sector
+  (all 4 districts) inside its city, streets joined, fence and gates on its edge (WastelandFence.inCity
+  via StreetPlan, lineOnLand), no refuge in it; new worlds only (StructureData `!wastelandSector`).
+  tools/topdown_blocks.py: top down block picture of a world from its region files.
   Gun study (10 Oktober 2026): docs/gun_style_guide.md, tools/guns/study.py
   (renders / measures Decimation's guns from the jar, `attach` adds
   attachments as the game places them), dev test mode `gunview` (hip, aim

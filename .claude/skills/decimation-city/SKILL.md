@@ -98,6 +98,13 @@ general: decimation-props; all of them: decimation-worldgen.
    sidewalk or beside it, never across the road (the DeceasedCraft station plaza cut the road).
 16. A dev test check on something random (a bunker in this district) must accept its absence and say
    so, or every unlucky district fails.
+17. "Split X out" / "make X its own city" means X is made of its own kind only, not cut away from the
+   city with empty land (user review of v0.56: the ring was "absurd", roads ended at grass). When a
+   request can mean "separate by land" or "separate by kind", ask with a sketch of both. A part of
+   the city stays reachable: its streets join the neighbours' (through gates when fenced).
+18. Read the user's words for the city's parts in their terms: their "sector" is our district
+   (2 x 2 cells), their "district / city" is our city sector (256 x 256, 4 districts), "big chunk" is
+   our cell (4 x 4 chunks). Map the words before designing.
 
 ## Casebook (never delete a case)
 
@@ -165,3 +172,17 @@ general: decimation-props; all of them: decimation-worldgen.
   380 mines, 3 bunkers garrisoned), dev tests wasteland / cityedge / rail / bridge PASS; shots
   docs/shots/v0.56_wasteland_city/, v0.56_city/.
 
+### Case 7: the wasteland ring was absurd (v0.56.0 -> v0.57.1, 13 Oktober 2026)
+- User (two shots from the air: docs/shots/v0.56_user_review/): "why the wasteland sector is not
+  connected with other city road? ... make 1 district full of wasteland sector on 4 big chunk inside
+  it, not splited like in that photo!! thas absurd"; then "wastelanda is spilited, so its his own city
+  so later it will like city full of wasteland, not 1 city have 1 sector of wasteland and otjer sector
+  of resident or high building".
+- Cause: v0.56 read "split out the wasteland city" as cutting the 8 neighbour cells to grass
+  (Wasteland.ring), which holed the city and cut its roads.
+- Fix (lessons 17, 18): whole wasteland city sectors (Wasteland.sector, `!wastelandSector`), no ring,
+  fence on the sector edge inside the city drawn by the edge street chunks (WastelandFence.inCity in
+  StreetPlan.blockAt) with a gate on every crossing street, carried onto land to meet the v0.56 fence
+  (lineOnLand); refuges skip wasteland sectors.
+- Check: seed 1 server top down pictures (tools/topdown_blocks.py; docs/shots/v0.57.1_wasteland_sector/),
+  dev test wasteland PASS.

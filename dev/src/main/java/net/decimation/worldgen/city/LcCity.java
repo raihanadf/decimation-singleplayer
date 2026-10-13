@@ -360,7 +360,15 @@ public final class LcCity
             return "";
         }
         String dead = styles.contains("legacy:deadzone") ? "legacy:deadzone" : null;
-        if (dead != null)
+        if (dead != null && Wasteland.sectors())
+        {
+            if (Wasteland.deadCell(seed, cellX, cellZ))
+            {
+                return dead;                              // a whole wasteland city sector
+            }
+            styles.remove(dead);
+        }
+        else if (dead != null)
         {
             for (int dx = -DEADZONE_RANGE; dx <= DEADZONE_RANGE + 1; dx++)
             {
@@ -616,9 +624,9 @@ public final class LcCity
      */
     public static int[] refuge(long seed, int rx, int rz)
     {
-        if (!Highways.cityRegion(seed, rx, rz))
+        if (!Highways.cityRegion(seed, rx, rz) || Wasteland.sectors() && Wasteland.sector(seed, rx, rz))
         {
-            return null;
+            return null;                                  // no safezone in a wasteland city
         }
         int cells = Sectors.REGION / CELL;
         List<int[]> order = new ArrayList<int[]>();

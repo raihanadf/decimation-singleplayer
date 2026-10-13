@@ -118,6 +118,139 @@ final class WastelandFence
         }
     }
 
+    // ---- inside the city: the edge between a wasteland city sector and a city sector beside it (v0.57.1)
+
+    /**
+     * Which edge lines of a wasteland city sector inside the city pass through column (x, z): 1 = a line
+     * along z at this x, 2 = a line along x at this z, 3 = both (a corner), 0 = none. A line is the first
+     * column of the eastern (or southern) sector of a pair of city sectors where one is a wasteland city
+     * and the other is not: the outer sidewalk of the street on the sector edge (cell row and column 0 are
+     * always streets), so no building is touched.
+     */
+    static int line(long seed, int x, int z)
+    {
+        int r = net.decimation.worldgen.Sectors.REGION_BLOCKS, rx = Math.floorDiv(x, r), rz = Math.floorDiv(z, r);
+        int out = 0;
+        if (Math.floorMod(x, r) == 0 && edge(seed, rx - 1, rz, rx, rz))
+        {
+            out |= 1;
+        }
+        if (Math.floorMod(z, r) == 0 && edge(seed, rx, rz - 1, rx, rz))
+        {
+            out |= 2;
+        }
+        return out;
+    }
+
+    /**
+     * A land column outside the city on the extension of an inside line (v0.57.1): the line goes on up to
+     * FENCE blocks past the city edge, where it meets the land fence (column at distance FENCE), so the
+     * corner has no gap. Called by EdgePlan for land owned by a city cell that is not wasteland.
+     */
+    static void lineOnLand(World w, long seed, int x, int z, int y)
+    {
+        int r = net.decimation.worldgen.Sectors.REGION_BLOCKS;
+        boolean alongZ = Math.floorMod(x, r) == 0 && extends_(seed, x, z, true);
+        boolean alongX = !alongZ && Math.floorMod(z, r) == 0 && extends_(seed, x, z, false);
+        if (!alongZ && !alongX)
+        {
+            return;
+        }
+        boolean post = ((x + z) & 3) == 0;
+        Block metal = deci("BlockMetal_2"), wire = deci("BlockConcertinaWire");
+        for (int k = 1; k <= 3; k++)
+        {
+            w.setBlock(x, y + k, z, post && metal != null ? metal : Blocks.iron_bars, 0, 2);
+        }
+        if (post && metal != null)
+        {
+            w.setBlock(x, y + 4, z, metal, 0, 2);
+        }
+        else if (wire != null)
+        {
+            w.setBlock(x, y + 4, z, wire, Math.max(2, PropFacing.along(wire, alongX, 0)), 2);
+        }
+        clearAbove(w, x, y + 5, z);
+    }
+
+    /** The line at x (alongZ) or z continues within FENCE of a city sector pair it separates. */
+    private static boolean extends_(long seed, int x, int z, boolean alongZ)
+    {
+        int r = net.decimation.worldgen.Sectors.REGION_BLOCKS;
+        int along = alongZ ? z : x, fixed = Math.floorDiv(alongZ ? x : z, r);
+        for (int k = -1; k <= 1; k++)
+        {
+            int ra = Math.floorDiv(along, r) + k, lo = ra * r, hi = lo + r - 1;
+            int dist = Math.max(0, Math.max(lo - along, along - hi));
+            if (dist >= 1 && dist <= FENCE
+                && (alongZ ? edge(seed, fixed - 1, ra, fixed, ra) : edge(seed, ra, fixed - 1, ra, fixed)))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static boolean edge(long seed, int ax, int az, int bx, int bz)
+    {
+        int c = net.decimation.worldgen.StructureGenerator.CITY;
+        return net.decimation.worldgen.Sectors.regionSector(seed, ax, az) == c && net.decimation.worldgen.Sectors.regionSector(seed, bx, bz) == c
+            && Wasteland.sector(seed, ax, az) != Wasteland.sector(seed, bx, bz);
+    }
+
+    /**
+     * The fence of a street chunk on a wasteland city's edge inside the city (StreetPlan.blockAt): chain
+     * link 3 high between posts every 4 with wire on top on the sidewalk, and where a street crosses the
+     * line a gate: posts at the road's edges, striped barriers on every second cell across the road, open
+     * between them. `surface` is the street's top at the column (plan y). Null when the cell is not fence.
+     */
+    static Block inCity(long seed, int x, int z, int ly, int surface, int[] meta)
+    {
+        int l = line(seed, x, z);
+        if (l == 0 || ly <= surface || ly > surface + 4)
+        {
+            return null;
+        }
+        int k = ly - surface;
+        Block metal = deci("BlockMetal_2"), wire = deci("BlockConcertinaWire");
+        // a street crossing the line here: along x for a line along z (its across is z & 15), and so on
+        boolean alongZ = (l & 1) != 0;
+        int across = alongZ ? z & 15 : x & 15;
+        int crossChunk = alongZ ? z >> 4 : x >> 4;
+        boolean crossing = Math.floorMod(crossChunk, CELL) == 0 && l != 3;
+        if (crossing && across >= SIDEWALK - 1 && across <= 16 - SIDEWALK)
+        {
+            meta[0] = 0;
+            if (across == SIDEWALK - 1 || across == 16 - SIDEWALK)
+            {
+                return metal != null ? metal : Blocks.iron_bars;   // gate posts, 4 high
+            }
+            Block bar = deci("BlockHazardbarrier");
+            if (k == 1 && (across & 1) == 1 && bar != null)
+            {
+                meta[0] = Math.max(2, PropFacing.along(bar, !alongZ, 0));
+                return bar;
+            }
+            return null;
+        }
+        boolean post = ((x + z) & 3) == 0;
+        meta[0] = 0;
+        if (k <= 3)
+        {
+            return post && metal != null ? metal : Blocks.iron_bars;
+        }
+        if (post && metal != null)
+        {
+            return metal;
+        }
+        if (wire != null)
+        {
+            meta[0] = Math.max(2, PropFacing.along(wire, !alongZ, 0));
+            return wire;
+        }
+        return null;
+    }
+
     private static boolean plant(World w, int x, int y, int z)
     {
         return w.getBlock(x, y, z) instanceof net.minecraft.block.BlockBush;
