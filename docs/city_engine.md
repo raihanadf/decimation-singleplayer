@@ -146,7 +146,7 @@ chunks between level 0 city streets (BuildingInfo.calculateXBridge); our
 cities fill whole 256 block sectors, so those gaps barely exist. Highways
 between cities do the job instead.
 - Network (pure function of the seed, `tools/hwmap.py` is the Python
-  copy): each region row has one highway chunk row (region start + 0 or 8
+  copy, old layout only: worlds since v0.60.0 use CityLayout and a gap of 5, see "City sizes"): each region row has one highway chunk row (region start + 0 or 8
   chunks, by hash). That is always a city street row, superblocks
   included (they sit on even cells). Where the row leaves a city region and
   the next city region lies at most MAX_GAP = 3 non city regions away,
@@ -396,6 +396,42 @@ level 0 only); our cities had no such gaps (rivers kept 32 blocks off).
   water 57..62, railings on the edges, the broken bridge at 120,64,136 open
   over across 5..10 / along 4..11. Dev test all PASS at 30144,64,1696
   (docs/shots_index.md "lc_bridge_v0.45.1").
+
+## City sizes (v0.60.0, `worldgen/CityLayout.java`, new worlds only)
+
+User idea 13 Oktober 2026 (docs/ideas.md item 19): "city have variant size ... 8, 16, 24, 48 or even 64
+district inside one city". Choices: sizes a little more even than first offered (each weight plus 15),
+compact blobs, cities and roads less rare, 1 wasteland sector per 4 city sectors on the military side.
+- Before: every 256 block sector rolled city alone (15 %), so a city was whatever city sectors touched:
+  seed 1 had 1096 of 1509 cities of one sector (4 districts), the biggest 8 sectors.
+- Now: the world is cut into cells of 5 x 5 sectors. Each cell holds one city (config `cityChance`, 1)
+  grown as a compact blob inside its 4 x 4 corner: 1, 2, 4, 6, 12 or 16 sectors (4 to 64 districts),
+  weights 30 35 40 35 28 22. The cell's last row and column stay free, so two cities never touch (not
+  even at a corner). A city of 2+ sectors gets a military sector beside its farthest sector toward one
+  side; its wasteland sectors (sector count / 4, at least 1) are the city sectors nearest that one (a
+  breadth first walk from it). Other sectors roll wilderness / civilian / military in the old shares
+  without the city one (40 / 25 / 20 of 85).
+- Sectors.regionSector asks CityLayout first; Wasteland.sector takes the layout's wasteland sectors;
+  Highways join cities up to 5 empty sectors apart here (maxGap(), 3 in older worlds); every cache of
+  sector answers (Wasteland, Highways, CityNames, CityRivers, BiomeMap) carries CityLayout.epoch().
+- New worlds only: StructureData `!citySizes` (CityLayoutEvents). The layout is ON by default because a
+  new world's spawn search runs inside the World constructor, before WorldEvent.Load
+  (MinecraftServer.loadAllWorlds posts it after; read in the Forge sources); an older world switches it
+  off on load, unloading the overworld switches it back on. -Ddeciworldgen.citysizes=true|false.
+- config/deciworldgen_cities.cfg: weight4Districts .. weight64Districts, cityChance. Changing them moves
+  the cities of every world made with this layout (chunks already generated stay).
+- Numbers without the game: `java -cp dev/build/classes/java/main net.decimation.worldgen.CityLayout SEED
+  [RADIUS]`. Seed 1, 6400 cells: city land 24.3 % (was 15 %), sizes 4 / 8 / 16 / 24 / 48 / 64 districts
+  15.8 / 18.8 / 21.0 / 18.0 / 15.0 / 11.4 %, wasteland 24.4 % of city land (1, 1, 1, 3, 4 sectors per
+  city of 8 / 16 / 24 / 48 / 64; none in a 4 district town); RADIUS <= 8 prints a map.
+- Checked: seed 1 server world (servertest pregen=1536,512,22): the 48 district city at x 1280 .. 2303,
+  z 256 .. 1023 with its 3 wasteland sectors as an L on the military side (wasteland zones at 1280,256
+  ...), fence and gates on their edge, streets joined, highways in from the west and north
+  (docs/shots/city_sizes_v0.60/topdown_seed1_48districts.png). Live dev world (older): "city sizes off",
+  dev test places PASS.
+- Not changed: one refuge per city sector outside the wasteland (a 64 district city can have up to 12;
+  user to decide), rails per highway line. `tools/hwmap.py` and the Python sector copies know only the
+  old layout [their maps are wrong for new worlds].
 
 ## Verified (seed 1, Decimation world type, fresh server world)
 

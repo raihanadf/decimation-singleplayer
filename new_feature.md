@@ -7,6 +7,13 @@ Status values: `Done` / `Decided` (direction agreed, not built yet) /
 
 ## Done
 
+### Cities of 4 to 64 districts (13 Oktober 2026, v0.60.0)
+- User idea (docs/ideas.md item 19) and choices: sizes 4 / 8 / 16 / 24 / 48 / 64 districts with
+  weights 30 35 40 35 28 22, compact blobs, more city land (cities and roads felt too rare), one
+  wasteland sector per 4 city sectors on the side toward the military.
+- worldgen/CityLayout (+ CityLayoutEvents, config/deciworldgen_cities.cfg); new worlds only. Design,
+  numbers and checks: docs/city_engine.md "City sizes". Seed 1: city land 24.3 % (was 15 %).
+
 ### Auto update from our GitHub releases (13 Oktober 2026, v0.59.0)
 - User: "user launch decimation then it trigger check updates on github via api, if there is update,
   the button on hud show "update" and it will begin install on minecraft with install progress

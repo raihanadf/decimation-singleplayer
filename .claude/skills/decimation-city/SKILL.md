@@ -105,6 +105,13 @@ general: decimation-props; all of them: decimation-worldgen.
 18. Read the user's words for the city's parts in their terms: their "sector" is our district
    (2 x 2 cells), their "district / city" is our city sector (256 x 256, 4 districts), "big chunk" is
    our cell (4 x 4 chunks). Map the words before designing.
+19. A change to which sector is city reaches everything that asks Sectors (biomes, highways, names,
+   rivers, wasteland, refuges): give every cache of sector answers the layout's epoch, and switch a new
+   layout on BY DEFAULT, because a new world's spawn search runs before WorldEvent.Load; old worlds
+   switch it off on load. Check the shares without the game (CityLayout main) before a server world.
+20. When the user's numbers and their reason disagree (bigger cities but "the same city land", while
+   saying cities are too rare), show the consequence in numbers and ask once; if the answer is still
+   unclear, follow the stated reason and make the numbers a config.
 
 ## Casebook (never delete a case)
 
@@ -186,3 +193,15 @@ general: decimation-props; all of them: decimation-worldgen.
   (lineOnLand); refuges skip wasteland sectors.
 - Check: seed 1 server top down pictures (tools/topdown_blocks.py; docs/shots/v0.57.1_wasteland_sector/),
   dev test wasteland PASS.
+
+### Case 8: cities of many sizes (v0.60.0, 13 Oktober 2026)
+- User idea: "city have variant size, so its not stuck on 4 district like we have now, we can have 8,
+  16, 24, 48 or even 64 disctrit inside one city". Answers: compact blob, 1 wasteland per 4 sectors on
+  the military side, same land; then on the sizes "each distrct add 15% ... cause the city and road too
+  rare in this condition now" and "i mean the change to get that".
+- Read as: every size weight plus 15 and more city land (lesson 20); config for both.
+- Built: worldgen/CityLayout (5 x 5 sector cells, one city each in a 4 x 4 corner, free row and
+  column between cities), military sector beside, wasteland walk from it, highways up to 5 sectors.
+- Check: CityLayout main on seed 1 (24.3 % land, shares as weighted), seed 1 server top down of a 48
+  district city (docs/shots/city_sizes_v0.60/), old dev world loads with the layout off (places PASS).
+

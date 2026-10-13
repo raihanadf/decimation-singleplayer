@@ -3,6 +3,7 @@ package net.decimation.worldgen.terrain;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 
+import net.decimation.worldgen.CityLayout;
 import net.decimation.worldgen.Sectors;
 import net.decimation.worldgen.StructureGenerator;
 import net.minecraft.world.gen.NoiseGeneratorSimplex;
@@ -34,6 +35,7 @@ public final class BiomeMap
     private final long seed;
     private final NoiseGeneratorSimplex warpX, warpZ, variety, river;
     private final ConcurrentHashMap<Long, Integer> sectors = new ConcurrentHashMap<Long, Integer>();
+    private volatile int sectorsEpoch = CityLayout.epoch();
     /** The map of each seed a Decimation world was created with (city code asks for river chunks). */
     private static final ConcurrentHashMap<Long, BiomeMap> MAPS = new ConcurrentHashMap<Long, BiomeMap>();
     private volatile boolean cityRivers;
@@ -142,6 +144,11 @@ public final class BiomeMap
     private int sector(int rx, int rz)
     {
         long key = ((long) rx << 32) ^ (rz & 0xFFFFFFFFL);
+        if (sectorsEpoch != CityLayout.epoch())
+        {
+            sectors.clear();                               // city layout switched (world load)
+            sectorsEpoch = CityLayout.epoch();
+        }
         Integer s = sectors.get(key);
         if (s == null)
         {

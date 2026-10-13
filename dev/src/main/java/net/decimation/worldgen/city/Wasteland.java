@@ -93,6 +93,7 @@ public final class Wasteland
     /**
      * A city sector that is a wasteland city: one of its 4 side neighbours is a military sector, and a
      * seeded coin says yes (half of them: about 1 city sector in 3 on seed 1, where 63 % touch one).
+     * City sizes (CityLayout, worlds since v0.60.0): the layout's own wasteland sectors instead.
      */
     public static boolean sector(long seed, int regionX, int regionZ)
     {
@@ -100,6 +101,10 @@ public final class Wasteland
         if (net.decimation.worldgen.Sectors.regionSector(seed, regionX, regionZ) != c || !LcCity.hasDeadzone())
         {
             return false;
+        }
+        if (net.decimation.worldgen.CityLayout.on())
+        {
+            return net.decimation.worldgen.CityLayout.wasteland(seed, regionX, regionZ);   // 1 per 4 city sectors (v0.60.0)
         }
         boolean mil = net.decimation.worldgen.Sectors.regionSector(seed, regionX + 1, regionZ) == m
             || net.decimation.worldgen.Sectors.regionSector(seed, regionX - 1, regionZ) == m
@@ -133,12 +138,13 @@ public final class Wasteland
 
     private static long cell(long seed, int cx, int cz)
     {
-        if (seed != cachedSeed)
+        long layout = seed ^ net.decimation.worldgen.CityLayout.epoch() * 0x9E3779B97F4A7C15L;
+        if (layout != cachedSeed)
         {
             DEAD.clear();
             RING.clear();
             SECTOR.clear();
-            cachedSeed = seed;
+            cachedSeed = layout;
         }
         return ((long) cx << 32) ^ (cz & 0xffffffffL);
     }

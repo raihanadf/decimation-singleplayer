@@ -11,6 +11,16 @@ How shots are made: `./gradlew runClient -Pautotest` (street views),
 `-Paudit` (building audit), `-Pgallery` (prop gallery); output in
 `dev/run/client/screenshots/`, then copied here into a versioned folder.
 
+## city_sizes_v0.60/ (cities of 4 to 64 districts, seed 1 server world, 13 Oktober 2026)
+- topdown_seed1_48districts.png: tools/topdown_blocks.py, x 1150 .. 1900, z 170 .. 870, 1 px per
+  block (north up). The 48 district city (CityLayout: 12 sectors at x 1280 .. 2303, z 256 .. 1023, only
+  its north west part generated). Its 3 wasteland sectors form an L in the top left (x 1280 .. 1791 on
+  z 256 .. 511, x 1280 .. 1535 on z 512 .. 767): grey military lots ringed red (iron bar fence), dark
+  road grid; the normal city (green park edges, coloured roofs, blue pools) to the right and below,
+  its streets running straight on through the fence line. Grass to the west (the military sector
+  beside it lies further west, not in the picture), a highway comes in from the west at z about 520
+  and one from the north at x about 1545; small lakes north of the city.
+
 ## update_v0.59/ (auto update, dev test `update` against the fake release server, 13 Oktober 2026)
 - sheet_update_real.png: the same three screens against the real GitHub release 0.59.0 (229 MB).
 - sheet_update.png: update_menu: Decimation's home menu with a red "Update" button where Resume / Play

@@ -906,6 +906,10 @@ of the last session:
   v0.59.1: update check survives GitHub's API rate limit (ETag cache, a 304 is free; fallback to the
   release feed releases.atom + plain download links). RELEASE RULE added: upload Decimation.jar.sha256
   (written by tools/onejar.py) beside Decimation.jar. Fake server flag LIMITED (API 403).
+  v0.60.0: cities of 4 to 64 districts (worldgen/CityLayout, docs/city_engine.md "City sizes"): cells of
+  5 x 5 sectors, one compact city each, 1 wasteland sector per 4 beside a military sector; new worlds only
+  (`!citySizes`, ON by default: a new world's spawn search runs before WorldEvent.Load). Caches of sector
+  answers must carry CityLayout.epoch(). tools/hwmap.py knows only the old layout.
   Gun study (10 Oktober 2026): docs/gun_style_guide.md, tools/guns/study.py
   (renders / measures Decimation's guns from the jar, `attach` adds
   attachments as the game places them), dev test mode `gunview` (hip, aim

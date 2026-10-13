@@ -31,8 +31,14 @@ import net.minecraft.world.World;
 public final class Highways
 {
     static final int DECK = LcCity.BASE;
-    /** Most non city regions a highway crosses between two cities. */
+    /** Most non city regions a highway crosses between two cities (CityLayout worlds: maxGap()). */
     static final int MAX_GAP = 3;
+
+    /** Cities of many sizes sit on a 5 sector grid, often 4 to 5 sectors apart: longer highways there. */
+    static int maxGap()
+    {
+        return net.decimation.worldgen.CityLayout.on() ? 5 : MAX_GAP;
+    }
     static final int TUNNEL_DEPTH = 6;
     /** Air kept above an open deck / bridge (trees and hills cut). */
     static final int CLEAR = 20;
@@ -63,17 +69,17 @@ public final class Highways
     static boolean spans(long seed, int r, int other, boolean alongX)
     {
         int lo = r - 1, hi = r + 1;
-        while (lo >= r - MAX_GAP && !(alongX ? cityRegion(seed, lo, other) : cityRegion(seed, other, lo)))
+        while (lo >= r - maxGap() && !(alongX ? cityRegion(seed, lo, other) : cityRegion(seed, other, lo)))
         {
             lo--;
         }
-        while (hi <= r + MAX_GAP && !(alongX ? cityRegion(seed, hi, other) : cityRegion(seed, other, hi)))
+        while (hi <= r + maxGap() && !(alongX ? cityRegion(seed, hi, other) : cityRegion(seed, other, hi)))
         {
             hi++;
         }
         boolean a = alongX ? cityRegion(seed, lo, other) : cityRegion(seed, other, lo);
         boolean b = alongX ? cityRegion(seed, hi, other) : cityRegion(seed, other, hi);
-        return a && b && hi - lo - 1 <= MAX_GAP;
+        return a && b && hi - lo - 1 <= maxGap();
     }
 
     static final long SALT_X = 0x48575958L, SALT_Z = 0x4857595AL;
@@ -113,10 +119,11 @@ public final class Highways
     {
         synchronized (LINKS)
         {
-            if (linkSeed != seed || LINKS.size() > 65536)
+            long layout = seed ^ net.decimation.worldgen.CityLayout.epoch() * 0x9E3779B97F4A7C15L;
+            if (linkSeed != layout || LINKS.size() > 65536)
             {
                 LINKS.clear();
-                linkSeed = seed;
+                linkSeed = layout;
             }
             Long key = ((long) rx << 32) ^ (rz & 0xFFFFFFFFL);
             int[] l = LINKS.get(key);
@@ -135,7 +142,7 @@ public final class Highways
         {
             return NONE;
         }
-        for (int d = 1; d <= MAX_GAP + 1; d++)
+        for (int d = 1; d <= maxGap() + 1; d++)
         {
             if (cityRegion(seed, ax + d, az) || cityRegion(seed, ax - d, az)
                 || cityRegion(seed, ax, az + d) || cityRegion(seed, ax, az - d))

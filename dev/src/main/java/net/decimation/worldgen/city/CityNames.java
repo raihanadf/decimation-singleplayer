@@ -29,6 +29,7 @@ public final class CityNames
     private static final int MAX_REGIONS = 64;
 
     private static final Map<Long, List<long[]>> CITIES = new HashMap<Long, List<long[]>>();
+    private static long citiesLayout;
 
     private CityNames()
     {
@@ -50,6 +51,12 @@ public final class CityNames
         if (!cityRegion(seed, rx, rz))
         {
             return null;
+        }
+        long layout = seed ^ net.decimation.worldgen.CityLayout.epoch() * 0x9E3779B97F4A7C15L;
+        if (layout != citiesLayout)
+        {
+            CITIES.clear();                                // another world or layout: the groups differ
+            citiesLayout = layout;
         }
         List<long[]> c = CITIES.get(key(rx, rz));
         if (c != null)

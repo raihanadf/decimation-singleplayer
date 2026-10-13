@@ -84,8 +84,8 @@ every item below that is not DONE.
     is the CITY sectors that touch (Sectors: 15 % of 256 block sectors, one at random each), so most
     cities are one sector = 4 districts (seed 1: 1096 of 1509 cities one sector, the biggest 8
     sectors). Idea: a city layout of its own that grows a city of 2 to 16 sectors (8 to 64
-    districts) from a seed, the wasteland city sectors on its side toward the military. Not
-    designed yet; touches Sectors, highways, rails, names, refuges.
+    districts) from a seed, the wasteland city sectors on its side toward the military.
+    DONE v0.60.0 (new worlds): worldgen/CityLayout, docs/city_engine.md "City sizes".
 
 ## Menu
 16. **GitHub repo link on the home screen**: on the menu shown before the player clicks Play (the

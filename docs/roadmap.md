@@ -219,6 +219,9 @@ menu. Not designed: each needs a design talk first. Current work comes first (us
   rail.
 - v0.41.0 / 0.41.1 EOTech 558 and ACOG TA11 of our own, reticles in the glass swaying with the
   gun, Mk18 IMI TS stock, HK416 front sight folds away; accepted.
+- v0.60.0 cities of 4 to 64 districts (new worlds, worldgen/CityLayout, docs/city_engine.md "City
+  sizes"): about 24 % city land, 1 wasteland sector per 4 on the military side; waiting for the user's
+  look. Open: one refuge per city sector (up to 12 in the biggest cities).
 - v0.58.0 one release jar with everything; v0.59.0 auto update from GitHub releases; v0.59.1 the update
   check survives GitHub's API rate limit (ETag cache, release feed fallback; new_feature.md).
 - v0.57.1 wasteland city = a whole city sector inside its city, streets joined through gates in the

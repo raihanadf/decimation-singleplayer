@@ -81,6 +81,10 @@ public class DecimationWorldGen
             new net.decimation.worldgen.terrain.DecimationWorldType();
         net.minecraftforge.common.MinecraftForge.TERRAIN_GEN_BUS.register(
             new net.decimation.worldgen.terrain.TerrainEvents());
+        // cities of 4 to 64 districts (CityLayout): on for worlds created since 0.60 (stored per world);
+        // registered first so the other world load handlers already see it
+        CityLayoutEvents.configure(event.getModConfigurationDirectory());
+        net.minecraftforge.common.MinecraftForge.EVENT_BUS.register(new CityLayoutEvents());
         // rivers through cities: on for worlds created since 0.45 (stored per world)
         net.minecraftforge.common.MinecraftForge.EVENT_BUS.register(new net.decimation.worldgen.city.CityRivers());
         // the wasteland district as a military area: its military building pick for worlds created since 0.54

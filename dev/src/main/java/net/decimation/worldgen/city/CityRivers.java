@@ -36,7 +36,7 @@ public final class CityRivers
         {
             return false;
         }
-        long key = ((long) cx << 32) ^ (cz & 0xFFFFFFFFL) ^ seed * 31;
+        long key = ((long) cx << 32) ^ (cz & 0xFFFFFFFFL) ^ seed * 31 ^ net.decimation.worldgen.CityLayout.epoch() * 0x9E3779B97F4A7C15L;
         Boolean b = CHUNKS.get(key);
         if (b == null)
         {
@@ -86,7 +86,7 @@ public final class CityRivers
         {
             return false;
         }
-        long key = ((long) cellX << 32) ^ (cellZ & 0xFFFFFFFFL) ^ seed * 31;
+        long key = ((long) cellX << 32) ^ (cellZ & 0xFFFFFFFFL) ^ seed * 31 ^ net.decimation.worldgen.CityLayout.epoch() * 0x9E3779B97F4A7C15L;
         Boolean b = CELLS.get(key);
         if (b == null)
         {
