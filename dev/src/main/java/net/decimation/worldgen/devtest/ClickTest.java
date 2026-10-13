@@ -24,8 +24,10 @@ public class ClickTest extends DevTestMode
     public String name() { return "click"; }
 
     private static final int LEFT = -100;
+    /** manual=true: no simulated presses; waits (2 minutes per step) for a real mouse click on the target. */
+    private final boolean manual = "true".equals(System.getProperty("deciworldgen.autotest.manual"));
     private volatile int ticks, phase;          // server phase: 1 dirt placed, 2 dirt again, 3 pig
-    private volatile boolean checkDirt, checkPig, done;
+    private volatile boolean checkDirt, checkPig, done, dirtGone;
     private int step, wait;
     private EntityPig pig;
     private float pigHealth;
@@ -59,11 +61,11 @@ public class ClickTest extends DevTestMode
                         + mc.playerController.isInCreativeMode() + " hand " + mc.thePlayer.getHeldItem() + " on ground "
                         + mc.thePlayer.onGround + " flying " + mc.thePlayer.capabilities.isFlying);
                 }
-                if (wait == 60)
+                if (wait == (manual ? 2400 : 60) || manual && wait > 40 && dirtGone)
                 {
                     press(false);
                     checkDirt = true;
-                    next(1);
+                    next(manual ? 9 : 1);
                 }
                 break;
             case 1:
@@ -116,8 +118,12 @@ public class ClickTest extends DevTestMode
         return !done;
     }
 
-    private static void press(boolean down)
+    private void press(boolean down)
     {
+        if (manual)
+        {
+            return;                                       // a real click is expected
+        }
         KeyBinding.setKeyBindState(LEFT, down);
         if (down)
         {
@@ -158,6 +164,10 @@ public class ClickTest extends DevTestMode
         if (phase > 0 && phase < 3 && t % 40 == 0)
         {
             look(p);                                      // not every tick: a teleport each tick keeps the player off the ground (digging x 1/5)
+        }
+        if (manual && phase == 1)
+        {
+            dirtGone = w.getBlock(x, y, z) != Blocks.dirt;
         }
         if (checkDirt)
         {

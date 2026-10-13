@@ -83,6 +83,9 @@ Knowledge index:
   tools) in one list with links; add new requests there, move done items.
 - `docs/gun_model_spec.md`: gun `.bmodel` / `.anib` formats, paths, renderer,
   new gun checklist.
+- `docs/production_test.md`: testing the RELEASE jar in a plain Forge server and client built in the
+  scratchpad (never Prism): steps, traps (server jar via the Forge manifest, -XstartOnFirstThread hang),
+  driving it with devtest.py --live.
 - `docs/performance.md`: how to check lag (dev test modes gunperf, census,
   tools/perfcheck.py world / log / fixchunk, JFR on the live game with
   jcmd) and what was found (corrupt chunk entity explosion, infected path

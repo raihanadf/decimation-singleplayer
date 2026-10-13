@@ -62,6 +62,11 @@ not something we introduced or need to fix) see `documentation.md`.
   (mc.inGameHasFocus); a teleport every tick keeps the player off the ground (digging 5 times slower).
 - Needed from the friend: survival or adventure, inside a safezone (camp, refuge) or not, mouse or
   touchpad, Windows or Mac, which item and what target.
+- Friend (13 Oktober 2026): creative and survival both; guns fire. User asked whether dev and
+  production differ: a production client was built (docs/production_test.md) and `click` run in it with
+  the release jar: all PASS there too (simulated key presses). Our shipped code has no name based
+  lookups touching input; Decimation's dev only branch (StanceEntityRenderer) only covers fog colours.
+  A real mouse click is still untested (`click manual=true` waits for one).
 
 ### Shots at a big zombie's head miss (reported 13 Oktober 2026 by a friend, Open, not reproduced)
 - User: "big zombie model hit box not hit when its hit head, i think its caused by hitbox issue".
