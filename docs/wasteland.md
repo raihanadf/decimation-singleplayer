@@ -129,7 +129,37 @@ Crates are never stacked: a military crate is drawn 1.15 high, one on another ov
   before v0.54 (stays off by the flag), the helicopter crash and casualty lots in game (none in the
   shot districts; the server run logged 2 motor pools).
 
+### v0.61.1 user review of the gates (14 Oktober 2026)
+User shots docs/shots/wasteland_gate_v0.61_review/: the land edge street ran out through a gate to nothing
+("better use T intersection rather use 4 intersection since there is no road"; edge gates "blocker gate
+... only 5% chance to be opened ... no road on it"), a connector left as the plain gate ("boring and no
+taste"), the tank ditch ("really bad idea ... remove it"). Choices taken (asked): toll replaces only the
+plain connectors (the 5 looks stay), a HESCO wall instead of the ditch, T junctions at EVERY city edge, the
+edge gates shut with the same closures.
+- Closures now: wire + landmines, welded steel, burnt bus, HESCO wall (our block 3 high, wire on top,
+  sandbags and a crate in front). The ditch and the street base sinking are gone.
+- Connectors that cannot take a full gate (the street before the line is a canal, a level change, or no
+  street) get the COMPACT toll gate (look -1 in CityGate): a booth island on the line and the crossing's two
+  rows, a canopy over both lanes, arms down on the far side, the closure in the line's lanes beside the
+  booth (a bus becomes steel there). Gates are allowed on bridge decks (RiverPlan asks the street above
+  the deck), so a crossing on a canal is no longer plain. Seed 1: 15 connectors, none plain.
+- T junctions (StreetPlan.arms): our own street chunks (districts without Lost Cities street parts, the
+  wasteland's among them) close every side with no city street or highway beyond it with sidewalk, so a
+  crossing at a city edge becomes a T and a street running out ends; the district street parts already
+  chose "t" / "end" parts by their connections.
+- Edge gates (WastelandFence.landGate): no road; where a district street meets the land fence the fence
+  holds a closure (1 in 20 a broken gap: bars bent to stubs, scorched ground, wire scraps, a skeleton, no
+  mines on the way through); the stretch's ground is levelled to the street level first (a bus on the
+  slope came out jagged); the wire version adds wire both sides and mines one cell in three outside.
+  Wasteland cell ties go to the side the column lies straight out from (a gate's first columns took the
+  next cell's corner and kept the plain fence).
+- Checked: seed 1 server (pregen 1472,448,18): 15 connector gates, no plain; west land edge: the crossing's
+  arm toward the land is sidewalk (T); the edge gates at z 320 and 448 are buses level at y 65..67 across
+  z 323..332 with posts at both ends on the fence line.
+
 ### v0.61.0 gates between a wasteland city and its city (14 Oktober 2026)
+(History: v0.61.1 above removed the tank ditch and the base sinking, and changed the canvas to H 9 without the
+SINK rows; the lines below describe v0.61.0 as built then.)
 User on 0.60.2: the fence "actually very good", but the gates should be a toll gate and different
 styles, "around 6 gate style"; then "80% is blocked so player or mobs cannot pass it ... 20% where the gate is
 opened even its half opened cause its has breaked before"; the closures: "version one using landmine, other
@@ -149,7 +179,7 @@ tank ditch; an open gate keeps its look, smashed; up to 8 blocks each side.
   flag, hedgehogs), containers (two stacks 2 high with a 3 wide gap, wire on top, a third container behind,
   work lights), quarantine (white tent over the road with strip curtains, medical crates, stretcher, body
   bags, generator), police (barriers, cruiser across, cones, small blue booth with a beacon).
-- Closures (all at least 3 high or uncrossable: Decimation's mines only go off under players, props like
+- Closures in v0.61.0 (all at least 3 high or uncrossable: Decimation's mines only go off under players, props like
   wire do not stop mobs): wire (the chain link carried across the road, wire rolls both sides, about one
   mine per 3 road cells before it, 12 per gate in the test), steel (plates 3 high, ragged top, sandbags,
   warning sign), bus (a burnt bus of clay blocks 10 x 3 x 3 across the line and the crossing's 2 rows,

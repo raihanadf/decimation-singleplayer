@@ -397,6 +397,12 @@ level 0 only); our cities had no such gaps (rivers kept 32 blocks off).
   over across 5..10 / along 4..11. Dev test all PASS at 30144,64,1696
   (docs/shots_index.md "lc_bridge_v0.45.1").
 
+## City edges end in T junctions (v0.61.1)
+User, 14 Oktober 2026: no road running out of a city into empty land. StreetPlan.arms: a street chunk of our
+own (no Lost Cities street part) closes each side whose neighbour chunk is neither a city street nor a highway
+with sidewalk (a crossing becomes a T or an L, a street an end). District street parts already pick their
+"t" / "end" parts from the same connections (LcCity.street). Highways keep their arm.
+
 ## City sizes (v0.60.0, `worldgen/CityLayout.java`, new worlds only)
 
 User idea 13 Oktober 2026 (docs/ideas.md item 19): "city have variant size ... 8, 16, 24, 48 or even 64

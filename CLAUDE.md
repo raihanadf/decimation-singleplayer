@@ -917,6 +917,10 @@ of the last session:
   cells, StreetPlan sinks a ditch chunk's base, Slices spawns CityGate.MINE markers as landmines; our block
   deciworldgen:boom_barrier (skill decimation-block); the inside fence stands on full blocks (StreetPlan.floor)
   and runs over bridges. Dev test `gates`.
+  v0.61.1 (user review): no tank ditch (HESCO wall instead), compact toll gate where the street before a connector
+  cannot take a full one (gates on bridge decks too: no plain connector), T junctions at every city edge
+  (StreetPlan.arms: our own streets close sides with no street or highway beyond), edge gates of the land fence
+  closed with the same closures (WastelandFence.landGate, 1 in 20 a broken gap, no road).
   Gun study (10 Oktober 2026): docs/gun_style_guide.md, tools/guns/study.py
   (renders / measures Decimation's guns from the jar, `attach` adds
   attachments as the game places them), dev test mode `gunview` (hip, aim

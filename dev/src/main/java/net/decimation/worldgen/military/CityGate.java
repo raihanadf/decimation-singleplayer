@@ -13,21 +13,24 @@ import net.minecraft.init.Blocks;
  * The gates in the fence between a wasteland city sector and the city beside it (city/WastelandFence; user,
  * 14 Oktober 2026). Each gate has a LOOK (toll gate, military checkpoint, container wall, quarantine, police
  * roadblock) and a STATE: 8 in 10 are shut so neither players nor mobs get through (barbed wire with
- * landmines, a welded steel wall, a burnt bus plugging it, or a tank ditch that replaces the look), 2 in 10
+ * landmines, a welded steel wall, a burnt bus plugging it, or a HESCO wall; user, 14 Oktober 2026: the tank
+ * ditch "really bad idea ... remove it"), 2 in 10
  * stand open because they broke (the look smashed: arms torn off, burnt road, bodies, loose wire).
  * <p>
  * Final canvas W x H x L: x = across the street (0..15, sidewalks 0..2 and 13..15, road 3..12); z = d + BACK,
  * d the distance from the fence line (0 = the line, -1 / -2 the crossing street's first two road rows, which
- * only the bus uses; 1..8 the street chunk in front); y = height + SINK (y SINK = the street surface, below
- * it solid ground that a ditch digs into). Arriving traffic comes from +z: signs and lights face south.
+ * only the bus and the compact toll use; 1..8 the street chunk in front); y = height above the street
+ * surface (0 = the surface). Arriving traffic comes from +z: signs and lights face south. A crossing whose
+ * street chunk in front cannot take a gate (a canal) gets the COMPACT toll gate on the line and the
+ * crossing's two rows only (user: no plain gate on a connector).
  * Looks are drawn on a small canvas (y 0 = surface, z = d) and copied in; props checked by validateProps.
  */
 public final class CityGate
 {
     public static final String[] LOOKS = {"toll", "checkpoint", "containers", "quarantine", "police"};
-    public static final String[] STATES = {"open", "wire", "steel", "bus", "ditch"};
-    public static final int OPEN = 0, WIRE = 1, STEEL = 2, BUS = 3, DITCH = 4;
-    public static final int W = 16, BACK = 2, L = 9 + BACK, SINK = 4, H = 9 + SINK;
+    public static final String[] STATES = {"open", "wire", "steel", "bus", "hesco"};
+    public static final int OPEN = 0, WIRE = 1, STEEL = 2, BUS = 3, HESCO = 4;
+    public static final int W = 16, BACK = 2, L = 9 + BACK, H = 9;
     static final int E = 2, S = 3, WE = 4, N = 5;
 
     /** Marker for a landmine: Slices spawns Decimation's landmine entity in its cell instead of a block. */
@@ -46,12 +49,12 @@ public final class CityGate
 
     public static String name(int look, int state)
     {
-        return state == DITCH ? "ditch" : LOOKS[look] + "/" + STATES[state];
+        return (look < 0 ? "compact toll" : LOOKS[look]) + "/" + STATES[state];
     }
 
     private static int key(int look, int state)
     {
-        return state == DITCH ? -1 : look * STATES.length + state;
+        return (look + 1) * STATES.length + state;
     }
 
     static synchronized Canvas canvas(int look, int state)
@@ -95,7 +98,7 @@ public final class CityGate
         metal = d("BlockMetal_2", Blocks.iron_block);
         road = d("BlockRoad", Blocks.stone);
         ground();
-        if (state != DITCH)
+        if (look >= 0)
         {
             switch (look)
             {
@@ -107,18 +110,22 @@ public final class CityGate
             }
         }
         copy();
+        if (look < 0)
+        {
+            compactToll();
+        }
         switch (state)
         {
             case OPEN:  smash(); break;
             case WIRE:  wire(); break;
             case STEEL: steel(); break;
-            case BUS:   bus(); break;
-            default:    ditch(); break;
+            case BUS:   if (look < 0) steel(); else bus(); break;   // no room for a bus beside the booth
+            default:    hesco(); break;
         }
         f.validateProps(log);
     }
 
-    /** The look canvas into the final one; solid ground below the surface; the crossing's two road rows. */
+    /** The look canvas into the final one; the crossing's two road rows; the compact toll on those and the line. */
     private void copy()
     {
         for (int z = 0; z < L; z++)
@@ -130,13 +137,9 @@ public final class CityGate
                 {
                     continue;                                   // the line's fence, the crossing's corners
                 }
-                for (int y = 0; y < SINK; y++)
-                {
-                    f.set(a, y, z, Blocks.stone, 0, Canvas.PLAIN);
-                }
                 if (d < 0)
                 {
-                    f.set(a, SINK, z, road, 0, Canvas.PLAIN);
+                    f.set(a, 0, z, road, 0, Canvas.PLAIN);
                     continue;
                 }
                 for (int y = 0; y < c.h; y++)
@@ -144,7 +147,7 @@ public final class CityGate
                     Block b = c.get(a, y, d);
                     if (b != null)
                     {
-                        f.set(a, y + SINK, z, b, c.meta(a, y, d), c.kind(a, y, d));
+                        f.set(a, y, z, b, c.meta(a, y, d), c.kind(a, y, d));
                     }
                 }
             }
@@ -155,12 +158,12 @@ public final class CityGate
     // final canvas helpers: h = height above the surface (0 = the surface), d = distance from the line
     private Block at(int a, int h, int d)
     {
-        return f.get(a, h + SINK, d + BACK);
+        return f.get(a, h, d + BACK);
     }
 
     private void put(int a, int h, int d, Block b, int m)
     {
-        f.set(a, h + SINK, d + BACK, b, m, Canvas.PLAIN);
+        f.set(a, h, d + BACK, b, m, Canvas.PLAIN);
     }
 
     private void putProp(int a, int h, int d, String name, int facing)
@@ -168,15 +171,15 @@ public final class CityGate
         Block b = d(name, null);
         if (b != null)
         {
-            f.prop(a, h + SINK, d + BACK, b, facing);
+            f.prop(a, h, d + BACK, b, facing);
         }
     }
 
     private void clearColumn(int a, int d, int fromH)
     {
-        for (int h = fromH; h + SINK < H; h++)
+        for (int h = fromH; h < H; h++)
         {
-            f.clear(a, h + SINK, d + BACK);
+            f.clear(a, h, d + BACK);
         }
     }
 
@@ -191,7 +194,7 @@ public final class CityGate
         {
             return false;
         }
-        int cy = 1 + SINK, cz = d + BACK;
+        int cy = 1, cz = d + BACK;
         for (int z = cz - 5; z <= cz + 5; z++)
         {
             for (int y = cy - 1; y <= cy + 1; y++)
@@ -265,6 +268,11 @@ public final class CityGate
         }
         // bodies on spots checked against each look's drawn props by hand (a skeleton lies 2 long toward +d,
         // a bag 2 long across at E, along d at S); validateProps would drop one that still clashed
+        if (look < 0)
+        {
+            putProp(3, 1, -1, "BlockSkeletonGround", E);       // only the line and the crossing's rows are ours
+            return;
+        }
         int[][] skeleton = {{4, 6}, {10, 3}, {12, 5}, {3, 7}, {4, 5}};
         int[][] bag = {{1, 3}, {12, 2}, {3, 5}, null, null};
         int[] bagFacing = {E, S, S, S, S};
@@ -288,12 +296,21 @@ public final class CityGate
         }
     }
 
+    /** The compact toll's booth island on the line (closures leave it standing). */
+    private boolean island(int a)
+    {
+        return look < 0 && a >= 6 && a <= 9;
+    }
+
     /** Clears the line's road cells (the look's barriers there) for a closure. */
     private void clearLine()
     {
         for (int a = 3; a <= 12; a++)
         {
-            clearColumn(a, 0, 1);
+            if (!island(a))
+            {
+                clearColumn(a, 0, 1);
+            }
         }
     }
 
@@ -308,6 +325,10 @@ public final class CityGate
         Block wireB = d("BlockConcertinaWire", null);
         for (int a = 3; a <= 12; a++)
         {
+            if (island(a))
+            {
+                continue;
+            }
             boolean post = a % 4 == 1;
             for (int h = 1; h <= 3; h++)
             {
@@ -319,21 +340,22 @@ public final class CityGate
             }
             else if (wireB != null)
             {
-                f.prop(a, 4 + SINK, BACK, wireB, S);
+                f.prop(a, 4, BACK, wireB, S);
             }
         }
         for (int a = 3; a <= 12; a++)
         {
-            for (int d : new int[] {1, -1})
+            for (int d : look < 0 ? new int[] {} : new int[] {1, -1})   // a compact gate owns no front rows
             {
                 if (free(a, d))
                 {
                     putProp(a, 1, d, "BlockConcertinaWire", S);
                 }
             }
-            for (int d : new int[] {2, 3, 4, -2})
+            // the compact gate's one free row (between the line and its arms) is all mines
+            for (int d : look < 0 ? new int[] {-1} : new int[] {2, 3, 4, -2})
             {
-                if (free(a, d) && hash(a, d, 2) % 3 == 0)
+                if (free(a, d) && (look < 0 ? hash(a, d, 2) % 2 == 0 : hash(a, d, 2) % 3 == 0))
                 {
                     put(a, 1, d, MINE, 0);
                 }
@@ -348,6 +370,10 @@ public final class CityGate
         Block[] plates = {metal, d("BlockMetal_3", Blocks.iron_block), d("BlockMetalWall", Blocks.iron_block)};
         for (int a = 3; a <= 12; a++)
         {
+            if (island(a))
+            {
+                continue;
+            }
             for (int h = 1; h <= 3; h++)
             {
                 put(a, h, 0, plates[(int) (hash(a, h, 3) % 3)], 0);
@@ -356,6 +382,10 @@ public final class CityGate
             {
                 put(a, 4, 0, plates[1], 0);
             }
+        }
+        if (look < 0)
+        {
+            return;                                           // the front rows are not the compact gate's
         }
         Block sand = d("BlockSandbagStack", Blocks.sandstone);
         for (int a = 3; a <= 12; a++)
@@ -400,7 +430,7 @@ public final class CityGate
                     put(a, 2, d, window ? Blocks.glass_pane : clay, window ? 0 : body);
                     if (window && hash(a, d, 7) % 2 == 0)
                     {
-                        f.clear(a, 2 + SINK, d + BACK);         // broken out
+                        f.clear(a, 2, d + BACK);         // broken out
                     }
                 }
                 put(a, 3, d, clay, hash(a, d, 8) % 10 < 5 ? 15 : 4);
@@ -411,52 +441,105 @@ public final class CityGate
         {
             if (wireB != null)
             {
-                f.prop(a, 4 + SINK, BACK - 1, wireB, S);
+                f.prop(a, 4, BACK - 1, wireB, S);
             }
         }
     }
 
-    /**
-     * Tank ditch instead of a look: the whole street (sidewalks too) dug 4 deep and 4 wide right before the
-     * line (d 1..4), hedgehogs and wire at the bottom, wire along both lips, a warning sign, hedgehogs and
-     * sandbags on the approach. StreetPlan lowers the street chunk's base by SINK for it.
-     */
-    private void ditch()
+    /** HESCO wall: our HESCO block 3 high across the opening, wire on top, a sandbag sentry post and a crate in front. */
+    private void hesco()
     {
-        for (int d = 1; d <= 4; d++)
+        clearLine();
+        Block h = BlockHesco.instance != null ? BlockHesco.instance : d("BlockMilitaryBarrier", Blocks.sandstone);
+        Block wireB = d("BlockConcertinaWire", null);
+        for (int a = 3; a <= 12; a++)
         {
-            for (int a = 0; a < W; a++)
+            if (island(a))
             {
-                for (int h = -3; h <= 0; h++)
-                {
-                    f.clear(a, h + SINK, d + BACK);
-                }
-                f.set(a, 0, d + BACK, Blocks.stone, 0, Canvas.PLAIN);
+                continue;                                     // the compact toll's booth island
+            }
+            for (int y = 1; y <= 3; y++)
+            {
+                put(a, y, 0, h, 0);
+            }
+            if (wireB != null)
+            {
+                f.prop(a, 4, BACK, wireB, S);
             }
         }
-        putProp(4, -3, 2, "BlockHedgehog", S);
-        putProp(11, -3, 3, "BlockHedgehog", S);
-        putProp(7, -3, 2, "BlockConcertinaWire", S);
-        putProp(8, -3, 3, "BlockConcertinaWire", S);
-        for (int a = 0; a < W; a++)
+        if (look < 0)
         {
-            if (a >= 3 && a <= 12 && free(a, 0))
-            {
-                putProp(a, 1, 0, "BlockConcertinaWire", S);
-            }
-            if (free(a, 5))
-            {
-                putProp(a, 1, 5, "BlockConcertinaWire", S);
-            }
+            return;
         }
-        putProp(1, 1, 7, "BlockRussianRoadSignWarning", S);
-        putProp(5, 1, 7, "BlockHedgehog", S);
-        putProp(10, 1, 8, "BlockHedgehog", S);
         Block sand = d("BlockSandbagStack", Blocks.sandstone);
-        for (int a = 13; a <= 15; a++)
+        for (int a = 3; a <= 4; a++)
         {
-            put(a, 1, 6, sand, 0);
+            if (free(a, 1))
+            {
+                put(a, 1, 1, sand, 0);
+            }
         }
+        if (free(12, 1))
+        {
+            putProp(12, 1, 1, "BlockMilitaryCrate", S);
+        }
+    }
+
+    /**
+     * Compact toll gate (a crossing where the street in front cannot take the full one): a glass booth on an
+     * island in the middle of the line and the crossing's two rows, a canopy over both lanes resting on the
+     * booth and the fence posts, an arm down across each lane on the far side, a red lamp.
+     */
+    private void compactToll()
+    {
+        Block door = d("Door_Metal_3", Blocks.iron_door);
+        for (int d = -2; d <= 0; d++)
+        {
+            for (int a = 6; a <= 9; a++)
+            {
+                boolean side = a == 6 || a == 9, end = d == -2 || d == 0;
+                put(a, 0, d, Blocks.double_stone_slab, 0);
+                put(a, 1, d, metal, 0);
+                for (int y = 2; y <= 3; y++)
+                {
+                    if (side && end)
+                    {
+                        put(a, y, d, metal, 0);
+                    }
+                    else if (side || end)
+                    {
+                        f.set(a, y, d + BACK, Blocks.glass_pane, 0);
+                    }
+                }
+                put(a, 4, d, Blocks.double_stone_slab, 0);
+            }
+            for (int a = 7; a <= 8; a++)
+            {
+                f.clear(a, 1, d + BACK);                       // inside the booth
+            }
+        }
+        f.set(7, 1, -2 + BACK, door, 1, Canvas.DOOR);         // door to the far side
+        f.set(7, 2, -2 + BACK, door, 8, Canvas.DOOR);
+        for (int a = 3; a <= 12; a++)
+        {
+            for (int d = -2; d <= 0; d++)
+            {
+                put(a, 5, d, Blocks.double_stone_slab, 0);       // canopy over both lanes, on the booth
+            }
+        }
+        Block boom = BlockBoomArm.instance;
+        if (boom != null && state != OPEN)
+        {
+            for (int a = 3; a <= 5; a++)
+            {
+                put(a, 1, -2, boom, 0);
+            }
+            for (int a = 10; a <= 12; a++)
+            {
+                put(a, 1, -2, boom, 0);
+            }
+        }
+        putProp(6, 5 + 1, -1, "BlockRedlight", S);
     }
 
     // ---------------------------------------------------------------- looks (y 0 = surface, z = d)

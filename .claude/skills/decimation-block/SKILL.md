@@ -71,6 +71,9 @@ Decimation has no barrier arm). Facts on props: docs/prop_placement.md, docs/pro
 2. Barrier arm (v0.61.0): Decimation had no such prop; a thin block with bounds per metadata and two
    striped textures did it without any model; Rotation does not turn our metadata, the plan does.
 
+3. HESCO (v0.61.1) also closes wasteland gates (CityGate.hesco, WastelandFence.landGate): a plain block
+   placed in rows needs no prop checks and stops mobs.
+
 ## Casebook (never delete a case)
 ### Case 1: HESCO as a plain block (v0.42.1, 11 Oktober 2026)
 - User: the military barrier "really hurt fps". Fix: BlockHesco, tools/props/hesco_textures.py.

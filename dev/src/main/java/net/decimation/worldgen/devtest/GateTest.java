@@ -14,10 +14,10 @@ import net.minecraft.world.World;
 
 /**
  * The wasteland gates (military/CityGate) built in the sky at -20000, 230, -19100 on a stone pad: every look
- * x state (looks along x, states along z; the ditch once), each written straight from its plan (turns 1 as
+ * x state (looks along x with the compact toll first, states along z), each written straight from its plan (turns 1 as
  * on a line along z; -Pturns=2 for a line along x). Checks: no prop clash (Canvas.validateProps), landmines
  * spawned by the wire gates. Writes run/client/devtest/gates_<look>_<state>.tsv for tools/props/propclash.py;
- * one front and one top shot each. -Pgates=toll/wire,ditch picks some (default all).
+ * one front and one top shot each. -Pgates=toll/wire,compact_toll/hesco picks some (default all).
  */
 public class GateTest extends DevTestMode
 {
@@ -87,19 +87,15 @@ public class GateTest extends DevTestMode
             int mines = 0;
             for (int state = 0; state < CityGate.STATES.length; state++)
             {
-                for (int look = 0; look < CityGate.LOOKS.length; look++)
+                for (int look = -1; look < CityGate.LOOKS.length; look++)
                 {
-                    if (state == CityGate.DITCH && look > 0)
-                    {
-                        continue;
-                    }
                     String n = CityGate.name(look, state);
-                    if (!pick.isEmpty() && !("," + pick + ",").contains("," + n + ","))
+                    if (!pick.isEmpty() && !("," + pick + ",").contains("," + n.replace(' ', '_') + ","))   // compact_toll/wire
                     {
                         continue;
                     }
-                    int x = X0 + look * STEP, z = Z0 + state * STEP;
-                    CityGatePlan plan = new CityGatePlan("TG_" + look + "_" + state, x, z, turns, look, state);
+                    int x = X0 + (look + 1) * STEP, z = Z0 + state * STEP;
+                    CityGatePlan plan = new CityGatePlan("TG_" + (look + 1) + "_" + state, x, z, turns, look, state);
                     int m = build(w, plan);
                     mines += m;
                     List<String> log = plan.debugLog();
@@ -112,12 +108,12 @@ public class GateTest extends DevTestMode
                     {
                         DevTestResults.check(name(), n + " landmines", m, m > 0, "> 0");
                     }
-                    dump(w, plan, "gates_" + n.replace('/', '_'));
+                    dump(w, plan, "gates_" + n.replace('/', '_').replace(' ', '_'));
                     for (Map.Entry<String, float[]> e : plan.pointsOfInterest().entrySet())
                     {
                         float[] q = e.getValue();
                         shots.add(new float[] {q[0], Y + q[1], q[2], q[3], q[4]});   // heights above the street surface
-                        names.add(n.replace('/', '_') + "_" + e.getKey());
+                        names.add(n.replace('/', '_').replace(' ', '_') + "_" + e.getKey());
                     }
                 }
             }
@@ -137,11 +133,11 @@ public class GateTest extends DevTestMode
 
     /**
      * A stone pad 6 around at the street surface (Y), cleared air above, then every cell of the plan written
-     * straight (canvas y SINK = Y); landmine markers spawn mines. Returns the mines spawned.
+     * straight (canvas y 0 = Y); landmine markers spawn mines. Returns the mines spawned.
      */
     private static int build(World w, CityGatePlan plan)
     {
-        int base = Y - CityGate.SINK, mines = 0;
+        int base = Y, mines = 0;
         // one layer of pad at the surface round the plan (thick pads cost seconds of sky light updates each)
         for (int x = plan.minX() - 4; x <= plan.maxX() + 4; x++)
         {
@@ -200,7 +196,7 @@ public class GateTest extends DevTestMode
         try (java.io.PrintWriter out = new java.io.PrintWriter(f, "UTF-8"))
         {
             out.println("# origin " + plan.minX() + " " + Y + " " + plan.minZ() + " " + file);
-            for (int y = Y - CityGate.SINK; y <= Y + CityGate.H; y++)
+            for (int y = Y - 1; y <= Y + CityGate.H; y++)
             {
                 for (int x = plan.minX(); x <= plan.maxX(); x++)
                 {

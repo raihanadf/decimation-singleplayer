@@ -15,16 +15,16 @@ import static net.decimation.worldgen.city.LcCity.*;
  * wasteland cell owns, by the Chebyshev distance d to the wasteland (a square fence):
  * - d = FENCE: chain link (iron bars 3 high) between dark metal posts every 4, barbed wire on top;
  *   d = FENCE + 1: barbed wire at the foot every second cell;
- * - every street running out of the district (a north south street on the north and south sides, an
- *   east west one on the west and east sides) goes on through a gate: the street (sidewalks, road) out to
- *   ROAD_TO, at the fence line a row of striped barriers across the road between taller posts, and a
- *   guard booth inside on one sidewalk (a military post) or on both (a toll gate);
+ * - where a street of the district meets the city edge (it ends there in a T or a dead end, StreetPlan.arms)
+ *   the fence holds a closed gate (user, 14 Oktober 2026: "blocker gate ... only 5% chance to be opened and
+ *   even its opened its broken style, no road on it"): the same closures as the inside gates (barbed wire
+ *   with landmines, welded steel, a burnt bus, HESCO), 1 in 20 a broken gap; no road leads to it;
  * - MINES_FROM to MINES_TO outside: Decimation's landmines, about one in MINE_ONE_IN columns, none in
  *   front of a gate (they go off under a player only, without breaking blocks).
  */
 final class WastelandFence
 {
-    static final int FENCE = 4, ROAD_TO = 9, MINES_FROM = 6, MINES_TO = 16, MINE_ONE_IN = 28;
+    static final int FENCE = 4, MINES_FROM = 6, MINES_TO = 16, MINE_ONE_IN = 28;
 
     private WastelandFence()
     {
@@ -52,7 +52,9 @@ final class WastelandFence
                 int x0 = (cx + i) * CELL * 16, z0 = (cz + j) * CELL * 16, x1 = x0 + CELL * 16 - 1, z1 = z0 + CELL * 16 - 1;
                 int dx = Math.max(0, Math.max(x0 - x, x - x1)), dz = Math.max(0, Math.max(z0 - z, z - z1));
                 int d = Math.max(dx, dz);
-                if (d < best)
+                // ties go to a cell the column lies straight out from (else a gate's first columns beside the
+                // next wasteland cell were taken for a corner and kept the plain fence)
+                if (d < best || d == best && (dx == 0 || dz == 0) && ox > 0 && oz > 0)
                 {
                     best = d;
                     ox = dx;
@@ -79,8 +81,11 @@ final class WastelandFence
         }
         if (gate)
         {
-            gate(w, seed, x, z, d, nsSide, nsSide ? x & 15 : z & 15, g, y, bchx, bchz);
-            return;
+            int a = nsSide ? x & 15 : z & 15;
+            if (a >= SIDEWALK - 1 && a <= 16 - SIDEWALK && landGate(w, seed, x, z, d, nsSide, a, y, g, bchx, bchz))
+            {
+                return;
+            }
         }
         boolean alongX = oz >= ox;                         // the fence runs along x on the north and south sides
         if (d == FENCE)
@@ -261,9 +266,10 @@ final class WastelandFence
     /**
      * The styled gate owning column (x, z), or null: a street crossing an inside fence line (line()) whose
      * street chunk in front (west of a line along z, north of a line along x) is a plain street at the
-     * same level as the crossing (no river, no ramp). It owns that chunk's 8 columns nearest the line, the
+     * same level as the crossing (no river, no ramp): it owns that chunk's 8 columns nearest the line, the
      * road cells of the line itself and of the crossing's first two columns (the posts and the fence on the
-     * sidewalks stay inCity's). Look and state by the crossing's hash (military/CityGate).
+     * sidewalks stay inCity's). Where the street in front cannot take it, a compact toll gate owns only the
+     * line and the crossing's rows. Look and state by the crossing's hash (military/CityGate).
      */
     static net.decimation.worldgen.military.CityGatePlan gate(long seed, int x, int z)
     {
@@ -285,7 +291,7 @@ final class WastelandFence
                     continue;                                 // the fence on the line's sidewalks, the crossing's corners
                 }
                 net.decimation.worldgen.military.CityGatePlan g = gateAt(seed, axis, line0, across >> 4);
-                if (g != null)
+                if (g != null && !(g.compact() && d > 0))         // a compact toll owns no front rows
                 {
                     return g;
                 }
@@ -330,14 +336,14 @@ final class WastelandFence
         // the crossing chunk on the line and the street chunk in front of it
         int cx = axis == 0 ? line0 >> 4 : crossChunk, cz = axis == 0 ? crossChunk : line0 >> 4;
         int fx = axis == 0 ? cx - 1 : cx, fz = axis == 0 ? cz : cz - 1;
-        if (!isStreetChunk(seed, fx, fz) || CityRivers.chunk(seed, fx, fz) || CityRivers.chunk(seed, cx, cz)
-            || ground(seed, Math.floorDiv(fx, CELL), Math.floorDiv(fz, CELL)) != ground(seed, Math.floorDiv(cx, CELL), Math.floorDiv(cz, CELL)))
-        {
-            return null;
-        }
+        // the street in front cannot take a full gate (a canal, a level change, no street): the compact toll
+        // on the line and the crossing's two rows (user, 14 Oktober 2026: toll gates instead of plain ones); a
+        // crossing on a canal carries its gate on the bridge deck (RiverPlan asks the street above the deck)
+        boolean compact = !isStreetChunk(seed, fx, fz) || CityRivers.chunk(seed, fx, fz)
+            || ground(seed, Math.floorDiv(fx, CELL), Math.floorDiv(fz, CELL)) != ground(seed, Math.floorDiv(cx, CELL), Math.floorDiv(cz, CELL));
         // look by the crossing's hash; 2 in 10 open (broken), else one of the four closures (user, 14 Oktober 2026)
         long h = hl(seed ^ 0x47415445L, cx * 2 + axis, cz);
-        int look = (int) (h % net.decimation.worldgen.military.CityGate.LOOKS.length);
+        int look = compact ? -1 : (int) (h % net.decimation.worldgen.military.CityGate.LOOKS.length);
         int state = (h >>> 20) % 10 < 2 ? net.decimation.worldgen.military.CityGate.OPEN : 1 + (int) ((h >>> 28) % 4);
         String id = "lcg_" + cx + "_" + cz + "_" + axis;
         cpw.mods.fml.common.FMLLog.info("[deciworldgen] lc gate %s at %d,%d,%d (line along %s)", net.decimation.worldgen.military.CityGate.name(look, state),
@@ -370,85 +376,193 @@ final class WastelandFence
     }
 
     /**
-     * A column of a gate in front of the street chunk (bchx, bchz): a = position across the road (0..15,
-     * the street's own across), d out from the wasteland, street level g, column top y.
+     * A column of an edge gate where the street chunk (bchx, bchz) meets the fence: a = position across the
+     * street's width (SIDEWALK - 1 .. 16 - SIDEWALK, posts at the ends), d out from the wasteland, y the
+     * column's top, g the street level (a closure's ground is levelled to it: a bus on the slope came out
+     * jagged). State by the street's hash: 1 in 20 broken open, else a closure. Returns false when the
+     * normal fence column applies (the wire gate's fence line, ground beyond what the gate uses).
      */
-    private static void gate(World w, long seed, int x, int z, int d, boolean nsSide, int a, int g, int y, int bchx, int bchz)
+    private static boolean landGate(World w, long seed, int x, int z, int d, boolean nsSide, int a, int y, int g, int bchx, int bchz)
     {
-        if (d > ROAD_TO)
+        long h = hl(seed ^ 0x45444745L, bchx, bchz);
+        int state = h % 20 == 0 ? CityGateState.OPEN : 1 + (int) ((h >>> 20) % 4);
+        boolean post = a == SIDEWALK - 1 || a == 16 - SIDEWALK;
+        Block metal = deci("BlockMetal_2"), wire = deci("BlockConcertinaWire");
+        boolean solid = state == CityGateState.STEEL || state == CityGateState.HESCO || state == CityGateState.BUS;
+        if (solid && (d == FENCE || state == CityGateState.BUS && d <= FENCE + 2 && d >= FENCE))
         {
-            return;                                     // no mines on the way in
-        }
-        boolean toll = hl(seed ^ 0x544F4C4CL, bchx, bchz) % 2 == 0;
-        // the street goes on: sidewalks and road at street level
-        LcCity.reshape(w, x, z, y, g);
-        boolean walk = a < SIDEWALK || a > 15 - SIDEWALK;
-        Block road = Block.getBlockFromName("deci:BlockRoad");
-        Block line = roadLine();
-        if (walk)
-        {
-            w.setBlock(x, g, z, Blocks.double_stone_slab, 0, 2);
-        }
-        else if (a == 7 && ((nsSide ? z : x) & 3) < 2 && line != Blocks.bedrock)
-        {
-            w.setBlock(x, g, z, line, nsSide ? 4 : 2, 2);
-        }
-        else if (road != null && road != Blocks.air)
-        {
-            w.setBlock(x, g, z, road, 0, 2);
-        }
-        for (int k = 1; k <= 5; k++)
-        {
-            w.setBlock(x, g + k, z, Blocks.air, 0, 2);
-        }
-        Block metal = deci("BlockMetal_2");
-        if (d == FENCE)
-        {
-            if ((a == 0 || a == 15) && metal != null)
+            y = level(w, x, z, y, g);
+            if (post && d != FENCE)
+            {
+                return false;                                 // beside the bus off the line: the fence's own column
+            }
+            if (post)
             {
                 for (int k = 1; k <= 4; k++)
                 {
-                    w.setBlock(x, g + k, z, metal, 0, 2);   // the gate posts
+                    w.setBlock(x, y + k, z, metal != null ? metal : Blocks.iron_bars, 0, 2);   // the posts at its ends
                 }
-            }
-            else if (a >= SIDEWALK && a <= 15 - SIDEWALK && (a & 1) == 1)
-            {
-                Block bar = deci("BlockHazardbarrier");     // striped barriers across the road
-                if (bar != null)
-                {
-                    w.setBlock(x, g + 1, z, bar, Math.max(2, PropFacing.along(bar, nsSide, 0)), 2);
-                }
+                clearAbove(w, x, y + 5, z);
+                return true;
             }
         }
-        // the guard booth inside the fence on the sidewalk: 3 across, 3 deep (d 1..3), the window to the road
-        boolean booth = d >= 1 && d <= 3 && (a <= 2 || toll && a >= 13);
-        if (booth)
+        switch (state)
         {
-            int ia = a <= 2 ? a : 15 - a;                 // 0 outer .. 2 road side
-            boolean ring = ia == 0 || ia == 2 || d == 1 || d == 3;
-            for (int k = 1; k <= 3; k++)
-            {
-                Block b = null;
-                int m = 0;
-                if (ring)
+            case CityGateState.OPEN:
+                // the gap: bars bent down to stubs beside it, scorched ground, scraps of wire, a body
+                if (d == FENCE && !post)
                 {
-                    b = Blocks.stonebrick;
-                    if (k == 2 && (ia == 2 || ia == 1))
+                    clearAbove(w, x, y + 1, z);
+                    if (a == SIDEWALK || a == 15 - SIDEWALK)
                     {
-                        b = Blocks.glass_pane;              // windows to the road and to both ends
+                        w.setBlock(x, y + 1, z, Blocks.iron_bars, 0, 2);
                     }
-                    if (ia == 1 && d == 1 && k <= 2)
-                    {
-                        b = deci("Door_Metal_3");             // the door at the inner end, walked through toward the city
-                        m = k == 1 ? (nsSide ? 1 : 0) : 8;
-                    }
+                    burn(w, seed, x, y, z);
+                    return true;
                 }
-                if (b != null)
+                if (d >= FENCE - 2 && d <= FENCE + 2 && !post)
                 {
-                    w.setBlock(x, g + k, z, b, m, 2);
+                    burn(w, seed, x, y, z);
+                    if (d == FENCE + 1 && a == 6 && wire != null)
+                    {
+                        w.setBlock(x, y + 1, z, wire, 2, 2);
+                    }
+                    if (d == FENCE + 2 && a == 9)
+                    {
+                        Block bones = deci("BlockSkeletonGround");
+                        if (bones != null)
+                        {
+                            w.setBlock(x, y + 1, z, bones, nsSide ? 2 : 3, 2);
+                        }
+                    }
+                    return true;                              // no mines on the way through
                 }
-            }
-            w.setBlock(x, g + 4, z, Blocks.double_stone_slab, 0, 2);
+                return d >= MINES_FROM && d <= FENCE + 6 && !post;
+            case CityGateState.STEEL:
+                if (d == FENCE && !post)
+                {
+                    Block[] plates = {metal, deci("BlockMetal_3"), deci("BlockMetalWall")};
+                    for (int k = 1; k <= 4; k++)
+                    {
+                        Block p = plates[(int) (hl(seed ^ k, x, z) % 3)];
+                        if (k < 4 || (hl(seed, x, z) & 1) == 0)
+                        {
+                            w.setBlock(x, y + k, z, p != null ? p : Blocks.iron_block, 0, 2);
+                        }
+                    }
+                    clearAbove(w, x, y + 5, z);
+                    return true;
+                }
+                return false;
+            case CityGateState.HESCO:
+                if (d == FENCE && !post)
+                {
+                    Block hb = net.decimation.worldgen.military.BlockHesco.instance;
+                    for (int k = 1; k <= 3; k++)
+                    {
+                        w.setBlock(x, y + k, z, hb != null ? hb : Blocks.sandstone, 0, 2);
+                    }
+                    if (wire != null)
+                    {
+                        w.setBlock(x, y + 4, z, wire, 2, 2);
+                    }
+                    clearAbove(w, x, y + 5, z);
+                    return true;
+                }
+                return false;
+            case CityGateState.BUS:
+                if (d >= FENCE && d <= FENCE + 2 && !post)
+                {
+                    int dd = d - FENCE;
+                    boolean side = dd != 1, end = a == SIDEWALK || a == 15 - SIDEWALK;
+                    boolean wheel = side && (a == 4 || a == 5 || a == 10 || a == 11);
+                    int body = hl(seed ^ 0x425553L, x, z) % 10 < 4 ? 15 : 4;
+                    clearAbove(w, x, y + 1, z);
+                    w.setBlock(x, y + 1, z, wheel ? Blocks.coal_block : Blocks.stained_hardened_clay, wheel ? 0 : body, 2);
+                    if (side || end)
+                    {
+                        boolean window = !end && hl(seed ^ 0x57494EL, x, z) % 3 != 0;
+                        if (!window)
+                        {
+                            w.setBlock(x, y + 2, z, Blocks.stained_hardened_clay, body, 2);
+                        }
+                        else if (hl(seed ^ 0x42524BL, x, z) % 2 == 0)
+                        {
+                            w.setBlock(x, y + 2, z, Blocks.glass_pane, 0, 2);
+                        }
+                    }
+                    w.setBlock(x, y + 3, z, Blocks.stained_hardened_clay, hl(seed ^ 0x524F46L, x, z) % 2 == 0 ? 15 : 4, 2);
+                    return true;
+                }
+                return false;
+            default:
+                // barbed wire with landmines: the fence runs on as it is, wire along both sides of it, mines
+                // thick on the outside (about one cell in three)
+                if ((d == FENCE + 1 || d == FENCE - 1) && !post && wire != null && w.isAirBlock(x, y + 1, z))
+                {
+                    w.setBlock(x, y + 1, z, wire, 2, 2);
+                    return true;
+                }
+                if (d >= FENCE + 2 && d <= FENCE + 5 && !post && hl(seed ^ 0x4D494E45L, x, z) % 3 == 0
+                    && w.getBlock(x, y, z).getMaterial().isSolid())
+                {
+                    if (!w.isAirBlock(x, y + 1, z))
+                    {
+                        w.setBlock(x, y + 1, z, Blocks.air, 0, 2);
+                    }
+                    w.spawnEntityInWorld(Deci.newLandmine(w, x + 0.5, y + 1, z + 0.5));
+                    return true;
+                }
+                return false;
         }
+    }
+
+    /** The column's ground brought to y = g (filled with its own surface block's under layer, or cut down). */
+    private static int level(World w, int x, int z, int y, int g)
+    {
+        if (y == g || g <= 0)
+        {
+            return y;
+        }
+        Block top = w.getBlock(x, y, z);
+        int meta = w.getBlockMetadata(x, y, z);
+        if (top instanceof net.minecraft.block.BlockFalling)
+        {
+            top = Blocks.stone;                               // never fill with blocks that fall
+            meta = 0;
+        }
+        if (y < g)
+        {
+            for (int k = y; k < g; k++)
+            {
+                w.setBlock(x, k, z, top == Blocks.grass ? Blocks.dirt : top, top == Blocks.grass ? 0 : meta, 2);
+            }
+        }
+        else
+        {
+            for (int k = y; k > g; k--)
+            {
+                w.setBlock(x, k, z, Blocks.air, 0, 2);
+            }
+        }
+        w.setBlock(x, g, z, top, meta, 2);
+        return g;
+    }
+
+    /** Scorched ground: about 4 in 10 columns turn black (stained clay; podzol reads orange in the pack). */
+    private static void burn(World w, long seed, int x, int y, int z)
+    {
+        if (hl(seed ^ 0x4255524EL, x, z) % 10 < 4 && w.getBlock(x, y, z).getMaterial().isSolid())
+        {
+            w.setBlock(x, y, z, Blocks.stained_hardened_clay, 15, 2);
+        }
+    }
+
+    /** The edge gates' states, the same as the inside gates' (military/CityGate). */
+    private static final class CityGateState
+    {
+        static final int OPEN = net.decimation.worldgen.military.CityGate.OPEN, WIRE = net.decimation.worldgen.military.CityGate.WIRE,
+            STEEL = net.decimation.worldgen.military.CityGate.STEEL, BUS = net.decimation.worldgen.military.CityGate.BUS,
+            HESCO = net.decimation.worldgen.military.CityGate.HESCO;
     }
 }

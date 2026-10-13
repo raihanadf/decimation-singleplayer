@@ -18,6 +18,22 @@ How shots are made: `./gradlew runClient -Pautotest` (street views),
 - user_fence_float.png: the inside fence beside a sidewalk: metal posts and iron bars standing on top of the
   sidewalk's half slabs, hedges and wooden fences, so they look like they float (fixed v0.61.0).
 
+## wasteland_gate_v0.61.1/ (dev test gates after the review, 14 Oktober 2026)
+- gates_<look>_<state>_front / _top.png for looks toll, checkpoint, containers, quarantine, police and the compact
+  toll, states open, wire, steel, bus, hesco (no ditch). cmp_compact_hesco.png: compact toll with steel (front: a
+  gatehouse, booth with glass in the middle, steel plates across both lanes, canopy on top, red lamp; top: the
+  canopy over the line and the crossing's two rows only), toll with HESCO (tan HESCO wall with wire behind the
+  booth), checkpoint with HESCO. Older sky leftovers on neighbouring spots show at the picture edges.
+
+## wasteland_gate_v0.61_review/ (user shots in their dev world, 14 Oktober 2026)
+- user_edge_gate_deadend.png: night, the land fence gate of "Fort Willowhaven: Wasteland - 11": a 4 way crossing's
+  road runs out through the fence (striped sawhorses, traffic light, posts) into grass and a dirt bank: road to
+  nothing. User: T junction, blocker gate, no road.
+- user_connector_plain.png: a city to wasteland connector left as the plain gate (sawhorses between posts,
+  hedges of the district part in front, the wasteland's checkpoint behind): "really boring".
+- user_ditch.png: the tank ditch from above, a trench with hedgehogs and wire beside the road: "really bad
+  idea ... remove it".
+
 ## wasteland_gate_v0.61/ (dev test gates, sky at -20000, 230, -19100, 14 Oktober 2026)
 - sheet_gates.png: every look x state (front from the street in front, top from above). Looks: toll
   (canopy on 4 columns, island glass booth, arm down / raised), checkpoint (staggered jerseys, sandbag

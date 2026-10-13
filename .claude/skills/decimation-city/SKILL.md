@@ -123,6 +123,13 @@ general: decimation-props; all of them: decimation-worldgen.
 23. Anything standing on a city street part stands on the last FULL block and replaces what the part has
    above it (half slab sidewalks, hedges, railings): counted from the top of a slab, the fence floated.
 
+24. Never leave a road running out of a city into nothing: a street ends (sidewalk across) or a crossing
+   becomes a T where no street or highway goes on (StreetPlan.arms); a fence where a street would have
+   left the city is closed, not a gate with a road stub. A feature that cannot fit its full form at
+   some spots needs a compact form, not a plain fallback (the user saw the one plain connector at once).
+25. A trench or anything dug into the street reads as a hole in the road, not a barrier: the user rejected
+   the tank ditch. Barriers stand on the road (walls, HESCO, vehicles, wire).
+
 ## Casebook (never delete a case)
 
 ### Case 1: bridges did not match the roads (v0.45.0 -> v0.45.1, 11 Oktober 2026)
@@ -235,3 +242,14 @@ general: decimation-props; all of them: decimation-worldgen.
 - Check: dev test gates (21 looks x states, clash checks 0, 12 mines per wire gate), seed 1 server: gates
   logged at the 48 district city's wasteland edges, toll layers read from the region files; fence columns
   on full blocks (the rest were bridge railings, now fenced). Shots docs/shots/wasteland_gate_v0.61/.
+
+### Case 11: gate review (v0.61.0 -> v0.61.1, 14 Oktober 2026)
+- User shots docs/shots/wasteland_gate_v0.61_review/: the land fence gate's road ran out to nothing, a
+  connector still plain ("boring and no taste"), the tank ditch ("really bad idea ... remove it").
+- Asked with options; choices: toll for the plain connectors only (5 looks kept), HESCO instead of the
+  ditch, T junctions at every city edge, edge gates closed with the same closures (1 in 20 broken, no road).
+- Fix: CityGate compact toll + HESCO state, no ditch / sink; gates allowed on bridge decks; StreetPlan.arms
+  (sidewalk on sides with nothing beyond); WastelandFence.landGate (closures in the fence line, ground levelled
+  to the street, tie break toward the straight side).
+- Check: seed 1 server, 15 connectors none plain, T at the west land edge, edge buses level with posts on
+  the line; dev test gates 30 looks x states.

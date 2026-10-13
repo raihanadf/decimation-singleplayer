@@ -8,8 +8,7 @@ import net.minecraft.block.Block;
 /**
  * One wasteland gate (CityGate style) at its place in the city: the canvas turned so its line row lies on
  * the fence line and its street runs out into the street chunk before it. Not placed as a plan of its own:
- * StreetPlan asks blockAt for the cells it owns (city/WastelandFence.gate), y in canvas units (SINK = the
- * street surface). Turns 1: line along z, the street west of it; turns 2: line along x, the street north of it.
+ * StreetPlan asks blockAt for the cells it owns (city/WastelandFence.gate), y 0 = the street surface. Turns 1: line along z, the street west of it; turns 2: line along x, the street north of it.
  */
 public final class CityGatePlan extends CanvasPlan
 {
@@ -27,10 +26,10 @@ public final class CityGatePlan extends CanvasPlan
         return CityGate.canvas(look, state);
     }
 
-    /** How far the street chunk in front sinks its base for this gate (a tank ditch digs below the road). */
-    public int sink()
+    /** A compact toll gate: owns only the line and the crossing's two road rows (no street before it). */
+    public boolean compact()
     {
-        return state == CityGate.DITCH ? CityGate.SINK : 0;
+        return look < 0;
     }
 
     int canvasWidth() { return CityGate.W; }

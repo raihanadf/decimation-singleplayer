@@ -71,42 +71,14 @@ final class StreetPlan implements net.decimation.worldgen.FixedBase
 
     /** 0 = north-south street, 1 = east-west, 2 = crossing. */
     int kind() { return kind; }
-    public int fixedBaseY() { return ground - sink(); }
-
-    private int sink = -1;
-
-    /**
-     * Blocks this chunk's base sinks below the street: CityGate.SINK when it is the street in front of a gate
-     * closed by a tank ditch (the ditch is dug below the road), else 0.
-     */
-    private int sink()
-    {
-        if (sink < 0)
-        {
-            int s = 0;
-            if (Wasteland.sectors() && !onWater && !climb && stairs == null)
-            {
-                for (net.decimation.worldgen.military.CityGatePlan g : new net.decimation.worldgen.military.CityGatePlan[] {
-                    WastelandFence.gate(seed, minX + 15, minZ + 8), WastelandFence.gate(seed, minX + 8, minZ + 15)})
-                {
-                    // the gate's line is this chunk's east / south edge (a gate reaches 2 past its line)
-                    if (g != null && g.sink() > 0 && (g.maxX() == minX + 16 + 2 || g.maxZ() == minZ + 16 + 2))
-                    {
-                        s = g.sink();
-                    }
-                }
-            }
-            sink = s;
-        }
-        return sink;
-    }
+    public int fixedBaseY() { return ground; }
 
     public String id() { return id; }
     public int minX() { return minX; }
     public int minZ() { return minZ; }
     public int maxX() { return minX + 15; }
     public int maxZ() { return minZ + 15; }
-    public int height() { return sink() + (climb ? LcCity.LEVEL + 3 : stairs != null ? stairs.height + 1 : Math.max(13, piece != null ? piece.height : 0)); }
+    public int height() { return climb ? LcCity.LEVEL + 3 : stairs != null ? stairs.height + 1 : Math.max(13, piece != null ? piece.height : 0); }
     public int clearAbove() { return 14; }
     public int maxSpread() { return 255; }
     public Block foundation() { return Blocks.stone; }
@@ -196,28 +168,19 @@ final class StreetPlan implements net.decimation.worldgen.FixedBase
 
     public Block blockAt(int lx, int ly, int lz, int[] meta)
     {
-        if (Wasteland.sectors() && !onWater && !climb && stairs == null)
+        if (Wasteland.sectors() && !climb && stairs == null)              // bridges too (a gate on the deck)
         {
             // a styled gate (military/CityGate) owns its cells whole: its own surface, nothing of the street above
             net.decimation.worldgen.military.CityGatePlan gate = WastelandFence.gate(seed, minX + lx, minZ + lz);
             if (gate != null)
             {
-                int cy = ly - sink() + net.decimation.worldgen.military.CityGate.SINK;   // canvas y: SINK = the surface
-                if (cy >= gate.canvasHeightPublic())
+                if (ly >= gate.canvasHeightPublic())
                 {
                     return null;
                 }
                 meta[0] = 0;
-                return gate.blockAt(minX + lx - gate.minX(), cy, minZ + lz - gate.minZ(), meta);
+                return gate.blockAt(minX + lx - gate.minX(), ly, minZ + lz - gate.minZ(), meta);
             }
-        }
-        if (sink() > 0)
-        {
-            if (ly < sink())
-            {
-                return Blocks.stone;                          // the base sank for a tank ditch: keep the ground
-            }
-            ly -= sink();
         }
         if (Wasteland.sectors() && (lx == 0 || lz == 0))           // bridges too: no gap over a canal
         {
@@ -249,6 +212,26 @@ final class StreetPlan implements net.decimation.worldgen.FixedBase
             }
         }
         return baseAt(lx, ly, lz, meta);
+    }
+
+    private boolean[] arms;
+
+    /** West, north, east, south: does a city street or a highway go on beyond that side of this chunk? */
+    private boolean[] arms()
+    {
+        if (arms == null)
+        {
+            int[][] dirs = {{-1, 0}, {0, -1}, {1, 0}, {0, 1}};
+            boolean[] c = new boolean[4];
+            for (int d = 0; d < 4; d++)
+            {
+                int nx = (minX >> 4) + dirs[d][0], nz = (minZ >> 4) + dirs[d][1];
+                c[d] = Highways.at(seed, nx, nz)
+                    || isCity(seed, Math.floorDiv(nx, CELL), Math.floorDiv(nz, CELL)) && isStreetChunk(seed, nx, nz);
+            }
+            arms = c;
+        }
+        return arms;
     }
 
     /** Highest plan y (0 .. 8) with a full opaque block of this street's own at (lx, lz). */
@@ -296,6 +279,14 @@ final class StreetPlan implements net.decimation.worldgen.FixedBase
         int across = kind == 1 ? lz : lx, along = kind == 1 ? lx : lz;
         boolean sidewalk = kind == 2 ? (lx < SIDEWALK || lx > 15 - SIDEWALK) && (lz < SIDEWALK || lz > 15 - SIDEWALK)
             : across < SIDEWALK || across > 15 - SIDEWALK;
+        if (!sidewalk && piece == null)
+        {
+            // no street (or highway) beyond this side: the sidewalk closes it, a crossing becomes a T and a
+            // street an end (user, 14 Oktober 2026: no road running out of a city into nothing)
+            boolean[] c = arms();
+            sidewalk = !c[0] && lx < SIDEWALK && kind != 0 || !c[2] && lx > 15 - SIDEWALK && kind != 0
+                || !c[1] && lz < SIDEWALK && kind != 1 || !c[3] && lz > 15 - SIDEWALK && kind != 1;
+        }
         if (piece != null)
         {
             return pieceAt(lx, ly, lz, across, along, meta);
