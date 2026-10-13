@@ -74,6 +74,10 @@ public class DecimationWorldGen
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event)
     {
+        if (cpw.mods.fml.common.FMLCommonHandler.instance().getSide().isClient())
+        {
+            net.decimation.fixes.GlInfo.log();             // which GPU and Java (bug.md black mobs)
+        }
         // Decimation world type: biomes must exist before Decimation's init
         // strips vanilla monsters from every biome (see DecimationBiomes)
         net.decimation.worldgen.terrain.DecimationBiomes.create();

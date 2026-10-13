@@ -27,6 +27,22 @@ not something we introduced or need to fix) see `documentation.md`.
   black; day and night alike. Things to try there: Windows Graphics settings, javaw.exe on the
   high performance GPU (if the laptop has two), a GPU driver update [not verified as a fix].
 - Possible fix on our side once confirmed: an option to draw mobs without the fixed function lights.
+- Update (user, 13 Oktober 2026): every Decimation mob (NPCs, animals, zombies) is black, AND props do not
+  load, or appear black and vanish / come back with every move of the player or the camera. The laptop: NVIDIA
+  RTX 2060 + Intel i7-9750H (its Intel UHD 630 is the second GPU: an Optimus laptop). User: strong confidence
+  it is Java or GPU rendering.
+- Read in code: Decimation draws mobs (ModelHuman on ModelBiped) and props (BModel parts) through vanilla
+  ModelRenderer display lists with the normal fixed function lighting; GlBufferPool is only a scissor stack.
+  No shaders, no vertex buffers of its own: nothing GPU specific that a Mac would forgive and a PC not. So a
+  driver / GPU choice problem is the likely cause [inferred]; the classic one on Optimus laptops: Java runs
+  on the Intel GPU unless Windows or the NVIDIA panel says otherwise [not verified on that laptop].
+- v0.60.1: fixes/GlInfo logs the GPU, its driver vendor and OpenGL version, and the Java at start
+  ("[deciworldgen] graphics: ..." and "java: ..." in logs/fml-client-latest.log; checked in the dev client:
+  "Apple M4 | Apple | OpenGL 2.1 Metal"; the dedicated server logs nothing and starts).
+- Steps for that laptop: (1) NVIDIA Control Panel, Manage 3D settings, Program settings, add the javaw.exe
+  Prism uses (its path: Prism Settings, Java), "High performance NVIDIA processor"; or Windows Settings,
+  Display, Graphics, javaw.exe, High performance; (2) update the NVIDIA and Intel drivers; (3) in game Video
+  Settings: Advanced OpenGL off, Mipmap levels 0; (4) send the "graphics:" line of the log.
 
 ### Water spread over a wasteland crossing once in the bridge test (seen 13 Oktober 2026, Open, not reproduced)
 - Live `bridge` run (district at 31664,1536): 100 water blocks at street level on a crossing beside
