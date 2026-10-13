@@ -27,6 +27,10 @@ game layer on top of vanilla Forge 1.7.10:
 
 ## How the loot table works
 
+Since 0.57 a crate listed with n items gives 1 to n per open (before: 1 to n-1, so the military,
+police, medical and ammo crates always gave exactly 1) and an item listed as a stack of n gives 1
+to n (tools/patches/PatchLootRolls.java, bug.md).
+
 Three moving parts, all server-side logic (this is exactly why singleplayer never
 worked before patching - see bug.md):
 

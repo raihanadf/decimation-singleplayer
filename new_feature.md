@@ -7,6 +7,18 @@ Status values: `Done` / `Decided` (direction agreed, not built yet) /
 
 ## Done
 
+### Shared core, step 1 of the master plan (13 Oktober 2026, v0.57.0)
+- docs/systems_plan.md section 2: `fixes/WorldClock` (day number, DAY / DUSK / NIGHT / DAWN events
+  for every later system), `fixes/LootPools` (16 loot lists, 4 kinds x 4 levels, in
+  config/deciworldgen_loot.json; magazines taken from each gun's own list; roller with "first"
+  lists so level 4 holds one item of every type), `fixes/Protection` (armor table in
+  config/deciworldgen_protection.json, 124 wearables by family; not used by damage yet),
+  `worldgen/Areas` (our areas with kind, owner, state, per world; radiation / safezone / military
+  areas put a Decimation zone in place). Loot spikes before it (v0.57.0 too): fixes/Loot, LootBody.
+- Decimation's crate off by one fixed (bug.md).
+- Checked: dev test `core` 36 checks PASS; dedicated server boots with it; dev test `items` dumps
+  every item (docs/references/decimation_items.tsv).
+
 ### Zones on generated structures (auto zone tagging)
 - **Requested**: 27 Juli 2026
 - Zones (safezone/military/police/radiation/scary/border,

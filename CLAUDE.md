@@ -121,7 +121,7 @@ Knowledge index:
   zones) with the shared core (world clock, pools, body entity, tier table, areas, protection
   table, group spawner) and the build order; user choices of 13 Oktober 2026.
 - `docs/loot_levels.md`: DRAFT design of crate levels (kind x 4 levels by content type) and NPC loot bodies; how
-  Decimation's loot works (33 blocks, 12 lists, 1 .. n-1 items per open, rarity per item).
+  Decimation's loot works (33 blocks, 12 lists, 1 .. n items per open since the v0.57.0 fix, rarity per item).
 - `docs/porting.md`: PARKED plan for a port to modern Minecraft (three paths: modpack, gun pack for a
   modern gun mod, full NeoForge rewrite; model conversion; first spike), for later only (user).
 - `docs/city_dressing.md`: Decimation props through the whole city (streets, road scenes,
@@ -312,6 +312,7 @@ SRG→MCP from the old root `src/` via `mcp_stable/12` CSVs; the root `src/` +
   `PatchTurfNames.java` (2026-10-12, docs/zones.md "Place names"): IngameHud chat lines turn "_"
   into spaces (turf names travel with "_"); argument `layer` (v0.52.1): the same for the floating
   turf name of ClanTurfLayer (deci/M/l);
+  `PatchLootRolls.java` (2026-10-13, bug.md): IntRange.pick (deci/aB/a) inclusive, loot counts 1 .. n;
   `PatchVehicleArrows.java` (2026-10-11, bug.md vehicle entry): indirect player hits
   (arrows, thrown, TNT) on deci/ad/e take the health path, not pickup;
   `PatchInfectedAI.java` (2026-10-10, docs/performance.md): infected
@@ -868,10 +869,14 @@ of the last session:
   blockhouse + worldgen/Garrisons (posts manned on first visit, spawner infected in military outfit;
   StructureData int lists); StreetPlan.rampAt replaces DC stairs parts; RiverPlan.damage; Rails.entrance
   (station stairs in the sidewalk).
-  After 0.56.0 (unreleased, 13 Oktober 2026): loot spikes (docs/loot_levels.md section 7): fixes/Loot.open
+  v0.57.0 (13 Oktober 2026): master plan steps 0 and 1 (docs/systems_plan.md): loot spikes (docs/loot_levels.md section 7): fixes/Loot.open
   shows an InventoryBasic of ours on Decimation's loot screen (Deci.setLootInventory, openLootGui),
   fixes/LootBody entity (deciworldgen:loot_body) opens it on a right click; dev test `loot`. Dev test
-  trap: DevAutoTest closes every screen each tick unless `DevAutoTest.keepScreen` is set.
+  trap: DevAutoTest closes every screen each tick unless `DevAutoTest.keepScreen` is set. Shared core:
+  fixes/WorldClock, fixes/LootPools (config/deciworldgen_loot.json), fixes/Protection
+  (config/deciworldgen_protection.json), worldgen/Areas (<world>/deciworldgen_areas.json); dev tests
+  `core`, `items` (item dump -> docs/references/decimation_items.tsv). PatchLootRolls (three jars):
+  Decimation's loot counts 1 .. n, not 1 .. n-1.
   Gun study (10 Oktober 2026): docs/gun_style_guide.md, tools/guns/study.py
   (renders / measures Decimation's guns from the jar, `attach` adds
   attachments as the game places them), dev test mode `gunview` (hip, aim

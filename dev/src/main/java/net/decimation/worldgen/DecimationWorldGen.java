@@ -67,6 +67,9 @@ public class DecimationWorldGen
     private net.decimation.fixes.VanillaMobs vanillaMobs;
     private net.decimation.fixes.InfectedVariants infectedVariants;
 
+    /** config/ (preInit), for the files loaded in postInit. */
+    private File configDir;
+
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event)
     {
@@ -146,6 +149,12 @@ public class DecimationWorldGen
             new net.decimation.fixes.ZombieEgg(infectedVariants), "zombie_egg");
         cpw.mods.fml.common.registry.GameRegistry.registerItem(
             new net.decimation.fixes.NpcEgg(npcLoadouts), "npc_egg");
+        // shared core (docs/systems_plan.md section 2): the world's day and its events, our areas
+        configDir = event.getModConfigurationDirectory();
+        net.decimation.fixes.WorldClock clock = new net.decimation.fixes.WorldClock();
+        cpw.mods.fml.common.FMLCommonHandler.instance().bus().register(clock);
+        net.minecraftforge.common.MinecraftForge.EVENT_BUS.register(clock);
+        net.minecraftforge.common.MinecraftForge.EVENT_BUS.register(new Areas());
         // loot of our own on Decimation's loot screen (docs/loot_levels.md): opener and the body entity
         cpw.mods.fml.common.FMLCommonHandler.instance().bus().register(new net.decimation.fixes.Loot());
         cpw.mods.fml.common.registry.EntityRegistry.registerModEntity(net.decimation.fixes.LootBody.class, "loot_body", 0, this,
@@ -240,6 +249,9 @@ public class DecimationWorldGen
     @Mod.EventHandler
     public void postInit(cpw.mods.fml.common.event.FMLPostInitializationEvent event)
     {
+        // loot lists and the protection table name items of every mod: all registered by now
+        net.decimation.fixes.LootPools.load(configDir);
+        net.decimation.fixes.Protection.load(configDir);
         net.decimation.worldgen.terrain.DecimationBiomes.copySpawns();
         if (vanillaMobs != null && vanillaMobs.enabled())
         {

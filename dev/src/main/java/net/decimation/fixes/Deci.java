@@ -1058,6 +1058,53 @@ public final class Deci
         return n;
     }
 
+    /**
+     * Decimation's crate loot table as "block registry name" -> (items per open n, item list)
+     * (LootTableRegistry deci.aD.l entries awA: block, afu = n, awC = items).
+     */
+    public static java.util.Map<String, java.util.Map.Entry<Integer, java.util.List<net.minecraft.item.ItemStack>>> lootTable()
+    {
+        java.util.Map<String, java.util.Map.Entry<Integer, java.util.List<net.minecraft.item.ItemStack>>> out =
+            new java.util.LinkedHashMap<String, java.util.Map.Entry<Integer, java.util.List<net.minecraft.item.ItemStack>>>();
+        for (Object o : deci.a.b.a().f().awA)
+        {
+            try
+            {
+                Class<?> c = o.getClass();   // a private class: its public fields need setAccessible
+                java.lang.reflect.Field fb = c.getDeclaredField("block"), fn = c.getDeclaredField("afu"), fl = c.getDeclaredField("awC");
+                fb.setAccessible(true);
+                fn.setAccessible(true);
+                fl.setAccessible(true);
+                net.minecraft.block.Block block = (net.minecraft.block.Block) fb.get(o);
+                int n = fn.getInt(o);
+                @SuppressWarnings("unchecked")
+                java.util.List<net.minecraft.item.ItemStack> items = (java.util.List<net.minecraft.item.ItemStack>) fl.get(o);
+                out.put(net.minecraft.block.Block.blockRegistry.getNameForObject(block),
+                        new java.util.AbstractMap.SimpleEntry<Integer, java.util.List<net.minecraft.item.ItemStack>>(n, items));
+            }
+            catch (Exception e)
+            {
+                cpw.mods.fml.common.FMLLog.info("[deciworldgen] loot table read failed: %s", e);
+            }
+        }
+        return out;
+    }
+
+    /**
+     * One open of Decimation's own crate loot for a block (LootTableRegistry.getPool c, then
+     * LootPool.fillInventory a); false when the block has no pool.
+     */
+    public static boolean rollDecimationLoot(net.minecraft.block.Block block, net.minecraft.inventory.IInventory inv)
+    {
+        deci.aB.c pool = deci.a.b.a().f().c(block);
+        if (pool == null)
+        {
+            return false;
+        }
+        pool.a(inv);
+        return true;
+    }
+
     // ---- loot screen: the path of LootInteractHandler (deci.aK.k), docs/loot_levels.md
 
     /** Runtime class of the loot screen (PlayerInventoryScreen deci.g.g, client only): compare names. */
@@ -1103,6 +1150,31 @@ public final class Deci
     public static double gunSecondsPerShot(net.minecraft.item.ItemStack gun)
     {
         return gun != null && gun.getItem() instanceof deci.ay.i ? ((deci.ay.i) gun.getItem()).aeq.ads : 0.1;
+    }
+
+    /** The magazines a gun loads (GunItem deci.ay.i ammoTypes aep); empty for anything else. */
+    public static java.util.List<Item> gunMagazines(Item gun)
+    {
+        java.util.List<Item> out = new java.util.ArrayList<Item>();
+        if (gun instanceof deci.ay.i && ((deci.ay.i) gun).aep != null)
+        {
+            for (deci.ay.f m : ((deci.ay.i) gun).aep)
+            {
+                if (m != null)
+                {
+                    out.add(m);
+                }
+            }
+        }
+        return out;
+    }
+
+    /** PlayerData.getVest / getMask / getBackpack (cw, cx, cv): Decimation's extra gear slots, null if empty. */
+    public static net.minecraft.item.ItemStack[] playerGear(EntityPlayer player)
+    {
+        deci.Q.b data = deci.Q.b.e(player);
+        return data == null ? new net.minecraft.item.ItemStack[0]
+            : new net.minecraft.item.ItemStack[] {data.cw(), data.cx(), data.cv()};
     }
 
     /** HumanEntity.getMask (deci.af.d.cx). */

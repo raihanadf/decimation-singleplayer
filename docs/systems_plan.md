@@ -14,7 +14,7 @@ run; `[not verified]` = not checked; `[draft]` = a number or rule of mine for th
 
 | thing | where | today |
 |---|---|---|
-| crate loot | LootTableRegistry deci.aD.l, LootPool deci.aB.c | 33 blocks, 12 hardcoded lists, 1 .. n-1 items per open, rarity per item (docs/loot_levels.md section 2) |
+| crate loot | LootTableRegistry deci.aD.l, LootPool deci.aB.c | 33 blocks, 12 hardcoded lists, 1 .. n-1 items per open (fixed to 1 .. n in v0.57.0), rarity per item (docs/loot_levels.md section 2) |
 | infection | PlayerData (decimation.player_data) | one boolean; 8 % chance per infected bite; while infected 1 damage at intervals (DamageSources.infected) until a cure syringe; refused inside a safezone on a dedicated server |
 | armor | ItemArmorDeci | every Decimation piece is built with ArmorMaterial.CHAIN, so a hoodie and juggernaut plate block mob hits alike `[inferred: vanilla reduction from the material]` |
 | demons | DemonEntity deci.ag.b | EntityMob, 100 hp, spawns capped by ServerConfig maxDemonCount |
@@ -30,14 +30,17 @@ run; `[not verified]` = not checked; `[draft]` = a number or rule of mine for th
 
 Each piece below is used by two or more systems; building it first avoids writing it twice.
 
-### 2.1 WorldClock (worldgen or fixes, stored in StructureData)
-- The world day (world time / 24000 + 1), plus a schedule of events by day.
+### 2.1 WorldClock (BUILT v0.57.0: fixes/WorldClock)
+- The world day (world time / 24000 + 1), plus a schedule of events by day. Nothing is stored: the
+  day comes from the world time, which the world saves. Events DAY (time 0), DUSK (12000), NIGHT
+  (13800), DAWN (22200), fired in time order when the time crosses them (sleep and /time add
+  included, each type once per jump; /time set back fires nothing); `WorldClock.listen`.
 - Used by: zombie growth and unlocks (5.4), horde nights (5.5), NPC raids (6.3), claim decay and
   revenue (6.2), infection stage timers (5.2).
 - One server tick handler fires day start, dusk and dawn events; every system subscribes instead
   of keeping its own timer.
 
-### 2.2 Pools (loot lists, roller, loot screen bridge)
+### 2.2 Pools (loot lists, roller, loot screen bridge) (BUILT v0.57.0: fixes/LootPools)
 - One registry of named item lists from a config file of ours (`deciworldgen_loot.json`): items
   with weight and count, items per open, refill minutes. Our own roller (rarity per list, not per
   item).
@@ -59,7 +62,7 @@ Each piece below is used by two or more systems; building it first avoids writin
   flags (4.3), egg. New tiers go LAST (egg metadata = index).
 - Used by: police (4.1), outfits (4.2), sniper bandit (4.2), bodies (3.2), raids (6.3), garrisons.
 
-### 2.5 Areas registry (zones we own)
+### 2.5 Areas registry (zones we own) (SKELETON v0.57.0: worldgen/Areas)
 - Our areas with a kind and a state, mapped onto Decimation's zone list (Deci.zoneType) and the
   turf list (PlaceNames) so its banner, HUD and zone rules work.
 - Kinds: SAFEZONE (camps, refuges, police stations), MILITARY, RADIATION (6.4), BASE_CLAIM and
@@ -67,7 +70,7 @@ Each piece below is used by two or more systems; building it first avoids writin
 - Used by: claims, raids, radiation, police safezones, horde nights (safezones are not safe on a
   horde night? 8, open), zombie spawning rules.
 
-### 2.6 Protection table (armor values)
+### 2.6 Protection table (armor values) (BUILT v0.57.0: fixes/Protection, not used by damage yet)
 - Per armor item: protection against infected hits, against NPC gunfire (today
   ArmorGunfireHandler), bite infection chance, radiation (gas mask, hazmat).
 - Used by: armor against zombies (5.1), infection (5.2), radiation (6.4), NPC shots.
@@ -241,7 +244,8 @@ Each piece below is used by two or more systems; building it first avoids writin
 
 0. Spikes: the loot screen from our code (2.2), a body entity opening it (2.3). DONE 13 Oktober
    2026, both work (dev test `loot`, docs/loot_levels.md section 7).
-1. Core: WorldClock, Pools + config, protection table, areas registry skeleton.
+1. Core: WorldClock, Pools + config, protection table, areas registry skeleton. DONE v0.57.0 (dev
+   test `core`), with Decimation's off by one fixed.
 2. Loot: crate blocks and look, lists, placement, supply drops; NPC bodies with drop tables.
 3. Human NPCs: tier table grown, outfits, sniper bandit, police faction; smart behaviours.
 4. Zombies: armor per type, infection stages, shooter memory, melee variant, growth, horde nights,
@@ -253,7 +257,7 @@ placement), shots to docs/shots, docs and skills updated.
 
 ## 8. Still open (ask before building that step)
 1. Loot lists per kind and level (docs/loot_levels.md); supply drop list (ours or Decimation's);
-   fix Decimation's 1 .. n-1 for its own crates?
+   fix Decimation's 1 .. n-1 for its own crates? (ANSWERED: fixed, v0.57.0)
 2. Friendly NPCs leaving bodies or not.
 3. Antibiotics: an item of ours or Decimation's vitamin capsules; stage length.
 4. Claim flag item: crafted or bought; base claim size.

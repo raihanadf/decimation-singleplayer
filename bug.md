@@ -25,6 +25,15 @@ not something we introduced or need to fix) see `documentation.md`.
   world. Watch for it again (an "Entity is already tracked" error came just before).
 
 
+### Decimation's crates gave one item fewer than listed; stacks one short (found 13 Oktober 2026, FIXED v0.57.0)
+- Found reading LootPool / IntRange (docs/loot_levels.md section 2); user: "fix the off by one too".
+- IntRange (deci.aB.a) is half open and every loot range is built as upTo(n) = [1, n), so a crate
+  listed with n items per open gave 1 .. n-1 (military, police, medical, ammo crates and the weapon
+  cabinet: n = 2, always exactly 1) and an item listed as a stack of n gave 1 .. n-1.
+- Fix: tools/patches/PatchLootRolls.java makes IntRange.pick inclusive (three jars). Checked by the
+  dev test `core` over 2000 opens each: military crate 1 or 2, chest 1 .. 3, supply drop 1 .. 8,
+  every multi stack item seen reaches its listed size and none passes it.
+
 ### Enemy military group members spawned beside their spot, into walls; none in superblock districts (found 12 Oktober 2026, FIXED v0.54.1)
 - Found by the dev test `wasteland` (docs/wasteland.md section 5).
 - MilitarySpawner checked one spot, then put each member up to one block off it: at a street chunk's

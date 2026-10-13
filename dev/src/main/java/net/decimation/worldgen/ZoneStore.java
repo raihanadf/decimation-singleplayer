@@ -101,6 +101,20 @@ public class ZoneStore
         return n;
     }
 
+    /** Removes the zone of ours of this kind with exactly this box (Areas); true when one went. */
+    public static synchronized boolean removeBox(ZoneKind kind, int x1, int y1, int z1, int x2, int y2, int z2)
+    {
+        for (ObjectZone zone : new ArrayList<ObjectZone>(zones))
+        {
+            if (net.decimation.fixes.Deci.isZone(zone, kind) && zone.zoneX1 == x1 && zone.zoneY1 == y1 && zone.zoneZ1 == z1
+                && zone.zoneX2 == x2 && zone.zoneY2 == y2 && zone.zoneZ2 == z2)
+            {
+                return remove(zone);
+            }
+        }
+        return false;
+    }
+
     /** Takes a zone of ours out of this world and the live list (dev tests; later a fallen safezone). */
     public static synchronized boolean remove(ObjectZone zone)
     {

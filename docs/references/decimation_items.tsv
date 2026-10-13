@@ -1,0 +1,895 @@
+name	display	class	max_stack	armor_slot	damage_multiplier	loot_chance	loot_lists
+deci:12gauge	12 Gauge Buckshot	deci.ay.f	30				
+deci:12gauge_box	12 Gauge Buckshot Box	deci.ay.g	1			0.5	BlockMilitaryCratex3,BlockWreckageMilitary1x3,BlockWreckageMilitary2x3,BlockWreckageMilitary3x3,BlockWeaponCabinetx3,BlockCarePackagex3,BlockMechWreckagex3,BlockSupplyDropx3,BlockPoliceCratex2,BlockWreckagePolice1x2,BlockWreckagePolice2x2,BlockWreckagePolice3x2,BlockAmmoCrateLargex1
+deci:14_5x114mm	14.5x114mm Rounds	deci.ay.f	64				
+deci:14_5x114mm_box	14.5x114mm Rounds Box	deci.ay.g	1			0.5	
+deci:22	.22 Rounds	deci.ay.f	30				
+deci:22_box	.22 Rounds Box	deci.ay.g	1			0.5	BlockAmmoCrateLargex1
+deci:2x	2x Scope	deci.ay.h	1				BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1
+deci:300winchester	.300 Winchester Magnum	deci.ay.f	30				
+deci:300winchester_box	.300 Winchester Magnum Box	deci.ay.g	1			0.5	BlockAmmoCrateLargex1
+deci:308winchester	.308 Winchester	deci.ay.f	30				
+deci:308winchester_box	.308 Winchester Box	deci.ay.g	1			0.5	BlockAmmoCrateLargex1
+deci:357	.357 Rounds	deci.ay.f	30				
+deci:357_box	.357 Rounds Box	deci.ay.g	1			0.5	BlockAmmoCrateLargex1
+deci:380	.380 Auto Rounds	deci.ay.f	30				
+deci:380_box	.380 Auto Rounds Box	deci.ay.g	1			0.5	BlockAmmoCrateLargex1
+deci:38special	.38 S&W SPECIAL +P Rounds	deci.ay.f	30				
+deci:38special_box	.38 S&W SPECIAL +P Box	deci.ay.g	1			0.5	BlockAmmoCrateLargex1
+deci:45acp	.45ACP Rounds	deci.ay.f	30				
+deci:45acp_box	.45ACP Rounds Box	deci.ay.g	1			0.5	BlockAmmoCrateLargex1
+deci:46mmGrenade	46mm Grenade	deci.ay.f	30				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2,BlockAmmoCratex5
+deci:4x	4x Scope	deci.ay.h	1				BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1
+deci:50beowulf	50. Beowulf Rounds	deci.ay.f	30				
+deci:50beowulf_box	50. Beowulf Rounds Box	deci.ay.g	1			0.5	BlockAmmoCrateLargex1
+deci:50bmg	.50 BMG Rounds	deci.ay.f	30				
+deci:50bmg_box	.50 BMG Rounds Box	deci.ay.g	1			0.5	BlockAmmoCrateLargex1
+deci:5_45x39mm	5.45x39mm Rounds	deci.ay.f	30				
+deci:5_45x39mm_box	5.45x39mm Rounds Box	deci.ay.g	1			0.5	BlockAmmoCrateLargex1
+deci:5_56mm	5.56mm Rounds	deci.ay.f	30				
+deci:5_56mm_box	5.56mm Rounds Box	deci.ay.g	1			0.5	BlockAmmoCrateLargex1
+deci:7_62x25mm	7.62x25mm Tokarev Rounds	deci.ay.f	30				
+deci:7_62x25mm_box	7.62x25mm Tokarev Rounds Box	deci.ay.g	1			0.5	BlockAmmoCrateLargex1
+deci:7_62x39mm	7.62x39mm Rounds	deci.ay.f	30				
+deci:7_62x39mm_box	7.62x39mm Rounds Box	deci.ay.g	1			0.5	BlockAmmoCrateLargex1
+deci:7_62x45mm	7.62x45mm Rounds	deci.ay.f	30				
+deci:7_62x45mm_box	7.62x45mmR Rounds Box	deci.ay.g	1			0.5	BlockAmmoCrateLargex1
+deci:7_62x51mm	7.62x51mm Rounds	deci.ay.f	30				
+deci:7_62x51mm_box	7.62x51mmR Rounds Box	deci.ay.g	1			0.5	BlockAmmoCrateLargex1
+deci:7_62x54mm	7.62x54mmR Rounds	deci.ay.f	30				
+deci:7_62x54mm_box	7.62x54mmR Rounds Box	deci.ay.g	1			0.5	BlockAmmoCrateLargex1
+deci:7_92x57mm	7.92x57mm Rounds	deci.ay.f	30				
+deci:7_92x57mm_box	7.92x57mmR Rounds Box	deci.ay.g	1			0.5	BlockAmmoCrateLargex1
+deci:8x	8x Scope	deci.ay.h	1				BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1
+deci:9mm	9mm Rounds	deci.ay.f	30				
+deci:9mm_box	9mm Rounds Box	deci.ay.g	1			0.5	BlockAmmoCrateLargex1
+deci:9x18mm	9x18 Rounds	deci.ay.f	30				
+deci:9x18mm_box	9x18mm Rounds Box	deci.ay.g	1			0.5	BlockAmmoCrateLargex1
+deci:9x19mm	9x19mm Rounds	deci.ay.f	30				
+deci:9x19mm_box	9x19mm Rounds Box	deci.ay.g	1			0.5	BlockAmmoCrateLargex1
+deci:9x39mm	9x39 PAB-9 Rounds	deci.ay.f	30				
+deci:9x39mm_box	9x39mm PAB-9 Rounds Box	deci.ay.g	1			0.5	BlockAmmoCrateLargex1
+deci:BlockAcidPit	Industrial Acid Pit	net.minecraft.item.ItemBlock	64				
+deci:BlockAlarmBell	Alarm Bell	net.minecraft.item.ItemBlock	64				
+deci:BlockAmmoCrate	Explosives Crate	net.minecraft.item.ItemBlock	64				
+deci:BlockAmmoCrateLarge	Large Ammo Crate	net.minecraft.item.ItemBlock	64				
+deci:BlockBarrel	Barrel	net.minecraft.item.ItemBlock	64				
+deci:BlockBarrier	Barrier	net.minecraft.item.ItemBlock	64				
+deci:BlockBarrierTall	Tall Barrier	net.minecraft.item.ItemBlock	64				
+deci:BlockBicycle	Bicycle	net.minecraft.item.ItemBlock	64				
+deci:BlockBodyBagBlack	Body Bag (Civilian)	net.minecraft.item.ItemBlock	64				
+deci:BlockBodyBagBlue	Body Bag (Police)	net.minecraft.item.ItemBlock	64				
+deci:BlockBodyBagGreen	Body Bag (Military)	net.minecraft.item.ItemBlock	64				
+deci:BlockBodyBagOrange	Body Bag (Infected)	net.minecraft.item.ItemBlock	64				
+deci:BlockBrick_1	tile.BlockBrick_1.name	net.minecraft.item.ItemBlock	64				
+deci:BlockBrick_2	tile.BlockBrick_2.name	net.minecraft.item.ItemBlock	64				
+deci:BlockBrick_3	tile.BlockBrick_3.name	net.minecraft.item.ItemBlock	64				
+deci:BlockCCTV	CCTV Camera	net.minecraft.item.ItemBlock	64				
+deci:BlockCanFire	Can Fire	net.minecraft.item.ItemBlock	64				
+deci:BlockCanTrap	Tin Can Trap	net.minecraft.item.ItemBlock	64				
+deci:BlockCardboardBoxes1	Cardboard Boxes (1)	net.minecraft.item.ItemBlock	64				
+deci:BlockCardboardBoxes2	Cardboard Boxes (2)	net.minecraft.item.ItemBlock	64				
+deci:BlockCardboardBoxes3	Cardboard Boxes (3)	net.minecraft.item.ItemBlock	64				
+deci:BlockCarePackage	Care Package	net.minecraft.item.ItemBlock	64				
+deci:BlockCeilingVent	Ceiling Vent	net.minecraft.item.ItemBlock	64				
+deci:BlockCeilingVentCorner	Ceiling Vent (Corner)	net.minecraft.item.ItemBlock	64				
+deci:BlockCeiling_1	tile.BlockCeiling_1.name	net.minecraft.item.ItemBlock	64				
+deci:BlockCeiling_2	tile.BlockCeiling_2.name	net.minecraft.item.ItemBlock	64				
+deci:BlockCeiling_3	tile.BlockCeiling_3.name	net.minecraft.item.ItemBlock	64				
+deci:BlockCeiling_4	tile.BlockCeiling_4.name	net.minecraft.item.ItemBlock	64				
+deci:BlockChair	Chair	net.minecraft.item.ItemBlock	64				
+deci:BlockChesstable	Chess Table	net.minecraft.item.ItemBlock	64				
+deci:BlockCocaPlant	Coca Plant	net.minecraft.item.ItemBlock	64				
+deci:BlockConcertinaWire	Barbed Wire	net.minecraft.item.ItemBlock	64				
+deci:BlockCone	Traffic Cone	net.minecraft.item.ItemBlock	64				
+deci:BlockCookingStation	Cooking Station	net.minecraft.item.ItemBlock	64				
+deci:BlockDumpster	Dumpster	net.minecraft.item.ItemBlock	64				
+deci:BlockElectricBox1	Electric Box 1	net.minecraft.item.ItemBlock	64				
+deci:BlockElectricBox2	Electric Box 2	net.minecraft.item.ItemBlock	64				
+deci:BlockElectricBoxBin	Electric Box Bin	net.minecraft.item.ItemBlock	64				
+deci:BlockElevator	Elevator	net.minecraft.item.ItemBlock	64				
+deci:BlockElevatorButton	Elevator Button	net.minecraft.item.ItemBlock	64				
+deci:BlockExitLight	Exit Light	net.minecraft.item.ItemBlock	64				
+deci:BlockFlagPollUAHD	UAHD Flag Poll	net.minecraft.item.ItemBlock	64				
+deci:BlockFlagPollUSSR	USSR Flag Poll	net.minecraft.item.ItemBlock	64				
+deci:BlockFlatscreenTV	Flatscreen TV	net.minecraft.item.ItemBlock	64				
+deci:BlockFlatscreenTV_Emergency	Flatscreen TV (Emergency Broadcasting)	net.minecraft.item.ItemBlock	64				
+deci:BlockFlatscreenTV_News	Flatscreen TV (News Broadcast)	net.minecraft.item.ItemBlock	64				
+deci:BlockFlatscreenTV_Target	Flatscreen TV (Target Range Score)	net.minecraft.item.ItemBlock	64				
+deci:BlockFlatscreenTV_Youtube	Flatscreen TV (Le YouTubes)	net.minecraft.item.ItemBlock	64				
+deci:BlockFloorCarpet_1	tile.BlockFloorCarpet_1.name	net.minecraft.item.ItemBlock	64				
+deci:BlockFloorCarpet_2	tile.BlockFloorCarpet_2.name	net.minecraft.item.ItemBlock	64				
+deci:BlockFloorCarpet_3	tile.BlockFloorCarpet_3.name	net.minecraft.item.ItemBlock	64				
+deci:BlockFloorCarpet_4	tile.BlockFloorCarpet_4.name	net.minecraft.item.ItemBlock	64				
+deci:BlockFloorCarpet_5	tile.BlockFloorCarpet_5.name	net.minecraft.item.ItemBlock	64				
+deci:BlockFloorCarpet_6	tile.BlockFloorCarpet_6.name	net.minecraft.item.ItemBlock	64				
+deci:BlockFloorTiles_1	tile.BlockFloorTiles_1.name	net.minecraft.item.ItemBlock	64				
+deci:BlockFloorTiles_2	tile.BlockFloorTiles_2.name	net.minecraft.item.ItemBlock	64				
+deci:BlockFloorTiles_3	tile.BlockFloorTiles_3.name	net.minecraft.item.ItemBlock	64				
+deci:BlockGraffiti_1	Graffiti 1	net.minecraft.item.ItemBlock	64				
+deci:BlockGraffiti_10	Graffiti 10	net.minecraft.item.ItemBlock	64				
+deci:BlockGraffiti_11	Graffiti 11	net.minecraft.item.ItemBlock	64				
+deci:BlockGraffiti_12	Graffiti 12	net.minecraft.item.ItemBlock	64				
+deci:BlockGraffiti_2	Graffiti 2	net.minecraft.item.ItemBlock	64				
+deci:BlockGraffiti_3	Graffiti 3	net.minecraft.item.ItemBlock	64				
+deci:BlockGraffiti_4	Graffiti 4	net.minecraft.item.ItemBlock	64				
+deci:BlockGraffiti_5	Graffiti 5	net.minecraft.item.ItemBlock	64				
+deci:BlockGraffiti_6	Graffiti 6	net.minecraft.item.ItemBlock	64				
+deci:BlockGraffiti_7	Graffiti 7	net.minecraft.item.ItemBlock	64				
+deci:BlockGraffiti_8	Graffiti 8	net.minecraft.item.ItemBlock	64				
+deci:BlockGraffiti_9	Graffiti 9	net.minecraft.item.ItemBlock	64				
+deci:BlockHangingPlayer	Hanging Player	net.minecraft.item.ItemBlock	64				
+deci:BlockHazardLamp	Hazard Lamp	net.minecraft.item.ItemBlock	64				
+deci:BlockHazardLight	Hazard Light	net.minecraft.item.ItemBlock	64				
+deci:BlockHazardScreen_1	Contamination Screen (Sealed)	net.minecraft.item.ItemBlock	64				
+deci:BlockHazardScreen_2	Contamination Screen (Open)	net.minecraft.item.ItemBlock	64				
+deci:BlockHazard_1	tile.BlockHazard_1.name	net.minecraft.item.ItemBlock	64				
+deci:BlockHazardbarrier	Hazard Barrier	net.minecraft.item.ItemBlock	64				
+deci:BlockHazardpole	Hazard Pole	net.minecraft.item.ItemBlock	64				
+deci:BlockHedgehog	Hedgehog (Tank Stopper)	net.minecraft.item.ItemBlock	64				
+deci:BlockKeycardScreen	Key-card Screen	net.minecraft.item.ItemBlock	64				
+deci:BlockKeycardScreenLaboratory	Lab Key-card Screen	net.minecraft.item.ItemBlock	64				
+deci:BlockKeycardScreenMilitary	Military Key-card Screen	net.minecraft.item.ItemBlock	64				
+deci:BlockLantern	Lantern	net.minecraft.item.ItemBlock	64				
+deci:BlockLight	Light	net.minecraft.item.ItemBlock	64				
+deci:BlockLightOff	Light (Off)	net.minecraft.item.ItemBlock	64				
+deci:BlockMailbox	Mailbox	net.minecraft.item.ItemBlock	64				
+deci:BlockMaintenanceScreen	Stationary Maintenance Screen	net.minecraft.item.ItemBlock	64				
+deci:BlockMapBarrier	Barrier Block	net.minecraft.item.ItemBlock	64				
+deci:BlockMapBarrierInfected	Barrier Block (Infected)	net.minecraft.item.ItemBlock	64				
+deci:BlockMapBarrierPlayer	Barrier Block (Players)	net.minecraft.item.ItemBlock	64				
+deci:BlockMechWreckage	Mech Wreckage	net.minecraft.item.ItemBlock	64				
+deci:BlockMedicalCrate	Medical Crate	net.minecraft.item.ItemBlock	64				
+deci:BlockMetalShelf	Metal Shelf	net.minecraft.item.ItemBlock	64				
+deci:BlockMetalShelf_Empty	Metal Shelf (Empty)	net.minecraft.item.ItemBlock	64				
+deci:BlockMetalTable	Metal Table	net.minecraft.item.ItemBlock	64				
+deci:BlockMetalWall	Metal Wall	net.minecraft.item.ItemBlock	64				
+deci:BlockMetal_1	tile.BlockMetal_1.name	net.minecraft.item.ItemBlock	64				
+deci:BlockMetal_2	tile.BlockMetal_2.name	net.minecraft.item.ItemBlock	64				
+deci:BlockMetal_3	tile.BlockMetal_3.name	net.minecraft.item.ItemBlock	64				
+deci:BlockMetroRailing1	Metro Railing 1	net.minecraft.item.ItemBlock	64				
+deci:BlockMetroRailing2	Metro Railing 2	net.minecraft.item.ItemBlock	64				
+deci:BlockMilitaryBarrier	Military Barrier	net.minecraft.item.ItemBlock	64				
+deci:BlockMilitaryCrate	Military Crate	net.minecraft.item.ItemBlock	64				
+deci:BlockMilitaryRadio	Military Radio	net.minecraft.item.ItemBlock	64				
+deci:BlockMilitaryRadioOff	Military Radio (Off)	net.minecraft.item.ItemBlock	64				
+deci:BlockMilitaryRadioSmall	Small Military Radio	net.minecraft.item.ItemBlock	64				
+deci:BlockMilitaryRadioSmallOff	Small Military Radio (Off)	net.minecraft.item.ItemBlock	64				
+deci:BlockMissileLauncher	Stationary Missile Launcher	net.minecraft.item.ItemBlock	64				
+deci:BlockMonitor	Monitor	net.minecraft.item.ItemBlock	64				
+deci:BlockNewsStand1	News Stand 1	net.minecraft.item.ItemBlock	64				
+deci:BlockNewsStand2	News Stand 2	net.minecraft.item.ItemBlock	64				
+deci:BlockOfficeChair	Office Chair	net.minecraft.item.ItemBlock	64				
+deci:BlockPackagedCocaineStack	Packaged Cocaine Stack	net.minecraft.item.ItemBlock	64				
+deci:BlockPhonebooth	Phone Booth	net.minecraft.item.ItemBlock	64				
+deci:BlockPhonebox	Phonebox	net.minecraft.item.ItemBlock	64				
+deci:BlockPoliceCrate	Police Crate	net.minecraft.item.ItemBlock	64				
+deci:BlockPowerGenerator	Power Generator	net.minecraft.item.ItemBlock	64				
+deci:BlockPowerPole	Power Pole	net.minecraft.item.ItemBlock	64				
+deci:BlockPresent	Present	net.minecraft.item.ItemBlock	64				
+deci:BlockPresent2	Present	net.minecraft.item.ItemBlock	64				
+deci:BlockPresent3	Present	net.minecraft.item.ItemBlock	64				
+deci:BlockPropellerTrap	Propeller Trap	net.minecraft.item.ItemBlock	64				
+deci:BlockRadio1	Stereo Radio (Static)	net.minecraft.item.ItemBlock	64				
+deci:BlockRadioTower	Radio Tower	net.minecraft.item.ItemBlock	64				
+deci:BlockRedlight	Red Light	net.minecraft.item.ItemBlock	64				
+deci:BlockRoad	Road	net.minecraft.item.ItemBlock	64				
+deci:BlockRoadSlab	Road Slab	net.minecraft.item.ItemBlock	64				
+deci:BlockRoadSlab_CenterLine	Road Slab (Center Line)	net.minecraft.item.ItemBlock	64				
+deci:BlockRoadSlab_DoubleYellowLine	Road Slab (Double Yellow Line)	net.minecraft.item.ItemBlock	64				
+deci:BlockRoadSlab_RedLine	Road Slab (Red Line)	net.minecraft.item.ItemBlock	64				
+deci:BlockRoadSlab_StopLine	Road Slab (Stop Line)	net.minecraft.item.ItemBlock	64				
+deci:BlockRoadSlab_YellowLine	Road Slab (Yellow Line)	net.minecraft.item.ItemBlock	64				
+deci:BlockRoad_CenterLine	Road (Center Line)	net.minecraft.item.ItemBlock	64				
+deci:BlockRoad_DoubleYellowLine	Road (Double Yellow Line)	net.minecraft.item.ItemBlock	64				
+deci:BlockRoad_RedLine	Road (Red Line)	net.minecraft.item.ItemBlock	64				
+deci:BlockRoad_StopLine	Road (Stop Line)	net.minecraft.item.ItemBlock	64				
+deci:BlockRoad_YellowLine	Road (Yellow Line)	net.minecraft.item.ItemBlock	64				
+deci:BlockRoadsign20	Road Sign (20)	net.minecraft.item.ItemBlock	64				
+deci:BlockRoadsign30	Road Sign (30)	net.minecraft.item.ItemBlock	64				
+deci:BlockRoadsign40	Road Sign (40)	net.minecraft.item.ItemBlock	64				
+deci:BlockRoadsign50	Road Sign (50)	net.minecraft.item.ItemBlock	64				
+deci:BlockRoadsign60	Road Sign (60)	net.minecraft.item.ItemBlock	64				
+deci:BlockRoadsignOneway	Road Sign (One-Way)	net.minecraft.item.ItemBlock	64				
+deci:BlockRoadsignParking	Road Sign (Parking)	net.minecraft.item.ItemBlock	64				
+deci:BlockRoadsignStop	Road Sign (Stop)	net.minecraft.item.ItemBlock	64				
+deci:BlockRope	Rope	net.minecraft.item.ItemBlock	64				
+deci:BlockRopeTop	Rope Hook/Top	net.minecraft.item.ItemBlock	64				
+deci:BlockRussianRoadSign	Russian Road Sign	net.minecraft.item.ItemBlock	64				
+deci:BlockRussianRoadSignArrow	Russian Road Sign (Arrow)	net.minecraft.item.ItemBlock	64				
+deci:BlockRussianRoadSignWarning	Russian Road Sign (Warning)	net.minecraft.item.ItemBlock	64				
+deci:BlockSafezoneSignEntry	tile.BlockSafezoneSignEntry.name	net.minecraft.item.ItemBlock	64				
+deci:BlockSafezoneSignExit	tile.BlockSafezoneSignExit.name	net.minecraft.item.ItemBlock	64				
+deci:BlockSandbagStack	Sandbag Stack	net.minecraft.item.ItemBlock	64				
+deci:BlockSandbagStackBeige	Beige Sandbag Stack	net.minecraft.item.ItemBlock	64				
+deci:BlockShopDisplay_1	Shop Display 1	net.minecraft.item.ItemBlock	64				
+deci:BlockSign_Decimunition	Deci-Munition Sign	net.minecraft.item.ItemBlock	64				
+deci:BlockSign_Gunsrus	Guns'r'Us Sign	net.minecraft.item.ItemBlock	64				
+deci:BlockSign_Metro	Metro Sign	net.minecraft.item.ItemBlock	64				
+deci:BlockSign_Minebay	Minebay Sign	net.minecraft.item.ItemBlock	64				
+deci:BlockSign_Minedonalds	Minedonalds Sign	net.minecraft.item.ItemBlock	64				
+deci:BlockSign_Mineway	Mineway Sign	net.minecraft.item.ItemBlock	64				
+deci:BlockSkeletonGround	Ground Skeleton	net.minecraft.item.ItemBlock	64				
+deci:BlockSkeletonWall	Wall Skeleton	net.minecraft.item.ItemBlock	64				
+deci:BlockSoundBlock_Alarm	Sound Block - Alarm	net.minecraft.item.ItemBlock	64				
+deci:BlockSoundBlock_CarAlarm	Sound Block - Car Alarm	net.minecraft.item.ItemBlock	64				
+deci:BlockSoundBlock_Morsecode_Bukovka	Sound Block - Morse Code - Bukovka	net.minecraft.item.ItemBlock	64				
+deci:BlockSoundBlock_Range	Sound Block - Firing Range	net.minecraft.item.ItemBlock	64				
+deci:BlockSoundBlock_ScaryLab	Sound Block - Scary Lab	net.minecraft.item.ItemBlock	64				
+deci:BlockSpotlight	Stationary Spotlight	net.minecraft.item.ItemBlock	64				
+deci:BlockStereo	Stereo Radio	net.minecraft.item.ItemBlock	64				
+deci:BlockStone_1	tile.BlockStone_1.name	net.minecraft.item.ItemBlock	64				
+deci:BlockStone_2	tile.BlockStone_2.name	net.minecraft.item.ItemBlock	64				
+deci:BlockStone_3	tile.BlockStone_3.name	net.minecraft.item.ItemBlock	64				
+deci:BlockStone_4	tile.BlockStone_4.name	net.minecraft.item.ItemBlock	64				
+deci:BlockStone_5	tile.BlockStone_5.name	net.minecraft.item.ItemBlock	64				
+deci:BlockStone_6	tile.BlockStone_6.name	net.minecraft.item.ItemBlock	64				
+deci:BlockStone_7	tile.BlockStone_7.name	net.minecraft.item.ItemBlock	64				
+deci:BlockStone_8	tile.BlockStone_8.name	net.minecraft.item.ItemBlock	64				
+deci:BlockStorageCrate	Storage Crate	net.minecraft.item.ItemBlock	64				
+deci:BlockStreetBarrier	Street Barrier	net.minecraft.item.ItemBlock	64				
+deci:BlockStreetBench	Street Bench	net.minecraft.item.ItemBlock	64				
+deci:BlockStreetBin	Street Bin	net.minecraft.item.ItemBlock	64				
+deci:BlockStreetLight	Street Light	net.minecraft.item.ItemBlock	64				
+deci:BlockStreetLightMiddle	Street Light (Middle)	net.minecraft.item.ItemBlock	64				
+deci:BlockStretcher	Stretcher	net.minecraft.item.ItemBlock	64				
+deci:BlockStudioCamera	Studio Camera	net.minecraft.item.ItemBlock	64				
+deci:BlockSupplyDrop	Supply Drop	net.minecraft.item.ItemBlock	64				
+deci:BlockTarget	Target	net.minecraft.item.ItemBlock	64				
+deci:BlockTicketGate	Ticket Gate	net.minecraft.item.ItemBlock	64				
+deci:BlockTicketGate_Open	Ticket Gate (Open)	net.minecraft.item.ItemBlock	64				
+deci:BlockTire	Tire	net.minecraft.item.ItemBlock	64				
+deci:BlockTireStack	Stack of Tires	net.minecraft.item.ItemBlock	64				
+deci:BlockTrafficLights	Traffic Lights	net.minecraft.item.ItemBlock	64				
+deci:BlockTrafficLightsMiddle	Traffic Lights (Middle)	net.minecraft.item.ItemBlock	64				
+deci:BlockTrashBag1	Trash Bag 1	net.minecraft.item.ItemBlock	64				
+deci:BlockTrashBag2	Trash Bag 2	net.minecraft.item.ItemBlock	64				
+deci:BlockTrashcan	Trashcan	net.minecraft.item.ItemBlock	64				
+deci:BlockTruckWreckage1	Wrecked Civilian Truck (Black)	net.minecraft.item.ItemBlock	64				
+deci:BlockTruckWreckage2	Wrecked Civilian Truck (Blue)	net.minecraft.item.ItemBlock	64				
+deci:BlockTruckWreckage3	Wrecked Civilian Truck (Green)	net.minecraft.item.ItemBlock	64				
+deci:BlockTruckWreckage4	Wrecked Civilian Truck (Red)	net.minecraft.item.ItemBlock	64				
+deci:BlockTruckWreckage5	Wrecked Civilian Truck (Beige)	net.minecraft.item.ItemBlock	64				
+deci:BlockTruckWreckage6	Wrecked Civilian Truck (White)	net.minecraft.item.ItemBlock	64				
+deci:BlockVendingMachine_1	Vending Machine (Red)	net.minecraft.item.ItemBlock	64				
+deci:BlockVendingMachine_2	Vending Machine (Green)	net.minecraft.item.ItemBlock	64				
+deci:BlockWallOffice_2_Bottom_1	tile.BlockWallOffice_2_Bottom_1.name	net.minecraft.item.ItemBlock	64				
+deci:BlockWallOffice_2_Top	tile.BlockWallOffice_2_Top.name	net.minecraft.item.ItemBlock	64				
+deci:BlockWallOffice_3_Bottom_1	tile.BlockWallOffice_3_Bottom_1.name	net.minecraft.item.ItemBlock	64				
+deci:BlockWallOffice_3_Bottom_2	tile.BlockWallOffice_3_Bottom_2.name	net.minecraft.item.ItemBlock	64				
+deci:BlockWallOffice_3_Top	tile.BlockWallOffice_3_Top.name	net.minecraft.item.ItemBlock	64				
+deci:BlockWallOffice_4_Bottom_1	tile.BlockWallOffice_4_Bottom_1.name	net.minecraft.item.ItemBlock	64				
+deci:BlockWallOffice_4_Bottom_2	tile.BlockWallOffice_4_Bottom_2.name	net.minecraft.item.ItemBlock	64				
+deci:BlockWallOffice_4_Bottom_3	tile.BlockWallOffice_4_Bottom_3.name	net.minecraft.item.ItemBlock	64				
+deci:BlockWallOffice_4_Top	tile.BlockWallOffice_4_Top.name	net.minecraft.item.ItemBlock	64				
+deci:BlockWallOffice_Bottom_1	tile.BlockWallOffice_Bottom_1.name	net.minecraft.item.ItemBlock	64				
+deci:BlockWallOffice_Bottom_2	tile.BlockWallOffice_Bottom_2.name	net.minecraft.item.ItemBlock	64				
+deci:BlockWallOffice_Bottom_3	tile.BlockWallOffice_Bottom_3.name	net.minecraft.item.ItemBlock	64				
+deci:BlockWallOffice_Bottom_4	tile.BlockWallOffice_Bottom_4.name	net.minecraft.item.ItemBlock	64				
+deci:BlockWallOffice_Top	tile.BlockWallOffice_Top.name	net.minecraft.item.ItemBlock	64				
+deci:BlockWallflag	Wall Flag	net.minecraft.item.ItemBlock	64				
+deci:BlockWashingMachine	Washing Machine	net.minecraft.item.ItemBlock	64				
+deci:BlockWaterPallet	Water Pallet	net.minecraft.item.ItemBlock	64				
+deci:BlockWaterPalletTarp	Water Pallet (Tarp)	net.minecraft.item.ItemBlock	64				
+deci:BlockWaterfountain	Water Fountain	net.minecraft.item.ItemBlock	64				
+deci:BlockWaterpump	Waterpump	net.minecraft.item.ItemBlock	64				
+deci:BlockWeaponCabinet	Weapon Cabinet	net.minecraft.item.ItemBlock	64				
+deci:BlockWoodCrate	Wooden Crate	net.minecraft.item.ItemBlock	64				
+deci:BlockWoodCrateOpen	Wooden Crate (Open)	net.minecraft.item.ItemBlock	64				
+deci:BlockWoodTable	Wooden Table	net.minecraft.item.ItemBlock	64				
+deci:BlockWoodTable2	Wooden Table 2	net.minecraft.item.ItemBlock	64				
+deci:BlockWreckage1	Wrecked Civilian Car (Black)	net.minecraft.item.ItemBlock	64				
+deci:BlockWreckage2	Wrecked Civilian Car (Blue)	net.minecraft.item.ItemBlock	64				
+deci:BlockWreckage3	Wrecked Civilian Car (Green)	net.minecraft.item.ItemBlock	64				
+deci:BlockWreckage4	Wrecked Civilian Car (Red)	net.minecraft.item.ItemBlock	64				
+deci:BlockWreckage5	Wrecked Civilian Car (Beige)	net.minecraft.item.ItemBlock	64				
+deci:BlockWreckageMilitary1	Wrecked Military Jeep	net.minecraft.item.ItemBlock	64				
+deci:BlockWreckageMilitary2	Wrecked Military Tank	net.minecraft.item.ItemBlock	64				
+deci:BlockWreckageMilitary3	Wrecked Military Helicopter	net.minecraft.item.ItemBlock	64				
+deci:BlockWreckagePolice1	Police Wreckage 1	net.minecraft.item.ItemBlock	64				
+deci:BlockWreckagePolice2	Police Wreckage 2	net.minecraft.item.ItemBlock	64				
+deci:BlockWreckagePolice3	Police Wreckage 3	net.minecraft.item.ItemBlock	64				
+deci:Door_Blue_1	tile.Door_Blue_1.name	net.minecraft.item.ItemBlock	64				
+deci:Door_Blue_2	tile.Door_Blue_2.name	net.minecraft.item.ItemBlock	64				
+deci:Door_Blue_3	tile.Door_Blue_3.name	net.minecraft.item.ItemBlock	64				
+deci:Door_Emergency_1	tile.Door_Emergency_1.name	net.minecraft.item.ItemBlock	64				
+deci:Door_Emergency_1_Locked	tile.Door_Emergency_1_Locked.name	net.minecraft.item.ItemBlock	64				
+deci:Door_Emergency_2	tile.Door_Emergency_2.name	net.minecraft.item.ItemBlock	64				
+deci:Door_Emergency_3	tile.Door_Emergency_3.name	net.minecraft.item.ItemBlock	64				
+deci:Door_Green_1	tile.Door_Green_1.name	net.minecraft.item.ItemBlock	64				
+deci:Door_Green_2	tile.Door_Green_2.name	net.minecraft.item.ItemBlock	64				
+deci:Door_Green_3	tile.Door_Green_3.name	net.minecraft.item.ItemBlock	64				
+deci:Door_InfektorSecurity_1	tile.Door_InfektorSecurity_1.name	net.minecraft.item.ItemBlock	64				
+deci:Door_Metal_3	tile.Door_Metal_3.name	net.minecraft.item.ItemBlock	64				
+deci:Door_Office_1	tile.Door_Office_1.name	net.minecraft.item.ItemBlock	64				
+deci:Door_Orange_1	tile.Door_Orange_1.name	net.minecraft.item.ItemBlock	64				
+deci:Door_Orange_2	tile.Door_Orange_2.name	net.minecraft.item.ItemBlock	64				
+deci:Door_Orange_3	tile.Door_Orange_3.name	net.minecraft.item.ItemBlock	64				
+deci:Door_security_1	tile.Door_security_1.name	net.minecraft.item.ItemBlock	64				
+deci:Item120mmMortarRound	120mm Mortar Round	deci.aA.d	4			0.5	
+deci:ItemAcidCanister	Acid Canister	deci.ao.b	1				
+deci:ItemBandage	Bandage	deci.au.a	4				minecraft:chestx2,BlockWreckage1x2,BlockWreckage2x2,BlockWreckage3x2,BlockWreckage4x2,BlockWreckage5x2,BlockMetalShelfx2,BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1,BlockSupplyDropx1,BlockMedicalCratex2
+deci:ItemBandageDirty	Dirty Bandage	deci.av.n	64			0.5	minecraft:chestx2,BlockWreckage1x2,BlockWreckage2x2,BlockWreckage3x2,BlockWreckage4x2,BlockWreckage5x2,BlockMetalShelfx2,BlockMedicalCratex2
+deci:ItemBarChocolate	Chocolate Candy Bar	deci.ar.c	64				BlockVendingMachine_1x1,BlockVendingMachine_2x1
+deci:ItemBarEnergyApple	Apple Energy Bar	deci.ar.c	64				BlockVendingMachine_1x1,BlockVendingMachine_2x1
+deci:ItemBarEnergyBlueberry	Blueberry Energy Bar	deci.ar.c	64				BlockVendingMachine_1x1,BlockVendingMachine_2x1
+deci:ItemBarbedWire	Barbed Wire	deci.av.b	64				
+deci:ItemBaseballBat	Baseball Bat	deci.az.b	1			0.5	minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1
+deci:ItemBaseballBatNails	Nailed Baseball Bat	deci.az.b	1			0.5	minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1
+deci:ItemBattery	Battery	deci.ao.b	1				
+deci:ItemBirdMeat	Raw Bird Meat	net.minecraft.item.ItemFood	64				
+deci:ItemBloodBag	Blood Bag	deci.au.b	64				BlockMedicalCratex1
+deci:ItemBoarMeat	Raw Boar Meat	net.minecraft.item.ItemFood	64				
+deci:ItemBottlecap	Bottle Cap	deci.av.c	64				
+deci:ItemBottlecapGold	Gold Bottle Cap	deci.av.d	64				
+deci:ItemBottledBerryade	Bottle of Berryade	deci.aq.a	64				BlockVendingMachine_1x1,BlockVendingMachine_2x1
+deci:ItemBottledCherryade	Bottle of Cherryade	deci.aq.a	64				BlockVendingMachine_1x1,BlockVendingMachine_2x1
+deci:ItemBottledCoke	Bottle of Coca Coal	deci.aq.a	64				BlockVendingMachine_1x1,BlockVendingMachine_2x1
+deci:ItemBottledIrnbru	Bottle of Iron Bru	deci.aq.a	64				BlockVendingMachine_1x1,BlockVendingMachine_2x1
+deci:ItemBottledLemonade	Bottle of Lemonade	deci.aq.a	64				BlockVendingMachine_1x1,BlockVendingMachine_2x1
+deci:ItemBottledLimeade	Bottle of Limeade	deci.aq.a	64				BlockVendingMachine_1x1,BlockVendingMachine_2x1
+deci:ItemBottledWater	Bottled Water	deci.aq.a	64				BlockVendingMachine_1x1,BlockVendingMachine_2x1
+deci:ItemBottledWhiskey	Bottle of Whiskey	deci.aq.a	64				BlockVendingMachine_1x1,BlockVendingMachine_2x1
+deci:ItemButcherKnife	Butcher Knife	deci.az.b	1			0.5	minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1
+deci:ItemCampfire	Campfire	deci.av.e	1			0.5	
+deci:ItemCandyCane	Candy Cane	deci.ar.c	64				BlockPresentx3,BlockPresentx2,BlockPresentx1,BlockPresent2x3,BlockPresent2x2,BlockPresent2x1,BlockPresent3x3,BlockPresent3x2,BlockPresent3x1
+deci:ItemCandyCorn	Bag of Crafty Corn	deci.ar.d	64				
+deci:ItemCannedAppleGreen	Canned Green Apples	deci.ar.d	64				minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1
+deci:ItemCannedAppleRed	Canned Red Apples	deci.ar.d	64				minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1
+deci:ItemCannedApplesauce	Canned Applesauce	deci.ar.d	64				minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1
+deci:ItemCannedBlackberry	Canned Blackberries	deci.ar.d	64				minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1
+deci:ItemCannedBlueberry	Canned Blueberries	deci.ar.d	64				minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1
+deci:ItemCannedCarrot	Canned Carrots	deci.ar.d	64				minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1
+deci:ItemCannedChocolatePowder	Canned Chocolate Powder	deci.ar.d	64				minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1
+deci:ItemCannedCustard	Canned Custard	deci.ar.d	64				minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1
+deci:ItemCannedGrape	Canned Grapes	deci.ar.d	64				minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1
+deci:ItemCannedKebab	Canned Kebab Meat	deci.ar.d	64				
+deci:ItemCannedLemon	Canned Lemons	deci.ar.d	64				minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1
+deci:ItemCannedLime	Canned Limes	deci.ar.d	64				minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1
+deci:ItemCannedMacncheese	Canned Mac'n'Cheese	deci.ar.d	64				minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1
+deci:ItemCannedMushroom	Canned Mushrooms	deci.ar.d	64				minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1
+deci:ItemCannedPeach	Canned Peaches	deci.ar.d	64				minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1
+deci:ItemCannedPear	Canned Pears	deci.ar.d	64				minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1
+deci:ItemCannedSweetcorn	Canned Sweetcorn	deci.ar.d	64				minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1
+deci:ItemCannedTuna	Canned Tunafish	deci.ar.d	64				minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1
+deci:ItemChainsaw	Chainsaw	deci.az.a	1			0.5	minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1
+deci:ItemChestRig_Beige	Chest Rig (Tan)	deci.av.a	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1
+deci:ItemChestRig_Gray	Chest Rig (Gray)	deci.av.a	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1
+deci:ItemChestRig_Green	Chest Rig (Green)	deci.av.a	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1
+deci:ItemChestRig_Snow	Chest Rig (Snow)	deci.av.a	1			0.5	
+deci:ItemChocolateApple	Chocolate Apple	deci.ar.c	64				
+deci:ItemChoppedCocaLeaves	Chopped Coca Leaves	deci.av.n	64			0.5	
+deci:ItemCocaLeaves	Coca Leaves	deci.av.n	64			0.5	
+deci:ItemCocaineProduce	Cocaine Produce	deci.av.n	64			0.5	
+deci:ItemCombatKnife	Combat Knife	deci.az.b	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1
+deci:ItemConstructionHammer	Construction Hammer	deci.av.f	1			0.5	
+deci:ItemCookedBirdMeat	Cooked Bird Meat	net.minecraft.item.ItemFood	64				
+deci:ItemCookedBoarMeat	Cooked Boar Meat	net.minecraft.item.ItemFood	64				
+deci:ItemCookedDeerMeat	Cooked Buck Meat	net.minecraft.item.ItemFood	64				
+deci:ItemCricketbat	Cricket Bat	deci.az.b	1			0.5	minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1
+deci:ItemCrispsBBQ	BBQ Crisps	deci.ar.c	64				BlockVendingMachine_1x1,BlockVendingMachine_2x1
+deci:ItemCrispsCoolranch	Cool Ranch Crisps	deci.ar.c	64				BlockVendingMachine_1x1,BlockVendingMachine_2x1
+deci:ItemCrispsNachocheese	Nacho Cheese Crisps	deci.ar.c	64				BlockVendingMachine_1x1,BlockVendingMachine_2x1
+deci:ItemCrowbar	Crowbar	deci.az.b	1			0.5	minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1
+deci:ItemDeerMeat	Raw Buck Meat	net.minecraft.item.ItemFood	64				
+deci:ItemDemonFlesh	Demon Flesh	deci.ar.e	64				
+deci:ItemDoorBlue_1	Blue Door 1	deci.ap.a	1				
+deci:ItemDoorBlue_2	Blue Door 2	deci.ap.a	1				
+deci:ItemDoorBlue_3	Blue Door 3	deci.ap.a	1				
+deci:ItemDoorEmergency_1	Emergency Door 1	deci.ap.a	1				
+deci:ItemDoorEmergency_1_Locked	Emergency Door 1 (Lockpick)	deci.ap.f	1			0.5	
+deci:ItemDoorEmergency_2	Emergency Door 2	deci.ap.a	1				
+deci:ItemDoorEmergency_3	Emergency Door 3	deci.ap.a	1				
+deci:ItemDoorGreen_1	Green Door 1	deci.ap.a	1				
+deci:ItemDoorGreen_2	Green Door 2	deci.ap.a	1				
+deci:ItemDoorGreen_3	Green Door 3	deci.ap.a	1				
+deci:ItemDoorInfektorSecurity_1	item.ItemDoorInfektorSecurity_1.name	deci.ap.a	1				
+deci:ItemDoorMetal_1	Metal Door 1	deci.ap.a	1				
+deci:ItemDoorOffice_1	Office Door 1	deci.ap.a	1				
+deci:ItemDoorOrange_1	Orange Door 1	deci.ap.a	1				
+deci:ItemDoorOrange_2	Orange Door 2	deci.ap.a	1				
+deci:ItemDoorOrange_3	Orange Door 3	deci.ap.a	1				
+deci:ItemDoorSecurity_1	Security Door 1	deci.ap.a	1				
+deci:ItemDrainCleaner	Drain Cleaner	deci.ao.b	1				minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1
+deci:ItemDrinkCanEnergy	Energy Drink	deci.aq.b	64				BlockVendingMachine_1x1,BlockVendingMachine_2x1
+deci:ItemDrinkCanEnergyBlueberry	Blueberry Energy Drink	deci.aq.b	64				BlockVendingMachine_1x1,BlockVendingMachine_2x1
+deci:ItemDrinkCanEnergyCitrus	Citrus Energy Drink	deci.aq.b	64				BlockVendingMachine_1x1,BlockVendingMachine_2x1
+deci:ItemDrinkCanWater	Can of Water	deci.aq.b	64				BlockVendingMachine_1x1,BlockVendingMachine_2x1
+deci:ItemDuffleBag	Duffle Bag	deci.av.a	1			0.5	minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1,BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1
+deci:ItemDustedCocaLeaves	Dusted Coca Leaves	deci.av.g	1			0.5	
+deci:ItemEmptyBloodBag	Empty Blood Bag	deci.av.n	64			0.5	BlockMedicalCratex1
+deci:ItemEmptyCan	Empty Can	deci.av.n	64			0.5	minecraft:chestx2,BlockWreckage1x2,BlockWreckage2x2,BlockWreckage3x2,BlockWreckage4x2,BlockWreckage5x2,BlockMetalShelfx2
+deci:ItemFRAGGrenade	Fragmentation Grenade	deci.aA.a	4				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockCarePackagex2,BlockMechWreckagex2,BlockSupplyDropx1,BlockAmmoCratex3
+deci:ItemFannyPack_Blue	Fanny Pack (Blue)	deci.av.a	1			0.5	minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1
+deci:ItemFannyPack_Green	Fanny Pack (Green)	deci.av.a	1			0.5	minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1
+deci:ItemFannyPack_Red	Fanny Pack (Red)	deci.av.a	1			0.5	
+deci:ItemFannyPack_Yellow	Fanny Pack (Yellow)	deci.av.a	1			0.5	minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1
+deci:ItemFireaxe	Fireaxe	deci.az.b	1			0.5	minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1
+deci:ItemFirstAidKit	First Aid Kit	deci.au.e	4				BlockMedicalCratex1
+deci:ItemGPS	Military GPS	deci.av.n	64			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1
+deci:ItemGlider	Tactical Glider	deci.av.h	1			0.5	BlockSupplyDropx1
+deci:ItemGuitar	Old Guitar	deci.av.i	1			0.5	minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1
+deci:ItemHammer	Hammer	deci.az.b	1			0.5	minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1
+deci:ItemHikingPack_Gray	Hiking Backpack (Gray)	deci.av.a	1			0.5	minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1
+deci:ItemHikingPack_Green	Hiking Backpack (Green)	deci.av.a	1			0.5	minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1
+deci:ItemHikingPack_Tan	Hiking Backpack (Tan)	deci.av.a	1			0.5	minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1
+deci:ItemHugeMilitaryPack_Black	Huge Military Backpack (Black)	deci.av.a	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1,BlockSupplyDropx1
+deci:ItemHugeMilitaryPack_Green	Huge Military Backpack (Green)	deci.av.a	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1,BlockSupplyDropx1
+deci:ItemHugeMilitaryPack_Snow	Huge Military Backpack (Snow)	deci.av.a	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1,BlockSupplyDropx1
+deci:ItemHugeMilitaryPack_Tan	Huge Military Backpack (Tan)	deci.av.a	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1,BlockSupplyDropx1
+deci:ItemIcePick	Ice Pick	deci.az.b	1			0.5	minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1
+deci:ItemInfectedFlesh	Infected Flesh	deci.ar.e	64				
+deci:ItemJerryCan	Jerry Can	deci.av.j	1				minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1,BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1,BlockSupplyDropx1
+deci:ItemK9Harness	Tactical K9 Harness	deci.av.n	64			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1
+deci:ItemKitConcertina	Kit (Barbed Wire)	deci.at.a	1			0.5	
+deci:ItemKitMetalWall	Kit (Metal Wall)	deci.at.b	1			0.5	
+deci:ItemKitSandbagStack	Kit (Sandbags)	deci.at.c	1			0.5	
+deci:ItemKitSandbagStackBeige	Kit (Beige Sandbags)	deci.at.d	1			0.5	
+deci:ItemLaboratoryKeycard	Laboratory Key-card	deci.av.k	1			0.5	BlockMedicalCratex1
+deci:ItemLandmine	Landmine	deci.av.l	64			0.5	
+deci:ItemLockpick	Lockpick	deci.av.m	64			0.5	minecraft:chestx5,BlockWreckage1x5,BlockWreckage2x5,BlockWreckage3x5,BlockWreckage4x5,BlockWreckage5x5,BlockMetalShelfx5
+deci:ItemMRE	Military MRE	deci.ar.c	64				BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1
+deci:ItemMRECooked	Cooked Military MRE	deci.ar.c	64				
+deci:ItemMachete	Machete	deci.az.b	1			0.5	minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1
+deci:ItemMapDeci	Geographic Map	deci.av.n	64			0.5	minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1
+deci:ItemMarshmallows	Bag of Marshmallows	deci.ar.c	64				
+deci:ItemMetalRod	Metal Rod	deci.av.n	64			0.5	
+deci:ItemMethProduce	Methamphetamine	deci.av.n	64			0.5	
+deci:ItemMilitaryKeycard	Military Key-card	deci.av.k	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1
+deci:ItemMolotov	Molotov Cocktail	deci.aA.b	4				minecraft:chestx3,BlockWreckage1x3,BlockWreckage2x3,BlockWreckage3x3,BlockWreckage4x3,BlockWreckage5x3,BlockMetalShelfx3
+deci:ItemMortarGun	Mortar Gun	deci.aA.c	1			0.5	
+deci:ItemPackagedCocaine	Packaged Cocaine	deci.av.n	64			0.5	
+deci:ItemPackagedMeth	Packaged Methamphetamine	deci.av.n	64			0.5	
+deci:ItemPackagingPaper	Packaging Paper	deci.av.n	64			0.5	BlockTrashcanx3,BlockDumpsterx3,BlockSkeletonGroundx3,BlockSkeletonWallx3,BlockPhoneboxx3
+deci:ItemPainKillers	Pain Killers	deci.au.e	4				minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1,BlockMedicalCratex1
+deci:ItemParachute	Parachute	deci.av.o	1			0.5	minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1
+deci:ItemPartyHorn	Party Horn	deci.av.p	1			0.5	minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1
+deci:ItemPastyDustedCocaLeaves	Dusted Coca Leaves (Pasty)	deci.av.q	1			0.5	
+deci:ItemPeppermint	Peppermint	deci.ar.c	64				BlockPresentx3,BlockPresentx2,BlockPresentx1,BlockPresent2x3,BlockPresent2x2,BlockPresent2x1,BlockPresent3x3,BlockPresent3x2,BlockPresent3x1
+deci:ItemPlateCarrier_Beige	Plate Carrier (Beige)	deci.av.a	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1
+deci:ItemPlateCarrier_Gray	Plate Carrier (Gray)	deci.av.a	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1
+deci:ItemPlateCarrier_Green	Plate Carrier (Green)	deci.av.a	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1
+deci:ItemPoliceBaton	Police Baton	deci.az.b	1			0.5	BlockPoliceCratex1,BlockWreckagePolice1x1,BlockWreckagePolice2x1,BlockWreckagePolice3x1
+deci:ItemPunjiSticks	Punji Sticks	deci.av.r	64				
+deci:ItemPyroPowderBlue	Pyro-Powder (Blue)	deci.ay.k	64				
+deci:ItemPyroPowderGreen	Pyro-Powder (Green)	deci.ay.k	64				
+deci:ItemPyroPowderOrange	Pyro-Powder (Orange)	deci.ay.k	64				
+deci:ItemPyroPowderPink	Pyro-Powder (Pink)	deci.ay.k	64				
+deci:ItemPyroPowderRed	Pyro-Powder (Red)	deci.ay.k	64				
+deci:ItemPyroPowderWhite	Pyro-Powder (White)	deci.ay.k	64				
+deci:ItemPyroPowderYellow	Pyro-Powder (Yellow)	deci.ay.k	64				
+deci:ItemRadio	Radio	deci.av.s	1			0.5	minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1,BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1,BlockSupplyDropx1
+deci:ItemRag	Rag	deci.au.a	4				minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1
+deci:ItemRagDirty	Dirty Rag	deci.av.n	64			0.5	minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1
+deci:ItemRangeFinder	Tactical Range Finder	deci.av.t	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1
+deci:ItemReeses	Bag of Creepes	deci.ar.d	64				
+deci:ItemRiotshield	Riot Shield	deci.az.c	1			0.5	
+deci:ItemRotationToolReset	Rotation Tool (Reset)	deci.aw.a	1			0.5	
+deci:ItemRotationToolX	Rotation Tool (X)	deci.aw.a	1			0.5	
+deci:ItemRotationToolY	Rotation Tool (Y)	deci.aw.a	1			0.5	
+deci:ItemRotationToolZ	Rotation Tool (Z)	deci.aw.a	1			0.5	
+deci:ItemScrapAcetone	Acetone	deci.av.n	64			0.5	minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1
+deci:ItemScrapCigarettes	Pack of Cigarettes	deci.av.n	8			0.5	minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1
+deci:ItemScrapDuctTape	Roll of Duct Tape	deci.av.n	8			0.5	minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1
+deci:ItemScrapLyePacket	Lye Packet	deci.av.n	64			0.5	minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1
+deci:ItemScrapMilitaryGasAnalyzer	Gas Analyzer	deci.av.n	8			0.05	BlockSupplyDropx1
+deci:ItemScrapMilitaryGasMaskFilter	Gas Mask Filter	deci.av.n	8			0.5	BlockSupplyDropx1
+deci:ItemScrapMilitaryGunPowder	Gun Powder	deci.av.n	8			0.5	BlockSupplyDropx1
+deci:ItemScrapMonitorCPU	Computer CPU	deci.av.n	8			0.1	BlockMonitorx1
+deci:ItemScrapMonitorCapacitors	Computer Capacitors	deci.av.n	8			0.5	BlockMonitorx3
+deci:ItemScrapMonitorFlashdrive	Computer Flashdrive	deci.av.n	8			0.08	BlockMonitorx1
+deci:ItemScrapMonitorGraphicsCard	Broken Computer Graphics Card	deci.av.n	8			0.5	BlockMonitorx1
+deci:ItemScrapMonitorGraphicsCardFixed	Fixed Computer Graphics Card	deci.av.n	8			0.01	BlockMonitorx1
+deci:ItemScrapMonitorRAM	Computer RAM Card	deci.av.n	8			0.2	BlockMonitorx2
+deci:ItemScrapMonitorSSD	Computer SSD	deci.av.n	8			0.05	BlockMonitorx1
+deci:ItemScrapPhone	Old Phone	deci.av.n	8			0.02	minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1
+deci:ItemScrapPliers	Rusty Pliers	deci.av.n	8			0.5	minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1
+deci:ItemScrapPropaneTank	Propane Tank	deci.av.n	8			0.08	minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1
+deci:ItemScrapScrewdriver	Rusty Screwdriver	deci.av.n	8			0.5	minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1
+deci:ItemScrapWD40	WD-40 Canister	deci.av.n	8			0.5	minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1
+deci:ItemScrapWaterFilter	Old Water Filter	deci.av.n	8			0.07	minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1
+deci:ItemScrapWrench	Rusty Wrench	deci.av.n	8			0.5	minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1
+deci:ItemSecurityKeycard	Security Key-card	deci.av.k	1			0.5	BlockPoliceCratex1,BlockWreckagePolice1x1,BlockWreckagePolice2x1,BlockWreckagePolice3x1
+deci:ItemSelectionTool	Wand of Selection	deci.aw.b	1			0.5	
+deci:ItemSignalGrenadeGreen	Signal Smoke Grenade (Green)	deci.aA.e	4				BlockPresentx1,BlockPresent2x1,BlockPresent3x1,BlockMilitaryCratex3,BlockWreckageMilitary1x3,BlockWreckageMilitary2x3,BlockWreckageMilitary3x3,BlockCarePackagex3,BlockMechWreckagex3,BlockAmmoCratex3
+deci:ItemSignalGrenadeRed	Signal Smoke Grenade (Red)	deci.aA.e	4				BlockPresentx1,BlockPresent2x1,BlockPresent3x1,BlockMilitaryCratex3,BlockWreckageMilitary1x3,BlockWreckageMilitary2x3,BlockWreckageMilitary3x3,BlockCarePackagex3,BlockMechWreckagex3,BlockAmmoCratex3
+deci:ItemSmokeGrenade	M8 Smoke Grenade	deci.aA.f	4				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockCarePackagex2,BlockMechWreckagex2,BlockSupplyDropx1,BlockAmmoCratex3
+deci:ItemSplint	Splint	deci.au.c	4				BlockMedicalCratex1
+deci:ItemStunGrenade	M12 Stun Grenade	deci.aA.g	4				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockCarePackagex2,BlockMechWreckagex2,BlockSupplyDropx1,BlockAmmoCratex3
+deci:ItemSupplyDropRadio	Supply Drop Radio	deci.av.u	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1
+deci:ItemSyringeAdrenaline	Adrenaline Syringe	deci.au.h	4				BlockMedicalCratex1
+deci:ItemSyringeBlood	Blood Syringe	deci.au.b	4				BlockMedicalCratex2
+deci:ItemSyringeCure	Cure Syringe	deci.au.f	4				BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1,BlockSupplyDropx1,BlockMedicalCratex2
+deci:ItemSyringeEmpty	Empty Syringe	deci.au.d	4				minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1,BlockMedicalCratex2
+deci:ItemSyringeInfection	Infection Syringe	deci.au.g	4				
+deci:ItemSyringeMorphine	Morphine Syringe	deci.au.c	4				minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1,BlockMedicalCratex2
+deci:ItemTearGasGrenade	M7A3 Gas Grenade	deci.aA.h	4				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockCarePackagex2,BlockMechWreckagex2,BlockSupplyDropx1,BlockAmmoCratex3
+deci:ItemToffeeApple	Toffee Apple	deci.ar.c	64				
+deci:ItemTrimmingScissors	Trimming Scissors	deci.av.v	1			0.5	
+deci:ItemTurret	Turret	deci.av.w	64			0.5	
+deci:ItemVestDetonator	Suicide Vest	deci.av.x	1			0.5	
+deci:ItemVitaminCapsules	Vitamin Capsules	deci.au.h	4				BlockMedicalCratex1
+deci:ItemWire	Wire	deci.av.n	64			0.8999999761581421	BlockTrashcanx4,BlockDumpsterx4,BlockSkeletonGroundx4,BlockSkeletonWallx4,BlockPhoneboxx4,BlockMonitorx3
+deci:ItemWireCoil	Wire Coil	deci.av.n	64			0.5	BlockTrashcanx4,BlockDumpsterx4,BlockSkeletonGroundx4,BlockSkeletonWallx4,BlockPhoneboxx4
+deci:VehicleSpawnerATV	ATV	deci.ax.b	1			0.5	
+deci:VehicleSpawnerBTR70	BTR70 APC	deci.ax.c	1			0.5	
+deci:VehicleSpawnerBuggy	Buggy	deci.ax.d	1			0.5	
+deci:VehicleSpawnerHummer	Hummer	deci.ax.e	1			0.5	
+deci:VehicleSpawnerM35	M35 Truck	deci.ax.f	1			0.5	
+deci:aa12	AA12	deci.ay.i	1			0.5	
+deci:aa12Mag	AA12 Magazine	deci.ay.f	3				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2,BlockSupplyDropx1,BlockSupplyDropx3
+deci:acr	ACR	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1,BlockSupplyDropx1
+deci:acrMag	30rnd NATO STANAG Magazine (ACR)	deci.ay.f	3				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2,BlockSupplyDropx3
+deci:ak12	AK-12	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1
+deci:ak12Mag	30rnd AK-12 Magazine	deci.ay.f	3				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2
+deci:ak74	AK-74	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1
+deci:ak74Mag	30rnd AK Magazine	deci.ay.f	3				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2
+deci:akm	AKM	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1
+deci:akms	AKMS	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1
+deci:aks74	AKS-74	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1
+deci:aks74u	AKS-74U	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1
+deci:aks74uMag	20rnd AK Magazine	deci.ay.f	3				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2
+deci:aps	APS	deci.ay.i	1			0.5	minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1,BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1
+deci:apsMag	APS Magazine	deci.ay.f	4				minecraft:chestx3,BlockWreckage1x3,BlockWreckage2x3,BlockWreckage3x3,BlockWreckage4x3,BlockWreckage5x3,BlockMetalShelfx3,BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2
+deci:ar15	AR-15	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1
+deci:ar15Mag	30rnd NATO STANAG Magazine (AR-15)	deci.ay.f	3				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2
+deci:ar15beowulf	AR-15 Beowulf	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1
+deci:ar15beowulfMag	AR-15 Beowulf Magazine	deci.ay.f	4				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2
+deci:arSuppressor	Rifle Suppressor	deci.ay.h	1				BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1
+deci:asval	AS Val	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1,BlockSupplyDropx1
+deci:asvalMag	AS Val Magazine	deci.ay.f	4				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2,BlockSupplyDropx3
+deci:aug1	AUG A1	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1,BlockSupplyDropx1
+deci:aug3	AUG A3	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1,BlockSupplyDropx1
+deci:aug3para	AUG A3-Para	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1,BlockSupplyDropx1
+deci:augMag	AUG A1 Magazine	deci.ay.f	3				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2,BlockSupplyDropx4
+deci:augparaMag	AUG A3 Para Magazine	deci.ay.f	3				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2,BlockSupplyDropx2
+deci:balaclava	Balaclava	net.decimation.mod.common.item.armor.ItemMaskDeci	1	0	0.95	0.5	minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1
+deci:banditBoots	Bandit Boots	net.decimation.mod.common.item.armor.ItemArmorDeci	1	3	0.5525	0.5	
+deci:banditHelm	Bandit Balaclava	net.decimation.mod.common.item.armor.ItemArmorDeci	1	0	0.5525	0.5	
+deci:banditPants	Bandit Pants	net.decimation.mod.common.item.armor.ItemArmorDeci	1	2	0.5525	0.5	
+deci:banditVest	Bandit Vest	net.decimation.mod.common.item.armor.ItemArmorDeci	1	1	0.5525	0.5	
+deci:barettam9	Beretta M9	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1,BlockPoliceCratex1,BlockWreckagePolice1x1,BlockWreckagePolice2x1,BlockWreckagePolice3x1
+deci:barettam9Mag	Beretta M9	deci.ay.f	4				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2,BlockPoliceCratex4,BlockWreckagePolice1x4,BlockWreckagePolice2x4,BlockWreckagePolice3x4
+deci:barrett	Barret 50cal	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1
+deci:barrettMag	Barret 50cal Magazine	deci.ay.f	3				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2
+deci:bayonet	Tactical Bayonet	deci.ay.h	1				BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1
+deci:benellim4	Benelli M4	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1
+deci:bolt	TAC-15 Crossbow Bolt	deci.ay.f	30				BlockMilitaryCratex5,BlockWreckageMilitary1x5,BlockWreckageMilitary2x5,BlockWreckageMilitary3x5,BlockWeaponCabinetx5,BlockCarePackagex5,BlockMechWreckagex5,BlockSupplyDropx5
+deci:browninghp	Browning Hi-Power	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1
+deci:browninghpMag	Browning Hi-Power Magazine	deci.ay.f	4				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2
+deci:bulletproofvest	Bullet Proof Vest	net.decimation.mod.common.item.armor.ItemVestDeci	1	0	0.52	0.5	minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1,BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1,BlockSupplyDropx1
+deci:capBlue	Blue Cap	net.decimation.mod.common.item.armor.ItemArmorDeci	1	0	0.65	0.5	minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1
+deci:capGreen	Green Cap	net.decimation.mod.common.item.armor.ItemArmorDeci	1	0	0.65	0.5	minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1
+deci:capMaga	MAGA Cap	net.decimation.mod.common.item.armor.ItemArmorDeci	1	0	0.65	0.5	minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1
+deci:capRed	Red Cap	net.decimation.mod.common.item.armor.ItemArmorDeci	1	0	0.65	0.5	minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1
+deci:casual1Boots	Gray Shoes	net.decimation.mod.common.item.armor.ItemArmorDeci	1	3	0.65	0.5	minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1
+deci:casual1Pants	Blue Trousers	net.decimation.mod.common.item.armor.ItemArmorDeci	1	2	0.65	0.5	minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1
+deci:casual1Vest	Minecraft Shirt	net.decimation.mod.common.item.armor.ItemArmorDeci	1	1	0.65	0.5	minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1
+deci:casual2Boots	White Shoes	net.decimation.mod.common.item.armor.ItemArmorDeci	1	3	0.65	0.5	minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1
+deci:casual2Pants	Gray Trousers	net.decimation.mod.common.item.armor.ItemArmorDeci	1	2	0.65	0.5	minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1
+deci:casual2Vest	Creeper Shirt	net.decimation.mod.common.item.armor.ItemArmorDeci	1	1	0.65	0.5	minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1
+deci:casual3Boots	Black Shoes	net.decimation.mod.common.item.armor.ItemArmorDeci	1	3	0.65	0.5	minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1
+deci:casual3Pants	Black Trousers	net.decimation.mod.common.item.armor.ItemArmorDeci	1	2	0.65	0.5	minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1
+deci:casual3Vest	Mojang Shirt	net.decimation.mod.common.item.armor.ItemArmorDeci	1	1	0.65	0.5	minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1
+deci:casual4Vest	Decimation Shirt	net.decimation.mod.common.item.armor.ItemArmorDeci	1	1	0.65	0.5	minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1
+deci:casual5Vest	Scotteh Shirt	net.decimation.mod.common.item.armor.ItemArmorDeci	1	1	0.65	0.5	minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1
+deci:colt	Colt	deci.ay.i	1			0.5	minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1,BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1
+deci:coltMag	Colt	deci.ay.f	4				minecraft:chestx3,BlockWreckage1x3,BlockWreckage2x3,BlockWreckage3x3,BlockWreckage4x3,BlockWreckage5x3,BlockMetalShelfx3,BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2
+deci:crotchbow	TAC-15 Crossbow	deci.ay.i	1			0.5	BlockSupplyDropx1
+deci:cz52	CZ-52	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1
+deci:cz52Mag	CZ-52 Magazine	deci.ay.f	4				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2
+deci:dbarrel	TOZ BM-16	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1
+deci:dbarrels	TOZ BM-16 (Sawed-off)	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1
+deci:deagle	IMI Desert Eagle	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1
+deci:deagleMag	IMI Desert Eagle Magazine	deci.ay.f	4				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2
+deci:decal.bloodsplat1	Blood Splat 1	net.minecraft.item.ItemBlock	64				
+deci:decal.bloodsplat2	Blood Splat 2	net.minecraft.item.ItemBlock	64				
+deci:decal.bloodsplat3	Blood Splat 3	net.minecraft.item.ItemBlock	64				
+deci:decal.bloodsplat4	Blood Splat 4	net.minecraft.item.ItemBlock	64				
+deci:decal.bloodsplat5	Blood Splat 5	net.minecraft.item.ItemBlock	64				
+deci:decal.hazardbio	tile.decal.hazardbio.name	net.minecraft.item.ItemBlock	64				
+deci:decal.hazardnuclear	Nuclear Hazard Sign	net.minecraft.item.ItemBlock	64				
+deci:decal.imagegeneric	Image Decal	net.minecraft.item.ItemBlock	64				
+deci:decal.notegeneric	Wall Note	net.minecraft.item.ItemBlock	64				
+deci:decal.sovietsymbol	tile.decal.sovietsymbol.name	net.minecraft.item.ItemBlock	64				
+deci:decal.usflag	tile.decal.usflag.name	net.minecraft.item.ItemBlock	64				
+deci:decal.warningcctv	CCTV Sign	net.minecraft.item.ItemBlock	64				
+deci:decal.warningchemicalstorage	Chemical Storage Sign	net.minecraft.item.ItemBlock	64				
+deci:decal.warninglights	Lights Warning Sign	net.minecraft.item.ItemBlock	64				
+deci:decal.warningslipperyfloor	Slippery Floor Sign	net.minecraft.item.ItemBlock	64				
+deci:decal.warningtrespass	tile.decal.warningtrespass.name	net.minecraft.item.ItemBlock	64				
+deci:decal.warningwatchstep	Watch Step Sign	net.minecraft.item.ItemBlock	64				
+deci:decal.warningxray	Xray Warning Sign	net.minecraft.item.ItemBlock	64				
+deci:dragunovScope	PSO-1 Scope	deci.ay.h	1				
+deci:eotech558	item.eotech558.name	deci.ay.h	1				BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1
+deci:fal	FAL	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1
+deci:falMag	30rnd FAL Magazine	deci.ay.f	3				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2
+deci:famas	FAMAS	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1
+deci:famasMag	FAMAS Magazine	deci.ay.f	4				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2
+deci:famasi	Famas (Itric)	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1
+deci:famasiMag	Famas (Itric) Magazine	deci.ay.f	4				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2
+deci:flashlight	Flashlight	deci.ay.h	1				BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1
+deci:fn57x28mm	FN 5.7x28mm Rounds	deci.ay.f	30				
+deci:fn57x28mm_box	FN 5.7x28mm Rounds Box	deci.ay.g	1			0.5	BlockAmmoCrateLargex1
+deci:fnscar	FN SCAR-H	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1
+deci:fnscarMag	20rnd FN SCAR (H) 51mm Magazine	deci.ay.f	4				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2
+deci:fnscarhamr	FN SCAR-HAMR	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1,BlockSupplyDropx1
+deci:fnscarhamrMag	FN SCAR-HAMR Double-Drum	deci.ay.f	1				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2,BlockSupplyDropx2
+deci:fnscarl	FN SCAR-L	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1,BlockSupplyDropx1
+deci:fnscarlMag	FN SCAR-L Magazine	deci.ay.f	4				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2,BlockSupplyDropx4
+deci:fnscarsc	FN SCAR-SC	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1,BlockSupplyDropx1
+deci:fnscarscMag	FN SCAR-SC Magazine	deci.ay.f	4				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2,BlockSupplyDropx4
+deci:fnscarssr	FN SCAR-SSR	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1,BlockSupplyDropx1
+deci:fnscarssrMag	10rnd FN SCAR (SSR) 51mm Magazine	deci.ay.f	3				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2,BlockSupplyDropx2
+deci:foregrip	Foregrip	deci.ay.h	1				BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1
+deci:g36c	G36C	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1
+deci:g36cMag	G36C Magazine	deci.ay.f	3				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2
+deci:g3a3	G3A3	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1
+deci:g3a3Mag	G3A3 Magazine	deci.ay.f	3				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2
+deci:g3a4	G3A4	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1
+deci:g3a4Mag	G3A4 Magazine	deci.ay.f	3				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2
+deci:galil	IMI Galil	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1
+deci:galilMag	Galil Magazine	deci.ay.f	4				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2
+deci:galilsar	IMI Galil-SAR	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1
+deci:gasmask	Gas Mask	net.decimation.mod.common.item.armor.ItemGasMaskDeci	1	0	0.95	0.5	minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1,BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1
+deci:gasmaskmilitary	Military Gas Mask	net.decimation.mod.common.item.armor.ItemGasMaskDeci	1	0	0.95	0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1
+deci:ghillieBoots	Ghillie Boots	net.decimation.mod.common.item.armor.ItemArmorDeci	1	3	0.65	0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1
+deci:ghillieBootsSnow	Ghillie Boots (Snow)	net.decimation.mod.common.item.armor.ItemArmorDeci	1	3	0.65	0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1
+deci:ghillieHelm	Ghillie Cap	net.decimation.mod.common.item.armor.ItemArmorDeci	1	0	0.65	0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1
+deci:ghillieHelmSnow	Ghillie Cap (Snow)	net.decimation.mod.common.item.armor.ItemArmorDeci	1	0	0.65	0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1
+deci:ghilliePants	Ghillie Pants	net.decimation.mod.common.item.armor.ItemArmorDeci	1	2	0.65	0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1
+deci:ghilliePantsSnow	Ghillie Pants (Snow)	net.decimation.mod.common.item.armor.ItemArmorDeci	1	2	0.65	0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1
+deci:ghillieVest	Ghillie Vest	net.decimation.mod.common.item.armor.ItemArmorDeci	1	1	0.65	0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1
+deci:ghillieVestSnow	Ghillie Vest (Snow)	net.decimation.mod.common.item.armor.ItemArmorDeci	1	1	0.65	0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1
+deci:glock17	Glock 17	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1,BlockPoliceCratex1,BlockWreckagePolice1x1,BlockWreckagePolice2x1,BlockWreckagePolice3x1
+deci:glock17Mag	Glock 17 Magazine	deci.ay.f	4				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2,BlockPoliceCratex4,BlockWreckagePolice1x4,BlockWreckagePolice2x4,BlockWreckagePolice3x4
+deci:hazmatBoots	Hazmat Boots	net.decimation.mod.common.item.armor.ItemArmorDeci	1	3	0.65	0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1
+deci:hazmatHelm	Hazmat Helmet	net.decimation.mod.common.item.armor.ItemArmorDeci	1	0	0.65	0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1
+deci:hazmatPants	Hazmat Pants	net.decimation.mod.common.item.armor.ItemArmorDeci	1	2	0.65	0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1
+deci:hazmatVest	Hazmat Vest	net.decimation.mod.common.item.armor.ItemArmorDeci	1	1	0.65	0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1
+deci:hk_4_6x30	Hk 4.6x30 Rounds	deci.ay.f	30				
+deci:hk_4_6x30_box	Hk 4.6x30 Rounds Box	deci.ay.g	1			0.5	
+deci:honeyBadgerMag	20rnd NATO STANAG Magazine (Honey Badger)	deci.ay.f	3				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2
+deci:honeybadger	AAC Honey Badger PDW	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1
+deci:hoodie1	Decimation Hoodie	net.decimation.mod.common.item.armor.ItemArmorDeci	1	1	0.65	0.5	
+deci:hoodie2	Decimation Hoodie (Gold)	net.decimation.mod.common.item.armor.ItemArmorDeci	1	1	0.65	0.5	
+deci:hoodie3	Brown Hoodie	net.decimation.mod.common.item.armor.ItemArmorDeci	1	1	0.65	0.5	minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1
+deci:hoodie4	Blue Hoodie	net.decimation.mod.common.item.armor.ItemArmorDeci	1	1	0.65	0.5	minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1
+deci:hoodie5	Purple-Red Hoodie	net.decimation.mod.common.item.armor.ItemArmorDeci	1	1	0.65	0.5	minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1
+deci:hoodie6	Green Hoodie	net.decimation.mod.common.item.armor.ItemArmorDeci	1	1	0.65	0.5	minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1
+deci:hoodie7	Hunting Camo Hoodie	net.decimation.mod.common.item.armor.ItemArmorDeci	1	1	0.65	0.5	minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1
+deci:hoodie8	Halloween Hoodie	net.decimation.mod.common.item.armor.ItemArmorDeci	1	1	0.65	0.5	
+deci:hoodie9	BoehMod Hoodie	net.decimation.mod.common.item.armor.ItemArmorDeci	1	1	0.65	0.5	
+deci:insas	INSAS Rifle	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1
+deci:insasMag	INSAS Magazine	deci.ay.f	3				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2
+deci:itric_bolt	Itric Bolt Rounds	deci.ay.f	32				
+deci:itric_bolt_box	Itric Bolt Rounds Box	deci.ay.g	1			0.5	
+deci:jng90	MKEK JNG-90	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1,BlockSupplyDropx1
+deci:jng90Mag	MKEK JNG-90 Magazine	deci.ay.f	4				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2,BlockSupplyDropx3
+deci:juggernautBoots	Juggernaut Foot Plates	net.decimation.mod.common.item.armor.ItemArmorJuggernaut	1	3	0.26	0.01	BlockSupplyDropx1
+deci:juggernautBootsGray	Juggernaut Foot Plates (Gray)	net.decimation.mod.common.item.armor.ItemArmorJuggernaut	1	3	0.26	0.01	BlockSupplyDropx1
+deci:juggernautHelm	Juggernaut Helmet	net.decimation.mod.common.item.armor.ItemArmorJuggernaut	1	0	0.065	0.01	BlockSupplyDropx1
+deci:juggernautHelmGray	Juggernaut Helmet (Gray)	net.decimation.mod.common.item.armor.ItemArmorJuggernaut	1	0	0.065	0.01	BlockSupplyDropx1
+deci:juggernautPants	Juggernaut Leg Plates	net.decimation.mod.common.item.armor.ItemArmorJuggernaut	1	2	0.325	0.01	BlockSupplyDropx1
+deci:juggernautPantsGray	Juggernaut Leg Plates (Gray)	net.decimation.mod.common.item.armor.ItemArmorJuggernaut	1	2	0.325	0.01	BlockSupplyDropx1
+deci:juggernautVest	Juggernaut Chest Plate	net.decimation.mod.common.item.armor.ItemArmorJuggernaut	1	1	0.26	0.01	BlockSupplyDropx1
+deci:juggernautVestGray	Juggernaut Chest Plate (Gray)	net.decimation.mod.common.item.armor.ItemArmorJuggernaut	1	1	0.26	0.01	BlockSupplyDropx1
+deci:kar98k	Karabiner 98k	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1
+deci:kar98kMag	Karabiner 98k Stripper Clip	deci.ay.f	4				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2
+deci:kms72	KMS-72	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1
+deci:kms72Mag	KMS-72 Magazine	deci.ay.f	3				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2
+deci:kp31	Suomi KP/-31	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1,BlockSupplyDropx1
+deci:kp31Mag	Suomi KP/-31 Drum	deci.ay.f	4				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2,BlockSupplyDropx3
+deci:ks23	KS-23	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1
+deci:l115a3	L115A3 (AWM)	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1
+deci:l115a3Mag	L115A3 (AWM) Magazine	deci.ay.f	3				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2
+deci:l85a1	L85A1	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1,BlockSupplyDropx1
+deci:l85a1Mag	L85A1 Magazine	deci.ay.f	4				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2,BlockSupplyDropx3
+deci:laser	Laser Marker	deci.ay.h	1				BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1
+deci:m110	M110 SA SS	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1,BlockSupplyDropx1
+deci:m110Mag	M110 SA SS Magazine	deci.ay.f	4				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2,BlockSupplyDropx2
+deci:m14	M14	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1
+deci:m14Mag	M14 Magazine	deci.ay.f	3				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2
+deci:m16a1	M16A1	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1,BlockSupplyDropx1
+deci:m16a1Mag	20rnd NATO STANAG Magazine	deci.ay.f	3				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2,BlockSupplyDropx3
+deci:m16a2	M16A2	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1,BlockSupplyDropx1
+deci:m16a2Mag	30rnd NATO STANAG Magazine	deci.ay.f	3				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2,BlockSupplyDropx3
+deci:m1919a6	M1919A6	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1
+deci:m1919a6Mag	M1919A6 Belt Box	deci.ay.f	1				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2
+deci:m1934	Beretta M1934	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1
+deci:m1934Mag	Beretta M1934 Magazine	deci.ay.f	4				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2
+deci:m1garand	M1 Garand	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1
+deci:m1garandMag	M1 Garand Magazine	deci.ay.f	4				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2
+deci:m231	M231	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1,BlockSupplyDropx1
+deci:m231Mag	30rnd NATO STANAG Magazine (M231)	deci.ay.f	3				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2,BlockSupplyDropx3
+deci:m240	M240	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1
+deci:m240Mag	M240 Belt Box	deci.ay.f	1				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2
+deci:m4a4	M4A4	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1,BlockSupplyDropx1
+deci:m4a4Mag	M4A4 Magazine	deci.ay.f	3				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2,BlockSupplyDropx3
+deci:m60	M60	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1
+deci:m60Mag	M60 Belt Box	deci.ay.f	1				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2
+deci:m79	M79 Grenade Launcher	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1,BlockSupplyDropx1
+deci:makarov	Makarov	deci.ay.i	1			0.5	minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1,BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1
+deci:makarovMag	Makarov Magazine	deci.ay.f	4				minecraft:chestx3,BlockWreckage1x3,BlockWreckage2x3,BlockWreckage3x3,BlockWreckage4x3,BlockWreckage5x3,BlockMetalShelfx3,BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2
+deci:marineBoots	Marine Boots	net.decimation.mod.common.item.armor.ItemArmorDeci	1	3	0.52	0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1
+deci:marineHat	Marine Hat	net.decimation.mod.common.item.armor.ItemArmorDeci	1	0	0.5525	0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1
+deci:marineHelm	Marine Helmet	net.decimation.mod.common.item.armor.ItemArmorDeci	1	0	0.19500001	0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1
+deci:marinePants	Marine Pants	net.decimation.mod.common.item.armor.ItemArmorDeci	1	2	0.52	0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1
+deci:marineVest	Marine Vest	net.decimation.mod.common.item.armor.ItemArmorDeci	1	1	0.5525	0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1
+deci:marineVestMedical	Marine Medical Vest	net.decimation.mod.common.item.armor.ItemArmorDeci	1	1	0.52	0.5	
+deci:marineblackBoots	Marine Boots (Black)	net.decimation.mod.common.item.armor.ItemArmorDeci	1	3	0.52	0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1
+deci:marineblackHat	Marine Hat (Black)	net.decimation.mod.common.item.armor.ItemArmorDeci	1	0	0.5525	0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1
+deci:marineblackHelm	Marine Helmet (Black)	net.decimation.mod.common.item.armor.ItemArmorDeci	1	0	0.19500001	0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1
+deci:marineblackPants	Marine Pants (Black)	net.decimation.mod.common.item.armor.ItemArmorDeci	1	2	0.52	0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1
+deci:marineblackVest	Marine Vest (Black)	net.decimation.mod.common.item.armor.ItemArmorDeci	1	1	0.5525	0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1
+deci:marineblueBoots	Marine Boots (Blue)	net.decimation.mod.common.item.armor.ItemArmorDeci	1	3	0.52	0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1
+deci:marineblueHelm	Marine Helmet (Blue)	net.decimation.mod.common.item.armor.ItemArmorDeci	1	0	0.19500001	0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1
+deci:marinebluePants	Marine Pants (Blue)	net.decimation.mod.common.item.armor.ItemArmorDeci	1	2	0.52	0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1
+deci:marineblueVest	Marine Vest (Blue)	net.decimation.mod.common.item.armor.ItemArmorDeci	1	1	0.5525	0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1
+deci:marineforestBoots	Marine Boots (Forest)	net.decimation.mod.common.item.armor.ItemArmorDeci	1	3	0.52	0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1
+deci:marineforestHat	Marine Hat (Forest)	net.decimation.mod.common.item.armor.ItemArmorDeci	1	0	0.5525	0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1
+deci:marineforestHelm	Marine Helmet (Forest)	net.decimation.mod.common.item.armor.ItemArmorDeci	1	0	0.19500001	0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1
+deci:marineforestPants	Marine Pants (Forest)	net.decimation.mod.common.item.armor.ItemArmorDeci	1	2	0.52	0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1
+deci:marineforestVest	Marine Vest (Forest)	net.decimation.mod.common.item.armor.ItemArmorDeci	1	1	0.5525	0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1
+deci:marineforestVestMedical	Marine Medical Vest (Forest)	net.decimation.mod.common.item.armor.ItemArmorDeci	1	1	0.52	0.5	
+deci:marinefuryBoots	Marine Boots (Fury)	net.decimation.mod.common.item.armor.ItemArmorDeci	1	3	0.52	0.5	
+deci:marinefuryHelm	Marine Helmet (Fury)	net.decimation.mod.common.item.armor.ItemArmorDeci	1	0	0.19500001	0.5	
+deci:marinefuryPants	Marine Pants (Fury)	net.decimation.mod.common.item.armor.ItemArmorDeci	1	2	0.52	0.5	
+deci:marinefuryVest	Marine Vest (Fury)	net.decimation.mod.common.item.armor.ItemArmorDeci	1	1	0.5525	0.5	
+deci:marinesnowBoots	Marine Boots (Snow)	net.decimation.mod.common.item.armor.ItemArmorDeci	1	3	0.52	0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1
+deci:marinesnowHat	Marine Hat (Snow)	net.decimation.mod.common.item.armor.ItemArmorDeci	1	0	0.5525	0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1
+deci:marinesnowHelm	Marine Helmet (Snow)	net.decimation.mod.common.item.armor.ItemArmorDeci	1	0	0.19500001	0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1
+deci:marinesnowPants	Marine Pants (Snow)	net.decimation.mod.common.item.armor.ItemArmorDeci	1	2	0.52	0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1
+deci:marinesnowVest	Marine Vest (Snow)	net.decimation.mod.common.item.armor.ItemArmorDeci	1	1	0.5525	0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1
+deci:marinesnowVestMedical	Marine Medical Vest (Snow)	net.decimation.mod.common.item.armor.ItemArmorDeci	1	1	0.52	0.5	
+deci:marineurbanBoots	Marine Boots (Urban)	net.decimation.mod.common.item.armor.ItemArmorDeci	1	3	0.52	0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1
+deci:marineurbanHat	Marine Hat (Urban)	net.decimation.mod.common.item.armor.ItemArmorDeci	1	0	0.5525	0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1
+deci:marineurbanHelm	Marine Helmet (Urban)	net.decimation.mod.common.item.armor.ItemArmorDeci	1	0	0.19500001	0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1
+deci:marineurbanPants	Marine Pants (Urban)	net.decimation.mod.common.item.armor.ItemArmorDeci	1	2	0.52	0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1
+deci:marineurbanVest	Marine Vest (Urban)	net.decimation.mod.common.item.armor.ItemArmorDeci	1	1	0.5525	0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1
+deci:marineurbanVestMedical	Marine Medical Vest (Urban)	net.decimation.mod.common.item.armor.ItemArmorDeci	1	1	0.52	0.5	
+deci:mg3	Rheinmetall MG-3	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1
+deci:mg3Mag	Rheinmetall MG-3 Magazine	deci.ay.f	2				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2
+deci:mgSuppressor	MG Suppressor	deci.ay.h	1				BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1
+deci:mglml1l	MGL ML 1L	deci.ay.i	1			0.5	BlockSupplyDropx1
+deci:militaryvest	Military Vest	net.decimation.mod.common.item.armor.ItemVestDeci	1	0	0.45499998	0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1,BlockSupplyDropx1
+deci:militaryvestbeige	Military Vest (Beige)	net.decimation.mod.common.item.armor.ItemVestDeci	1	0	0.45499998	0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1,BlockSupplyDropx1
+deci:militaryvestblack	Military Vest (Black)	net.decimation.mod.common.item.armor.ItemVestDeci	1	0	0.45499998	0.5	BlockSupplyDropx1
+deci:militaryvesthunter	Hunting Vest	net.decimation.mod.common.item.armor.ItemVestDeci	1	0	0.45499998	0.5	minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1
+deci:militaryvestsnow	Military Vest (Snow)	net.decimation.mod.common.item.armor.ItemVestDeci	1	0	0.45499998	0.5	BlockSupplyDropx1
+deci:militiaBoots	Militia Boots	net.decimation.mod.common.item.armor.ItemArmorDeci	1	3	0.61749995	0.5	
+deci:militiaHelm	Militia Cap	net.decimation.mod.common.item.armor.ItemArmorDeci	1	0	0.39000002	0.5	
+deci:militiaPants	Militia Pants	net.decimation.mod.common.item.armor.ItemArmorDeci	1	2	0.61749995	0.5	
+deci:militiaVest	Militia Vest	net.decimation.mod.common.item.armor.ItemArmorDeci	1	1	0.61749995	0.5	
+deci:minigun	Minigun	deci.ay.i	1			0.01	BlockSupplyDropx1
+deci:minigunMag	Minigun Ammunition Barrel	deci.ay.f	1				BlockSupplyDropx1
+deci:mk48	MK-48	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1
+deci:mk48Mag	MK-48 Belt Box	deci.ay.f	1				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2
+deci:model642	Model 642	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1
+deci:mosinnagant	Mosin-Nagant	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1
+deci:mosinnagantMag	Mosin-Nagant Stripper Clip	deci.ay.f	6				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2
+deci:mp40	MP-40	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1
+deci:mp40Mag	MP-40 Magazine	deci.ay.f	4				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2
+deci:mp5a3	MP5A3	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1,BlockSupplyDropx1
+deci:mp5a3Mag	MP5A3 Magazine	deci.ay.f	4				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2,BlockSupplyDropx3
+deci:mp7	HK MP7	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1
+deci:mp7Mag	HK MP7 Magazine	deci.ay.f	4				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2
+deci:mpi40	MPI-40 (Itric)	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1
+deci:mpi40Mag	MPI-40 (Itric) Magazine	deci.ay.f	3				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2
+deci:mpt76	MPT-76	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1
+deci:mpt76Mag	MPT-76 Magazine	deci.ay.f	3				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2
+deci:nvgoggles	Tactical NV Goggles	net.decimation.mod.common.item.armor.ItemNVGoggles	1	0	0.95	0.5	
+deci:nvgoggles_fury	Tactical NV Goggles (Fury)	net.decimation.mod.common.item.armor.ItemNVGoggles	1	0	0.95	0.5	
+deci:nypdBoots	NYPD Boots	net.decimation.mod.common.item.armor.ItemArmorDeci	1	3	0.63699996	0.5	BlockPoliceCratex1,BlockWreckagePolice1x1,BlockWreckagePolice2x1,BlockWreckagePolice3x1
+deci:nypdCoat	NYPD Coat	net.decimation.mod.common.item.armor.ItemArmorDeci	1	1	0.63699996	0.5	BlockPoliceCratex1,BlockWreckagePolice1x1,BlockWreckagePolice2x1,BlockWreckagePolice3x1
+deci:nypdHelm	NYPD Hat	net.decimation.mod.common.item.armor.ItemArmorDeci	1	0	0.63699996	0.5	BlockPoliceCratex1,BlockWreckagePolice1x1,BlockWreckagePolice2x1,BlockWreckagePolice3x1
+deci:nypdPants	NYPD Trousers	net.decimation.mod.common.item.armor.ItemArmorDeci	1	2	0.63699996	0.5	BlockPoliceCratex1,BlockWreckagePolice1x1,BlockWreckagePolice2x1,BlockWreckagePolice3x1
+deci:nypdShirt	NYPD Shirt	net.decimation.mod.common.item.armor.ItemArmorDeci	1	1	0.63699996	0.5	BlockPoliceCratex1,BlockWreckagePolice1x1,BlockWreckagePolice2x1,BlockWreckagePolice3x1
+deci:p90	FN P90	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1
+deci:p90Mag	FN P90 Magazine	deci.ay.f	3				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2
+deci:parafal	ParaFAL	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1,BlockSupplyDropx1
+deci:parafalMag	20rnd FAL Magazine	deci.ay.f	3				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2,BlockSupplyDropx3
+deci:pistolSuppressor	Pistol Suppressor	deci.ay.h	1				BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1,BlockPoliceCratex1,BlockWreckagePolice1x1,BlockWreckagePolice2x1,BlockWreckagePolice3x1
+deci:pkm	PKM	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1
+deci:pkmMag	PKM Belt Box	deci.ay.f	1				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2
+deci:pkp	PKP (Pecheneg MG)	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1
+deci:pkpMag	PKP Belt Box	deci.ay.f	1				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2
+deci:policevest	Police Vest	net.decimation.mod.common.item.armor.ItemVestDeci	1	0	0.48749998	0.5	BlockPoliceCratex1,BlockWreckagePolice1x1,BlockWreckagePolice2x1,BlockWreckagePolice3x1
+deci:pressvest	Press Vest	net.decimation.mod.common.item.armor.ItemVestDeci	1	0	0.61749995	0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1,BlockSupplyDropx1
+deci:r870	R870	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1,BlockPoliceCratex1,BlockWreckagePolice1x1,BlockWreckagePolice2x1,BlockWreckagePolice3x1
+deci:ragingbull	Taurus Raging Bull	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1
+deci:reddot	Red Dot Sight	deci.ay.h	1				BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1
+deci:rpd	RPD	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1
+deci:rpdMag	RPD Drum Box	deci.ay.f	1				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2
+deci:rpg18	RPG-18	deci.ay.i	1			0.5	BlockSupplyDropx1
+deci:rpg18Rocket	RPG-18 Rocket	deci.ay.f	30				BlockSupplyDropx1,BlockAmmoCratex1
+deci:rpg18RocketHS	RPG-18 Rocket (Heat-Seeking)	deci.ay.f	30				
+deci:rpg18RocketNWH	RPG-18 Rocket (Nuclear Warhead)	deci.ay.f	30				
+deci:rpg7	RPG-7	deci.ay.i	1			0.5	BlockSupplyDropx1
+deci:rpg7Rocket	RPG-7 Rocket	deci.ay.f	30				BlockSupplyDropx1,BlockAmmoCratex1
+deci:rpk	RPK	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1
+deci:rpk74	RPK-74	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1
+deci:rpk74Mag	40rnd AK Magazine	deci.ay.f	3				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2
+deci:rpkMag	RPK Magazine	deci.ay.f	3				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2
+deci:santahat	Santa Hat	net.decimation.mod.common.item.armor.ItemArmorDeci	1	0	0.65	0.5	minecraft:chestx1,BlockWreckage1x1,BlockWreckage2x1,BlockWreckage3x1,BlockWreckage4x1,BlockWreckage5x1,BlockMetalShelfx1,BlockPresentx1,BlockPresent2x1,BlockPresent3x1
+deci:sasBoots	SAS Boots	net.decimation.mod.common.item.armor.ItemArmorDeci	1	3	0.5525	0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1
+deci:sasHelm	SAS Helmet	net.decimation.mod.common.item.armor.ItemArmorDeci	1	0	0.19500001	0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1
+deci:sasPants	SAS Pants	net.decimation.mod.common.item.armor.ItemArmorDeci	1	2	0.52	0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1
+deci:sasVest	SAS Vest	net.decimation.mod.common.item.armor.ItemArmorDeci	1	1	0.5525	0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1
+deci:shotgunSuppressor	Shotgun Filter	deci.ay.h	1				BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1,BlockPoliceCratex1,BlockWreckagePolice1x1,BlockWreckagePolice2x1,BlockWreckagePolice3x1
+deci:sks	SKS	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1,BlockSupplyDropx1
+deci:sksMag	SKS Stripper Clip	deci.ay.f	4				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2,BlockSupplyDropx3
+deci:smgSuppressor	SMG Suppressor	deci.ay.h	1				BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1
+deci:sp6	SP-6 Rounds	deci.ay.f	30				
+deci:sp6_box	SP-6 Rounds Box	deci.ay.g	1			0.5	BlockAmmoCrateLargex1
+deci:spas12	Spas-12	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1,BlockPoliceCratex1,BlockWreckagePolice1x1,BlockWreckagePolice2x1,BlockWreckagePolice3x1
+deci:spetsnazBoots	Spetsnaz Boots	net.decimation.mod.common.item.armor.ItemArmorDeci	1	3	0.5525	0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1
+deci:spetsnazHelm	Spetsnaz Helmet	net.decimation.mod.common.item.armor.ItemArmorDeci	1	0	0.19500001	0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1
+deci:spetsnazPants	Spetsnaz Pants	net.decimation.mod.common.item.armor.ItemArmorDeci	1	2	0.52	0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1
+deci:spetsnazVest	Spetsnaz Coat	net.decimation.mod.common.item.armor.ItemArmorDeci	1	1	0.5525	0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1
+deci:sprayCan.item.acr.black	Spraycan (ACR "Black Panther")	deci.ay.j	64				
+deci:sprayCan.item.acr.pinkpower	Spraycan (ACR "Pink Power")	deci.ay.j	64				
+deci:sprayCan.item.acr.silver	Spraycan (ACR "Silver Sight")	deci.ay.j	64				
+deci:sprayCan.item.ak12.black	Spraycan (AK-12 "Black")	deci.ay.j	64				
+deci:sprayCan.item.ak12.marble	Spraycan (AK-12 "Marble")	deci.ay.j	64				
+deci:sprayCan.item.ak12.virtual	Spraycan (AK-12 "Virtual")	deci.ay.j	64				
+deci:sprayCan.item.ak74.future	Spraycan (AK-74 "Future")	deci.ay.j	64				
+deci:sprayCan.item.ak74.hunter	Spraycan (AK-74 "Hunter")	deci.ay.j	64				
+deci:sprayCan.item.ak74.redcog	Spraycan (AK-74 "Red Cogs")	deci.ay.j	64				
+deci:sprayCan.item.aks74u.winter	Spraycan (AKS-74-U "Winter")	deci.ay.j	64				
+deci:sprayCan.item.aug1.fury	Spraycan (AUG 1A "Fury")	deci.ay.j	64				
+deci:sprayCan.item.aug3.fury	Spraycan (AUG 3A "Fury")	deci.ay.j	64				
+deci:sprayCan.item.aug3para.fury	Spraycan (AUG 3A Para "Fury")	deci.ay.j	64				
+deci:sprayCan.item.colt.black	Spraycan (Colt "Black Mesa")	deci.ay.j	64				
+deci:sprayCan.item.colt.cherryapple	Spraycan (Colt "Cherry Apple")	deci.ay.j	64				
+deci:sprayCan.item.colt.forest	Spraycan (Colt "Forest")	deci.ay.j	64				
+deci:sprayCan.item.colt.gold	Spraycan (Colt "Golden Grill")	deci.ay.j	64				
+deci:sprayCan.item.colt.silver	Spraycan (Colt "Silver Fox")	deci.ay.j	64				
+deci:sprayCan.item.insas.blue	Spraycan (INSAS "Blue Rose")	deci.ay.j	64				
+deci:sprayCan.item.insas.forest	Spraycan (INSAS "Forest")	deci.ay.j	64				
+deci:sprayCan.item.insas.red	Spraycan (INSAS "Red Poppy")	deci.ay.j	64				
+deci:sprayCan.item.m4a4.forest	Spraycan (M4A4 "Forest Viper")	deci.ay.j	64				
+deci:stenmk2	Sten MkII	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1
+deci:stenmk2Mag	Sten MkII Magazine	deci.ay.f	4				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2
+deci:suicidevest	Suicide Vest	net.decimation.mod.common.item.armor.ItemVestDeci	1	0	0.65	0.5	
+deci:sv98	Snaiperskaya Vintovka (SV98)	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1,BlockSupplyDropx1
+deci:sv98Mag	Snaiperskaya Vintovka (SV98) Magazine	deci.ay.f	3				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2,BlockSupplyDropx3
+deci:svd	SVD Dragunov	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1
+deci:svdMag	SVD Dragunov Magazine	deci.ay.f	3				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2
+deci:svt40	SVT-40	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1,BlockSupplyDropx1
+deci:svt40Mag	SVT-40 Magazine	deci.ay.f	4				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2,BlockSupplyDropx3
+deci:ta11acog	item.ta11acog.name	deci.ay.h	1				BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockCarePackagex1,BlockMechWreckagex1
+deci:testvest	item.testvest.name	net.decimation.mod.common.item.armor.ItemVestDeci	1	0	0.52	0.5	
+deci:thompson	Thompson	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1
+deci:thompsonMag	Thompson Magazine	deci.ay.f	4				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2
+deci:thompsoni	Thompson (Itric)	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1
+deci:thompsoniMag	Thompson (Itric) Magazine	deci.ay.f	3				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2
+deci:uahdHelmet	UAHD Helmet	net.decimation.mod.common.item.armor.ItemArmorDeci	1	0	0.19500001	0.5	
+deci:ump45	UMP45	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1,BlockSupplyDropx1
+deci:ump45Mag	UMP45 Magazine	deci.ay.f	4				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2,BlockSupplyDropx3
+deci:uzi	Uzi	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1,BlockSupplyDropx1
+deci:uziMag	Uzi Magazine	deci.ay.f	5				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2,BlockSupplyDropx3
+deci:vector	KRISS Vector	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1
+deci:vectorMag	KRISS Vector Magazine	deci.ay.f	4				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2
+deci:vz24	Sa vz. 24	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1
+deci:vz24Mag	Sa vz. 24 Magazine	deci.ay.f	4				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2
+deci:vz52	vz. 52	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1
+deci:vz52Mag	vz. 52 Magazine	deci.ay.f	5				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2
+deci:vz58	VZ.58	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1
+deci:vz58Mag	VZ.58 Magazine	deci.ay.f	3				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2
+deci:wristTimer	item.wristTimer.name	net.decimation.mod.common.item.armor.ItemArmorDeci	1	1	0.61749995	0.5	
+deci:wristTimer2	item.wristTimer2.name	net.decimation.mod.common.item.armor.ItemArmorDeci	1	1	0.61749995	0.5	
+deci:xm177	Commando XM177	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1,BlockSupplyDropx1
+deci:xm177Mag	30rnd NATO STANAG Magazine (XM117)	deci.ay.f	3				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2,BlockSupplyDropx3
+deciworldgen:ak60Mag	60rnd AK Magazine	net.decimation.fixes.Deci$Magazine	3				BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1
+deciworldgen:hesco	HESCO Barrier	net.minecraft.item.ItemBlock	64				
+deciworldgen:hk416	HK416	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1,BlockSupplyDropx1
+deciworldgen:hk416tan	HK416 (Tan)	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1,BlockSupplyDropx1
+deciworldgen:mac10	MAC-10	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1,BlockSupplyDropx1
+deciworldgen:mac10Mag	30rnd MAC-10 Magazine	net.decimation.fixes.Deci$Magazine	3				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2,BlockSupplyDropx2
+deciworldgen:mk18	Mk18 Mod 1	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1,BlockSupplyDropx1
+deciworldgen:npc_egg	Spawn Bandit (light)	net.decimation.fixes.NpcEgg	64				
+deciworldgen:stanag60Mag	60rnd NATO STANAG Magazine	net.decimation.fixes.Deci$Magazine	3				BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1,BlockSupplyDropx1
+deciworldgen:ump9	HK UMP9	deci.ay.i	1			0.5	BlockMilitaryCratex1,BlockWreckageMilitary1x1,BlockWreckageMilitary2x1,BlockWreckageMilitary3x1,BlockWeaponCabinetx1,BlockCarePackagex1,BlockMechWreckagex1,BlockSupplyDropx1
+deciworldgen:ump9Mag	30rnd UMP9 Magazine	net.decimation.fixes.Deci$Magazine	3				BlockMilitaryCratex2,BlockWreckageMilitary1x2,BlockWreckageMilitary2x2,BlockWreckageMilitary3x2,BlockWeaponCabinetx2,BlockCarePackagex2,BlockMechWreckagex2,BlockSupplyDropx2
+deciworldgen:zombie_egg	Spawn Infected (runner)	net.decimation.fixes.ZombieEgg	64				
