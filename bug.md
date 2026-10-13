@@ -116,6 +116,8 @@ not something we introduced or need to fix) see `documentation.md`.
   type he changed before"); the same release on the user's brother's Windows laptop clicks fine.
 - To check on the friend's game: Options > Controls, "Attack/Destroy" must read "Button 1" with no red
   conflict; or options.txt line `key_key.attack:-100`; and their mods folder.
+- Confirmed by the user (14 Oktober 2026): the friend's Attack was bound to a key, not the mouse button.
+  Done, nothing to check again.
 
 ### Shots at a big zombie's head miss (reported 13 Oktober 2026 by a friend, Open, not reproduced)
 - User: "big zombie model hit box not hit when its hit head, i think its caused by hitbox issue".
