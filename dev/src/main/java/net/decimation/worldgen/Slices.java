@@ -279,6 +279,15 @@ public final class Slices
                             world.setBlock(x, y, z, Blocks.air, 0, 2);
                         }
                     }
+                    else if (block == net.decimation.worldgen.military.CityGate.MINE)
+                    {
+                        // a landmine (wasteland gates): Decimation's mine entity over this cell's floor
+                        if (!world.isAirBlock(x, y, z))
+                        {
+                            world.setBlock(x, y, z, Blocks.air, 0, 2);
+                        }
+                        world.spawnEntityInWorld(net.decimation.fixes.Deci.newLandmine(world, x + 0.5, y, z + 0.5));
+                    }
                     else
                     {
                         block = Doors.swap(block, p);             // never a vanilla door (Doors)

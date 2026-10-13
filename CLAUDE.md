@@ -912,6 +912,11 @@ of the last session:
   answers must carry CityLayout.epoch(). tools/hwmap.py knows only the old layout.
   v0.60.2: refuges in sized cities 1 per 4 city sectors (round, at least 1, spread apart, never wasteland;
   LcCity.refugeSectors; user 13 Oktober 2026). Releases are batched (user): no upload per small version.
+  v0.61.0: wasteland gates in the inside fence (docs/wasteland.md "v0.61.0"): military/CityGate looks x states
+  (8 in 10 shut: wire + landmines, steel, bus, tank ditch; 2 in 10 broken open), WastelandFence.gate owns the
+  cells, StreetPlan sinks a ditch chunk's base, Slices spawns CityGate.MINE markers as landmines; our block
+  deciworldgen:boom_barrier (skill decimation-block); the inside fence stands on full blocks (StreetPlan.floor)
+  and runs over bridges. Dev test `gates`.
   Gun study (10 Oktober 2026): docs/gun_style_guide.md, tools/guns/study.py
   (renders / measures Decimation's guns from the jar, `attach` adds
   attachments as the game places them), dev test mode `gunview` (hip, aim

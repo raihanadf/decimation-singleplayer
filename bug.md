@@ -59,6 +59,17 @@ not something we introduced or need to fix) see `documentation.md`.
   world. Watch for it again (an "Entity is already tracked" error came just before).
 
 
+### Wasteland fence floating over half slab sidewalks (reported 14 Oktober 2026 by the user, FIXED v0.61.0)
+- User shot docs/shots/wasteland_gate_v0.60.2_review/user_fence_float.png: the inside fence posts and bars
+  started above the sidewalk's half slabs and hedges ("looks flying ... replace the slab").
+- Cause: StreetPlan passed the top of whatever the street part had in the column (a half slab, a hedge, a
+  railing) as the fence's base.
+- Fix: StreetPlan.floor = the last full opaque block (leaves excluded: they are opaque on fast graphics); the
+  fence starts on it and replaces anything above. The fence also runs over bridges now (it skipped
+  bridge chunks: a gap with only the bridge railing).
+- Check: seed 1 server, x 1792 line: 205 of 220 fence columns on full blocks; the 15 others were bridge
+  railings over a canal (the gap the second change closes). New chunks only.
+
 ### No city on a friend's install (found 13 Oktober 2026, FIXED v0.58.0)
 - User: "most critical bug is the city is not generated. why you using splited mod? why not combine it
   with one".

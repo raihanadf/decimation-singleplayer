@@ -11,6 +11,27 @@ How shots are made: `./gradlew runClient -Pautotest` (street views),
 `-Paudit` (building audit), `-Pgallery` (prop gallery); output in
 `dev/run/client/screenshots/`, then copied here into a versioned folder.
 
+## wasteland_gate_v0.60.2_review/ (user shots in their dev world, 14 Oktober 2026)
+- user_gate_1.png: a city to wasteland gate of v0.60.2 seen from the city street: posts at the road edges,
+  striped sawhorses across, wire, a traffic light; the wasteland's own checkpoint (jersey line, sandbags,
+  jeep) behind; banner "Greyford: Downtown - 6". The user wanted a toll gate and 6 styles.
+- user_fence_float.png: the inside fence beside a sidewalk: metal posts and iron bars standing on top of the
+  sidewalk's half slabs, hedges and wooden fences, so they look like they float (fixed v0.61.0).
+
+## wasteland_gate_v0.61/ (dev test gates, sky at -20000, 230, -19100, 14 Oktober 2026)
+- sheet_gates.png: every look x state (front from the street in front, top from above). Looks: toll
+  (canopy on 4 columns, island glass booth, arm down / raised), checkpoint (staggered jerseys, sandbag
+  position left, camo tower right, searchlight, flag), containers (two stacks 2 high with a gap, wire on
+  top, container behind), quarantine (white peaked tent, strip curtains, body bags right, generator left),
+  police (blue booth with beacon, cruiser across, cones). States: wire (iron bar fence across the road at
+  the line, wire rolls, mines not visible: entities), steel (patched metal wall at the line, sandbags),
+  bus (yellow and black clay bus filling the gap at the line), ditch (no look: trench across the street,
+  hedgehogs and wire inside, wire on both lips, sign), open (lowered arm gone, black scorched road,
+  skeleton, knocked sawhorse). Sky test artefact: light blue at the ditch's sides (the pad is one layer).
+  Single shots gates_<look>_<state>_front / _top.png beside it. Sky artefacts: the quarantine/open and
+  police/open fronts show leftovers of the first run's six style layout built on the same sky spots (a
+  blue sedan, a white tent), not the gates.
+
 ## city_sizes_v0.60/ (cities of 4 to 64 districts, seed 1 server world, 13 Oktober 2026)
 - topdown_seed1_48districts.png: tools/topdown_blocks.py, x 1150 .. 1900, z 170 .. 870, 1 px per
   block (north up). The 48 district city (CityLayout: 12 sectors at x 1280 .. 2303, z 256 .. 1023, only

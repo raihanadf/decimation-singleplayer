@@ -71,13 +71,42 @@ final class StreetPlan implements net.decimation.worldgen.FixedBase
 
     /** 0 = north-south street, 1 = east-west, 2 = crossing. */
     int kind() { return kind; }
-    public int fixedBaseY() { return ground; }
+    public int fixedBaseY() { return ground - sink(); }
+
+    private int sink = -1;
+
+    /**
+     * Blocks this chunk's base sinks below the street: CityGate.SINK when it is the street in front of a gate
+     * closed by a tank ditch (the ditch is dug below the road), else 0.
+     */
+    private int sink()
+    {
+        if (sink < 0)
+        {
+            int s = 0;
+            if (Wasteland.sectors() && !onWater && !climb && stairs == null)
+            {
+                for (net.decimation.worldgen.military.CityGatePlan g : new net.decimation.worldgen.military.CityGatePlan[] {
+                    WastelandFence.gate(seed, minX + 15, minZ + 8), WastelandFence.gate(seed, minX + 8, minZ + 15)})
+                {
+                    // the gate's line is this chunk's east / south edge (a gate reaches 2 past its line)
+                    if (g != null && g.sink() > 0 && (g.maxX() == minX + 16 + 2 || g.maxZ() == minZ + 16 + 2))
+                    {
+                        s = g.sink();
+                    }
+                }
+            }
+            sink = s;
+        }
+        return sink;
+    }
+
     public String id() { return id; }
     public int minX() { return minX; }
     public int minZ() { return minZ; }
     public int maxX() { return minX + 15; }
     public int maxZ() { return minZ + 15; }
-    public int height() { return climb ? LcCity.LEVEL + 3 : stairs != null ? stairs.height + 1 : Math.max(13, piece != null ? piece.height : 0); }
+    public int height() { return sink() + (climb ? LcCity.LEVEL + 3 : stairs != null ? stairs.height + 1 : Math.max(13, piece != null ? piece.height : 0)); }
     public int clearAbove() { return 14; }
     public int maxSpread() { return 255; }
     public Block foundation() { return Blocks.stone; }
@@ -167,18 +196,44 @@ final class StreetPlan implements net.decimation.worldgen.FixedBase
 
     public Block blockAt(int lx, int ly, int lz, int[] meta)
     {
-        if (Wasteland.sectors() && !onWater && (lx == 0 || lz == 0))
+        if (Wasteland.sectors() && !onWater && !climb && stairs == null)
+        {
+            // a styled gate (military/CityGate) owns its cells whole: its own surface, nothing of the street above
+            net.decimation.worldgen.military.CityGatePlan gate = WastelandFence.gate(seed, minX + lx, minZ + lz);
+            if (gate != null)
+            {
+                int cy = ly - sink() + net.decimation.worldgen.military.CityGate.SINK;   // canvas y: SINK = the surface
+                if (cy >= gate.canvasHeightPublic())
+                {
+                    return null;
+                }
+                meta[0] = 0;
+                return gate.blockAt(minX + lx - gate.minX(), cy, minZ + lz - gate.minZ(), meta);
+            }
+        }
+        if (sink() > 0)
+        {
+            if (ly < sink())
+            {
+                return Blocks.stone;                          // the base sank for a tank ditch: keep the ground
+            }
+            ly -= sink();
+        }
+        if (Wasteland.sectors() && (lx == 0 || lz == 0))           // bridges too: no gap over a canal
         {
             // the fence and gates on a wasteland city's edge inside the city (WastelandFence.inCity)
             int x = minX + lx, z = minZ + lz;
             if (WastelandFence.line(seed, x, z) != 0)
             {
-                Block f = WastelandFence.inCity(seed, x, z, ly, surface(lx, lz), meta);
+                // the fence stands on the last full block and replaces what the part has above it (half
+                // slab sidewalks, hedges, railings): counted from their top it floated (user, 14 Oktober 2026)
+                int floor = floor(lx, lz);
+                Block f = WastelandFence.inCity(seed, x, z, ly, floor, meta);
                 if (f != null)
                 {
                     return f;
                 }
-                if (ly > surface(lx, lz) && ly <= surface(lx, lz) + 4)
+                if (ly > floor && ly <= floor + 4)
                 {
                     return null;                          // the gate stays open: no dressing in it
                 }
@@ -196,13 +251,15 @@ final class StreetPlan implements net.decimation.worldgen.FixedBase
         return baseAt(lx, ly, lz, meta);
     }
 
-    /** Highest plan y (0 .. 8) with a block of this street's own at (lx, lz). */
-    private int surface(int lx, int lz)
+    /** Highest plan y (0 .. 8) with a full opaque block of this street's own at (lx, lz). */
+    private int floor(int lx, int lz)
     {
         int[] m = new int[1];
         for (int y = 8; y > 0; y--)
         {
-            if (baseAt(lx, y, lz, m) != null)
+            Block b = baseAt(lx, y, lz, m);
+            if (b != null && b.isOpaqueCube() && b.renderAsNormalBlock()
+                && b.getMaterial() != net.minecraft.block.material.Material.leaves)   // hedges: opaque on fast graphics
             {
                 return y;
             }

@@ -116,6 +116,13 @@ general: decimation-props; all of them: decimation-worldgen.
    one per sector: 12 in a 64 district city). Ask the user for the count, then spread the picks apart and
    let a pick that does not fit fall to the next candidate (LcCity.refugeSectors).
 
+22. A barrier that must stop players AND mobs needs real collision 3 high or a gap they cannot cross
+   (a ditch 4 wide, 4 deep): Decimation's landmines go off under players only, wire coils and most
+   props do not stop mobs. Bodies and debris on a shared canvas go on spots checked against each look's
+   drawn props, not on "a free cell" (a 2 long body bag clashed with a column and a car).
+23. Anything standing on a city street part stands on the last FULL block and replaces what the part has
+   above it (half slab sidewalks, hedges, railings): counted from the top of a slab, the fence floated.
+
 ## Casebook (never delete a case)
 
 ### Case 1: bridges did not match the roads (v0.45.0 -> v0.45.1, 11 Oktober 2026)
@@ -215,3 +222,16 @@ general: decimation-props; all of them: decimation-worldgen.
 - Check: seed 1 server, pregen over the 48 district city (x 1280 .. 2303, z 256 .. 1023): 3 refuges
   (lcz_21_13, lcz_30_9, lcz_33_5) in sectors 5,3 / 7,2 / 8,1, none in its wasteland L; the middle sector
   6,2 holds a canal (17 bridges) and was passed over [inferred: no block without river chunks there].
+
+### Case 10: gates between a wasteland city and its city, fence floating (v0.61.0, 14 Oktober 2026)
+- User on 0.60.2: city bigger "nice", fence "actually very good"; gates should be a toll gate and about 6
+  styles; then "80% is blocked so player or mobs cannot pass it ... 20% where the gate is opened even its
+  half opened cause its has breaked before"; closures "version one using landmine, other version can use
+  traps"; and a shot of the fence posts over a half slab ("looks flying ... replace the slab").
+- Asked with options: 8 in 10 shut / 2 in 10 broken open; looks toll, checkpoint, containers, quarantine,
+  police; closures wire + mines, steel wall, vehicle plug (a bus of blocks), tank ditch.
+- Built: military/CityGate + CityGatePlan, WastelandFence.gate, StreetPlan sink for the ditch, Slices mine
+  marker, BlockBoomArm (skill decimation-block); StreetPlan.floor for the fence, fence over bridges.
+- Check: dev test gates (21 looks x states, clash checks 0, 12 mines per wire gate), seed 1 server: gates
+  logged at the 48 district city's wasteland edges, toll layers read from the region files; fence columns
+  on full blocks (the rest were bridge railings, now fenced). Shots docs/shots/wasteland_gate_v0.61/.

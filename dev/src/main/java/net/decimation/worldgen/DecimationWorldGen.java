@@ -154,6 +154,8 @@ public class DecimationWorldGen
         // HESCO cells of our bases: a plain block, not Decimation's per cell prop (docs/military_base.md)
         net.decimation.worldgen.military.BlockHesco.instance = new net.decimation.worldgen.military.BlockHesco();
         cpw.mods.fml.common.registry.GameRegistry.registerBlock(net.decimation.worldgen.military.BlockHesco.instance, "hesco");
+        net.decimation.worldgen.military.BlockBoomArm.instance = new net.decimation.worldgen.military.BlockBoomArm();
+        cpw.mods.fml.common.registry.GameRegistry.registerBlock(net.decimation.worldgen.military.BlockBoomArm.instance, "boom_barrier");
         cpw.mods.fml.common.registry.GameRegistry.registerItem(
             new net.decimation.fixes.ZombieEgg(infectedVariants), "zombie_egg");
         cpw.mods.fml.common.registry.GameRegistry.registerItem(

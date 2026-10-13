@@ -7,6 +7,16 @@ Status values: `Done` / `Decided` (direction agreed, not built yet) /
 
 ## Done
 
+### Wasteland gates: 5 looks, 8 in 10 shut (14 Oktober 2026, v0.61.0)
+- User on 0.60.2: gates between a wasteland city and its city in about 6 styles, the first a toll gate;
+  then 80 % shut so players and mobs cannot pass, 20 % broken open; closures barbed wire with landmines
+  plus traps. Chosen (asked): looks toll, checkpoint, containers, quarantine, police; closures wire +
+  mines, welded steel, burnt bus, tank ditch; open gates smashed.
+- military/CityGate, CityGatePlan, city/WastelandFence.gate, our block deciworldgen:boom_barrier. Details,
+  checks and what is not verified: docs/wasteland.md "v0.61.0". New worlds' chunks only (wasteland sector
+  worlds since v0.57.1).
+- Refuges in big cities 1 per 4 city sectors (v0.60.2, docs/city_engine.md "City sizes").
+
 ### Cities of 4 to 64 districts (13 Oktober 2026, v0.60.0)
 - User idea (docs/ideas.md item 19) and choices: sizes 4 / 8 / 16 / 24 / 48 / 64 districts with
   weights 30 35 40 35 28 22, compact blobs, more city land (cities and roads felt too rare), one

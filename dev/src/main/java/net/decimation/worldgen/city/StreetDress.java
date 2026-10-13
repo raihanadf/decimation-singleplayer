@@ -281,6 +281,10 @@ final class StreetDress
             }
         }
         facades(alongZ);
+        if (WastelandFence.gateApproach(seed, chx, chz))
+        {
+            return;                                      // a styled gate takes this street (military/CityGate)
+        }
         if (district == WASTELAND && entry(alongZ))
         {
             return;                                      // the zone's checkpoint takes the road

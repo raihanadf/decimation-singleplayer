@@ -222,6 +222,10 @@ menu. Not designed: each needs a design talk first. Current work comes first (us
 - v0.60.0 cities of 4 to 64 districts (new worlds, worldgen/CityLayout, docs/city_engine.md "City
   sizes"): about 24 % city land, 1 wasteland sector per 4 on the military side; waiting for the user's
   look. v0.60.2: refuges 1 per 4 city sectors (user), spread apart.
+- v0.61.0 gates between a wasteland city and its city: 5 looks (toll, checkpoint, containers, quarantine, police),
+  8 in 10 shut (barbed wire + landmines, welded steel, burnt bus, tank ditch), 2 in 10 broken open; the inside
+  fence no longer floats over slabs and runs over bridges (user 14 Oktober 2026); waiting for the user's look
+  (new worlds).
 - v0.58.0 one release jar with everything; v0.59.0 auto update from GitHub releases; v0.59.1 the update
   check survives GitHub's API rate limit (ETag cache, release feed fallback; new_feature.md).
 - v0.57.1 wasteland city = a whole city sector inside its city, streets joined through gates in the

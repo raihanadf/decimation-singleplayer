@@ -129,6 +129,47 @@ Crates are never stacked: a military crate is drawn 1.15 high, one on another ov
   before v0.54 (stays off by the flag), the helicopter crash and casualty lots in game (none in the
   shot districts; the server run logged 2 motor pools).
 
+### v0.61.0 gates between a wasteland city and its city (14 Oktober 2026)
+User on 0.60.2: the fence "actually very good", but the gates should be a toll gate and different
+styles, "around 6 gate style"; then "80% is blocked so player or mobs cannot pass it ... 20% where the gate is
+opened even its half opened cause its has breaked before"; the closures: "version one using landmine, other
+version can use traps". Choices taken (asked with options): 8 in 10 shut, 2 in 10 broken open; looks toll,
+checkpoint, containers, quarantine, police; closures barbed wire + landmines, welded steel wall, vehicle plug,
+tank ditch; an open gate keeps its look, smashed; up to 8 blocks each side.
+- Code: military/CityGate (canvas: looks drawn y 0 = street surface, copied into the final canvas W 16 x H 13
+  x L 11 with SINK 4 rows of ground below and the crossing's two road rows d -1 / -2), CityGatePlan (the
+  canvas turned onto the line: turns 1 for a line along z, 2 along x), city/WastelandFence.gate (which
+  columns a gate owns: the street chunk's 8 columns before the line, the line's road cells, the crossing's
+  first 2 road columns; look and state by the crossing's hash), StreetPlan (asks the gate first; sinks the
+  street chunk's base 4 for a ditch), StreetDress (no checkpoint / road scene in a gate's street chunk),
+  Slices (CityGate.MINE marker cells spawn Decimation's landmine), BlockBoomArm (deciworldgen:boom_barrier,
+  our thin striped arm; textures by tools/props/boom_textures.py).
+- Looks: toll (island booth, canopy on 4 columns over 2 lanes, one arm down, one raised, red lamp, posts,
+  sign), checkpoint (staggered jersey rows, sandbag position, camo guard tower with ladder, searchlight,
+  flag, hedgehogs), containers (two stacks 2 high with a 3 wide gap, wire on top, a third container behind,
+  work lights), quarantine (white tent over the road with strip curtains, medical crates, stretcher, body
+  bags, generator), police (barriers, cruiser across, cones, small blue booth with a beacon).
+- Closures (all at least 3 high or uncrossable: Decimation's mines only go off under players, props like
+  wire do not stop mobs): wire (the chain link carried across the road, wire rolls both sides, about one
+  mine per 3 road cells before it, 12 per gate in the test), steel (plates 3 high, ragged top, sandbags,
+  warning sign), bus (a burnt bus of clay blocks 10 x 3 x 3 across the line and the crossing's 2 rows,
+  windows one block high: nobody fits through), ditch (whole street 4 deep and 4 wide right before the line,
+  hedgehogs and wire at the bottom and on both lips; replaces the look). Open: the look with the lowered
+  arm gone, scorched road, a skeleton, a body bag, a knocked barrier, wire at the line ends.
+- Not every crossing gets one: a river chunk, a level change or a non street chunk before the line keeps the
+  plain gate (posts and striped barriers, open).
+- Fence fix in the same version (user shot docs/shots/wasteland_gate_v0.60.2_review/user_fence_float.png:
+  posts over a half slab): the inside fence stands on the last full block and replaces slabs, hedges and
+  railings above it (StreetPlan.floor); it now also runs over bridges (no gap over a canal).
+- Test: dev test `gates` (all 21 looks x states in the sky at -20000, 230, -19100, clash checks, mines
+  spawned, shots); `servertest.py 1 type=decimation pregen=1664,512,14` logs "lc gate LOOK/STATE at x,y,z".
+- Checked (14 Oktober 2026): dev test gates all 21 PASS (0 clashes, 10 to 16 mines per wire gate); seed 1
+  server, the 48 district city's wasteland edges: 11 gates (3 ditch, 2 bus, 3 steel, 3 wire, none open in
+  this sample [inferred: chance, 2 in 10 expected]), no errors. Region files: the ditch at 1736,64,512 is dug
+  z 508..511 down to y 61 with wire at the bottom and on both lips; the bus at 1792,64,456 spans x 1792..1794,
+  z 451..460, y 65..67 (the crossing's lanes from x 1795 stay free). Mines in a generated world, an open gate
+  in a generated world and walking into a closure in game: [not verified] (sky test only).
+
 ### v0.54.1 (12 Oktober 2026, the weak spots of v0.54.0, user: "do weak spot task now")
 - Seed 1 server (same area): military buildings 23 -> 10 (bases 3, camps 4, bunkers 3; was 11 alike
   bunkers); military lots 2 -> 8 (4 motor pools, 2 supply dumps, 1 helicopter crash, 1 empty).

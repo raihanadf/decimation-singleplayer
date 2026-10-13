@@ -251,6 +251,103 @@ final class WastelandFence
         return null;
     }
 
+    // ---- styled gates on the inside edge (v0.61.0, military/CityGate)
+
+    private static final java.util.Map<Long, Object> GATES = new java.util.concurrent.ConcurrentHashMap<Long, Object>();
+    private static final Object NONE = new Object();
+    private static volatile long gatesSeed;
+    private static volatile int gatesEpoch;
+
+    /**
+     * The styled gate owning column (x, z), or null: a street crossing an inside fence line (line()) whose
+     * street chunk in front (west of a line along z, north of a line along x) is a plain street at the
+     * same level as the crossing (no river, no ramp). It owns that chunk's 8 columns nearest the line, the
+     * road cells of the line itself and of the crossing's first two columns (the posts and the fence on the
+     * sidewalks stay inCity's). Look and state by the crossing's hash (military/CityGate).
+     */
+    static net.decimation.worldgen.military.CityGatePlan gate(long seed, int x, int z)
+    {
+        int r = net.decimation.worldgen.Sectors.REGION_BLOCKS;
+        for (int axis = 0; axis < 2; axis++)
+        {
+            // axis 0: a line along z at x0 (street along x west of it); axis 1: a line along x at z0
+            int out = axis == 0 ? x : z, across = axis == 0 ? z : x;
+            if (Math.floorMod(across >> 4, CELL) != 0)
+            {
+                continue;
+            }
+            int a = across & 15;
+            for (int line0 : new int[] {Math.floorDiv(out + 8, r) * r, Math.floorDiv(out, r) * r})
+            {
+                int d = line0 - out;                          // 1..8 in front, 0 the line, -1 / -2 the crossing's road
+                if (d < -2 || d > 8 || d <= 0 && (a < SIDEWALK || a > 15 - SIDEWALK))
+                {
+                    continue;                                 // the fence on the line's sidewalks, the crossing's corners
+                }
+                net.decimation.worldgen.military.CityGatePlan g = gateAt(seed, axis, line0, across >> 4);
+                if (g != null)
+                {
+                    return g;
+                }
+            }
+        }
+        return null;
+    }
+
+    /** True when the street chunk (chx, chz) is the street in front of a styled gate (its dressing skips the checkpoint). */
+    static boolean gateApproach(long seed, int chx, int chz)
+    {
+        return gate(seed, chx * 16 + 15, chz * 16 + 8) != null || gate(seed, chx * 16 + 8, chz * 16 + 15) != null;
+    }
+
+    private static net.decimation.worldgen.military.CityGatePlan gateAt(long seed, int axis, int line0, int crossChunk)
+    {
+        int epoch = net.decimation.worldgen.CityLayout.epoch();
+        if (seed != gatesSeed || epoch != gatesEpoch || GATES.size() > 4096)
+        {
+            GATES.clear();
+            gatesSeed = seed;
+            gatesEpoch = epoch;
+        }
+        long key = ((long) line0 << 33) ^ ((long) crossChunk << 1) ^ axis;
+        Object o = GATES.get(key);
+        if (o == null)
+        {
+            o = buildGate(seed, axis, line0, crossChunk);
+            GATES.put(key, o == null ? NONE : o);
+        }
+        return o == NONE ? null : (net.decimation.worldgen.military.CityGatePlan) o;
+    }
+
+    private static net.decimation.worldgen.military.CityGatePlan buildGate(long seed, int axis, int line0, int crossChunk)
+    {
+        int mid = crossChunk * 16 + 8;
+        int lx = axis == 0 ? line0 : mid, lz = axis == 0 ? mid : line0;
+        if ((line(seed, lx, lz) & (axis == 0 ? 1 : 2)) == 0)
+        {
+            return null;
+        }
+        // the crossing chunk on the line and the street chunk in front of it
+        int cx = axis == 0 ? line0 >> 4 : crossChunk, cz = axis == 0 ? crossChunk : line0 >> 4;
+        int fx = axis == 0 ? cx - 1 : cx, fz = axis == 0 ? cz : cz - 1;
+        if (!isStreetChunk(seed, fx, fz) || CityRivers.chunk(seed, fx, fz) || CityRivers.chunk(seed, cx, cz)
+            || ground(seed, Math.floorDiv(fx, CELL), Math.floorDiv(fz, CELL)) != ground(seed, Math.floorDiv(cx, CELL), Math.floorDiv(cz, CELL)))
+        {
+            return null;
+        }
+        // look by the crossing's hash; 2 in 10 open (broken), else one of the four closures (user, 14 Oktober 2026)
+        long h = hl(seed ^ 0x47415445L, cx * 2 + axis, cz);
+        int look = (int) (h % net.decimation.worldgen.military.CityGate.LOOKS.length);
+        int state = (h >>> 20) % 10 < 2 ? net.decimation.worldgen.military.CityGate.OPEN : 1 + (int) ((h >>> 28) % 4);
+        String id = "lcg_" + cx + "_" + cz + "_" + axis;
+        cpw.mods.fml.common.FMLLog.info("[deciworldgen] lc gate %s at %d,%d,%d (line along %s)", net.decimation.worldgen.military.CityGate.name(look, state),
+                                        axis == 0 ? line0 : crossChunk * 16 + 8, ground(seed, Math.floorDiv(cx, CELL), Math.floorDiv(cz, CELL)),
+                                        axis == 0 ? crossChunk * 16 + 8 : line0, axis == 0 ? "z" : "x");
+        return axis == 0
+            ? new net.decimation.worldgen.military.CityGatePlan(id, line0 - 8, crossChunk * 16, 1, look, state)
+            : new net.decimation.worldgen.military.CityGatePlan(id, crossChunk * 16, line0 - 8, 2, look, state);
+    }
+
     private static boolean plant(World w, int x, int y, int z)
     {
         return w.getBlock(x, y, z) instanceof net.minecraft.block.BlockBush;
