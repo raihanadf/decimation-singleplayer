@@ -95,12 +95,12 @@ first), 120 min.
   except in places where we already choose the loot ourselves (wasteland swaps, bunker armory,
   base arms room), which move to our crates.
 
-### 3.4 How it would be built `[inferred, to check in a spike]`
+### 3.4 How it would be built (loot screen path verified by the spike, 13 Oktober 2026)
 - Lists in `config/deciworldgen_loot.json` (docs/systems_plan.md 2.2): kind, level, items with
   weight and count, items per open, refill minutes; the user can edit it.
 - Our own interact handler for our crates: rolls with our weights, own refill per level, then
-  hands the inventory to Decimation's loot screen through Deci (the same packet and GUI_LOOT that
-  LootInteractHandler uses). Whether that path can be reused from outside: check in code first.
+  hands the inventory to Decimation's loot screen with `fixes/Loot.open(player, inventory)`
+  (VERIFIED, section 7).
 - Guns with attachments: the NBT `<slot>Attach` we already write for NPC rifles (NpcLoadouts).
 
 ## 4. NPC loot: the lootable body
@@ -113,7 +113,8 @@ first), 120 min.
 - NPCs killed only by zombies or other NPCs leave nothing (no farming the enemy spawner from
   behind a wall) `[draft]`.
 - Look: the NPC lying down in what it wore (its own renderer turned on its back) or a body bag
-  `[inferred: which one is feasible decided in the spike]`.
+  `[inferred: which one is feasible decided later]`. The spike body (fixes/LootBody) is drawn as
+  vanilla's default white box.
 
 ### 4.2 Contents per tier (draft)
 Gun: the gun it carried, with its attachments, magazine partly loaded. Armor: each worn piece by
@@ -141,11 +142,33 @@ its own chance. Extras: rolls from a crate pool. Caps: bottlecaps.
 5. Supply drops: our military L4 list, or keep Decimation's own list?
 
 ## 6. Order of work and checks (when approved)
-1. Pools, config, roller, the four crate blocks and their look (spike first: the loot screen
-   from our handler). Dev test `loot`: opens every pool 1000 times server side and prints item
+1. Pools, config, roller, the four crate blocks and their look (the loot screen spike is done,
+   section 7). Dev test `loot`: opens every pool 1000 times server side and prints item
    counts and how often each rarity came; shots of all 16 crates side by side.
 2. Placement in buildings, bases, bunker, wasteland, supply drops. servertest census: crates per
    level and kind per building kind; L3 only behind locked doors (checked against the door log).
 3. NPC bodies. Arena dev test: kill each tier N times by a player and by zombies, list what the
    bodies held; body gone after 5 minutes or when emptied.
 Each step its own release, docs and skill lesson as usual.
+
+## 7. Spike results (13 Oktober 2026, dev test `loot`, all 12 checks PASS)
+
+Both spikes from docs/systems_plan.md section 7 step 0 work; nothing in the design has to change.
+
+1. Our code opens Decimation's loot screen on an inventory of ours: `fixes/Loot.open(player, inv)`
+   does what LootInteractHandler does: `Deci.setLootInventory` (PlayerData.setLootInventory
+   deci.Q.b.a, then PacketLootInventory deci.aE.a$R to the client), and 2 ticks later
+   `Deci.openLootGui` (openGui GUI_LOOT deci.Q.c.Xa with x -1, y 2; y is the container type, 2 =
+   with loot slots, PlayerGearContainer deci.f.d). Our own tick queue does the delay (Decimation's
+   TickScheduler is drained by a ServerProxy handler).
+2. The loot slots of the server container are Slots on that SAME InventoryBasic object, so a stack
+   taken leaves our inventory directly: no copy back needed. Checked through the client's real
+   window clicks (pick up, put into the main inventory).
+3. A body entity (`fixes/LootBody`, registered as deciworldgen:loot_body, entity id 0) opens it on
+   the client's real interact packet (interactFirst); reopened, it shows only what is left; it goes
+   2 ticks after the last stack is taken (checked every 20 ticks); items survive NBT save / load.
+4. Limits: the setLootInventory parameter is an InventoryBasic (not any IInventory), 18 slots fill
+   the loot area (4 rows by 5, 18 used); our path does not skip creative players (Decimation's crate
+   handler does). Test trap: the dev test harness closes every screen each tick unless
+   `DevAutoTest.keepScreen` is set; the closed client screen does not close the server container.
+Evidence: docs/shots/loot_spike_v0.56/sheet_loot.png (shots_index.md).

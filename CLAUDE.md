@@ -868,6 +868,10 @@ of the last session:
   blockhouse + worldgen/Garrisons (posts manned on first visit, spawner infected in military outfit;
   StructureData int lists); StreetPlan.rampAt replaces DC stairs parts; RiverPlan.damage; Rails.entrance
   (station stairs in the sidewalk).
+  After 0.56.0 (unreleased, 13 Oktober 2026): loot spikes (docs/loot_levels.md section 7): fixes/Loot.open
+  shows an InventoryBasic of ours on Decimation's loot screen (Deci.setLootInventory, openLootGui),
+  fixes/LootBody entity (deciworldgen:loot_body) opens it on a right click; dev test `loot`. Dev test
+  trap: DevAutoTest closes every screen each tick unless `DevAutoTest.keepScreen` is set.
   Gun study (10 Oktober 2026): docs/gun_style_guide.md, tools/guns/study.py
   (renders / measures Decimation's guns from the jar, `attach` adds
   attachments as the game places them), dev test mode `gunview` (hip, aim

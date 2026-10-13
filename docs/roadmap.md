@@ -27,7 +27,9 @@ or `[not decided]`.
 
 Every open feature of the sections below (loot, NPCs, zombies, world and zones, ideas) is planned
 together in docs/systems_plan.md: shared core first, then loot, NPCs, zombies, world (section 7).
-Open questions per step there (section 8).
+Open questions per step there (section 8). Step 0 (the two loot spikes) DONE 13 Oktober 2026:
+our code opens Decimation's loot screen, a body entity of ours opens it too (docs/loot_levels.md
+section 7). Next: step 1, the core.
 
 ## Worldgen and cities
 

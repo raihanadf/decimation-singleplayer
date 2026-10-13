@@ -41,14 +41,16 @@ Each piece below is used by two or more systems; building it first avoids writin
 - One registry of named item lists from a config file of ours (`deciworldgen_loot.json`): items
   with weight and count, items per open, refill minutes. Our own roller (rarity per list, not per
   item).
-- `Deci.openLoot(player, inventory)`: shows a rolled inventory on Decimation's loot screen (the
-  packet and GUI_LOOT LootInteractHandler uses) `[inferred: spike first]`.
+- `fixes/Loot.open(player, inventory)`: shows a rolled inventory on Decimation's loot screen (the
+  packet and GUI_LOOT LootInteractHandler uses). VERIFIED by the spike (docs/loot_levels.md
+  section 7).
 - Used by: crates of every kind and level (3.1), NPC bodies (3.2, 4.4), supply drops, claim
   stashes (6.2), radiation site loot (6.4), raid rewards.
 
 ### 2.3 Body entity
 - One entity of ours holding an inventory; right click opens it through 2.2; gone when empty or
-  after a timer.
+  after a timer. Spike version exists: `fixes/LootBody` (VERIFIED, docs/loot_levels.md section 7;
+  no model yet).
 - Used by: NPC bodies (3.2), the player's gear after turning (5.2) `[draft: or Decimation's own
   EntityCorpse there]`, raid groups' bodies.
 
@@ -237,7 +239,8 @@ Each piece below is used by two or more systems; building it first avoids writin
 
 ## 7. Build order (each step a release with its tests)
 
-0. Spikes: the loot screen from our code (2.2), a body entity opening it (2.3).
+0. Spikes: the loot screen from our code (2.2), a body entity opening it (2.3). DONE 13 Oktober
+   2026, both work (dev test `loot`, docs/loot_levels.md section 7).
 1. Core: WorldClock, Pools + config, protection table, areas registry skeleton.
 2. Loot: crate blocks and look, lists, placement, supply drops; NPC bodies with drop tables.
 3. Human NPCs: tier table grown, outfits, sniper bandit, police faction; smart behaviours.

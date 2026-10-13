@@ -127,6 +127,7 @@ public class DevAutoTest
         if (name.equals("firerate")) return new net.decimation.worldgen.devtest.FireRateTest();
         if (name.equals("milbase")) return new net.decimation.worldgen.devtest.MilBaseTest();
         if (name.equals("stats")) return new net.decimation.worldgen.devtest.StatsTest();
+        if (name.equals("loot")) return new net.decimation.worldgen.devtest.LootTest();
         if (name.equals("npckill")) return new net.decimation.worldgen.devtest.NpcKillTest();
         if (name.equals("noise")) return new net.decimation.worldgen.devtest.NoiseTest();
         if (name.equals("aimdrift")) return new net.decimation.worldgen.devtest.AimDriftTest();

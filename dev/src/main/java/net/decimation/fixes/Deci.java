@@ -1058,6 +1058,47 @@ public final class Deci
         return n;
     }
 
+    // ---- loot screen: the path of LootInteractHandler (deci.aK.k), docs/loot_levels.md
+
+    /** Runtime class of the loot screen (PlayerInventoryScreen deci.g.g, client only): compare names. */
+    public static final String LOOT_SCREEN = "deci.g.g";
+
+    /**
+     * The inventory a player's loot screen shows (PlayerData.setLootInventory, deci.Q.b.a) and,
+     * server side, sends it to the client (PacketLootInventory deci.aE.a$R on the channel
+     * deci.aF.a$a$a.gB). The screen's slots act on this same object server side, so a stack taken
+     * leaves `inv` itself.
+     */
+    public static void setLootInventory(EntityPlayer player, net.minecraft.inventory.InventoryBasic inv)
+    {
+        deci.Q.b data = deci.Q.b.e(player);
+        if (data == null)
+        {
+            return;
+        }
+        data.a(inv);
+        if (player instanceof net.minecraft.entity.player.EntityPlayerMP)
+        {
+            deci.aF.a.a.a.gB().sendTo(new deci.aE.a.R(inv), (net.minecraft.entity.player.EntityPlayerMP) player);
+        }
+    }
+
+    /** PlayerData.getLootInventory (cN): what the loot screen shows on this side. */
+    public static net.minecraft.inventory.InventoryBasic lootInventory(EntityPlayer player)
+    {
+        deci.Q.b data = deci.Q.b.e(player);
+        return data == null ? null : data.cN();
+    }
+
+    /**
+     * Opens Decimation's inventory screen with the loot area (GUI_LOOT deci.Q.c.Xa, x -1, y 2: y is
+     * the container type, 2 = with the loot slots of PlayerGearContainer deci.f.d).
+     */
+    public static void openLootGui(EntityPlayer player)
+    {
+        player.openGui(deci.a.b.a(), deci.Q.c.Xa, player.worldObj, -1, 2, 0);
+    }
+
     /** GunItem.stats (aeq).secondsPerShot (ads): the gun's own rate of fire. */
     public static double gunSecondsPerShot(net.minecraft.item.ItemStack gun)
     {

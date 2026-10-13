@@ -146,6 +146,10 @@ public class DecimationWorldGen
             new net.decimation.fixes.ZombieEgg(infectedVariants), "zombie_egg");
         cpw.mods.fml.common.registry.GameRegistry.registerItem(
             new net.decimation.fixes.NpcEgg(npcLoadouts), "npc_egg");
+        // loot of our own on Decimation's loot screen (docs/loot_levels.md): opener and the body entity
+        cpw.mods.fml.common.FMLCommonHandler.instance().bus().register(new net.decimation.fixes.Loot());
+        cpw.mods.fml.common.registry.EntityRegistry.registerModEntity(net.decimation.fixes.LootBody.class, "loot_body", 0, this,
+            64, 20, false);
 
         File dir = new File(event.getModConfigurationDirectory(), "decimation_worldgen");
         if (!dir.isDirectory() && !dir.mkdirs())

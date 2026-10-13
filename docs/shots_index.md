@@ -11,6 +11,14 @@ How shots are made: `./gradlew runClient -Pautotest` (street views),
 `-Paudit` (building audit), `-Pgallery` (prop gallery); output in
 `dev/run/client/screenshots/`, then copied here into a versioned folder.
 
+## loot_spike_v0.56/ (dev test loot, the two loot spikes, 13 Oktober 2026)
+- sheet_loot.png, three shots. loot_crate: Decimation's inventory screen (clothing slots, player
+  model, "Loot" area on the right) showing OUR inventory: apple x3 in slot 0, iron ingot x2 in
+  slot 5, exactly as filled by Loot.open. loot_body_world: the LootBody entity on the arena floor,
+  drawn as a plain white box (no model of its own yet). loot_body: the same screen opened by a
+  right click on the body: gold ingot x4, bread x2; the apple taken from the crate earlier sits in
+  the main inventory.
+
 ## place_names_v0.52.1/ (dev test places, 12 Oktober 2026)
 - places_3_floating_name.png: flying at y 128 in the Suburbs district looking south at its middle:
   ClanTurfLayer's floating name "Hollowhaven: Suburbs - 6" over the district with spaces (was "_",
