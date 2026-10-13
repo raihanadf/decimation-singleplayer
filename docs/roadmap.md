@@ -22,6 +22,10 @@ or `[not decided]`.
    impact; height can differ between two new worlds of one seed near the
    edge of the generated area). bug.md "Building base height depends on
    chunk generation order".
+3. **Every Decimation mob solid black on a fresh Windows install** (reported 13 Oktober 2026, the
+   user's brother's laptop, parked by the user): entity lighting in the graphics driver suspected
+   [not verified]. Waiting for that laptop's logs, GPU name, a screenshot, and whether the hand and
+   items are black too. bug.md "Every Decimation mob drawn solid black".
 
 ## Master plan (13 Oktober 2026)
 
