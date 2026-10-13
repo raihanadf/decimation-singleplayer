@@ -37,7 +37,7 @@ public final class Updater
     public enum State { IDLE, CHECKING, NONE, AVAILABLE, DOWNLOADING, READY, FAILED }
 
     public static final String ASSET = "Decimation.jar";
-    private static final String DEFAULT_API = "https://api.github.com/repos/ucilmenangis/decimation-singleplayer/releases?per_page=10";
+    public static final String DEFAULT_API = "https://api.github.com/repos/ucilmenangis/decimation-singleplayer/releases?per_page=10";
 
     private static volatile State state = State.IDLE;
     private static volatile String latest, url, digest, message = "";

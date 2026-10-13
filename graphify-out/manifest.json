@@ -150,9 +150,9 @@
     "semantic_hash": "af6445bc9b20fd442f4572b895b8c120"
   },
   "new_feature.md": {
-    "mtime": 1791881519.775985,
-    "ast_hash": "b89745bc61583b86f04b7e5b074e6f06",
-    "semantic_hash": "b89745bc61583b86f04b7e5b074e6f06"
+    "mtime": 1791882436.0924606,
+    "ast_hash": "5a0c69dc497774b4723242b66ac5ed29",
+    "semantic_hash": "5a0c69dc497774b4723242b66ac5ed29"
   },
   "tools/graph_update.py": {
     "mtime": 1791348965.63658,
@@ -325,9 +325,9 @@
     "semantic_hash": "0145e0863788d451e8ae4273d3c2abdd"
   },
   "docs/shots_index.md": {
-    "mtime": 1791881225.5209057,
-    "ast_hash": "a4e7ba15691fd45405da86667a4394d0",
-    "semantic_hash": "a4e7ba15691fd45405da86667a4394d0"
+    "mtime": 1791882436.0931747,
+    "ast_hash": "f63e21a12d08707d266b0eb6fc355dc2",
+    "semantic_hash": "f63e21a12d08707d266b0eb6fc355dc2"
   },
   "docs/interior_spec.md": {
     "mtime": 1791385593.9436893,
@@ -1410,14 +1410,14 @@
     "semantic_hash": "0096f8dec0ced80f21b5db419a28aea8"
   },
   "dev/src/main/java/net/decimation/fixes/Updater.java": {
-    "mtime": 1791881418.4560556,
-    "ast_hash": "03b29a1da030ff260d5197c8d0bc515a",
-    "semantic_hash": "03b29a1da030ff260d5197c8d0bc515a"
+    "mtime": 1791882155.2911608,
+    "ast_hash": "0273bb14e55cfe3c999814d3374546f1",
+    "semantic_hash": "0273bb14e55cfe3c999814d3374546f1"
   },
   "dev/src/main/java/net/decimation/worldgen/devtest/UpdateTest.java": {
-    "mtime": 1791881072.9557095,
-    "ast_hash": "8ab5c8111eb98bd6f734c07d70d00711",
-    "semantic_hash": "8ab5c8111eb98bd6f734c07d70d00711"
+    "mtime": 1791882155.2951355,
+    "ast_hash": "71b1a10c3e4daeb53445f98ab32993f9",
+    "semantic_hash": "71b1a10c3e4daeb53445f98ab32993f9"
   },
   "tools/fake_release_server.py": {
     "mtime": 1791881046.2029188,

@@ -18,6 +18,9 @@ import net.minecraft.client.gui.GuiScreen;
  * (update_menu), the button opens our screen, the download runs with a progress bar (update_progress),
  * is checked and ready (update_ready), and the swap helper replaces a stand in jar
  * (run/client/devtest/update_target/Decimation.jar) with the download.
+ * real=true: against our real GitHub releases instead, the running version pretended to be `from`
+ * (default 0.58.0), expecting `expect` (default 0.59.0): the real jar downloads, is checked against
+ * GitHub's sha256 and swapped into the stand in.
  */
 public class UpdateTest extends DevTestMode
 {
@@ -26,6 +29,10 @@ public class UpdateTest extends DevTestMode
     private int frames, step, at;
     private boolean progressShot, done;
     private File target;
+    private long started;
+    private String versionBefore;
+    private final boolean real = "true".equals(System.getProperty("deciworldgen.autotest.real"));
+    private final String expect = System.getProperty("deciworldgen.autotest.expect", real ? "0.59.0" : "9.9.9");
 
     public boolean client(Minecraft mc)
     {
@@ -46,7 +53,18 @@ public class UpdateTest extends DevTestMode
                 new File(target.getParentFile(), "update.log").delete();
                 System.setProperty("deciworldgen.update.target", target.getPath());
                 Updater.reset();
-                Updater.setApi("http://127.0.0.1:" + port + "/api/releases");
+                if (real)
+                {
+                    cpw.mods.fml.common.ModMetadata m = cpw.mods.fml.common.Loader.instance().getIndexedModList().get("deciworldgen").getMetadata();
+                    versionBefore = m.version;
+                    m.version = System.getProperty("deciworldgen.autotest.from", "0.58.0");
+                    Updater.setApi(Updater.DEFAULT_API);
+                }
+                else
+                {
+                    Updater.setApi("http://127.0.0.1:" + port + "/api/releases");
+                }
+                started = System.currentTimeMillis();
                 Updater.check();
                 next(1);
                 break;
@@ -54,7 +72,7 @@ public class UpdateTest extends DevTestMode
                 if (s == Updater.State.AVAILABLE || s == Updater.State.NONE || frames - at > 400)
                 {
                     DevTestResults.check(name(), "check finds the release", s + " " + Updater.latest() + " (" + Updater.message() + ")",
-                                         s == Updater.State.AVAILABLE && "9.9.9".equals(Updater.latest()), "AVAILABLE 9.9.9");
+                                         s == Updater.State.AVAILABLE && expect.equals(Updater.latest()), "AVAILABLE " + expect);
                     DevTestResults.check(name(), "Decimation's update check", Deci.updateRequired(), Deci.updateRequired(), "true");
                     net.decimation.worldgen.DevAutoTest.keepScreen = true;
                     mc.displayGuiScreen(Deci.homeMenu());
@@ -89,9 +107,10 @@ public class UpdateTest extends DevTestMode
                     progressShot = true;
                     DevTestUtil.screenshot(mc, name(), "update_progress");
                 }
-                if (s == Updater.State.READY || s == Updater.State.FAILED || frames - at > 2400)
+                if (s == Updater.State.READY || s == Updater.State.FAILED || System.currentTimeMillis() - started > 20 * 60 * 1000L)
                 {
                     DevTestResults.check(name(), "download checked", s + " (" + Updater.message() + ")", s == Updater.State.READY, "READY");
+                    DevTestResults.value(name(), "download time", (System.currentTimeMillis() - started) / 1000 + " s for " + (Updater.size() >> 20) + " MB");
                     next(4);
                 }
                 break;
@@ -101,9 +120,10 @@ public class UpdateTest extends DevTestMode
                     DevTestUtil.screenshot(mc, name(), "update_ready");
                     int code = Updater.swap(true);
                     byte[] head = head(target, 6);
-                    boolean swapped = new String(head).equals("NEWJAR") && target.length() == Updater.size();
+                    String want = real ? "PK" : "NEWJAR";            // a real release is a zip
+                    boolean swapped = new String(head).startsWith(want) && target.length() == Updater.size();
                     DevTestResults.check(name(), "swap helper replaced the jar", "exit " + code + ", starts " + new String(head) + ", "
-                        + target.length() + " bytes", swapped, "NEWJAR, " + Updater.size() + " bytes");
+                        + target.length() + " bytes", swapped, want + ", " + Updater.size() + " bytes");
                     next(9);
                 }
                 break;
@@ -113,6 +133,10 @@ public class UpdateTest extends DevTestMode
                     mc.displayGuiScreen(null);
                     net.decimation.worldgen.DevAutoTest.keepScreen = false;
                     System.clearProperty("deciworldgen.update.target");
+                    if (versionBefore != null)
+                    {
+                        cpw.mods.fml.common.Loader.instance().getIndexedModList().get("deciworldgen").getMetadata().version = versionBefore;
+                    }
                     Updater.reset();
                     done = true;
                 }

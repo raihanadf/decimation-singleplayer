@@ -24,8 +24,13 @@ Status values: `Done` / `Decided` (direction agreed, not built yet) /
   true, menu Update button, our screen, progress (33 %), ready, the helper replaced a stand in jar
   (all PASS); a wrong digest: refused, download deleted, old jar kept. The real GitHub check from the dev
   game: "up to date (0.58.0...)". Shots docs/shots/update_v0.59/sheet_update.png.
+- Real GitHub (after 0.59.0 was published, dev test `update real=true`: the dev game pretends to run
+  0.58.0): found 0.59.0, Decimation's check true, Update button, our screen, the real 229 MB jar
+  downloaded in 177 s and matched GitHub's sha256 (9e20395d...), the helper swapped it into the stand in
+  (starts PK, 240980301 bytes): all PASS. Shots docs/shots/update_v0.59/sheet_update_real.png.
 - Not verified: old Java 8 builds bundled by launchers (HTTPS to GitHub), a launcher that kills the game's
-  child processes on exit, a real update between two published releases (first possible from 0.59.0 on).
+  child processes on exit, the update running inside a real installed game (the dev game runs from a
+  folder, so a stand in jar was replaced; the first real one is 0.59.0 -> the next release).
 - Security (commit review, same day): the swap helper ran from a fixed folder in the shared temp
   directory, where another local user could plant a class; now a fresh folder from
   Files.createTempDirectory (owner only: rwx------ checked on Java 8), deleted by the helper when done.
