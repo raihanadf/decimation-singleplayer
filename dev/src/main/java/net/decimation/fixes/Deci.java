@@ -586,6 +586,12 @@ public final class Deci
     // DeciConstants deci.Q.c
 
     /** The session check result (ClientState.bv): false = "Play offline" and the invalid session banner. */
+    /** UpdateChecker.isUpdateRequired (net.decimation.mod.common.utils.h.gI): false since PatchNoUpdate. */
+    public static boolean updateRequired()
+    {
+        return net.decimation.mod.common.utils.h.gI();
+    }
+
     public static void setSessionValid(boolean valid)
     {
         deci.b.i.bv = valid;

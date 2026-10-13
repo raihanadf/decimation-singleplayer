@@ -255,7 +255,8 @@ SRG→MCP from the old root `src/` via `mcp_stable/12` CSVs; the root `src/` +
   Voice Chat, from Prism) deobfed and copied to `run/client/mods/` by the
   `installVoiceChat` task. Needed because Decimation's menu shows "Update"
   instead of "Play" when `mods/DecimationVoiceChat.jar` is absent
-  (`net.decimation.mod.common.utils.h.gI()`). Never click that Update button.
+  (`net.decimation.mod.common.utils.h.gI()`). Never click that Update button. Since v0.57.2
+  PatchNoUpdate makes gI always false, so the voice chat jar is no longer needed for "Play".
 - Run: IntelliJ Gradle panel → Tasks → modded minecraft → `runClient` → Debug.
   Plain `runClient` only; `runClient17/21/25` swap in lwjgl3ify, untested with
   Decimation. Schematics for dev live in `run/client/config/decimation_worldgen/`.
@@ -312,6 +313,8 @@ SRG→MCP from the old root `src/` via `mcp_stable/12` CSVs; the root `src/` +
   `PatchTurfNames.java` (2026-10-12, docs/zones.md "Place names"): IngameHud chat lines turn "_"
   into spaces (turf names travel with "_"); argument `layer` (v0.52.1): the same for the floating
   turf name of ClanTurfLayer (deci/M/l);
+  `PatchNoUpdate.java` (2026-10-13, bug.md): UpdateChecker.isUpdateRequired (net/decimation/mod/common/utils/h.gI)
+  always false: no "Update" button without mods/DecimationVoiceChat.jar; dev test `menu`;
   `PatchLootRolls.java` (2026-10-13, bug.md): IntRange.pick (deci/aB/a) inclusive, loot counts 1 .. n;
   `PatchVehicleArrows.java` (2026-10-11, bug.md vehicle entry): indirect player hits
   (arrows, thrown, TNT) on deci/ad/e take the health path, not pickup;
@@ -881,6 +884,8 @@ of the last session:
   (all 4 districts) inside its city, streets joined, fence and gates on its edge (WastelandFence.inCity
   via StreetPlan, lineOnLand), no refuge in it; new worlds only (StructureData `!wastelandSector`).
   tools/topdown_blocks.py: top down block picture of a world from its region files.
+  v0.57.2: PatchNoUpdate (three jars): no forced "Update" for players without DecimationVoiceChat.jar
+  (bug.md); dev test `menu`.
   Gun study (10 Oktober 2026): docs/gun_style_guide.md, tools/guns/study.py
   (renders / measures Decimation's guns from the jar, `attach` adds
   attachments as the game places them), dev test mode `gunview` (hip, aim

@@ -25,6 +25,21 @@ not something we introduced or need to fix) see `documentation.md`.
   world. Watch for it again (an "Entity is already tracked" error came just before).
 
 
+### New players are forced to update: "Update" instead of "Play", then an empty server list (found 13 Oktober 2026 by a friend of the user, FIXED v0.57.2)
+- User: "when user first time opening the mods, it force player to update and after it click update,
+  it show server list without any of them. and there is no create world or button".
+- Cause: UpdateChecker.isUpdateRequired (net.decimation.mod.common.utils.h.gI) answers true when
+  mods/DecimationVoiceChat.jar is missing (our releases ship only Decimation.jar and the deciworldgen
+  jar) or when BoehMod's latestversion.txt on GitHub names another version (the file is gone today:
+  404, so the built-in 1.21.10f stays). The menu then shows "Update" (GuiMenuBase and the profile /
+  supporter pages), which leads to BoehMod's dead server list.
+- Fix: tools/patches/PatchNoUpdate.java, gI always false (three jars). Dev test `menu` records the
+  answer and photographs the home menu. Run live with dev/run/client/mods/DecimationVoiceChat.jar
+  moved aside (put back after): jar present false, update required false (PASS); the home menu shows
+  "Resume Game" where it showed "Update" (GuiMenuBase builds that button update first, then resume in
+  a world, else Play: the title screen gets "Play" by the same check). Shot
+  docs/shots/menu_v0.57.2/menu_home_no_voicechat.png. Not seen on the friend's install itself.
+
 ### Decimation's crates gave one item fewer than listed; stacks one short (found 13 Oktober 2026, FIXED v0.57.0)
 - Found reading LootPool / IntRange (docs/loot_levels.md section 2); user: "fix the off by one too".
 - IntRange (deci.aB.a) is half open and every loot range is built as upTo(n) = [1, n), so a crate

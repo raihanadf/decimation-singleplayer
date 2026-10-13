@@ -11,6 +11,11 @@ How shots are made: `./gradlew runClient -Pautotest` (street views),
 `-Paudit` (building audit), `-Pgallery` (prop gallery); output in
 `dev/run/client/screenshots/`, then copied here into a versioned folder.
 
+## menu_v0.57.2/ (update check patched out, 13 Oktober 2026)
+- menu_home_no_voicechat.png: Decimation's home menu opened in a world with mods/DecimationVoiceChat.jar
+  moved aside: buttons Resume Game (orange), My Community, Server Status, Settings, Disconnect; no
+  Update button, profile and stats on the left.
+
 ## v0.57.1_wasteland_sector/ (whole sector wasteland city, seed 1 server; 13 Oktober 2026)
 - topdown_seed1.png (tools/topdown_blocks.py, 2 px per block, x -300 .. 100, z -40 .. 300): the
   wasteland city sector (x -256 .. -1) with its dark broken streets, red outlined military lots and
