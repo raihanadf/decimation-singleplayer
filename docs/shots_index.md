@@ -11,6 +11,12 @@ How shots are made: `./gradlew runClient -Pautotest` (street views),
 `-Paudit` (building audit), `-Pgallery` (prop gallery); output in
 `dev/run/client/screenshots/`, then copied here into a versioned folder.
 
+## bugs_v0.58/ (friend's bug reports, 13 Oktober 2026)
+- hitbox_side.png: arena, a Hulk (left) and a Bloater (right) seen from behind with their bounding boxes
+  drawn (white): both models stand inside a 1.2 x 2.85 box, the box top level with the head.
+- sheet_scope.png: dev test `scope` after the copy change: 4x / 8x / integrated sniper overlays, red dot
+  and 2x sights with the world visible through the glass, two window sizes.
+
 ## menu_v0.57.2/ (update check patched out, 13 Oktober 2026)
 - menu_home_no_voicechat.png: Decimation's home menu opened in a world with mods/DecimationVoiceChat.jar
   moved aside: buttons Resume Game (orange), My Community, Server Status, Settings, Disconnect; no

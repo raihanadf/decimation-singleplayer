@@ -424,6 +424,14 @@ public class ScopeZoom
         {
             return;
         }
+        // the glass shows the world only while aiming (or zooming in / out): holding a scoped gun at the
+        // hip copied the whole screen every frame (the glass box is unknown there), and so did every
+        // frame of the zoom animation: a large frame drop on a weak laptop (bug report 13 Oktober 2026)
+        boolean aiming = Deci.aimMode(mc.thePlayer) == 1;
+        if (!aiming && zoom <= 1.001)
+        {
+            return;
+        }
         int w = mc.displayWidth, h = mc.displayHeight;
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, Deci.scopeTexture());
         if (w != texW || h != texH)
@@ -433,18 +441,16 @@ public class ScopeZoom
             texH = h;
             return;
         }
-        int x0 = 0, y0 = 0, x1 = w, y1 = h;
-        float[] g = Deci.scopeGlassOnScreen();
-        if (g != null && Math.abs(zoom - targetZoom(mc)) < 0.01)
+        float[] box = Deci.scopeGlassBox();
+        if (!(box[2] > box[0] && box[3] > box[1]))
         {
-            // the box is up to 8 frames old: a margin for sway and turning
-            float[] box = Deci.scopeGlassBox();
-            int m = 16 + h / 20;
-            x0 = Math.max(0, (int) box[0] - m);
-            y0 = Math.max(0, (int) box[1] - m);
-            x1 = Math.min(w, (int) box[2] + m);
-            y1 = Math.min(h, (int) box[3] + m);
+            return;                                       // no glass measured yet: nothing to fill
         }
+        // the box is up to 8 frames old: a margin for sway and turning, wider while the gun still moves
+        boolean settled = Deci.scopeGlassOnScreen() != null && Math.abs(zoom - targetZoom(mc)) < 0.01;
+        int m = settled ? 16 + h / 20 : 16 + h / 6;
+        int x0 = Math.max(0, (int) box[0] - m), y0 = Math.max(0, (int) box[1] - m);
+        int x1 = Math.min(w, (int) box[2] + m), y1 = Math.min(h, (int) box[3] + m);
         if (x1 > x0 && y1 > y0)
         {
             GL11.glCopyTexSubImage2D(GL11.GL_TEXTURE_2D, 0, x0, y0, x0, y0, x1 - x0, y1 - y0);

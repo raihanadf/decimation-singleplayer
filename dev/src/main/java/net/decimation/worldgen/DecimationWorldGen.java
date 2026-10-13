@@ -166,6 +166,8 @@ public class DecimationWorldGen
             FMLLog.info("[%s] could not create %s", MODID, dir);
             return;
         }
+        // the release jar carries the city pack and schematics: unpack them before anything reads the folder
+        BundledContent.unpack(dir);
         File[] files = dir.listFiles();
         if (files == null)
         {

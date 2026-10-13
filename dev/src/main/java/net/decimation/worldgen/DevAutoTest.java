@@ -131,6 +131,8 @@ public class DevAutoTest
         if (name.equals("items")) return new net.decimation.worldgen.devtest.ItemsTest();
         if (name.equals("core")) return new net.decimation.worldgen.devtest.CoreTest();
         if (name.equals("menu")) return new net.decimation.worldgen.devtest.MenuTest();
+        if (name.equals("click")) return new net.decimation.worldgen.devtest.ClickTest();
+        if (name.equals("hitbox")) return new net.decimation.worldgen.devtest.HitboxTest();
         if (name.equals("npckill")) return new net.decimation.worldgen.devtest.NpcKillTest();
         if (name.equals("noise")) return new net.decimation.worldgen.devtest.NoiseTest();
         if (name.equals("aimdrift")) return new net.decimation.worldgen.devtest.AimDriftTest();

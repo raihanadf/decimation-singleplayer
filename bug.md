@@ -25,6 +25,51 @@ not something we introduced or need to fix) see `documentation.md`.
   world. Watch for it again (an "Entity is already tracked" error came just before).
 
 
+### No city on a friend's install (found 13 Oktober 2026, FIXED v0.58.0)
+- User: "most critical bug is the city is not generated. why you using splited mod? why not combine it
+  with one".
+- Cause: the converted city pack (config/decimation_worldgen/lc, 2.4 MB) and the schematics lived only in
+  our own config folders; no release ever carried them, so a fresh install fell back to the old
+  procedural city.
+- Fix (user choice: one jar with everything): tools/onejar.py builds ONE Decimation.jar (Decimation with
+  our bytecode fixes, our mod, the content under assets/deciworldgen/content/); worldgen/BundledContent
+  unpacks the content into config/decimation_worldgen/ on start when its stamp differs.
+- Checked on a real Forge 1.7.10 server outside the dev setup (installer 10.13.4.1614, only the one jar
+  in mods/, seed 1, type decimation): "bundled content ... unpacked: 486 files, 0 failed", 231 city
+  buildings (34 DeceasedCraft, 64 legacy wasteland in the first log lines), the refuge in the spawn
+  city, no errors of ours.
+
+### Scope zoom lags on a weak laptop (found 13 Oktober 2026 by a friend of the user, FIX v0.58.0, effect not measured there)
+- User: "scope when do zoom in/out animation, its really laggy and do framedrop rell high. this happen
+  on my potato laptop".
+- Cause [inferred from the code]: fixes/ScopeZoom copied the WHOLE screen into the scope texture every
+  frame of the zoom animation, and also every frame while a scoped gun was only held (no glass box known
+  there); only a settled aim copied just the glass. A full screen copy each frame is heavy on an
+  integrated GPU.
+- Fix: copy only while aiming or zooming, always just the glass box (a wider margin while the gun still
+  moves), nothing before a glass was measured. Dev test `scope` PASS, the 2x / red dot glass still shows
+  the world (docs/shots/bugs_v0.58/sheet_scope.png). Not measured on a weak GPU.
+
+### Left click does nothing with fists or melee (reported 13 Oktober 2026 by a friend, Open, not reproduced)
+- User: "left mouse click is not usable, except gun it can shot, but cant click left mouse button with
+  melee and hit block too".
+- What Decimation does: while a gun is held it unbinds the attack key (keyBindAttack code 0; the gun
+  reads the mouse itself) and binds it back to the left button (-100) when no gun is held
+  (ClientEventHandler tick).
+- Dev test `click` (physical left button pressed the way Minecraft does, survival): bare hand breaks
+  dirt, also after holding a gun (attack key 0 with the gun, -100 after), a fire axe hits a pig: all
+  PASS. Test traps found: the client owns the selected slot; Minecraft digs only with window focus
+  (mc.inGameHasFocus); a teleport every tick keeps the player off the ground (digging 5 times slower).
+- Needed from the friend: survival or adventure, inside a safezone (camp, refuge) or not, mouse or
+  touchpad, Windows or Mac, which item and what target.
+
+### Shots at a big zombie's head miss (reported 13 Oktober 2026 by a friend, Open, not reproduced)
+- User: "big zombie model hit box not hit when its hit head, i think its caused by hitbox issue".
+- Dev test `hitbox`: Hulk and Bloater boxes are 1.2 wide, 2.85 high (eyes 2.42); side view with boxes
+  drawn: both models stand inside their boxes, the box top at the head (docs/shots/bugs_v0.58/
+  hitbox_side.png). Not checked: how Decimation's player bullet tests a hit (client ray or server), our
+  riot variant (InfectedVariants, takes less damage), which zombie the friend meant.
+
 ### New players are forced to update: "Update" instead of "Play", then an empty server list (found 13 Oktober 2026 by a friend of the user, FIXED v0.57.2)
 - User: "when user first time opening the mods, it force player to update and after it click update,
   it show server list without any of them. and there is no create world or button".

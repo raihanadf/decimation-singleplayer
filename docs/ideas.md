@@ -69,6 +69,15 @@ every item below that is not DONE.
     need models of our own (multiblock props or entities) [not verified: effort]. Built on the
     military base Canvas (docs/military_base.md). A full sector (256 x 256) if a longer runway is
     wanted.
+20. **Auto update** (user, 13 Oktober 2026: "user launch decimation then it trigger check updates on
+    github via api, if there is update, the button on hud show "update" and it will begin install on
+    minecraft with install progress screen. if not it show "play" button"; earlier: a Vercel website
+    showing the project). Draft: our mod asks GitHub's latest release API at the menu; newer = the
+    menu's Play button reads Update (Decimation's own menu button and progress screen style), the new
+    Decimation.jar downloads with a progress bar into mods/ under a temporary name, and the swap
+    happens after the game closes (a small helper process: Windows locks a loaded jar [inferred]);
+    then "restart to play". The site: a project page linking the GitHub releases (Vercel serves no
+    jars). Every update is about 240 MB while the release is one jar.
 19. **City sizes** (user, 13 Oktober 2026: "city have variant size, so its not stuck on 4 district
     like we have now, we can have 8, 16, 24, 48 or even 64 disctrit inside one city"). Today a city
     is the CITY sectors that touch (Sectors: 15 % of 256 block sectors, one at random each), so most

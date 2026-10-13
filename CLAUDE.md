@@ -886,6 +886,14 @@ of the last session:
   tools/topdown_blocks.py: top down block picture of a world from its region files.
   v0.57.2: PatchNoUpdate (three jars): no forced "Update" for players without DecimationVoiceChat.jar
   (bug.md); dev test `menu`.
+  v0.58.0 (user: one jar with everything): the RELEASE is ONE Decimation.jar built by
+  `python3 tools/onejar.py VERSION` (dist/Decimation.jar + dev/build/libs/deciworldgen-VERSION.jar +
+  dist/config/decimation_worldgen as assets/deciworldgen/content/) -> dist/onejar/Decimation.jar;
+  worldgen/BundledContent unpacks the content on start. Test a release jar on the real Forge server
+  in the scratchpad style: Forge installer --installServer, only that jar in mods/ (never Prism).
+  ScopeZoom copies only the glass box while aiming / zooming (weak laptop lag). Dev tests `click`
+  (left button), `hitbox` (big infected boxes). The dev workspace is unchanged (two mods: dev/libs base
+  jar + our classes).
   Gun study (10 Oktober 2026): docs/gun_style_guide.md, tools/guns/study.py
   (renders / measures Decimation's guns from the jar, `attach` adds
   attachments as the game places them), dev test mode `gunview` (hip, aim
