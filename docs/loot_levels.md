@@ -151,7 +151,7 @@ its own chance. Extras: rolls from a crate pool. Caps: bottlecaps.
    bodies held; body gone after 5 minutes or when emptied.
 Each step its own release, docs and skill lesson as usual.
 
-## 7. Spike results (13 Oktober 2026, dev test `loot`, all 12 checks PASS)
+## 7. Spike results (13 Oktober 2026, dev test `loot`, all 13 checks PASS)
 
 Both spikes from docs/systems_plan.md section 7 step 0 work; nothing in the design has to change.
 
@@ -171,4 +171,11 @@ Both spikes from docs/systems_plan.md section 7 step 0 work; nothing in the desi
    the loot area (4 rows by 5, 18 used); our path does not skip creative players (Decimation's crate
    handler does). Test trap: the dev test harness closes every screen each tick unless
    `DevAutoTest.keepScreen` is set; the closed client screen does not close the server container.
+5. Duplication guard (found by a commit security review, same day): Decimation's loot container
+   never checks its source (canInteractWith always true), so a screen left open on a body that is
+   gone, or saved away with its chunk, would hand out items a second time. `Loot.closeFor` closes
+   every loot screen on a body's inventory when the body dies (setDead) and, each tick, for a player
+   farther than LootBody.RANGE (8). Checked: a screen open on a body closes on both sides 1 tick after
+   the body goes; the range close uses the same call `[not verified separately]`. Rule for every
+   loot source of ours (crates too): close its screens when the source goes.
 Evidence: docs/shots/loot_spike_v0.56/sheet_loot.png (shots_index.md).

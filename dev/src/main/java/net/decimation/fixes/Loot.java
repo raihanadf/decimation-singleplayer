@@ -30,6 +30,25 @@ public class Loot
         }
     }
 
+    /**
+     * Closes the loot screen of every player in `world` looking at `inv`, and of anyone farther than
+     * `range` from (x, y, z). Decimation's loot container never checks its source (canInteractWith is
+     * always true): a screen left open on a body that is gone or saved away would hand out its items
+     * twice.
+     */
+    public static void closeFor(net.minecraft.world.World world, InventoryBasic inv, double x, double y, double z, double range)
+    {
+        for (Object o : world.playerEntities)
+        {
+            EntityPlayerMP p = (EntityPlayerMP) o;
+            if (Deci.lootInventory(p) == inv && p.openContainer != p.inventoryContainer
+                && (range < 0 || p.getDistanceSq(x, y, z) > range * range))
+            {
+                p.closeScreen();
+            }
+        }
+    }
+
     @SubscribeEvent
     public void tick(TickEvent.ServerTickEvent e)
     {

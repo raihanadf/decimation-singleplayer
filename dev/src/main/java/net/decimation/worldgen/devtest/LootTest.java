@@ -32,7 +32,9 @@ public class LootTest extends DevTestMode
     /** Client step; the server reacts to the request flags. */
     private int step, wait;
     private volatile boolean openCrate, checkCrate, crateDone, checkTake, takeDone, checkEmpty, emptyDone, done;
-    private volatile int bodyId = -1;
+    private volatile int bodyId = -1, secondId = -1;
+    private volatile boolean spawnSecond, kill, killed;
+    private LootBody second;
     private volatile Item taken;
     private InventoryBasic crate;
     private LootBody body;
@@ -165,6 +167,34 @@ public class LootTest extends DevTestMode
                 }
                 if (emptyDone)
                 {
+                    spawnSecond = true;
+                    next(7);
+                }
+                break;
+            case 7: // a screen left open on a body that goes must close (no taking from it after)
+                Entity b2 = secondId < 0 ? null : mc.theWorld.getEntityByID(secondId);
+                if (b2 != null && wait > 10 && !kill)
+                {
+                    if (!screenOpen(mc) && wait % 20 == 11)
+                    {
+                        mc.playerController.interactWithEntitySendPacket(mc.thePlayer, b2);
+                    }
+                    if (screenOpen(mc))
+                    {
+                        kill = true;
+                        wait = 0;
+                    }
+                }
+                if (kill && (!screenOpen(mc) && serverClosed() || wait > 40))
+                {
+                    DevTestResults.check(name(), "body: open screen closes when the body goes", wait + " ticks",
+                                         !screenOpen(mc) && serverClosed(), "closed on both sides");
+                    done = true;
+                }
+                if (!kill && wait > TIMEOUT * 2)
+                {
+                    DevTestResults.check(name(), "body: open screen closes when the body goes", "never opened", false,
+                                         "closed on both sides");
                     done = true;
                 }
                 break;
@@ -180,6 +210,13 @@ public class LootTest extends DevTestMode
     {
         step = s;
         wait = 0;
+    }
+
+    /** The server player's container is back to its own inventory. */
+    private boolean serverClosed()
+    {
+        EntityPlayerMP p = DevTestUtil.player();
+        return killed && p != null && p.openContainer == p.inventoryContainer;
     }
 
     private static String screenName(Minecraft mc)
@@ -289,6 +326,7 @@ public class LootTest extends DevTestMode
                                  "the item in the main inventory");
             takeDone = true;
         }
+        second(w);
         if (checkEmpty && !emptyDone)
         {
             if (emptyAt == 0)
@@ -300,6 +338,23 @@ public class LootTest extends DevTestMode
                 DevTestResults.check(name(), "body: goes when emptied", (t - emptyAt) + " ticks", body.isDead, "dead within 45 ticks");
                 emptyDone = true;
             }
+        }
+    }
+
+    private void second(World w)
+    {
+        if (spawnSecond && second == null)
+        {
+            second = new LootBody(w);
+            second.inventory.setInventorySlotContents(0, new ItemStack(Items.emerald, 1));
+            second.setPosition(DevTestArena.X + 0.5, DevTestArena.Y, DevTestArena.Z - 1.5);
+            w.spawnEntityInWorld(second);
+            secondId = second.getEntityId();
+        }
+        if (kill && !killed && second != null)
+        {
+            second.setDead();
+            killed = true;
         }
     }
 

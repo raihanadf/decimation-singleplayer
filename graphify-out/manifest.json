@@ -1305,9 +1305,9 @@
     "semantic_hash": "16b23b426e34b8777cc1bfc3e712e7f1"
   },
   "docs/loot_levels.md": {
-    "mtime": 1791870179.2726078,
-    "ast_hash": "8e17f663041a74dcbaf41660bd80c11e",
-    "semantic_hash": "8e17f663041a74dcbaf41660bd80c11e"
+    "mtime": 1791870479.8362083,
+    "ast_hash": "6db4b490f169fd8a25767b599395fe3d",
+    "semantic_hash": "6db4b490f169fd8a25767b599395fe3d"
   },
   "docs/systems_plan.md": {
     "mtime": 1791870179.276005,
@@ -1315,18 +1315,18 @@
     "semantic_hash": "c863415e5f5cb48e0d67d224184fdaab"
   },
   "dev/src/main/java/net/decimation/fixes/Loot.java": {
-    "mtime": 1791869811.3765628,
-    "ast_hash": "02046a87217875fe583c968471a2ad9a",
-    "semantic_hash": "02046a87217875fe583c968471a2ad9a"
+    "mtime": 1791870381.797644,
+    "ast_hash": "144c20bbb3d07678b8cf10409ae232e8",
+    "semantic_hash": "144c20bbb3d07678b8cf10409ae232e8"
   },
   "dev/src/main/java/net/decimation/fixes/LootBody.java": {
-    "mtime": 1791869825.0112257,
-    "ast_hash": "e1457d9924ad8547410247dd88f1c8d2",
-    "semantic_hash": "e1457d9924ad8547410247dd88f1c8d2"
+    "mtime": 1791870381.7981136,
+    "ast_hash": "3a1afd3a2a398a25c682b7c32269320d",
+    "semantic_hash": "3a1afd3a2a398a25c682b7c32269320d"
   },
   "dev/src/main/java/net/decimation/worldgen/devtest/LootTest.java": {
-    "mtime": 1791870071.1262662,
-    "ast_hash": "b42fdf94c62f4c778cbfc465ca493b90",
-    "semantic_hash": "b42fdf94c62f4c778cbfc465ca493b90"
+    "mtime": 1791870397.671441,
+    "ast_hash": "dcb6306e4550ae78b173f09b36edbcf3",
+    "semantic_hash": "dcb6306e4550ae78b173f09b36edbcf3"
   }
 }

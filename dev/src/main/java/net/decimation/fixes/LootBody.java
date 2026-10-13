@@ -19,6 +19,8 @@ public class LootBody extends Entity
     public static final int SLOTS = 18;
     /** 5 minutes. */
     public static final int LIFETIME = 6000;
+    /** A loot screen on the body closes when its player is farther than this. */
+    public static final double RANGE = 8;
 
     public final InventoryBasic inventory = new InventoryBasic("Loot", true, SLOTS);
     private int age;
@@ -71,9 +73,23 @@ public class LootBody extends Entity
         {
             motionY = 0;
         }
-        if (!worldObj.isRemote && (++age > LIFETIME || age % 20 == 0 && stacks() == 0))
+        if (!worldObj.isRemote)
         {
-            setDead();
+            Loot.closeFor(worldObj, inventory, posX, posY, posZ, RANGE);
+            if (++age > LIFETIME || age % 20 == 0 && stacks() == 0)
+            {
+                setDead();
+            }
+        }
+    }
+
+    /** Gone: nobody may keep taking from it (Loot.closeFor). */
+    public void setDead()
+    {
+        super.setDead();
+        if (!worldObj.isRemote)
+        {
+            Loot.closeFor(worldObj, inventory, posX, posY, posZ, -1);
         }
     }
 
