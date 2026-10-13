@@ -11,7 +11,7 @@ import java.io.PrintWriter;
  * it replaces). Retries for up to two minutes until the old jar can be moved aside, then moves the new
  * one into its place and deletes the old one. Writes what it did to update.log beside the jar.
  *
- * usage: java -cp DIR net.decimation.fixes.UpdateSwap TARGET_JAR STAGED_FILE
+ * usage: java -cp DIR net.decimation.fixes.UpdateSwap TARGET_JAR STAGED_FILE [DIR]   (DIR is deleted at the end)
  */
 public final class UpdateSwap
 {
@@ -51,5 +51,22 @@ public final class UpdateSwap
         }
         log.println(done ? "done" : "FAILED: the old jar stayed (try again after closing the game)");
         log.close();
+        if (args.length > 2)
+        {
+            delete(new File(args[2]));                    // the private folder this class ran from
+        }
+    }
+
+    private static void delete(File f)
+    {
+        File[] kids = f.listFiles();
+        if (kids != null)
+        {
+            for (File k : kids)
+            {
+                delete(k);
+            }
+        }
+        f.delete();
     }
 }

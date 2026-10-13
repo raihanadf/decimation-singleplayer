@@ -26,6 +26,9 @@ Status values: `Done` / `Decided` (direction agreed, not built yet) /
   game: "up to date (0.58.0...)". Shots docs/shots/update_v0.59/sheet_update.png.
 - Not verified: old Java 8 builds bundled by launchers (HTTPS to GitHub), a launcher that kills the game's
   child processes on exit, a real update between two published releases (first possible from 0.59.0 on).
+- Security (commit review, same day): the swap helper ran from a fixed folder in the shared temp
+  directory, where another local user could plant a class; now a fresh folder from
+  Files.createTempDirectory (owner only: rwx------ checked on Java 8), deleted by the helper when done.
 - Release rules for it: the asset must be named exactly Decimation.jar, the tag a dotted version above
   the last one (0.59.0, 0.60.0 ...).
 

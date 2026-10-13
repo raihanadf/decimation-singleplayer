@@ -305,7 +305,9 @@ public final class Updater
         }
         try
         {
-            File dir = new File(System.getProperty("java.io.tmpdir"), "deciworldgen-update");
+            // a fresh private folder each time (owner only on POSIX): a fixed name in the shared temp folder
+            // could be planted by another local user and its class run as the player (security review)
+            File dir = java.nio.file.Files.createTempDirectory("deciworldgen-update").toFile();
             File cls = new File(dir, "net/decimation/fixes/UpdateSwap.class");
             cls.getParentFile().mkdirs();
             InputStream in = Updater.class.getResourceAsStream("/net/decimation/fixes/UpdateSwap.class");
@@ -320,7 +322,7 @@ public final class Updater
             String java = new File(new File(System.getProperty("java.home"), "bin"),
                                    System.getProperty("os.name").toLowerCase().contains("win") ? "javaw.exe" : "java").getPath();
             Process p = new ProcessBuilder(java, "-cp", dir.getPath(), "net.decimation.fixes.UpdateSwap",
-                                           target.getAbsolutePath(), staged.getAbsolutePath()).start();
+                                           target.getAbsolutePath(), staged.getAbsolutePath(), dir.getAbsolutePath()).start();
             return wait ? p.waitFor() : 0;
         }
         catch (Exception e)
