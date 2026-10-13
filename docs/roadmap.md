@@ -219,6 +219,8 @@ menu. Not designed: each needs a design talk first. Current work comes first (us
   rail.
 - v0.41.0 / 0.41.1 EOTech 558 and ACOG TA11 of our own, reticles in the glass swaying with the
   gun, Mk18 IMI TS stock, HK416 front sight folds away; accepted.
+- v0.58.0 one release jar with everything; v0.59.0 auto update from GitHub releases; v0.59.1 the update
+  check survives GitHub's API rate limit (ETag cache, release feed fallback; new_feature.md).
 - v0.57.1 wasteland city = a whole city sector inside its city, streets joined through gates in the
   fence (user review of the v0.56 ring: "thas absurd"); new worlds; waiting for the user's look.
   Next ideas from the same review: a military airport in a wasteland city, cities of 8 to 64 districts

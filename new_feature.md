@@ -35,7 +35,22 @@ Status values: `Done` / `Decided` (direction agreed, not built yet) /
   directory, where another local user could plant a class; now a fresh folder from
   Files.createTempDirectory (owner only: rwx------ checked on Java 8), deleted by the helper when done.
 - Release rules for it: the asset must be named exactly Decimation.jar, the tag a dotted version above
-  the last one (0.59.0, 0.60.0 ...).
+  the last one (0.59.0, 0.60.0 ...). Since v0.59.1 also upload Decimation.jar.sha256 (tools/onejar.py
+  writes it beside the jar): the fallback below checks the download against it.
+- v0.59.1, rate limit fallback (13 Oktober 2026): GitHub allows 60 API calls an hour per address without
+  a login; our own production client got 403 after an afternoon of checks, and players behind one shared
+  address (mobile networks, CGNAT) would too: the menu then showed Play and never offered the update.
+  Now (fixes/Updater): (1) the API is asked with the ETag of its last answer
+  (config/deciworldgen_update_cache.json); GitHub does not count a 304; (2) when the API fails anyway
+  (403 / 429, timeout, bad answer) the check reads the release feed <web>.atom (not the API, pre-releases
+  included, newest first), takes the first newer tag whose <web>/download/<tag>/Decimation.jar answers a
+  HEAD, and its sha256 from <web>/download/<tag>/Decimation.jar.sha256 (older releases have none: size
+  check only). Config key `web`. Updater.source() says where the answer came from.
+- Checked: dev test `update` with tools/fake_release_server.py: API answer, then a second check "api (not
+  modified)" (304); with LIMITED (API 403) the answer comes from the feed and the jar downloads, is checked
+  against the .sha256 and swapped; LIMITED BADDIGEST: refused, old jar kept. Real GitHub with the API
+  pointed at a dead address (`real=true feedonly=true`): 0.59.0 found from github.com's feed, 229 MB in
+  13 s, size matched (0.59.0 has no .sha256), swapped: all PASS.
 
 ### Shared core, step 1 of the master plan (13 Oktober 2026, v0.57.0)
 - docs/systems_plan.md section 2: `fixes/WorldClock` (day number, DAY / DUSK / NIGHT / DAWN events

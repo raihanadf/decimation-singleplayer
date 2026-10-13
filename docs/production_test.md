@@ -34,7 +34,8 @@ Checked with it: bundled content unpacked, cities generated, no errors (bug.md v
   3. The Gradle cache holds a -javadoc jar next to LWJGL: pick the plain one.
   4. The first test in a new world runs while the player still falls: run it twice.
 - GitHub's release API answered 403 (unauthenticated rate limit, 60 requests an hour per address)
-  after many checks in one afternoon [inferred]; the updater then shows Play (no update).
+  after many checks in one afternoon [inferred]; the updater then showed Play (no update). Since v0.59.1
+  it falls back to the release feed and plain download links (new_feature.md "rate limit fallback").
 
 ## Results (13 Oktober 2026)
 - Left click (bug.md, friend's report), dev test `click` in the production client, simulated presses

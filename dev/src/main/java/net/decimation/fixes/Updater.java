@@ -30,7 +30,13 @@ import net.minecraftforge.common.config.Configuration;
  * - download(): the asset into "<jar>.download" beside the running jar with progress, checked against
  *   GitHub's sha256 (or the size), then staged; the swap (UpdateSwap, its own process) runs when the
  *   game closes ("Quit game" or later), because a loaded jar cannot be replaced on Windows.
- * config/deciworldgen_update.cfg: enabled, api. Dev tests: -Ddeciworldgen.update.api / .target.
+ * GitHub allows 60 API calls an hour per address without a login, and players behind one shared address
+ * (mobile, campus, CGNAT) run out: the API is asked with the ETag of its last answer (a 304 does not
+ * count), and when it fails anyway (403 / 429 limit, timeout) the check falls back to the release feed
+ * (releases.atom, newest first, pre-releases too) and the plain download links, which are not the API;
+ * the sha256 then comes from the release's Decimation.jar.sha256 asset (tools/onejar.py writes it), else
+ * only the size is checked.
+ * config/deciworldgen_update.cfg: enabled, api, web. Dev tests: -Ddeciworldgen.update.api / .web / .target.
  */
 public final class Updater
 {
@@ -38,13 +44,14 @@ public final class Updater
 
     public static final String ASSET = "Decimation.jar";
     public static final String DEFAULT_API = "https://api.github.com/repos/ucilmenangis/decimation-singleplayer/releases?per_page=10";
+    public static final String DEFAULT_WEB = "https://github.com/ucilmenangis/decimation-singleplayer/releases";
 
     private static volatile State state = State.IDLE;
-    private static volatile String latest, url, digest, message = "";
+    private static volatile String latest, url, digest, message = "", source = "";
     private static volatile long size, done;
     private static volatile boolean enabled = true, hooked;
-    private static String api = DEFAULT_API;
-    private static File staged, target;
+    private static String api = DEFAULT_API, web = DEFAULT_WEB;
+    private static File staged, target, cache;
 
     private Updater()
     {
@@ -55,8 +62,11 @@ public final class Updater
         Configuration cfg = new Configuration(new File(configDir, "deciworldgen_update.cfg"));
         enabled = cfg.getBoolean("enabled", "update", true, "check GitHub for a newer release at start and offer it in the menu");
         api = cfg.getString("api", "update", DEFAULT_API, "release list (GitHub API)");
+        web = cfg.getString("web", "update", DEFAULT_WEB, "release pages, used when the API refuses (rate limit): <web>.atom, <web>/download/<tag>/Decimation.jar");
         cfg.save();
         api = System.getProperty("deciworldgen.update.api", api);
+        web = System.getProperty("deciworldgen.update.web", web);
+        cache = new File(configDir, "deciworldgen_update_cache.json");
     }
 
     /** True when a newer release is known (or downloaded and waiting for a restart). */
@@ -69,6 +79,8 @@ public final class Updater
     public static State state() { return state; }
     public static String latest() { return latest; }
     public static String message() { return message; }
+    /** Where the last check got its answer: "api", "api (not modified)" or "feed". */
+    public static String source() { return source; }
     public static long size() { return size; }
     public static long downloaded() { return done; }
 
@@ -126,14 +138,54 @@ public final class Updater
         t.start();
     }
 
-    @SuppressWarnings("unchecked")
     private static void find() throws Exception
     {
-        HttpURLConnection c = open(api);
-        InputStream in = c.getInputStream();
-        List<Map<String, Object>> releases = new Gson().fromJson(new InputStreamReader(in, "UTF-8"), List.class);
-        in.close();
         String mine = current();
+        try
+        {
+            fromApi(mine);
+        }
+        catch (Exception e)
+        {
+            FMLLog.info("[deciworldgen] release API failed (%s), trying the release feed", e);
+            fromFeed(mine);
+        }
+        if (state != State.AVAILABLE)
+        {
+            message = "up to date (" + mine + ")";
+            state = State.NONE;
+            FMLLog.info("[deciworldgen] update check (%s): %s", source, message);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private static void fromApi(String mine) throws Exception
+    {
+        String[] cached = readCache();
+        HttpURLConnection c = open(api);
+        c.setRequestProperty("Accept", "application/vnd.github+json");
+        if (cached != null)
+        {
+            c.setRequestProperty("If-None-Match", cached[0]);
+        }
+        int code = c.getResponseCode();
+        String body;
+        if (code == HttpURLConnection.HTTP_NOT_MODIFIED && cached != null)
+        {
+            body = cached[1];
+            source = "api (not modified)";
+        }
+        else if (code == HttpURLConnection.HTTP_OK)
+        {
+            body = text(c);
+            writeCache(c.getHeaderField("ETag"), body);
+            source = "api";
+        }
+        else
+        {
+            throw new java.io.IOException("HTTP " + code + ", rate limit left " + c.getHeaderField("X-RateLimit-Remaining"));
+        }
+        List<Map<String, Object>> releases = new Gson().fromJson(body, List.class);
         for (Map<String, Object> r : releases)
         {
             if (Boolean.TRUE.equals(r.get("draft")))
@@ -146,24 +198,128 @@ public final class Updater
             {
                 if (ASSET.equals(a.get("name")) && newer(tag, mine))
                 {
-                    latest = tag;
-                    url = String.valueOf(a.get("browser_download_url"));
-                    digest = a.get("digest") == null ? null : String.valueOf(a.get("digest"));
-                    size = ((Number) a.get("size")).longValue();
-                    message = "update " + tag + " available (" + (size >> 20) + " MB)";
-                    state = State.AVAILABLE;
-                    FMLLog.info("[deciworldgen] %s, running %s", message, mine);
+                    found(tag, String.valueOf(a.get("browser_download_url")), a.get("digest") == null ? null : String.valueOf(a.get("digest")),
+                          ((Number) a.get("size")).longValue(), mine);
                     return;
                 }
             }
             if (assets != null && !assets.isEmpty())
             {
-                break;                                     // the newest release with files is not newer: none
+                return;                                    // the newest release with files is not newer: none
             }
         }
-        message = "up to date (" + mine + ")";
-        state = State.NONE;
-        FMLLog.info("[deciworldgen] update check: %s", message);
+    }
+
+    /** The release feed (newest first): the first newer tag whose Decimation.jar exists. Not the API. */
+    private static void fromFeed(String mine) throws Exception
+    {
+        source = "feed";
+        String xml = text(open(web + ".atom"));
+        java.util.regex.Matcher m = java.util.regex.Pattern.compile("<id>tag:github\\.com,2008:Repository/\\d+/([A-Za-z0-9._-]+)</id>").matcher(xml);
+        while (m.find())
+        {
+            String tag = m.group(1);
+            if (!newer(tag, mine))
+            {
+                return;                                    // newest first: nothing newer below
+            }
+            String jar = web + "/download/" + tag + "/" + ASSET;
+            HttpURLConnection h = open(jar);
+            h.setRequestMethod("HEAD");
+            if (h.getResponseCode() != HttpURLConnection.HTTP_OK)
+            {
+                continue;                                  // a release without the jar
+            }
+            long len = h.getContentLengthLong();
+            String sum = null;
+            try
+            {
+                String[] t = text(open(jar + ".sha256")).trim().split("\\s+");
+                if (t[0].matches("[0-9a-fA-F]{64}"))
+                {
+                    sum = "sha256:" + t[0];
+                }
+            }
+            catch (Exception e)
+            {
+                // older releases have no .sha256 asset: the size is checked instead
+            }
+            found(tag, jar, sum, len, mine);
+            return;
+        }
+    }
+
+    private static void found(String tag, String u, String sum, long len, String mine)
+    {
+        latest = tag;
+        url = u;
+        digest = sum;
+        size = len;
+        message = "update " + tag + " available (" + (size >> 20) + " MB)";
+        state = State.AVAILABLE;
+        FMLLog.info("[deciworldgen] %s from the %s, running %s, %s", message, source, mine, sum == null ? "size check only" : "sha256 known");
+    }
+
+    private static String text(HttpURLConnection c) throws Exception
+    {
+        int code = c.getResponseCode();
+        if (code != HttpURLConnection.HTTP_OK)
+        {
+            throw new java.io.IOException("HTTP " + code + " for " + c.getURL());
+        }
+        InputStream in = c.getInputStream();
+        java.io.ByteArrayOutputStream out = new java.io.ByteArrayOutputStream();
+        byte[] buf = new byte[8192];
+        for (int r; (r = in.read(buf)) > 0;)
+        {
+            out.write(buf, 0, r);
+        }
+        in.close();
+        return out.toString("UTF-8");
+    }
+
+    /** {etag, body} of the last API answer for the same API address, or null. */
+    @SuppressWarnings("unchecked")
+    private static String[] readCache()
+    {
+        try
+        {
+            if (cache == null || !cache.isFile())
+            {
+                return null;
+            }
+            InputStreamReader r = new InputStreamReader(new java.io.FileInputStream(cache), "UTF-8");
+            Map<String, String> m = new Gson().fromJson(r, Map.class);
+            r.close();
+            return m != null && api.equals(m.get("api")) && m.get("etag") != null && m.get("body") != null
+                ? new String[] {m.get("etag"), m.get("body")} : null;
+        }
+        catch (Exception e)
+        {
+            return null;
+        }
+    }
+
+    private static void writeCache(String etag, String body)
+    {
+        if (cache == null || etag == null)
+        {
+            return;
+        }
+        try
+        {
+            Map<String, String> m = new java.util.HashMap<String, String>();
+            m.put("api", api);
+            m.put("etag", etag);
+            m.put("body", body);
+            java.io.Writer w = new java.io.OutputStreamWriter(new FileOutputStream(cache), "UTF-8");
+            w.write(new Gson().toJson(m));
+            w.close();
+        }
+        catch (Exception e)
+        {
+            FMLLog.info("[deciworldgen] update cache not written: %s", e);
+        }
     }
 
     /** a > b by their leading dotted numbers ("0.58.0", "0.58.0-main+abc-dirty"). */
@@ -336,18 +492,27 @@ public final class Updater
     {
         HttpURLConnection c = (HttpURLConnection) new URL(u).openConnection();
         c.setRequestProperty("User-Agent", "deciworldgen-updater");
-        c.setRequestProperty("Accept", "application/vnd.github+json");
         c.setConnectTimeout(10000);
         c.setReadTimeout(30000);
         c.setInstanceFollowRedirects(true);
         return c;
     }
 
-    /** Release list to ask (dev tests: the fake release server). */
-    public static void setApi(String u)
+    /** Release list and release pages to ask (dev tests: the fake release server). */
+    public static void setApi(String u, String w)
     {
         api = u;
+        web = w;
         enabled = true;
+    }
+
+    /** Drops the remembered API answer (dev tests). */
+    public static void forgetCache()
+    {
+        if (cache != null)
+        {
+            cache.delete();
+        }
     }
 
     /** Forget everything (dev tests). */
@@ -356,6 +521,6 @@ public final class Updater
         state = State.IDLE;
         latest = url = digest = null;
         size = done = 0;
-        message = "";
+        message = source = "";
     }
 }

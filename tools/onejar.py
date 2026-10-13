@@ -11,6 +11,7 @@ the converted city pack lc/, large schematics, small schematics) in ONE Decimati
 - Read straight from zip to zip: never extracted onto the case insensitive disk (CLAUDE.md trap).
 
 usage: python3 tools/onejar.py VERSION|OUR_JAR [OUT]   (OUT default dist/onejar/Decimation.jar)
+Also writes OUT.sha256 (sha256sum format): release asset Decimation.jar.sha256 beside the jar.
 Never commit the output: it is Decimation's jar."""
 import hashlib
 import json
@@ -81,6 +82,14 @@ def main():
     total = len(zipfile.ZipFile(out).namelist())
     print("wrote %s: %d entries (Decimation %d, ours %d, content %d files, content version %s)"
           % (out, total, len(base.namelist()), len(mine.namelist()), len(files), content_version))
+    # the update fallback (fixes/Updater, release feed) checks the download against this asset
+    sha = hashlib.sha256()
+    with open(out, "rb") as f:
+        for block in iter(lambda: f.read(1 << 20), b""):
+            sha.update(block)
+    with open(out + ".sha256", "w") as f:
+        f.write("%s  %s\n" % (sha.hexdigest(), os.path.basename(out)))
+    print("wrote %s.sha256: %s (upload it with the jar)" % (out, sha.hexdigest()))
 
 
 if __name__ == "__main__":

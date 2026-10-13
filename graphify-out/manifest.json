@@ -110,9 +110,9 @@
     "semantic_hash": "de153d1f8408971d6190e16a7d4256f9"
   },
   "CLAUDE.md": {
-    "mtime": 1791884990.9777977,
-    "ast_hash": "0f3a4eb5169a9d6279acba759cffd09b",
-    "semantic_hash": "0f3a4eb5169a9d6279acba759cffd09b"
+    "mtime": 1791898890.7552633,
+    "ast_hash": "cd533a7b7c5d7199fab0f722e40a35f3",
+    "semantic_hash": "cd533a7b7c5d7199fab0f722e40a35f3"
   },
   "DECIMATION_MOD_TASK.md": {
     "mtime": 1784958353.0126374,
@@ -150,9 +150,9 @@
     "semantic_hash": "af6445bc9b20fd442f4572b895b8c120"
   },
   "new_feature.md": {
-    "mtime": 1791882436.0924606,
-    "ast_hash": "5a0c69dc497774b4723242b66ac5ed29",
-    "semantic_hash": "5a0c69dc497774b4723242b66ac5ed29"
+    "mtime": 1791898890.7544303,
+    "ast_hash": "37343e4ca49711eff5e8cfb0393c36a1",
+    "semantic_hash": "37343e4ca49711eff5e8cfb0393c36a1"
   },
   "tools/graph_update.py": {
     "mtime": 1791348965.63658,
@@ -655,9 +655,9 @@
     "semantic_hash": "d154b3e4611ca9f79a59cd33b625d68f"
   },
   "docs/roadmap.md": {
-    "mtime": 1791898302.3797014,
-    "ast_hash": "372032bea70ac029db715468786ac733",
-    "semantic_hash": "372032bea70ac029db715468786ac733"
+    "mtime": 1791898926.976557,
+    "ast_hash": "42d677c23ee41712d03369cd30c8f81e",
+    "semantic_hash": "42d677c23ee41712d03369cd30c8f81e"
   },
   "dev/src/main/java/net/decimation/worldgen/LegacyStreets.java": {
     "mtime": 1791487239.5087948,
@@ -1395,9 +1395,9 @@
     "semantic_hash": "db0535bef6cb19da9991c51e678f879f"
   },
   "tools/onejar.py": {
-    "mtime": 1791878898.8230155,
-    "ast_hash": "646ceb198d469989c68914424de61451",
-    "semantic_hash": "646ceb198d469989c68914424de61451"
+    "mtime": 1791898636.268256,
+    "ast_hash": "4f4bec4c3aa7f92e18ee4236a3554bd3",
+    "semantic_hash": "4f4bec4c3aa7f92e18ee4236a3554bd3"
   },
   "dev/src/main/java/net/decimation/fixes/UpdateScreen.java": {
     "mtime": 1791880964.6459625,
@@ -1410,19 +1410,19 @@
     "semantic_hash": "0096f8dec0ced80f21b5db419a28aea8"
   },
   "dev/src/main/java/net/decimation/fixes/Updater.java": {
-    "mtime": 1791882155.2911608,
-    "ast_hash": "0273bb14e55cfe3c999814d3374546f1",
-    "semantic_hash": "0273bb14e55cfe3c999814d3374546f1"
+    "mtime": 1791898579.965845,
+    "ast_hash": "eed81c356d2e0c35d73ff0abfb2ea083",
+    "semantic_hash": "eed81c356d2e0c35d73ff0abfb2ea083"
   },
   "dev/src/main/java/net/decimation/worldgen/devtest/UpdateTest.java": {
-    "mtime": 1791882155.2951355,
-    "ast_hash": "71b1a10c3e4daeb53445f98ab32993f9",
-    "semantic_hash": "71b1a10c3e4daeb53445f98ab32993f9"
+    "mtime": 1791898773.351624,
+    "ast_hash": "5710aa896dcc876cdb8a3b9bdb6e541f",
+    "semantic_hash": "5710aa896dcc876cdb8a3b9bdb6e541f"
   },
   "tools/fake_release_server.py": {
-    "mtime": 1791881046.2029188,
-    "ast_hash": "250e03b604565b04048e493998bc8e15",
-    "semantic_hash": "250e03b604565b04048e493998bc8e15"
+    "mtime": 1791898618.1441169,
+    "ast_hash": "ea93c6599e4dfe317802b838122ad6ce",
+    "semantic_hash": "ea93c6599e4dfe317802b838122ad6ce"
   },
   "tools/prodclient/classpath.py": {
     "mtime": 1791884978.3965542,
@@ -1430,8 +1430,8 @@
     "semantic_hash": "c65a27842aee5ff4b471f84a704c2267"
   },
   "docs/production_test.md": {
-    "mtime": 1791884978.4095082,
-    "ast_hash": "f64a5d00bd168efc42a16a9a2f484b6d",
-    "semantic_hash": "f64a5d00bd168efc42a16a9a2f484b6d"
+    "mtime": 1791898890.7548046,
+    "ast_hash": "dbceb24cea20469765f9964e022b2a34",
+    "semantic_hash": "dbceb24cea20469765f9964e022b2a34"
   }
 }

@@ -903,6 +903,9 @@ of the last session:
   PatchNoUpdate v2). RELEASE RULES: the asset is named exactly Decimation.jar (the one jar), the tag a
   dotted version above the last; players see "Update" in Decimation's menu. Dev test `update` needs
   `python3 tools/fake_release_server.py` running.
+  v0.59.1: update check survives GitHub's API rate limit (ETag cache, a 304 is free; fallback to the
+  release feed releases.atom + plain download links). RELEASE RULE added: upload Decimation.jar.sha256
+  (written by tools/onejar.py) beside Decimation.jar. Fake server flag LIMITED (API 403).
   Gun study (10 Oktober 2026): docs/gun_style_guide.md, tools/guns/study.py
   (renders / measures Decimation's guns from the jar, `attach` adds
   attachments as the game places them), dev test mode `gunview` (hip, aim

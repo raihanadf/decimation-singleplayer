@@ -21,6 +21,10 @@ import net.minecraft.client.gui.GuiScreen;
  * real=true: against our real GitHub releases instead, the running version pretended to be `from`
  * (default 0.58.0), expecting `expect` (default 0.59.0): the real jar downloads, is checked against
  * GitHub's sha256 and swapped into the stand in.
+ * Fallback (rate limit): the fake server started with LIMITED answers the API with 403 and the check must
+ * come from the release feed (`source=feed`); `feedonly=true` points the API at a dead address (works with
+ * real=true against GitHub's own feed). A fake run that got its answer from the API asks again and must get
+ * "api (not modified)" (ETag, not counted by GitHub).
  */
 public class UpdateTest extends DevTestMode
 {
@@ -33,6 +37,8 @@ public class UpdateTest extends DevTestMode
     private String versionBefore;
     private final boolean real = "true".equals(System.getProperty("deciworldgen.autotest.real"));
     private final String expect = System.getProperty("deciworldgen.autotest.expect", real ? "0.59.0" : "9.9.9");
+    private final boolean feedOnly = "true".equals(System.getProperty("deciworldgen.autotest.feedonly"));
+    private final String source = prop("source", feedOnly ? "feed" : "api");
 
     public boolean client(Minecraft mc)
     {
@@ -53,16 +59,19 @@ public class UpdateTest extends DevTestMode
                 new File(target.getParentFile(), "update.log").delete();
                 System.setProperty("deciworldgen.update.target", target.getPath());
                 Updater.reset();
+                Updater.forgetCache();
+                String dead = "http://127.0.0.1:9/none";
                 if (real)
                 {
                     cpw.mods.fml.common.ModMetadata m = cpw.mods.fml.common.Loader.instance().getIndexedModList().get("deciworldgen").getMetadata();
                     versionBefore = m.version;
                     m.version = System.getProperty("deciworldgen.autotest.from", "0.58.0");
-                    Updater.setApi(Updater.DEFAULT_API);
+                    Updater.setApi(feedOnly ? dead : Updater.DEFAULT_API, Updater.DEFAULT_WEB);
                 }
                 else
                 {
-                    Updater.setApi("http://127.0.0.1:" + port + "/api/releases");
+                    String base = "http://127.0.0.1:" + port;
+                    Updater.setApi(feedOnly ? dead : base + "/api/releases", base + "/web/releases");
                 }
                 started = System.currentTimeMillis();
                 Updater.check();
@@ -73,10 +82,26 @@ public class UpdateTest extends DevTestMode
                 {
                     DevTestResults.check(name(), "check finds the release", s + " " + Updater.latest() + " (" + Updater.message() + ")",
                                          s == Updater.State.AVAILABLE && expect.equals(Updater.latest()), "AVAILABLE " + expect);
+                    DevTestResults.check(name(), "answer from", Updater.source(), source.equals(Updater.source()), source);
                     DevTestResults.check(name(), "Decimation's update check", Deci.updateRequired(), Deci.updateRequired(), "true");
-                    net.decimation.worldgen.DevAutoTest.keepScreen = true;
-                    mc.displayGuiScreen(Deci.homeMenu());
-                    next(s == Updater.State.AVAILABLE ? 2 : 9);
+                    if (!real && "api".equals(Updater.source()))
+                    {
+                        Updater.reset();                   // ask again: the ETag must give a 304
+                        Updater.check();
+                        next(10);
+                    }
+                    else
+                    {
+                        menu(mc, s);
+                    }
+                }
+                break;
+            case 10:
+                if (s == Updater.State.AVAILABLE || s == Updater.State.NONE || frames - at > 400)
+                {
+                    DevTestResults.check(name(), "second check not counted", Updater.source() + " " + Updater.latest(),
+                                         "api (not modified)".equals(Updater.source()) && expect.equals(Updater.latest()), "api (not modified) " + expect);
+                    menu(mc, s);
                 }
                 break;
             case 2:
@@ -142,6 +167,20 @@ public class UpdateTest extends DevTestMode
                 }
         }
         return !done;
+    }
+
+    /** A test setting; empty (cleared with `key=` on a live run) counts as unset. */
+    private static String prop(String key, String fallback)
+    {
+        String v = System.getProperty("deciworldgen.autotest." + key);
+        return v == null || v.isEmpty() ? fallback : v;
+    }
+
+    private void menu(Minecraft mc, Updater.State s)
+    {
+        net.decimation.worldgen.DevAutoTest.keepScreen = true;
+        mc.displayGuiScreen(Deci.homeMenu());
+        next(s == Updater.State.AVAILABLE ? 2 : 9);
     }
 
     private void next(int s)
