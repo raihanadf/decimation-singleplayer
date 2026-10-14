@@ -155,6 +155,10 @@ props placement".
 20. Decimation blocks with an axis in their metadata are not turned by Rotation: BlockRoad_CenterLine (4 along z,
     2 along x) needs a swap in the plan's blockAt on odd turns, like the boom arm. Look at turns 1 / 3 shots for
     dashes showing as ticks across a road.
+21. Block-built vehicles get their real size at 1 block = 1 m (fact sheet numbers in the doc) and are judged from
+    where the player first meets them (nose on from a bay mouth): a 1 block body reads as a toy. Give the body real
+    bulk (a fighter 3 wide and 2 high), the features that read from the front (twin fins, intakes, canopy), and size
+    the bay around it (span plus a free cell each side). Grey wool 7 reads near black: keep it for small accents.
 
 ## Casebook (never delete a case)
 
@@ -314,3 +318,11 @@ props placement".
 - Fix: UAHD flags, green ribbed leaves, iron bar fence, AirportPlan.blockAt turns the centre line, cameras moved.
 - Check: clashes 0, propclash 0 on 247 props and walkcheck 0 (2 keycard notes) in turns 0 and 3; turns 3 dump has
   all 109 centre line cells at metadata 2. Evidence docs/shots/airport_v0.62.1/.
+
+### Case 10: "make the fighters bigger" (airport v0.62.2 -> v0.62.3, 14 Oktober 2026)
+- User, after the v0.62.2 shots: "make the fighters bigger". The fighter was 14 long, 9 span, its body 1 block
+  (3 only at the middle), so nose on from the bay it was a dark block with thin slabs.
+- Fix: F-15 size from the USAF fact sheet (19 x 13 x 6), body 3 x 2, intakes, canopy, swept wings, stabilators, twin
+  fins, nozzles; radome and fins in body grey; revetments one shared wall row, 15 wide inside; shelter props moved off
+  the new stabilator (first run's one clash); a three quarter camera point (lesson 21).
+- Check: turns 0 and 3 clashes 0, propclash 0 on 247 props, walkcheck 0. Evidence docs/shots/airport_v0.62.3/.

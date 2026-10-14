@@ -936,6 +936,7 @@ of the last session:
   v0.62.2: sky shots of the rework (docs/airport.md section 10): UAHD flags (not USSR), green blast door leaves, chain
   link radar plot, road dashes turned with the plan (AirportPlan.blockAt: BlockRoad_CenterLine 4 along z, 2 along x),
   camera points that faced walls moved. Read every shot of a sky test: a blank wall or dark frame is a bad camera.
+  v0.62.3: airport fighters F-15 size (19 x 13 x 6, Airport.fighter), revetments in one shared wall row 15 wide inside.
   Gun study (10 Oktober 2026): docs/gun_style_guide.md, tools/guns/study.py
   (renders / measures Decimation's guns from the jar, `attach` adds
   attachments as the game places them), dev test mode `gunview` (hip, aim

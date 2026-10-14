@@ -18,6 +18,13 @@ How shots are made: `./gradlew runClient -Pautotest` (street views),
 - user_fence_float.png: the inside fence beside a sidewalk: metal posts and iron bars standing on top of the
   sidewalk's half slabs, hedges and wooden fences, so they look like they float (fixed v0.61.0).
 
+## airport_v0.62.3/ (bigger fighters, dev test airport turns 0, 14 Oktober 2026)
+- airport_fighter.png: three quarter view over a revetment wall: the F-15 sized fighter (light grey body 3 wide,
+  canopy, swept slab wings, stabilators, twin fins) in its bay, the next bay's fighter beyond, the burnt bay's wreck
+  close in the foreground. revetment_0..3: nose on from the bay mouth, now wide (intake mouths, wings, twin fins over
+  the canopy); shelter_0 / 1: the fighter inside the arch; hangar_burnt and runway_crash: the longer wreck. The other
+  shots as airport_v0.62.1 (unchanged areas). sheet_airport.png: all 29.
+
 ## airport_v0.62.1/ (airport rework in the sky, dev test airport, 14 Oktober 2026)
 - sheet_airport.png + airport_<point>.png (turns 0, runway along z, after the v0.62.2 fixes): ecp (road to the drop
   arm, blue UAHD flag, sandbag wall, overwatch tower), runway_north (approach light bars on posts, green threshold,

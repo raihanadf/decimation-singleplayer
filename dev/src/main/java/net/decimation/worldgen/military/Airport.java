@@ -611,9 +611,12 @@ public final class Airport
             }
         }
         int burnt = r.nextInt(4), empty = (burnt + 1 + r.nextInt(3)) % 4;
-        for (int k = 0; k < 4; k++)
+        if (reserve("revetments", 44, 50, 68, 50 + 4 * 16))
         {
-            revetment(50 + k * 16, k == burnt ? 2 : k == empty ? 1 : 0, k);
+            for (int k = 0; k < 4; k++)
+            {
+                revetment(50 + k * 16, k == burnt ? 2 : k == empty ? 1 : 0, k);
+            }
         }
         cargoStand(116);
         helipad(146);
@@ -628,64 +631,65 @@ public final class Airport
     }
 
     /**
-     * HESCO revetment x 44..66, z s..s+13 (blast walls on three sides, open to the taxiway): a fighter nose out with a
-     * chock, and at the back its ground equipment (generator, light cart, bomb trolley, toolbox, crate). kind 1: the
-     * bay is empty (oil stains where its fighter stood), kind 2: burnt (its fighter wrecked, scorched, a body).
+     * HESCO revetment x 46..68, z s..s+16 in a row of four sharing their side walls (Bagram's rows of U bays): 15 wide
+     * inside for a fighter of 13 span, open to the taxiway, back wall 2 thick. A fighter nose out with a chock; its
+     * ground equipment in the back corners beside the tail (generator, light, bomb trolley, wall box, crate). kind 1:
+     * the bay is empty (oil stains where its fighter stood), kind 2: burnt (its fighter wrecked, scorched, a body).
      */
     private void revetment(int s, int kind, int k)
     {
-        if (!reserve("revetment " + k, 44, s, 66, s + 13))
-        {
-            return;
-        }
-        for (int x = 46; x <= 66; x++)
+        for (int x = 46; x <= 68; x++)
         {
             for (int y = 1; y <= 3; y++)
             {
                 plain(x, y, s, hesco);
-                plain(x, y, s + 13, hesco);
+                plain(x, y, s + 16, hesco);
             }
         }
-        for (int z = s; z <= s + 13; z++)
+        for (int z = s; z <= s + 16; z++)
         {
             for (int y = 1; y <= 3; y++)
             {
-                plain(65, y, z, hesco);
-                plain(66, y, z, hesco);
+                plain(67, y, z, hesco);
+                plain(68, y, z, hesco);
             }
         }
-        int zc = s + 7;
+        int zc = s + 8;
         if (kind == 0)
         {
             fighter(47, zc, true, false);
-            c.set(48, 1, zc, Blocks.wooden_slab, 0);            // a chock in front of the nose gear
+            c.set(50, 1, zc, Blocks.wooden_slab, 0);            // a chock in front of the nose gear
+            if (!poi.containsKey("fighter"))
+            {
+                poi("fighter", 42, 9, zc - 10, 306, 25);          // three quarter view from above the wall
+            }
         }
         else if (kind == 2)
         {
             fighter(47, zc, true, true);
-            for (int i = 0; i < 25; i++)
+            for (int i = 0; i < 35; i++)
             {
-                int x = 46 + r.nextInt(18), z = s + 1 + r.nextInt(12);
+                int x = 46 + r.nextInt(20), z = s + 1 + r.nextInt(15);
                 if (c.get(x, 1, z) == null)
                 {
                     colour(x, 0, z, clay, r.nextBoolean() ? 15 : 7);
                 }
             }
-            prop(56, 1, s + 2, "BlockSkeletonGround", E);
+            prop(56, 1, s + 3, "BlockSkeletonGround", E);
         }
         else
         {
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < 10; i++)
             {
-                colour(52 + r.nextInt(6), 0, s + 5 + r.nextInt(4), clay, 15);
+                colour(53 + r.nextInt(8), 0, s + 6 + r.nextInt(5), clay, 15);
             }
         }
-        prop(63, 1, s + 2, "BlockPowerGenerator", WE);
-        prop(63, 1, s + 11, "BlockHazardLight", WE);
-        bombTrolley(61, s + 5);
-        prop(64, 1, s + 9, "BlockElectricBox1", WE);              // wall mounted: against the HESCO
-        prop(60, 1, s + 11, "BlockMilitaryCrate", E);
-        poi("revetment_" + k, 40, 4, s + 7, 270, 12);
+        prop(65, 1, s + 2, "BlockPowerGenerator", WE);
+        prop(65, 1, s + 14, "BlockHazardLight", WE);
+        bombTrolley(62, s + 1);
+        prop(66, 1, s + 9, "BlockElectricBox1", WE);              // wall mounted: against the HESCO
+        prop(62, 1, s + 14, "BlockMilitaryCrate", E);
+        poi("revetment_" + k, 40, 4, zc, 270, 12);
     }
 
     /** Bomb trolley along z: a slab cart, a coal block bomb in the middle with button fins at its ends. */
@@ -965,8 +969,8 @@ public final class Airport
         {
             for (int v = 2; v <= 4; v++)
             {
-                c.clear(x0 + 8, 2, zc + v);
-                c.clear(x0 + 9, 2, zc + v);
+                c.clear(x0 + 14, 2, zc + v);                      // a wing panel off (wing cells u 11, 12)
+                c.clear(x0 + 15, 2, zc + v);
             }
             for (int dx = 0; dx < 3; dx++)
             {
@@ -981,7 +985,7 @@ public final class Airport
             prop(x1 - 2, 1, s + 5, "BlockMetalShelf", WE);
             prop(x1 - 1, 1, s + 8, "BlockElectricBox1", WE);
             prop(x1 - 2, 1, z1 - 4, "BlockAmmoCrateLarge", WE);
-            prop(x1 - 2, 1, z1 - 7, "BlockWeaponCabinet", WE);
+            prop(x1 - 1, 1, z1 - 7, "BlockWeaponCabinet", WE);        // against the back wall, clear of the stabilator
         }
         posts.add(new int[] {x0 - 2, 1, s + 9});
         poi("shelter_" + kind, x0 - 10, 4, zc, 270, 8);
@@ -1533,81 +1537,114 @@ public final class Airport
 
     // ================================================================ aircraft
 
+    /** Fighter size (F-15 at 1 block = 1 m, docs/airport.md section 4): cells along, half span. */
+    static final int FIGHTER_LEN = 19, FIGHTER_HALF = 6;
+
     /**
-     * A fighter built from blocks, nose west or east: 14 long, 9 wide, 5 high. Grey wool fuselage on gear legs, glass
-     * canopy, slab wings and tailplanes, a fin, coal intakes and nozzle. Wrecked: one wing gone, the tail broken off
-     * and lying beside it, scorched patches.
+     * A fighter built from blocks, F-15 size (19 long, 13 span, 6 high), nose west or east from x0, centred on zc.
+     * Grey wool body 3 wide and 2 high from the intakes back, darker radome, glass canopy, box intakes with dark mouths,
+     * swept slab wings, stabilators, twin fins, two nozzles, gear legs. Wrecked: the tail section and the right wing
+     * gone, scorched panels, the broken tail lying beside it.
      */
     void fighter(int x0, int zc, boolean noseWest, boolean wrecked)
     {
-        for (int u = 0; u <= 13; u++)
+        int last = wrecked ? 14 : FIGHTER_LEN - 1;
+        for (int u = 0; u <= last; u++)
         {
-            int x = noseWest ? x0 + u : x0 + 13 - u;
-            if (wrecked && u >= 10)
+            int x = noseWest ? x0 + u : x0 + FIGHTER_LEN - 1 - u;
+            int grey = wrecked && r.nextInt(4) == 0 ? 15 : 8;
+            if (u <= 2)
             {
-                continue;
+                colour(x, 2, zc, paint, 8);                         // radome (grey 7 reads near black)
             }
-            int body = wrecked && r.nextInt(4) == 0 ? 15 : (u == 0 ? 7 : 8);
-            colour(x, 2, zc, paint, body);
-            if (u >= 3 && u <= 9)
+            else if (u <= 5)
             {
-                colour(x, 2, zc - 1, paint, u == 4 ? 15 : 8);
-                colour(x, 2, zc + 1, paint, u == 4 ? 15 : 8);
+                colour(x, 2, zc, paint, grey);
+                plain(x, 3, zc, Blocks.glass);                      // canopy
             }
-            if (u >= 2 && u <= 4)
+            else if (u <= 16)
             {
-                plain(x, 3, zc, Blocks.glass);
-            }
-            else if (u >= 5 && u <= 9)
-            {
-                colour(x, 3, zc, paint, 8);
-            }
-            if (u == 2 || u == 8)
-            {
-                for (int v : u == 2 ? new int[] {0} : new int[] {-1, 1})
+                for (int v = -1; v <= 1; v++)
                 {
-                    plain(x, 1, zc + v, Blocks.cobblestone_wall);
+                    colour(x, 2, zc + v, paint, wrecked && r.nextInt(4) == 0 ? 15 : 8);
+                    colour(x, 3, zc + v, paint, wrecked && r.nextInt(5) == 0 ? 15 : 8);
                 }
             }
-            if (u >= 5 && u <= 8)
+            else
             {
-                int span = u == 5 ? 3 : 4;
-                for (int v = 2; v <= span; v++)
+                colour(x, 2, zc, paint, 7);                         // the stinger between the engines
+                for (int v = -1; v <= 1; v += 2)
                 {
-                    c.set(x, 2, zc - v, Blocks.stone_slab, 8);
+                    if (u == FIGHTER_LEN - 1)
+                    {
+                        plain(x, 2, zc + v, Blocks.coal_block);     // nozzles
+                    }
+                    else
+                    {
+                        colour(x, 2, zc + v, paint, 7);
+                    }
+                }
+            }
+            if (u == 5)
+            {
+                for (int v = -1; v <= 1; v += 2)
+                {
+                    plain(x, 2, zc + v, Blocks.coal_block);         // intake mouths
+                    colour(x, 3, zc + v, paint, 8);
+                }
+            }
+            for (int v = 2; v <= FIGHTER_HALF; v++)
+            {
+                if (u >= 7 + v && u <= 14)
+                {
+                    c.set(x, 2, zc - v, Blocks.stone_slab, 8);       // swept wings
                     if (!wrecked)
                     {
                         c.set(x, 2, zc + v, Blocks.stone_slab, 8);
                     }
                 }
-            }
-            if (u >= 11)
-            {
-                for (int v = 2; v <= 3; v++)
+                if (v <= 4 && u >= 13 + v)
                 {
-                    c.set(x, 2, zc - v, Blocks.stone_slab, 8);
+                    c.set(x, 2, zc - v, Blocks.stone_slab, 8);       // stabilators
                     c.set(x, 2, zc + v, Blocks.stone_slab, 8);
                 }
-                colour(x, 3, zc, paint, 7);
-                if (u >= 12)
+            }
+            if (u >= 14 && !wrecked)
+            {
+                for (int v = -1; v <= 1; v += 2)
                 {
-                    colour(x, 4, zc, paint, 7);
+                    colour(x, 4, zc + v, paint, 8);                 // twin fins
+                    if (u >= 15)
+                    {
+                        colour(x, 5, zc + v, paint, 8);
+                    }
+                    if (u >= 16 && u <= 17)
+                    {
+                        colour(x, 6, zc + v, paint, 8);
+                    }
                 }
             }
-            if (u == 13)
+            if (u == 4)
             {
-                plain(x, 2, zc, Blocks.coal_block);
+                plain(x, 1, zc, Blocks.cobblestone_wall);           // nose gear
+            }
+            if (u == 12)
+            {
+                plain(x, 1, zc - 1, Blocks.cobblestone_wall);       // main gear
+                plain(x, 1, zc + 1, Blocks.cobblestone_wall);
             }
         }
         if (wrecked)
         {
-            int tx = noseWest ? x0 + 12 : x0 + 1;
             for (int k = 0; k < 3; k++)
             {
-                colour(tx, 1, zc + 3 + k, paint, k == 1 ? 15 : 7);   // the tail lies beside the wreck
+                int x = noseWest ? x0 + 11 + k : x0 + FIGHTER_LEN - 12 - k;
+                colour(x, 1, zc + 4, paint, k == 1 ? 15 : 7);       // the broken tail lies beside the wreck
+                colour(x, 1, zc + 5, paint, k == 2 ? 15 : 8);
             }
-            colour(tx, 2, zc + 4, paint, 7);
-            colour(tx, 3, zc + 4, paint, 15);
+            int fx = noseWest ? x0 + 12 : x0 + FIGHTER_LEN - 13;
+            colour(fx, 2, zc + 4, paint, 7);                        // one fin still standing on it
+            colour(fx, 3, zc + 4, paint, 15);
         }
     }
 
@@ -1692,9 +1729,9 @@ public final class Airport
     {
         int crashZ = 90 + r.nextInt(50);
         fighter(RWY0 + 1, crashZ, r.nextBoolean(), true);
-        for (int k = 0; k < 40; k++)
+        for (int k = 0; k < 55; k++)
         {
-            int x = RWY0 - 1 + r.nextInt(18), z = crashZ - 6 + r.nextInt(13);
+            int x = RWY0 - 1 + r.nextInt(22), z = crashZ - 7 + r.nextInt(15);
             if (c.get(x, 1, z) == null && c.get(x, 2, z) == null)
             {
                 colour(x, 0, z, clay, r.nextInt(3) == 0 ? 7 : 15);

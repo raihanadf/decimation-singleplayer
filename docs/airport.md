@@ -70,13 +70,18 @@ park and hangar on wasteland". Choices taken (asked with options, 14 Oktober 202
 | x 4..25 | runway strip: shoulders, runway x 8..21, approach bars z 1..9 and 230..238, arresting gear z 34 / 205, PAPI beside z 48 / 191, numbers and touchdown marks |
 | x 26..33 | infield grass: windsock, hold short lines on the stubs, taxiway signs |
 | x 34..41 | taxiway, blue edge lights, three stubs |
-| x 42..71 | apron: four HESCO revetments with fighters and their ground equipment (z 50..110), the cargo plane hardstand (z 116..142), helipad (z 148..164), fuel truck, tow tractor, bomb trolleys, light carts (z 168..196) |
+| x 42..71 | apron: four HESCO revetments in a row sharing their side walls, 15 wide inside, with fighters and their ground equipment (x 46..68, z 50..114), the cargo plane hardstand (z 116..142), helipad (z 148..164), fuel truck, tow tractor, bomb trolleys, light carts (z 168..196) |
 | x 72..77 | landside road |
 | x 78..110 | ECP side and fuel farm (z 12..44), two hardened shelters (z 50..72, 78..100), the burnt maintenance hangar (z 106..132), fire station and radar (z 136..154), tower and HQ (z 158..178), barracks with bunkers (z 182..200), the munitions area with igloos and the armory (z 204..236) |
 
 ## 4. Aircraft from blocks
-- Fighter (about 13 long, 9 wide, 4 high): grey clay fuselage, glass canopy, slab wings and tailplanes, a fin,
-  coal block intake and nozzle, gear legs of fences.
+- Fighter, F-15 size at 1 block = 1 m since v0.62.3 (user: "make the fighters bigger"; the 14 x 9 fighter with a 1
+  block body read small nose on): USAF fact sheet https://www.af.mil/About-Us/Fact-Sheets/Display/Article/104501/f-15-eagle/
+  gives 19.44 m long, 13 m span, 5.6 m high; recognition guide
+  https://www.aircraftrecognitionguide.com/index.php/mcdonnell-douglas-f-15: wedge shaped box intakes on the
+  fuselage sides, twin upright fins, splayed stabilators. Built 19 long, 13 span, 6 high: grey wool body 3 wide and 2
+  high from the intakes to the nozzles, darker radome, glass canopy, box intakes with coal mouths, swept slab wings
+  (leading edge one cell back per cell out), stabilators, twin fins, two coal nozzles, gear legs of cobblestone wall.
 - Cargo plane (about 20 long, 22 span, 6 high): hollow fuselage 3 x 3 with the rear ramp down (walk in), high
   wing, four engine pods, crates and a care package inside (loot).
 - Wrecked fighter on the runway: broken in two, a wing off, black and grey scorch, debris, burnt ground.
@@ -165,3 +170,17 @@ docs/shots/airport_v0.62.1/ (shots_index.md). Read every shot; found and fixed:
   cargo plane's wing tip in its foreground; the radar shot has the fire station's side wall on its left.
 - Not checked: the garrison manned in game (posts spawn on a player's first visit; the sky test has no garrison
   keeper), a real worldgen airport in the client.
+
+## 11. Bigger fighters (v0.62.3, 14 Oktober 2026)
+User: "make the fighters bigger" (after the v0.62.2 shots: the revetment fighters read small nose on). Real size at
+1 block = 1 m from the USAF F-15 fact sheet (section 4): Airport.fighter is now 19 long, 13 span, 6 high
+(FIGHTER_LEN, FIGHTER_HALF): body 3 wide and 2 high from the intakes to the engines, canopy, intake mouths, swept
+wings, stabilators, twin fins, two nozzles. Radome and fins in the body grey: grey wool 7 reads near black and made the
+nose a black box. The wreck loses its tail section and right wing; the broken tail lies beside it.
+- Revetments grew with it: one row of four bays sharing their side walls (one reserve "revetments" x 44..68,
+  z 50..114), each 15 wide inside (span 13 plus a cell each side), back wall at x 67..68; the ground equipment stands
+  in the back corners beside the tail. The shelter maintenance bay's missing wing panel moved to the new wing cells,
+  its weapon cabinet to the back wall (it was drawn into a stabilator: the one clash of the first run).
+- New camera point `fighter`: three quarter view from above the first full bay's wall.
+- Checked: dev test airport turns 0 and 3: clashes 0, propclash 0 on 247 props, walkcheck 0 (2 keycard notes).
+  Shots docs/shots/airport_v0.62.3/.
