@@ -968,8 +968,12 @@ used as floor.
 - **Checked**: patch built from the original classes, classes load under -Xverify:all, bytecode shows both
   segment points clamped and the handler's end replaced; mod compiles; backup hash unchanged, entry counts and zip
   tests clean. Dev test `tracer` got a check "tracers end where the shot ended" (hits on the player 8 away end
-  within 12 blocks, none longer than the shot range). Not run yet: the user was playing in the dev client
-  `[not verified]` in game.
+  within 12 blocks, none longer than the shot range). Run 14 Oktober 2026 (`--live tracer shots`, fresh live
+  game on the patched base jar): 62 of 75 tracers end within 12 blocks, longest 96 (was 250 each), tracer vs
+  server shot line 0.8 deg, hits through a wall 0 / 30. A tracer into a wall ending at the wall is
+  `[inferred]` from NpcShots (end = the ray's block hit); no check measures it in game, and the one wall
+  frame of the shots sheet shows no tracer. The shots mode's "spotting at 70" FAIL is older: the test still
+  expects sniperRange 96 (70 since v0.42.5) with its sniper exactly 70 away.
 
 ## Full military armor makes NPC gunfire almost harmless (reported 9 Oktober 2026, FIXED v0.30.2)
 User: a full set of normal military armor takes about 1 hp per NPC shot,
