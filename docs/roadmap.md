@@ -229,6 +229,8 @@ menu. Not designed: each needs a design talk first. Current work comes first (us
 - v0.61.1 gate review: HESCO wall replaces the tank ditch, compact toll gates where a connector had none, T
   junctions at every city edge, the land fence's edge gates closed (1 in 20 broken), no road out of a city into
   nothing; waiting for the user's look (new worlds).
+- v0.62.0 military airport in a wasteland city (idea 18, docs/airport.md): half a wasteland sector, runway, block
+  built planes, hangars, tower, locked HQ and armory, garrison, half wrecked; waiting for the user's look (new worlds).
 - v0.58.0 one release jar with everything; v0.59.0 auto update from GitHub releases; v0.59.1 the update
   check survives GitHub's API rate limit (ETag cache, release feed fallback; new_feature.md).
 - v0.57.1 wasteland city = a whole city sector inside its city, streets joined through gates in the

@@ -129,6 +129,8 @@ Knowledge index:
   modern gun mod, full NeoForge rewrite; model conversion; first spike), for later only (user).
 - `docs/city_dressing.md`: Decimation props through the whole city (streets, road scenes,
   interiors, story layer), rules in directions, verified facing table, checks, status / handoff.
+- `docs/airport.md`: military airport in a wasteland city (placement as a 2 x 4 cell block, layout, block-built
+  planes, garrison, loot, checks).
 - `docs/wasteland.md`: the wasteland district as the city's military area (DeceasedCraft check,
   one MILITARY zone per district, military buildings, loot, dressing, enemy military, how to test).
 - `docs/city_engine.md`: the Lost Cities style city from converted
@@ -924,6 +926,10 @@ of the last session:
   Gate checks: `servertest.py SEED type=decimation gatescan=x,z,r` logs every connector and edge gate around a point
   without generating (then pregen only around a hit); dev test `gatewalk` pushes infected down every lane of the toll
   and compact toll in each state (shut 0 of 10 through, open > 0; run at night, infected burn by day).
+  v0.62.0: military airports in wasteland cities (docs/airport.md): city/Airport picks one half wasteland sector per
+  city (1 in 3) as a block of 2 x 4 cells (LcCity.block kind 3), military/Airport builds it (runway, taxiway, apron,
+  block-built planes, hangars, tower, locked HQ and armory, barracks, fuel farm, damage, garrison); new worlds
+  (`!airports`). Dev test `airport`; gatescan also lists airport sites. No lakes / springs over cities now.
   Gun study (10 Oktober 2026): docs/gun_style_guide.md, tools/guns/study.py
   (renders / measures Decimation's guns from the jar, `attach` adds
   attachments as the game places them), dev test mode `gunview` (hip, aim

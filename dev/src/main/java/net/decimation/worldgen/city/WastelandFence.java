@@ -238,7 +238,8 @@ final class WastelandFence
         boolean alongZ = (l & 1) != 0;
         int across = alongZ ? z & 15 : x & 15;
         int crossChunk = alongZ ? z >> 4 : x >> 4;
-        boolean crossing = Math.floorMod(crossChunk, CELL) == 0 && l != 3;
+        boolean crossing = Math.floorMod(crossChunk, CELL) == 0 && l != 3
+            && Airport.block(seed, Math.floorDiv((alongZ ? x - 1 : x) >> 4, CELL), Math.floorDiv((alongZ ? z : z - 1) >> 4, CELL)) == null;
         if (crossing && across >= SIDEWALK - 1 && across <= 16 - SIDEWALK)
         {
             meta[0] = 0;
@@ -352,6 +353,10 @@ final class WastelandFence
         // the crossing chunk on the line and the street chunk in front of it
         int cx = axis == 0 ? line0 >> 4 : crossChunk, cz = axis == 0 ? crossChunk : line0 >> 4;
         int fx = axis == 0 ? cx - 1 : cx, fz = axis == 0 ? cz : cz - 1;
+        if (Airport.block(seed, Math.floorDiv(fx, CELL), Math.floorDiv(fz, CELL)) != null)
+        {
+            return null;                                      // an airport beyond the line: its fence, no gate
+        }
         // the street in front cannot take a full gate (a canal, a level change, no street): the compact toll
         // on the line and the crossing's two rows (user, 14 Oktober 2026: toll gates instead of plain ones); a
         // crossing on a canal carries its gate on the bridge deck (RiverPlan asks the street above the deck)
@@ -540,8 +545,8 @@ final class WastelandFence
     }
 
     /**
-     * Dev scan (-Ddeciworldgen.gatescan=x,z,r, blocks; DevPregen): logs every inside gate (through buildGate's own
-     * "lc gate" lines) and every edge gate ("lc edge gate STATE at x,z") within r of (x, z) by the same
+     * Dev scan (-Ddeciworldgen.gatescan=x,z,r, blocks; DevPregen): logs every airport site ("lc airport at"), every
+     * inside gate (through buildGate's own "lc gate" lines) and every edge gate ("lc edge gate STATE at x,z") within r of (x, z) by the same
      * decisions the generator makes, without generating anything; then generate only around the hits.
      */
     public static void scan(long seed, int x0, int z0, int r)
@@ -556,6 +561,13 @@ final class WastelandFence
                     gateAt(seed, 0, rx * reg, rz * (reg / 16) + k);
                     gateAt(seed, 1, rz * reg, rx * (reg / 16) + k);
                 }
+            }
+        }
+        for (int rx = Math.floorDiv(x0 - r, reg); rx <= Math.floorDiv(x0 + r, reg); rx++)
+        {
+            for (int rz = Math.floorDiv(z0 - r, reg); rz <= Math.floorDiv(z0 + r, reg); rz++)
+            {
+                Airport.site(seed, rx, rz);                   // logs "lc airport at" for each site
             }
         }
         java.util.Set<Long> seen = new java.util.HashSet<Long>();

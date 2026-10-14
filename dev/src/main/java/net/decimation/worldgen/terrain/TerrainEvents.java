@@ -45,7 +45,7 @@ public class TerrainEvents
     }
 
     /**
-     * Lakes: none in the city or the military zone (buildings cancel on
+     * Lakes: none on or next to a city (city cells, any biome) or in the military zone (buildings cancel on
      * water), one in four of vanilla's in the other dead biomes (dry land),
      * vanilla's rate in the overgrown ones. No surface lava pools anywhere.
      */
@@ -59,7 +59,10 @@ public class TerrainEvents
         }
         // a lake spans the 2 x 2 chunks from this one: none over a railway tunnel
         int bx = event.chunkX << 4, bz = event.chunkZ << 4;
-        if (net.decimation.worldgen.city.Rails.near(event.world.getSeed(), bx, bz, bx + 31, bz + 31))
+        // nor over a city: a lake carved through the airport's ground after it was written (14 Oktober 2026)
+        if (net.decimation.worldgen.city.Rails.near(event.world.getSeed(), bx, bz, bx + 31, bz + 31)
+            || net.decimation.worldgen.city.LcCity.enabled()
+                && net.decimation.worldgen.city.LcCity.nearCity(event.world.getSeed(), bx, bz, bx + 31, bz + 31))
         {
             event.setResult(Event.Result.DENY);
             return;
@@ -90,9 +93,13 @@ public class TerrainEvents
     @SubscribeEvent
     public void onDecorate(DecorateBiomeEvent.Decorate event)
     {
+        long seed = event.world.getSeed();
+        int x0 = event.chunkX + 7, z0 = event.chunkZ + 7, x1 = event.chunkX + 24, z1 = event.chunkZ + 24;
+        // nor in a city: on the open ground of an airport a spring ran over the road (airport test, 14 Oktober
+        // 2026); a city has no use for them
         if (event.type == DecorateBiomeEvent.Decorate.EventType.LAKE
-            && net.decimation.worldgen.city.Rails.near(event.world.getSeed(), event.chunkX + 7, event.chunkZ + 7,
-                                                        event.chunkX + 24, event.chunkZ + 24))
+            && (net.decimation.worldgen.city.Rails.near(seed, x0, z0, x1, z1)
+                || net.decimation.worldgen.city.LcCity.enabled() && net.decimation.worldgen.city.LcCity.nearCity(seed, x0, z0, x1, z1)))
         {
             event.setResult(Event.Result.DENY);
         }

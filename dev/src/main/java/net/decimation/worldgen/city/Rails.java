@@ -56,8 +56,8 @@ public final class Rails
      * The station's middle chunk x of a city region's row (its street
      * segment 0..2 by hash: chunks 4k+1..4k+3, never a crossing, never a
      * line end, never a stairs chunk between city levels, never on the
-     * river); Integer.MIN_VALUE when the region is no city or all three
-     * segments touch the river.
+     * river, never in an airport block); Integer.MIN_VALUE when the region is no city or all three
+     * segments touch the river or an airport.
      */
     public static int stationX(long seed, int rx, int rz)
     {
@@ -70,12 +70,19 @@ public final class Rails
         for (int i = 0; i < 3; i++)
         {
             int sx = rx * Sectors.REGION + 4 * ((first + i) % 3) + 2;
-            if (!CityRivers.chunk(seed, sx - 1, cz) && !CityRivers.chunk(seed, sx, cz) && !CityRivers.chunk(seed, sx + 1, cz))
+            if (!CityRivers.chunk(seed, sx - 1, cz) && !CityRivers.chunk(seed, sx, cz) && !CityRivers.chunk(seed, sx + 1, cz)
+                && !inAirport(seed, sx - 1, cz) && !inAirport(seed, sx + 1, cz))
             {
                 return sx;
             }
         }
         return Integer.MIN_VALUE;
+    }
+
+    /** The chunk lies in an airport block (its stairs came up through a hangar floor, 14 Oktober 2026). */
+    private static boolean inAirport(long seed, int chx, int chz)
+    {
+        return Airport.block(seed, Math.floorDiv(chx, LcCity.CELL), Math.floorDiv(chz, LcCity.CELL)) != null;
     }
 
     /** A city region's station: {track x, y, z (middle of the station chunk), street ground}, or null. */

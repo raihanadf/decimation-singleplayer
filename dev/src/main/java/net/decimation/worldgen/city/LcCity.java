@@ -445,6 +445,11 @@ public final class LcCity
      */
     public static int[] block(long seed, int cellX, int cellZ)
     {
+        int[] air = Airport.block(seed, cellX, cellZ);          // {ox, oz, KIND, cells x, cells z}
+        if (air != null)
+        {
+            return air;
+        }
         int ox = Math.floorDiv(cellX, 2) * 2, oz = Math.floorDiv(cellZ, 2) * 2;
         if (h(seed ^ 0x5355504552L, ox, oz) < SUPER_CHANCE && isCity(seed, ox, oz) && isCity(seed, ox + 1, oz)
             && isCity(seed, ox, oz + 1) && isCity(seed, ox + 1, oz + 1))
@@ -472,7 +477,17 @@ public final class LcCity
     {
         int[] b = block(seed, cellX, cellZ);
         int l = level(seed, b[0], b[1]);
-        if (b[2] == 2)
+        if (b[2] == Airport.KIND)
+        {
+            for (int i = 0; i < b[3]; i++)
+            {
+                for (int j = 0; j < b[4]; j++)
+                {
+                    l = Math.min(l, level(seed, b[0] + i, b[1] + j));   // one ground for the whole airport
+                }
+            }
+        }
+        else if (b[2] == 2)
         {
             l = Math.min(Math.min(l, level(seed, b[0] + 1, b[1])),
                          Math.min(level(seed, b[0], b[1] + 1), level(seed, b[0] + 1, b[1] + 1)));
@@ -500,6 +515,12 @@ public final class LcCity
             return out;
         }
         out = new ArrayList<Plan>();
+        if (blk[2] == Airport.KIND)
+        {
+            planAirport(seed, blk, out);
+            cache.put(key, out);
+            return out;
+        }
         int size = blk[2] * CELL; // chunks per block side: 4, or 8 for a superblock
         int g = ground(seed, cellX, cellZ);
         String style = style(seed, cellX, cellZ);
@@ -809,6 +830,50 @@ public final class LcCity
             return new int[] {cx, cz, from.get((int) (hl(seed ^ 0x47415445L, cx, cz) % from.size()))};
         }
         return null;
+    }
+
+    /**
+     * An airport block (city/Airport, docs/airport.md): the block's first chunk column and row are streets as in
+     * any block, the edge ramps of its cells as usual, the rest the airport (military/AirportPlan), its gate
+     * toward the street (turns 0: runway along z, gate north; 3: along x, gate west).
+     */
+    private void planAirport(long seed, int[] blk, List<Plan> out)
+    {
+        int cellX = blk[0], cellZ = blk[1], sx = blk[3] * CELL, sz = blk[4] * CELL;
+        int g = ground(seed, cellX, cellZ);
+        String style = style(seed, cellX, cellZ);
+        for (int lz = 0; lz < sz; lz++)
+        {
+            out.add(street(seed, cellX, cellZ, 0, lz, cellX * CELL, cellZ * CELL + lz, g, style));
+        }
+        for (int lx = 1; lx < sx; lx++)
+        {
+            out.add(street(seed, cellX, cellZ, lx, 0, cellX * CELL + lx, cellZ * CELL, g, style));
+        }
+        for (int mx = 0; mx < blk[3]; mx++)
+        {
+            for (int mz = 0; mz < blk[4]; mz++)
+            {
+                int ccx = cellX + mx, ccz = cellZ + mz;
+                boolean[][] city = new boolean[3][3];
+                boolean open = false;
+                for (int i = 0; i < 3; i++)
+                {
+                    for (int j = 0; j < 3; j++)
+                    {
+                        city[i][j] = isCity(seed, ccx + i - 1, ccz + j - 1);
+                        open |= !city[i][j];
+                    }
+                }
+                if (open)
+                {
+                    out.add(new EdgePlan("lce_" + ccx + "_" + ccz, ccx, ccz, g, city));
+                }
+            }
+        }
+        boolean alongZ = blk[4] > blk[3];
+        out.add(new net.decimation.worldgen.military.AirportPlan("lca_" + cellX + "_" + cellZ,
+            seed ^ hl(seed ^ 0x41495250L, cellX, cellZ), (cellX * CELL + 1) * 16, (cellZ * CELL + 1) * 16, alongZ ? 0 : 3, g));
     }
 
     /** Weighted pick of a building whose chunks all fit free at (i, j) in the block. */

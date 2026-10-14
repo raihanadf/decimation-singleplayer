@@ -58,7 +58,7 @@ every item below that is not DONE.
     DeceasedCraft's city style data (legacy deadzone) and its loot before acting]. Today our
     wasteland district stands next to military sectors (v0.24.3) and is zoned MILITARY.
 15. **Story** ("story??": open, nothing decided).
-18. **Military airport in a wasteland city** (user, 13 Oktober 2026: "airport military base with
+18. **Military airport in a wasteland city** (DONE v0.62.0, docs/airport.md) (user, 13 Oktober 2026: "airport military base with
     barracks, HQ, tower, aircraft park and hangar on wasteland later? and how gonna big it is?").
     First size estimate [draft]: it takes half a wasteland city sector (2 districts side by side,
     128 x 256 blocks) instead of city blocks: runway about 220 x 15 along the long side with

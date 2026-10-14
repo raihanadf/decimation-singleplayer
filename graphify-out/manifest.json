@@ -55,9 +55,9 @@
     "semantic_hash": "349759ed48d70ba880df9bffff1c9d74"
   },
   "dev/src/main/java/net/decimation/worldgen/DevAutoTest.java": {
-    "mtime": 1791927959.8070407,
-    "ast_hash": "fc5b3c4ebe0367904f9dc92aa97a1cdc",
-    "semantic_hash": "fc5b3c4ebe0367904f9dc92aa97a1cdc"
+    "mtime": 1791956852.2721784,
+    "ast_hash": "5013bb8ae9f85ea1063ce015d8d5ed45",
+    "semantic_hash": "5013bb8ae9f85ea1063ce015d8d5ed45"
   },
   "dev/src/main/java/net/decimation/worldgen/Rotation.java": {
     "mtime": 1791315242.0110583,
@@ -110,9 +110,9 @@
     "semantic_hash": "de153d1f8408971d6190e16a7d4256f9"
   },
   "CLAUDE.md": {
-    "mtime": 1791928520.388565,
-    "ast_hash": "8a5a83c249e4ac2b78e54c59e4743f78",
-    "semantic_hash": "8a5a83c249e4ac2b78e54c59e4743f78"
+    "mtime": 1791958192.1559625,
+    "ast_hash": "61e32564f564ecf8bd2b956225ed321b",
+    "semantic_hash": "61e32564f564ecf8bd2b956225ed321b"
   },
   "DECIMATION_MOD_TASK.md": {
     "mtime": 1784958353.0126374,
@@ -290,9 +290,9 @@
     "semantic_hash": "a8d56e85b0e3997c3e93012729e1edb5"
   },
   "dev/src/main/java/net/decimation/worldgen/terrain/TerrainEvents.java": {
-    "mtime": 1791682512.9976213,
-    "ast_hash": "6dfa7132ea1c278205a5f72f397ae7f0",
-    "semantic_hash": "6dfa7132ea1c278205a5f72f397ae7f0"
+    "mtime": 1791957966.8401077,
+    "ast_hash": "3718dc2a56e04d5130ebe32bac4dc13b",
+    "semantic_hash": "3718dc2a56e04d5130ebe32bac4dc13b"
   },
   "tools/worldmap.py": {
     "mtime": 1791372727.9316144,
@@ -325,9 +325,9 @@
     "semantic_hash": "0145e0863788d451e8ae4273d3c2abdd"
   },
   "docs/shots_index.md": {
-    "mtime": 1791926328.1114957,
-    "ast_hash": "cd0584888a1031602796118f49906481",
-    "semantic_hash": "cd0584888a1031602796118f49906481"
+    "mtime": 1791958290.5504072,
+    "ast_hash": "9f4721bef4111e597d1d78ed0c39320c",
+    "semantic_hash": "9f4721bef4111e597d1d78ed0c39320c"
   },
   "docs/interior_spec.md": {
     "mtime": 1791385593.9436893,
@@ -530,9 +530,9 @@
     "semantic_hash": "4754c787c15ae49542d1bf2159b29b75"
   },
   "dev/src/main/java/net/decimation/worldgen/city/LcCity.java": {
-    "mtime": 1791927757.4022696,
-    "ast_hash": "c66434c15f1dbb1af25420813f5b4f2e",
-    "semantic_hash": "c66434c15f1dbb1af25420813f5b4f2e"
+    "mtime": 1791956749.3228414,
+    "ast_hash": "0b227b3dda4427dfe4f8a585c5cb82d4",
+    "semantic_hash": "0b227b3dda4427dfe4f8a585c5cb82d4"
   },
   "dev/src/main/java/net/decimation/worldgen/city/LcContent.java": {
     "mtime": 1791734512.8675733,
@@ -655,9 +655,9 @@
     "semantic_hash": "d154b3e4611ca9f79a59cd33b625d68f"
   },
   "docs/roadmap.md": {
-    "mtime": 1791925734.3512573,
-    "ast_hash": "5b6cfdb3601f110f4e902ea92810d71c",
-    "semantic_hash": "5b6cfdb3601f110f4e902ea92810d71c"
+    "mtime": 1791958178.699322,
+    "ast_hash": "34eed296855f5fda858bd62f614810a5",
+    "semantic_hash": "34eed296855f5fda858bd62f614810a5"
   },
   "dev/src/main/java/net/decimation/worldgen/LegacyStreets.java": {
     "mtime": 1791487239.5087948,
@@ -920,9 +920,9 @@
     "semantic_hash": "19c893ca87e2012f85ac264a8f37cb55"
   },
   ".claude/skills/decimation-military-base/SKILL.md": {
-    "mtime": 1791751710.4555378,
-    "ast_hash": "f223adec96f57feb000ed4da3dd35264",
-    "semantic_hash": "f223adec96f57feb000ed4da3dd35264"
+    "mtime": 1791958192.156787,
+    "ast_hash": "1214457abd5750661abc68fcc811fe3d",
+    "semantic_hash": "1214457abd5750661abc68fcc811fe3d"
   },
   "docs/military_base.md": {
     "mtime": 1791751710.4425635,
@@ -1010,9 +1010,9 @@
     "semantic_hash": "56ae48dcabf32ca01a6914c1cf69f259"
   },
   "dev/src/main/java/net/decimation/worldgen/city/Rails.java": {
-    "mtime": 1791839298.4227517,
-    "ast_hash": "101399b93335b1bea986246ae26319bd",
-    "semantic_hash": "101399b93335b1bea986246ae26319bd"
+    "mtime": 1791958045.373375,
+    "ast_hash": "81e7fd587683bc5130a42046e15cc309",
+    "semantic_hash": "81e7fd587683bc5130a42046e15cc309"
   },
   "dev/src/main/java/net/decimation/worldgen/devtest/RailTest.java": {
     "mtime": 1791684514.51989,
@@ -1230,9 +1230,9 @@
     "semantic_hash": "8a3ad8dda4604fb188e87f47efc3db90"
   },
   "docs/ideas.md": {
-    "mtime": 1791900116.501227,
-    "ast_hash": "43c29482de20d65ca11c5c73a9e33188",
-    "semantic_hash": "43c29482de20d65ca11c5c73a9e33188"
+    "mtime": 1791958178.6972704,
+    "ast_hash": "3582e139162f66e2b61bf7666659f91b",
+    "semantic_hash": "3582e139162f66e2b61bf7666659f91b"
   },
   "dev/src/main/java/net/decimation/worldgen/NamedPlace.java": {
     "mtime": 1791753400.7417421,
@@ -1295,9 +1295,9 @@
     "semantic_hash": "b23396598a06a9c2a29a5e9d485ea132"
   },
   "dev/src/main/java/net/decimation/worldgen/city/WastelandFence.java": {
-    "mtime": 1791927777.6831343,
-    "ast_hash": "3ce9074571ea3f1c74bf00c5615cbefc",
-    "semantic_hash": "3ce9074571ea3f1c74bf00c5615cbefc"
+    "mtime": 1791957626.6714728,
+    "ast_hash": "bf1a8d552217e38d24704f0fe883ffa3",
+    "semantic_hash": "bf1a8d552217e38d24704f0fe883ffa3"
   },
   "docs/porting.md": {
     "mtime": 1791844669.0772715,
@@ -1440,9 +1440,9 @@
     "semantic_hash": "1e5dbb00aefd44ff93b1c30555c28117"
   },
   "dev/src/main/java/net/decimation/worldgen/CityLayoutEvents.java": {
-    "mtime": 1791899751.756159,
-    "ast_hash": "2290458097d433575ad485d6c90056a6",
-    "semantic_hash": "2290458097d433575ad485d6c90056a6"
+    "mtime": 1791956765.6322644,
+    "ast_hash": "44d2a56de442d4aed84c84aea74a047c",
+    "semantic_hash": "44d2a56de442d4aed84c84aea74a047c"
   },
   "dev/src/main/java/net/decimation/fixes/GlInfo.java": {
     "mtime": 1791901041.7651844,
@@ -1483,5 +1483,30 @@
     "mtime": 1791928381.7576747,
     "ast_hash": "8adcfde4931827b49df4387bd2fde524",
     "semantic_hash": "8adcfde4931827b49df4387bd2fde524"
+  },
+  "dev/src/main/java/net/decimation/worldgen/city/Airport.java": {
+    "mtime": 1791952148.6028273,
+    "ast_hash": "288dd4b3421958fe5c6e096083b7404b",
+    "semantic_hash": "288dd4b3421958fe5c6e096083b7404b"
+  },
+  "dev/src/main/java/net/decimation/worldgen/devtest/AirportTest.java": {
+    "mtime": 1791957454.0929677,
+    "ast_hash": "dae5b10c4e9d57742974876ec085a761",
+    "semantic_hash": "dae5b10c4e9d57742974876ec085a761"
+  },
+  "dev/src/main/java/net/decimation/worldgen/military/Airport.java": {
+    "mtime": 1791957626.6702552,
+    "ast_hash": "d2298969f75aa562b2dd18e501e2570d",
+    "semantic_hash": "d2298969f75aa562b2dd18e501e2570d"
+  },
+  "dev/src/main/java/net/decimation/worldgen/military/AirportPlan.java": {
+    "mtime": 1791956715.8054945,
+    "ast_hash": "b9b963269d8fd32582beea523084afb7",
+    "semantic_hash": "b9b963269d8fd32582beea523084afb7"
+  },
+  "docs/airport.md": {
+    "mtime": 1791958178.6962178,
+    "ast_hash": "27afa28e142e7ff42069b14f4b044687",
+    "semantic_hash": "27afa28e142e7ff42069b14f4b044687"
   }
 }

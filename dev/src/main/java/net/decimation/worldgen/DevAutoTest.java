@@ -152,6 +152,7 @@ public class DevAutoTest
         if (name.equals("refuge")) return new net.decimation.worldgen.devtest.RefugeTest();
         if (name.equals("gates")) return new net.decimation.worldgen.devtest.GateTest();
         if (name.equals("gatewalk")) return new net.decimation.worldgen.devtest.GateWalkTest();
+        if (name.equals("airport")) return new net.decimation.worldgen.devtest.AirportTest();
         return null;
     }
 

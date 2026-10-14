@@ -18,6 +18,19 @@ How shots are made: `./gradlew runClient -Pautotest` (street views),
 - user_fence_float.png: the inside fence beside a sidewalk: metal posts and iron bars standing on top of the
   sidewalk's half slabs, hedges and wooden fences, so they look like they float (fixed v0.61.0).
 
+## airport_v0.62/ (military airport, 14 Oktober 2026)
+- sheet_airport.png + airport_<point>.png: dev test airport in the sky (no garrison). entry (road from the gate,
+  flag, chicane of jerseys, sandbags, fence), hangar_0 (a grey block-built fighter inside), hangar_1 (burnt:
+  scorched panels, roof holes, scorched floor, military infected from its spawner), hangar_2 (stores, tables,
+  generator), tower (concrete shaft), tower_cab (glass cab, radio, monitors, chair), hq (concrete, locked door,
+  keycard screen), hq_inside (ops desks with monitors and chairs, cabinets, ammo cases), armory (HESCO ring,
+  locked door, keycard), barracks (plywood huts), fuel (dark bladders in a sandbag berm, drums), cargo (grey cargo
+  plane from behind, ramp, hold with crates), apron (cargo plane, tower), runway_crash (taxiway, grass strip with
+  the wrecked fighter's scorch, runway), top (the whole airport from above).
+- topdown_alongz.png / topdown_alongx.png: tools/topdown_blocks.py of seed 1 server worlds, the airports at
+  -2544,1296 (runway along z) and 272,-2032 (along x) inside their wasteland cities: streets round the block,
+  the land fence outside, runway, taxiway, apron, hangars and buildings; no water.
+
 ## wasteland_gate_v0.61.1/ (dev test gates after the review, 14 Oktober 2026)
 - gates_<look>_<state>_front / _top.png for looks toll, checkpoint, containers, quarantine, police and the compact
   toll, states open, wire, steel, bus, hesco (no ditch). cmp_compact_hesco.png: compact toll with steel (front: a

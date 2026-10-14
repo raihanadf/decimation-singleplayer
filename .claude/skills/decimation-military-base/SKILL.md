@@ -137,6 +137,12 @@ props placement".
     alone: a crate's front is its latch face, so a crate in a 1 wide hold faces the open end, a crate
     in a booth faces the door. propclash.py checks FACE with the table; keep it 0 for every size.
 
+14. In Decimation's pack grey and white stained clay read pink-brown: paint aircraft and white markings in
+    wool (light grey 8, grey 7, white 0); yellow and black clay read right.
+15. A big flat open compound in a city meets the world's late decoration: lakes and springs (deny them over
+    cities, TerrainEvents) and other city features laid by rows (a metro station's stairs): check the
+    generated world for water and holes, not only the sky test.
+
 ## Casebook (never delete a case)
 
 ### Case 1: first FOB generator (v0.42.0, 10 Oktober 2026)
@@ -267,3 +273,13 @@ props placement".
 - Fix: crates face the open end / the door / the room; flag poles no front, generator front unknown
   (overrides). All sizes 0, walk test unchanged. Trap: hotswap does not rebuild the cached base
   layout; stop and start the live game after changing MilitaryBase.
+
+### Case 7: military airport (v0.62.0, 14 Oktober 2026)
+- User idea 18; choices: half a wasteland sector, any wasteland city, planes from blocks, held but half
+  wrecked, bunker level loot in the HQ and armory. Design: docs/airport.md (references, layout).
+- Built on the Canvas pipeline (military/Airport, AirportPlan) as a city block of 2 x 4 cells (city/Airport).
+- Found on the way: clay colours (lesson 14), 4 prop clashes (cargo hold too narrow for a care package, the big
+  radio against the cab wall, crates 1 apart), a lake and a spring in the generated airport, a metro station's
+  stairs through a hangar floor (lesson 15).
+- Check: sky test clashes 0, propclash 0, walkcheck all reachable; seed 1 server, two airports generated and
+  read back clean. Shots docs/shots/airport_v0.62/.
