@@ -29,6 +29,8 @@ public final class AirportPlan extends CanvasPlan implements FixedBase, Garrison
         }
     };
 
+    private static final Block LINE = Block.getBlockFromName("deci:BlockRoad_CenterLine");
+
     private final long seed;
     private final int ground;
 
@@ -117,6 +119,10 @@ public final class AirportPlan extends CanvasPlan implements FixedBase, Garrison
         if (b != null && b == BlockBoomArm.instance && meta[0] < 2 && (turns & 1) == 1)
         {
             meta[0] ^= 1;                                      // an arm lying along x lies along z
+        }
+        if (b != null && b == LINE && (turns & 1) == 1)
+        {
+            meta[0] ^= 6;                                      // centre line: 4 runs along z, 2 along x
         }
         return b;
     }

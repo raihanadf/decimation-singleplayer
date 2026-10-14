@@ -933,6 +933,9 @@ of the last session:
   v0.62.1: the airport redone through the decimation-military-base skill after "to basic" (docs/airport.md section 9):
   module reserves, runway lighting / markings / PAPI / arresting gear, revetments, shelters, fire station, radar,
   igloos, FOB style entry; checked on the server (propclash 0 on 248 props, walkcheck 0).
+  v0.62.2: sky shots of the rework (docs/airport.md section 10): UAHD flags (not USSR), green blast door leaves, chain
+  link radar plot, road dashes turned with the plan (AirportPlan.blockAt: BlockRoad_CenterLine 4 along z, 2 along x),
+  camera points that faced walls moved. Read every shot of a sky test: a blank wall or dark frame is a bad camera.
   Gun study (10 Oktober 2026): docs/gun_style_guide.md, tools/guns/study.py
   (renders / measures Decimation's guns from the jar, `attach` adds
   attachments as the game places them), dev test mode `gunview` (hip, aim

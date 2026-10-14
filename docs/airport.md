@@ -143,3 +143,25 @@ fixed boxes, big empty concrete). Redone through the skill: sections 1 to 3 rewr
   two keycard doors (HQ, armory), garrison registered. Top down: shots airport_v0.62/topdown_v2_alongz.png.
 - Not checked: in game shots of the rework (client test not run while the user plays), turns 3 (runway along x) in
   the walk test.
+
+## 10. Sky shots of the rework and fixes (v0.62.2, 14 Oktober 2026)
+The user closed their game; dev test `airport` ran live in deciworldgen_devtest, turns 0 and 3. Shots in
+docs/shots/airport_v0.62.1/ (shots_index.md). Read every shot; found and fixed:
+- the entry point and HQ flags were BlockFlagPollUSSR (red Soviet flag) on a US style base: now BlockFlagPollUAHD,
+  the flag of the FOBs and gates;
+- the hardened shelter blast door leaves were BlockMetal_3 (rusty brown: stepped brown stacks, not doors): now
+  camouflage green BlockMetalWall with a BlockMetal_2 rib every 4 high;
+- the radar plot fence was oak fence (reads as a farm): now iron bars (chain link, like the city fence);
+- the landside road's dashed centre line (BlockRoad_CenterLine: metadata 4 runs along z, 2 along x) was not turned
+  with the plan: with the runway along x (turns 3) the dashes showed as ticks across the road. AirportPlan.blockAt
+  swaps 4 and 2 on odd turns, like the boom arm;
+- camera points that showed nothing: hq_ops faced the partition wall, hq_office the corridor wall, armory stood
+  inside an igloo mound, radar on the HQ roof looking at concrete. Now: ops from its south east corner toward the
+  desks, office toward the desk and cabinets, armory inside from its north west corner, radar from the street
+  between the plot and the HQ.
+- Checked after the fixes: turns 0 and 3: clashes 0, propclash 0 on 247 props, walkcheck reaches every cell but the
+  two keycard doors (HQ 91,1,167 and armory 100,1,211 in turns 0); turns 3 dump: 109 centre line cells all metadata 2.
+- Seen and left as is: the revetment fighters are small seen nose on from the bay mouth; the helipad camera has the
+  cargo plane's wing tip in its foreground; the radar shot has the fire station's side wall on its left.
+- Not checked: the garrison manned in game (posts spawn on a player's first visit; the sky test has no garrison
+  keeper), a real worldgen airport in the client.

@@ -32,14 +32,13 @@ public final class Airport
     final List<int[]> posts = new ArrayList<int[]>(), spawners = new ArrayList<int[]>();
     private final Random r;
     private final byte[] occ = new byte[W * L];
-    private final Block metal, metalRust, metalGreen, concrete, concreteDark, road, line, sand, sandBeige, hesco, wire,
+    private final Block metal, metalGreen, concrete, concreteDark, road, line, sand, sandBeige, hesco, wire,
         locked, keycard, door, clay = Blocks.stained_hardened_clay, paint = Blocks.wool;   // aircraft paint: grey clay reads pink-brown
 
     Airport(long seed)
     {
         r = new Random(seed ^ 0x41495250L);
         metal = d("BlockMetal_2", Blocks.iron_block);
-        metalRust = d("BlockMetal_3", Blocks.iron_block);
         metalGreen = d("BlockMetalWall", Blocks.iron_block);
         concrete = d("BlockStone_7", Blocks.stone);
         concreteDark = d("BlockStone_6", Blocks.stone);
@@ -411,7 +410,7 @@ public final class Airport
             prop(105, 1, 9, "BlockCone", S);
         }
         prop(68, 1, 12, "BlockRussianRoadSignWarning", S);
-        prop(69, 1, 16, "BlockFlagPollUSSR", S);
+        prop(69, 1, 16, "BlockFlagPollUAHD", S);
         poi("ecp", 74.5F, 3, 26, 180, 10);
         poi("main_road", 74.5F, 1, 22, 180, 10);                  // walkcheck starts here
     }
@@ -948,7 +947,7 @@ public final class Airport
             {
                 if (leaf)
                 {
-                    plain(x0 - 1, y, z, metalRust);
+                    plain(x0 - 1, y, z, y % 4 == 0 ? metal : metalGreen);   // steel leaves in camouflage green, ribbed
                 }
             }
             plain(x0 - 1, 0, z, concreteDark);                     // the door track
@@ -1142,7 +1141,7 @@ public final class Airport
     }
 
     /**
-     * Surveillance radar (x 99..109, z 136..154): a fenced plot with its gate west, a lattice tower 8 high with the
+     * Surveillance radar (x 99..109, z 136..154): a chain link plot with its gate west, a lattice tower 8 high with the
      * antenna (a reflector and its feed arm) on top, an equipment shelter with a monitor and panels, a generator.
      */
     private void radar()
@@ -1160,8 +1159,8 @@ public final class Airport
                 boolean edge = x == x0 || x == x1 || z == z0 || z == z1;
                 if (edge && !(x == x0 && z >= 142 && z <= 143))
                 {
-                    c.set(x, 1, z, Blocks.fence, 0);
-                    c.set(x, 2, z, Blocks.fence, 0);
+                    c.set(x, 1, z, Blocks.iron_bars, 0);                   // chain link, like the city fence
+                    c.set(x, 2, z, Blocks.iron_bars, 0);
                 }
             }
         }
@@ -1188,7 +1187,7 @@ public final class Airport
         prop(x0 + 4, 1, z0 + 3, "BlockMonitor", S);
         prop(x0 + 5, 1, z0 + 5, "BlockElectricBox1", WE);
         prop(x0 + 4, 1, z0 + 10, "BlockPowerGenerator", N);
-        poi("radar", x0 - 7, 7, z1 + 7, 225, 20);
+        poi("radar", x0 + 1, 3.5F, z1 + 2.5F, 200, -8);          // on the street between the plot and the HQ
     }
 
     /**
@@ -1342,11 +1341,11 @@ public final class Airport
         {
             prop(x1 - 2, y, z0 + 2, "BlockRadioTower", S);
         }
-        prop(x0 - 2, 1, z1 + 2, "BlockFlagPollUSSR", S);         // clear of the blast wall (the flag flies east)
+        prop(x0 - 2, 1, z1 + 2, "BlockFlagPollUAHD", S);         // clear of the blast wall (the flag flies east)
         posts.add(new int[] {x0 - 1, 1, z0 + 8});
         poi("hq", x0 - 10, 3, z0 + 9.5F, 270, 8);
-        poi("hq_ops", x0 + 6, 2.6F, z0 + 9.5F, 0, 20);
-        poi("hq_office", x0 + 6, 2.6F, z0 + 12.5F, 90, 12);
+        poi("hq_ops", x0 + 14.5F, 2.6F, z0 + 9.5F, 135, 20);
+        poi("hq_office", x0 + 5.5F, 2.6F, z0 + 12.5F, 290, 15);
     }
 
     /**
@@ -1488,7 +1487,7 @@ public final class Airport
         prop(ax0 + 6, 1, az1 - 1, "BlockAmmoCrate", N);
         lights(ax0, az0, ax1, az1, 3);
         poi("munitions", x0 - 9, 7, 220, 270, 18);
-        poi("armory", ax0 - 5, 3, az0 + 4.5F, 270, 8);
+        poi("armory", ax0 + 1.5F, 2.6F, az0 + 1.5F, 315, 15);
     }
 
     /** Igloo at x0, z0 (door west): concrete headwall and back, a metal door, an arch 7 wide under a grass mound; loot inside. */

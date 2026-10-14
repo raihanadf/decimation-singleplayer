@@ -147,6 +147,14 @@ props placement".
     things written into the doc): the airport built from memory with two searches read as "to basic".
 17. When the user is playing, verify through the dedicated server (servertest, region file dumps for propclash
     and walkcheck) instead of the client; never chain the pgrep check with a live test.
+18. Read every sky test shot, not only the sheet: a frame showing one wall, a ceiling or darkness is a camera point
+    inside or facing a wall (the airport's HQ rooms, armory and radar shots showed nothing for a whole version).
+    Put room cameras in a corner looking across the room at its furniture.
+19. Faction props follow the base: US style compounds fly BlockFlagPollUAHD (blue), never BlockFlagPollUSSR.
+    Colours of big surfaces too: rusty BlockMetal_3 reads brown from 10 blocks (blast doors are camouflage green).
+20. Decimation blocks with an axis in their metadata are not turned by Rotation: BlockRoad_CenterLine (4 along z,
+    2 along x) needs a swap in the plan's blockAt on odd turns, like the boom arm. Look at turns 1 / 3 shots for
+    dashes showing as ticks across a road.
 
 ## Casebook (never delete a case)
 
@@ -297,3 +305,12 @@ props placement".
   lighting and markings, revetments, shelters, fire station, radar, igloos, a FOB style entry (lesson 16).
 - Test trap: the live sky test ran beside the user's open game (pgrep chained, third time); stopped, verified on the
   server instead (lesson 17): no clash, propclash 0 on 248 props, walkcheck 0.
+
+### Case 9: airport sky shots (v0.62.1 -> v0.62.2, 14 Oktober 2026)
+- User closed their game and asked for the pictures. Sky test turns 0 and 3, 28 shots each.
+- Found by reading each shot: red Soviet flags at the entry and HQ, brown stepped blast door leaves, an oak farm
+  fence round the radar, four camera points showing a wall or darkness (hq_ops, hq_office, armory, radar), and in
+  turns 3 the landside road dashes lying across the road (lessons 18 to 20).
+- Fix: UAHD flags, green ribbed leaves, iron bar fence, AirportPlan.blockAt turns the centre line, cameras moved.
+- Check: clashes 0, propclash 0 on 247 props and walkcheck 0 (2 keycard notes) in turns 0 and 3; turns 3 dump has
+  all 109 centre line cells at metadata 2. Evidence docs/shots/airport_v0.62.1/.

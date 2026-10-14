@@ -18,6 +18,23 @@ How shots are made: `./gradlew runClient -Pautotest` (street views),
 - user_fence_float.png: the inside fence beside a sidewalk: metal posts and iron bars standing on top of the
   sidewalk's half slabs, hedges and wooden fences, so they look like they float (fixed v0.61.0).
 
+## airport_v0.62.1/ (airport rework in the sky, dev test airport, 14 Oktober 2026)
+- sheet_airport.png + airport_<point>.png (turns 0, runway along z, after the v0.62.2 fixes): ecp (road to the drop
+  arm, blue UAHD flag, sandbag wall, overwatch tower), runway_north (approach light bars on posts, green threshold,
+  "18", touchdown bars), arresting_gear, windsock (orange sock on its mast, infield grass), revetment_0..3 (HESCO
+  bays: empty with oil stains, burnt with a wreck, two fighters nose out, small seen nose on), cargo (cargo plane from
+  behind, ramp down, pallets and a care package), helipad (H, corner lights, a helicopter, the tower; the cargo
+  wing tip in the foreground), equipment_yard (block built fuel truck, tow tractor, trolleys), fuel (bladders in a
+  sandbag berm, pump house), shelter_0 / shelter_1 (concrete arch, camouflage green blast door leaves half open, a
+  fighter inside), hangar_burnt (scorched walls and floor, roof holes), fire_station (red crash truck in the bay),
+  radar (lattice mast with the antenna over a chain link plot; fire station wall at the left), tower, tower_cab
+  (consoles, two chairs, glass), hq (blast wall, locked door), hq_ops (two map tables, a row of desks with monitors
+  and chairs), hq_office (desk and chair, cabinet, the large ammo case), barracks (B-hut), munitions (three grass
+  covered igloos behind the HESCO wall, warning sign), igloo_inside (crates under the arch), armory (inside: weapon
+  cabinets, military crates, ammo cases), runway_crash (wrecked fighter on the grass strip), top.
+- sheet_airport_turns3.png: the same points with the plan turned 3 (runway along x); the top shot also shows the
+  turns 0 build left around it (the sky test clears only its own box). Road dashes run along the road after the fix.
+
 ## airport_v0.62/ (military airport, 14 Oktober 2026)
 - sheet_airport.png + airport_<point>.png: dev test airport in the sky (no garrison). entry (road from the gate,
   flag, chicane of jerseys, sandbags, fence), hangar_0 (a grey block-built fighter inside), hangar_1 (burnt:
