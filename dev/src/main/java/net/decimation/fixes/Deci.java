@@ -732,7 +732,7 @@ public final class Deci
 
     /**
      * PacketGunFireEffects (deci.aE.a$B) to everyone: shot effects of an NPC,
-     * tracer along the line from its eyes to the aim point (PatchTracer v2).
+     * tracer from its eyes to the aim point, ending there (PatchTracer v2, v3: the point where the shot ended).
      */
     public static void sendNpcShot(net.minecraft.entity.Entity shooter, net.minecraft.entity.Entity target,
                                    double x, double y, double z)

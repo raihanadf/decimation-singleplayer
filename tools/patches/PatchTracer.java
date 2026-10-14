@@ -43,6 +43,18 @@ import javassist.expr.MethodCall;
  * - the handler shows a traced shot's tracer always (Decimation draws 40% of
  *   tracers and makes 60% invisible).
  * Rebuild from the ORIGINAL classes (v1 is included here), then PatchFactions.
+ *
+ * v3 (2026-10-14, user: NPC tracers fly through buildings): the aim point is
+ * now where the shot ENDED (the block or body it hit, else its range), and the
+ * handler ends the tracer there instead of 250 blocks along the line (no end
+ * jitter for traced shots). A tracer lives until its head reaches its length
+ * (BulletTracer.c), so it stops at the wall. BulletTracerRenderer$BulletTracer
+ * (deci.n.d$a) render b(): the drawn 10 block segment is clamped to the
+ * tracer's length, so a shot into a near wall no longer pokes through it on its
+ * first frames (player tracers too: PacketBulletTracer already ends them at
+ * the hit). Fourth argument: lwjgl_util 2.9.4 (Vector3f).
+ *   (cd build/patch_tracer/out && zip <jar> 'deci/aE/a$B$a.class' 'deci/n/d$a.class')
+ * is enough when only v3 changed (the packet and shooters are as in v2).
  */
 public class PatchTracer {
     public static void main(String[] a) throws Exception {
@@ -51,6 +63,9 @@ public class PatchTracer {
         pool.insertClassPath("tools/lib/minecraft-1.7.10-srg.jar");
         pool.insertClassPath("tools/lib/forge-1.7.10-srg.jar");
         pool.insertClassPath(a[2]); // netty-all 4.0.10 (Prism libraries): ByteBuf of toBytes / fromBytes
+        if (a.length > 3) {
+            pool.insertClassPath(a[3]); // lwjgl_util 2.9.4: Vector3f of the tracer renderer (v3)
+        }
 
         CtClass packet = pool.get("deci.aE.a$B");
         packet.addField(CtField.make("public int targetId;", packet), CtField.Initializer.constant(-1));
@@ -91,6 +106,17 @@ public class PatchTracer {
                     m.replace("{ $_ = deci.aE.a$B.handlingHasAim ? 0.0 : $proceed($$); }");
                     return;
                 }
+                if (m.getMethodName().equals("func_72441_c")) { // Vec3.addVector: the tracer's end (v3)
+                    m.replace("{ $_ = deci.aE.a$B.handlingHasAim ? net.minecraft.util.Vec3.func_72443_a("
+                      + "(double) deci.aE.a$B.handlingAimX, (double) deci.aE.a$B.handlingAimY,"
+                      + " (double) deci.aE.a$B.handlingAimZ) : $proceed($$); }");
+                    return;
+                }
+                if (m.getClassName().equals("java.util.Random") && m.getMethodName().equals("nextFloat")) {
+                    // the end jitter (+-1, shotguns +-3): none for a traced shot, it ends where it hit (v3)
+                    m.replace("{ $_ = deci.aE.a$B.handlingHasAim ? 0.5F : $proceed($$); }");
+                    return;
+                }
                 if (m.getMethodName().equals("func_70676_i")) { // getLook(float) of the shooter
                     m.replace(
                         "{ double ax = deci.aE.a$B.handlingAimX - $0.field_70165_t;"
@@ -116,6 +142,29 @@ public class PatchTracer {
         });
         handler.writeFile(a[1]);
 
+        // v3: the drawn segment never runs past the tracer's end. The first two 3 float Vector3f
+        // constructions in b() are the segment's tail and head (start kf + direction x distance);
+        // kk = the tracer's length (capped at 300 by Decimation)
+        CtClass tracer = pool.get("deci.n.d$a");
+        CtMethod render = tracer.getMethod("b", "(Lnet/minecraft/client/Minecraft;F)V");
+        final int[] seen = {0};
+        render.instrument(new ExprEditor() {
+            public void edit(javassist.expr.NewExpr e) throws CannotCompileException {
+                if (e.getClassName().equals("org.lwjgl.util.vector.Vector3f") && e.getSignature().equals("(FFF)V")
+                    && seen[0]++ < 2) {
+                    e.replace("{ float dx = $1 - this.kf.x, dy = $2 - this.kf.y, dz = $3 - this.kf.z;"
+                      + "  float d = (float) Math.sqrt((double) (dx * dx + dy * dy + dz * dz));"
+                      + "  if (d > this.kk && d > 1.0E-4F) { float s = this.kk / d;"
+                      + "    $_ = new org.lwjgl.util.vector.Vector3f(this.kf.x + dx * s, this.kf.y + dy * s, this.kf.z + dz * s); }"
+                      + "  else { $_ = $proceed($$); } }");
+                }
+            }
+        });
+        if (seen[0] < 2) {
+            throw new IllegalStateException("BulletTracer.b: segment points not found (" + seen[0] + ")");
+        }
+        tracer.writeFile(a[1]);
+
         String[][] shooters = {{"deci.ag.a", "e"}, {"deci.ai.v", "e"}}; // BanditEntity / ArmedTraderEntity.shootAt
         for (String[] s : shooters) {
             CtClass c = pool.get(s[0]);
@@ -136,6 +185,7 @@ public class PatchTracer {
             c.writeFile(a[1]);
         }
         System.out.println("patched PacketGunFireEffects (+target id, +aim point), its handler (tracer toward the "
-                           + "aim point / target), BanditEntity.shootAt (+shotHook), ArmedTraderEntity.shootAt");
+                           + "aim point / target, ending at the aim point), BulletTracer (segment clamped to its "
+                           + "end), BanditEntity.shootAt (+shotHook), ArmedTraderEntity.shootAt");
     }
 }

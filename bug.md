@@ -950,6 +950,27 @@ used as floor.
   shootAt crashes on a miss when the bandit has no AI target: it plays the
   miss sound at getAITarget(); never happens in play, the AI sets it.)
 
+## NPC tracers fly through buildings (reported 14 Oktober 2026, FIXED v0.62.4)
+- **Reported**: 14 Oktober 2026 (user): "the tracer ammo pass through any building ... normally when it hit block,
+  it will disappear since its the end of the tracer ... even apartment can be pass it".
+- **Cause (code)**: a tracer (BulletTracerRenderer$BulletTracer, deci.n.d$a) flies from start to end and is removed
+  when its head reaches its length (tick c(): ticks x 10 >= length - 10); nothing checks blocks. A player's own
+  shot sends PacketBulletTracer with the ray trace's hit as the end, so it stops at the wall. An NPC shot sends
+  PacketGunFireEffects; its handler (deci.aE.a$B$a) ends the tracer 250 blocks along the aim (shotguns 50) with a
+  random +-1 (+-3) end. Our v2 aim point (NpcShots, v0.30.3) only set the direction ("a point far along the
+  line"), so the server stopped the shot at the wall while the client drew it 250 blocks on. Since v2 every NPC
+  tracer is visible (Decimation hid 60 %), which made it obvious.
+- **Fix** (`tools/patches/PatchTracer.java` v3, three jars: deci/aE/a$B$a and deci/n/d$a; the packet and shooter
+  classes are unchanged from v2, checked byte for byte): NpcShots sends the point where the shot ENDED (the body it
+  hit, the block's hit point, else its range) and the handler ends a traced shot's tracer there (Vec3.addVector
+  answered with the aim point, no end jitter). The renderer clamps the drawn 10 block segment to the tracer's
+  length, so a shot into a near wall does not poke through it during its first frames (player tracers too).
+- **Checked**: patch built from the original classes, classes load under -Xverify:all, bytecode shows both
+  segment points clamped and the handler's end replaced; mod compiles; backup hash unchanged, entry counts and zip
+  tests clean. Dev test `tracer` got a check "tracers end where the shot ended" (hits on the player 8 away end
+  within 12 blocks, none longer than the shot range). Not run yet: the user was playing in the dev client
+  `[not verified]` in game.
+
 ## Full military armor makes NPC gunfire almost harmless (reported 9 Oktober 2026, FIXED v0.30.2)
 User: a full set of normal military armor takes about 1 hp per NPC shot,
 even with a group of NPCs shooting at once.
@@ -1023,7 +1044,8 @@ bullet impacts on blocks (until now only player shots made them).
   full on infected). A block hit sends Decimation's own impact particles
   ("explode" + "blockcrack", as the player block hit handler does). The
   packet carries a point far along the shot line, the client draws the
-  tracer along it and always visible.
+  tracer along it and always visible. (Since v0.62.4 the point is where the
+  shot ended and the tracer stops there: "NPC tracers fly through buildings".)
 - **Checked** (dev test modes, fresh world, all PASS): shots: AKM medium
   bandit at a pig, 97% hits at 10 blocks, 57..66% at 20, 0 / 143 through
   a stone wall, impact particles on the wall (shots_wall); tracer: 163

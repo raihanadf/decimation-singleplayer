@@ -157,9 +157,10 @@ public class NpcShots implements BiFunction<Entity, EntityLivingBase, Object>
                 world.getBlock(block.blockX, block.blockY, block.blockZ),
                 world.getBlockMetadata(block.blockX, block.blockY, block.blockZ));
         }
-        // the client only needs the direction: a point far along the line keeps it exact even
-        // when the shot stopped close to the shooter (client and server positions differ a little)
-        Deci.sendNpcShot(shooter, target, sx + cx * 64, sy + cy * 64, sz + cz * 64);
+        // the tracer ends where the shot ended: the body it hit, the wall, or its range (PatchTracer v3;
+        // a point far along the line drew every tracer 250 blocks long, through buildings)
+        Vec3 end = hitPoint != null ? hitPoint : stop;
+        Deci.sendNpcShot(shooter, target, end.xCoord, end.yCoord, end.zCoord);
         // the magazine: empty means a reload (the burst ends with it)
         int capacity = Math.max(1, Deci.gunMagazine(gun));
         int[] mag = magazines.get(shooter);

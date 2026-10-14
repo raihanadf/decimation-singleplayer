@@ -306,7 +306,8 @@ SRG→MCP from the old root `src/` via `mcp_stable/12` CSVs; the root `src/` +
   `PatchBackend.java` (2026-10-09) launch no longer waits 5 s for the
   dead Decimation server; `PatchTracer.java` v2 (2026-10-09, aim point in
   the packet, `shotHook` in BanditEntity.shootAt, NPC tracers always
-  visible) then `PatchFactions.java` on top of its deci/ag/a output
+  visible; v3 2026-10-14: tracers end where the shot ended, drawn segment
+  clamped to the tracer's length) then `PatchFactions.java` on top of its deci/ag/a output
   (Soviets vs everyone else);
   `PatchMenuStats.java` (2026-10-11, ASM not Javassist: rewrites string
   constants): menu / HUD stat labels (Human Kills, Deaths, Total Human Kills,
@@ -937,6 +938,9 @@ of the last session:
   link radar plot, road dashes turned with the plan (AirportPlan.blockAt: BlockRoad_CenterLine 4 along z, 2 along x),
   camera points that faced walls moved. Read every shot of a sky test: a blank wall or dark frame is a bad camera.
   v0.62.3: airport fighters F-15 size (19 x 13 x 6, Airport.fighter), revetments in one shared wall row 15 wide inside.
+  v0.62.4: NPC tracers stop where the shot stopped (bug.md "NPC tracers fly through buildings"): PatchTracer v3 (three
+  jars, deci/aE/a$B$a + deci/n/d$a; fourth argument lwjgl_util 2.9.4 from the gradle cache), NpcShots sends the shot's
+  end point; dev test `tracer` checks tracer lengths.
   Gun study (10 Oktober 2026): docs/gun_style_guide.md, tools/guns/study.py
   (renders / measures Decimation's guns from the jar, `attach` adds
   attachments as the game places them), dev test mode `gunview` (hip, aim

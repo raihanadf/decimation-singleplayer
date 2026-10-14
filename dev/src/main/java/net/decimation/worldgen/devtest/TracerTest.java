@@ -62,6 +62,9 @@ public class TracerTest extends DevTestMode
         java.util.Collections.newSetFromMap(new java.util.IdentityHashMap<Object, Boolean>());
     private int tracerCount;
     private double tracerMax, tracerSum, shotSum;
+    /** Tracers ending within 12 blocks (on the player 8 away) and the longest one (PatchTracer v3: ends where the shot ended). */
+    private int shortTracers;
+    private double longestTracer;
     private int allSeen, rejected;
     private final java.util.Map<String, Integer> colours = new java.util.TreeMap<String, Integer>();
     private final java.util.Queue<double[]> shotDirs = new java.util.concurrent.ConcurrentLinkedQueue<double[]>();
@@ -129,6 +132,10 @@ public class TracerTest extends DevTestMode
                                  tracerCount > 0 ? shotSum / tracerCount : 0, tracerCount, ownShots()),
                                  tracerCount > 10 && shotSum / tracerCount < 3,
                                  "< 3 deg over > 10 tracers (before v0.28.5 ~133 to the target)");
+            DevTestResults.check("tracer", "tracers end where the shot ended", String.format("%d of %d within 12 blocks, "
+                                 + "longest %.0f", shortTracers, tracerCount, longestTracer),
+                                 shortTracers > 5 && longestTracer <= 161,
+                                 "hits on the player 8 away end there; none past the shot range (before v0.62.4 all 250)");
             tracerDone = true;
             return;
         }
@@ -178,6 +185,11 @@ public class TracerTest extends DevTestMode
                     bestShot = Math.min(bestShot, Math.toDegrees(Math.acos(Math.max(-1, Math.min(1, c)))));
                 }
                 shotSum += bestShot;
+                if (len <= 12)
+                {
+                    shortTracers++;
+                }
+                longestTracer = Math.max(longestTracer, len);
                 tracerCount++;
                 tracerSum += ang;
                 tracerMax = Math.max(tracerMax, ang);
