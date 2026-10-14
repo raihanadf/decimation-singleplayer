@@ -143,6 +143,11 @@ props placement".
     cities, TerrainEvents) and other city features laid by rows (a metro station's stairs): check the
     generated world for water and holes, not only the sky test.
 
+16. Start every compound by invoking this skill and doing its research step for real (a dozen sources, the small
+    things written into the doc): the airport built from memory with two searches read as "to basic".
+17. When the user is playing, verify through the dedicated server (servertest, region file dumps for propclash
+    and walkcheck) instead of the client; never chain the pgrep check with a live test.
+
 ## Casebook (never delete a case)
 
 ### Case 1: first FOB generator (v0.42.0, 10 Oktober 2026)
@@ -283,3 +288,12 @@ props placement".
   stairs through a hangar floor (lesson 15).
 - Check: sky test clashes 0, propclash 0, walkcheck all reachable; seed 1 server, two airports generated and
   read back clean. Shots docs/shots/airport_v0.62/.
+
+### Case 8: "to basic" (airport v0.62.0 -> v0.62.1, 14 Oktober 2026)
+- User: "hmm, to basic. are you using the skills before? and you still remember how to make structure correctly and
+  really detailed?" The first airport was built without invoking this skill: thin research, fixed boxes, empty
+  concrete, bare buildings.
+- Redone through the skill: 13 sources into docs/airport.md, the real details mapped to blocks, module reserves,
+  lighting and markings, revetments, shelters, fire station, radar, igloos, a FOB style entry (lesson 16).
+- Test trap: the live sky test ran beside the user's open game (pgrep chained, third time); stopped, verified on the
+  server instead (lesson 17): no clash, propclash 0 on 248 props, walkcheck 0.

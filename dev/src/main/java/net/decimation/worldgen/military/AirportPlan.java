@@ -49,6 +49,10 @@ public final class AirportPlan extends CanvasPlan implements FixedBase, Garrison
                 a = new Airport(seed);
                 a.build();
                 CACHE.put(seed, a);
+                for (String line : a.log)
+                {
+                    cpw.mods.fml.common.FMLLog.info("[deciworldgen] airport %s", line);   // clashes / refusals (servertest)
+                }
             }
             return a;
         }

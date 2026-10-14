@@ -930,6 +930,9 @@ of the last session:
   city (1 in 3) as a block of 2 x 4 cells (LcCity.block kind 3), military/Airport builds it (runway, taxiway, apron,
   block-built planes, hangars, tower, locked HQ and armory, barracks, fuel farm, damage, garrison); new worlds
   (`!airports`). Dev test `airport`; gatescan also lists airport sites. No lakes / springs over cities now.
+  v0.62.1: the airport redone through the decimation-military-base skill after "to basic" (docs/airport.md section 9):
+  module reserves, runway lighting / markings / PAPI / arresting gear, revetments, shelters, fire station, radar,
+  igloos, FOB style entry; checked on the server (propclash 0 on 248 props, walkcheck 0).
   Gun study (10 Oktober 2026): docs/gun_style_guide.md, tools/guns/study.py
   (renders / measures Decimation's guns from the jar, `attach` adds
   attachments as the game places them), dev test mode `gunview` (hip, aim

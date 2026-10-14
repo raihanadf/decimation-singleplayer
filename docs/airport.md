@@ -10,40 +10,69 @@ park and hangar on wasteland". Choices taken (asked with options, 14 Oktober 202
 - loot: BUNKER LEVEL IN PLACES: HQ and armory locked (keycard), top military loot inside; hangars and barracks
   normal military loot.
 
-## 1. Reference (what a military airfield has, in the order a visitor meets it)
-- Runway with shoulders, edge lights, threshold and centreline markings; a parallel taxiway joined to it by
-  stub taxiways; aprons (aircraft parking) beside the taxiway; hangars grouped next to the aprons (NCAP,
-  "Anatomy of airfields": https://www.ncap.org/news/2026/anatomy-of-airfields); a control tower with a view
-  of the whole runway; fuel stores with their own road loop (same source), expeditionary fuel in collapsible
-  bladders (SLDinfo, FARP at WTI 2-26: https://sldinfo.com/2026/06/fueling-the-forward-edge-the-farp-practical-application-at-wti-2-26/);
-  HQ, barracks, armory on the landside; perimeter fence, entry control point.
-- Main runways are about 45 m wide (UK ACP 31 reference: https://scottbouch.com/rtfm/uk/sequential/acp/31/b1/al6/acp31-b1-s3-c1.pdf);
-  layout rules for military airfields are in UFC 3-260-01 (https://www.wbdg.org/node/23093). Scaled to the
-  game: a runway 14 wide and about 220 long reads as a runway beside 3.85 wide cars [inferred: scale].
+## 1. Reference (researched 14 Oktober 2026, second pass after the user's review "to basic")
+- Runway, taxiway, aprons, hangars beside the aprons, tower, fuel stores with a road loop, fuel bladders (NCAP
+  "Anatomy of airfields" https://www.ncap.org/news/2026/anatomy-of-airfields; SLDinfo FARP
+  https://sldinfo.com/2026/06/fueling-the-forward-edge-the-farp-practical-application-at-wti-2-26/). Main runways
+  about 45 m wide (ACP 31 https://scottbouch.com/rtfm/uk/sequential/acp/31/b1/al6/acp31-b1-s3-c1.pdf); layout
+  rules UFC 3-260-01 (https://www.wbdg.org/node/23093).
+- Lighting (aeroclass https://www.aeroclass.org/runway-lights/, IVAO https://wiki.ivao.aero/en/home/training/documentation/Aerodrome_Lighting_System,
+  OCEM https://ocem.com/en/all-about-airfield-ground-lighting/what-lights-are-part-of-the-airfield-ground-lighting-set-up-at-an-airport/):
+  white approach light bars from the threshold outward (centreline + crossbars), green threshold lights, white
+  edge lights about 60 m apart, red end lights, PAPI: four boxes beside the touchdown zone (two red two white =
+  on the glide path), blue taxiway edge lights.
+- Arresting gear BAK-12 (af.mil https://www.creech.af.mil/News/Article-Display/Article/1017474/nttrrss-certifies-arresting-system/,
+  https://www.ramstein.af.mil/News/Features/Display/Article/727167/786th-ces-barrier-mx-team-leash-aircraft):
+  an energy absorber housing on each side of the runway, a pendant cable across it on supports, fired from the
+  tower.
+- Hardened aircraft shelters (AFMAN 141182 https://stg.wbdg.org/FFC/AF/AFMAN/141182_Hardened_Aircraft_Shelters.pdf;
+  Airfield Research Group https://www.airfieldresearchgroup.org.uk/forum/airfield-discussion/261-uk-cold-war-airfield-structures):
+  steel lined concrete about 0.46 m thick, an arched shell, one aircraft each (first and second generation),
+  heavy sliding blast doors in two leaves on rails at one end.
+- Revetments (Wikipedia https://en.wikipedia.org/wiki/Revetment_(aircraft); Bagram
+  https://en.wikipedia.org/wiki/Bagram_Airfield, https://www.globalsecurity.org/military/world/afghanistan/bagram.htm):
+  a parking pad with blast walls on three sides; Bagram had over 110 revetments, five dispersal areas, three
+  large hangars. Soviet model bases (Air Power Australia https://www.ausairpower.net/APA-2008-02.html; CIA Tutow
+  https://www.cia.gov/readingroom/node/1997290): earth revetted hardstands, pads for up to three fighters,
+  dispersal taxiways.
+- Aerospace ground equipment (af.mil https://www.shaw.af.mil/News/Article-Display/Article/1734808/age-supports-mission-from-ground):
+  diesel and turbine generators, hydraulic test stands, nitrogen carts, air conditioners, heaters, jacks,
+  maintenance stands, light carts, bomb lifts; hundreds of pieces per base.
+- Munitions storage (Coffman https://www.coffman.com/portfolio_items/p-3105-munitions-storage-igloos/; Ellsworth
+  https://wearethemighty.com/mighty-history/a-rare-look-beyond-the-gates-at-ellsworth-afb): earth covered
+  magazines (igloos): an arch under at least 0.6 m of soil, a concrete headwall with blast doors, built side by
+  side but apart.
+- Radar (FAA ASR-11 https://www.faa.gov/air_traffic/technology/asr-11/): the rotating antenna on its own tower
+  (8 to 23 m) in a fenced plot with an equipment shelter at its foot, apart from the control tower.
 
-## 2. Placement (city/Airport, LcCity.block)
-- One airport per city at most: the city's first wasteland sector by hash, 1 in 3 cities; the half of that
-  sector (west / east: runway along z; north / south: along x) facing away from the rest of the city where
-  possible. No airport when a river cell lies in it.
-- The half sector is one BLOCK of 2 x 4 cells (LcCity.block kind 3, like the 2 x 2 superblock): its first
-  chunk column and row stay streets (so it joins the wasteland's streets and the fence lines on sector edges
-  keep working), the rest (7 x 15 chunks = 112 x 240 blocks) is the airport canvas. One ground level for the
-  whole block (the lowest member level), edge plans of the member cells kept (land fence, ramps).
-- New worlds only (StructureData flag), like every other city layout change.
-
-## 3. Layout (canvas 112 x 240, runway along z, the entry gate on the north side toward the block's street)
-| x | what |
+## 2. In Minecraft (Decimation props, docs/prop_catalogue.md)
+| Real thing | Built from |
 |---|---|
-| 0..2 | perimeter: chain link, posts, wire; HESCO guard towers at the corners |
-| 4..25 | runway strip: runway x 8..21 (14 wide), shoulders, edge lights, threshold bars, centreline dashes |
-| 26..33 | grass and gravel, stub taxiways across every ~60 |
-| 34..41 | parallel taxiway (8 wide, yellow centreline) |
-| 42..71 | apron (concrete) z 50..190: fighters in a row, the cargo plane, the helipad with the helicopter wreck |
-| 72..108 | landside: 3 hangars facing the apron, control tower at the apron's middle, HQ (locked), armory (locked), barracks rows, fuel farm (bladders, drums, a pump), motor pool |
-| 109..111 | perimeter |
+| runway / taxiway / apron | deci:BlockRoad asphalt; concrete BlockStone_7 aprons with darker joints; white paint wool 0 (white clay reads pink); yellow clay lines |
+| lights | glowstone flush under stained glass: white edge, lime threshold, red ends, blue taxiway edges; approach bars of white glass lights on posts beyond the thresholds |
+| PAPI | four small boxes on legs beside the touchdown zone, red / white wool faces |
+| windsock | iron bar mast, an orange and white wool sock |
+| arresting gear | BlockMetalWall housings 2 x 3 each side, black carpet cable across the runway |
+| runway numbers, touchdown marks | white wool pixels (3 x 5 digits) |
+| hardened shelter | concrete arch (BlockStone_7), blast doors of BlockMetal_3 half open on rails (rail block) |
+| revetment | deciworldgen:hesco walls 3 high, U open to the taxiway |
+| aircraft | wool fighters and cargo plane (section 4) |
+| ground equipment | generators, light carts (BlockHazardLight), bomb trolleys (slab carts with coal block bombs), a fuel truck and a tow tractor from blocks, wheel chocks (slabs), FOD bins (BlockTrashcan), toolboxes (BlockElectricBox1) |
+| fire station | concrete, two bays, a red wool crash truck, hose rack, lockers, beds |
+| radar | BlockRadioTower lattice 8 high, a block dish on top, equipment shelter, fence |
+| igloos | stone arch covered by grass on dirt, concrete headwall, metal blast doors, ammo cases and crates inside |
+| loot | as the FOB: weapon cabinets, large ammo cases, military crates, care packages, footlockers |
 
-Along z: north perimeter with the entry control point (chicane, booth, barrier arm) on the street side; the
-runway z 10..229.
+## 3. Layout (canvas 112 x 240, runway along z, the gate north)
+| x / z | what |
+|---|---|
+| x 0 | perimeter fence, concertina ring inside; HESCO towers at the corners and over the ECP |
+| x 4..25 | runway strip: shoulders, runway x 8..21, approach bars z 1..9 and 230..238, arresting gear z 34 / 205, PAPI beside z 48 / 191, numbers and touchdown marks |
+| x 26..33 | infield grass: windsock, hold short lines on the stubs, taxiway signs |
+| x 34..41 | taxiway, blue edge lights, three stubs |
+| x 42..71 | apron: four HESCO revetments with fighters and their ground equipment (z 50..110), the cargo plane hardstand (z 116..142), helipad (z 148..164), fuel truck, tow tractor, bomb trolleys, light carts (z 168..196) |
+| x 72..77 | landside road |
+| x 78..110 | ECP side and fuel farm (z 12..44), two hardened shelters (z 50..72, 78..100), the burnt maintenance hangar (z 106..132), fire station and radar (z 136..154), tower and HQ (z 158..178), barracks with bunkers (z 182..200), the munitions area with igloos and the armory (z 204..236) |
 
 ## 4. Aircraft from blocks
 - Fighter (about 13 long, 9 wide, 4 high): grey clay fuselage, glass canopy, slab wings and tailplanes, a fin,
@@ -87,3 +116,30 @@ runway z 10..229.
   spawner), top down pictures topdown_alongz.png / topdown_alongx.png.
 - Not checked: the garrison manned in game (posts spawn on a player's first visit), how it feels to walk in.
 
+## 9. Rework after the user's review (v0.62.1, 14 Oktober 2026)
+User on v0.62.0: "hmm, to basic. are you using the skills before? and you still remember how to make structure
+correctly and really detailed?" Cause: built from memory without the decimation-military-base skill (2 searches,
+fixed boxes, big empty concrete). Redone through the skill: sections 1 to 3 rewritten from 13 sources, then:
+- every module reserves its rectangle (Airport.reserve: an overlap logs "refused ..." and fails the test);
+- runway: numbers 18 / 36 (3 x 5 pixels, readable from each approach), touchdown bars, aiming blocks, edge and
+  threshold bars, dashed centreline; lights: edge every 12, green threshold glass, red end glass, approach light bars
+  on posts beyond both ends; PAPI (two white, two red); arresting gear housings both sides with the cable across;
+- infield windsock; taxiway blue edge lights, hold short lines and signs on the stubs;
+- apron: four HESCO revetments (fighter nose out with a chock, generator, light cart, bomb trolley, toolbox, crate;
+  one bay empty with oil stains, one burnt with a wrecked fighter and a body), the cargo stand with pallets and a
+  care package, the helipad with corner lights, the equipment yard (block built fuel truck and tow tractor, bomb
+  trolley rows, generators, light carts, FOD bins), floodlights;
+- landside: FOB style entry point (drop arm with its lamp, serpentine, sandbag booth, overwatch tower with a
+  searchlight, vehicle search pad with a jeep), fuel farm (bladders in a berm, pump house, fuel lines, drums), two
+  hardened aircraft shelters (concrete arch, blast door leaves half open on their track; one a maintenance bay with
+  a wing panel off, the engine on a stand, a work stand), the burnt maintenance hangar (spawner), a crash fire
+  rescue station (two bays, red crash truck, hose coils, crew room), a surveillance radar (fenced plot, lattice mast
+  with the antenna, equipment shelter), the tower with a catwalk and consoles, the HQ in three rooms (operations
+  with map tables, the commander's office, comms) behind a blast wall, two B-huts and a duck and cover bunker, the
+  munitions area (HESCO wall, three earth covered igloos with loot, bomb trolleys, the locked armory); guard
+  towers like the FOB's at three corners and over the entry.
+- Checked on the dedicated server (the user's game was open, so no client shots): seed 1 airport at -2544,1296
+  generated, no clash or refusal logged, propclash 0 findings on 248 props, walkcheck reaches every cell except the
+  two keycard doors (HQ, armory), garrison registered. Top down: shots airport_v0.62/topdown_v2_alongz.png.
+- Not checked: in game shots of the rework (client test not run while the user plays), turns 3 (runway along x) in
+  the walk test.

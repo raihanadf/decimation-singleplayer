@@ -27,6 +27,10 @@ How shots are made: `./gradlew runClient -Pautotest` (street views),
   locked door, keycard), barracks (plywood huts), fuel (dark bladders in a sandbag berm, drums), cargo (grey cargo
   plane from behind, ramp, hold with crates), apron (cargo plane, tower), runway_crash (taxiway, grass strip with
   the wrecked fighter's scorch, runway), top (the whole airport from above).
+- topdown_v2_alongz.png (v0.62.1 rework, seed 1 server, 3 px per block): runway with numbers, touchdown and aiming
+  marks, approach lights at both ends, arresting gear; grass infield; taxiway with stubs; apron (revetments, cargo
+  plane, helipad, equipment yard); landside from the top: entry point and search pad, fuel farm, two shelters, the
+  burnt hangar, fire station and radar, tower and HQ, barracks, the munitions area with three grass covered igloos.
 - topdown_alongz.png / topdown_alongx.png: tools/topdown_blocks.py of seed 1 server worlds, the airports at
   -2544,1296 (runway along z) and 272,-2032 (along x) inside their wasteland cities: streets round the block,
   the land fence outside, runway, taxiway, apron, hangars and buildings; no water.
