@@ -45,7 +45,7 @@ WBDG / Air Force entry control facility guidance; Smithsonian "HESCO barriers, n
 | tent (TEMPER) | smooth sandstone vault (hardened clay read orange), birch plank floor |
 | footlocker | deci:BlockStorageCrate or (half) a vanilla chest: the chest has Decimation's loot, the storage crate is a player box (empty) |
 | shelves, tool locker | deci:BlockMetalShelf / _Empty (multiblock, drawn 2 wide, 2 tall), deci:BlockElectricBoxBin |
-| locked door | deci:Door_Emergency_1_Locked (the only locked door): opened by a military keycard on deci:BlockKeycardScreenMilitary within 3 blocks, a lockpick, or creative; military crates, wrecks and care packages can drop the military keycard |
+| locked door | deci:Door_Emergency_1_Locked (the only locked door): opened by a military keycard on deci:BlockKeycardScreenMilitary at offsets -3 .. +2 (KeycardReaderBlock; tools/props/keycardcheck.py), a lockpick, or creative; military crates, wrecks and care packages can drop the military keycard |
 | concrete | stone / deci:BlockStone_* |
 | loot | deci:BlockMilitaryCrate, BlockAmmoCrate(Large), BlockWeaponCabinet, BlockMedicalCrate, BlockWoodCrate, BlockStorageCrate (footlocker), BlockCarePackage |
 | equipment | BlockMilitaryRadio(Small), BlockRadioTower, BlockSpotlight, BlockPowerGenerator, BlockHazardLight, BlockFlagPollUAHD, BlockWallflag, BlockMonitor, BlockMetalTable, BlockOfficeChair, BlockKeycardScreen_Military |

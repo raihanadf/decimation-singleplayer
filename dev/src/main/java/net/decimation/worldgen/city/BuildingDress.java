@@ -480,7 +480,7 @@ final class BuildingDress
      * most, clinics and police stations more). A locked building gets Decimation's only locked door
      * (Door_Emergency_1_Locked, same metadata) in every entrance, and a military keycard screen on the
      * outer wall 1 or 2 beside the doorway, 1 up, where the building's plot has an outdoor cell there
-     * (a door on the plot's edge has none: a lockpick then): a military keycard on it opens doors within 3 blocks
+     * (a door on the plot's edge has none: a lockpick then): a military keycard on it opens doors at offsets -3 .. +2 (KeycardReaderBlock; tools/props/keycardcheck.py)
      * (docs/military_base.md), a lockpick opens one. Military crates, wrecks and care packages drop the
      * keycard. Inner doors stay open.
      */

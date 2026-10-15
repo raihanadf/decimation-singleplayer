@@ -991,7 +991,7 @@ public final class MilitaryBase
         poi("toc_door", dx + 0.5, 2.6, z1 + 3.5, 180, 12);
         poi("toc_door_wall", dx + 0.5, 2.6, z0 + 2.5, 0, 15);
         // locked door (south) and the military keycard screen beside it on the outer wall: the
-        // reader opens a locked door within 3 blocks (Decimation's KeycardReaderBlock)
+        // reader opens a locked door at offsets -3 .. +2 (KeycardReaderBlock; tools/props/keycardcheck.py) (Decimation's KeycardReaderBlock)
         door(dx, 1, z1, b.lockedDoor, S);
         c.prop(dx + 1, 2, z1 + 1, b.keycard, S);
         for (int z = z0 + 2; z <= z1 - 2; z += 3)
@@ -2023,7 +2023,7 @@ public final class MilitaryBase
             concreteFloor = d("BlockStone_6", Blocks.stone);
             metalDoor = d("Door_Metal_3", Blocks.iron_door);
             // the only locked door Decimation has: opened by a military keycard on a keycard screen
-            // within 3 blocks (KeycardReaderBlock), by a lockpick, or in creative
+            // at offsets -3 .. +2 (KeycardReaderBlock; tools/props/keycardcheck.py) (KeycardReaderBlock), by a lockpick, or in creative
             lockedDoor = d("Door_Emergency_1_Locked", metalDoor);
             powerBox = d("BlockElectricBox1", null);
         }

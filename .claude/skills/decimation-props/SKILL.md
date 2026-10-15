@@ -39,7 +39,7 @@ bases, 11 Oktober 2026, 28 screenshots). Everything learned is in docs/prop_plac
 - Leave free: aisles, the cell in front of every door, the cells above tall props, the space
   of big props (spotlight 2.5 x 3.2, APC 4.5 x 8.9, helicopter 9.4 x 14).
 - Things on tables stand on the table's top (same cell or the table's overhang half cell).
-- A keycard opens a locked door (Door_Emergency_1_Locked) within 3 blocks; one wall prop per
+- A keycard opens a locked door (Door_Emergency_1_Locked) at offsets -3 .. +2 (KeycardReaderBlock; tools/props/keycardcheck.py); one wall prop per
   wall spot.
 - If the structure is built on a Canvas (worldgen/military), `Canvas.validateProps(log)` removes
   and logs every clash; for other builders, dump the blocks and run tools/props/propclash.py.

@@ -61,7 +61,7 @@ Exceptions (from the model geometry and the gallery):
 - Wall mounted props hang on the wall BEHIND their front: keycard screens, the wall flag, the
   junction box BlockElectricBox1 (metadata 3: on the north face of their cell). Their box enters
   that wall on purpose.
-- The keycard screen opens a locked door (only Door_Emergency_1_Locked exists) within 3 blocks
+- The keycard screen opens a locked door (only Door_Emergency_1_Locked exists) at offsets -3 .. +2 (KeycardReaderBlock; tools/props/keycardcheck.py)
   (`KeycardReaderBlock`: x, y, z each -3 .. +2 of the screen).
 
 ## 4. Sizes that matter (drawn, metadata 3; long axis turns with the metadata)
