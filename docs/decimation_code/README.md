@@ -14,7 +14,7 @@ dev test the files name).
 | weapons: guns, shots, ammo, attachments | weapons.md | decimation-code-weapons | dev test `playerfire` (the player's shot end to end, trace 16 Oktober 2026) |
 | NPCs and infected: humans, factions, zombies, spawning | npcs.md | decimation-code-npcs | dev test `shots` (armed NPC turn, trace 16 Oktober 2026) |
 | sides, proxies, network, singleplayer gaps | singleplayer.md | decimation-code-singleplayer | dev tests `zombies` + `checks` with the handler packages traced (16 Oktober 2026) |
-| vehicles | not yet | | |
+| vehicles: driving, fuel, seats, damage, despawn | vehicles.md | decimation-code-vehicles | dev test `drive` (a real drive with fuel, trace 16 Oktober 2026) |
 | zones and turf | not yet (docs/zones.md covers the zone rules) | | |
 | player data: stats, humanity, bottlecaps | not yet | | |
 | clans | not yet | | |
@@ -36,5 +36,6 @@ dev test the files name).
   each tick (npcs.md section 4) [inferred cost, not profiled]; InfectedEntity's client only canEntityBeSeen.
 - Sides: PlayerLoginHandler is registered twice, so it would run twice per login on a dedicated server [inferred];
   a destroyed vehicle drops its items in singleplayer (NoDropsHandler is server only) [inferred].
+- Vehicles: the HUD's despawn countdown says 900 s, the vehicle goes at 600 s, and the clock is not saved.
 - Overrides of Forge added methods renamed by Decimation's obfuscator never run (`...Lost` methods,
   architecture.md "Method naming pass"); other classes may have the same break [not verified].

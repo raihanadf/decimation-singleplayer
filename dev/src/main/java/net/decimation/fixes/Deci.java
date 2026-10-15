@@ -501,6 +501,42 @@ public final class Deci
         return new deci.ad.i(world, x, y, z);
     }
 
+    /** VehicleEntity.driverSeat (YO): the seat whose rider drives; null until the vehicle's first server tick. */
+    public static net.minecraft.entity.Entity vehicleDriverSeat(net.minecraft.entity.Entity vehicle)
+    {
+        return vehicle instanceof deci.ad.e ? ((deci.ad.e) vehicle).YO : null;
+    }
+
+    /** VehicleEntity.getSpeed (dZ): blocks per tick, negative in reverse. */
+    public static float vehicleSpeed(net.minecraft.entity.Entity vehicle)
+    {
+        return vehicle instanceof deci.ad.e ? ((deci.ad.e) vehicle).dZ() : 0;
+    }
+
+    /** VehicleEntity.isEngineOn (ea): a player drives it with fuel (a jerry can holding fuel in the hotbar). */
+    public static boolean vehicleEngineOn(net.minecraft.entity.Entity vehicle)
+    {
+        return vehicle instanceof deci.ad.e && ((deci.ad.e) vehicle).ea();
+    }
+
+    /** VehicleEntity.getDespawnSecondsLeft (dU): 900 minus the seconds since its last driver (it goes at 600). */
+    public static long vehicleDespawnSecondsLeft(net.minecraft.entity.Entity vehicle)
+    {
+        return vehicle instanceof deci.ad.e ? ((deci.ad.e) vehicle).dU() : -1;
+    }
+
+    /** ItemRegistry.itemJerryCan (amy): vehicle and chainsaw fuel. */
+    public static Item jerryCan()
+    {
+        return deci.aD.k.amy;
+    }
+
+    /** DescribedItem.getAmount (deci.ao.b p): the "amount" of a jerry can and the like; -1 for other items. */
+    public static int itemAmount(net.minecraft.item.ItemStack stack)
+    {
+        return stack != null && stack.getItem() instanceof deci.ao.b ? ((deci.ao.b) stack.getItem()).p(stack) : -1;
+    }
+
     /** InfectedEntity (deci.ag.d). */
     public static boolean isInfected(net.minecraft.entity.Entity e)
     {

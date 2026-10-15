@@ -38,6 +38,10 @@ Prefixes take dots or slashes and may go down to a method (`net.decimation.fixes
 - A live game that is already running keeps how it was started: a game without the agent answers "no call
   logger"; a game started with `--trace=PACKAGES` marks only those (a later `-Ptrace=` for other packages finds
   nothing). `--stop` and start again.
+- Decimation methods in a prefix go by their OBFUSCATED name (`deci.ad.e.h` for VehicleEntity.consumeFuel): look it up
+  in deobf/decimation.srg (`MD: deci/ad/e/h (...) decimation/vehicle/VehicleEntity/consumeFuel`). A readable name
+  only matches where the jar itself is readable (overrides like `onUpdate`, or methods such as `playerHasFuel`); a
+  prefix that matches nothing traces nothing and says nothing (16 Oktober 2026, the drive test).
 - Do not start a second game by hand beside devtest.py (both take the debug port 5005 and the live port; the
   second one dies with "bind failed").
 - Broad prefixes fill the event list fast: `deci.n,com.boehmod,deci.aE` over a 20 s tracer run made 2.75 million

@@ -55,9 +55,9 @@
     "semantic_hash": "349759ed48d70ba880df9bffff1c9d74"
   },
   "dev/src/main/java/net/decimation/worldgen/DevAutoTest.java": {
-    "mtime": 1792093188.2597911,
-    "ast_hash": "51545e7d12cf3500afd92a90a92674f7",
-    "semantic_hash": "51545e7d12cf3500afd92a90a92674f7"
+    "mtime": 1792095280.0870235,
+    "ast_hash": "97991f23ac4e189c3d1a78bd3c732c5c",
+    "semantic_hash": "97991f23ac4e189c3d1a78bd3c732c5c"
   },
   "dev/src/main/java/net/decimation/worldgen/Rotation.java": {
     "mtime": 1791315242.0110583,
@@ -575,9 +575,9 @@
     "semantic_hash": "9425c3d999231c499db9409aa6aa35ca"
   },
   "dev/src/main/java/net/decimation/fixes/Deci.java": {
-    "mtime": 1792094231.3828852,
-    "ast_hash": "d8e52f9162f320871b55859981e00ff8",
-    "semantic_hash": "d8e52f9162f320871b55859981e00ff8"
+    "mtime": 1792095251.4223197,
+    "ast_hash": "0d0b8cf9b2411c7ea629b4be0f6687db",
+    "semantic_hash": "0d0b8cf9b2411c7ea629b4be0f6687db"
   },
   "dev/src/main/java/net/decimation/fixes/ScopeZoom.java": {
     "mtime": 1791879636.7429748,
@@ -1535,9 +1535,9 @@
     "semantic_hash": "2fc538fce4c3de38e65b401ae1346c3c"
   },
   "docs/call_trace.md": {
-    "mtime": 1792092259.0639877,
-    "ast_hash": "97a75f368614904ee37753804d899643",
-    "semantic_hash": "97a75f368614904ee37753804d899643"
+    "mtime": 1792095766.6872976,
+    "ast_hash": "24ca63cf120795f79a1086865839f8ec",
+    "semantic_hash": "24ca63cf120795f79a1086865839f8ec"
   },
   "docs/tasks.md": {
     "mtime": 1792092395.257194,
@@ -1555,9 +1555,9 @@
     "semantic_hash": "16ec07afd4046b0158fe5fa5943f0fba"
   },
   "docs/decimation_code/README.md": {
-    "mtime": 1792094949.9941366,
-    "ast_hash": "3651ccd6b89971d8c9d54d25b9ecf5b0",
-    "semantic_hash": "3651ccd6b89971d8c9d54d25b9ecf5b0"
+    "mtime": 1792095849.4497087,
+    "ast_hash": "103c16b2737049ff2f401c4fc5b0276c",
+    "semantic_hash": "103c16b2737049ff2f401c4fc5b0276c"
   },
   "docs/decimation_code/loot.md": {
     "mtime": 1792092798.5578623,
@@ -1598,5 +1598,20 @@
     "mtime": 1792094887.651125,
     "ast_hash": "f7917789f6310256a5f94afd5703b081",
     "semantic_hash": "f7917789f6310256a5f94afd5703b081"
+  },
+  "dev/src/main/java/net/decimation/worldgen/devtest/DriveTest.java": {
+    "mtime": 1792095642.302198,
+    "ast_hash": "cdd11482628ec1f3bcdb986c0d9ed12c",
+    "semantic_hash": "cdd11482628ec1f3bcdb986c0d9ed12c"
+  },
+  ".claude/skills/decimation-code-vehicles/SKILL.md": {
+    "mtime": 1792095810.6086612,
+    "ast_hash": "da42af7cf1e1f592e4ae87209f5105eb",
+    "semantic_hash": "da42af7cf1e1f592e4ae87209f5105eb"
+  },
+  "docs/decimation_code/vehicles.md": {
+    "mtime": 1792095827.4269571,
+    "ast_hash": "d9959a6a8bc2e228afc6e4071816b753",
+    "semantic_hash": "d9959a6a8bc2e228afc6e4071816b753"
   }
 }
