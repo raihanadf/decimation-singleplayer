@@ -91,7 +91,7 @@ def check(path, obf, methods, names, deci, modes):
         if cls in methods and cls != "Deci" and meth not in methods[cls] and not meth.isupper():
             bad.append("method %s.%s" % (cls, meth))
     # repo paths
-    for m in re.finditer(r"`?((?:docs|tools|deobf|dev|fixes|worldgen|\.claude)/[\w./$*-]+)", text):
+    for m in re.finditer(r"(?<![\w/])`?((?:docs|tools|deobf|dev|fixes|worldgen|\.claude)/[\w./$*-]+)", text):
         p = m.group(1)
         if p.endswith("/") or "*" in p or p.startswith("dev/run"):
             continue

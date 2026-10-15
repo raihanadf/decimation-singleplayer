@@ -131,6 +131,7 @@ public class DevAutoTest
         if (name.equals("playerfire")) return new net.decimation.worldgen.devtest.PlayerFireTest();
         if (name.equals("drive")) return new net.decimation.worldgen.devtest.DriveTest();
         if (name.equals("trade")) return new net.decimation.worldgen.devtest.TradeTest();
+        if (name.equals("useitems")) return new net.decimation.worldgen.devtest.UseItemsTest();
         if (name.equals("items")) return new net.decimation.worldgen.devtest.ItemsTest();
         if (name.equals("core")) return new net.decimation.worldgen.devtest.CoreTest();
         if (name.equals("menu")) return new net.decimation.worldgen.devtest.MenuTest();

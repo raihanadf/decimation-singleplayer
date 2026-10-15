@@ -19,7 +19,7 @@ dev test the files name).
 | player data: conditions, humanity, bottlecaps, stats, sync | player.md | decimation-code-player | dev tests `zombies` + `checks` traced (16 Oktober 2026) |
 | clans and turfs | clans.md | decimation-code-clans | dev test `places` traced: server clan / turf code 0 calls (16 Oktober 2026) |
 | traders: offers, trades, banker, guards | traders.md | decimation-code-traders | dev test `trade` (buy, wrong price, sale, trace 16 Oktober 2026) |
-| items and gear | not yet | | |
+| items and gear: armor, slots, food, drink, medical, throwables, traps | items.md | decimation-code-items | dev test `useitems` (bandage, splint, drink, 16 Oktober 2026) |
 | blocks and props | not yet (docs/prop_placement.md covers drawing) | | |
 | menus and HUD | not yet | | |
 | rendering and models | not yet (docs/gun_model_spec.md covers .bmodel) | | |
@@ -41,5 +41,7 @@ dev test the files name).
   grows with the world [measured calls, time not profiled].
 - Traders: a buy hands over `new ItemStack(item)` (no metadata, count or NBT); offer lists are replaced per trader
   object, a rare race in singleplayer [inferred].
+- Items: bandages, splints and the morphine syringe hand nothing back (static shared "hand back" stack; run time
+  checked, cause inferred).
 - Overrides of Forge added methods renamed by Decimation's obfuscator never run (`...Lost` methods,
   architecture.md "Method naming pass"); other classes may have the same break [not verified].
