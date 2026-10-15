@@ -970,9 +970,9 @@ used as floor.
   tests clean. Dev test `tracer` got a check "tracers end where the shot ended" (hits on the player 8 away end
   within 12 blocks, none longer than the shot range). Run 14 Oktober 2026 (`--live tracer shots`, fresh live
   game on the patched base jar): 62 of 75 tracers end within 12 blocks, longest 96 (was 250 each), tracer vs
-  server shot line 0.8 deg, hits through a wall 0 / 30. A tracer into a wall ending at the wall is
-  `[inferred]` from NpcShots (end = the ray's block hit); no check measures it in game, and the one wall
-  frame of the shots sheet shows no tracer. The shots mode's "spotting at 70" FAIL is older: the test still
+  server shot line 0.8 deg, hits through a wall 0 / 30. Tracers into walls stop at the wall: user confirmed
+  in game 15 Oktober 2026 ("its blocked now"). A miss flies to NpcShots.RANGE 96 (SNIPER_RANGE 160), the
+  shot's range since v0.30.3, then fades as before. The shots mode's "spotting at 70" FAIL is older: the test still
   expects sniperRange 96 (70 since v0.42.5) with its sniper exactly 70 away.
 
 ## Full military armor makes NPC gunfire almost harmless (reported 9 Oktober 2026, FIXED v0.30.2)
