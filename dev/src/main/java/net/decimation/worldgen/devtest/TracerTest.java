@@ -134,8 +134,9 @@ public class TracerTest extends DevTestMode
                                  "< 3 deg over > 10 tracers (before v0.28.5 ~133 to the target)");
             DevTestResults.check("tracer", "tracers end where the shot ended", String.format("%d of %d within 12 blocks, "
                                  + "longest %.0f", shortTracers, tracerCount, longestTracer),
-                                 shortTracers > 5 && longestTracer <= 161,
-                                 "hits on the player 8 away end there; none past the shot range (before v0.62.4 all 250)");
+                                 shortTracers > 5 && longestTracer > 161 && longestTracer <= 251,
+                                 "hits on the player 8 away end there; misses fly on to 250 like Decimation's (before v0.62.4 "
+                                 + "every tracer 250, through buildings; v0.62.4 misses 96)");
             tracerDone = true;
             return;
         }

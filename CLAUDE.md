@@ -941,6 +941,8 @@ of the last session:
   v0.62.4: NPC tracers stop where the shot stopped (bug.md "NPC tracers fly through buildings"): PatchTracer v3 (three
   jars, deci/aE/a$B$a + deci/n/d$a; fourth argument lwjgl_util 2.9.4 from the gradle cache), NpcShots sends the shot's
   end point; dev test `tracer` checks tracer lengths.
+  v0.62.5: misses' tracers fly on to 250 again (user), still stopped by buildings past the shot range (NpcShots.missEnd,
+  loaded chunks only); no jar patch.
   Gun study (10 Oktober 2026): docs/gun_style_guide.md, tools/guns/study.py
   (renders / measures Decimation's guns from the jar, `attach` adds
   attachments as the game places them), dev test mode `gunview` (hip, aim

@@ -110,9 +110,9 @@
     "semantic_hash": "de153d1f8408971d6190e16a7d4256f9"
   },
   "CLAUDE.md": {
-    "mtime": 1791977178.5270042,
-    "ast_hash": "d67f7da56b35b4123d4a5c040a02852e",
-    "semantic_hash": "d67f7da56b35b4123d4a5c040a02852e"
+    "mtime": 1792081847.382849,
+    "ast_hash": "d92238564bbf302ee25ef1d3762b36e9",
+    "semantic_hash": "d92238564bbf302ee25ef1d3762b36e9"
   },
   "DECIMATION_MOD_TASK.md": {
     "mtime": 1784958353.0126374,
@@ -120,9 +120,9 @@
     "semantic_hash": "aa4550575e47e7c1d0b020a51afbb501"
   },
   "bug.md": {
-    "mtime": 1792081042.8677592,
-    "ast_hash": "e344f3a0d374c3e9c9b4ca49fdcee067",
-    "semantic_hash": "e344f3a0d374c3e9c9b4ca49fdcee067"
+    "mtime": 1792081839.822639,
+    "ast_hash": "b94f19a8821e06797a3e36efc5c3d92a",
+    "semantic_hash": "b94f19a8821e06797a3e36efc5c3d92a"
   },
   "create_weapons.md": {
     "mtime": 1791653625.5948887,
@@ -645,9 +645,9 @@
     "semantic_hash": "1674bb59ce3cdbf993a4e17673395383"
   },
   "dev/src/main/java/net/decimation/worldgen/devtest/TracerTest.java": {
-    "mtime": 1791977137.8328328,
-    "ast_hash": "84979fc8b96f34dfe6436b9795c18d4b",
-    "semantic_hash": "84979fc8b96f34dfe6436b9795c18d4b"
+    "mtime": 1792081385.5097802,
+    "ast_hash": "c4ad60409db118797f2b8107bfa16497",
+    "semantic_hash": "c4ad60409db118797f2b8107bfa16497"
   },
   "tools/devtest.py": {
     "mtime": 1791747935.9682536,
@@ -720,9 +720,9 @@
     "semantic_hash": "2b04aa63939ac08a2191dc2555b3f383"
   },
   "dev/src/main/java/net/decimation/fixes/NpcShots.java": {
-    "mtime": 1791976837.4382687,
-    "ast_hash": "a904d303ea98d278b98f91a402f6f5fd",
-    "semantic_hash": "a904d303ea98d278b98f91a402f6f5fd"
+    "mtime": 1792081286.429175,
+    "ast_hash": "3072a5f8fb197c7229b3c059645a1529",
+    "semantic_hash": "3072a5f8fb197c7229b3c059645a1529"
   },
   "dev/src/main/java/net/decimation/worldgen/devtest/ShotTest.java": {
     "mtime": 1791544427.020211,

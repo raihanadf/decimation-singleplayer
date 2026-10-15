@@ -971,9 +971,17 @@ used as floor.
   within 12 blocks, none longer than the shot range). Run 14 Oktober 2026 (`--live tracer shots`, fresh live
   game on the patched base jar): 62 of 75 tracers end within 12 blocks, longest 96 (was 250 each), tracer vs
   server shot line 0.8 deg, hits through a wall 0 / 30. Tracers into walls stop at the wall: user confirmed
-  in game 15 Oktober 2026 ("its blocked now"). A miss flies to NpcShots.RANGE 96 (SNIPER_RANGE 160), the
-  shot's range since v0.30.3, then fades as before. The shots mode's "spotting at 70" FAIL is older: the test still
-  expects sniperRange 96 (70 since v0.42.5) with its sniper exactly 70 away.
+  in game 15 Oktober 2026 ("its blocked now"). In v0.62.4 a miss's tracer ended at the shot's range
+  (NpcShots.RANGE 96, SNIPER_RANGE 160) and so showed for about 0.45 s instead of 1.2 s (the head moves 10
+  blocks a tick); a side effect, not a performance choice. The shots mode's "spotting at 70" FAIL is older: the
+  test still expects sniperRange 96 (70 since v0.42.5) with its sniper exactly 70 away.
+- **v0.62.5 (user 15 Oktober 2026: "put misses back to 250")**: NpcShots.missEnd carries a miss's tracer on to
+  TRACER_MISS 250 (drawing only, damage still ends at the range) and traces blocks past the range, so a long miss
+  still stops at a building; only loaded chunks are traced (blockExists in 16 block steps), so a shot never loads
+  terrain. Dev test `tracer` (live, 15 Oktober 2026): 70 of 84 within 12 blocks, longest 224 (beyond the loaded
+  chunks it stops early), tracer vs shot line 0.5 deg; check now wants the longest over 161 and at most 251. A
+  miss stopping at a wall beyond 96 is not measured by a test `[not verified]`. shots mode: "AKM magazine then
+  reload" read 17 rounds once and 30 on the rerun (flaky: the count can start mid magazine).
 
 ## Full military armor makes NPC gunfire almost harmless (reported 9 Oktober 2026, FIXED v0.30.2)
 User: a full set of normal military armor takes about 1 hp per NPC shot,

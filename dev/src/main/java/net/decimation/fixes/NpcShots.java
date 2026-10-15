@@ -32,6 +32,8 @@ public class NpcShots implements BiFunction<Entity, EntityLivingBase, Object>
 {
     /** How far a shot flies (Decimation's NPC follow range is 64). */
     static final double RANGE = 96, SNIPER_RANGE = 160;
+    /** How far a miss's tracer flies (Decimation's own tracer length). */
+    static final double TRACER_MISS = 250;
     private final NpcLoadouts loadouts;
     private final Random random = new Random();
     /**
@@ -160,6 +162,10 @@ public class NpcShots implements BiFunction<Entity, EntityLivingBase, Object>
         // the tracer ends where the shot ended: the body it hit, the wall, or its range (PatchTracer v3;
         // a point far along the line drew every tracer 250 blocks long, through buildings)
         Vec3 end = hitPoint != null ? hitPoint : stop;
+        if (hitPoint == null && block == null)
+        {
+            end = missEnd(world, stop, range, sx, sy, sz, cx, cy, cz);
+        }
         Deci.sendNpcShot(shooter, target, end.xCoord, end.yCoord, end.zCoord);
         // the magazine: empty means a reload (the burst ends with it)
         int capacity = Math.max(1, Deci.gunMagazine(gun));
@@ -285,6 +291,34 @@ public class NpcShots implements BiFunction<Entity, EntityLivingBase, Object>
     private static int side(NpcKind k)
     {
         return k == NpcKind.HAZMAT ? NpcKind.SOLDIER.ordinal() : k.ordinal();
+    }
+
+    /**
+     * Where a miss's tracer ends: on to TRACER_MISS like Decimation's own tracers (user 2026-10-15: misses
+     * back to 250), still stopped by a wall past the shot's range. Only loaded chunks are traced: a shot never
+     * loads terrain. Drawing only, the shot's damage ended at its range.
+     */
+    static Vec3 missEnd(World world, Vec3 stop, double range, double sx, double sy, double sz,
+                        double cx, double cy, double cz)
+    {
+        double len = range;
+        while (len < TRACER_MISS)
+        {
+            double next = Math.min(TRACER_MISS, len + 16);
+            if (!world.blockExists((int) Math.floor(sx + cx * next), (int) Math.floor(sy + cy * next),
+                                   (int) Math.floor(sz + cz * next)) && sy + cy * next >= 0 && sy + cy * next < 256)
+            {
+                break;
+            }
+            len = next;
+        }
+        if (len <= range)
+        {
+            return stop;
+        }
+        Vec3 far = Vec3.createVectorHelper(sx + cx * len, sy + cy * len, sz + cz * len);
+        MovingObjectPosition wall = traceBlocks(world, stop, far, cx, cy, cz);
+        return wall != null ? wall.hitVec : far;
     }
 
     /** First block on the line that stops a bullet, or null; see-through blocks are passed. */
