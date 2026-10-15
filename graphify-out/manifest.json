@@ -120,9 +120,9 @@
     "semantic_hash": "aa4550575e47e7c1d0b020a51afbb501"
   },
   "bug.md": {
-    "mtime": 1792081839.822639,
-    "ast_hash": "b94f19a8821e06797a3e36efc5c3d92a",
-    "semantic_hash": "b94f19a8821e06797a3e36efc5c3d92a"
+    "mtime": 1792097921.0358768,
+    "ast_hash": "670540a98dd0b752d083771afba4ea5a",
+    "semantic_hash": "670540a98dd0b752d083771afba4ea5a"
   },
   "create_weapons.md": {
     "mtime": 1791653625.5948887,
@@ -655,9 +655,9 @@
     "semantic_hash": "2d0f09fef2eed394139055f40d0cbe14"
   },
   "docs/roadmap.md": {
-    "mtime": 1792083541.1248457,
-    "ast_hash": "5443620984dccb5e14f56718e9e7e773",
-    "semantic_hash": "5443620984dccb5e14f56718e9e7e773"
+    "mtime": 1792097923.7507546,
+    "ast_hash": "6c5512960c0f5a3553e87e48a41117cf",
+    "semantic_hash": "6c5512960c0f5a3553e87e48a41117cf"
   },
   "dev/src/main/java/net/decimation/worldgen/LegacyStreets.java": {
     "mtime": 1791487239.5087948,
@@ -1540,9 +1540,9 @@
     "semantic_hash": "294036847a9caffda351bfa855a78636"
   },
   "docs/tasks.md": {
-    "mtime": 1792092395.257194,
-    "ast_hash": "2fc48d4020d7264c7294b6b85d159688",
-    "semantic_hash": "2fc48d4020d7264c7294b6b85d159688"
+    "mtime": 1792097937.4843771,
+    "ast_hash": "a85d095fee207cccc706c296411b9bf6",
+    "semantic_hash": "a85d095fee207cccc706c296411b9bf6"
   },
   "tools/skillcheck.py": {
     "mtime": 1792097014.739657,
@@ -1555,9 +1555,9 @@
     "semantic_hash": "16ec07afd4046b0158fe5fa5943f0fba"
   },
   "docs/decimation_code/README.md": {
-    "mtime": 1792097744.2747505,
-    "ast_hash": "2eedc432b325da1c68897cee1fe23f9c",
-    "semantic_hash": "2eedc432b325da1c68897cee1fe23f9c"
+    "mtime": 1792097923.7496128,
+    "ast_hash": "22a695800a6f097a93cba21986e5b8be",
+    "semantic_hash": "22a695800a6f097a93cba21986e5b8be"
   },
   "docs/decimation_code/loot.md": {
     "mtime": 1792092798.5578623,
@@ -1708,5 +1708,15 @@
     "mtime": 1792097726.8755543,
     "ast_hash": "92bd46b43c9f9ac65d8dcfa59e50badc",
     "semantic_hash": "92bd46b43c9f9ac65d8dcfa59e50badc"
+  },
+  ".claude/skills/decimation-code-backend/SKILL.md": {
+    "mtime": 1792097896.4996483,
+    "ast_hash": "6b95056b603c6c6ab413d0759290a651",
+    "semantic_hash": "6b95056b603c6c6ab413d0759290a651"
+  },
+  "docs/decimation_code/backend.md": {
+    "mtime": 1792097894.5624661,
+    "ast_hash": "f1d9811722fb997706549043257578f3",
+    "semantic_hash": "f1d9811722fb997706549043257578f3"
   }
 }

@@ -10,6 +10,22 @@ not something we introduced or need to fix) see `documentation.md`.
 
 ## Open
 
+### Backend reconnect leaks a thread every 15 seconds (found 16 Oktober 2026, Open, not fixed)
+- Found in the Decimation code study (docs/decimation_code/backend.md). Every 300 client ticks Decimation tries to
+  reconnect to its dead network (ClientEventHandler, client tick): `new Thread(backendClient.aBX).start();
+  aBX.reconnect()`. Each new thread runs kryonet's `Client.run` loop, which never ends; the connect fails, so the
+  next try 15 s later starts another one.
+- Measured on the live test game: `jcmd <pid> Thread.print`: 27 threads in `kryonet.Client.run` at 03:56:48, 28 at
+  03:57:09, 7 min 10 s after launch; the log shows "Attempting reconnection to Network..." / "Failed to Connect to
+  Network!" every 15 s from a new Thread-N. About 240 blocked threads an hour of play (memory per thread stack;
+  no CPU, they wait on one selector) [cost per hour inferred].
+- Also: network.mcdecimation.net resolved to 37.48.77.81 in an earlier run and to 212.92.104.119 now. If anybody
+  answered there, the game would talk to them (kryonet, Decimation's registered classes) [risk inferred].
+- PatchBackend (2026-10-09) only shortened the connect timeout to 300 ms; the reconnect loop is untouched.
+- Possible fix (not done, for the user to decide): a PatchBackend v2 that makes BackendClient.connect and the
+  reconnect lambdas (ClientEventHandler, ServerTickHandler) do nothing, so the game never contacts the BoehMod
+  network; three jars; check with the thread count staying flat and `menu` / `stats` passing.
+
 ### Every Decimation mob drawn solid black on a fresh Windows install (reported 13 Oktober 2026, Open)
 - User: on the brother's Windows laptop (fresh Prism, Java provisioned by Prism, first Minecraft ever),
   "all mobs decimation from zombie, animals, etc is rendered black". The user's Mac renders them fine.

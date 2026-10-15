@@ -9,6 +9,9 @@ or `[not decided]`.
 
 ## Open bugs
 
+0. **Backend reconnect leaks a thread every 15 seconds** (found 16 Oktober 2026 in the code study, measured on
+   the live game; bug.md): Decimation starts a new kryonet thread on each reconnect try to its dead network; the
+   host now resolves to an unknown IP. Proposed fix: PatchBackend v2 cuts the BoehMod connection [not decided].
 1. **Drawing cost of props in open prop-heavy views** (measured again
    10 Oktober 2026, docs/performance.md section 5: about 18 % of a city
    view; render distance by size 48 / 32 / 24 removes it, new defaults in
