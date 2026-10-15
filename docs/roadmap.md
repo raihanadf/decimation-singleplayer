@@ -124,6 +124,12 @@ docs/gun_model_spec.md); every user review goes into its lessons and casebook.
 
 1. **Port to modern Minecraft**: PARKED (user, 13 Oktober 2026: only when there is time and the
    skills for it). Three paths and a first spike in docs/porting.md.
+2. **Two stale / flaky shots test checks**: PENDING (user, 15 Oktober 2026: "we pending that first").
+   "spotting at 70 blocks" still expects sniperRange 96 (70 since v0.42.5, sniper exactly 70 away: put it
+   at 60); "AKM magazine then reload" can start counting mid magazine (read 17 once, 30 on the rerun).
+   Details bug.md, "NPC tracers fly through buildings".
+3. **REA (github.com/morluto/rea)**: looked at 15 Oktober 2026 for our reverse engineering; no JVM jar path
+   (native binaries, JS / Electron, .NET, Android APK via JADX). Not installed; user to decide.
 
 ## Ideas (later, user 12 Oktober 2026)
 
