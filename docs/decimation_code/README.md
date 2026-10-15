@@ -21,7 +21,7 @@ dev test the files name).
 | traders: offers, trades, banker, guards | traders.md | decimation-code-traders | dev test `trade` (buy, wrong price, sale, trace 16 Oktober 2026) |
 | items and gear: armor, slots, food, drink, medical, throwables, traps | items.md | decimation-code-items | dev test `useitems` (bandage, splint, drink, 16 Oktober 2026) |
 | blocks and props: locked doors, keycards, elevators, multiblocks | blocks.md (drawing: docs/prop_placement.md) | decimation-code-blocks | dev test `keycard` traced, tools/props/keycardcheck.py on a fresh seed 1 world (16 Oktober 2026) |
-| menus and HUD | not yet | | |
+| menus, screens and HUD | menus.md | decimation-code-menus | dev tests `menu` + `stats` traced (16 Oktober 2026) |
 | rendering and models | not yet (docs/gun_model_spec.md covers .bmodel) | | |
 | backend and update checker | not yet | | |
 | weather and world features | not yet | | |
