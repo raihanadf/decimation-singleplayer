@@ -18,6 +18,8 @@ LIVE (no game launch per run, docs/roadmap.md "Live dev test mode"):
     python3 tools/devtest.py --live --angelica MODE   # start the live game with Angelica (dev only)
     python3 tools/devtest.py --live --java25 MODE     # start it on Java 25 with lwjgl3ify (runClient25)
     python3 tools/devtest.py --live --dress MODE      # start it with the city dressing on (docs/city_dressing.md)
+    python3 tools/devtest.py --live MODE -Ptrace=deci.aE,deci.n.d   # record the run's calls (docs/call_trace.md)
+    python3 tools/devtest.py --live --trace=deci/aE MODE ...        # start the game marking only those packages
 
 --live sends the modes to a game started with `gradlew runClient -Plive`
 (devtest/DevTestLive, 127.0.0.1:25599); if none answers it starts one in the
@@ -34,6 +36,7 @@ mode instead of every screenshot). Exit code 1 when any check FAILs or the
 run wrote no results (crash: see the newest dev/run/client/crash-reports).
 """
 import os
+import re
 import subprocess
 import sys
 import time
@@ -111,6 +114,7 @@ def live_ready(wait):
 
 
 def run_live(modes, extra, swap, angelica=False, task="runClient", dress=False):
+    trace = any(e.startswith("-Ptrace=") for e in extra)
     if live_send("ping", 5) is None:
         print("no live game: starting one (log %s)..." % os.path.relpath(LIVE_LOG, ROOT))
         os.makedirs(os.path.dirname(LIVE_LOG), exist_ok=True)
@@ -119,6 +123,11 @@ def run_live(modes, extra, swap, angelica=False, task="runClient", dress=False):
             start += ["-Pdress"]
         if angelica:  # Angelica rendering overhaul in the dev client (docs/performance.md)
             start += ["-Pangelica", "-PforceEnableMixins=true"]
+        marks = [a[len("--trace="):] for a in sys.argv if a.startswith("--trace=")]
+        if trace or marks or "--trace" in sys.argv:  # call logger agent (docs/call_trace.md)
+            if not os.path.isfile(os.path.join(ROOT, "build", "trace", "decitrace-agent.jar")):
+                subprocess.run([sys.executable, os.path.join(ROOT, "tools", "trace", "build.py")], check=True)
+            start += ["-Ptrace=" + marks[0]] if marks else ["-Ptrace"]  # --trace=deci/aE: mark only those packages
         subprocess.Popen(start, cwd=DEV, stdout=open(LIVE_LOG, "w"),
                          stderr=subprocess.STDOUT, start_new_session=True)
         t0 = time.time()
@@ -141,6 +150,12 @@ def run_live(modes, extra, swap, angelica=False, task="runClient", dress=False):
     t0 = time.time()
     reply = live_send("run " + " ".join(modes + props))
     print("ran %s live in %.0f s" % (" ".join(modes), time.time() - t0))
+    for r in reply or []:
+        if r.startswith("trace: "):  # call logger: name the methods (tools/trace/tracelog.py)
+            print(r)
+            m = re.match(r"trace: trace (\S+\.txt):", r)
+            if m:
+                subprocess.run([sys.executable, os.path.join(ROOT, "tools", "trace", "tracelog.py"), m.group(1)])
     return reply is not None
 
 

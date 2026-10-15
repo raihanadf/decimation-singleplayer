@@ -27,7 +27,9 @@ import cpw.mods.fml.common.FMLLog;
  *   run MODE [MODE ...] [key=value ...]
  *                           -> runs the modes in the open world (key=value sets
  *                              -Ddeciworldgen.autotest.key=value first), then sends
- *                              run/client/devtest/results.txt and a last line "END"
+ *                              run/client/devtest/results.txt and a last line "END";
+ *                              trace=PREFIXES records the run with the call logger
+ *                              (docs/call_trace.md) and sends "trace: ..." lines first
  *   quit                    -> closes the game
  *
  * The game thread takes commands from the queue (DevAutoTest.onClientTick);
@@ -131,10 +133,15 @@ public final class DevTestLive
             return;
         }
         StringBuilder modes = new StringBuilder();
+        String trace = null;
         for (int i = 1; i < words.length; i++)
         {
             int eq = words[i].indexOf('=');
-            if (eq > 0)
+            if (eq > 0 && words[i].startsWith("trace="))
+            {
+                trace = words[i].substring(eq + 1);   // call logger for this run only (docs/call_trace.md)
+            }
+            else if (eq > 0)
             {
                 System.setProperty("deciworldgen.autotest." + words[i].substring(0, eq), words[i].substring(eq + 1));
             }
@@ -144,8 +151,15 @@ public final class DevTestLive
             }
         }
         Command c = new Command(modes.toString(), false);
+        String traced = trace == null ? null : CallTrace.start(trace, 0);
         QUEUE.offer(c);
-        if (c.done.poll(30, TimeUnit.MINUTES) == null)
+        boolean done = c.done.poll(30, TimeUnit.MINUTES) != null;
+        if (trace != null)
+        {
+            out.println("trace: " + traced);
+            out.println("trace: " + CallTrace.stop());
+        }
+        if (!done)
         {
             out.println("TIMEOUT");
         }

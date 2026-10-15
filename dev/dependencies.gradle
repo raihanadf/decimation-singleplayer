@@ -68,6 +68,20 @@ tasks.matching { it.name.startsWith("runClient") }.configureEach {
     }
 }
 
+// `gradlew runClient -Ptrace`: dev call logger agent (docs/call_trace.md; build it first with
+// python3 tools/trace/build.py); records only while /deciworldgen trace or a live run's trace= is on
+tasks.matching { it.name.startsWith("runClient") }.configureEach {
+    if (project.hasProperty("trace")) {
+        def agent = rootProject.file("../build/trace/decitrace-agent.jar")
+        if (!agent.isFile()) {
+            throw new GradleException("no call logger agent: run python3 tools/trace/build.py first")
+        }
+        // -Ptrace=deci/aE,deci/n marks only those packages (cheaper); plain -Ptrace marks deci, net/decimation, com/boehmod
+        def packages = project.property("trace").toString()
+        jvmArgs("-javaagent:" + agent.absolutePath + (packages && packages != "true" ? "=packages=" + packages : ""))
+    }
+}
+
 // `gradlew runClient -Plive`: the game stays open and takes test runs over
 // 127.0.0.1:25599 (devtest/DevTestLive; tools/devtest.py --live), with the
 // hotswap debug port too, so code changes in method bodies need no restart

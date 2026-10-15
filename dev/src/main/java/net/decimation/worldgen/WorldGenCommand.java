@@ -13,6 +13,7 @@ import net.minecraft.util.ChatComponentText;
  * capture set NAME ROOM [north|south|west|east] [weight] : saves the box as
  * a furniture set (docs/furniture_sets.md "Capture") and reloads.
  * capture part NAME : saves the box as a raw part (for the part planner).
+ * trace start PREFIXES [seconds] | trace stop : dev call logger (docs/call_trace.md, game run with -Ptrace).
  */
 public class WorldGenCommand extends CommandBase
 {
@@ -26,6 +27,7 @@ public class WorldGenCommand extends CommandBase
     public String getCommandUsage(ICommandSender sender)
     {
         return "/deciworldgen reload | rebuild [radius] [x z] | camp [turns 0..3] | pos1|pos2 [x y z]"
+               + " | trace start <prefixes> [seconds] | trace stop"
                + " | capture set <name> <room> [north|south|west|east] [weight] | capture part <name> | paste <name> <x> <y> <z>";
     }
 
@@ -52,6 +54,16 @@ public class WorldGenCommand extends CommandBase
                 net.minecraft.entity.player.EntityPlayerMP player = getCommandSenderAsPlayer(sender);
                 rebuild(sender, player.worldObj, (int) Math.floor(player.posX), (int) Math.floor(player.posZ), radius);
             }
+            return;
+        }
+        if (args.length >= 2 && "trace".equals(args[0]))
+        {
+            // dev call logger (docs/call_trace.md): trace start <prefixes> [seconds] | trace stop
+            String r = "start".equals(args[1]) && args.length >= 3
+                ? net.decimation.worldgen.devtest.CallTrace.start(args[2], args.length > 3 ? parseIntBounded(sender, args[3], 1, 600) : 0)
+                : "stop".equals(args[1]) ? net.decimation.worldgen.devtest.CallTrace.stop()
+                : "usage: /deciworldgen trace start <prefix,prefix> [seconds] | trace stop";
+            sender.addChatMessage(new ChatComponentText("[deciworldgen] " + r));
             return;
         }
         if (args.length >= 1 && "camp".equals(args[0]))

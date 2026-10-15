@@ -86,6 +86,8 @@ Knowledge index:
 - `docs/production_test.md`: testing the RELEASE jar in a plain Forge server and client built in the
   scratchpad (never Prism): steps, traps (server jar via the Forge manifest, -XstartOnFirstThread hang),
   driving it with devtest.py --live.
+- `docs/call_trace.md`: dev call logger (Java agent, `-Ptrace` / `devtest.py --live MODE -Ptrace=PREFIXES`,
+  `/deciworldgen trace`): which Decimation / mod methods run, in order, per thread, named from decimation.srg.
 - `docs/performance.md`: how to check lag (dev test modes gunperf, census,
   tools/perfcheck.py world / log / fixchunk, JFR on the live game with
   jcmd) and what was found (corrupt chunk entity explosion, infected path
@@ -943,6 +945,9 @@ of the last session:
   end point; dev test `tracer` checks tracer lengths.
   v0.62.5: misses' tracers fly on to 250 again (user), still stopped by buildings past the shot range (NpcShots.missEnd,
   loaded chunks only); no jar patch.
+  v0.62.6: call logger (docs/call_trace.md, tools/trace): dev only Java agent marks every method of the chosen packages,
+  /deciworldgen trace start PREFIXES [s] | stop, live runs take trace=PREFIXES; tools/trace/tracelog.py names the trace.
+  Never run fps tests in a game started with the agent.
   Gun study (10 Oktober 2026): docs/gun_style_guide.md, tools/guns/study.py
   (renders / measures Decimation's guns from the jar, `attach` adds
   attachments as the game places them), dev test mode `gunview` (hip, aim

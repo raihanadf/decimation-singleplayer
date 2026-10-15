@@ -130,6 +130,8 @@ docs/gun_model_spec.md); every user review goes into its lessons and casebook.
    Details bug.md, "NPC tracers fly through buildings".
 3. **REA (github.com/morluto/rea)**: looked at 15 Oktober 2026 for our reverse engineering; no JVM jar path
    (native binaries, JS / Electron, .NET, Android APK via JADX). SKIPPED (user, 15 Oktober 2026).
+4. **Call logger**: DONE v0.62.6 (user, 15 Oktober 2026), docs/call_trace.md. Next uses: name unnamed methods by
+   when they run; list server handlers that never fire in singleplayer.
 
 ## Ideas (later, user 12 Oktober 2026)
 
