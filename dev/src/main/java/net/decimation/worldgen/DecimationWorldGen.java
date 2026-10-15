@@ -168,9 +168,7 @@ public class DecimationWorldGen
         {
             net.minecraftforge.common.MinecraftForge.EVENT_BUS.register(new net.decimation.fixes.UpdateScreen.Hook());
         }
-        net.decimation.fixes.WorldClock clock = new net.decimation.fixes.WorldClock();
-        cpw.mods.fml.common.FMLCommonHandler.instance().bus().register(clock);
-        net.minecraftforge.common.MinecraftForge.EVENT_BUS.register(clock);
+        cpw.mods.fml.common.FMLCommonHandler.instance().bus().register(new net.decimation.fixes.WorldClock());
         net.minecraftforge.common.MinecraftForge.EVENT_BUS.register(new Areas());
         // loot of our own on Decimation's loot screen (docs/loot_levels.md): opener and the body entity
         cpw.mods.fml.common.FMLCommonHandler.instance().bus().register(new net.decimation.fixes.Loot());

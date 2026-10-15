@@ -35,15 +35,17 @@ Traced `deci.aI,deci.an.p,deci.b.i.a`: client thread WeatherType.byId 112 (once 
 - No dynamic weather in singleplayer at all (WeatherController is server proxy only); nothing lost given the above.
 - The world's day count never grows: world time goes back to 0 after 24000, so the moon phase (computed from the day)
   stays the same night after night and `/time set` past 24000 is undone [inferred].
-- OUR fixes/WorldClock counts days as world time / 24000 + 1, so with this reset its day stays 1, and at each
-  midnight it sees the time go back to 0 and treats it as "time set back": DAY fires each midnight but always as
-  day 2 (confirmed by the core test "clock: two midnights", bug.md "WorldClock day never advances").
+- OUR fixes/WorldClock counted days as world time / 24000 + 1, so with this reset its day stayed 1, and at each
+  midnight it saw the time go back to 0 and treated it as "time set back": DAY fired each midnight but always as
+  day 2 (confirmed by the core test "clock: two midnights", bug.md "WorldClock day never advances"). FIXED
+  v0.62.9: a saved counter (WorldClock.Data, <world>/data/deciworldgen_clock.dat) counts each midnight the raw
+  time passes forward; the step back to 0 counts nothing.
 
 ## 5. How our mod uses it
 
 | Need | Use |
 |---|---|
-| days and time of day for our systems | fixes/WorldClock (broken by the reset: bug.md "WorldClock day never advances") |
+| days and time of day for our systems | fixes/WorldClock (saved day counter since v0.62.9, survives the reset) |
 | infected stronger at night | fixes/InfectedVariants (night frenzy) |
 | world type, terrain, structures | our worldgen (docs/terrain.md, docs/worldgen.md) |
 

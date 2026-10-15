@@ -9,9 +9,7 @@ or `[not decided]`.
 
 ## Open bugs
 
-0. **WorldClock day never advances** (found 16 Oktober 2026 in the code study; bug.md): Decimation sets world time
-   back to 0 every day, our WorldClock counts days from world time, so the day stays 1 and DAY never fires after
-   day 1. Fix test first before any day based system (systems_plan step 2+).
+0. **WorldClock day never advances**: FIXED v0.62.9 (saved day counter fixes/WorldClock.Data; bug.md).
 0. **Backend reconnect leaks a thread every 15 seconds**: FIXED v0.62.8 (PatchBackend v2, no BoehMod connection;
    bug.md).
 1. **Drawing cost of props in open prop-heavy views** (measured again
@@ -158,7 +156,8 @@ armour against zombies, 5 stages of infection, demons in the wasteland / militar
 growing from day 1 to 100, city names on entering ("[district] - [number]", DONE v0.52.0), a
 barricaded police building as the city safezone (3 police building kinds), the wasteland district as
 a military area with military loot (DONE v0.54.0, docs/wasteland.md), story, a GitHub link on the home
-menu. Not designed: each needs a design talk first. Current work comes first (user).
+menu, a survivor partner who follows the player and carries the gear the player gives it (item 21, user
+16 Oktober 2026). Not designed: each needs a design talk first. Current work comes first (user).
 
 ## Last: only when nothing else is left (user 9 Oktober 2026)
 

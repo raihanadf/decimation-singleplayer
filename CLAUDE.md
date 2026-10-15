@@ -962,10 +962,13 @@ of the last session:
   x 15): every non synthetic Decimation method named (deobf/maps/m_methods_rest.tsv); dev tests playerfire, drive,
   trade, useitems, keycard, and loot now clicks a real Decimation crate; tools/skillcheck.py (must pass for those docs
   and skills), tools/props/keycardcheck.py (keycard reach -3 .. +2). Found: backend reconnect leaks a thread every
-  15 s, Decimation's daily world time reset stops our WorldClock day (bug.md, not fixed yet).
+  15 s, Decimation's daily world time reset stops our WorldClock day (bug.md, both fixed since).
   v0.62.8: PatchBackend v2 (three jars): Decimation never contacts BoehMod's network (connect and both reconnects
   do nothing); 0 kryonet threads after 2 minutes, menu / stats / zombies / checks and the dedicated server fine.
   Website plan on the roadmap (UI 2): download page and a community server list read over HTTPS, not kryonet.
+  v0.62.9: WorldClock day fixed (bug.md): a saved counter (fixes/WorldClock.Data, <world>/data/deciworldgen_clock.dat;
+  older worlds start at total ticks / 24000) counts each midnight the raw time passes; Decimation's reset to 0 counts
+  nothing. Never take days from getWorldTime() / 24000: use WorldClock.day(). Dev test core checks two midnights.
   Gun study (10 Oktober 2026): docs/gun_style_guide.md, tools/guns/study.py
   (renders / measures Decimation's guns from the jar, `attach` adds
   attachments as the game places them), dev test mode `gunview` (hip, aim

@@ -20,8 +20,8 @@ Facts and the trace: docs/decimation_code/world.md. Decimation generates no terr
 
 1. Do not build on Decimation's weather: the storm never shows (both weathers have id 0, the client resets to
    `byId(1)` each tick). A weather feature of ours needs its own state and its own fog hook.
-2. World time never passes 24000: never count days with `getWorldTime() / 24000` (fixes/WorldClock still does:
-   bug.md "WorldClock day never advances"); keep an own counter that advances when the time wraps to 0.
+2. World time never passes 24000: never count days with `getWorldTime() / 24000` (fixes/WorldClock did until
+   v0.62.9: bug.md "WorldClock day never advances"); ask `WorldClock.day()`, which keeps a saved counter.
 3. Test anything time based at a set time (`setWorldTime`) inside the test; the reset happens every world tick.
 
 ## Common mistakes

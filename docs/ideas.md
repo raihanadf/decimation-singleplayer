@@ -27,6 +27,16 @@ every item below that is not DONE.
 3. **More military NPC outfits** (skins / armour looks per tier).
 4. **Sniper bandit spawn egg** (we have tier eggs: fixes/NpcEgg, NpcLoadouts; a bandit sniper tier
    may need a new tier, new tiers go LAST in NpcLoadouts).
+21. **Survivor partner** (user, 16 Oktober 2026: "survivor can follow players like bro anywhere like dog
+    partnership, they can be customize loaded by player like what type armor he use, guns, weapon, and
+    player can put backpacks on him so he gonna be like chest moving"). A friendly survivor NPC that
+    follows its player everywhere (like a tamed wolf), fights beside them, and is equipped by the player:
+    armour, gun and melee weapon chosen from the player's own items, and a backpack that makes the
+    partner a walking chest. Not designed yet; first look (16 Oktober 2026) in the chat: possible, pieces
+    exist (NpcLoadouts gun sync, Decimation armour on NPCs, our loot screen inventory from LootBody,
+    vanilla follow owner AI) [inferred, nothing built or tested]. Open: how a partner is found or
+    recruited, ammo use from the backpack, death (loot body with the gear?), teleport when left far
+    behind, one or several, orders (stay, follow, guard).
 
 ## Zombies
 5. **Harder zombies**, **more zombie variants** (fixes/InfectedVariants already has variants).

@@ -46,7 +46,7 @@ dev test the files name).
 - Rendering: all 13 world layers run per loaded entity per frame, empty and debug ones included [cost not profiled].
 - Backend: one leaked kryonet thread every 15 s (measured: 27 -> 28 threads): FIXED v0.62.8, PatchBackend v2 cuts
   the BoehMod connection (bug.md).
-- World: Decimation's storm weather can never show (both weathers id 0); its daily world time reset breaks OUR
-  WorldClock day count (bug.md "WorldClock day never advances").
+- World: Decimation's storm weather can never show (both weathers id 0); its daily world time reset broke OUR
+  WorldClock day count: FIXED v0.62.9, a saved counter (bug.md "WorldClock day never advances").
 - Overrides of Forge added methods renamed by Decimation's obfuscator never run (`...Lost` methods,
   architecture.md "Method naming pass"); other classes may have the same break [not verified].

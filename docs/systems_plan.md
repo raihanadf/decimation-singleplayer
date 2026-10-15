@@ -31,8 +31,9 @@ run; `[not verified]` = not checked; `[draft]` = a number or rule of mine for th
 Each piece below is used by two or more systems; building it first avoids writing it twice.
 
 ### 2.1 WorldClock (BUILT v0.57.0: fixes/WorldClock)
-- The world day (world time / 24000 + 1), plus a schedule of events by day. Nothing is stored: the
-  day comes from the world time, which the world saves. Events DAY (time 0), DUSK (12000), NIGHT
+- The world day, plus a schedule of events by day. Since v0.62.9 a saved counter (fixes/WorldClock.Data,
+  <world>/data/deciworldgen_clock.dat): Decimation puts world time back to 0 after 24000, so world time / 24000
+  never grows (bug.md "WorldClock day never advances"). Events DAY (time 0), DUSK (12000), NIGHT
   (13800), DAWN (22200), fired in time order when the time crosses them (sleep and /time add
   included, each type once per jump; /time set back fires nothing); `WorldClock.listen`.
 - Used by: zombie growth and unlocks (5.4), horde nights (5.5), NPC raids (6.3), claim decay and

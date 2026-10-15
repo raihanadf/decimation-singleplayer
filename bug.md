@@ -10,7 +10,7 @@ not something we introduced or need to fix) see `documentation.md`.
 
 ## Open
 
-### WorldClock day never advances (found 16 Oktober 2026, Open, not fixed)
+### WorldClock day never advances (found 16 Oktober 2026, FIXED v0.62.9)
 - Found in the Decimation code study (docs/decimation_code/world.md). Decimation's DayLengthHandler (deci/an/p,
   common, every world tick) sets world time back to 0 once it passes 24000. Our fixes/WorldClock (v0.57.0) takes
   day = world time / 24000 + 1, so day() is always 1; and its tick sees the time go from about 24000 back to 0 and
@@ -24,6 +24,16 @@ not something we introduced or need to fix) see `documentation.md`.
   day = days + 1 + (p / 24000 - last / 24000), days += now / 24000 - last / 24000. Backward: last >= 24000 means
   Decimation's reset (nothing to do), else a /time set back (no events). Sleeping jumps to 24000: forward, counted
   once. fire(w, from, to) keeps its old day numbers for the jump checks. Test first: DONE (fails as above).
+- FIX v0.62.9: fixes/WorldClock.Data (WorldSavedData "deciworldgen_clock" in the overworld's mapStorage: days, last)
+  as planned; the tick handler counts each multiple of 24000 the raw time passes forward and fires events with
+  day = days before + 1 + (point / 24000 - last / 24000); any backward step only sets last. day(world) = days + 1
+  (0 on a client world). The Forge bus registration and the unload reset went (nothing static left to reset).
+- Checked: core dev test all PASS in a fresh live game ("two midnights (day 36 before)": 37 [DAY@37], 38 [DAY@38];
+  the dev world started at its total ticks / 24000 = 35 days); <world>/data/deciworldgen_clock.dat then held
+  days 37, last 6324; after a restart the same test began at day 38 (39 [DAY@39], 40 [DAY@40]), so the count is
+  saved. Dedicated server (servertest seed 1): starts, writes deciworldgen_clock.dat, stops cleanly, no exception.
+  Not seen: a real night passing by itself or sleeping in a bed [not verified; both are forward steps the test
+  covers with setWorldTime].
 
 ### Backend reconnect leaks a thread every 15 seconds (found 16 Oktober 2026, FIXED v0.62.8)
 - Found in the Decimation code study (docs/decimation_code/backend.md). Every 300 client ticks Decimation tries to
