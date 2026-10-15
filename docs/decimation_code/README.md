@@ -15,7 +15,7 @@ dev test the files name).
 | NPCs and infected: humans, factions, zombies, spawning | npcs.md | decimation-code-npcs | dev test `shots` (armed NPC turn, trace 16 Oktober 2026) |
 | sides, proxies, network, singleplayer gaps | singleplayer.md | decimation-code-singleplayer | dev tests `zombies` + `checks` with the handler packages traced (16 Oktober 2026) |
 | vehicles: driving, fuel, seats, damage, despawn | vehicles.md | decimation-code-vehicles | dev test `drive` (a real drive with fuel, trace 16 Oktober 2026) |
-| zones and turf | not yet (docs/zones.md covers the zone rules) | | |
+| zones: safezone, military, police, radiation, scary, border | docs/zones.md (run time added) | decimation-code-zones | dev test `zones` traced (16 Oktober 2026); turfs go with clans |
 | player data: stats, humanity, bottlecaps | not yet | | |
 | clans | not yet | | |
 | traders and quests | not yet | | |
@@ -37,5 +37,7 @@ dev test the files name).
 - Sides: PlayerLoginHandler is registered twice, so it would run twice per login on a dedicated server [inferred];
   a destroyed vehicle drops its items in singleplayer (NoDropsHandler is server only) [inferred].
 - Vehicles: the HUD's despawn countdown says 900 s, the vehicle goes at 600 s, and the clock is not saved.
+- Zones: every zone question walks all zones of the world (9.9 million isBetween calls in 24 s with 4435 zones);
+  grows with the world [measured calls, time not profiled].
 - Overrides of Forge added methods renamed by Decimation's obfuscator never run (`...Lost` methods,
   architecture.md "Method naming pass"); other classes may have the same break [not verified].

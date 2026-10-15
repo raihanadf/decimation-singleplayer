@@ -164,6 +164,17 @@ and map markers drawn from the client list `[inferred from IngameHud / MapRender
 Test trap: a condition the player already has stays (the rule stops new ones only); the dev
 player was bleeding from earlier runs.
 
+Run time (call logger, 16 Oktober 2026, docs/decimation_code/README.md): the `zones` test traced
+`net.decimation.mod.server.zones,net.decimation.fixes.ZoneRules` recorded 11.7 million calls in 24 s:
+ZoneManager.isBetween 9914390, isBetweenWithMargin 1693156, EnumZoneType.valueOf 86742, against only 1638
+isPlayerInZone and 571 isInfectedInZone questions. Every zone question walks ALL zones of the world (4435 in the dev
+world, more as the world is explored: our worldgen adds one per site and district) and turns each zone's type string
+into the enum again. Per call cheap; the cost grows with the zone count [measured calls, time not profiled]. A
+spatial index (zones by region) would make it constant. ZoneRules itself: onPlayerTick 1598, onServerTick 898,
+onLivingAttack 357, near 22183. Decimation's PlayerZoneTickHandler and SafezoneAttackHandler: 0 calls (server proxy
+only, docs/decimation_code/singleplayer.md). Two timing checks (water refill, bleeding) FAILED under that trace and
+PASS without it: the recording overhead, not the code.
+
 ## 7. Safezone sites (docs/safezone.md)
 
 Survivor camps outside the cities since v0.47.0 (walled, market of traders, guards, civilians,

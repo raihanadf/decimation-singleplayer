@@ -46,6 +46,9 @@ Prefixes take dots or slashes and may go down to a method (`net.decimation.fixes
   second one dies with "bind failed").
 - Broad prefixes fill the event list fast: `deci.n,com.boehmod,deci.aE` over a 20 s tracer run made 2.75 million
   calls, the list was full after 200 000 events (render methods). Trace narrow: a package, a class, a method.
+- A hot prefix slows the game enough to break timing checks: the `zones` test traced over the zone package recorded
+  11.7 million calls in 24 s and failed water refill and bleeding, which pass without the trace. A check that fails
+  only under the trace is the trace's cost: rerun it without, and trace narrower (a class, not its per zone loop).
 - Frame rate: do not run fps tests (cityfps, gunperf, scope, props) in a game started with the agent. Measured
   15 Oktober 2026, cityfps in the live game, sequences of runs: without the agent 40, 30, 31, 28 and 19, 28, 29;
   with all packages marked 28, 26 and 30, 28, 20, 19; with deci/aE, deci/n marked 20, 18, 18. The numbers drift
