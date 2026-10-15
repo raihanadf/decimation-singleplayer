@@ -18,7 +18,7 @@ dev test the files name).
 | zones: safezone, military, police, radiation, scary, border | docs/zones.md (run time added) | decimation-code-zones | dev test `zones` traced (16 Oktober 2026); turfs go with clans |
 | player data: conditions, humanity, bottlecaps, stats, sync | player.md | decimation-code-player | dev tests `zombies` + `checks` traced (16 Oktober 2026) |
 | clans and turfs | clans.md | decimation-code-clans | dev test `places` traced: server clan / turf code 0 calls (16 Oktober 2026) |
-| traders and quests | not yet | | |
+| traders: offers, trades, banker, guards | traders.md | decimation-code-traders | dev test `trade` (buy, wrong price, sale, trace 16 Oktober 2026) |
 | items and gear | not yet | | |
 | blocks and props | not yet (docs/prop_placement.md covers drawing) | | |
 | menus and HUD | not yet | | |
@@ -39,5 +39,7 @@ dev test the files name).
 - Vehicles: the HUD's despawn countdown says 900 s, the vehicle goes at 600 s, and the clock is not saved.
 - Zones: every zone question walks all zones of the world (9.9 million isBetween calls in 24 s with 4435 zones);
   grows with the world [measured calls, time not profiled].
+- Traders: a buy hands over `new ItemStack(item)` (no metadata, count or NBT); offer lists are replaced per trader
+  object, a rare race in singleplayer [inferred].
 - Overrides of Forge added methods renamed by Decimation's obfuscator never run (`...Lost` methods,
   architecture.md "Method naming pass"); other classes may have the same break [not verified].

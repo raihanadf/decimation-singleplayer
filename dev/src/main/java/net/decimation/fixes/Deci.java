@@ -395,6 +395,32 @@ public final class Deci
         return e instanceof deci.ai.v;
     }
 
+    /**
+     * A trader's offers: TraderEntity.OFFERS_BY_CLASS (abd) for its class, each TraderOffer (deci.ai.y) as its item and
+     * {buyPrice abi, sellPrice abj, currency hW: 0 bottlecaps, 1 gold caps}; empty for anything else.
+     */
+    public static java.util.List<java.util.Map.Entry<ItemStack, int[]>> traderOffers(net.minecraft.entity.Entity trader)
+    {
+        java.util.List<java.util.Map.Entry<ItemStack, int[]>> out = new java.util.ArrayList<java.util.Map.Entry<ItemStack, int[]>>();
+        java.util.List<deci.ai.y> list = trader == null ? null : deci.ai.a.abd.get(trader.getClass());
+        for (int i = 0; list != null && i < list.size(); i++)
+        {
+            deci.ai.y o = list.get(i);
+            out.add(new java.util.AbstractMap.SimpleEntry<ItemStack, int[]>(o.itemStack, new int[] {o.abi, o.abj, o.hW}));
+        }
+        return out;
+    }
+
+    /**
+     * Client: one trade as the trader screen sends it (PacketTraderTransaction deci.aE.a$M; action 0 buy, 1 sell). The
+     * server checks the price against the trader class's offers and gives `new ItemStack(item)` on a buy (count 1,
+     * metadata 0, no NBT).
+     */
+    public static void sendTrade(int action, ItemStack item, int price, int traderEntityId, int currency)
+    {
+        deci.aF.a.a.a.gB().sendToServer(new deci.aE.a.M(action, item, price, traderEntityId, currency));
+    }
+
     /** A civilian human: FactionHumanEntity (deci.ah.d) that is neither a bandit kind (deci.ag.a) nor a trader. */
     public static boolean isCivilian(net.minecraft.entity.Entity e)
     {

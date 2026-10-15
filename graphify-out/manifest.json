@@ -55,9 +55,9 @@
     "semantic_hash": "349759ed48d70ba880df9bffff1c9d74"
   },
   "dev/src/main/java/net/decimation/worldgen/DevAutoTest.java": {
-    "mtime": 1792095280.0870235,
-    "ast_hash": "97991f23ac4e189c3d1a78bd3c732c5c",
-    "semantic_hash": "97991f23ac4e189c3d1a78bd3c732c5c"
+    "mtime": 1792096535.118535,
+    "ast_hash": "b4e95e35d9359cba2e2582a1e3163427",
+    "semantic_hash": "b4e95e35d9359cba2e2582a1e3163427"
   },
   "dev/src/main/java/net/decimation/worldgen/Rotation.java": {
     "mtime": 1791315242.0110583,
@@ -575,9 +575,9 @@
     "semantic_hash": "9425c3d999231c499db9409aa6aa35ca"
   },
   "dev/src/main/java/net/decimation/fixes/Deci.java": {
-    "mtime": 1792095251.4223197,
-    "ast_hash": "0d0b8cf9b2411c7ea629b4be0f6687db",
-    "semantic_hash": "0d0b8cf9b2411c7ea629b4be0f6687db"
+    "mtime": 1792096530.7144964,
+    "ast_hash": "cf0675eb9c12dab28b9878b4c13a7364",
+    "semantic_hash": "cf0675eb9c12dab28b9878b4c13a7364"
   },
   "dev/src/main/java/net/decimation/fixes/ScopeZoom.java": {
     "mtime": 1791879636.7429748,
@@ -1555,9 +1555,9 @@
     "semantic_hash": "16ec07afd4046b0158fe5fa5943f0fba"
   },
   "docs/decimation_code/README.md": {
-    "mtime": 1792096425.8593845,
-    "ast_hash": "2ef758d8f85a6637c15689b1068576d7",
-    "semantic_hash": "2ef758d8f85a6637c15689b1068576d7"
+    "mtime": 1792096713.8657928,
+    "ast_hash": "7735cb9a61cbd9a70d82affa39e69d96",
+    "semantic_hash": "7735cb9a61cbd9a70d82affa39e69d96"
   },
   "docs/decimation_code/loot.md": {
     "mtime": 1792092798.5578623,
@@ -1638,5 +1638,20 @@
     "mtime": 1792096409.0941439,
     "ast_hash": "c3afb178b12e0793d28a1bfef0929b56",
     "semantic_hash": "c3afb178b12e0793d28a1bfef0929b56"
+  },
+  "dev/src/main/java/net/decimation/worldgen/devtest/TradeTest.java": {
+    "mtime": 1792096532.5864308,
+    "ast_hash": "134c2191e45ffcde54a19841009456f2",
+    "semantic_hash": "134c2191e45ffcde54a19841009456f2"
+  },
+  ".claude/skills/decimation-code-traders/SKILL.md": {
+    "mtime": 1792096690.5258355,
+    "ast_hash": "d9400d0c91898d8b1cbcd8a4845bcd23",
+    "semantic_hash": "d9400d0c91898d8b1cbcd8a4845bcd23"
+  },
+  "docs/decimation_code/traders.md": {
+    "mtime": 1792096688.7766407,
+    "ast_hash": "32f042a2b38651375d031fa15e81b0a4",
+    "semantic_hash": "32f042a2b38651375d031fa15e81b0a4"
   }
 }
