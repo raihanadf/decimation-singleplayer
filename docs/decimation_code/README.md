@@ -16,7 +16,7 @@ dev test the files name).
 | sides, proxies, network, singleplayer gaps | singleplayer.md | decimation-code-singleplayer | dev tests `zombies` + `checks` with the handler packages traced (16 Oktober 2026) |
 | vehicles: driving, fuel, seats, damage, despawn | vehicles.md | decimation-code-vehicles | dev test `drive` (a real drive with fuel, trace 16 Oktober 2026) |
 | zones: safezone, military, police, radiation, scary, border | docs/zones.md (run time added) | decimation-code-zones | dev test `zones` traced (16 Oktober 2026); turfs go with clans |
-| player data: stats, humanity, bottlecaps | not yet | | |
+| player data: conditions, humanity, bottlecaps, stats, sync | player.md | decimation-code-player | dev tests `zombies` + `checks` traced (16 Oktober 2026) |
 | clans | not yet | | |
 | traders and quests | not yet | | |
 | items and gear | not yet | | |
