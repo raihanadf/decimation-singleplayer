@@ -445,7 +445,11 @@ to `decimation/<subsystem>/<Name>`; unnamed ones to
 `decimation/unnamed/<pkg>_<cls>` so the tree is case collision free on APFS.
 - Status 2026-10-07: EVERY class named (965 explicit, inner classes follow
   their outer), 2890 fields, 1400 of ~2038 methods (69%). Unnamed fields are
-  mostly 3D model parts. Sources of names, in priority order (first name
+  mostly 3D model parts. 16 Oktober 2026: every non synthetic method named (1998; the
+  597 left were model boilerplate, menus, render helpers, ~130 gameplay; table
+  `maps/m_methods_rest.tsv`, H 446 / M 110 / L 41); only compiler made lambda bodies and
+  accessors (203) keep obfuscated names. Methods ending in `Lost` are overrides of
+  Forge added methods that the obfuscator renamed, so they never override [inferred]. Sources of names, in priority order (first name
   wins in `apply_mappings.py`): AI tables `g*.tsv`, `p_*.tsv`, `r_*.tsv`,
   `m_*.tsv`, then `zz_auto.tsv` from `deobf/autoname.py` (heuristics: registry
   names, NBT keys, event types, entity registrations, accessors; runs in 1 s

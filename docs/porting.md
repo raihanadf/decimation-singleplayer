@@ -9,8 +9,8 @@ guesses and carry `[inferred]`. Check every marked line before acting on it.
 ## 1. What we start from (counted 13 Oktober 2026)
 
 - Decimation: one closed source Forge 1.7.10 jar, 238 MB, 21587 entries, name obfuscated. No
-  source. Our readable copy (`deobf/src`) names every class (965 explicit) and about 69 % of the
-  methods; it is a reading aid, never shippable.
+  source. Our readable copy (`deobf/src`) names every class (965 explicit) and every method except compiler made lambdas
+  (since 16 Oktober 2026); it is a reading aid, never shippable.
 - Our own code: 148 Java files, 36484 lines (worldgen 30972, fixes 5512) in
   `dev/src/main/java/net/decimation`, plus 11 Javassist / ASM patch sources in `tools/patches/`.
   Our code is ours: it can be ported and published. Everything it touches of Decimation goes

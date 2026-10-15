@@ -5,6 +5,10 @@ Short checklist of the work in flight, shown in the usage band and the usage pan
 and the linked docs; this file only names each item. Keep it current: add an item when it opens,
 `- [~]` while it is being worked on, `- [x]` when done (prune done items now and then).
 
+- [x] name the 597 unnamed Decimation methods (deobf/maps/m_methods_rest.tsv)
+- [~] usage pane: group tasks into working now and pending
+- [ ] study each Decimation feature: how its code works, its purpose
+- [ ] one skill per Decimation feature (.claude/skills/decimation-code-*)
 - [ ] flaky shots checks: AKM count, spotting at 70 (pending, user)
 - [ ] loot step 2 questions (docs/systems_plan.md section 8)
 - [ ] call logger first use: name methods or list silent handlers

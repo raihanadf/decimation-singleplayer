@@ -284,3 +284,31 @@ KEY FINDING for custom weapon models: `.bmodel` is a plain TEXT format, not bina
 ## deci/x, y, z: melee/tool item models and muzzle flash (model, render)
 
 - Melee item models (x), detonator and unused tool models (y), MuzzleFlashModel (z/a) used by GunItemRenderer.
+
+## Method naming pass (16 Oktober 2026)
+
+The last 597 obfuscated methods got names (`maps/m_methods_rest.tsv`, H 446 / M 110 / L 41), read from the
+decompiled bodies and their callers. What the pass showed:
+
+- Model boilerplate: 124 Techne `setRotation(part, x, y, z)` copies and 57 empty `unusedAngles` / `unusedRender`
+  stubs; every prop model also has its real `render` (Minecraft's) beside them.
+- `Lost` methods (MenuFakeWorld and its world provider, deci/e/d and deci/e/d$c): bodies that only call Forge's own
+  `getSkyColorBody`, `getMovementFactor`, `isSideSolid` and so on. They were overrides of methods Forge adds to
+  Minecraft classes; those keep readable names in the jar, the obfuscator renamed the overrides anyway, so they no
+  longer override anything and never run [inferred: no caller found]. Other Decimation overrides of Forge added
+  methods may have broken the same way [not verified].
+- deci/ao/a was misnamed ILootable: it is ISlowsHolder. GunItem implements it; ClientEventHandler multiplies the
+  player's motion by (1 - getMovementSlowdown) while shouldSlowPlayer is true (halved in the air).
+- Weather (deci/aI): WeatherType.byId / nextWeather, fogDensity (default 0.008, storm 0.045, read by
+  ClientState.currentFogDensity), ambientSound / ambientSoundIndoors, fogType "misty". The onStart / onTick / onEnd
+  hooks are empty in every weather and have no caller [inferred].
+- Client side: ToastNotification (show, showTyped: type 1 = "BoehMod AC"), TipPopup (showOnce: each tip once per
+  install, list kept in a file), ClientConfigLoader.loadClientProperties (decimation_client.properties: isModpack,
+  disableCustomMainMenu, enableOldGui, enableDiscordRP, enableServerList, enableWristDisplay, disableUpdates,
+  enableFancyNameplate), ClientState.loadProfileData / saveProfileData (profile_data_<name>.json).
+- Doggo: petByPlayer (sound, tame effect, 20 pet ticks), skin from NBT "dogSkin", createPuppy copies the owner.
+- Multiblocks (deci/W/e): isSpaceFree, placeWhole (every part gets setMaster to the origin), breakWhole.
+- Backend leftovers: BackendClient.connect (kryonet TCP/UDP, 5 s timeout), server list registration and player
+  count polls, supporter list commands; all aim at BoehMod's dead servers.
+- Lambda bodies and accessors (203 synthetic methods) keep obfuscated names: CFR folds lambdas back into their call
+  sites, so they only show in call logger traces.

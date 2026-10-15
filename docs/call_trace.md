@@ -18,7 +18,7 @@ command and bridge.
 
 Names in a trace are dev names: Decimation's obfuscated classes and methods (`deci/aE/a$B$a.a(...)`), MCP names
 for Minecraft. The namer turns them into `NetworkMessages$PacketGunFireEffects$PacketGunFireEffectsHandler.handle`
-where deobf/decimation.srg has a name (all classes, about 69 % of methods).
+where deobf/decimation.srg has a name (all classes, every method except compiler made lambdas and accessors since 16 Oktober 2026).
 
 ## Use
 

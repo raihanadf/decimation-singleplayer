@@ -110,9 +110,9 @@
     "semantic_hash": "de153d1f8408971d6190e16a7d4256f9"
   },
   "CLAUDE.md": {
-    "mtime": 1792091497.909665,
-    "ast_hash": "769c0cea42d33d33e55f397f109cabfb",
-    "semantic_hash": "769c0cea42d33d33e55f397f109cabfb"
+    "mtime": 1792092259.0633168,
+    "ast_hash": "06d0d66cd9f9a03c053aa2b9a16fcf4f",
+    "semantic_hash": "06d0d66cd9f9a03c053aa2b9a16fcf4f"
   },
   "DECIMATION_MOD_TASK.md": {
     "mtime": 1784958353.0126374,
@@ -135,9 +135,9 @@
     "semantic_hash": "316b9920994709b612cca2a27016a4d0"
   },
   "deobf/notes/architecture.md": {
-    "mtime": 1791321072.652995,
-    "ast_hash": "f5f7ed9764011af0e3df121e92cff225",
-    "semantic_hash": "f5f7ed9764011af0e3df121e92cff225"
+    "mtime": 1792092276.520988,
+    "ast_hash": "f00b410585efe1a6120301dbb01c3098",
+    "semantic_hash": "f00b410585efe1a6120301dbb01c3098"
   },
   "docs/gun_model_spec.md": {
     "mtime": 1791653625.5958328,
@@ -1300,9 +1300,9 @@
     "semantic_hash": "bf1a8d552217e38d24704f0fe883ffa3"
   },
   "docs/porting.md": {
-    "mtime": 1791844669.0772715,
-    "ast_hash": "16b23b426e34b8777cc1bfc3e712e7f1",
-    "semantic_hash": "16b23b426e34b8777cc1bfc3e712e7f1"
+    "mtime": 1792092259.064479,
+    "ast_hash": "43a84ea16436978f0e4279f0c9c82edb",
+    "semantic_hash": "43a84ea16436978f0e4279f0c9c82edb"
   },
   "docs/loot_levels.md": {
     "mtime": 1791871580.495368,
@@ -1535,13 +1535,13 @@
     "semantic_hash": "2fc538fce4c3de38e65b401ae1346c3c"
   },
   "docs/call_trace.md": {
-    "mtime": 1792083532.1795273,
-    "ast_hash": "50011811c3d9f0cf510293ac3eeabdd9",
-    "semantic_hash": "50011811c3d9f0cf510293ac3eeabdd9"
+    "mtime": 1792092259.0639877,
+    "ast_hash": "97a75f368614904ee37753804d899643",
+    "semantic_hash": "97a75f368614904ee37753804d899643"
   },
   "docs/tasks.md": {
-    "mtime": 1792091497.3912225,
-    "ast_hash": "50daa1d15f5cc10725fa2da14238d55a",
-    "semantic_hash": "50daa1d15f5cc10725fa2da14238d55a"
+    "mtime": 1792092282.8885047,
+    "ast_hash": "d5347c2729a33c3f678083b4d64a24b4",
+    "semantic_hash": "d5347c2729a33c3f678083b4d64a24b4"
   }
 }
