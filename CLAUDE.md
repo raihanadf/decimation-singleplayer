@@ -480,8 +480,8 @@ Single/double-lowercase-letter packages under `deci.*` are the obfuscated core;
 
 - `deci.a` — main mod class (`b`, `@Mod` entry point) + the two proxies:
   `deci.a.c` = **ClientProxy**, `deci.a.e` = **ServerProxy** (dedicated-only).
-  `deci.a.b.d()` returns the proxy hard-cast to ServerProxy type — throws on
-  client. This proxy split is the root cause of nearly every singleplayer bug
+  `deci.a.b.d()` (getServerProxy) hard-cast the proxy to ServerProxy and threw
+  on the client; the early "proxy cast" patch makes it return null there. This proxy split is the root cause of nearly every singleplayer bug
   found so far (see below).
 - `deci.aD.g` — block registration (`init()`, hundreds of `GameRegistry.
   registerBlock` calls). `deci.aD.c` — a few more blocks incl. `afA` =

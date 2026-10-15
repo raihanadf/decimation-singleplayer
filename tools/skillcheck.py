@@ -99,7 +99,7 @@ def check(path, obf, methods, names, deci, modes):
             bad.append("path " + p)
     # dev test modes
     for m in re.finditer(r"devtest\.py(?: --\w+(?:=\S+)?)* (\w+)", text):
-        if m.group(1) not in modes:
+        if m.group(1) not in modes and not m.group(1).isupper():  # MODE is a placeholder
             bad.append("dev test mode " + m.group(1))
     return sorted(set(bad))
 
