@@ -17,7 +17,7 @@ dev test the files name).
 | vehicles: driving, fuel, seats, damage, despawn | vehicles.md | decimation-code-vehicles | dev test `drive` (a real drive with fuel, trace 16 Oktober 2026) |
 | zones: safezone, military, police, radiation, scary, border | docs/zones.md (run time added) | decimation-code-zones | dev test `zones` traced (16 Oktober 2026); turfs go with clans |
 | player data: conditions, humanity, bottlecaps, stats, sync | player.md | decimation-code-player | dev tests `zombies` + `checks` traced (16 Oktober 2026) |
-| clans | not yet | | |
+| clans and turfs | clans.md | decimation-code-clans | dev test `places` traced: server clan / turf code 0 calls (16 Oktober 2026) |
 | traders and quests | not yet | | |
 | items and gear | not yet | | |
 | blocks and props | not yet (docs/prop_placement.md covers drawing) | | |
