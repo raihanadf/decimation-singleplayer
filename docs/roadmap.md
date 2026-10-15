@@ -129,7 +129,7 @@ docs/gun_model_spec.md); every user review goes into its lessons and casebook.
    at 60); "AKM magazine then reload" can start counting mid magazine (read 17 once, 30 on the rerun).
    Details bug.md, "NPC tracers fly through buildings".
 3. **REA (github.com/morluto/rea)**: looked at 15 Oktober 2026 for our reverse engineering; no JVM jar path
-   (native binaries, JS / Electron, .NET, Android APK via JADX). Not installed; user to decide.
+   (native binaries, JS / Electron, .NET, Android APK via JADX). SKIPPED (user, 15 Oktober 2026).
 
 ## Ideas (later, user 12 Oktober 2026)
 
