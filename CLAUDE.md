@@ -81,6 +81,9 @@ the matching `docs/` file, instead of re-deriving from source.
 Knowledge index:
 - `docs/roadmap.md`: EVERYTHING planned (open bugs, worldgen, NPCs, items,
   tools) in one list with links; add new requests there, move done items.
+- `docs/tasks.md`: short checklist of what is open RIGHT NOW (`- [ ]`, `- [~]` in progress, `- [x]`),
+  shown in Claude Code's usage band and pane (usage-pane mod, ~/.claude-mods); update it whenever an
+  item opens, starts or ends (user request 16 Oktober 2026).
 - `docs/gun_model_spec.md`: gun `.bmodel` / `.anib` formats, paths, renderer,
   new gun checklist.
 - `docs/production_test.md`: testing the RELEASE jar in a plain Forge server and client built in the

@@ -110,9 +110,9 @@
     "semantic_hash": "de153d1f8408971d6190e16a7d4256f9"
   },
   "CLAUDE.md": {
-    "mtime": 1792083541.1240516,
-    "ast_hash": "b487a50ad8e5c682c47d801ce151de80",
-    "semantic_hash": "b487a50ad8e5c682c47d801ce151de80"
+    "mtime": 1792091497.909665,
+    "ast_hash": "769c0cea42d33d33e55f397f109cabfb",
+    "semantic_hash": "769c0cea42d33d33e55f397f109cabfb"
   },
   "DECIMATION_MOD_TASK.md": {
     "mtime": 1784958353.0126374,
@@ -1538,5 +1538,10 @@
     "mtime": 1792083532.1795273,
     "ast_hash": "50011811c3d9f0cf510293ac3eeabdd9",
     "semantic_hash": "50011811c3d9f0cf510293ac3eeabdd9"
+  },
+  "docs/tasks.md": {
+    "mtime": 1792091497.3912225,
+    "ast_hash": "50daa1d15f5cc10725fa2da14238d55a",
+    "semantic_hash": "50daa1d15f5cc10725fa2da14238d55a"
   }
 }
