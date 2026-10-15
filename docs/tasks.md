@@ -5,7 +5,6 @@ Short checklist of the work in flight, shown in the usage band and the usage pan
 and the linked docs; this file only names each item. Keep it current: add an item when it opens,
 `- [~]` while it is being worked on, `- [x]` when done (prune done items now and then).
 
-- [ ] push 0.62.4 to 0.62.6 (user: `git push origin main --tags`)
 - [ ] flaky shots checks: AKM count, spotting at 70 (pending, user)
 - [ ] loot step 2 questions (docs/systems_plan.md section 8)
 - [ ] call logger first use: name methods or list silent handlers
