@@ -6,8 +6,8 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 `- [~]` while it is being worked on, `- [x]` when done (prune done items now and then).
 
 - [x] name the 597 unnamed Decimation methods (deobf/maps/m_methods_rest.tsv)
-- [~] usage pane: group tasks into working now and pending
-- [ ] study each Decimation feature: how its code works, its purpose
+- [x] usage pane: group tasks into working now and pending
+- [~] study each Decimation feature: how its code works, its purpose
 - [ ] one skill per Decimation feature (.claude/skills/decimation-code-*)
 - [ ] flaky shots checks: AKM count, spotting at 70 (pending, user)
 - [ ] loot step 2 questions (docs/systems_plan.md section 8)
