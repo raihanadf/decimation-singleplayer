@@ -55,9 +55,9 @@
     "semantic_hash": "349759ed48d70ba880df9bffff1c9d74"
   },
   "dev/src/main/java/net/decimation/worldgen/DevAutoTest.java": {
-    "mtime": 1791956852.2721784,
-    "ast_hash": "5013bb8ae9f85ea1063ce015d8d5ed45",
-    "semantic_hash": "5013bb8ae9f85ea1063ce015d8d5ed45"
+    "mtime": 1792093188.2597911,
+    "ast_hash": "51545e7d12cf3500afd92a90a92674f7",
+    "semantic_hash": "51545e7d12cf3500afd92a90a92674f7"
   },
   "dev/src/main/java/net/decimation/worldgen/Rotation.java": {
     "mtime": 1791315242.0110583,
@@ -575,9 +575,9 @@
     "semantic_hash": "9425c3d999231c499db9409aa6aa35ca"
   },
   "dev/src/main/java/net/decimation/fixes/Deci.java": {
-    "mtime": 1792092532.4755647,
-    "ast_hash": "8c0c94b8d8dd4ef5734a1b63b3b14935",
-    "semantic_hash": "8c0c94b8d8dd4ef5734a1b63b3b14935"
+    "mtime": 1792093129.2949724,
+    "ast_hash": "deb0cc16805327489a812ce3180a4201",
+    "semantic_hash": "deb0cc16805327489a812ce3180a4201"
   },
   "dev/src/main/java/net/decimation/fixes/ScopeZoom.java": {
     "mtime": 1791879636.7429748,
@@ -810,9 +810,9 @@
     "semantic_hash": "9c323a4f7fad7e1d89f2c84f7ebd94d1"
   },
   ".claude/skills/decimation-gun/SKILL.md": {
-    "mtime": 1791672060.2278738,
-    "ast_hash": "6d8781d23672e939384d998d3a3a2445",
-    "semantic_hash": "6d8781d23672e939384d998d3a3a2445"
+    "mtime": 1792093550.3871264,
+    "ast_hash": "1493d25e49ba5c5811f67b3a6e523d6f",
+    "semantic_hash": "1493d25e49ba5c5811f67b3a6e523d6f"
   },
   "tools/guns/ump9.py": {
     "mtime": 1791575647.9663312,
@@ -1555,13 +1555,28 @@
     "semantic_hash": "16ec07afd4046b0158fe5fa5943f0fba"
   },
   "docs/decimation_code/README.md": {
-    "mtime": 1792092942.5202816,
-    "ast_hash": "1e54dbb85754577a30b26c6d5353993f",
-    "semantic_hash": "1e54dbb85754577a30b26c6d5353993f"
+    "mtime": 1792093544.26542,
+    "ast_hash": "3d9de9c9c1fa5a0031f48282686a6528",
+    "semantic_hash": "3d9de9c9c1fa5a0031f48282686a6528"
   },
   "docs/decimation_code/loot.md": {
     "mtime": 1792092798.5578623,
     "ast_hash": "cbc2d8a20109c5c24e25d5b94129ded7",
     "semantic_hash": "cbc2d8a20109c5c24e25d5b94129ded7"
+  },
+  "dev/src/main/java/net/decimation/worldgen/devtest/PlayerFireTest.java": {
+    "mtime": 1792093358.4375455,
+    "ast_hash": "087a71bcf7748251868b31514b4762f6",
+    "semantic_hash": "087a71bcf7748251868b31514b4762f6"
+  },
+  ".claude/skills/decimation-code-weapons/SKILL.md": {
+    "mtime": 1792093533.0027618,
+    "ast_hash": "ca35eb74f6924acc2a87a2e71275f95d",
+    "semantic_hash": "ca35eb74f6924acc2a87a2e71275f95d"
+  },
+  "docs/decimation_code/weapons.md": {
+    "mtime": 1792093513.221292,
+    "ast_hash": "2be9ec393ef23420a7b299de71b97297",
+    "semantic_hash": "2be9ec393ef23420a7b299de71b97297"
   }
 }

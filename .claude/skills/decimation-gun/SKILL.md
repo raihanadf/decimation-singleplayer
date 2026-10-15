@@ -142,7 +142,8 @@ into the repo: measure and learn from them, build our own.
   854 x 480 NPC shot: use study.py numbers or crop and enlarge first
   person shots.
 - `python3 tools/devtest.py --live gun` (reload loads the magazine, NPC
-  fires it). Player firing is manual (Decimation reads the mouse).
+  fires it). `python3 tools/devtest.py --live playerfire` fires the held gun the way the mouse path
+  does (Deci.fireHeldGun) at an infected: hit, damage, rounds on both sides (decimation-code-weapons).
 - Live traps: new classes / fields need `--stop`; `key=value` persists,
   clear with `key=`.
 

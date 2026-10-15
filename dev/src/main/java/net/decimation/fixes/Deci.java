@@ -708,6 +708,22 @@ public final class Deci
         return gun != null && gun.getItem() instanceof deci.ay.i ? ((deci.ay.i) gun.getItem()).t(gun) : -1;
     }
 
+    /**
+     * One shot of the gun the player holds, on the client, as the mouse path does it (GunItem.fire a(ItemStack,
+     * EntityPlayer): fireRay per pellet, PacketGunHit / PacketGunFire to the server, recoil, the Fire animation).
+     * Skips the mouse poll, fire rate and fire mode checks of GunItem.clientHeldTick. Client thread only.
+     */
+    public static boolean fireHeldGun(EntityPlayer player)
+    {
+        net.minecraft.item.ItemStack s = player.getHeldItem();
+        if (s == null || !(s.getItem() instanceof deci.ay.i))
+        {
+            return false;
+        }
+        ((deci.ay.i) s.getItem()).a(s, player);
+        return true;
+    }
+
     /** A suppressor on this gun (its "barrelAttach" NBT names one; NPC guns carry it the same way). */
     public static boolean hasSuppressor(net.minecraft.item.ItemStack gun)
     {
