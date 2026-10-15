@@ -44,8 +44,8 @@ dev test the files name).
 - Items: bandages, splints and the morphine syringe hand nothing back (static shared "hand back" stack; run time
   checked, cause inferred).
 - Rendering: all 13 world layers run per loaded entity per frame, empty and debug ones included [cost not profiled].
-- Backend: one leaked kryonet thread every 15 s (measured: 27 -> 28 threads, bug.md); the dead BoehMod host now
-  resolves to a new IP [risk inferred].
+- Backend: one leaked kryonet thread every 15 s (measured: 27 -> 28 threads): FIXED v0.62.8, PatchBackend v2 cuts
+  the BoehMod connection (bug.md).
 - World: Decimation's storm weather can never show (both weathers id 0); its daily world time reset breaks OUR
   WorldClock day count (bug.md "WorldClock day never advances").
 - Overrides of Forge added methods renamed by Decimation's obfuscator never run (`...Lost` methods,

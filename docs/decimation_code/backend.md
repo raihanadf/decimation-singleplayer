@@ -44,7 +44,8 @@ api.mojang.com, mcapi.ca, discord, twitter.
 
 ## 4. Singleplayer state and known faults
 
-- Thread leak above (client side; the dedicated server's reconnect has the same pattern).
+- Thread leak above: FIXED v0.62.8 by PatchBackend v2 (no BoehMod connection at all: 0 kryonet threads after 2 minutes,
+  bug.md).
 - Profile, stats, news, server lists, supporter capes: empty; our LocalStats fills stats.
 - Every outside call fails or returns nothing; none blocks the game since PatchBackend (launch) and our own updater.
 
@@ -52,13 +53,13 @@ api.mojang.com, mcapi.ca, discord, twitter.
 
 | Need | Use |
 |---|---|
-| no 5 s launch wait | tools/patches/PatchBackend.java (timeout 300 ms; the reconnect loop is untouched) |
+| no BoehMod connection, no reconnect threads | tools/patches/PatchBackend.java v2 (v1: 300 ms timeout) |
 | "Play" without the voice chat jar, our releases | tools/patches/PatchNoUpdate.java, fixes/Updater, fixes/UpdateScreen |
 | stats without the backend | fixes/LocalStats, PatchMenuStats |
 
 ## 6. Checks
 
-- Thread leak: `jcmd <pid> Thread.print` on a running game, count threads in `kryonet.Client.run`; grows by one every
-  15 s today.
+- Thread leak: `jcmd <pid> Thread.print` on a running game, count threads in `kryonet.Client.run`: 0 since v0.62.8
+  (was one more every 15 s); the log says "BoehMod network is off" once.
 - `python3 tools/devtest.py --live menu` (no forced update), `update` (our updater against
   tools/fake_release_server.py).

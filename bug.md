@@ -23,7 +23,7 @@ not something we introduced or need to fix) see `documentation.md`.
   night to early morning, firing DAY; a dev test check first that sets the time to 23990, waits past the wrap and
   expects day + 1 and one DAY event (fails today).
 
-### Backend reconnect leaks a thread every 15 seconds (found 16 Oktober 2026, Open, not fixed)
+### Backend reconnect leaks a thread every 15 seconds (found 16 Oktober 2026, FIXED v0.62.8)
 - Found in the Decimation code study (docs/decimation_code/backend.md). Every 300 client ticks Decimation tries to
   reconnect to its dead network (ClientEventHandler, client tick): `new Thread(backendClient.aBX).start();
   aBX.reconnect()`. Each new thread runs kryonet's `Client.run` loop, which never ends; the connect fails, so the
@@ -35,9 +35,15 @@ not something we introduced or need to fix) see `documentation.md`.
 - Also: network.mcdecimation.net resolved to 37.48.77.81 in an earlier run and to 212.92.104.119 now. If anybody
   answered there, the game would talk to them (kryonet, Decimation's registered classes) [risk inferred].
 - PatchBackend (2026-10-09) only shortened the connect timeout to 300 ms; the reconnect loop is untouched.
-- Possible fix (not done, for the user to decide): a PatchBackend v2 that makes BackendClient.connect and the
-  reconnect lambdas (ClientEventHandler, ServerTickHandler) do nothing, so the game never contacts the BoehMod
-  network; three jars; check with the thread count staying flat and `menu` / `stats` passing.
+- FIX v0.62.8 (user: "do both", the website plan stays separate: docs/roadmap.md UI 2): tools/patches/PatchBackend.java
+  v2, three jars: BackendClient.connect (deci/aP/a.e) does nothing, the client reconnect (ClientEventHandler deci/c/c,
+  static a(deci.aP.a)) and the server reconnect (ServerTickHandler$1.run, deci/aK/q$1) do nothing; v1's kryonet
+  change kept. Only those methods changed (javap compare: every other method of deci/c/c the same instructions and
+  constants; offsets moved, one nop for switch alignment).
+- Checked: live game log "Decimation's BoehMod network is off" once, 0 "Attempting reconnection", 0 connects; thread
+  dumps at 1 min 6 s and 2 min 12 s uptime: 0 kryonet Client.run threads (45 to 48 threads in all, was 72 with 27
+  leaked); dev tests menu, stats, zombies, checks all PASS; dedicated server (servertest seed 1) starts, logs the
+  same line, no reconnects, stops cleanly. Backup hash unchanged.
 
 ### Every Decimation mob drawn solid black on a fresh Windows install (reported 13 Oktober 2026, Open)
 - User: on the brother's Windows laptop (fresh Prism, Java provisioned by Prism, first Minecraft ever),

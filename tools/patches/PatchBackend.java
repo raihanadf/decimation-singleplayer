@@ -3,53 +3,54 @@ import javassist.expr.ExprEditor;
 import javassist.expr.MethodCall;
 
 /**
- * Javassist patch: the game froze about 5 s at launch (found 2026-10-09 in a
- * Flight Recorder profile: the client main thread sat in a socket connect).
+ * Javassist patch: Decimation never contacts BoehMod's dead network (v2, 16 Oktober 2026).
  *
- * Cause: DecimationMod.postInit calls BackendClient.e(host, tcp, udp)
- * (deci.aP.a.e), which connects kryonet's Client to network.mcdecimation.net
- * with a 5000 ms timeout ON THE MAIN THREAD. That server is gone for good, so
- * every launch waited the full 5 s before the connect failed (the IOException
- * is caught by postInit). Later reconnect attempts run in their own threads
- * and reuse the last connect's timeout.
+ * v1 (2026-10-09): the game froze about 5 s at launch: DecimationMod.postInit calls BackendClient.e(host, tcp, udp)
+ * (deci.aP.a.e), which connected kryonet's Client to network.mcdecimation.net with a 5000 ms timeout on the main
+ * thread. v1 made that 300 ms and made kryonet's Client.connect (bundled in Decimation.jar) honour it.
  *
- * Fix: the timeout becomes 300 ms, and kryonet's Client.connect (bundled in
- * Decimation.jar) is made to use it for the TCP connect, which it hardcoded to
- * 5000 ms (a first version that only shortened the timeout still waited 5 s).
- * Everything else is unchanged (the client
- * still registers its message types and its listener, the reconnect logic and
- * the "not connected" paths behave as before, only faster).
+ * v2 (bug.md "Backend reconnect leaks a thread every 15 seconds", docs/decimation_code/backend.md): every 15 s the
+ * client tick (ClientEventHandler deci.c.c, the lambda body a(deci.aP.a)) and on a dedicated server the tick thread
+ * (ServerTickHandler$1 deci.aK.q$1) did `new Thread(client).start(); client.reconnect()`: each try left one kryonet
+ * Client.run thread behind for good (28 after 7 minutes). And network.mcdecimation.net now resolves to an unknown
+ * host. So:
+ * - BackendClient.e (connect): no message registration, no thread, no connect; one log line;
+ * - ClientEventHandler.a(deci.aP.a) (client reconnect) and ServerTickHandler$1.run (server reconnect): nothing.
+ * Everything that only sends when connected (stats, articles, player counts, supporter checks) stays silent, as it
+ * already was with the dead server. The v1 kryonet change is kept so a rebuild from the original gives every class.
  *
  *   javac -cp tools/lib/javassist.jar --release 8 -d build/patch_backend tools/patches/PatchBackend.java
- *   java -cp tools/lib/javassist.jar:build/patch_backend PatchBackend <Decimation jar ending .jar> build/patch_backend/out <kryonet jar>
- *   (cd build/patch_backend/out && zip <jar> deci/aP/a.class com/esotericsoftware/kryonet/Client.class)
- * The kryonet classes ship inside Decimation.jar itself, so <kryonet jar> can
- * be the Decimation jar again. Patch from the ORIGINAL class.
+ *   java -cp tools/lib/javassist.jar:build/patch_backend PatchBackend <ORIGINAL Decimation jar ending .jar> build/patch_backend/out
+ *   (cd build/patch_backend/out && zip <jar> deci/aP/a.class 'deci/c/c.class' 'deci/aK/q$1.class' com/esotericsoftware/kryonet/Client.class)
+ * into the three jars (Decimation.jar.patched, dist/Decimation.jar, dev/libs/Decimation-base.jar). deci/c/c and
+ * deci/aK/q$1 were unpatched in all three (checked 16 Oktober 2026); deci/aP/a is rebuilt from the original.
  */
 public class PatchBackend {
     public static void main(String[] a) throws Exception {
         ClassPool pool = new ClassPool(true);
         pool.insertClassPath(a[0]);
-        pool.insertClassPath(a[2]);
+
+        // BackendClient.connect: nothing at all
         CtClass client = pool.get("deci.aP.a");
         CtMethod connect = client.getMethod("e", "(Ljava/lang/String;II)V");
-        final int[] done = {0};
-        connect.instrument(new ExprEditor() {
-            public void edit(MethodCall m) throws CannotCompileException {
-                if (m.getClassName().equals("com.esotericsoftware.kryonet.Client") && m.getMethodName().equals("connect")) {
-                    m.replace("{ $proceed(300, $2, $3, $4); }"); // was 5000 ms
-                    done[0]++;
-                }
-            }
-        });
-        if (done[0] != 1) {
-            throw new IllegalStateException("expected one Client.connect call, found " + done[0]);
-        }
+        connect.setBody("{ System.out.println(\"[deciworldgen] Decimation's BoehMod network is off (PatchBackend v2): no connection to \" + $1); }");
         client.writeFile(a[1]);
 
-        // kryonet (bundled in Decimation.jar) ignores the timeout for the TCP
-        // part: Client.connect(int, InetAddress, int, int) calls
-        // TcpConnection.connect(selector, address, 5000). Use the given timeout.
+        // ClientEventHandler: the client reconnect every 15 s (lambda body, static, takes the BackendClient)
+        CtClass handler = pool.get("deci.c.c");
+        CtMethod reconnect = handler.getDeclaredMethod("a", new CtClass[] {pool.get("deci.aP.a")});
+        if (!reconnect.getReturnType().equals(CtClass.voidType) || !Modifier.isStatic(reconnect.getModifiers())) {
+            throw new IllegalStateException("deci.c.c.a(deci.aP.a) is not the static reconnect lambda");
+        }
+        reconnect.setBody("{ return; }");
+        handler.writeFile(a[1]);
+
+        // ServerTickHandler$1: the dedicated server reconnect thread
+        CtClass serverThread = pool.get("deci.aK.q$1");
+        serverThread.getDeclaredMethod("run").setBody("{ return; }");
+        serverThread.writeFile(a[1]);
+
+        // v1, kept: kryonet's TCP connect honours the given timeout (bundled in Decimation.jar)
         CtClass kryo = pool.get("com.esotericsoftware.kryonet.Client");
         kryo.addField(CtField.make("public static int tcpTimeout;", kryo), CtField.Initializer.constant(5000));
         CtMethod kconnect = kryo.getMethod("connect", "(ILjava/net/InetAddress;II)V");
@@ -67,7 +68,7 @@ public class PatchBackend {
             throw new IllegalStateException("expected one TcpConnection.connect call, found " + tcp[0]);
         }
         kryo.writeFile(a[1]);
-        System.out.println("patched deci.aP.a.e (BackendClient): backend connect timeout 5000 -> 300 ms, "
-                           + "kryonet Client.connect: TCP connect uses that timeout");
+        System.out.println("patched deci.aP.a.e (no BoehMod connect), deci.c.c.a(deci.aP.a) and deci.aK.q$1.run (no "
+                           + "reconnect), kryonet Client.connect (v1 timeout)");
     }
 }

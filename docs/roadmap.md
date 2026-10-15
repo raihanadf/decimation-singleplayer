@@ -12,9 +12,8 @@ or `[not decided]`.
 0. **WorldClock day never advances** (found 16 Oktober 2026 in the code study; bug.md): Decimation sets world time
    back to 0 every day, our WorldClock counts days from world time, so the day stays 1 and DAY never fires after
    day 1. Fix test first before any day based system (systems_plan step 2+).
-0. **Backend reconnect leaks a thread every 15 seconds** (found 16 Oktober 2026 in the code study, measured on
-   the live game; bug.md): Decimation starts a new kryonet thread on each reconnect try to its dead network; the
-   host now resolves to an unknown IP. Proposed fix: PatchBackend v2 cuts the BoehMod connection [not decided].
+0. **Backend reconnect leaks a thread every 15 seconds**: FIXED v0.62.8 (PatchBackend v2, no BoehMod connection;
+   bug.md).
 1. **Drawing cost of props in open prop-heavy views** (measured again
    10 Oktober 2026, docs/performance.md section 5: about 18 % of a city
    view; render distance by size 48 / 32 / 24 removes it, new defaults in
@@ -125,6 +124,13 @@ docs/gun_model_spec.md); every user review goes into its lessons and casebook.
    the GUI on main menu, not our priority"). The offline banner / "Play
    offline" and the Human Kills counters are DONE (v0.42.2, bug.md); anything
    else on the menu: ask the user.
+2. **Project website** (user, 16 Oktober 2026: "use our website later for download page or to list the community
+   server"; earlier note docs/ideas.md item 20: a Vercel project page). Not designed yet `[not decided]`:
+   - a project page with the download link (the GitHub releases our updater already reads; Vercel serves no jars);
+   - a community server list: the site hosts a small servers.json, our mod reads it over HTTPS (as fixes/Updater
+     reads GitHub) and fills Decimation's community server page (GuiMenuCommunityServers) `[inferred: not tried]`.
+   Decimation's own BoehMod connection (kryonet, network.mcdecimation.net) cannot carry either: it is a raw socket
+   protocol a website cannot answer; cut by PatchBackend v2 in v0.62.8 (bug.md "Backend reconnect leaks a thread").
 
 ## Code and tools
 

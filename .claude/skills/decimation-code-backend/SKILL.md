@@ -13,7 +13,7 @@ Facts, the hosts, and the measured thread leak: docs/decimation_code/backend.md.
 |---|---|
 | backend connect | BackendClient (deci/aP/a) `connect`, called from DecimationMod.postInit |
 | reconnect every 15 s | ClientEventHandler (client), ServerTickHandler (dedicated server) |
-| launch wait fix | tools/patches/PatchBackend.java |
+| no connection at all (v2) | tools/patches/PatchBackend.java |
 | update check | UpdateChecker (net/decimation/mod/common/utils/h), our fixes/Updater |
 
 ## Rules
@@ -25,5 +25,6 @@ Facts, the hosts, and the measured thread leak: docs/decimation_code/backend.md.
 
 ## Common mistakes
 
-- Thinking PatchBackend stopped the backend: it only shortened the connect timeout; reconnects still run every 15 s.
-- Reading "Failed to Connect to Network!" as harmless: each try leaks a thread.
+- Re-enabling any BoehMod call (connect, reconnect): each reconnect try leaked a thread for good before v0.62.8.
+- Building website features on Decimation's kryonet client: a website cannot answer it; read our own JSON over
+  HTTPS instead (docs/roadmap.md UI 2).

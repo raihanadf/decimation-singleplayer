@@ -312,7 +312,7 @@ SRG→MCP from the old root `src/` via `mcp_stable/12` CSVs; the root `src/` +
   `PatchTracer.java`, NPC tracers aimed at the target, 2026-10-09, needs
   netty-all 4.0.10 from Prism's libraries on the Javassist classpath;
   `PatchBackend.java` (2026-10-09) launch no longer waits 5 s for the
-  dead Decimation server; `PatchTracer.java` v2 (2026-10-09, aim point in
+  dead Decimation server; v2 (v0.62.8) no BoehMod connection at all (each reconnect try leaked a thread); `PatchTracer.java` v2 (2026-10-09, aim point in
   the packet, `shotHook` in BanditEntity.shootAt, NPC tracers always
   visible; v3 2026-10-14: tracers end where the shot ended, drawn segment
   clamped to the tracer's length) then `PatchFactions.java` on top of its deci/ag/a output
@@ -963,6 +963,9 @@ of the last session:
   trade, useitems, keycard, and loot now clicks a real Decimation crate; tools/skillcheck.py (must pass for those docs
   and skills), tools/props/keycardcheck.py (keycard reach -3 .. +2). Found: backend reconnect leaks a thread every
   15 s, Decimation's daily world time reset stops our WorldClock day (bug.md, not fixed yet).
+  v0.62.8: PatchBackend v2 (three jars): Decimation never contacts BoehMod's network (connect and both reconnects
+  do nothing); 0 kryonet threads after 2 minutes, menu / stats / zombies / checks and the dedicated server fine.
+  Website plan on the roadmap (UI 2): download page and a community server list read over HTTPS, not kryonet.
   Gun study (10 Oktober 2026): docs/gun_style_guide.md, tools/guns/study.py
   (renders / measures Decimation's guns from the jar, `attach` adds
   attachments as the game places them), dev test mode `gunview` (hip, aim
