@@ -1555,9 +1555,9 @@
     "semantic_hash": "16ec07afd4046b0158fe5fa5943f0fba"
   },
   "docs/decimation_code/README.md": {
-    "mtime": 1792097635.0288055,
-    "ast_hash": "42a6c8214c35a2cb938caaf49efc66f2",
-    "semantic_hash": "42a6c8214c35a2cb938caaf49efc66f2"
+    "mtime": 1792097744.2747505,
+    "ast_hash": "2eedc432b325da1c68897cee1fe23f9c",
+    "semantic_hash": "2eedc432b325da1c68897cee1fe23f9c"
   },
   "docs/decimation_code/loot.md": {
     "mtime": 1792092798.5578623,
@@ -1698,5 +1698,15 @@
     "mtime": 1792097617.4078689,
     "ast_hash": "ec6e91163265c693be516e9b088f65ee",
     "semantic_hash": "ec6e91163265c693be516e9b088f65ee"
+  },
+  ".claude/skills/decimation-code-rendering/SKILL.md": {
+    "mtime": 1792097728.951449,
+    "ast_hash": "83c2e2c7760d2555ccb68ad1c9be7732",
+    "semantic_hash": "83c2e2c7760d2555ccb68ad1c9be7732"
+  },
+  "docs/decimation_code/rendering.md": {
+    "mtime": 1792097726.8755543,
+    "ast_hash": "92bd46b43c9f9ac65d8dcfa59e50badc",
+    "semantic_hash": "92bd46b43c9f9ac65d8dcfa59e50badc"
   }
 }

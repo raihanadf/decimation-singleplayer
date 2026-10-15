@@ -22,7 +22,7 @@ dev test the files name).
 | items and gear: armor, slots, food, drink, medical, throwables, traps | items.md | decimation-code-items | dev test `useitems` (bandage, splint, drink, 16 Oktober 2026) |
 | blocks and props: locked doors, keycards, elevators, multiblocks | blocks.md (drawing: docs/prop_placement.md) | decimation-code-blocks | dev test `keycard` traced, tools/props/keycardcheck.py on a fresh seed 1 world (16 Oktober 2026) |
 | menus, screens and HUD | menus.md | decimation-code-menus | dev tests `menu` + `stats` traced (16 Oktober 2026) |
-| rendering and models | not yet (docs/gun_model_spec.md covers .bmodel) | | |
+| rendering and models | rendering.md (formats: docs/gun_model_spec.md) | decimation-code-rendering | dev test `gunview` traced (16 Oktober 2026) |
 | backend and update checker | not yet | | |
 | weather and world features | not yet | | |
 
@@ -43,5 +43,6 @@ dev test the files name).
   object, a rare race in singleplayer [inferred].
 - Items: bandages, splints and the morphine syringe hand nothing back (static shared "hand back" stack; run time
   checked, cause inferred).
+- Rendering: all 13 world layers run per loaded entity per frame, empty and debug ones included [cost not profiled].
 - Overrides of Forge added methods renamed by Decimation's obfuscator never run (`...Lost` methods,
   architecture.md "Method naming pass"); other classes may have the same break [not verified].
