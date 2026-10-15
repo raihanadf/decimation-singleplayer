@@ -395,7 +395,7 @@ public final class Deci
         return e instanceof deci.ai.v;
     }
 
-    /** A civilian human: HumanEntity2 (deci.ah.d) that is neither a bandit kind (deci.ag.a) nor a trader. */
+    /** A civilian human: FactionHumanEntity (deci.ah.d) that is neither a bandit kind (deci.ag.a) nor a trader. */
     public static boolean isCivilian(net.minecraft.entity.Entity e)
     {
         return e instanceof deci.ah.d && !(e instanceof deci.ag.a) && !(e instanceof deci.ai.a);
@@ -564,7 +564,7 @@ public final class Deci
 
     /**
      * A human: a player, an armed human NPC (npcKind), a civilian (HumanEntity deci.af.d,
-     * HumanEntity2 deci.ah.d) or a trader (TraderEntity deci.ai.a and its kinds).
+     * FactionHumanEntity deci.ah.d) or a trader (TraderEntity deci.ai.a and its kinds).
      */
     public static boolean isHuman(net.minecraft.entity.Entity e)
     {

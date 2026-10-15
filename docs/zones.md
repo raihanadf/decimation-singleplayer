@@ -134,7 +134,7 @@ list sync, which runs on both (it sends a superset: the live list holds the file
    scary flag, world border, creative flag.
 2. Safezone attacks, a copy of SafezoneAttackHandler (PvP, grace timer, infected) plus OUR rule:
    inside a safezone NOBODY friendly can be hurt: players, traders and guards, civilians
-   (HumanEntity2 that are not bandits), friendly soldiers / survivors, owned pets. Hostiles
+   (FactionHumanEntity that are not bandits), friendly soldiers / survivors, owned pets. Hostiles
    (infected, bandits, Soviets, mechs, vanilla monsters) stay attackable so guards can defend.
 3. No provocation (since v0.47.2): a player's hit on a protected one inside a safezone simply does
    nothing. v0.46.0 to v0.47.1 had the guards and soldiers within 64 blocks fire on such a player

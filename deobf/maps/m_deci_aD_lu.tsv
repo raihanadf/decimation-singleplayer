@@ -36,7 +36,7 @@ F	deci/aD/h	alk	customExplosion	H
 C	deci/aD/i	EntityRegistryDeci	entity	H	Registers every entity (Infected, crawler, Hulk, dog, NPCs, vehicles, projectiles)
 F	deci/aD/i	alm	nextEntityId	H
 M	deci/aD/i	gc	()	nextEntityId	H
-C	deci/aD/j	EmptyRegistryJ	misc	L	Registry with an empty init()
+C	deci/aD/j	MobSpawnRegistry	entity	H	Biome spawn lists for every biome: humans as creature (Human 1 x1-4, Bandit / Soviet / Soldier / Hazmat 1 x1-2), infected as monster (Infected 10 x1-4, Crawler / Hulk / Frail 1, InfectedDog 1 x1-2), Boar / Buck 3, Doggo 1
 C	deci/aD/k	ItemRegistry	item	H	Registers every item: bottlecaps, guns, magazines, ammo boxes, armor, consumables
 M	deci/aD/k	gd	()	registerAmmoTypes	M
 M	deci/aD/k	ge	()	registerMagazines	M
@@ -51,7 +51,7 @@ C	deci/aD/m	CustomMaterials	block	M	Custom block Material(s)
 C	deci/aD/n	NetworkMessageRegistry	network	H	Registers every SimpleNetworkWrapper message both sides
 F	deci/aD/n	awE	lastMessageId	M
 M	deci/aD/n	gi	()	nextMessageId	M
-C	deci/aD/o	EmptyRegistryO	misc	L	Class with an empty init()
+C	deci/aD/o	RecipeRegistry	core	H	Shaped crafting recipes (coca and cocaine packaging, meth, syringes emptied, barbed wire, wire coils, molotov)
 C	deci/aD/p	IdHelper	util	L	Single static int helper aq(int)
 C	deci/aD/q	SkinRegistry	weapon	M	Weapon skin (spray can) items per gun
 F	deci/aD/q	awF	allSkins	M

@@ -12,7 +12,7 @@ dev test the files name).
 |---|---|---|---|
 | loot: crates, cooldowns, supply drops | loot.md | decimation-code-loot | dev test `loot` (real click on a Decimation crate, trace 16 Oktober 2026) |
 | weapons: guns, shots, ammo, attachments | weapons.md | decimation-code-weapons | dev test `playerfire` (the player's shot end to end, trace 16 Oktober 2026) |
-| NPCs and infected | not yet | | |
+| NPCs and infected: humans, factions, zombies, spawning | npcs.md | decimation-code-npcs | dev test `shots` (armed NPC turn, trace 16 Oktober 2026) |
 | network, proxies, singleplayer gaps | not yet | | |
 | vehicles | not yet | | |
 | zones and turf | not yet (docs/zones.md covers the zone rules) | | |
@@ -32,5 +32,7 @@ dev test the files name).
 - Loot: the loot hint reads the client's cooldown registry, never marked [inferred].
 - Weapons: the hit handler's infected branch never runs (weapons.md section 4); the server trusts the client's
   damage value.
+- NPCs: findTarget rays every living entity before asking isHostileTo, FactionHumanEntity walks every loaded entity
+  each tick (npcs.md section 4) [inferred cost, not profiled]; InfectedEntity's client only canEntityBeSeen.
 - Overrides of Forge added methods renamed by Decimation's obfuscator never run (`...Lost` methods,
   architecture.md "Method naming pass"); other classes may have the same break [not verified].

@@ -469,7 +469,7 @@ How Decimation's armed NPCs work today (read from deobf source):
 - Soldiers attack players with humanity under 50 only. Soviets (spetsnaz
   set, AK74 / AKS74U / AK12) are hostile to every player and every non
   Soviet human: Decimation's own enemy military. Bandit, Soldier, Soviet,
-  Hazmat each spawn naturally at weight 1 in every biome (EmptyRegistryJ).
+  Hazmat each spawn naturally at weight 1 in every biome (MobSpawnRegistry).
 
 Design (our code, `net.decimation.fixes.NpcLoadouts` + `MilitarySpawner`):
 - Every armed NPC gets a tier when it first joins a world (server), stored
@@ -977,7 +977,7 @@ the user before building.
    Soviets near the zone, turn on a player who shoots inside or hits
    someone); people inside: traders, guards, unarmed civilians and armed
    survivors (item 5 joins this). Next: research the existing pieces
-   (Decimation trader entity, civilian HumanEntity2, faction rules, zone
+   (Decimation trader entity, civilian FactionHumanEntity, faction rules, zone
    registration) and a plan for the user.
    What Decimation already has (deobf/names.tsv, 11 Oktober 2026, read from
    the names table only; behaviour `[not verified]` until the classes are
@@ -1002,7 +1002,7 @@ the user before building.
      covers the spawn side since v0.7.0). TraderAndSafezoneAttackGuard
      deci.an.a (both sides): traders cannot be attacked.
    - Props: BlockSafezoneSignEntry / Exit (signs at a safezone gate).
-   - Civilians: HumanEntity2 deci.ah.d (faction CIVILIAN, unarmed);
+   - Civilians: FactionHumanEntity deci.ah.d (faction CIVILIAN, unarmed);
      NpcFaction deci.ae.b: Bandit, Military, Civilian, Soviet.
    Open design point for the plan: Decimation's safezone cancels every
    attack inside, while the user wants guards to turn on a player who
@@ -1035,7 +1035,7 @@ the user before building.
    no living police NPC. Would be a new tier on an existing human class
    (as the elites) or a faction `[not decided]`.
 5. Survivor civilians with a minimal weapon. Exists: civilian humans
-   (HumanEntity2, faction CIVILIAN, entity "Human", unarmed); bandits hunt
+   (FactionHumanEntity, faction CIVILIAN, entity "Human", unarmed); bandits hunt
    them, Soviets too since the faction fix.
 6. Radiated areas. Exists: our "Irradiated Military Zone" biome (no
    effect yet), hazmat suits and gas masks as items.

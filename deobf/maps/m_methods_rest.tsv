@@ -1,4 +1,6 @@
 C	deci/ao/a	ISlowsHolder	item	M	Item that slows the player holding it (guns): shouldSlowPlayer and getMovementSlowdown, read by ClientEventHandler each tick; was named ILootable
+C	deci/ah/d	FactionHumanEntity	entity	H	Human NPC with a faction (NpcFaction, CIVILIAN by default): registered as the civilian Human; base of BanditEntity (Soldier, Soviet, Hazmat) and every TraderEntity; looks scared when someone near holds a gun (scans every loaded entity each tick)
+F	deci/ah/d	abc	faction	H
 M	deci/b/a	a	(String)	skinLocation	H
 M	deci/b/b	b	(String)	show	H
 M	deci/b/b	a	(String,int)	showTyped	H

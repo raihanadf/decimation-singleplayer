@@ -49,7 +49,7 @@ No loot: Decimation gives no loot from containers inside or within 10 blocks of 
 ## 3. Residents (worldgen/SafezoneSites)
 
 - Posts per camp: 6 guards (GuardTrader "TraderGuard": static, M16 / M4, shoots infected and
-  bandits within 32), 6 traders, 5 civilians ("Human", HumanEntity2), 3 armed survivors
+  bandits within 32), 6 traders, 5 civilians ("Human", FactionHumanEntity), 3 armed survivors
   (SoldierEntity with our tier "survivor": casual clothes, pistol / shotgun / Mosin / SKS,
   NpcLoadouts, weights 0).
 - Registered when the camp's first slice is written (Slices, interface Residents) with the

@@ -5,7 +5,7 @@ import javassist.*;
  * MilitarySpawner put them in groups).
  *
  * Cause: SovietEntity.isHostileTo (deci.ag.m.c) returns, for another armed
- * human (HumanEntity2 deci.ah.d), faction == SOVIET: hostile ONLY to Soviets,
+ * human (FactionHumanEntity deci.ah.d), faction == SOVIET: hostile ONLY to Soviets,
  * the opposite of what an enemy faction means (they ignored bandits and
  * soldiers and shot each other). Bandits (deci.ag.a.c) and soldiers
  * (deci.ag.l.c, also hazmat soldiers) never counted Soviets as enemies.
