@@ -9,6 +9,9 @@ or `[not decided]`.
 
 ## Open bugs
 
+0. **WorldClock day never advances** (found 16 Oktober 2026 in the code study; bug.md): Decimation sets world time
+   back to 0 every day, our WorldClock counts days from world time, so the day stays 1 and DAY never fires after
+   day 1. Fix test first before any day based system (systems_plan step 2+).
 0. **Backend reconnect leaks a thread every 15 seconds** (found 16 Oktober 2026 in the code study, measured on
    the live game; bug.md): Decimation starts a new kryonet thread on each reconnect try to its dead network; the
    host now resolves to an unknown IP. Proposed fix: PatchBackend v2 cuts the BoehMod connection [not decided].

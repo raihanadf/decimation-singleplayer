@@ -10,6 +10,19 @@ not something we introduced or need to fix) see `documentation.md`.
 
 ## Open
 
+### WorldClock day never advances (found 16 Oktober 2026, Open, not fixed)
+- Found in the Decimation code study (docs/decimation_code/world.md). Decimation's DayLengthHandler (deci/an/p,
+  common, every world tick) sets world time back to 0 once it passes 24000. Our fixes/WorldClock (v0.57.0) takes
+  day = world time / 24000 + 1, so day() is always 1; and its tick sees the time go from about 24000 back to 0 and
+  treats that as "time set back": the DAY event never fires after the first day (DUSK, NIGHT, DAWN still fire).
+  [inferred from both codes; the trace showed DayLengthHandler.onWorldTick on every world tick; the wrap itself not
+  run yet]
+- Impact today: Areas.since is always day 1. Before the systems plan's day based features (zombie growth, horde
+  nights, raids, claim decay) it must be fixed.
+- Fix (proposed): a saved day counter of our own (world saved data) that advances when the time wraps from late
+  night to early morning, firing DAY; a dev test check first that sets the time to 23990, waits past the wrap and
+  expects day + 1 and one DAY event (fails today).
+
 ### Backend reconnect leaks a thread every 15 seconds (found 16 Oktober 2026, Open, not fixed)
 - Found in the Decimation code study (docs/decimation_code/backend.md). Every 300 client ticks Decimation tries to
   reconnect to its dead network (ClientEventHandler, client tick): `new Thread(backendClient.aBX).start();

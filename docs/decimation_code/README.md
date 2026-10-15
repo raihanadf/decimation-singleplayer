@@ -24,7 +24,7 @@ dev test the files name).
 | menus, screens and HUD | menus.md | decimation-code-menus | dev tests `menu` + `stats` traced (16 Oktober 2026) |
 | rendering and models | rendering.md (formats: docs/gun_model_spec.md) | decimation-code-rendering | dev test `gunview` traced (16 Oktober 2026) |
 | backend, update checker, outside connections | backend.md | decimation-code-backend | live game log and thread dumps (16 Oktober 2026) |
-| weather and world features | not yet | | |
+| weather, day length, world rules | world.md | decimation-code-world | trace of weather and day length (16 Oktober 2026) |
 
 ## Findings to follow up
 
@@ -46,5 +46,7 @@ dev test the files name).
 - Rendering: all 13 world layers run per loaded entity per frame, empty and debug ones included [cost not profiled].
 - Backend: one leaked kryonet thread every 15 s (measured: 27 -> 28 threads, bug.md); the dead BoehMod host now
   resolves to a new IP [risk inferred].
+- World: Decimation's storm weather can never show (both weathers id 0); its daily world time reset breaks OUR
+  WorldClock day count (bug.md "WorldClock day never advances").
 - Overrides of Forge added methods renamed by Decimation's obfuscator never run (`...Lost` methods,
   architecture.md "Method naming pass"); other classes may have the same break [not verified].
