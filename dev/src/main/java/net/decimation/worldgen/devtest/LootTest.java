@@ -21,6 +21,8 @@ import net.minecraft.world.World;
  *    there through the real window clicks leaves that inventory and lands in the player's;
  * 2. a body entity (LootBody) opens it on a right click (the client's real interact packet), keeps
  *    what was not taken (reopened: one stack left), goes when emptied, and saves its items to NBT.
+ * 3. Decimation's own crate (a real right click through LootInteractHandler deci.aK.k): the screen opens with rolled
+ *    stacks, the spot goes on cooldown, a second click within it opens nothing ("This ... is empty...").
  * Shots: loot_crate (screen on our inventory), loot_body_world (the body), loot_body (its screen).
  */
 public class LootTest extends DevTestMode
@@ -39,6 +41,11 @@ public class LootTest extends DevTestMode
     private InventoryBasic crate;
     private LootBody body;
     private int emptyAt;
+    /** Step 3: Decimation's crate, placed by the server, clicked by the client. */
+    private volatile boolean placeDeci, deciPlaced, checkDeciCooldown, finishDeci, deciCleaned;
+    private volatile int crateX, crateY, crateZ;
+    private volatile String deciName = "none";
+    private net.minecraft.world.WorldSettings.GameType modeBefore;
 
     // ---- client: the player's side, through the real GUI paths
 
@@ -189,12 +196,48 @@ public class LootTest extends DevTestMode
                 {
                     DevTestResults.check(name(), "body: open screen closes when the body goes", wait + " ticks",
                                          !screenOpen(mc) && serverClosed(), "closed on both sides");
-                    done = true;
+                    next(8);
                 }
                 if (!kill && wait > TIMEOUT * 2)
                 {
                     DevTestResults.check(name(), "body: open screen closes when the body goes", "never opened", false,
                                          "closed on both sides");
+                    next(8);
+                }
+                break;
+            case 8: // spike 3: Decimation's own crate, a real right click (LootInteractHandler deci.aK.k)
+                if (wait == 1)
+                {
+                    placeDeci = true;
+                }
+                if (deciPlaced && wait == 20)
+                {
+                    rightClick(mc);
+                }
+                if (deciPlaced && wait > 20 && screenOpen(mc) || wait > 20 + TIMEOUT)
+                {
+                    DevTestResults.check(name(), "decimation crate: right click opens the loot screen", screenName(mc) + " (" + deciName + ")",
+                                         screenOpen(mc), Deci.LOOT_SCREEN);
+                    DevTestResults.check(name(), "decimation crate: rolled stacks shown", lootStacks(mc), lootStacks(mc) > 0, "1 or more");
+                    checkDeciCooldown = true;
+                    mc.thePlayer.closeScreen();
+                    next(9);
+                }
+                break;
+            case 9: // a second click within the cooldown opens nothing
+                if (wait == 15)
+                {
+                    rightClick(mc);
+                }
+                if (wait == 40)
+                {
+                    DevTestResults.check(name(), "decimation crate: second click within the cooldown stays shut", screenName(mc),
+                                         !screenOpen(mc), "no loot screen");
+                    mc.thePlayer.closeScreen();
+                    finishDeci = true;
+                }
+                if (deciCleaned || wait > 40 + TIMEOUT)
+                {
                     done = true;
                 }
                 break;
@@ -238,6 +281,13 @@ public class LootTest extends DevTestMode
             n += inv.getStackInSlot(i) != null ? 1 : 0;
         }
         return n;
+    }
+
+    /** A right click on the top of Decimation's crate, as the player's own click sends it. */
+    private void rightClick(Minecraft mc)
+    {
+        mc.playerController.onPlayerRightClick(mc.thePlayer, mc.theWorld, mc.thePlayer.getHeldItem(), crateX, crateY, crateZ, 1,
+                                               net.minecraft.util.Vec3.createVectorHelper(crateX + 0.5, crateY + 1.0, crateZ + 0.5));
     }
 
     /** Left click on the first loot slot holding a stack: it goes onto the cursor. */
@@ -327,6 +377,7 @@ public class LootTest extends DevTestMode
             takeDone = true;
         }
         second(w);
+        deciCrate(p, w);
         if (checkEmpty && !emptyDone)
         {
             if (emptyAt == 0)
@@ -355,6 +406,61 @@ public class LootTest extends DevTestMode
         {
             second.setDead();
             killed = true;
+        }
+    }
+
+    /**
+     * Decimation's crate for step 3: the first loot table block named like a crate (survival for the click: the handler
+     * skips creative players), cooldowns cleared so reruns in the open live world start ready; removed at the end.
+     */
+    private void deciCrate(EntityPlayerMP p, World w)
+    {
+        if (placeDeci && !deciPlaced)
+        {
+            String pick = null;
+            for (String n : Deci.lootTable().keySet())
+            {
+                if (n.startsWith("deci:") && (pick == null || n.toLowerCase().contains("crate") && !pick.toLowerCase().contains("crate")))
+                {
+                    pick = n;
+                }
+            }
+            net.minecraft.block.Block b = pick == null ? null : net.minecraft.block.Block.getBlockFromName(pick);
+            if (b == null)
+            {
+                DevTestResults.check(name(), "decimation crate: a loot table block", "none", false, "a deci: block with a pool");
+                placeDeci = false;
+                return;
+            }
+            modeBefore = p.theItemInWorldManager.getGameType();
+            p.setGameType(net.minecraft.world.WorldSettings.GameType.SURVIVAL);
+            crateX = DevTestArena.X;
+            crateY = DevTestArena.Y;
+            crateZ = DevTestArena.Z - 2;
+            w.setBlock(crateX, crateY, crateZ, b, 0, 3);
+            Deci.clearLootCooldowns();
+            deciName = pick;
+            deciPlaced = true;
+        }
+        if (checkDeciCooldown)
+        {
+            checkDeciCooldown = false;
+            DevTestResults.check(name(), "decimation crate: spot on cooldown after the open", "ready=" + Deci.lootReady(w, crateX, crateY, crateZ),
+                                 !Deci.lootReady(w, crateX, crateY, crateZ), "not ready");
+            InventoryBasic inv = Deci.lootInventory(p);
+            DevTestResults.value(name(), "decimation crate: stacks rolled (server)", inv == null ? "none" : String.valueOf(stacks(inv)));
+        }
+        if (finishDeci && !deciCleaned)
+        {
+            if (deciPlaced)
+            {
+                w.setBlockToAir(crateX, crateY, crateZ);
+            }
+            if (modeBefore != null)
+            {
+                p.setGameType(modeBefore);
+            }
+            deciCleaned = true;
         }
     }
 

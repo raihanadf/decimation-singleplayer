@@ -1111,6 +1111,21 @@ public final class Deci
         return true;
     }
 
+    /**
+     * LootCooldownRegistry.isReady (deci.aB.e.d(world).k): the crate at this spot gives loot again
+     * (lootRespawnTime, default 900 s, after its last open; kept in memory only).
+     */
+    public static boolean lootReady(net.minecraft.world.World world, int x, int y, int z)
+    {
+        return deci.aB.e.d(world).k(x, y, z);
+    }
+
+    /** LootCooldownRegistry.clear: every crate of every world gives loot again (server start does this). */
+    public static void clearLootCooldowns()
+    {
+        deci.aB.e.clear();
+    }
+
     // ---- loot screen: the path of LootInteractHandler (deci.aK.k), docs/loot_levels.md
 
     /** Runtime class of the loot screen (PlayerInventoryScreen deci.g.g, client only): compare names. */

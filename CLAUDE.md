@@ -91,6 +91,9 @@ Knowledge index:
   driving it with devtest.py --live.
 - `docs/call_trace.md`: dev call logger (Java agent, `-Ptrace` / `devtest.py --live MODE -Ptrace=PREFIXES`,
   `/deciworldgen trace`): which Decimation / mod methods run, in order, per thread, named from decimation.srg.
+- `docs/decimation_code/README.md`: DECIMATION'S OWN CODE feature by feature (loot, weapons, NPCs, network, ...):
+  one doc and one project skill `decimation-code-<feature>` each, call order checked with the call logger; every
+  such doc and skill must pass `python3 tools/skillcheck.py` (looks up each class, method, Deci accessor, path, test).
 - `docs/performance.md`: how to check lag (dev test modes gunperf, census,
   tools/perfcheck.py world / log / fixchunk, JFR on the live game with
   jcmd) and what was found (corrupt chunk entity explosion, infected path
