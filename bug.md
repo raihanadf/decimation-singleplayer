@@ -14,14 +14,16 @@ not something we introduced or need to fix) see `documentation.md`.
 - Found in the Decimation code study (docs/decimation_code/world.md). Decimation's DayLengthHandler (deci/an/p,
   common, every world tick) sets world time back to 0 once it passes 24000. Our fixes/WorldClock (v0.57.0) takes
   day = world time / 24000 + 1, so day() is always 1; and its tick sees the time go from about 24000 back to 0 and
-  treats that as "time set back": the DAY event never fires after the first day (DUSK, NIGHT, DAWN still fire).
-  [inferred from both codes; the trace showed DayLengthHandler.onWorldTick on every world tick; the wrap itself not
-  run yet]
+  treats that as "time set back". CONFIRMED by the failing dev test (core, "clock: two midnights", 16 Oktober 2026):
+  day() stays 1, and DAY does fire at each midnight (the tick sees 23999 -> 24000 before Decimation's reset at the next
+  tick start) but always as DAY@2: got "1 [DAY@2], 1 [DAY@2]", want "2 [DAY@2], 3 [DAY@3]".
 - Impact today: Areas.since is always day 1. Before the systems plan's day based features (zombie growth, horde
   nights, raids, claim decay) it must be fixed.
-- Fix (proposed): a saved day counter of our own (world saved data) that advances when the time wraps from late
-  night to early morning, firing DAY; a dev test check first that sets the time to 23990, waits past the wrap and
-  expects day + 1 and one DAY event (fails today).
+- Fix (in progress, user "start fix worldclock"): a saved day counter (WorldSavedData "deciworldgen_clock": days,
+  last raw time; existing worlds start at totalWorldTime / 24000). Forward raw time: fire events in (last, now] with
+  day = days + 1 + (p / 24000 - last / 24000), days += now / 24000 - last / 24000. Backward: last >= 24000 means
+  Decimation's reset (nothing to do), else a /time set back (no events). Sleeping jumps to 24000: forward, counted
+  once. fire(w, from, to) keeps its old day numbers for the jump checks. Test first: DONE (fails as above).
 
 ### Backend reconnect leaks a thread every 15 seconds (found 16 Oktober 2026, FIXED v0.62.8)
 - Found in the Decimation code study (docs/decimation_code/backend.md). Every 300 client ticks Decimation tries to

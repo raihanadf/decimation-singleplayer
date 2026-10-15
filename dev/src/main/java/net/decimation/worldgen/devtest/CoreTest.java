@@ -31,7 +31,8 @@ import net.minecraft.world.World;
  *   up to 8), listed stacks reach their size and never pass it;
  * - our loot lists (LootPools): no unknown names, 16 lists, every roll inside its range, level 4 holds
  *   an item of every type;
- * - WorldClock: events in time order for jumps, and the live tick handler at dusk;
+ * - WorldClock: events in time order for jumps, the live tick handler at dusk, and two midnights in a row with
+ *   Decimation's daily time reset (DayLengthHandler sets the time back to 0 after 24000): day + 1 each, one DAY each;
  * - Protection: values per family and their caps;
  * - Areas: a radiation area puts a Decimation zone in place, survives a save and reload, goes again.
  */
@@ -41,7 +42,8 @@ public class CoreTest extends DevTestMode
 
     private static final int ROLLS = 2000;
     private volatile boolean done;
-    private int ticks, liveAt = -1;
+    private int ticks, liveAt = -1, midAt = -1, d0;
+    private final List<String> nights = new ArrayList<String>();
     private final List<String> seen = new ArrayList<String>();
     private final WorldClock.Listener listener = new WorldClock.Listener()
     {
@@ -91,12 +93,45 @@ public class CoreTest extends DevTestMode
             {
                 got = new ArrayList<String>(seen);
             }
-            WorldClock.unlisten(listener);
             int day = WorldClock.day(w);
             DevTestResults.check(name(), "clock: live dusk", got, got.equals(java.util.Arrays.asList("DUSK@" + day)),
                                  "[DUSK@" + day + "]");
-            w.setWorldTime(w.getWorldTime() / 24000L * 24000L + 6000);
-            done = true;
+            // two midnights: just before each, then past Decimation's reset
+            w.setWorldTime(23990);
+            midAt = t;
+        }
+        if (midAt > 0 && (t == midAt + 2 || t == midAt + 42))
+        {
+            synchronized (seen)
+            {
+                seen.clear();   // the jump to 23990 fired DUSK / NIGHT / DAWN; only midnight counts
+            }
+            if (t == midAt + 2)
+            {
+                d0 = WorldClock.day(w);
+            }
+        }
+        if (midAt > 0 && (t == midAt + 40 || t == midAt + 80))
+        {
+            List<String> got;
+            synchronized (seen)
+            {
+                got = new ArrayList<String>(seen);
+            }
+            nights.add(WorldClock.day(w) + " " + got);
+            if (t == midAt + 40)
+            {
+                w.setWorldTime(23990);
+            }
+            else
+            {
+                WorldClock.unlisten(listener);
+                String want = (d0 + 1) + " [DAY@" + (d0 + 1) + "], " + (d0 + 2) + " [DAY@" + (d0 + 2) + "]";
+                String have = nights.get(0) + ", " + nights.get(1);
+                DevTestResults.check(name(), "clock: two midnights (day " + d0 + " before)", have, have.equals(want), want);
+                w.setWorldTime(6000);
+                done = true;
+            }
         }
     }
 

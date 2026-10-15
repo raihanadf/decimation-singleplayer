@@ -8,7 +8,8 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [x] name the 597 unnamed Decimation methods (deobf/maps/m_methods_rest.tsv)
 - [x] usage pane: group tasks into working now and pending
 - [x] study each Decimation feature: how its code works, its purpose (docs/decimation_code/)
-- [ ] WorldClock day never advances (Decimation resets world time daily, bug.md): fix test first
+- [~] WorldClock day never advances (bug.md): failing test DONE (core "clock: two midnights"), fix next
+- [ ] talk about the project website with the user (after WorldClock; roadmap UI 2)
 - [x] backend thread leak: PatchBackend v2, no BoehMod connection (v0.62.8)
 - [ ] project website: design when the user is ready (roadmap UI 2)
 - [x] one skill per Decimation feature (.claude/skills/decimation-code*)

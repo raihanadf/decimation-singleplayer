@@ -36,8 +36,8 @@ Traced `deci.aI,deci.an.p,deci.b.i.a`: client thread WeatherType.byId 112 (once 
 - The world's day count never grows: world time goes back to 0 after 24000, so the moon phase (computed from the day)
   stays the same night after night and `/time set` past 24000 is undone [inferred].
 - OUR fixes/WorldClock counts days as world time / 24000 + 1, so with this reset its day stays 1, and at each
-  midnight it sees the time go back to 0 and treats it as "time set back": the DAY event never fires after the
-  first day (DUSK, NIGHT, DAWN still do) [inferred from both codes, bug.md "WorldClock day never advances"].
+  midnight it sees the time go back to 0 and treats it as "time set back": DAY fires each midnight but always as
+  day 2 (confirmed by the core test "clock: two midnights", bug.md "WorldClock day never advances").
 
 ## 5. How our mod uses it
 
