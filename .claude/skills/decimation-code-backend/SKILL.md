@@ -1,6 +1,6 @@
 ---
 name: decimation-code-backend
-description: Use when touching anything Decimation does over the network outside the game - the dead BoehMod backend (kryonet, network.mcdecimation.net), reconnect attempts, threads piling up, launch delays, update checks, server lists, news, capes, skins or images fetched from the web, Discord presence - or when deciding what the mod may contact.
+description: Use when touching anything Decimation does over the network outside the game: the dead BoehMod backend (kryonet, network.mcdecimation.net), reconnect attempts, threads piling up, launch delays, update checks, server lists, news, capes, skins or images fetched from the web, Discord presence, or when deciding what the mod may contact.
 ---
 
 # Decimation backend and outside connections code

@@ -1,6 +1,6 @@
 ---
 name: decimation-code-npcs
-description: Use when changing or debugging Decimation's NPCs and infected - bandits, soldiers, Soviets, civilians, medics, zombies and their kinds (crawler, dog, frail, gawker, hulk, bloater), who attacks whom, NPC guns and shooting, NPC spawning, hordes, infection bites, NPC performance - or when code must spawn, identify or steer them.
+description: Use when changing or debugging Decimation's NPCs and infected: bandits, soldiers, Soviets, civilians, medics, zombies and their kinds (crawler, dog, frail, gawker, hulk, bloater), who attacks whom, NPC guns and shooting, NPC spawning, hordes, infection bites, NPC performance, or when code must spawn, identify or steer them.
 ---
 
 # Decimation NPC and infected code

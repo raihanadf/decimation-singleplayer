@@ -1,6 +1,6 @@
 ---
 name: decimation-code-blocks
-description: Use when changing or debugging how Decimation's blocks behave (not how props look or where they go) - locked doors, keycard screens and keycards, lockpicking, elevators, multiblock props breaking or not rendering, supply crates, fortifications, block registration - or when generated structures need working locked rooms or elevators.
+description: Use when changing or debugging how Decimation's blocks behave (not how props look or where they go): locked doors, keycard screens and keycards, lockpicking, elevators, multiblock props breaking or not rendering, supply crates, fortifications, block registration, or when generated structures need working locked rooms or elevators.
 ---
 
 # Decimation blocks and interactive props code

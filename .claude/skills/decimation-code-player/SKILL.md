@@ -1,6 +1,6 @@
 ---
 name: decimation-code-player
-description: Use when changing or debugging a Decimation player's survival data - thirst and water, blood, infection, bleeding, broken legs, radiation, humanity and hero / bandit rank, bottlecaps and gold caps, bounty, kill and death stats, data lost or not syncing between client and server - or when code must read or set any of it.
+description: Use when changing or debugging a Decimation player's survival data: thirst and water, blood, infection, bleeding, broken legs, radiation, humanity and hero / bandit rank, bottlecaps and gold caps, bounty, kill and death stats, data lost or not syncing between client and server, or when code must read or set any of it.
 ---
 
 # Decimation player data code

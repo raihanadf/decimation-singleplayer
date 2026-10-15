@@ -958,6 +958,11 @@ of the last session:
   v0.62.6: call logger (docs/call_trace.md, tools/trace): dev only Java agent marks every method of the chosen packages,
   /deciworldgen trace start PREFIXES [s] | stop, live runs take trace=PREFIXES; tools/trace/tracelog.py names the trace.
   Never run fps tests in a game started with the agent.
+  v0.62.7: Decimation code study (docs/decimation_code/README.md; skills decimation-code and decimation-code-<feature>
+  x 15): every non synthetic Decimation method named (deobf/maps/m_methods_rest.tsv); dev tests playerfire, drive,
+  trade, useitems, keycard, and loot now clicks a real Decimation crate; tools/skillcheck.py (must pass for those docs
+  and skills), tools/props/keycardcheck.py (keycard reach -3 .. +2). Found: backend reconnect leaks a thread every
+  15 s, Decimation's daily world time reset stops our WorldClock day (bug.md, not fixed yet).
   Gun study (10 Oktober 2026): docs/gun_style_guide.md, tools/guns/study.py
   (renders / measures Decimation's guns from the jar, `attach` adds
   attachments as the game places them), dev test mode `gunview` (hip, aim

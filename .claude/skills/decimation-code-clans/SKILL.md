@@ -1,6 +1,6 @@
 ---
 name: decimation-code-clans
-description: Use when touching Decimation's clans or turfs - clan files, turf capture and income, turf building rules, "Can't open that in another clans turf", clan chat, the floating turf names and the entering-turf banner - or when our place names (districts, bases) misbehave, since they ride on Decimation's turf list.
+description: Use when touching Decimation's clans or turfs: clan files, turf capture and income, turf building rules, "Can't open that in another clans turf", clan chat, the floating turf names and the entering-turf banner, or when our place names (districts, bases) misbehave, since they ride on Decimation's turf list.
 ---
 
 # Decimation clans and turfs code

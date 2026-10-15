@@ -3,7 +3,7 @@
 
     python3 tools/skillcheck.py [FILE ...]
 
-Default files: .claude/skills/decimation-code-*/SKILL.md and docs/decimation_code/*.md. Each reference is looked up:
+Default files: .claude/skills/decimation-code*/SKILL.md and docs/decimation_code/*.md. Each reference is looked up:
 - repo paths (docs/..., tools/..., fixes/X, worldgen/..., config files are skipped): the file exists;
 - obfuscated classes (deci/aK/k, net/decimation/mod/.../b, with $Inner): a class of deobf/decimation-mcp.jar;
 - `Deci.name`: a method of dev/src/main/java/net/decimation/fixes/Deci.java;
@@ -105,7 +105,7 @@ def check(path, obf, methods, names, deci, modes):
 
 
 def main():
-    files = sys.argv[1:] or sorted(glob.glob(os.path.join(ROOT, ".claude", "skills", "decimation-code-*", "SKILL.md"))
+    files = sys.argv[1:] or sorted(glob.glob(os.path.join(ROOT, ".claude", "skills", "decimation-code*", "SKILL.md"))
                                    + glob.glob(os.path.join(ROOT, "docs", "decimation_code", "*.md")))
     obf, methods, names, deci, modes = load()
     total = 0

@@ -1,6 +1,6 @@
 ---
 name: decimation-code-world
-description: Use when touching Decimation's own world rules - weather and fog (default, storm), ambient weather sounds, day length and world time, moon phase, day counting - or when our features need time of day or days survived.
+description: Use when touching Decimation's own world rules: weather and fog (default, storm), ambient weather sounds, day length and world time, moon phase, day counting, or when our features need time of day or days survived.
 ---
 
 # Decimation weather and world rules code

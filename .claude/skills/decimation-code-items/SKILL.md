@@ -1,6 +1,6 @@
 ---
 name: decimation-code-items
-description: Use when changing or debugging Decimation's non gun items - armor and its damage multipliers, backpacks, vests and masks, food and drinks, bandages, splints, blood bags and syringes, grenades, rockets, landmines and other traps, jerry cans, chainsaw and melee - or when code must give, use or read such items.
+description: Use when changing or debugging Decimation's non gun items: armor and its damage multipliers, backpacks, vests and masks, food and drinks, bandages, splints, blood bags and syringes, grenades, rockets, landmines and other traps, jerry cans, chainsaw and melee, or when code must give, use or read such items.
 ---
 
 # Decimation items and gear code

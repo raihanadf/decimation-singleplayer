@@ -110,9 +110,9 @@
     "semantic_hash": "de153d1f8408971d6190e16a7d4256f9"
   },
   "CLAUDE.md": {
-    "mtime": 1792094887.6522145,
-    "ast_hash": "2a4ed54d63b9d717d211ec33c75c034f",
-    "semantic_hash": "2a4ed54d63b9d717d211ec33c75c034f"
+    "mtime": 1792098301.356655,
+    "ast_hash": "4ca455141abccb3141795e1c0e014140",
+    "semantic_hash": "4ca455141abccb3141795e1c0e014140"
   },
   "DECIMATION_MOD_TASK.md": {
     "mtime": 1784958353.0126374,
@@ -655,9 +655,9 @@
     "semantic_hash": "2d0f09fef2eed394139055f40d0cbe14"
   },
   "docs/roadmap.md": {
-    "mtime": 1792098084.951527,
-    "ast_hash": "423581eaae964bdd42e2c3ef9ffd3a1e",
-    "semantic_hash": "423581eaae964bdd42e2c3ef9ffd3a1e"
+    "mtime": 1792098301.355655,
+    "ast_hash": "749c7b2af302a0649ba85d84f9cd0116",
+    "semantic_hash": "749c7b2af302a0649ba85d84f9cd0116"
   },
   "dev/src/main/java/net/decimation/worldgen/LegacyStreets.java": {
     "mtime": 1791487239.5087948,
@@ -1540,19 +1540,19 @@
     "semantic_hash": "294036847a9caffda351bfa855a78636"
   },
   "docs/tasks.md": {
-    "mtime": 1792098067.3053439,
-    "ast_hash": "ae75382e9e6e8f8e6bb90e601a81602f",
-    "semantic_hash": "ae75382e9e6e8f8e6bb90e601a81602f"
+    "mtime": 1792098301.3571732,
+    "ast_hash": "2ea3a4c6908e6dd4fcd636fa2a3a0c47",
+    "semantic_hash": "2ea3a4c6908e6dd4fcd636fa2a3a0c47"
   },
   "tools/skillcheck.py": {
-    "mtime": 1792097014.739657,
-    "ast_hash": "249a6022d291d0d1e497d284e411c625",
-    "semantic_hash": "249a6022d291d0d1e497d284e411c625"
+    "mtime": 1792098139.5315723,
+    "ast_hash": "39e2f0ba8fa660285a4d7a93372f1a79",
+    "semantic_hash": "39e2f0ba8fa660285a4d7a93372f1a79"
   },
   ".claude/skills/decimation-code-loot/SKILL.md": {
-    "mtime": 1792092849.4833713,
-    "ast_hash": "16ec07afd4046b0158fe5fa5943f0fba",
-    "semantic_hash": "16ec07afd4046b0158fe5fa5943f0fba"
+    "mtime": 1792098116.9798663,
+    "ast_hash": "8176befb88d735134d7ed1a7157e3ba2",
+    "semantic_hash": "8176befb88d735134d7ed1a7157e3ba2"
   },
   "docs/decimation_code/README.md": {
     "mtime": 1792098084.95236,
@@ -1570,9 +1570,9 @@
     "semantic_hash": "087a71bcf7748251868b31514b4762f6"
   },
   ".claude/skills/decimation-code-weapons/SKILL.md": {
-    "mtime": 1792093533.0027618,
-    "ast_hash": "ca35eb74f6924acc2a87a2e71275f95d",
-    "semantic_hash": "ca35eb74f6924acc2a87a2e71275f95d"
+    "mtime": 1792098116.9779408,
+    "ast_hash": "cae33d7c89cc30de26ed6d294f1c1d28",
+    "semantic_hash": "cae33d7c89cc30de26ed6d294f1c1d28"
   },
   "docs/decimation_code/weapons.md": {
     "mtime": 1792093513.221292,
@@ -1580,9 +1580,9 @@
     "semantic_hash": "2be9ec393ef23420a7b299de71b97297"
   },
   ".claude/skills/decimation-code-npcs/SKILL.md": {
-    "mtime": 1792094304.27346,
-    "ast_hash": "22940ced77307e34a90f8cd1d852d0fd",
-    "semantic_hash": "22940ced77307e34a90f8cd1d852d0fd"
+    "mtime": 1792098116.979303,
+    "ast_hash": "1e429b744c3f09fba683e30ebf28992f",
+    "semantic_hash": "1e429b744c3f09fba683e30ebf28992f"
   },
   "docs/decimation_code/npcs.md": {
     "mtime": 1792094278.169468,
@@ -1605,9 +1605,9 @@
     "semantic_hash": "cdd11482628ec1f3bcdb986c0d9ed12c"
   },
   ".claude/skills/decimation-code-vehicles/SKILL.md": {
-    "mtime": 1792095810.6086612,
-    "ast_hash": "da42af7cf1e1f592e4ae87209f5105eb",
-    "semantic_hash": "da42af7cf1e1f592e4ae87209f5105eb"
+    "mtime": 1792098116.9818077,
+    "ast_hash": "27848d4587812676ad7796cc9922ca47",
+    "semantic_hash": "27848d4587812676ad7796cc9922ca47"
   },
   "docs/decimation_code/vehicles.md": {
     "mtime": 1792095827.4269571,
@@ -1615,14 +1615,14 @@
     "semantic_hash": "d9959a6a8bc2e228afc6e4071816b753"
   },
   ".claude/skills/decimation-code-zones/SKILL.md": {
-    "mtime": 1792096004.5791605,
-    "ast_hash": "c903adc4c3d1a64a7a4799584e316a67",
-    "semantic_hash": "c903adc4c3d1a64a7a4799584e316a67"
+    "mtime": 1792098116.9827414,
+    "ast_hash": "59c484854625731973ea7e7da88e9c51",
+    "semantic_hash": "59c484854625731973ea7e7da88e9c51"
   },
   ".claude/skills/decimation-code-player/SKILL.md": {
-    "mtime": 1792096285.1670227,
-    "ast_hash": "d730e5e6fe3d02b0f3a9b67f4154fade",
-    "semantic_hash": "d730e5e6fe3d02b0f3a9b67f4154fade"
+    "mtime": 1792098116.985121,
+    "ast_hash": "b2e5d37fa541cb8b68d81ee1cfd9d840",
+    "semantic_hash": "b2e5d37fa541cb8b68d81ee1cfd9d840"
   },
   "docs/decimation_code/player.md": {
     "mtime": 1792096311.1939995,
@@ -1630,9 +1630,9 @@
     "semantic_hash": "d52b4c40b11bd687caeafcbd65ddd63c"
   },
   ".claude/skills/decimation-code-clans/SKILL.md": {
-    "mtime": 1792096410.9669702,
-    "ast_hash": "1999e2589bbeed2897d4e9e27427bf97",
-    "semantic_hash": "1999e2589bbeed2897d4e9e27427bf97"
+    "mtime": 1792098116.981228,
+    "ast_hash": "217451123a0575de6ad9efee4bc24a66",
+    "semantic_hash": "217451123a0575de6ad9efee4bc24a66"
   },
   "docs/decimation_code/clans.md": {
     "mtime": 1792096409.0941439,
@@ -1645,9 +1645,9 @@
     "semantic_hash": "134c2191e45ffcde54a19841009456f2"
   },
   ".claude/skills/decimation-code-traders/SKILL.md": {
-    "mtime": 1792096690.5258355,
-    "ast_hash": "d9400d0c91898d8b1cbcd8a4845bcd23",
-    "semantic_hash": "d9400d0c91898d8b1cbcd8a4845bcd23"
+    "mtime": 1792098116.9821951,
+    "ast_hash": "826eb5d3be5a3474e7c4742b6e642170",
+    "semantic_hash": "826eb5d3be5a3474e7c4742b6e642170"
   },
   "docs/decimation_code/traders.md": {
     "mtime": 1792096688.7766407,
@@ -1660,9 +1660,9 @@
     "semantic_hash": "f8da4f796518edef2eae7a1d43a06127"
   },
   ".claude/skills/decimation-code-items/SKILL.md": {
-    "mtime": 1792096999.899008,
-    "ast_hash": "1aae3e0f8bcbb10ca5bef26450e76f80",
-    "semantic_hash": "1aae3e0f8bcbb10ca5bef26450e76f80"
+    "mtime": 1792098116.9833667,
+    "ast_hash": "4ac50610f0bfd0bc9ab5ca54bfa656db",
+    "semantic_hash": "4ac50610f0bfd0bc9ab5ca54bfa656db"
   },
   "docs/decimation_code/items.md": {
     "mtime": 1792097014.737276,
@@ -1680,9 +1680,9 @@
     "semantic_hash": "a1c48b57caaeeb93cb846ff4bbe3a9c1"
   },
   ".claude/skills/decimation-code-blocks/SKILL.md": {
-    "mtime": 1792097486.6887162,
-    "ast_hash": "3766d533b91bb36611e0e6b3e7cc60fd",
-    "semantic_hash": "3766d533b91bb36611e0e6b3e7cc60fd"
+    "mtime": 1792098116.9803605,
+    "ast_hash": "cb33702ba435282a5eacee24b2a19edb",
+    "semantic_hash": "cb33702ba435282a5eacee24b2a19edb"
   },
   "docs/decimation_code/blocks.md": {
     "mtime": 1792097495.5795121,
@@ -1690,9 +1690,9 @@
     "semantic_hash": "f940d8a8513334bca6b22a62a3a67b43"
   },
   ".claude/skills/decimation-code-menus/SKILL.md": {
-    "mtime": 1792097619.4395812,
-    "ast_hash": "7f81227c1abc861aa39aee798fc2d4a8",
-    "semantic_hash": "7f81227c1abc861aa39aee798fc2d4a8"
+    "mtime": 1792098131.602451,
+    "ast_hash": "c59d8e32048732ff41cb53ad71b74213",
+    "semantic_hash": "c59d8e32048732ff41cb53ad71b74213"
   },
   "docs/decimation_code/menus.md": {
     "mtime": 1792097617.4078689,
@@ -1700,9 +1700,9 @@
     "semantic_hash": "ec6e91163265c693be516e9b088f65ee"
   },
   ".claude/skills/decimation-code-rendering/SKILL.md": {
-    "mtime": 1792097728.951449,
-    "ast_hash": "83c2e2c7760d2555ccb68ad1c9be7732",
-    "semantic_hash": "83c2e2c7760d2555ccb68ad1c9be7732"
+    "mtime": 1792098116.9846776,
+    "ast_hash": "f46f8e8b7639d1debffa29c9d62ea5a8",
+    "semantic_hash": "f46f8e8b7639d1debffa29c9d62ea5a8"
   },
   "docs/decimation_code/rendering.md": {
     "mtime": 1792097726.8755543,
@@ -1710,9 +1710,9 @@
     "semantic_hash": "92bd46b43c9f9ac65d8dcfa59e50badc"
   },
   ".claude/skills/decimation-code-backend/SKILL.md": {
-    "mtime": 1792097896.4996483,
-    "ast_hash": "6b95056b603c6c6ab413d0759290a651",
-    "semantic_hash": "6b95056b603c6c6ab413d0759290a651"
+    "mtime": 1792098116.977268,
+    "ast_hash": "12ade597c95bc63896ee02638e61a254",
+    "semantic_hash": "12ade597c95bc63896ee02638e61a254"
   },
   "docs/decimation_code/backend.md": {
     "mtime": 1792097894.5624661,
@@ -1720,13 +1720,18 @@
     "semantic_hash": "f1d9811722fb997706549043257578f3"
   },
   ".claude/skills/decimation-code-world/SKILL.md": {
-    "mtime": 1792098067.3041873,
-    "ast_hash": "717e00b0bf7afbbf0ed001012e5c047b",
-    "semantic_hash": "717e00b0bf7afbbf0ed001012e5c047b"
+    "mtime": 1792098116.980875,
+    "ast_hash": "fb050c5fd3caf660e4c4a9ffdad5cbe4",
+    "semantic_hash": "fb050c5fd3caf660e4c4a9ffdad5cbe4"
   },
   "docs/decimation_code/world.md": {
     "mtime": 1792098067.3037019,
     "ast_hash": "58000a3fc85e548c1c5cd795e0eea8dc",
     "semantic_hash": "58000a3fc85e548c1c5cd795e0eea8dc"
+  },
+  ".claude/skills/decimation-code/SKILL.md": {
+    "mtime": 1792098131.6201193,
+    "ast_hash": "e8564bc6458835de29bc9ea8ba1e842c",
+    "semantic_hash": "e8564bc6458835de29bc9ea8ba1e842c"
   }
 }

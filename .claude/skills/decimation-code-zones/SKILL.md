@@ -1,6 +1,6 @@
 ---
 name: decimation-code-zones
-description: Use when changing or debugging Decimation's zones - safezones (nobody hurt, no hostile spawns, water refill, grace timer), military and police zones (infected variants), radiation, scary and border zones, zone lists on the client, place name banners - or when worldgen creates zones or code asks whether something is inside one.
+description: Use when changing or debugging Decimation's zones: safezones (nobody hurt, no hostile spawns, water refill, grace timer), military and police zones (infected variants), radiation, scary and border zones, zone lists on the client, place name banners, or when worldgen creates zones or code asks whether something is inside one.
 ---
 
 # Decimation zone code

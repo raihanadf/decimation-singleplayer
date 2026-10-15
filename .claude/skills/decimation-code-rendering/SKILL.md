@@ -1,6 +1,6 @@
 ---
 name: decimation-code-rendering
-description: Use when changing or debugging how Decimation draws things - guns in hand and their animations and attachments, player stances and gear, prop and mob renderers, particles, the per frame world layers (tracers, laser dots, loot hints, turf names, icons) - or when chasing low frame rates. For making a gun model use decimation-gun; for placing props use decimation-props.
+description: Use when changing or debugging how Decimation draws things: guns in hand and their animations and attachments, player stances and gear, prop and mob renderers, particles, the per frame world layers (tracers, laser dots, loot hints, turf names, icons), or when chasing low frame rates. For making a gun model use decimation-gun; for placing props use decimation-props.
 ---
 
 # Decimation rendering code

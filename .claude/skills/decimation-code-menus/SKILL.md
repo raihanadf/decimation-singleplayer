@@ -1,6 +1,6 @@
 ---
 name: decimation-code-menus
-description: Use when changing or debugging Decimation's main menu (Play or Update button, news, profile, server lists, update pages), its in game screens (inventory and loot, trader, banker, attachments, lockpicking) or its HUD, toasts and tips - or when our code must show something in them (stats, turf banners, our inventory on the loot screen).
+description: Use when changing or debugging Decimation's main menu (Play or Update button, news, profile, server lists, update pages), its in game screens (inventory and loot, trader, banker, attachments, lockpicking) or its HUD, toasts and tips, or when our code must show something in them (stats, turf banners, our inventory on the loot screen).
 ---
 
 # Decimation menus, screens and HUD code

@@ -136,8 +136,12 @@ docs/gun_model_spec.md); every user review goes into its lessons and casebook.
    Details bug.md, "NPC tracers fly through buildings".
 3. **REA (github.com/morluto/rea)**: looked at 15 Oktober 2026 for our reverse engineering; no JVM jar path
    (native binaries, JS / Electron, .NET, Android APK via JADX). SKIPPED (user, 15 Oktober 2026).
-4. **Call logger**: DONE v0.62.6 (user, 15 Oktober 2026), docs/call_trace.md. Next uses: name unnamed methods by
-   when they run; list server handlers that never fire in singleplayer.
+4. **Call logger**: DONE v0.62.6 (user, 15 Oktober 2026), docs/call_trace.md. Both next uses DONE in v0.62.7.
+5. **Decimation code study**: DONE v0.62.7 (user, 16 Oktober 2026: "fix unamed method + learn how the code work +
+   whats purpose is + make skills after that for each feature"): every non synthetic method named, 15 feature docs
+   (docs/decimation_code/README.md) and skills (decimation-code index), each checked at run time; new dev tests
+   playerfire, drive, trade, useitems, keycard, loot crate click; tools/skillcheck.py, tools/props/keycardcheck.py.
+   Findings to act on: Open bugs 0 (WorldClock day, backend thread leak) and the README's findings list.
 
 ## Ideas (later, user 12 Oktober 2026)
 

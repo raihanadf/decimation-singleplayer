@@ -1,6 +1,6 @@
 ---
 name: decimation-code-loot
-description: Use when changing, debugging or extending loot in the Decimation mod - crates or car wrecks that open empty or not at all, loot amounts, item lists, the loot screen, crate cooldowns ("This ... is empty"), supply drops, or putting lootable containers into generated structures or entities.
+description: Use when changing, debugging or extending loot in the Decimation mod: crates or car wrecks that open empty or not at all, loot amounts, item lists, the loot screen, crate cooldowns ("This ... is empty"), supply drops, or putting lootable containers into generated structures or entities.
 ---
 
 # Decimation loot code

@@ -1,6 +1,6 @@
 ---
 name: decimation-code-vehicles
-description: Use when changing or debugging Decimation's drivable vehicles (Hummer, ATV, Buggy, M35, BTR-70) - driving, fuel and jerry cans, seats and riders, vehicle damage, explosions, being picked up by a punch, despawning - or when code must spawn, ride or read a vehicle. City car wrecks are props: use decimation-city-vehicles for those.
+description: Use when changing or debugging Decimation's drivable vehicles (Hummer, ATV, Buggy, M35, BTR-70): driving, fuel and jerry cans, seats and riders, vehicle damage, explosions, being picked up by a punch, despawning, or when code must spawn, ride or read a vehicle. City car wrecks are props: use decimation-city-vehicles for those.
 ---
 
 # Decimation vehicle code

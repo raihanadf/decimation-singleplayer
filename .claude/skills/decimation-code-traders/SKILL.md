@@ -1,6 +1,6 @@
 ---
 name: decimation-code-traders
-description: Use when changing or debugging Decimation's traders - buying and selling for bottlecaps or gold caps, prices and offers, the banker, bounty board, guards and armed traders, traders missing or not respawning - or when code must spawn a trader, read its offers or trade.
+description: Use when changing or debugging Decimation's traders: buying and selling for bottlecaps or gold caps, prices and offers, the banker, bounty board, guards and armed traders, traders missing or not respawning, or when code must spawn a trader, read its offers or trade.
 ---
 
 # Decimation trader code

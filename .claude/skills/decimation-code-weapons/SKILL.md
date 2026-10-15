@@ -1,6 +1,6 @@
 ---
 name: decimation-code-weapons
-description: Use when changing or debugging how Decimation guns behave in play - player shots not hitting or doing wrong damage, ammo counts going wrong, reloads, fire modes, recoil, attachments, tracers, gun sounds, armor against gunshots - or when code must read or fire a gun. For modelling a new gun use decimation-gun instead.
+description: Use when changing or debugging how Decimation guns behave in play: player shots not hitting or doing wrong damage, ammo counts going wrong, reloads, fire modes, recoil, attachments, tracers, gun sounds, armor against gunshots, or when code must read or fire a gun. For modelling a new gun use decimation-gun instead.
 ---
 
 # Decimation weapons code
