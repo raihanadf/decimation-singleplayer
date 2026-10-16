@@ -119,7 +119,8 @@ park and hangar on wasteland". Choices taken (asked with options, 14 Oktober 202
   within 3000 blocks (2 along z, 2 along x); the ones at -2544,64,1296 (runway along z) and 272,64,-2032
   (along x) generated and read back: no water, no holes in the ground, garrison registered (15 posts, 1
   spawner), top down pictures topdown_alongz.png / topdown_alongx.png.
-- Not checked: the garrison manned in game (posts spawn on a player's first visit), how it feels to walk in.
+- Not checked then: the garrison manned in game (posts spawn on a player's first visit), how it feels to walk in
+  (garrison checked 17 Oktober 2026: section 12).
 
 ## 9. Rework after the user's review (v0.62.1, 14 Oktober 2026)
 User on v0.62.0: "hmm, to basic. are you using the skills before? and you still remember how to make structure
@@ -168,8 +169,8 @@ docs/shots/airport_v0.62.1/ (shots_index.md). Read every shot; found and fixed:
   two keycard doors (HQ 91,1,167 and armory 100,1,211 in turns 0); turns 3 dump: 109 centre line cells all metadata 2.
 - Seen and left as is: the revetment fighters are small seen nose on from the bay mouth; the helipad camera has the
   cargo plane's wing tip in its foreground; the radar shot has the fire station's side wall on its left.
-- Not checked: the garrison manned in game (posts spawn on a player's first visit; the sky test has no garrison
-  keeper), a real worldgen airport in the client.
+- Not checked then: the garrison manned in game (posts spawn on a player's first visit; the sky test has no garrison
+  keeper), a real worldgen airport in the client. Both checked 17 Oktober 2026: section 12.
 
 ## 11. Bigger fighters (v0.62.3, 14 Oktober 2026)
 User: "make the fighters bigger" (after the v0.62.2 shots: the revetment fighters read small nose on). Real size at
@@ -184,3 +185,22 @@ nose a black box. The wreck loses its tail section and right wing; the broken ta
 - New camera point `fighter`: three quarter view from above the first full bay's wall.
 - Checked: dev test airport turns 0 and 3: clashes 0, propclash 0 on 247 props, walkcheck 0 (2 keycard notes).
   Shots docs/shots/airport_v0.62.3/.
+
+## 12. Garrison manned in a real world (v0.64.3, 17 Oktober 2026)
+Dev test `garrison` (fresh seed 1 world, the airport at 272, -2032, runway along x; the player in creative: Decimation's
+NPCs ignore creative players). Garrison lca_4_-32: 16 posts, 1 spawner, registered while the airport was written.
+- Found (RED): the first visit (a player within 40 blocks of the first post) manned only 14 of 16: the two posts at the
+  far east end (508, 69, -2030 and 508, 69, -1924, about 240 blocks from the first) lay in chunks not loaded yet, their
+  spawns failed, and the garrison was marked manned anyway: those posts stayed empty for good. Guards also had no home:
+  Decimation's wander AI walked them off their posts (one more than 6 blocks away within a minute).
+- Fixed (worldgen/Garrisons): the first visit starts the garrison; each post spawns its NPC once its own chunk is loaded
+  (per post state in the StructureData list "!garm_<id>"; garrisons saved as manned by older versions stay as they
+  are). Each NPC keeps its post in its saved entity data (deciworldgen_post) and gets a home area of 4 blocks there,
+  set again whenever it loads (vanilla saves no home): EntityAIWander picks targets only inside it, a chase still goes
+  beyond.
+- Checked (GREEN): 14 posts at the first visit, then 1 and 1 as their chunks loaded; seen from the airport's middle
+  with every post's chunk loaded: 16 of 16 posts held, 16 of 16 guards with their home at a post, 0 inside a block.
+  Shot garrison_post (docs/shots/airport_v0.64.3/, shots_index.md): the entry post, a sandbagged booth with an
+  armoured Soviet inside, the perimeter fence and the runway threshold beside it.
+- Still not checked: how it feels to walk in under fire (survival).
+

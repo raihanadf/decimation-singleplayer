@@ -26,9 +26,11 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
  * zombie spawner"; docs/wasteland.md). A plan with a garrison hands Slices its posts and spawner cells
  * when its first slice is written; they are kept per world in StructureData lists "!gar_<id>":
  * {state, spawners, sx, sy, sz, ..., px, py, pz, ...}, state 0 waiting, 1 manned. The first time a
- * player comes within VISIT of a garrison whose chunks are loaded, its posts are manned: juggernauts
- * and elite military in turn, never despawning (spawned then and not at generation: Decimation's NPCs
- * would despawn before anyone came). Its spawners (vanilla mob spawner cages) breed Decimation's
+ * player comes within VISIT of a garrison's first post (its chunks loaded), its posts are manned:
+ * juggernauts and elite military in turn, never despawning (spawned then and not at generation:
+ * Decimation's NPCs would despawn before anyone came). A post whose chunk is not loaded yet waits for
+ * it (an airport's posts lie up to 250 blocks apart, beyond the loaded area: until 17 Oktober 2026 they
+ * were marked manned without their NPC); per post state in the list "!garm_<id>", 1 each post done. Its spawners (vanilla mob spawner cages) breed Decimation's
  * infected; every infected that appears within SPAWNER_REACH of one gets the military outfit.
  */
 public class Garrisons
@@ -40,7 +42,10 @@ public class Garrisons
         int[] garrison(int baseY);
     }
 
-    static final String PREFIX = "!gar_";
+    static final String PREFIX = "!gar_", POSTS = "!garm_";
+    /** A garrison NPC's post (entity data, saved with it): its home area, so it guards the post instead of wandering off. */
+    static final String POST_TAG = "deciworldgen_post";
+    private static final int HOME = 4;
     private static final int EVERY = 40, VISIT = 40, SPAWNER_REACH = 6;
     /** Spawner cells of this world, x / y / z packed (filled at load and on register). */
     private static final Set<Long> spawners = new HashSet<Long>();
@@ -148,36 +153,65 @@ public class Garrisons
         for (String id : data.lists(PREFIX))
         {
             int[] v = data.list(id);
-            int posts = v.length - 2 - 3 * v[1];
-            if (v[0] != 0 || posts < 3)
+            int first = 2 + 3 * v[1], posts = (v.length - first) / 3;
+            if (v[0] != 0 || posts < 1)
             {
                 continue;
             }
-            int first = 2 + 3 * v[1];
-            int px = v[first], py = v[first + 1], pz = v[first + 2];
-            EntityPlayer near = w.getClosestPlayer(px + 0.5, py, pz + 0.5, VISIT);
-            if (near == null || !w.checkChunksExist(px - 16, py, pz - 16, px + 16, py, pz + 16))
+            String state = POSTS + id.substring(PREFIX.length());
+            int[] done = data.list(state);
+            boolean fresh = done == null;
+            if (fresh)
             {
-                continue;
+                int px = v[first], py = v[first + 1], pz = v[first + 2];
+                EntityPlayer near = w.getClosestPlayer(px + 0.5, py, pz + 0.5, VISIT);
+                if (near == null || !w.checkChunksExist(px - 16, py, pz - 16, px + 16, py, pz + 16))
+                {
+                    continue;                                   // nobody came yet
+                }
+                done = new int[posts];
             }
-            man(w, id, v, first);
+            int n = 0, waiting = 0, tried = 0;
+            for (int k = 0; k < posts; k++)
+            {
+                int i = first + 3 * k;
+                if (done[k] != 0)
+                {
+                    continue;
+                }
+                if (!w.blockExists(v[i], v[i + 1], v[i + 2]))
+                {
+                    waiting++;                                  // its chunk is not loaded: spawning there fails
+                    continue;
+                }
+                n += spawn(w, v, i, k) ? 1 : 0;
+                done[k] = 1;
+                tried++;
+            }
+            if (fresh || tried > 0)
+            {
+                data.setList(state, done);
+            }
+            if (waiting == 0)
+            {
+                v[0] = 1;
+                data.setList(id, v);
+            }
+            if (n > 0)
+            {
+                FMLLog.info("[%s] garrison %s manned: %d NPCs%s", DecimationWorldGen.MODID, id.substring(PREFIX.length()), n,
+                            waiting > 0 ? ", " + waiting + " posts wait for their chunks" : "");
+            }
         }
     }
 
-    /** Spawns the garrison's NPCs on their posts: juggernaut, elite, elite, juggernaut, ... */
+    /** Spawns the garrison's NPCs on all their posts at once: juggernaut, elite, elite, juggernaut, ... (dev tests). */
     static int man(World w, String id, int[] v, int first)
     {
         int n = 0;
         for (int i = first, k = 0; i + 2 < v.length; i += 3, k++)
         {
-            EntityLiving npc = Deci.newSoviet(w);
-            if (NpcLoadouts.instance() != null)
-            {
-                NpcLoadouts.instance().equipTier(npc, k % 3 == 0 ? "juggernaut" : "elite_military");
-            }
-            npc.setLocationAndAngles(v[i] + 0.5, v[i + 1], v[i + 2] + 0.5, w.rand.nextFloat() * 360, 0);
-            npc.func_110163_bv();                       // never despawns
-            n += w.spawnEntityInWorld(npc) ? 1 : 0;
+            n += spawn(w, v, i, k) ? 1 : 0;
         }
         v[0] = 1;
         StructureData.get(w).setList(id, v);
@@ -185,11 +219,43 @@ public class Garrisons
         return n;
     }
 
-    /** Every infected that appears beside a garrison spawner wears the military outfit. */
+    /** One NPC on post k (its coordinates at v[i]): every third a juggernaut, the others elite military. */
+    private static boolean spawn(World w, int[] v, int i, int k)
+    {
+        EntityLiving npc = Deci.newSoviet(w);
+        if (NpcLoadouts.instance() != null)
+        {
+            NpcLoadouts.instance().equipTier(npc, k % 3 == 0 ? "juggernaut" : "elite_military");
+        }
+        npc.setLocationAndAngles(v[i] + 0.5, v[i + 1], v[i + 2] + 0.5, w.rand.nextFloat() * 360, 0);
+        npc.func_110163_bv();                           // never despawns
+        npc.getEntityData().setIntArray(POST_TAG, new int[] {v[i], v[i + 1], v[i + 2]});
+        home(npc);
+        return w.spawnEntityInWorld(npc);
+    }
+
+    /**
+     * Keeps a garrison NPC near its post: vanilla's wander AI (Decimation's NPCs use EntityAIWander) picks targets only
+     * within the home area; chasing a target still goes beyond it. Vanilla does not save a home: set again on load.
+     */
+    static void home(Entity e)
+    {
+        int[] post = e.getEntityData().getIntArray(POST_TAG);
+        if (post.length == 3 && e instanceof net.minecraft.entity.EntityCreature)
+        {
+            ((net.minecraft.entity.EntityCreature) e).setHomeArea(post[0], post[1], post[2], HOME);
+        }
+    }
+
+    /** A garrison NPC gets its post back as home; every infected that appears beside a garrison spawner wears the military outfit. */
     @SubscribeEvent
     public void onJoin(EntityJoinWorldEvent event)
     {
         Entity e = event.entity;
+        if (!e.worldObj.isRemote && Deci.npcKind(e) == net.decimation.fixes.NpcKind.SOVIET)
+        {
+            home(e);                                    // a garrison NPC loaded with its chunk: back to its post
+        }
         if (e.worldObj.isRemote || !Deci.isPlainInfected(e) || spawners.isEmpty())
         {
             return;
@@ -218,6 +284,47 @@ public class Garrisons
     public static List<String> ids(World w)
     {
         return StructureData.get(w).lists(PREFIX);
+    }
+
+    /** The posts of a garrison, {x, y, z} each (dev tests). */
+    public static int[][] posts(World w, String id)
+    {
+        int[] v = StructureData.get(w).list(id);
+        if (v == null)
+        {
+            return new int[0][];
+        }
+        int first = 2 + 3 * v[1];
+        int[][] out = new int[(v.length - first) / 3][];
+        for (int i = 0; i < out.length; i++)
+        {
+            out[i] = new int[] {v[first + 3 * i], v[first + 3 * i + 1], v[first + 3 * i + 2]};
+        }
+        return out;
+    }
+
+    /** True once every post of a garrison had its NPC spawned (dev tests). */
+    public static boolean manned(World w, String id)
+    {
+        int[] v = StructureData.get(w).list(id);
+        return v != null && v[0] != 0;
+    }
+
+    /** Posts of a garrison that had their NPC spawned so far (dev tests). */
+    public static int postsDone(World w, String id)
+    {
+        int[] v = StructureData.get(w).list(id);
+        if (v != null && v[0] != 0)
+        {
+            return posts(w, id).length;
+        }
+        int[] done = StructureData.get(w).list(POSTS + id.substring(PREFIX.length()));
+        int n = 0;
+        for (int i = 0; done != null && i < done.length; i++)
+        {
+            n += done[i];
+        }
+        return n;
     }
 
     /** Mans a garrison now (dev tests); the number of NPCs spawned. */

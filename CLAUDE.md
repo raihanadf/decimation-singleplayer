@@ -1012,6 +1012,10 @@ of the last session:
   hulk / mech / frail) spawned during a chunk load were added twice and updated twice a tick (double speed); fixes/
   JoinOnce cancels a join of an entity the world already holds. Dev test `doublejoin`; dev flag -Ptrackdebug
   (devtest/TrackDebug) logs any entity that joins a world twice with both stacks (FML log, not latest.log).
+  v0.64.3 (17 Oktober 2026, docs/airport.md section 12, bug.md): garrisons man each post once its own chunk is loaded
+  (the airport's far posts stayed empty: their chunks were not loaded at the first visit), guards keep a 4 block home
+  area at their post (entity data deciworldgen_post, set again on load). Dev test `garrison` (fresh seed 1 world, a
+  real airport, creative player).
   Gun study (10 Oktober 2026): docs/gun_style_guide.md, tools/guns/study.py
   (renders / measures Decimation's guns from the jar, `attach` adds
   attachments as the game places them), dev test mode `gunview` (hip, aim

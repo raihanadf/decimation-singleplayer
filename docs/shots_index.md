@@ -70,6 +70,12 @@ chunks at the camera and 48 ahead, up to 120 s).
   logo left of the credit line ("Unofficial fan project. Decimation belongs to BoehMod. ...") with GitHub on the right;
   on phones the logo, the line and GitHub stacked.
 
+## airport_v0.64.3/ (the airport garrison in a real seed 1 world, 17 Oktober 2026; docs/airport.md section 12)
+- `garrison_post.png` (dev test `garrison`, 854 x 480): the airport's entry post from above: a booth with a plank
+  roof on posts and sandbag walls, an armoured Soviet (juggernaut) inside; the perimeter fence of chain link, barbed
+  wire and dark pillars behind; a city of towers beyond; right, the runway threshold: white stripes and a green
+  threshold light row.
+
 ## main_menu_v0.64.0/ (the server pages coming soon, Early access, Chernarus, 17 Oktober 2026; docs/main_menu.md 2c)
 - `user_official_list.png` (the user's game, 1026 x 660, before v0.64.1): tabs Official / Community, "Players Online:
   Unknown", four rows Bukovka EU, NewYork City EU, Bukovka US, NewYork City US, each "Official Decimation Server

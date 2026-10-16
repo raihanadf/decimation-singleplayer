@@ -105,6 +105,18 @@ not something we introduced or need to fix) see `documentation.md`.
   runs did not crash. Cause unknown [not verified]; the lot code only plans blocks, it touches no
   world. Watch for it again (an "Entity is already tracked" error came just before).
 
+### Airport garrison: far posts never manned, guards wandered off (found 17 Oktober 2026, FIXED v0.64.3)
+- Found by the new dev test `garrison` (fresh seed 1 world, the airport at 272, -2032; docs/airport.md section 12):
+  the first visit manned 14 of 16 posts. Garrisons.man spawned every post when a player came within 40 blocks of the
+  FIRST post and then marked the garrison manned; posts about 240 blocks away lay in chunks not loaded yet, so their
+  spawns failed and they stayed empty for good. The guards also had no home, and Decimation's wander AI
+  (EntityAIWander) walked them off their posts.
+- Fix (worldgen/Garrisons): the first visit starts the garrison, each post spawns once its own chunk is loaded (per
+  post state "!garm_<id>"; garrisons that older versions marked manned stay as they are); each guard keeps its post in
+  its entity data (deciworldgen_post) and a home area of 4 blocks there, set again on every load.
+- Checks: RED 14 of 16 posts held, 0 of 16 guards with a home; GREEN 16 of 16 posts (14, then 1 and 1 as their chunks
+  loaded), 16 of 16 homes, 0 inside a block. Also for the wasteland bunker garrisons (same code).
+
 ### "Entity is already tracked" at every world load: swapped mobs added twice, double speed (seen 16 Oktober 2026, FIXED v0.64.2)
 - Seen: vanilla's EntityTracker logged `"Silently" catching entity tracking error ... IllegalStateException: Entity is
   already tracked!` 12 to 32 times at each load of a world, in 39 of 40 dev client logs; also once beside the
