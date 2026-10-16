@@ -289,8 +289,9 @@ BoehMod page).
   is "/").
 - Google Search Console (user's account): HTML file method, `public/googlec28e26622fed860e.html` in the site repo
   (site commit 294adc4, served 200 by a local production build). It must stay: Google checks it again later;
-  tests/seo.test.ts fails without it. Then the user clicks Verify and submits
-  https://deciremnant.vercel.app/sitemap.xml [not verified until the push and the user's Verify].
+  tests/seo.test.ts fails without it. Live since the user's push (checked 16 Oktober 2026: 200, exact content).
+  Then the user clicks Verify and submits https://deciremnant.vercel.app/sitemap.xml [not verified: the user's
+  Search Console].
 
 ## 10. Design talk record (user revisions)
 

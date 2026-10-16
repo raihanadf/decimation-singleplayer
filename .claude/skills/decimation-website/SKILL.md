@@ -98,6 +98,6 @@ Facts, decisions and the page text: docs/website.md (the spec). Site code: the P
   mobile), every head tag, crawl file, icon and link checked; desktop and phone pages read (docs/shots/
   website_live_v0.62.9/).
 - Search Console: the user picked the HTML file method and downloaded the file; it went into public/ test first (RED,
-  then GREEN), served 200 by a local production build; site commit 294adc4. GITHUB_TOKEN: the user creates and pastes
+  then GREEN), served 200 by a local production build; site commit 294adc4, live after the push (200, exact content). GITHUB_TOKEN: the user creates and pastes
   it; never through the chat.
 
