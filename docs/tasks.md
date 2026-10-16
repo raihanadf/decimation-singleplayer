@@ -9,10 +9,9 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [x] usage pane: group tasks into working now and pending
 - [x] study each Decimation feature: how its code works, its purpose (docs/decimation_code/)
 - [x] WorldClock day never advances: saved day counter (v0.62.9)
-- [ ] talk about the project website with the user (roadmap UI 2)
+- [~] DeciRemnant website: spec written (docs/website.md), user review, then the implementation plan
 - [ ] survivor partner idea: design talk (docs/ideas.md item 21)
 - [x] backend thread leak: PatchBackend v2, no BoehMod connection (v0.62.8)
-- [ ] project website: design when the user is ready (roadmap UI 2)
 - [x] one skill per Decimation feature (.claude/skills/decimation-code*)
 - [ ] flaky shots checks: AKM count, spotting at 70 (pending, user)
 - [ ] loot step 2 questions (docs/systems_plan.md section 8)

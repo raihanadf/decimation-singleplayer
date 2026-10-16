@@ -60,3 +60,6 @@ dev/src/main/resources/assets/deci/models/guns/rifle/mk18.bmodel
 dev/src/main/resources/assets/deci/textures/model/guns/rifle/mk18/
 dev/src/main/resources/assets/deci/textures/items/gun/rifle/mk18.png
 dev/src/main/resources/assets/deci/animations/mk18/
+
+# brainstorming companion mockups (local only: may hold Decimation screenshots)
+.superpowers/

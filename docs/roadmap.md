@@ -123,12 +123,15 @@ docs/gun_model_spec.md); every user review goes into its lessons and casebook.
    offline" and the Human Kills counters are DONE (v0.42.2, bug.md); anything
    else on the menu: ask the user.
 2. **Project website** (user, 16 Oktober 2026: "use our website later for download page or to list the community
-   server"; earlier note docs/ideas.md item 20: a Vercel project page). Not designed yet `[not decided]`:
+   server"; earlier note docs/ideas.md item 20: a Vercel project page). Designed 16 Oktober 2026 (below); first ideas:
    - a project page with the download link (the GitHub releases our updater already reads; Vercel serves no jars);
    - a community server list: the site hosts a small servers.json, our mod reads it over HTTPS (as fixes/Updater
      reads GitHub) and fills Decimation's community server page (GuiMenuCommunityServers) `[inferred: not tried]`.
    Decimation's own BoehMod connection (kryonet, network.mcdecimation.net) cannot carry either: it is a raw socket
    protocol a website cannot answer; cut by PatchBackend v2 in v0.62.8 (bug.md "Backend reconnect leaks a thread").
+   SPEC WRITTEN 16 Oktober 2026 after the design talk: docs/website.md (DeciRemnant, deciremnant.vercel.app,
+   private repo, Next.js on Vercel, v1 download + guide); skill decimation-website. Waiting for the user's review,
+   then the implementation plan.
 
 ## Code and tools
 

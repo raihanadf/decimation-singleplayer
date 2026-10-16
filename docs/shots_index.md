@@ -11,6 +11,23 @@ How shots are made: `./gradlew runClient -Pautotest` (street views),
 `-Paudit` (building audit), `-Pgallery` (prop gallery); output in
 `dev/run/client/screenshots/`, then copied here into a versioned folder.
 
+## website_design_v0.62/ (DeciRemnant website mockups, browser companion, 16 Oktober 2026; docs/website.md)
+- round1_three_looks.png: the top of the page in three looks (A ivory field report, B warm night with the city
+  shot as full width hero, C black and blood red game menu echo). User: "B looks best, but can be more minecraft".
+- round2_minecraft_styles.png: B's layout in three Minecraft styles (1 title screen: dirt background, stone
+  buttons, yellow splash; 2 inventory panel and item tooltips; 3 warm night with pixel touches, grass strip).
+  User: "3 with the splash text from 1".
+- round3_page_top / bottom.png: the whole page in style 3 with the splash (Pixelify Sans, our hand drawn icons,
+  3 screenshots, grass strip under the hero). Revised by the user (no grass, real Minecraft font, real icons,
+  more shots, coming soon, proper install).
+- round4_page_v2_top / middle / bottom.png: the revised page: Minecraft Standard font at 12 / 18 / 24 / 36 px,
+  Decimation item icons in slots, 10 shot gallery, coming soon cards (green Planned, yellow Idea), install tabs,
+  changelog, help, footer. User: "really nice".
+- round5_decimation_colours_rejected.png: the same page in Decimation's menu palette (red tinted hero, torn black
+  panels, logo coral): "really worse"; only its two hero buttons were kept.
+- round6_approved_v4_top.png: the approved v4 top: warm night page with the torn orange download button and the
+  torn black "Install guide >>".
+
 ## wasteland_gate_v0.60.2_review/ (user shots in their dev world, 14 Oktober 2026)
 - user_gate_1.png: a city to wasteland gate of v0.60.2 seen from the city street: posts at the road edges,
   striped sawhorses across, wire, a traffic light; the wasteland's own checkpoint (jersey line, sandbags,

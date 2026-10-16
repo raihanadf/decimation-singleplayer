@@ -1,7 +1,8 @@
 # Decimation Mod (1.7.10) - Singleplayer Loot Fix Documentation
 
-Abandonware mod, official server (mcdecimation.net) dead permanently. Personal-use
-patch only, jar obtained legally via Technic modpack. Not for redistribution.
+Abandonware mod, official server (mcdecimation.net) dead permanently. The user's jar came
+legally via the Technic modpack; since 16 Oktober 2026 the releases are public by the user's
+decision (GitHub releases, a download page), unofficial and credited to BoehMod.
 
 ## What makes this mod different
 

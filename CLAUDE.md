@@ -9,8 +9,10 @@ closed-source, abandoned Minecraft Forge 1.7.10 mod ("Decimation", modid `deci`,
 by ScottehBoeh/BoehMod, official server `mcdecimation.net` permanently dead). The
 "codebase" is a single 238MB compiled, name-obfuscated jar. All work here is
 **binary reverse engineering + bytecode patching**, not editing and recompiling
-source. Purpose: personal singleplayer fixes for the user's own legally-obtained
-copy (via Technic modpack). Not for redistribution.
+source. Purpose: singleplayer fixes and world generation for Decimation (the user's copy
+came via the Technic modpack). Releases are PUBLIC (user decision 16 Oktober 2026): the one
+Decimation.jar on GitHub releases and a download page (docs/roadmap.md UI 2); credit BoehMod,
+say unofficial. The repo itself still never holds Decimation's jars, code or art.
 
 Files in this directory:
 - `Decimation.jar` — original jar, currently untouched, do not modify directly.
@@ -128,6 +130,9 @@ Knowledge index:
 - `docs/safezone.md`: safezone sites: survivor camps (layout, residents and their keeper,
   placement, test) and city refuges (our fortified building, one per city region, section 7).
 - `docs/ideas.md`: the user's future feature ideas (12 Oktober 2026), not designed yet.
+- `docs/website.md`: SPEC of DeciRemnant, the project website (private repo `deciremnant`, Next.js on Vercel,
+  deciremnant.vercel.app): page text, look (Minecraft Standard font at the game's sizes, item icons), release data,
+  screenshots (`siteshots` test), checks; skill decimation-website.
 - `docs/systems_plan.md`: PLAN of every open feature together (loot, human NPCs, zombies, world and
   zones) with the shared core (world clock, pools, body entity, tier table, areas, protection
   table, group spawner) and the build order; user choices of 13 Oktober 2026.
