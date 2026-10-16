@@ -1,0 +1,4 @@
+# DeciRemnant website screenshots (docs/website.md section 6), seed 1 world type Decimation, fresh world
+# name	x	y	z	yaw	pitch	time      y "~N" = N above the ground; yaw 0 south 90 west 180 north 270 east
+hero	3	151	-9	0	25	6000
+gun	3	~2	-9	0	0	6000
