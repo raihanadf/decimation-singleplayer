@@ -28,8 +28,9 @@ Facts, decisions and the page text: docs/website.md (the spec). Site code: the P
    worse" as a whole page; its torn orange and torn black buttons were liked. Try a new direction one element at
    a time and keep the way back.
 4. No decoration that reads as a game block strip across the hero (the grass strip was removed).
-5. An install guide is complete for a first time player: requirements, launcher, Forge version, Java, memory,
-   world type, updating, server; never a three line summary.
+5. The install guide is the NEW PLAYER path only, complete for a first time player: requirements, launcher, Forge
+   version, Java, memory, world type; never a three line summary. Updating lives in Questions; the server has its own
+   docs page (/docs/server); no tabs for other readers (user, 17 Oktober 2026).
 6. Show what was built: 6 to 10 screenshots of our features in real worlds; never sky test platforms, window
    bars or HUDs.
 7. Coming soon lists only roadmap items, tagged Planned or Idea, no dates.
@@ -50,6 +51,14 @@ Facts, decisions and the page text: docs/website.md (the spec). Site code: the P
    the description (120 to 160), Open Graph and Twitter, the first paragraph, every picture's alt and the JSON-LD;
    robots.txt, sitemap.xml, the canonical and the Search Console file (public/google*.html) stay; tests/seo.test.ts guards all of it. Audit with Lighthouse locally
    (Google's free PageSpeed API runs out of quota) and read every flagged audit, not only the scores.
+14. Lists of facts (requirements) are lined tables: a line between rows, no boxed panel (user). Steps are divided by
+   the same lines.
+15. Steps show REAL pictures, and only where a real one can be taken here: Minecraft's own screens from the dev
+   test `guideshots` (no Prism: off limits, no screen capture; not Decimation's menu: its logo and the dev profile).
+   Ask before promising a picture; say plainly which steps stay text.
+16. A docs page (/docs/<topic>) states only what was run: every command and console line from a real test server
+   (scratchpad, release jar), every rule from code plus what the run showed. A first run teaches what the guide
+   misses (the anticheat kick was found that way).
 
 ## Casebook (never delete a case)
 
@@ -103,4 +112,23 @@ Facts, decisions and the page text: docs/website.md (the spec). Site code: the P
 - 17 Oktober 2026: the user verified the property, submitted sitemap.xml and requested indexing of the home page
   ("URL is not on Google", priority crawl queue). Whether Google crawls and ranks the page shows only in the user's
   Search Console: ask, never claim it. Indexing check on 20 Oktober 2026 (the user asked to be told then).
+
+### Case 6: install for new players, server guide page (17 Oktober 2026)
+- User (shots of the live tabs and requirements box): "for the installation, just for new player, no need already have
+  decimation and server. for the server put on new page docs (we create new page now, suggest your design). and the
+  installation, better to put real image instead of step list only. for requierement, make list table lined style
+  instead using boxed styled".
+- Plan mode, AskUserQuestion with ASCII previews: pictures "game screens only", picture beside the text, server page
+  "docs with side menu". My premise for "no menu pictures" (a session warning banner) was out of date: the menu now
+  says Play without a banner; it stays out for the logo and the dev profile (docs/website.md section 6).
+- Real server run first (scratchpad Forge server, release jar from GitHub, hashes checked): installer, EULA stop, empty
+  server.properties, "Done" line copied word for word; dev test `guideshots` checked Play, Singleplayer, World Type
+  (4 clicks), Other servers, Multiplayer, Add Server and a join. The first join was KICKED by Decimation's anticheat
+  (dev client sent no mod hashes): a whole Problems entry came from that (docs/decimation_code/backend.md 3b).
+- Site commit 9f2bfcd (local): FactTable, Steps, Zoom and Lightbox (shared with the gallery), DocMenu, Nav links
+  absolute, /docs/server, sitemap 2 URLs, 60 tests (RED first for install, nav, inline links, seo). Local checks: both
+  pages at 1300 and 390 read, no sideways scroll, fonts 12 / 18 / 24 / 36, 0 dashes, links ok, keyboard zoom in a real
+  browser, Lighthouse server page 98 / 100 / 100 / 100 mobile and 100 desktop (local home 95 is HTTP/1.1 local
+  serving: same script bytes as live, which scores 99). Evidence docs/shots/website_guide_v0.62.9/.
+- Open: the user's look verdict, the push, the live check.
 

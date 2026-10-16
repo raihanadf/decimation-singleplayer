@@ -34,6 +34,7 @@ a full install guide, screenshots of what we built, what is coming, the changelo
 | Look | warm night (dark brown, clay), the Minecraft GUI font at the game's sizes, real item icons, the yellow splash text, Decimation's torn orange and black buttons; no grass strip |
 | Sharing | releases are public (CLAUDE.md and documentation.md updated: no longer "not for redistribution") |
 | Name | DeciRemnant |
+| Install and server (17 Oktober 2026) | install for new players only with a lined requirements table and real game screens; the server guide on its own docs page /docs/server with a side menu |
 
 ## 3. The page, top to bottom
 
@@ -41,7 +42,8 @@ The approved mockup is `page-full-v4.html` in `.superpowers/brainstorm/60609-179
 ignored: it holds Decimation art). Pictures of the mockups: docs/shots/website_design_v0.62/ (shots_index.md).
 
 1. **Hero**: full width screenshot (a generated city from above), darkened toward the bottom.
-   - Top bar: brand "DeciRemnant" left; links Features, Screenshots, Install, Changelog, GitHub.
+   - Top bar: brand "DeciRemnant" left; links Features, Screenshots, Install, Server, Changelog, GitHub (since 17
+     Oktober 2026 absolute: /#features ... and /docs/server, so the same bar works on every page).
    - Label "Minecraft 1.7.10 · unofficial", title "Decimation, alive again in singleplayer".
    - Splash text in yellow, turned 20 degrees, pulsing like the game's title screen, one picked at random per
      visit (click: next one): "Now with airports!", "Up to 64 districts!", "No dead servers!", "Mind the
@@ -76,11 +78,17 @@ ignored: it holds Decimation art). Pictures of the mockups: docs/shots/website_d
    | graphics_card | Community servers | Servers listed on this site and in Decimation's own server menu. | Planned | roadmap UI 2 |
 
    When an item ships it moves to "What it adds"; when a plan is dropped it leaves the list.
-6. **Install** ("Installation guide"): a requirements box, then four tabs.
+6. **Install** ("Installation guide"), for NEW PLAYERS ONLY (user, 17 Oktober 2026: "just for new player, no need
+   already have decimation and server"): the requirements as a lined table (a line between rows, no box), the six
+   steps divided by lines (no tabs, no panel box), a real game screen beside a step where one could be taken, then
+   the torn black link "Running a server? Server guide >>" to /docs/server. Updating stays in Questions ("The menu
+   button says Update"); "Already have Decimation" was dropped; the server steps moved to their own page (3b).
    - Requirements: Account "Minecraft Java Edition"; Java "Java 8 (Prism Launcher can download it)"; Memory
      "4 GB for the game or more" [inferred: common advice, not measured]; Download "One file, Decimation.jar,
      <size>".
-   - Tab **New player** (Prism Launcher):
+   - Pictures (user: "game screens only"): step 6 shows Create New World with World Type: Decimation. Prism shots
+     are impossible here (Prism is off limits, no screen capture); the Decimation menu was left out (section 6).
+   - The steps (Prism Launcher):
      1. Install Prism Launcher: get it from prismlauncher.org (Windows, macOS, Linux) and add your Microsoft account.
      2. Make a Forge 1.7.10 instance: Add Instance, pick version 1.7.10, then Mod loader: Forge, version
         10.13.4.1614. Name it Decimation.
@@ -90,19 +98,11 @@ ignored: it holds Decimation art). Pictures of the mockups: docs/shots/website_d
      5. First start: launch. The first start takes a little longer. Decimation's own menu opens: click Play, then
         Singleplayer on the server page.
      6. Create the world: Create New World, More World Options, then click World Type until it says Decimation.
-        Create.
-   - Tab **Already have Decimation**: back up the saves folder; replace mods/Decimation.jar (keep the name);
-     delete any deciworldgen jar (it is inside Decimation.jar now), the voice chat jar is optional; old worlds
-     keep working, cities, bases and airports appear in new worlds with the world type Decimation.
-   - Tab **Updating**: Decimation's Play button says Update when a newer version is out; click it, the jar
-     downloads with a progress bar and is checked against its checksum; Quit game and start again, or Later
-     (the new version goes in when the game closes). Or swap the jar by hand.
-   - Tab **Server**: in an empty folder with Java 8 `java -jar forge-1.7.10-10.13.4.1614-1.7.10-installer.jar
-     --installServer`; Decimation.jar into mods; `level-type=decimation` in server.properties before the first
-     start; `java -Xmx4G -jar forge-1.7.10-10.13.4.1614-1.7.10-universal.jar nogui`, accept the EULA in
-     eula.txt, start again; players use the same Decimation.jar.
-   - To check before launch (section 9): the Prism wording against its current version, the screen after
-     Decimation's Play, the Forge file names.
+        Create New World. (Picture: worldtype.)
+   - Checked in the game (dev test `guideshots`, 17 Oktober 2026): Play opens the server page with Singleplayer and
+     Other servers, Singleplayer opens Minecraft's world list, Create New World, More World Options, World Type
+     reaches "World Type: Decimation" in 4 clicks. The Prism wording was checked against Prism's wiki and source
+     (section 9), not clicked [not verified in Prism].
 7. **Changelog** ("What changed"): the five newest releases, newest open, older ones fold out (version, date,
    pre-release tag, GitHub's rendered release notes); link "Every release on GitHub".
 8. **Help** ("Questions"), fold out:
@@ -119,6 +119,48 @@ ignored: it holds Decimation art). Pictures of the mockups: docs/shots/website_d
 
 On phones: one column everywhere, the top bar folds into a menu button, the hero is shorter, the gallery becomes
 two columns of equal shots.
+
+## 3b. The server guide page (/docs/server, 17 Oktober 2026)
+
+User: "for the server put on new page docs (we create new page now, suggest your design)"; picked "Docs with side
+menu" from two ASCII previews (the other: an article with section chips).
+
+- Layout: a solid top bar with the same links (`header.docbar`), then a grid: the side menu "On this page"
+  (Requirements, Set up, Join, Update, Problems; sticky while scrolling) and the article: label "Docs · Server", h1
+  "Run a Decimation server" (36 px, 24 on phones), lead, the five sections. Phones: one column, the menu becomes a
+  wrap of chips above the title. Texts in the site repo's `content/server.ts`, metadata in `lib/seo.ts`
+  (serverMetadata: "Decimation Minecraft server guide | DeciRemnant" (47), a 148 character description, canonical
+  /docs/server), sitemap.xml lists it.
+- Requirements (lined table): Java 8; 4 GB for the server, set in the start command; Forge 1.7.10 10.13.4.1614;
+  Decimation.jar, the same file the players use; port 25565 (TCP).
+- Set up: 1 Forge installer (direct maven link) `--installServer`, real last line; 2 a `mods` folder with only
+  Decimation.jar; 3 first start writes eula.txt, server.properties, decimation_server.properties and stops at the
+  EULA (real line); 4 `eula=true` and the line `level-type=decimation` (the world is made on the next start); 5 start
+  again, real "Done (8.421s)!" line, `stop` to save and close.
+- Join: install by the guide (/#install); Decimation's menu Play, Other servers (Minecraft's Multiplayer screen); Add
+  server, name and address, Done (picture addserver); pick it, Join Server (picture multiplayer).
+- Update: stop, replace mods/Decimation.jar, start; players get Update in their menu and need the server's version.
+- Problems (fold out): the anticheat kick and its fixes (same jar, no other mods, an empty mods/1.7.10 folder, or
+  `allowAdditionalMods=true`; ops never kicked), "You cannot break blocks on this server!" (enableBlockBreaking /
+  enableBlockPlacing), items not picked up (enableItemPickup), no cities (world made before level-type).
+
+### Server guide facts (a real run, 17 Oktober 2026)
+
+Scratchpad folder, Java 8 (Zulu 1.8.0_504), the Forge installer from maven (sha1 fccafccf... matches its .sha1), the
+release Decimation.jar from GitHub (240980301 bytes, sha256 9e20395d... = GitHub's digest). Never Prism.
+- Installer: "The server installed successfully, you should now be able to run the file
+  forge-1.7.10-10.13.4.1614-1.7.10-universal.jar" (no mods folder made).
+- First start: "server.properties does not exist", "Generating new properties file" (it holds only two comment lines),
+  "You need to agree to the EULA in order to run the server. Go to eula.txt for more info."; also wrote config/ (our
+  configs and the unpacked content) and decimation_server.properties (Decimation's server rules: enableBlockBreaking
+  false, enableBlockPlacing false, enableItemPickup false, allowAdditionalMods false, lootRespawnTime 900, ...).
+- Second start with eula=true, level-type=decimation (and online-mode=false ONLY for the dev client test): "Decimation
+  world type: 9 biomes", camps and other sites placed around spawn, "Starting Minecraft server on *:25565", "Done
+  (8.421s)!"; `stop` saved and closed it.
+- Dev test `guideshots` against it: ping 1 to 2 ms, "A Minecraft Server", 0/20. First join: kicked by Decimation's
+  anticheat a second after login (the dev client's mods/1.7.10 is empty, so it sent no hashes). With one identical small
+  file in the server's mods and the client's mods/1.7.10: in the server's world for 10 s, no kick. How the check works:
+  docs/decimation_code/backend.md section 3b.
 
 ## 4. Look
 
@@ -232,15 +274,27 @@ BoehMod page).
 - SHOT 16 Oktober 2026: all eleven in docs/shots/site_v0.62.9/ (shots_index.md); camera rows in tools/site/siteshots.tsv.
 - Output stays local (dev/run/client/screenshots/site_<name>.png, kept in docs/shots/site_v<version>/, git ignored) and is
   described in docs/shots_index.md; copied into the site repo's public/shots by a small script.
+- Guide pictures (17 Oktober 2026): Minecraft's own screens from the dev test `guideshots`
+  (devtest/GuideShotsTest: leaves the world, walks Play, Singleplayer, Create New World, More World Options, World Type,
+  then Other servers, Multiplayer, Add Server and a join; window 1440 x 810, GUI scale auto = 3; -Pserver=host for a
+  running server). `python3 tools/site/export_assets.py ../deciremnant --guide docs/shots/website_guide_v0.62.9` exports
+  ONLY them: cropped to (225, 20, 1215, 800), PNG (the pixel font stays sharp, 23 to 33 KB), content hash names in
+  public/guide with manifest.json; the site serves them unoptimised and zooms them pixelated. Used: worldtype (install
+  step 6), addserver and multiplayer (server Join).
+- Decimation's own menu was shot too (guide_menu_home, guide_menu_servers): no "session invalid" banner any more (the
+  menu says Play), but it shows the Decimation logo (never on the site, lesson 8) and the dev player's profile and kills,
+  so it is not used; a crop of the buttons alone would be possible if the user wants it.
 
 ## 7. Checks before calling it done
 
 - `next build` and the type check pass; lint clean.
 - Unit tests (vitest) for `pickRelease`: newest wins, pre-releases count, a release without Decimation.jar is
   skipped, the sha256 asset is found, an empty list and a GitHub error give the fallback.
-- The page rendered with agent-browser at 1300 x 900 (desktop) and 390 x 844 (phone), full page shots read:
-  every section, the splash, the lightbox, the install tabs, the fold outs; no dash characters in the page text;
-  every link answers (the download link redirects to GitHub's file).
+- Both pages (/ and /docs/server) rendered with agent-browser at 1300 x 900 (desktop) and 390 x 844 (phone), full
+  page shots read: every section, the splash, the lightbox, the install steps and their pictures, the server guide's
+  side menu (sticky: a full page shot draws it where the capture scrolled; check it with viewport shots), the fold
+  outs; no dash characters in the page text; every link answers on both pages (the download link redirects to
+  GitHub's file; before the push the server page's canonical is a 404 on the live site, expected).
 - Fonts at their sizes only (12 / 18 / 24 / 36 px), icons crisp.
 - After the user's push: the live deciremnant.vercel.app checked the same way. "Done" only after that.
 
@@ -250,6 +304,8 @@ BoehMod page).
 - A feature ships or a plan changes: edit `content/` (features, coming soon) and push.
 - New version with big visual changes: re-run `siteshots`, then `python3 tools/site/export_assets.py ../deciremnant --shots dev/run/client/screenshots`, push. Pictures are named by content hash (public/shots/manifest.json), so the new ones get new addresses; the image optimiser caches a picture 4 hours (max-age 14400), which would otherwise show old pictures to returning visitors.
 - Install steps change (Forge, launcher): edit `content/install.ts`.
+- Server guide: `content/server.ts`; change a command or console line only after running it on a test server (3b);
+  new pictures through `guideshots` and `export_assets.py --guide`.
 
 ## 9. Not verified yet (and what was checked, 16 Oktober 2026)
 
@@ -260,7 +316,8 @@ BoehMod page).
   (Mods page action "&Add File", Java settings "Maximum Memory Usage"). The guide uses those words.
 - CHECKED in Decimation's code (deobf GuiMenuBase case 9, GuiMenuOfficialServers): "Play" opens the official
   servers page (after fetching that list), which has a small "Singleplayer" button opening Minecraft's world list.
-  Not yet clicked through in the game with the dead backend [not verified in game].
+  CHECKED IN THE GAME 17 Oktober 2026 (dev test `guideshots`): Play opens the server page (deci.i.i) with Singleplayer
+  and Other servers; Singleplayer opens GuiSelectWorld; Other servers opens Minecraft's GuiMultiplayer.
 - CHECKED Forge files: forge-1.7.10-10.13.4.1614-1.7.10-installer.jar and -universal.jar answer 200 on
   maven.minecraftforge.net.
 - 4 GB of memory as advice [inferred, not measured].
@@ -313,6 +370,11 @@ BoehMod page).
 4. Revised page: "really nice"; then "use decimation colors instead?": the Decimation palette page was "really
    worse"; kept from it only the torn orange download and torn black "Install guide >>" buttons.
 5. Name: "any suggestion name instead of decimation? with same feel and word deci": DeciRemnant.
+6. Install section (17 Oktober 2026, the user's shots of the live tabs and requirements box): "for the installation,
+   just for new player, no need already have decimation and server. for the server put on new page docs (we create new
+   page now, suggest your design). and the installation, better to put real image instead of step list only. for
+   requierement, make list table lined style instead using boxed styled". Choices: pictures "game screens only" (no
+   Prism, no Decimation menu), each picture beside its step's text, the server page as docs with a side menu (3b).
 
 ## 11. Later (not v1)
 

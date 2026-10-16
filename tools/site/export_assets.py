@@ -2,12 +2,17 @@
 
     python3 tools/site/export_assets.py SITE_DIR                 # stand in screenshots from docs/shots
     python3 tools/site/export_assets.py SITE_DIR --shots DIR     # siteshots output: DIR/site_<name>.png
+    python3 tools/site/export_assets.py SITE_DIR --guide DIR     # ONLY the guide pictures: DIR/guide_<name>.png
 
 Item icons and the two torn menu textures come from Decimation.jar.original.bak, the MAC-10 icon is ours, the
 dirt strip is generated (seeded noise). Screenshots become JPEG (at most 1920 wide) plus og.jpg (1200 x 630 from
 the hero). Every picture is named by its content hash (city-1a2b3c4d.jpg; public/shots/manifest.json maps the subject
 to the file), so a new picture gets a new address and no browser or image cache shows an old one (the optimiser
 answers with max-age 14400). Everything lands in SITE_DIR/public; nothing here is committed to this public repo.
+
+--guide exports nothing else: Minecraft screens from the guideshots dev test (1440 x 810, GUI scale 3) cropped to
+their buttons, kept as PNG (the pixel font stays sharp), named by content hash in public/guide with
+public/guide/manifest.json (install step and server page pictures, docs/website.md).
 """
 import argparse
 import glob
@@ -55,6 +60,8 @@ STAND_INS = {
     "airport": ("airport_v0.62.3/airport_helipad.png", None),
     "gun": ("mac10_v0.37/gunview_mac10.png", None),
 }
+GUI_BOX = (225, 20, 1215, 800)  # the buttons and fields of a GUI scale 3 screen in a 1440 x 810 window
+GUIDE = {"worldtype": GUI_BOX, "multiplayer": GUI_BOX, "addserver": GUI_BOX}
 
 
 def dirt(path):
@@ -78,6 +85,28 @@ def hashed(im, folder, name):
     with open(os.path.join(folder, fname), "wb") as f:
         f.write(data)
     return fname
+
+
+def guide(site, src_dir):
+    """The guide pictures alone: crop, PNG named name-<first 8 of its sha1>.png, manifest; old ones removed."""
+    folder = os.path.join(site, "public", "guide")
+    os.makedirs(folder, exist_ok=True)
+    for old in glob.glob(os.path.join(folder, "*.png")):
+        os.remove(old)
+    manifest = {}
+    for name, box in GUIDE.items():
+        src = os.path.join(src_dir, "guide_%s.png" % name)
+        im = Image.open(src).convert("RGB").crop(box)
+        buf = io.BytesIO()
+        im.save(buf, "PNG", optimize=True)
+        data = buf.getvalue()
+        manifest[name] = "%s-%s.png" % (name, hashlib.sha1(data).hexdigest()[:8])
+        with open(os.path.join(folder, manifest[name]), "wb") as f:
+            f.write(data)
+        print("guide %-11s %4d x %-4d %6d bytes -> %s" % (name, im.width, im.height, len(data), manifest[name]))
+    with open(os.path.join(folder, "manifest.json"), "w") as f:
+        json.dump(manifest, f, indent=2, sort_keys=True)
+        f.write("\n")
 
 
 def site_icons(site):
@@ -119,7 +148,11 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("site")
     ap.add_argument("--shots", help="folder with site_<name>.png from the siteshots dev test")
+    ap.add_argument("--guide", help="folder with guide_<name>.png from the guideshots dev test (exports only these)")
     a = ap.parse_args()
+    if a.guide:
+        guide(os.path.abspath(a.site), a.guide)
+        return
     pub = os.path.join(os.path.abspath(a.site), "public")
     for d in ("icons", "ui", "shots"):
         os.makedirs(os.path.join(pub, d), exist_ok=True)

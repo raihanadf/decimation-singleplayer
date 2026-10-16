@@ -134,7 +134,9 @@ Knowledge index:
   github.com/ucilmenangis/deciremnant, local ~/Projects/deciremnant, Next.js on Vercel): page text, look (Minecraft Standard font at the game's sizes, item icons), release data,
   screenshots (dev test `siteshots`: camera rows tools/site/siteshots.tsv, `-Pwindow=1440x810` / `devtest.py --live
   --window=1440x810`, subjects from server logs with tools/site/subjects.py), art export tools/site/export_assets.py
-  (content hash names), checks; skill decimation-website.
+  (content hash names), checks; skill decimation-website. Since 17 Oktober 2026 also the server guide page
+  /docs/server (section 3b: every command from a real scratchpad Forge server with the release jar) and guide pictures
+  of Minecraft's own screens (dev test `guideshots`, `export_assets.py --guide`).
 - `docs/systems_plan.md`: PLAN of every open feature together (loot, human NPCs, zombies, world and
   zones) with the shared core (world clock, pools, body entity, tier table, areas, protection
   table, group spawner) and the build order; user choices of 13 Oktober 2026.

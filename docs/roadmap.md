@@ -140,6 +140,10 @@ docs/gun_model_spec.md); every user review goes into its lessons and casebook.
    JSON-LD, own icons; site commit 546f637 live checked (Lighthouse 100 on mobile and desktop); Search Console
    verified, sitemap.xml submitted and indexing requested by the user 17 Oktober 2026; indexing check on 20 Oktober
    2026 (docs/website.md 9b).
+   INSTALL AND SERVER GUIDE 17 Oktober 2026 (user review; docs/website.md 3 item 6 and 3b): install for new players
+   only, requirements as a lined table, real game screens beside steps (dev test guideshots); server guide on its own
+   docs page /docs/server with a side menu, every command and line from a real test server, Decimation's anticheat and
+   server rules under Problems. Site commit 9f2bfcd local: waits for the user's look, the push and the live check.
 
 ## Code and tools
 

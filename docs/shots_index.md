@@ -54,6 +54,35 @@ chunks at the camera and 48 ahead, up to 120 s).
   added to a priority crawl queue; Crawl rows (last crawl, crawled as, crawl allowed, page fetch, indexing allowed)
   all N/A. The baseline for the indexing check on 20 Oktober 2026.
 
+## website_guide_v0.62.9/ (install guide pictures and the server guide page, 17 Oktober 2026; docs/website.md 3b, 6)
+
+Game screens from the dev test `guideshots` (1440 x 810, GUI scale 3, dirt background, no world behind):
+- `guide_createworld.png`: Create New World, World Name "New World", Game Mode Survival, More World Options.
+- `guide_worldtype.png`: the More World Options view: seed field, Generate Structures ON, "World Type: Decimation",
+  Allow Cheats OFF, Bonus Chest OFF, Done, Create New World / Cancel. On the site (install step 6).
+- `guide_multiplayer.png`: Play Multiplayer with one entry "Decimation server / A Minecraft Server", 0/20, full ping
+  bars, green check, selected; Join Server, Direct Connect, Add server, Edit, Delete, Refresh, Cancel. On the site.
+- `guide_addserver.png`: Edit Server Info with Server Name "Decimation server", Server Address "localhost", Server
+  Resource Packs: Prompt, Done, Cancel. On the site.
+- `guide_menu_home.png`: Decimation's home menu: DECIMATION logo, green Play, My Community, Server Status, Settings,
+  Exit Game, profile "Developer" with kills, FURY advert, BOEHMOD; NO session warning. Not used (logo, dev profile).
+- `guide_menu_servers.png`: Official Server List: four dead official servers "Pinging...", Players Online: Unknown,
+  buttons Singleplayer and Other servers. Not used.
+- `guide_joined.png`: in the test server's world at night, Decimation's HUD (kills, days, humanity), empty hotbar.
+Site checks of the local build (agent-browser):
+- `server_desktop.png` (full page, 1300): top bar, the whole guide; the sticky side menu is drawn mid page there (a
+  capture artefact: measured at 88 px from the top at scroll 0 and sticky at 24 px when scrolled).
+- `server_desktop_top.png`: side menu "On this page", "Docs · Server", h1, lead, lined Requirements, Set up step 1
+  with its command and output block.
+- `server_zoom_open.png`: the Add Server picture zoomed after Enter on the keyboard (crisp, pixelated scaling).
+- `install_desktop.png`, `install_desktop_2.png`: the six install steps divided by lines, the World Type picture beside
+  step 6, the torn black "Running a server? Server guide >>".
+- `server_phone_top.png`, `server_phone_join.png` (390): chips above the title, the lined table, Join steps with the
+  Add Server picture under its text. `install_phone_top.png`: the lined table and steps 1 to 3;
+  `install_phone_steps.png`: steps 4 to 6, the World Type picture under step 6, the server guide link wrapping onto two
+  lines inside the torn black panel; `install_phone_steps2.png`: the changelog after it. `server_desktop_mid.png`:
+  scrolled to 1700 px (the side menu measured sticky at 24 px).
+
 ## website_design_v0.62/ (DeciRemnant website mockups, browser companion, 16 Oktober 2026; docs/website.md)
 - round1_three_looks.png: the top of the page in three looks (A ivory field report, B warm night with the city
   shot as full width hero, C black and blood red game menu echo). User: "B looks best, but can be more minecraft".

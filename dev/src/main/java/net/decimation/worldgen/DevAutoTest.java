@@ -145,6 +145,7 @@ public class DevAutoTest
         if (name.equals("census")) return new net.decimation.worldgen.devtest.CensusTest();
         if (name.equals("cityview")) return new net.decimation.worldgen.devtest.CityViewTest();
         if (name.equals("siteshots")) return new net.decimation.worldgen.devtest.SiteShotsTest();
+        if (name.equals("guideshots")) return new net.decimation.worldgen.devtest.GuideShotsTest();
         if (name.equals("rail")) return new net.decimation.worldgen.devtest.RailTest();
         if (name.equals("bridge")) return new net.decimation.worldgen.devtest.BridgeTest();
         if (name.equals("cityprops")) return new net.decimation.worldgen.devtest.CityPropsTest();

@@ -42,6 +42,26 @@ api.mojang.com, mcapi.ca, discord, twitter.
   deserialize whatever it sends back (kryonet with Decimation's registered classes) [risk inferred, never seen].
 - The update check logs FileNotFoundException for latestversion.txt (repository gone); harmless.
 
+## 3b. The anticheat on a dedicated server (seen 17 Oktober 2026, release 0.59.0 on Forge 1.7.10-10.13.4.1614)
+
+- `AntiCheatScanner.collectModHashes` hashes (SHA-256) every file in `mods/1.7.10/` when that folder exists, else every
+  file in `mods/`; a server skips names containing "dynmap". The server logged "[BoehMod-Anticheat] Detected hash
+  '9e20395d...' (Decimation.jar)": the same sha256 as the GitHub release asset.
+- On login `PlayerLoginHandler` sends RequestModHashes (to every player, when `allowAdditionalMods` is false: the
+  default that `decimation_server.properties` gets on the first start); the client answers ModHashes with its own list.
+- `PacketModHashesHandler.handle` kicks when a received hash is neither the server's nor one of 11 whitelisted hashes,
+  or when the client sent none while the server has some; players in the ops list are never kicked. Message: "BoehMod
+  Anticheat / You've been kicked for having modified files! / New update Out? / You can force-update from the options
+  menu".
+- Seen: the dev client (an EMPTY `mods/1.7.10`, so no hashes) was kicked a second after logging in ("Did not receive any
+  hashes from player Developer!"); with one identical small file in the server's `mods` and the client's `mods/1.7.10` it
+  stayed in the server's world (dev test `guideshots`). A player with exactly the server's Decimation.jar passes the same
+  way; another version or any extra mod is an unknown hash [the hash path read in code; a second real client not tried].
+- The same file sets Decimation's other server rules: `enableBlockBreaking` / `enableBlockPlacing` false
+  (BlockBreakProtectionHandler, BlockPlaceProtectionHandler: "You cannot break blocks on this server!", fortification
+  blocks and creative players excepted), `enableItemPickup` false (ItemPickupHandler cancels pickups, bottlecaps still
+  count) [code read, not tried in game]. The site's server guide (/docs/server) lists them under Problems.
+
 ## 4. Singleplayer state and known faults
 
 - Thread leak above: FIXED v0.62.8 by PatchBackend v2 (no BoehMod connection at all: 0 kryonet threads after 2 minutes,
@@ -63,3 +83,5 @@ api.mojang.com, mcapi.ca, discord, twitter.
   (was one more every 15 s); the log says "BoehMod network is off" once.
 - `python3 tools/devtest.py --live menu` (no forced update), `update` (our updater against
   tools/fake_release_server.py).
+- Anticheat and joining a server: a Forge 1.7.10 server in the scratchpad with the release Decimation.jar, then
+  `python3 tools/devtest.py --live guideshots -Pserver=localhost` (join result in the results; docs/website.md).

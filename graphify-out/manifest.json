@@ -55,9 +55,9 @@
     "semantic_hash": "a68a1be883c1bdbac80e294dd82db605"
   },
   "dev/src/main/java/net/decimation/worldgen/DevAutoTest.java": {
-    "mtime": 1792144671.5464036,
-    "ast_hash": "dbf76949b7754f75d60afa464ee07de6",
-    "semantic_hash": "dbf76949b7754f75d60afa464ee07de6"
+    "mtime": 1792177064.6750178,
+    "ast_hash": "916595603a52f29f2b49fc16852a9704",
+    "semantic_hash": "916595603a52f29f2b49fc16852a9704"
   },
   "dev/src/main/java/net/decimation/worldgen/Rotation.java": {
     "mtime": 1791315242.0110583,
@@ -110,9 +110,9 @@
     "semantic_hash": "de153d1f8408971d6190e16a7d4256f9"
   },
   "CLAUDE.md": {
-    "mtime": 1792154774.0271747,
-    "ast_hash": "af138abba2a99419e22e1e247d752639",
-    "semantic_hash": "af138abba2a99419e22e1e247d752639"
+    "mtime": 1792178721.5173385,
+    "ast_hash": "b09b6fb62e684ab1afe61223e980f7e7",
+    "semantic_hash": "b09b6fb62e684ab1afe61223e980f7e7"
   },
   "DECIMATION_MOD_TASK.md": {
     "mtime": 1784958353.0126374,
@@ -325,9 +325,9 @@
     "semantic_hash": "0145e0863788d451e8ae4273d3c2abdd"
   },
   "docs/shots_index.md": {
-    "mtime": 1792175587.9566028,
-    "ast_hash": "004d78c089ba069487214446a49c9f22",
-    "semantic_hash": "004d78c089ba069487214446a49c9f22"
+    "mtime": 1792178709.6404645,
+    "ast_hash": "6e55e075148731ea818ce46b0df6be6d",
+    "semantic_hash": "6e55e075148731ea818ce46b0df6be6d"
   },
   "docs/interior_spec.md": {
     "mtime": 1791385593.9436893,
@@ -655,9 +655,9 @@
     "semantic_hash": "59092135d7782c740ec478643992e90b"
   },
   "docs/roadmap.md": {
-    "mtime": 1792175592.5361767,
-    "ast_hash": "037152eed8b9a20f97c70d6049b2538d",
-    "semantic_hash": "037152eed8b9a20f97c70d6049b2538d"
+    "mtime": 1792178691.44573,
+    "ast_hash": "9bf823af7807212f9ee3816b102ca38d",
+    "semantic_hash": "9bf823af7807212f9ee3816b102ca38d"
   },
   "dev/src/main/java/net/decimation/worldgen/LegacyStreets.java": {
     "mtime": 1791487239.5087948,
@@ -1540,9 +1540,9 @@
     "semantic_hash": "294036847a9caffda351bfa855a78636"
   },
   "docs/tasks.md": {
-    "mtime": 1792175589.4812207,
-    "ast_hash": "e4ed5ec2caa6cc20e48198735e8580a2",
-    "semantic_hash": "e4ed5ec2caa6cc20e48198735e8580a2"
+    "mtime": 1792178675.56915,
+    "ast_hash": "917237d54851227a63f586a76965bf05",
+    "semantic_hash": "917237d54851227a63f586a76965bf05"
   },
   "tools/skillcheck.py": {
     "mtime": 1792098139.5315723,
@@ -1715,9 +1715,9 @@
     "semantic_hash": "8ad27ab3b506746999511642544ce5e4"
   },
   "docs/decimation_code/backend.md": {
-    "mtime": 1792099177.6246424,
-    "ast_hash": "06fafcf6ecebb7160536340bdce4ec2a",
-    "semantic_hash": "06fafcf6ecebb7160536340bdce4ec2a"
+    "mtime": 1792178565.5235481,
+    "ast_hash": "1b6e65082ea5bd2a65f89d00ae020f93",
+    "semantic_hash": "1b6e65082ea5bd2a65f89d00ae020f93"
   },
   ".claude/skills/decimation-code-world/SKILL.md": {
     "mtime": 1792100385.1414058,
@@ -1735,14 +1735,14 @@
     "semantic_hash": "e8564bc6458835de29bc9ea8ba1e842c"
   },
   ".claude/skills/decimation-website/SKILL.md": {
-    "mtime": 1792175594.3609076,
-    "ast_hash": "190dd6407c0a17f9b5f0dbea36121ffd",
-    "semantic_hash": "190dd6407c0a17f9b5f0dbea36121ffd"
+    "mtime": 1792178669.9974914,
+    "ast_hash": "2f3d20be59a2178731123c12113b3d6e",
+    "semantic_hash": "2f3d20be59a2178731123c12113b3d6e"
   },
   "docs/website.md": {
-    "mtime": 1792175591.093194,
-    "ast_hash": "7f163a963d8671da906751a161b07621",
-    "semantic_hash": "7f163a963d8671da906751a161b07621"
+    "mtime": 1792178649.9956496,
+    "ast_hash": "3a2e73cf5c0d37413982179df0ffc081",
+    "semantic_hash": "3a2e73cf5c0d37413982179df0ffc081"
   },
   "docs/website_plan.md": {
     "mtime": 1792162650.3638773,
@@ -1755,13 +1755,18 @@
     "semantic_hash": "643a98add20f3d1847554daff837579d"
   },
   "tools/site/export_assets.py": {
-    "mtime": 1792164652.57497,
-    "ast_hash": "77d2ff46ca940d7f15b16cc4acd48747",
-    "semantic_hash": "77d2ff46ca940d7f15b16cc4acd48747"
+    "mtime": 1792177698.5879154,
+    "ast_hash": "7c715dadb5614d959155785df65d2d2c",
+    "semantic_hash": "7c715dadb5614d959155785df65d2d2c"
   },
   "tools/site/subjects.py": {
     "mtime": 1792144948.9135313,
     "ast_hash": "ca334425aaf88add9e43c6d8182234df",
     "semantic_hash": "ca334425aaf88add9e43c6d8182234df"
+  },
+  "dev/src/main/java/net/decimation/worldgen/devtest/GuideShotsTest.java": {
+    "mtime": 1792178496.177264,
+    "ast_hash": "c58f148bfac9726d0ffb4c83a906655f",
+    "semantic_hash": "c58f148bfac9726d0ffb4c83a906655f"
   }
 }
