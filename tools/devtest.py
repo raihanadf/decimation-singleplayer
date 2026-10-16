@@ -18,6 +18,7 @@ LIVE (no game launch per run, docs/roadmap.md "Live dev test mode"):
     python3 tools/devtest.py --live --angelica MODE   # start the live game with Angelica (dev only)
     python3 tools/devtest.py --live --java25 MODE     # start it on Java 25 with lwjgl3ify (runClient25)
     python3 tools/devtest.py --live --dress MODE      # start it with the city dressing on (docs/city_dressing.md)
+    python3 tools/devtest.py --live --window=1920x1080 MODE   # start the live game with that window size
     python3 tools/devtest.py --live MODE -Ptrace=deci.aE,deci.n.d   # record the run's calls (docs/call_trace.md)
     python3 tools/devtest.py --live --trace=deci/aE MODE ...        # start the game marking only those packages
 
@@ -121,6 +122,9 @@ def run_live(modes, extra, swap, angelica=False, task="runClient", dress=False):
         start = ["./gradlew", task, "-q", "-Plive"]
         if dress:  # city dressing on (docs/city_dressing.md)
             start += ["-Pdress"]
+        windows = [a[len("--window="):] for a in sys.argv if a.startswith("--window=")]
+        if windows:  # window size of a new live game (website shots: docs/website.md section 6)
+            start += ["-Pwindow=" + windows[0]]
         if angelica:  # Angelica rendering overhaul in the dev client (docs/performance.md)
             start += ["-Pangelica", "-PforceEnableMixins=true"]
         marks = [a[len("--trace="):] for a in sys.argv if a.startswith("--trace=")]

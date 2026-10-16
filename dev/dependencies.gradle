@@ -196,3 +196,17 @@ if (project.hasProperty("angelica")) {
     }
 }
 
+// `gradlew runClient -Pwindow=1920x1080`: game window size (website screenshots, docs/website.md section 6)
+tasks.matching { it.name.startsWith("runClient") }.configureEach {
+    if (project.hasProperty("window")) {
+        def wh = project.property("window").toString().split("x")
+        args("--width", wh[0], "--height", wh[1])
+    }
+}
+
+// `-Pshots=hero,gun`: the siteshots dev test shoots only these rows of tools/site/siteshots.tsv
+tasks.matching { it.name.startsWith("runClient") }.configureEach {
+    if (project.hasProperty("shots")) {
+        jvmArgs("-Ddeciworldgen.autotest.shots=" + project.property("shots"))
+    }
+}
