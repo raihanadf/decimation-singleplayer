@@ -963,7 +963,7 @@ of the last session:
   v0.62.0: military airports in wasteland cities (docs/airport.md): city/Airport picks one half wasteland sector per
   city (1 in 3) as a block of 2 x 4 cells (LcCity.block kind 3), military/Airport builds it (runway, taxiway, apron,
   block-built planes, hangars, tower, locked HQ and armory, barracks, fuel farm, damage, garrison); new worlds
-  (`!airports`). Dev test `airport`; gatescan also lists airport sites. No lakes / springs over cities now.
+  (`!airports`). Dev test `airport`; gatescan also lists airport sites (and city refuges since 17 Oktober 2026). No lakes / springs over cities now.
   v0.62.1: the airport redone through the decimation-military-base skill after "to basic" (docs/airport.md section 9):
   module reserves, runway lighting / markings / PAPI / arresting gear, revetments, shelters, fire station, radar,
   igloos, FOB style entry; checked on the server (propclash 0 on 248 props, walkcheck 0).

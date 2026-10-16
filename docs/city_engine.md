@@ -438,7 +438,9 @@ compact blobs, cities and roads less rare, 1 wasteland sector per 4 city sectors
 - Refuges (v0.60.2, user 13 Oktober 2026: "1 per 4 sectors"): round(sectors / 4), at least 1, so 1 / 1 / 1 /
   2 / 3 / 4 for cities of 4 / 8 / 16 / 24 / 48 / 64 districts, never in a wasteland sector, spread apart
   (LcCity.refugeSectors: the first nearest the city's middle, each next the sector farthest from those taken;
-  a sector with no block that fits is skipped for the next). Older worlds keep one per city sector.
+  a sector with no block that fits is skipped for the next). Older worlds keep one per city sector. Checked 17
+  Oktober 2026 (gatescan on a fresh seed 1 server world): the 64 district city at x 1280 .. 2303, z -2560 .. -1537
+  has 4, none in its 4 wasteland sectors (docs/safezone.md section 7). `gatescan` lists refuges since then.
 - Not changed: rails per highway line. `tools/hwmap.py` and the Python sector copies know only the
   old layout [their maps are wrong for new worlds].
 

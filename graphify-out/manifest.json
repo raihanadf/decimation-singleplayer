@@ -110,9 +110,9 @@
     "semantic_hash": "de153d1f8408971d6190e16a7d4256f9"
   },
   "CLAUDE.md": {
-    "mtime": 1792191927.8551185,
-    "ast_hash": "0a04a7bfba728af33774719787fdb98a",
-    "semantic_hash": "0a04a7bfba728af33774719787fdb98a"
+    "mtime": 1792192225.657567,
+    "ast_hash": "067c8b3b0e552c30da79135aa9db62e8",
+    "semantic_hash": "067c8b3b0e552c30da79135aa9db62e8"
   },
   "DECIMATION_MOD_TASK.md": {
     "mtime": 1784958353.0126374,
@@ -530,9 +530,9 @@
     "semantic_hash": "4754c787c15ae49542d1bf2159b29b75"
   },
   "dev/src/main/java/net/decimation/worldgen/city/LcCity.java": {
-    "mtime": 1792144935.647216,
-    "ast_hash": "911594f82bd6f98cab1f8b66e4eef3ab",
-    "semantic_hash": "911594f82bd6f98cab1f8b66e4eef3ab"
+    "mtime": 1792192133.5410779,
+    "ast_hash": "c551c2d7c603517cfd2fe6280fbc4a8b",
+    "semantic_hash": "c551c2d7c603517cfd2fe6280fbc4a8b"
   },
   "dev/src/main/java/net/decimation/worldgen/city/LcContent.java": {
     "mtime": 1791734512.8675733,
@@ -555,9 +555,9 @@
     "semantic_hash": "87d7c5deb01bdf730025e901597a1efa"
   },
   "docs/city_engine.md": {
-    "mtime": 1791925734.3525944,
-    "ast_hash": "91f9f85cde94adafa75f59dd14a16f27",
-    "semantic_hash": "91f9f85cde94adafa75f59dd14a16f27"
+    "mtime": 1792192225.6567326,
+    "ast_hash": "4a6527730273875306cf37680bbb55f1",
+    "semantic_hash": "4a6527730273875306cf37680bbb55f1"
   },
   "tools/edgescan.py": {
     "mtime": 1791419321.0102901,
@@ -1085,9 +1085,9 @@
     "semantic_hash": "4a94e1b5ab540e7b3d1944382ae5fb57"
   },
   "docs/safezone.md": {
-    "mtime": 1792094231.3744524,
-    "ast_hash": "a1f5bc764e9248c0140b3da4a1ad3cfc",
-    "semantic_hash": "a1f5bc764e9248c0140b3da4a1ad3cfc"
+    "mtime": 1792192225.656286,
+    "ast_hash": "114b9752b14eada05da9791211cafa12",
+    "semantic_hash": "114b9752b14eada05da9791211cafa12"
   },
   "dev/src/main/java/net/decimation/worldgen/devtest/CampCommandTest.java": {
     "mtime": 1791709840.3908079,
@@ -1540,9 +1540,9 @@
     "semantic_hash": "294036847a9caffda351bfa855a78636"
   },
   "docs/tasks.md": {
-    "mtime": 1792191912.8469124,
-    "ast_hash": "e036e5e48cbec969c8b1671f0b646666",
-    "semantic_hash": "e036e5e48cbec969c8b1671f0b646666"
+    "mtime": 1792192225.6587958,
+    "ast_hash": "c38d2684747d62f295d8f3524675339a",
+    "semantic_hash": "c38d2684747d62f295d8f3524675339a"
   },
   "tools/skillcheck.py": {
     "mtime": 1792098139.5315723,

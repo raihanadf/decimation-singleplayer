@@ -34,6 +34,6 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [ ] tools/hwmap.py on the sized city layout
 - [ ] black mobs: graphics log line from the brother's laptop
 - [ ] graph.json over 5 MB: keep committing or not
-- [ ] 64 district city refuge check
+- [x] 64 district city refuge check: seed 1, 4 refuges, none in wasteland (gatescan lists refuges now)
 - [ ] airport garrison manned in game
 - [ ] airport verdict in game (user, seed 1, `/tp -2470 66 1290`)

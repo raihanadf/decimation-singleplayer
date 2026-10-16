@@ -203,3 +203,9 @@ lost a tent: writing over a multiblock prop (the APC) breaks its parts, which to
 written cells with it; the test now clears the box first. The same holds for /deciworldgen camp
 over an earlier camp `[inferred]`.
 Shots: docs/shots/city_refuge_v0.48.0/ (shots_index.md).
+
+Sized cities (v0.60.2, docs/city_engine.md "City sizes"): one refuge per 4 city sectors. Checked 17 Oktober 2026 on a
+fresh seed 1 server world by the generator's own choice (`servertest.py 1 type=decimation gatescan=1920,-1920,700`,
+lines "lc refuge in sector"): the 64 district city (sectors 5..8, -10..-7, four of them wasteland) has 4 refuges, in
+sectors 5,-10 / 5,-7 / 7,-9 / 8,-10, none in wasteland; the closest pair is 1.4 sectors apart (about 286 blocks):
+the first refuge takes the sector nearest the middle, which leaves the fourth little room in a 12 sector shape.

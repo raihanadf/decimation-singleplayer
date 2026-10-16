@@ -75,6 +75,24 @@ public final class LcCity
     public static void gateScan(long seed, int x, int z, int r)
     {
         WastelandFence.scan(seed, x, z, r);
+        // the city refuges there by the generator's own choice (docs/safezone.md section 7): one line per sector with one
+        int reg = Sectors.REGION_BLOCKS;
+        for (int rx = Math.floorDiv(x - r, reg); rx <= Math.floorDiv(x + r, reg); rx++)
+        {
+            for (int rz = Math.floorDiv(z - r, reg); rz <= Math.floorDiv(z + r, reg); rz++)
+            {
+                int[] ref = refuge(seed, rx, rz);
+                if (ref != null)
+                {
+                    CityLayout.Plan plan = CityLayout.on() ? CityLayout.planAt(seed, rx, rz) : null;
+                    cpw.mods.fml.common.FMLLog.info("[deciworldgen] lc refuge in sector %d,%d: block %d,%d at %d,%d (turns %d), "
+                                                    + "city of %s districts, wasteland here %s", rx, rz, ref[0], ref[1],
+                                                    ref[0] * CELL * 16 + 16, ref[1] * CELL * 16 + 16, ref[2],
+                                                    plan == null ? "?" : String.valueOf(plan.size * 4),
+                                                    Wasteland.sector(seed, rx, rz));
+                }
+            }
+        }
     }
 
     /** Layout rules changed outside the city package (city refuges switched): cached plans are dropped. */
