@@ -43,3 +43,15 @@ Checked with it: bundled content unpacked, cities generated, no errors (bug.md v
   gun (attack key 0 while the gun is held, -100 after), a fire axe hits a pig: all PASS, same as the dev
   client. Not tested: a real physical mouse click (desktop control needs macOS Accessibility / Screen
   Recording permission for the Claude app; `click manual=true` waits for a person's click).
+
+## Results (17 Oktober 2026, release 0.64.1)
+- Server: the one jar (sha256 f6ae0b91...) on a fresh seed 1 world: bundled content 0.64.1 unpacked (486 files, 0
+  failed), city sizes / airports / refuges on, structures placed, "Done (4.332s)", clean stop. Error lines only Forge's
+  version check, FML's signature notice and Decimation's dead BoehMod hosts (www.boehmod.net, its update file).
+- Client (prodclient, the same jar): `devtest.py --live menu stats mainmenu menupages` 22 PASS, 0 FAIL (results in
+  prodclient/game/devtest/results.txt: devtest.py reads only the dev run folder and printed "NO RESULTS"); window title
+  "DeciRemnant v0.64.1 (Minecraft 1.7.10)", Updates "Up to date: 0.64.1", the server pages coming soon, Early access.
+- Trap found: dev test helpers that reflect on Minecraft members by MCP name ("buttonList", "actionPerformed") crash
+  the shipped game (SRG names there: field_146292_n, func_146284_a). DevTestUtil.buttons / press try both since
+  17 Oktober 2026; GuideShotsTest still has its own MCP only copies (dev client only).
+
