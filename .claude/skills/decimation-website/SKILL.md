@@ -34,9 +34,10 @@ Facts, decisions and the page text: docs/website.md (the spec). Site code: the P
 6. Show what was built: 6 to 10 screenshots of our features in real worlds; never sky test platforms, window
    bars or HUDs.
 7. Coming soon lists only roadmap items, tagged Planned or Idea, no dates.
-8. Fan site: say unofficial, credit BoehMod, carry Mojang's "not an official Minecraft product" line. The site logo IS
-   the DECIMATION banner of the game's main menu (user, 17 Oktober 2026: "put the decimation logo on website"), with
-   "DeciRemnant" beside it; the old rule "never the Decimation logo image" is gone.
+8. Fan site: say unofficial, credit BoehMod, carry Mojang's "not an official Minecraft product" line. The site logo is
+   OUR official DeciRemnant logo (user, 17 Oktober 2026: "we have our official logo now"; it carries the name, no text
+   beside it), and BoehMod's own logo stands in the footer as the credit ("add boehmod logo on bottom website for
+   credit"). Before it the logo was the game's DECIMATION banner (case 7).
 9. Check the page like a visitor and measure it: full page at 1300 and 390 wide after scrolling once (lazy images), the
    top bar at tablet widths 768 to 1024 (links running off the edge, case 7),
    `scrollWidth` at 390, overlap of the splash with the hero text by bounding boxes, font sizes in use, console
@@ -151,3 +152,12 @@ Facts, decisions and the page text: docs/website.md (the spec). Site code: the P
   below 1024 px; gap between logo and links checked at 1025, 1100, 1300 (46 px and more).
 - Lesson: measure the top bar at tablet widths too (768 to 1024), not only desktop and phone.
 
+### Case 8: our official logo, BoehMod in the footer (17 Oktober 2026)
+- User: "we have our official logo now @Code_Generated_Image.png, but i think its still use white background" and "add
+  boehmod logo on bottom website for credit logo". The user's file stays untracked in both repos (.git/info/exclude).
+- Clearing the paper: colour to alpha faded the red letters and the grey wire; a mask kept them: near white with every
+  channel at 232 or more becomes clear, a 2 px band of low saturation grey around the drawing gets partial alpha, all
+  else stays opaque (tools/site/export_assets.py --logo, pure PIL). 539 x 120 WebP, 40 px high in the bar (28 on
+  phones); BoehMod's boehmod_big.png from the jar, 64 px high, 26 px in the footer.
+- Tests first: the brand link holds our logo with alt DeciRemnant and no text; the footer holds BoehMod's logo; the
+  narrower logo moved the fold of the links to 900 px (measured 1300 gap 456 px, 1000 gap 156, 901 gap 57). Site 72cc3c7.

@@ -312,8 +312,11 @@ its coming soon list; a click opens the page in the browser. The background show
 one every 7 seconds with a short fade, moving with Decimation's own slow sway, zoom and mouse parallax; the dark lava
 cube planet is gone. Since v0.64 the menu says DeciRemnant and our version (title line, under the logo, the welcome
 box, the window title), the red links top right open our website and GitHub, a Continue button under Play opens the
-world you played last, and the bottom right corner shows DeciRemnant instead of BoehMod's store advert. Details:
-docs/main_menu.md.
+world you played last, and the bottom right corner shows DeciRemnant instead of BoehMod's store advert. Since v0.64.1
+the server pages tell the truth: Play lists Bukovka and Chernarus as "Coming soon" (hover a row to see its map behind
+the page), Players Online says coming soon, the Community tab says "Community server coming soon", Server Status shows
+Global Server, Community Server and Download as Offline, and "My Supporter" in My Community is now "Early access"
+(coming soon). Details: docs/main_menu.md.
 
 ## Bug and feature tracking
 

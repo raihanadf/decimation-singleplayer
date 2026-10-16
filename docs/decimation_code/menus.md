@@ -107,3 +107,33 @@ website uses). Contact sheet: docs/shots/main_menu_v0.62.9/menu_assets_sheet.png
 
 Changing it: done in v0.63.0 with Decimation's own parts (docs/main_menu.md): its news panels added from a Forge
 InitGuiEvent (no jar patch), its background drawing patched (`RenderUtil.drawMenuBackground`, three jars).
+
+### 7b. The server pages and the My Community popup (read 17 Oktober 2026 for v0.64.1)
+
+- **Play** (button 9 on the home menu; "Refresh List" on the list page): `ServerListPinger.fetchOfficialServers()`
+  (deci/k/b) builds the rows on Decimation's executor from the hardcoded `officialServers()` (bg: Bukovka and NewYork
+  City, EU and US, *.mcdecimation.net 25565 / 25566), then opens GuiMenuOfficialServers (deci/i/i) on the client tick.
+  Each row is a ListElement (deci/d/p) on a ServerListEntry (deci/k/a: id, name shown as motd, host, port, label in
+  brackets, region; `setBackground(map)` = y). A row pings in its constructor (MinecraftPing, connect timeout); a failed
+  ping sets fN "Offline" and the row draws its state "Not Reachable" at x + 140 and then ALWAYS "?/?" at x + 190, on
+  top of it ("Not Reach?/?le" in the user's shot); " - 0ms" stands in the line under the name until a ping answers.
+- **Hover pictures**: a hovered row raises its fH by 0.05 a frame (to 1); GuiMenuOfficialServers.drawMenuBackground
+  draws `serverbackgrounds/<map><fK>.png` over the whole page at alpha fH (1.5 x the screen, with a sway), the row draws
+  it inside itself at fH minus 0.2. When fH falls back to 0, fK becomes a random 0..7: eight pictures per map.
+- **Players Online** above the list: lang `menu.stats.playercount` plus the backend's count, or
+  `menu.stats.playercount.unknown` (Unknown) without the backend (always now). Only this page reads that key.
+- **Official / Community tabs** (buttons 9 and 13, only with enableServerList): Community's tooltip is "Offline" without
+  the backend; a click opens GuiMenuCommunityServers only when ClientState.serverObjects has servers, otherwise the toast
+  "Failed to load Community list!" (GuiMenuBase.actionPerformed case 13). Toasts (ToastNotification deci/b/b: queue R,
+  current S, two lines W, title X "Decimation", or "BoehMod AC" for type 1).
+- **Server Status** (button 11): GuiMenuServerStatus (deci/i/h) has four ServerPinger rows (deci/l/a: name,
+  description, address, port, status jv) made in its field initialisers; each starts its own thread that opens
+  `new Socket(host, port)` with NO timeout, so a dead host that still resolves shows "Pinging..." for over 20 s (about
+  75 s on macOS) before Offline.
+- **My Community >>** (button 27): SupporterOnlyScreen (deci/d/k), a DeciSubScreen (deci/d/j: titles fa, lines fb,
+  click `onLineClicked` = g, 1 is the first entry) beside the button: "★ My Supporter" (supporters open
+  GuiMenuSupporterLounge deci/i/k, everyone else gets the toast "You must be a ★ Supporter to access this!"), Discord,
+  Forums (ClientResources.httpsWwwBoehmodCom), Twitter. ObjectPlayerProfile.isSupporter comes from BoehMod's backend:
+  false for everyone now.
+- Since v0.64.1 these say coming soon / Early access (docs/main_menu.md 2c: PatchMenuTexts, PatchOfficialServers,
+  fixes/MenuServers; dev test `menupages`).

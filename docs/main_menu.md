@@ -57,6 +57,34 @@ picked: Play straight to the worlds, hiding the dead pages.
 - The FURY store advert's corner shows ours: Decimation's torn black panel with **DeciRemnant**, "Download and guides"
   and deciremnant.vercel.app in the Minecraft font the website uses; the title pulses like FURY's did.
 
+## 2c. v0.64.1 (17 Oktober 2026): the server pages say coming soon, Early access, Chernarus
+
+The user's words: "for server status, changed it like this: Global Server, Community Server, Download, with that name 3
+of them for the offline"; "for my supporter, change the name to Early access"; "for server that is down, replace it with
+Bukovka and Chernarus only and its say coming soon, same with player online its say coming soon instead of unknown, with
+same community to when notification appear, its say community server coming soon instead of failed to load"; five
+Chernarus pictures ("here the chernarus location"). Shots: docs/shots/main_menu_v0.64.0/menupages_*.png (shots_index.md).
+- **Official server list** (Play): two rows, **Bukovka** and **Chernarus**, line "Official DeciRemnant Server (Official)",
+  state **Coming soon** in gold. Decimation drew "?/?" over the state text of every row without a player count (its
+  "Not Reachable" read "Not Reach?/?le") and " - 0ms" for a ping that never happened: both gone. Above the list
+  **Players Online: Coming soon** (was Unknown).
+- **Map pictures**: hovering a row fades one of its map's eight pictures in behind the page and inside the row (Decimation's
+  own, picked at random per hover: textures/gui/menu/serverbackgrounds/<map>0..7.png). Bukovka keeps Decimation's eight;
+  Chernarus shows the user's five pictures (coastal town, harbour with cranes, castle ruin, village under power lines,
+  village with a pond; 720 x 405, sources in docs/shots/main_menu_v0.64.0/chernarus_src), the first three twice.
+- **Community tab** on that page: tooltip "Coming soon" (was "Offline"); a click shows the toast **Community server coming
+  soon** (was "Failed to load Community list!").
+- **Server Status page**: Global Server (Official DeciRemnant server), Community Server (Servers run by players), Download
+  (DeciRemnant download server), each **Offline**; the fourth row, Website (BoehMod's site), unchanged and Online.
+- **My Community popup** (the button under Continue): **★ Early access** (line "New features before everyone else!"; a
+  click: toast "★ Early access is coming soon!"), Website ("Download, install and server guides"), Forums (unchanged:
+  BoehMod's forums; the user: "later we make forum on our website on it"), GitHub ("Source code, issues, all releases").
+- The profile cards say **No early access** (was "Not Supporter :(" and "Is not a Supporter :("), the lounge title
+  "★ Early access lounge" (nobody reaches it: no player is a supporter without BoehMod's backend).
+- No network: every row's host ends in .invalid (RFC 6761: never resolves), so the pings fail at once and nobody's
+  old domain gets our players' connections. The status page's pinger has no timeout: on Decimation's dead hosts it sat
+  at "Pinging..." for over 20 s (a resolving host that never answers holds the socket about 75 s).
+
 ## 3. Code map
 
 | Piece | Job |
@@ -68,7 +96,10 @@ picked: Play straight to the worlds, hiding the dead pages.
 | tools/menu_assets.py | writes background0..5.png (from docs/shots/site_v0.62.9), news_github / update / website / coming.png (from news_src), the corner donor_rank_0 / 1.png (Decimation's buttonbg plus tools/menu/MinecraftStandard.otf, public domain) and the welcome line of Decimation's lang file into the three jars; Decimation art, never committed |
 | fixes/MenuTexts | our version (Updater.current without a dev suffix) and the window title, called from Decimation's code by PatchMenuTexts |
 | fixes/MenuContinue | the Continue button: Forge InitGuiEvent.Post (Deci.menuButton, buttons 27, 11, 5, 0 moved down 21) and ActionPerformedEvent.Pre (launches the newest save) |
-| tools/patches/PatchMenuTexts.java | ASM on the jar's CURRENT classes (deci/i/a and i/e carry PatchMenuStats): 20 texts in 10 classes (labels, title, version calls, link addresses, window title). Three jars. |
+| tools/patches/PatchMenuTexts.java | ASM on the ORIGINAL classes plus PatchMenuStats (base.jar, section 4b): 47 texts in 12 classes since v0.64.1 (labels, title, version calls, link addresses, window title; status rows and hosts in deci/i/h; row state, "?/?" and " - 0ms" in ListElement deci/d/p; official line and Community tooltip in deci/i/i; popup, toast and profile texts in deci/d/k, i/a, i/e, i/k). Three jars. |
+| fixes/MenuServers | the official list's rows (Bukovka, Chernarus on *.deciremnant.invalid, pictures by map key) through Deci.officialServer (ServerListEntry deci.k.a, setBackground y) |
+| tools/patches/PatchOfficialServers.java | Javassist: ServerListPinger.officialServers (deci.k.b.bg) returns MenuServers.official(). Three jars. |
+| Deci (tests) | officialRows, showRowPicture (ListElement fH / fK), statusRows (deci.i.h iS..iV, ServerPinger deci.l.a), toasts (ToastNotification deci.b.b S, R, W), popupLines / clickPopupLine (DeciSubScreen deci.d.j fa, fb, g), menuTooltip (DeciMenuButton eN) |
 
 ## 4. Rebuild (after new site shots, before a release)
 
@@ -88,14 +119,20 @@ picked: Play straight to the worlds, hiding the dead pages.
 
 ```bash
 ASM=$(ls ~/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm-debug-all/5.0.3/*/asm-debug-all-5.0.3.jar | head -1)
-javac -cp $ASM -source 8 -target 8 -d build/patch_menutexts tools/patches/PatchMenuTexts.java
-java -cp $ASM:build/patch_menutexts PatchMenuTexts dist/Decimation.jar build/patch_menutexts/out   # 20 texts in 10 classes
-(cd build/patch_menutexts/out && zip <jar> deci/i/a.class deci/i/e.class deci/i/g.class deci/i/i.class deci/i/j.class \
-     deci/i/k.class deci/i/l.class deci/d/k.class deci/b/c.class deci/m/b.class)   # the three jars
+javac -cp $ASM -source 8 -target 8 -d build/menutexts_rebuild/cls tools/patches/PatchMenuTexts.java
+java -cp $ASM:build/menutexts_rebuild/cls PatchMenuTexts build/menutexts_rebuild/base.jar build/menutexts_rebuild/texts_out   # 47 texts in 12 classes
+(cd build/menutexts_rebuild/texts_out && zip <jar> deci/i/a.class deci/i/e.class deci/i/g.class deci/i/i.class deci/i/j.class \
+     deci/i/k.class deci/i/l.class deci/d/k.class deci/b/c.class deci/m/b.class deci/i/h.class deci/d/p.class)   # the three jars
+# the official list's rows (v0.64.1): deci/k/b is the original class in every jar; Javassist reads only names ending in .jar
+javac -cp tools/lib/javassist.jar --release 8 -d build/patch_servers tools/patches/PatchOfficialServers.java
+java -cp tools/lib/javassist.jar:build/patch_servers PatchOfficialServers dist/Decimation.jar build/patch_servers/out dev/build/classes/java/main
+(cd build/patch_servers/out && zip <jar> deci/k/b.class)   # the three jars
 ```
 The input must be the ORIGINAL classes with only PatchMenuStats on them (this patch removes the texts it looks for):
 copy Decimation.jar.original.bak to base.jar, run PatchMenuStats on it and zip its three classes back in, then run
-PatchMenuTexts on base.jar (done 17 Oktober 2026 in build/menutexts_rebuild; base.jar's ten classes matched the jars).
+PatchMenuTexts on base.jar (done 17 Oktober 2026 in build/menutexts_rebuild; base.jar's ten classes matched the jars;
+deci/i/h and deci/d/p, added in v0.64.1, were the original classes in all three jars). The patch counts the texts it
+changed per class and stops when a count differs from its plan.
 
 ## 5. Tests
 
@@ -108,6 +145,13 @@ PatchMenuTexts on base.jar (done 17 Oktober 2026 in build/menutexts_rebuild; bas
   PASS): the links say Website and GitHub and their addresses are ours, the window title is "DeciRemnant v0.63.0
   (Minecraft 1.7.10)", a Continue button is there.
 - With it, `menu` (no forced update) and `stats` (menu counters) still PASS.
+- `menupages` (v0.64.1, run it last like mainmenu: it leaves the world): My Community popup lines, the Early access
+  click's toast, the official rows (Bukovka and Chernarus, both not reachable), "Coming soon" as the player count, all
+  16 map pictures load as textures (not the missing texture), the Community tab's tooltip and toast, the status rows
+  (first three Offline), and our texts in the loaded classes (profile card, lounge: nothing to click). Shots
+  menupages_community, menupages_official (Chernarus' first picture shown as a hover shows it), menupages_status.
+  RED first (every check FAIL on the old jars), then PASS: 9 of 9 with menu, stats and mainmenu (17 Oktober 2026).
+  Trap found: a class check for "Supporter" also matched the field name isSupporter; check exact old texts.
 - TRAP: `mainmenu` ends at the title menu with no world; tests that wait for a player (`menu`, `stats`, most others)
   then wait forever and `--live --stop` times out (the quit waits for the run). Run them before `mainmenu`, or restart
   the live game.
@@ -117,7 +161,12 @@ PatchMenuTexts on base.jar (done 17 Oktober 2026 in build/menutexts_rebuild; bas
 - The user's look in their own game: their Prism instance has the old jars (Prism is off limits for us); a release
   (tools/onejar.py from dist/Decimation.jar) carries this. The dev client shows it now.
 - Still dead and kept (not picked): My Community, Server Status, "Not Supporter :(", and Play still opens the dead
-  official server list first (menus.md section 7).
+  official server list first (menus.md section 7). Since v0.64.1 those pages say coming soon (section 2c).
+- Later (user): a forum on our website for the My Community popup's Forums line (roadmap UI 3); Global Server,
+  Community Server, Download and the Bukovka / Chernarus rows wait for real servers (MenuServers holds the rows).
+- Offered, not asked: toasts still carry Decimation's title "Decimation" (ToastNotification), the Website status row
+  pings BoehMod's site, an unreachable row keeps Decimation's red X icon. [not verified] where the Chernarus pictures
+  come from (credit them if they are not the user's own).
 - The Decimation logo (banner.png) on the website: built 17 Oktober 2026 (site fc0d159), live after the user's push.
 
 ## 7. References looked at first (skill decimation-website lesson 17)

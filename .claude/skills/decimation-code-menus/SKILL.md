@@ -18,6 +18,8 @@ Facts and the traced menu and HUD: docs/decimation_code/menus.md.
 | stats shown | fixes/LocalStats, PatchMenuStats |
 | our main menu news and background slideshow | fixes/MenuNews, fixes/MenuBackground, PatchMenuBackground, tools/menu_assets.py (docs/main_menu.md) |
 | our links, name, version, Continue | PatchMenuTexts, fixes/MenuTexts, fixes/MenuContinue (docs/main_menu.md 2b) |
+| official server list rows, map pictures | ServerListPinger.officialServers (deci/k/b.bg) -> fixes/MenuServers (PatchOfficialServers); rows ListElement (deci/d/p); pictures serverbackgrounds/<map>0..7 (menus.md 7b) |
+| status page, My Community popup, toasts | GuiMenuServerStatus (deci/i/h), SupporterOnlyScreen (deci/d/k), ToastNotification (deci/b/b); texts by PatchMenuTexts (docs/main_menu.md 2c) |
 
 ## Rules
 
@@ -31,9 +33,17 @@ Facts and the traced menu and HUD: docs/decimation_code/menus.md.
    widgets.
 6. Texts we put into the game carry no dash either (the user's rule for everything we write): "DeciRemnant: Zombie
    Apocalypse" and "DeciRemnant v0.64.0 (Minecraft 1.7.10)", not Decimation's " - " style. Scan patched strings too.
+7. A page with no service behind it says so plainly (user, 17 Oktober 2026): "Coming soon" on the official rows, the
+   player count and the Community tab, Offline on the status rows, "Early access is coming soon!". Rows and pingers
+   point at hosts ending in .invalid (RFC 6761: never resolves), so nothing waits on the network and no stranger's
+   domain gets our players' connections.
 
 ## Common mistakes
 
 - Forgetting the client turf and zone lists feed the HUD banner: no list sent, no banner.
 - Changing labels by editing Decimation's strings in code: they are compiled constants; PatchMenuStats rewrites
   them in the jar (three jars).
+- Checking a patched class for an old word ("Supporter") with a byte search: field names match too (isSupporter).
+  Search for the exact old text ("Not Supporter :(").
+- Trusting Decimation's own row drawing: ListElement drew "?/?" over every unreachable row's state, and the status
+  page's pinger has no timeout (a dead host that resolves sits at "Pinging..." for over a minute).

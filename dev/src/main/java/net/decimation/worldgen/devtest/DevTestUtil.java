@@ -69,6 +69,69 @@ public final class DevTestUtil
         return b.displayString == null ? "" : net.minecraft.util.EnumChatFormatting.getTextWithoutFormattingCodes(b.displayString).trim();
     }
 
+    /** The button with this id on a screen, or null. */
+    public static net.minecraft.client.gui.GuiButton byId(net.minecraft.client.gui.GuiScreen screen, int id)
+    {
+        for (net.minecraft.client.gui.GuiButton b : buttons(screen))
+        {
+            if (b.id == id)
+            {
+                return b;
+            }
+        }
+        return null;
+    }
+
+    /** What a click on the button does: the screen's actionPerformed (Decimation's menu buttons too). */
+    public static void press(net.minecraft.client.gui.GuiScreen screen, net.minecraft.client.gui.GuiButton b)
+    {
+        for (Class<?> c = screen.getClass(); c != null; c = c.getSuperclass())
+        {
+            try
+            {
+                java.lang.reflect.Method m = c.getDeclaredMethod("actionPerformed", net.minecraft.client.gui.GuiButton.class);
+                m.setAccessible(true);
+                m.invoke(screen, b);
+                return;
+            }
+            catch (NoSuchMethodException e)
+            {
+                // try the parent class
+            }
+            catch (ReflectiveOperationException e)
+            {
+                throw new IllegalStateException("press " + b.displayString, e);
+            }
+        }
+        throw new IllegalStateException("no actionPerformed on " + screen.getClass());
+    }
+
+    /** True when the class file of `cls` (e.g. "deci/d/p") as the game loads it contains `text` (UTF-8). */
+    public static boolean classHas(String cls, String text)
+    {
+        try
+        {
+            java.io.InputStream in = DevTestUtil.class.getResourceAsStream("/" + cls + ".class");
+            if (in == null)
+            {
+                return false;
+            }
+            java.io.ByteArrayOutputStream b = new java.io.ByteArrayOutputStream();
+            byte[] buf = new byte[8192];
+            for (int n; (n = in.read(buf)) > 0; )
+            {
+                b.write(buf, 0, n);
+            }
+            in.close();
+            String bytes = new String(b.toByteArray(), "ISO-8859-1");
+            return bytes.contains(new String(text.getBytes("UTF-8"), "ISO-8859-1"));
+        }
+        catch (java.io.IOException e)
+        {
+            return false;
+        }
+    }
+
     public static void deleteRecursive(File f)
     {
         File[] kids = f.listFiles();

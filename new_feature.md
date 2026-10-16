@@ -961,6 +961,16 @@ city", chain link + wire, asphalt ramp for the street stairs, bridge damage "gra
 hole"; and the subway station "on side building instead on road". Details: docs/wasteland.md "v0.56.0",
 docs/city_engine.md "Open" (v0.56.0). The city edge gradient of v0.55.0 accepted ("i like it").
 
+### Main menu: server pages coming soon, Early access, Chernarus (DONE v0.64.1, 17 Oktober 2026)
+User: "for server status, changed it like this: Global Server, Community Server, Download, with that name 3 of them
+for the offline"; "for my supporter, change the name to Early access"; "for server that is down, replace it with
+Bukovka and Chernarus only and its say coming soon, same with player online its say coming soon instead of unknown,
+with same community to when notification appear, its say community server coming soon instead of failed to load";
+five Chernarus pictures. Official list rows from fixes/MenuServers (PatchOfficialServers), texts by PatchMenuTexts (47
+in 12 classes), Chernarus pictures and the player count line by tools/menu_assets.py. Dev test menupages RED (every
+check) then PASS 9 of 9; menu, stats, mainmenu PASS. Later: a forum on our website (roadmap UI 3), real servers (UI 4).
+Details: docs/main_menu.md section 2c.
+
 ### Main menu: links, our name and version, Continue, our corner (DONE v0.64.0, 17 Oktober 2026)
 User picked from suggestions: "Links to our site", "Replace FURY advert", "Our version shown" ("for version replace
 version code with our version code name, and for decimation replace with deciremnant"), "Continue last world"; and

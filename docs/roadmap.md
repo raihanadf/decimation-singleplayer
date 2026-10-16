@@ -131,6 +131,10 @@ docs/gun_model_spec.md); every user review goes into its lessons and casebook.
    release list, website top, coming soon cards); the Decimation logo in the website's top bar (site fc0d159, waits for
    the push). v0.64.0: Website / GitHub links, DeciRemnant and our version, Continue, our corner (docs/main_menu.md 2b).
    Suggested, not picked: Play straight to the worlds, hide the dead pages, community servers, scene captions.
+   v0.64.1 (user, 17 Oktober 2026; docs/main_menu.md 2c): the official server list shows Bukovka and Chernarus (the
+   user's Chernarus pictures behind the page on hover), both "Coming soon", Players Online "Coming soon", the Community
+   tab "Community server coming soon"; the status page's rows Global Server, Community Server, Download (Offline); "My
+   Supporter" is "Early access". Offered, not asked: toast title "Decimation", the Website status row, the red X icon.
 2. **Project website** (user, 16 Oktober 2026: "use our website later for download page or to list the community
    server"; earlier note docs/ideas.md item 20: a Vercel project page). Designed 16 Oktober 2026 (below); first ideas:
    - a project page with the download link (the GitHub releases our updater already reads; Vercel serves no jars);
@@ -154,6 +158,14 @@ docs/gun_model_spec.md); every user review goes into its lessons and casebook.
    docs page /docs/server with a side menu, every command and line from a real test server, Decimation's anticheat and
    server rules under Problems. Site commit 9f2bfcd pushed and checked live 17 Oktober 2026 ("not bad", kept; study
    famous sites first next time).
+   OUR OFFICIAL LOGO 17 Oktober 2026 (user: "we have our official logo now"): top bar logo with its white paper made
+   clear, BoehMod's logo as the footer credit (site 72cc3c7, waits for the push and the live check).
+3. **Forum on our website** (user, 17 Oktober 2026: "for my community, later we make forum on our website on it"): the
+   My Community popup's Forums line (now BoehMod's forums, ClientResources httpsWwwBoehmodCom) opens a forum on
+   deciremnant.vercel.app. Not designed yet; later.
+4. **Real servers behind the menu** (user, 17 Oktober 2026): Global Server, Community Server and Download on the status
+   page, Bukovka and Chernarus on the official list say Offline / Coming soon until they exist (fixes/MenuServers holds
+   the rows; the community list idea is UI 2). Not designed yet.
 
 ## Code and tools
 

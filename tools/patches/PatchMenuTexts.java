@@ -26,7 +26,15 @@ import org.objectweb.asm.Opcodes;
  *   deci.d.k): "Discord" becomes "Website", "Twitter" becomes "GitHub";
  * - ClientResources deci.b.c: the two addresses behind them (BoehMod's Discord and Twitter) become our website and our
  *   GitHub repository;
- * - WindowSetup deci.m.b: the window title "Minecraft - Decimation v1.21.10f" becomes MenuTexts.windowTitle().
+ * - WindowSetup deci.m.b: the window title "Minecraft - Decimation v1.21.10f" becomes MenuTexts.windowTitle();
+ * - GuiMenuServerStatus deci.i.h: the EU, US and Network rows become Global Server, Community Server and Download on
+ *   never resolving .invalid hosts, so they show Offline at once (their pinger has no timeout: a dead host took 75 s);
+ * - ListElement deci.d.p: a row that cannot be reached says "Coming soon" (gold), without the "?/?" drawn over it and
+ *   without the " - 0ms" of a ping that never happened; GuiMenuOfficialServers deci.i.i: "Official DeciRemnant Server",
+ *   the Community tab's tooltip "Coming soon"; GuiMenuBase deci.i.a: its toast "Community server coming soon";
+ * - the My Community popup deci.d.k: "My Supporter" becomes "Early access" (a click: "Early access is coming soon!"),
+ *   the Website and GitHub lines describe our pages; the profile cards (deci.i.a, deci.i.e) and the lounge title
+ *   (deci.i.k) say early access too.
  * Decimation's own mod version (deci.a.b) and the server list's version checks keep "1.21.10f".
  *
  * Reads the classes of the jar it is given and writes the patched ones; give it the ORIGINAL classes with only
@@ -37,7 +45,8 @@ import org.objectweb.asm.Opcodes;
  *   javac -cp $ASM -source 8 -target 8 -d build/patch_menutexts tools/patches/PatchMenuTexts.java
  *   java -cp $ASM:build/patch_menutexts PatchMenuTexts dist/Decimation.jar build/patch_menutexts/out
  *   (cd build/patch_menutexts/out && zip <jar> deci/i/a.class deci/i/e.class deci/i/g.class deci/i/i.class \
- *        deci/i/j.class deci/i/k.class deci/i/l.class deci/d/k.class deci/b/c.class deci/m/b.class)
+ *        deci/i/j.class deci/i/k.class deci/i/l.class deci/d/k.class deci/b/c.class deci/m/b.class \
+ *        deci/i/h.class deci/d/p.class)
  */
 public class PatchMenuTexts
 {
@@ -69,6 +78,41 @@ public class PatchMenuTexts
         Map<String, Object> window = new HashMap<String, Object>();
         window.put("Minecraft - Decimation v1.21.10f", new String[] {"windowTitle"});
         plan.put("deci/m/b", window);
+
+        // user, 17 Oktober 2026: server status rows "Global Server, Community Server, Download" offline; the official
+        // list's rows (MenuServers) and the Community tab "coming soon"; "My Supporter" becomes "Early access"
+        Map<String, Object> status = new HashMap<String, Object>();
+        status.put("EU Servers", "Global Server");
+        status.put("EU Minecraft Servers for Decimation", "Official DeciRemnant server");
+        status.put("eu.mcdecimation.net", "global.deciremnant.invalid");
+        status.put("US Servers", "Community Server");
+        status.put("US Minecraft Servers for Decimation", "Servers run by players");
+        status.put("us.mcdecimation.net", "community.deciremnant.invalid");
+        status.put("Network", "Download");
+        status.put("Official Decimation Management Server", "DeciRemnant download server");
+        status.put("network.mcdecimation.net", "download.deciremnant.invalid");
+        plan.put("deci/i/h", status);
+        Map<String, Object> row = new HashMap<String, Object>();
+        row.put("Not Reachable", "§6Coming soon");
+        row.put("?/?", "");      // drawn over the state text when a row has no player count
+        row.put(" - 0ms", "");   // a ping that never happened
+        plan.put("deci/d/p", row);
+        plan.get("deci/i/i").put("Official Decimation Server ", "Official DeciRemnant Server ");
+        plan.get("deci/i/i").put("Offline", "§6Coming soon");
+        Map<String, Object> popup = plan.get("deci/d/k");
+        popup.put("★ My Supporter", "★ Early access");
+        popup.put("Personalize your Supporter settings!", "New features before everyone else!");
+        popup.put("Join the verified Decimation Discord!", "Download, install and server guides");
+        popup.put("Catch up on the latest twitter updates!", "Source code, issues, all releases");
+        popup.put("You must be a ", "");
+        popup.put("★ Supporter ", "★ Early access ");
+        popup.put("to access this!", "is coming soon!");
+        plan.get("deci/i/a").put(" Supporter", " Early access");
+        plan.get("deci/i/a").put("Not Supporter :(", "No early access");
+        plan.get("deci/i/a").put("Failed to load Community list!", "Community server coming soon");
+        plan.get("deci/i/e").put("★Supporter", "★ Early access");
+        plan.get("deci/i/e").put("Is not a Supporter :(", "No early access");
+        plan.get("deci/i/k").put("\\⭐ Supporters Lounge", "★ Early access lounge");
 
         ZipFile jar = new ZipFile(a[0]);
         int total = 0;

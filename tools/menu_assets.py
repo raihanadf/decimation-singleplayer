@@ -16,7 +16,12 @@ scene", "just use component from decimation gui menu its self").
   with "DeciRemnant", "Download and guides" and the site's address in the Minecraft font the website uses
   (tools/menu/MinecraftStandard.otf, public domain); the title pulses as FURY's did.
 - The welcome box line in Decimation's lang file: "Welcome to Decimation v%s!" becomes "Welcome to DeciRemnant v%s!"
-  (the version is ours: PatchMenuTexts).
+  (the version is ours: PatchMenuTexts); "Players Online: Unknown" on the official server list becomes "Players Online:
+  Coming soon" (user, 17 Oktober 2026).
+- The Chernarus row of the official server list (fixes/MenuServers) fades its map's pictures in behind the page while
+  hovered, as Decimation's Bukovka and NewYork rows do (textures/gui/menu/serverbackgrounds/<map>0..7.png, one of the
+  eight at random per hover): the user's five Chernarus pictures (docs/shots/main_menu_v0.64.0/chernarus_src, 720 x
+  405), the first three twice to fill the eight slots, at Decimation's menu background size 960 x 540.
 
 Sources: the website's real screenshots (docs/shots/site_v0.62.9, dev test siteshots) and news_src. Written with `zip` into the
 three jars that carry Decimation (Decimation.jar.patched, dist/Decimation.jar, dev/libs/Decimation-base.jar); nothing
@@ -46,6 +51,10 @@ DIM, COLOUR = 0.62, 0.8  # brightness and saturation of the backgrounds: the men
 NEWS = {"news_github": "github", "news_update": "update", "news_website": "website", "news_coming": "coming"}
 NEWS_SRC = os.path.join(ROOT, "docs", "shots", "main_menu_v0.62.9", "news_src")
 NEWS_SIZE = (464, 200)
+# official server list map -> its eight picture slots, each a picture number in MAP_SRC/<map>_<n>.jpg
+MAPS = {"chernarus": [1, 2, 3, 4, 5, 1, 2, 3]}
+MAP_SRC = os.path.join(ROOT, "docs", "shots", "main_menu_v0.64.0", "chernarus_src")
+MAP_SIZE = (960, 540)
 
 
 ORIGINAL = os.path.join(ROOT, "Decimation.jar.original.bak")
@@ -80,16 +89,20 @@ def corner():
 
 
 def lang(out):
-    """Decimation's lang file with our name in the welcome box (the version there is ours through PatchMenuTexts)."""
+    """Decimation's lang file with our name in the welcome box (the version there is ours through PatchMenuTexts) and
+    the official server list's player count coming soon."""
     with zipfile.ZipFile(ORIGINAL) as z:
         text = z.read(LANG).decode("utf-8")
-    old = "menu.notification.welcome2=Welcome to Decimation v%s! Have fun!"
-    if old not in text:
-        sys.exit("the welcome line changed in Decimation's lang file")
+    for old, new in [("menu.notification.welcome2=Welcome to Decimation v%s! Have fun!",
+                      "menu.notification.welcome2=Welcome to DeciRemnant v%s! Have fun!"),
+                     ("menu.stats.playercount.unknown=Unknown", "menu.stats.playercount.unknown=Coming soon")]:
+        if old not in text:
+            sys.exit("changed in Decimation's lang file: " + old)
+        text = text.replace(old, new)
     path = os.path.join(out, LANG)
     os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, "w", encoding="utf-8", newline="") as f:
-        f.write(text.replace(old, "menu.notification.welcome2=Welcome to DeciRemnant v%s! Have fun!"))
+        f.write(text)
     return LANG
 
 
@@ -119,8 +132,15 @@ def build(shots, out):
         im = crop_ratio(im, (0.5, 0.5), NEWS_SIZE[0] / NEWS_SIZE[1]).resize(NEWS_SIZE, Image.LANCZOS)
         im.save(os.path.join(out, name + ".png"), optimize=True)
         made.append((name, "news_src/" + topic, im.size))
+    os.makedirs(os.path.join(out, "serverbackgrounds"), exist_ok=True)
+    for name, pictures in MAPS.items():
+        for slot, n in enumerate(pictures):
+            im = Image.open(os.path.join(MAP_SRC, "%s_%d.jpg" % (name, n))).convert("RGB")
+            im = crop_ratio(im, (0.5, 0.5), MAP_SIZE[0] / MAP_SIZE[1]).resize(MAP_SIZE, Image.LANCZOS)
+            im.save(os.path.join(out, "serverbackgrounds", "%s%d.png" % (name, slot)), optimize=True)
+            made.append(("serverbackgrounds/%s%d" % (name, slot), "%s_%d" % (name, n), im.size))
     for name, shot, size in made:
-        print("%-12s from %-13s %4d x %d" % (name, shot, size[0], size[1]))
+        print("%-30s from %-13s %4d x %d" % (name, shot, size[0], size[1]))
     return [n for n, _, _ in made]
 
 

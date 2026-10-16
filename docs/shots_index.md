@@ -62,6 +62,30 @@ chunks at the camera and 48 ahead, up to 120 s).
   cut at the right edge ("Ch..."). `top_820.png`, `top_960.png` (second build, fold below 960 at the time): Menu button
   instead of the links. `server_menu_open_820.png`: the server guide at 820 with the Menu open (links in a box under
   the button, inside the window).
+- `live_top_1300.png` (live site after the push of fc0d159, 1300 x 900): the red DECIMATION banner top left with
+  "DeciRemnant" beside it, the six links on the right, the hero's city towers behind.
+- `official_top_1300.png`, `official_top_390.png` (local build of site 72cc3c7): OUR official logo (red "DECIREMNANT"
+  lettering with grey barbed wire, the white paper gone: the hero shows through around the letters), no text beside it;
+  six links at 1300, the Menu button at 390. `official_footer_1300.png`, `official_footer_390.png`: BoehMod's orange
+  logo left of the credit line ("Unofficial fan project. Decimation belongs to BoehMod. ...") with GitHub on the right;
+  on phones the logo, the line and GitHub stacked.
+
+## main_menu_v0.64.0/ (the server pages coming soon, Early access, Chernarus, 17 Oktober 2026; docs/main_menu.md 2c)
+- `user_official_list.png` (the user's game, 1026 x 660, before v0.64.1): tabs Official / Community, "Players Online:
+  Unknown", four rows Bukovka EU, NewYork City EU, Bukovka US, NewYork City US, each "Official Decimation Server
+  (Official) - 0ms" and a red "Not Reachable" garbled by "?/?" drawn over it ("Not Reach?/?le"), red X icons; the
+  first row hovered with an empty gap under it; Singleplayer and Other servers below.
+- `chernarus_src/chernarus_1.jpg` .. `chernarus_5.jpg` (the user's pictures, 720 x 405, source not known): 1 a coastal
+  town with a harbour from above, 2 the harbour with cranes and an industrial yard, 3 a castle ruin on a green hill
+  with a winding road, 4 a village under a power line, 5 a village along a road with a pond. In the jar as
+  serverbackgrounds/chernarus0..7 (960 x 540; slots 5 to 7 repeat 1 to 3).
+- Dev test `menupages` (854 x 480): `menupages_community.png`: the My Community popup beside its button with
+  "★ Early access", Website, Forums, GitHub; toast top left "★ Early access is coming soon!" (title "Decimation"); the
+  profile card says "No early access". `menupages_official.png`: "Official Server List", "Players Online: Coming soon",
+  rows Bukovka and Chernarus, each "Official DeciRemnant Server (Official)" and a gold "Coming soon", no "?/?";
+  Chernarus' harbour picture behind the page (shown as a hover shows it). `menupages_status.png`: "Server/Network
+  Status": Global Server (Official DeciRemnant server), Community Server (Servers run by players), Download
+  (DeciRemnant download server) in red Offline, Website (Official BoehMod Website) green Online.
 
 ## main_menu_v0.62.9/ (Decimation's main menu, 17 Oktober 2026; docs/decimation_code/menus.md section 7)
 - `user_menu_prism.png` (the user's Prism game, window "Minecraft - Decimation v1.21.10f", 2000 x 1301): DECIMATION

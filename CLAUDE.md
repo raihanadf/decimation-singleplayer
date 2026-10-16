@@ -137,9 +137,10 @@ Knowledge index:
   (content hash names), checks; skill decimation-website. Since 17 Oktober 2026 also the server guide page
   /docs/server (section 3b: every command from a real scratchpad Forge server with the release jar) and guide pictures
   of Minecraft's own screens (dev test `guideshots`, `export_assets.py --guide`).
-- `docs/main_menu.md`: OUR main menu changes (v0.63.0): Decimation's news panels with our four items, the real scene
-  background slideshow, PatchMenuBackground, tools/menu_assets.py, dev test mainmenu; how Decimation's menu works
-  element by element: docs/decimation_code/menus.md section 7.
+- `docs/main_menu.md`: OUR main menu changes (v0.63.0 .. v0.64.1): Decimation's news panels with our four items, the
+  real scene background slideshow, links / name / version / Continue, the server pages "coming soon", Early access,
+  PatchMenuBackground / PatchMenuTexts / PatchOfficialServers, tools/menu_assets.py, dev tests mainmenu and menupages;
+  how Decimation's menu works element by element: docs/decimation_code/menus.md section 7 (server pages 7b).
 - `docs/systems_plan.md`: PLAN of every open feature together (loot, human NPCs, zombies, world and
   zones) with the shared core (world clock, pools, body entity, tier table, areas, protection
   table, group spawner) and the build order; user choices of 13 Oktober 2026.
@@ -344,8 +345,11 @@ SRG→MCP from the old root `src/` via `mcp_stable/12` CSVs; the root `src/` +
   answers net.decimation.fixes.Updater.required() (our auto update), patched from the original class
   with our compiled classes on the Javassist path;
   `PatchLootRolls.java` (2026-10-13, bug.md): IntRange.pick (deci/aB/a) inclusive, loot counts 1 .. n;
-  `PatchMenuTexts.java` (2026-10-17, docs/main_menu.md 2b, ASM on the jar's current classes): menu links, title line,
-  version and window title (net.decimation.fixes.MenuTexts);
+  `PatchMenuTexts.java` (2026-10-17, docs/main_menu.md 2b, 2c and 4b, ASM on the ORIGINAL classes plus PatchMenuStats,
+  kept as build/menutexts_rebuild/base.jar): menu links, title line, version and window title (net.decimation.fixes.
+  MenuTexts); v0.64.1: status page rows, row state "Coming soon", Early access texts, Community toast (47 texts, 12
+  classes); `PatchOfficialServers.java` (2026-10-17, Javassist): the official server list (deci/k/b.bg) comes from
+  fixes/MenuServers (our classes on the Javassist path, third argument);
   `PatchMenuBackground.java` (2026-10-17, docs/main_menu.md): RenderUtil.drawMenuBackground (deci/j/a.b) without its
   black layer, cube planet and glow sprites, its picture drawn by fixes/MenuBackground (slideshow; our classes on the
   Javassist path, third argument);
@@ -998,6 +1002,12 @@ of the last session:
   showed its own (title line, under the logo, welcome box, window title; Decimation's mod version stays 1.21.10f),
   Continue under Play (fixes/MenuContinue), our corner instead of the FURY store advert; tools/patches/
   PatchMenuTexts.java (ASM, 20 texts in 10 classes, three jars), fixes/MenuTexts; news pictures are real topic shots.
+  v0.64.1 (17 Oktober 2026, docs/main_menu.md 2c): the official list shows Bukovka and Chernarus "Coming soon" (fixes/
+  MenuServers, PatchOfficialServers; rows on *.deciremnant.invalid hosts: pings fail at once, no network), the user's
+  Chernarus pictures behind the page on hover (menu_assets.py, serverbackgrounds/chernarus0..7), Players Online and
+  the Community tab "coming soon", status rows Global Server / Community Server / Download Offline, "My Supporter" is
+  "Early access"; dev test `menupages` (run last). Check class texts by exact old strings: "Supporter" also matches
+  the field name isSupporter.
   Gun study (10 Oktober 2026): docs/gun_style_guide.md, tools/guns/study.py
   (renders / measures Decimation's guns from the jar, `attach` adds
   attachments as the game places them), dev test mode `gunview` (hip, aim

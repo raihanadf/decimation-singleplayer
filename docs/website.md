@@ -34,7 +34,7 @@ a full install guide, screenshots of what we built, what is coming, the changelo
 | Look | warm night (dark brown, clay), the Minecraft GUI font at the game's sizes, real item icons, the yellow splash text, Decimation's torn orange and black buttons; no grass strip |
 | Sharing | releases are public (CLAUDE.md and documentation.md updated: no longer "not for redistribution") |
 | Name | DeciRemnant |
-| Logo (17 Oktober 2026) | the real Decimation logo from the main menu (textures/gui/menu/banner.png) as the site's logo (user: "later you put real decimation logo from main menu to add it on website logo too", then "now put the decimation logo on website"); replaces the rule "never the Decimation logo image" (skill lesson 8); site commit fc0d159 |
+| Logo (17 Oktober 2026) | OUR official DeciRemnant logo (user: "we have our official logo now"; the user's Code_Generated_Image.png, its white paper made clear, never committed in the mod repo), no text beside it; BoehMod's own logo (boehmod_big.png) in the footer as the credit (user: "add boehmod logo on bottom website for credit logo"); site commit 72cc3c7. Before: the game's DECIMATION banner (site fc0d159), which replaced the rule "never the Decimation logo image" (skill lesson 8) |
 | Install and server (17 Oktober 2026) | install for new players only with a lined requirements table and real game screens; the server guide on its own docs page /docs/server with a side menu |
 
 ## 3. The page, top to bottom
@@ -43,12 +43,12 @@ The approved mockup is `page-full-v4.html` in `.superpowers/brainstorm/60609-179
 ignored: it holds Decimation art). Pictures of the mockups: docs/shots/website_design_v0.62/ (shots_index.md).
 
 1. **Hero**: full width screenshot (a generated city from above), darkened toward the bottom.
-   - Top bar: the DECIMATION banner of the game's main menu (public/ui/decimation-logo.webp from
-     textures/gui/menu/banner.png, 40 px high, 28 on phones; `export_assets.py --logo`) with "DeciRemnant" beside it
-     (12 px) on the left; links Features, Screenshots, Install, Server, Changelog, GitHub (since 17 Oktober 2026
-     absolute: /#features ... and /docs/server, so the same bar works on every page). Logo and six links need about
-     990 px in a row: below 1024 px the links fold into the Menu button (measured: they ran off the right edge at 760
-     to 986 px).
+   - Top bar: our official logo (public/ui/deciremnant-logo.webp, 539 x 120, 40 px high, 28 on phones;
+     `export_assets.py --logo FILE`), alt "DeciRemnant", no text beside it, on the left; links Features, Screenshots,
+     Install, Server, Changelog, GitHub (since 17 Oktober 2026 absolute: /#features ... and /docs/server, so the same
+     bar works on every page). Logo and six links need about 870 px in a row: below 900 px the links fold into the Menu
+     button (measured with the narrower logo: gap 456 px at 1300, 156 at 1000, 57 at 901; with the old banner they ran
+     off the right edge at 760 to 986 px).
    - Label "Minecraft 1.7.10 · unofficial", title "Decimation, alive again in singleplayer".
    - Splash text in yellow, turned 20 degrees, pulsing like the game's title screen, one picked at random per
      visit (click: next one): "Now with airports!", "Up to 64 districts!", "No dead servers!", "Mind the
@@ -118,9 +118,10 @@ ignored: it holds Decimation art). Pictures of the mockups: docs/shots/website_d
    - The game lags in cities: lower the prop render distance in `config/deciworldgen_props.cfg`.
    - Found a bug?: open an issue on GitHub and attach `logs/fml-client-latest.log`. Link: Report a bug (the
      public repo's issues).
-9. **Footer**: a dirt strip (our own generated texture), then "Unofficial fan project. Decimation belongs to
-   BoehMod. Not an official Minecraft product; not approved by or associated with Mojang or Microsoft." and a
-   GitHub link.
+9. **Footer**: a dirt strip (our own generated texture), then BoehMod's logo (public/ui/boehmod-logo.webp from
+   textures/gui/menu/boehmod_big.png, 26 px high) beside "Unofficial fan project. Decimation belongs to BoehMod. Not an
+   official Minecraft product; not approved by or associated with Mojang or Microsoft." and a GitHub link; on phones
+   stacked.
 
 On phones: one column everywhere, the top bar folds into a menu button, the hero is shorter, the gallery becomes
 two columns of equal shots.
@@ -216,8 +217,8 @@ Tried and rejected: Decimation's own menu palette (red tinted hero, torn black p
 | dirt strip | ours, generated (seeded noise in browns) | |
 | font | Minecraft Standard (CC PD) | |
 
-Decimation's files go into the PRIVATE site repo only. Never the Decimation logo image (would read as an official
-BoehMod page).
+Decimation's files go into the PRIVATE site repo only. The site's own logo is ours (DeciRemnant); BoehMod's logo appears
+only as the footer credit (17 Oktober 2026; the earlier rule "never the Decimation logo image" was lifted by the user).
 
 ## 5. How it works
 
@@ -292,7 +293,7 @@ BoehMod page).
   public/guide with manifest.json; the site serves them unoptimised and zooms them pixelated. Used: worldtype (install
   step 6), addserver and multiplayer (server Join).
 - Decimation's own menu was shot too (guide_menu_home, guide_menu_servers): no "session invalid" banner any more (the
-  menu says Play), but it shows the Decimation logo (never on the site, lesson 8) and the dev player's profile and kills,
+  menu says Play), but it shows the Decimation logo and the dev player's profile and kills,
   so it is not used; a crop of the buttons alone would be possible if the user wants it.
 
 ## 7. Checks before calling it done

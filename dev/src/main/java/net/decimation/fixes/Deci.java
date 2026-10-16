@@ -819,6 +819,189 @@ public final class Deci
         return out;
     }
 
+    /**
+     * One row of Decimation's official server list (ServerListEntry deci.k.a): `name` on the row, `label` in brackets
+     * on the line under it, `host`:`port` pinged for its state, `map` the key of its pictures
+     * (textures/gui/menu/serverbackgrounds/<map>0..7.png, faded in behind the page while the row is hovered).
+     */
+    @cpw.mods.fml.relauncher.SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)
+    public static Object officialServer(String id, String name, String host, int port, String label, String map)
+    {
+        return new deci.k.a(id, name, host, port, label, map).y(map);
+    }
+
+    /**
+     * The rows of the official server list page (GuiMenuOfficialServers deci.i.i, its ScrollPanel iW, rows ListElement
+     * deci.d.p) as "name | state | map", state pinging, offline (drawn "Coming soon") or online; for dev tests.
+     */
+    @cpw.mods.fml.relauncher.SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)
+    public static java.util.List<String> officialRows(net.minecraft.client.gui.GuiScreen screen)
+    {
+        java.util.List<String> out = new java.util.ArrayList<String>();
+        for (deci.d.p row : officialRowList(screen))
+        {
+            try
+            {
+                java.lang.reflect.Field f = deci.d.p.class.getDeclaredField("fF"); // private final ServerListEntry
+                java.lang.reflect.Method pinging = deci.d.p.class.getDeclaredMethod("af"); // private isPinging
+                java.lang.reflect.Method offline = deci.d.p.class.getDeclaredMethod("ag"); // private isOffline
+                f.setAccessible(true);
+                pinging.setAccessible(true);
+                offline.setAccessible(true);
+                String state = (Boolean) pinging.invoke(row) ? "pinging" : (Boolean) offline.invoke(row) ? "offline" : "online";
+                out.add(((deci.k.a) f.get(row)).getMotd() + " | " + state + " | " + (row.fI ? row.fJ : ""));
+            }
+            catch (ReflectiveOperationException e)
+            {
+                out.add("unreadable: " + e);
+            }
+        }
+        return out;
+    }
+
+    /** Shows row `index`'s picture `picture` behind the official server list as a hover does (ListElement fH, fK). */
+    @cpw.mods.fml.relauncher.SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)
+    public static void showRowPicture(net.minecraft.client.gui.GuiScreen screen, int index, int picture)
+    {
+        java.util.List<deci.d.p> rows = officialRowList(screen);
+        if (index < rows.size())
+        {
+            rows.get(index).fH = 1.0f;
+            rows.get(index).fK = picture;
+        }
+    }
+
+    @cpw.mods.fml.relauncher.SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)
+    private static java.util.List<deci.d.p> officialRowList(net.minecraft.client.gui.GuiScreen screen)
+    {
+        java.util.List<deci.d.p> rows = new java.util.ArrayList<deci.d.p>();
+        if (!(screen instanceof deci.i.i))
+        {
+            return rows;
+        }
+        try
+        {
+            java.lang.reflect.Field f = deci.i.i.class.getDeclaredField("iW"); // private final ScrollPanel serverListPanel
+            f.setAccessible(true);
+            for (Object o : ((deci.d.l) f.get(screen)).fl)
+            {
+                if (o instanceof deci.d.p)
+                {
+                    rows.add((deci.d.p) o);
+                }
+            }
+        }
+        catch (ReflectiveOperationException e)
+        {
+            // no rows
+        }
+        return rows;
+    }
+
+    /**
+     * The rows of the server status page (GuiMenuServerStatus deci.i.h: iS, iT, iU, iV, each a ServerPinger deci.l.a)
+     * as "name | description | status" without colour codes; for dev tests.
+     */
+    @cpw.mods.fml.relauncher.SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)
+    public static java.util.List<String> statusRows(net.minecraft.client.gui.GuiScreen screen)
+    {
+        java.util.List<String> out = new java.util.ArrayList<String>();
+        if (screen instanceof deci.i.h)
+        {
+            deci.i.h page = (deci.i.h) screen;
+            for (deci.l.a row : new deci.l.a[] {page.iS, page.iT, page.iU, page.iV})
+            {
+                out.add(row.name + " | " + row.description + " | "
+                        + net.minecraft.util.EnumChatFormatting.getTextWithoutFormattingCodes(row.getStatus()));
+            }
+        }
+        return out;
+    }
+
+    /** Every toast notification on screen or waiting (ToastNotification deci.b.b: current S, queue R, lines W), oldest first. */
+    @cpw.mods.fml.relauncher.SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)
+    public static java.util.List<String> toasts()
+    {
+        java.util.List<deci.b.b> all = new java.util.ArrayList<deci.b.b>();
+        if (deci.b.b.S != null)
+        {
+            all.add(deci.b.b.S);
+        }
+        all.addAll(deci.b.b.R);
+        java.util.List<String> out = new java.util.ArrayList<String>();
+        for (deci.b.b t : all)
+        {
+            StringBuilder s = new StringBuilder();
+            for (String line : t.W)
+            {
+                if (line != null && !line.isEmpty())
+                {
+                    s.append(s.length() == 0 ? "" : " ").append(line.trim());
+                }
+            }
+            out.add(net.minecraft.util.EnumChatFormatting.getTextWithoutFormattingCodes(s.toString()));
+        }
+        return out;
+    }
+
+    /** Title and line of every entry of a Decimation popup menu (DeciSubScreen deci.d.j: fa, fb), e.g. My Community. */
+    @cpw.mods.fml.relauncher.SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)
+    public static java.util.List<String> popupLines(net.minecraft.client.gui.GuiScreen screen)
+    {
+        java.util.List<String> out = new java.util.ArrayList<String>();
+        if (!(screen instanceof deci.d.j))
+        {
+            return out;
+        }
+        try
+        {
+            java.lang.reflect.Field titles = deci.d.j.class.getDeclaredField("fa");
+            java.lang.reflect.Field lines = deci.d.j.class.getDeclaredField("fb");
+            titles.setAccessible(true);
+            lines.setAccessible(true);
+            java.util.List<?> t = (java.util.List<?>) titles.get(screen);
+            java.util.List<?> l = (java.util.List<?>) lines.get(screen);
+            for (int i = 0; i < t.size(); i++)
+            {
+                out.add(net.minecraft.util.EnumChatFormatting.getTextWithoutFormattingCodes(String.valueOf(t.get(i))) + " | "
+                        + (i < l.size() ? l.get(i) : ""));
+            }
+        }
+        catch (ReflectiveOperationException e)
+        {
+            out.add("unreadable: " + e);
+        }
+        return out;
+    }
+
+    /** Clicks entry `n` (1 = the first) of a Decimation popup menu (DeciSubScreen.onLineClicked, deci.d.j.g). */
+    @cpw.mods.fml.relauncher.SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)
+    public static void clickPopupLine(net.minecraft.client.gui.GuiScreen screen, int n)
+    {
+        ((deci.d.j) screen).g(n);
+    }
+
+    /** The tooltip of one of Decimation's menu buttons (DeciMenuButton deci.d.f, private eN) without colour codes. */
+    @cpw.mods.fml.relauncher.SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)
+    public static String menuTooltip(net.minecraft.client.gui.GuiButton b)
+    {
+        if (!(b instanceof deci.d.f))
+        {
+            return "";
+        }
+        try
+        {
+            java.lang.reflect.Field f = deci.d.f.class.getDeclaredField("eN");
+            f.setAccessible(true);
+            Object tip = f.get(b);
+            return tip == null ? "" : net.minecraft.util.EnumChatFormatting.getTextWithoutFormattingCodes(tip.toString());
+        }
+        catch (ReflectiveOperationException e)
+        {
+            return "unreadable: " + e;
+        }
+    }
+
     /** The totals line at the bottom of the main menu (DeciConstants.globalHumanDeaths / globalZombieDeaths). */
     public static void setStatTotals(long humans, long infected)
     {
