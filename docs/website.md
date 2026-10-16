@@ -244,7 +244,7 @@ BoehMod page).
 
 - New release: nothing to do (the server picks it up within 10 minutes).
 - A feature ships or a plan changes: edit `content/` (features, coming soon) and push.
-- New version with big visual changes: re-run `siteshots`, copy, push.
+- New version with big visual changes: re-run `siteshots`, then `python3 tools/site/export_assets.py ../deciremnant --shots dev/run/client/screenshots`, push. Pictures are named by content hash (public/shots/manifest.json), so the new ones get new addresses; the image optimiser caches a picture 4 hours (max-age 14400), which would otherwise show old pictures to returning visitors.
 - Install steps change (Forge, launcher): edit `content/install.ts`.
 
 ## 9. Not verified yet (and what was checked, 16 Oktober 2026)

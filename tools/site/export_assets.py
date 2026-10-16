@@ -5,10 +5,15 @@
 
 Item icons and the two torn menu textures come from Decimation.jar.original.bak, the MAC-10 icon is ours, the
 dirt strip is generated (seeded noise). Screenshots become JPEG (at most 1920 wide) plus og.jpg (1200 x 630 from
-the hero). Everything lands in SITE_DIR/public; nothing here is committed to this public repo.
+the hero). Every picture is named by its content hash (city-1a2b3c4d.jpg; public/shots/manifest.json maps the subject
+to the file), so a new picture gets a new address and no browser or image cache shows an old one (the optimiser
+answers with max-age 14400). Everything lands in SITE_DIR/public; nothing here is committed to this public repo.
 """
 import argparse
+import glob
+import hashlib
 import io
+import json
 import os
 import random
 import sys
@@ -64,17 +69,27 @@ def dirt(path):
     im.save(path)
 
 
-def shot(src, crop, dst):
+def hashed(im, folder, name):
+    """Saves im as JPEG named name-<first 8 of its sha1>.jpg in folder; returns the file name."""
+    buf = io.BytesIO()
+    im.save(buf, "JPEG", quality=85)
+    data = buf.getvalue()
+    fname = "%s-%s.jpg" % (name, hashlib.sha1(data).hexdigest()[:8])
+    with open(os.path.join(folder, fname), "wb") as f:
+        f.write(data)
+    return fname
+
+
+def shot(src, crop):
     im = Image.open(src).convert("RGB")
     if crop:
         im = im.crop(crop)
     if im.width > 1920:
         im = im.resize((1920, round(im.height * 1920 / im.width)), Image.LANCZOS)
-    im.save(dst, quality=85)
     return im
 
 
-def og(hero, dst):
+def og(hero):
     w, h = hero.size
     target = 1200 / 630
     if w / h > target:
@@ -83,7 +98,7 @@ def og(hero, dst):
     else:
         ch = round(w / target)
         box = (0, (h - ch) // 2, w, (h - ch) // 2 + ch)
-    hero.crop(box).resize((1200, 630), Image.LANCZOS).save(dst, quality=85)
+    return hero.crop(box).resize((1200, 630), Image.LANCZOS)
 
 
 def main():
@@ -101,6 +116,11 @@ def main():
         Image.open(io.BytesIO(z.read(entry))).save(os.path.join(pub, "ui", name + ".png"))
     Image.open(MAC10).save(os.path.join(pub, "icons", "mac10.png"))
     dirt(os.path.join(pub, "ui", "dirt.png"))
+    shots_dir = os.path.join(pub, "shots")
+    for old in glob.glob(os.path.join(shots_dir, "*.jpg")) + [os.path.join(pub, "og.jpg")]:
+        if os.path.isfile(old):
+            os.remove(old)  # older names (hashes) would pile up
+    manifest = {}
     missing = []
     hero = None
     for s in SUBJECTS:
@@ -112,12 +132,16 @@ def main():
         if not os.path.isfile(src):
             missing.append(src)
             continue
-        im = shot(src, crop, os.path.join(pub, "shots", s + ".jpg"))
-        print("shot %-8s %4d x %-4d from %s" % (s, im.width, im.height, os.path.relpath(src, ROOT)))
+        im = shot(src, crop)
+        manifest[s] = hashed(im, shots_dir, s)
+        print("shot %-8s %4d x %-4d from %s -> %s" % (s, im.width, im.height, os.path.relpath(src, ROOT), manifest[s]))
         if s == "hero":
             hero = im
     if hero is not None:
-        og(hero, os.path.join(pub, "og.jpg"))
+        manifest["og"] = hashed(og(hero), shots_dir, "og")
+    with open(os.path.join(shots_dir, "manifest.json"), "w") as f:
+        json.dump(manifest, f, indent=2, sort_keys=True)
+        f.write("\n")
     print("icons %d, ui 3, shots %d" % (len(ICONS) + 1, len(SUBJECTS) - len(missing)))
     if missing:
         print("MISSING:\n  " + "\n  ".join(missing))
