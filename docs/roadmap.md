@@ -136,6 +136,8 @@ docs/gun_model_spec.md); every user review goes into its lessons and casebook.
    the user: the private GitHub repo, Vercel import, a GITHUB_TOKEN there, then the live check (task 14).
    v1 LIVE 16 Oktober 2026: https://deciremnant.vercel.app/ (checked live). Still open: the community server list
    (spec section 11) and the user's verdict on the live site.
+   SEO 16 Oktober 2026 (docs/website.md 9b): keywords decimation and minecraft, robots.txt, sitemap.xml, canonical,
+   JSON-LD, own icons; site commit 546f637 waits for the user's push and a live check; then Search Console (user).
 
 ## Code and tools
 
