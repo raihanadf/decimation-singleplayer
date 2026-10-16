@@ -961,6 +961,13 @@ city", chain link + wire, asphalt ramp for the street stairs, bridge damage "gra
 hole"; and the subway station "on side building instead on road". Details: docs/wasteland.md "v0.56.0",
 docs/city_engine.md "Open" (v0.56.0). The city edge gradient of v0.55.0 accepted ("i like it").
 
+### Main menu: links, our name and version, Continue, our corner (DONE v0.64.0, 17 Oktober 2026)
+User picked from suggestions: "Links to our site", "Replace FURY advert", "Our version shown" ("for version replace
+version code with our version code name, and for decimation replace with deciremnant"), "Continue last world"; and
+"replace the picture of news panel to real topic image". Website / GitHub links, DeciRemnant and our version in the
+title line, under the logo, the welcome box and the window title, Continue under Play, our corner art, topic pictures.
+Dev test mainmenu RED then PASS; menu, stats PASS. Details: docs/main_menu.md section 2b.
+
 ### Main menu: our news in Decimation's news panels, real scene slideshow (DONE v0.63.0, 17 Oktober 2026)
 User: "lets make the news panel now. 1. github repo, 2. update release, 3. our website release, 4. Coming soon
 feature"; "replace with real scene with your suggestion animation"; "just use component from decimation gui menu its

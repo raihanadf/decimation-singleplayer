@@ -11,6 +11,13 @@ scene", "just use component from decimation gui menu its self").
   release, the website's top and the website's coming soon cards, taken with agent-browser at 2.32 : 1 (the panel's
   picture box is 116 x 50) into docs/shots/main_menu_v0.62.9/news_src/ (docs/main_menu.md).
 
+- The FURY advert in the bottom right corner (textures/gui/menu/donor_rank_0.png, and donor_rank_1.png that pulses over
+  it; BoehMod's closed store) becomes ours (user: "Replace FURY advert"): Decimation's own torn black panel (buttonbg)
+  with "DeciRemnant", "Download and guides" and the site's address in the Minecraft font the website uses
+  (tools/menu/MinecraftStandard.otf, public domain); the title pulses as FURY's did.
+- The welcome box line in Decimation's lang file: "Welcome to Decimation v%s!" becomes "Welcome to DeciRemnant v%s!"
+  (the version is ours: PatchMenuTexts).
+
 Sources: the website's real screenshots (docs/shots/site_v0.62.9, dev test siteshots) and news_src. Written with `zip` into the
 three jars that carry Decimation (Decimation.jar.patched, dist/Decimation.jar, dev/libs/Decimation-base.jar); nothing
 here is committed (Decimation art). Run it again after new site shots and before a release (tools/onejar.py takes
@@ -19,12 +26,14 @@ dist/Decimation.jar).
     python3 tools/menu_assets.py [--shots DIR] [--only-dir OUT]   # --only-dir: write the PNGs there, touch no jar
 """
 import argparse
+import io
 import os
 import shutil
 import subprocess
 import sys
+import zipfile
 
-from PIL import Image, ImageEnhance
+from PIL import Image, ImageDraw, ImageEnhance, ImageFont
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 JARS = ["Decimation.jar.patched", "dist/Decimation.jar", "dev/libs/Decimation-base.jar"]
@@ -37,6 +46,51 @@ DIM, COLOUR = 0.62, 0.8  # brightness and saturation of the backgrounds: the men
 NEWS = {"news_github": "github", "news_update": "update", "news_website": "website", "news_coming": "coming"}
 NEWS_SRC = os.path.join(ROOT, "docs", "shots", "main_menu_v0.62.9", "news_src")
 NEWS_SIZE = (464, 200)
+
+
+ORIGINAL = os.path.join(ROOT, "Decimation.jar.original.bak")
+FONT = os.path.join(ROOT, "tools", "menu", "MinecraftStandard.otf")
+LANG = "assets/deci/lang/en_US.lang"
+
+
+def corner():
+    """Our picture for the FURY corner (drawn 150 x 150 at the bottom right): donor_rank_0 the panel and the words,
+    donor_rank_1 a lighter title the menu pulses over it."""
+    with zipfile.ZipFile(ORIGINAL) as z:
+        panel = Image.open(io.BytesIO(z.read(MENU + "buttonbg.png"))).convert("RGBA")
+    base = Image.new("RGBA", (800, 800), (0, 0, 0, 0))
+    glow = Image.new("RGBA", (800, 800), (0, 0, 0, 0))
+    panel = panel.resize((620, 270), Image.LANCZOS)
+    base.alpha_composite(panel, (180, 520))
+    lines = [("DeciRemnant", 66, (255, 85, 85), 575), ("Download and guides", 30, (240, 236, 228), 668),
+             ("deciremnant.vercel.app", 26, (229, 148, 104), 718)]
+    for text, size, colour, y in lines:
+        font = ImageFont.truetype(FONT, size)
+        while font.getbbox(text)[2] > 540:  # inside the panel with a margin
+            size -= 2
+            font = ImageFont.truetype(FONT, size)
+        w = font.getbbox(text)[2]
+        x = 180 + (620 - w) // 2
+        d = ImageDraw.Draw(base)
+        d.text((x + size // 10, y + size // 10), text, font=font, fill=(25, 8, 8, 230))  # the game's text shadow
+        d.text((x, y), text, font=font, fill=colour + (255,))
+        if text == "DeciRemnant":
+            ImageDraw.Draw(glow).text((x, y), text, font=font, fill=(255, 210, 200, 255))
+    return {"donor_rank_0": base, "donor_rank_1": glow}
+
+
+def lang(out):
+    """Decimation's lang file with our name in the welcome box (the version there is ours through PatchMenuTexts)."""
+    with zipfile.ZipFile(ORIGINAL) as z:
+        text = z.read(LANG).decode("utf-8")
+    old = "menu.notification.welcome2=Welcome to Decimation v%s! Have fun!"
+    if old not in text:
+        sys.exit("the welcome line changed in Decimation's lang file")
+    path = os.path.join(out, LANG)
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, "w", encoding="utf-8", newline="") as f:
+        f.write(text.replace(old, "menu.notification.welcome2=Welcome to DeciRemnant v%s! Have fun!"))
+    return LANG
 
 
 def crop_ratio(im, centre, ratio):
@@ -57,6 +111,9 @@ def build(shots, out):
         im = ImageEnhance.Brightness(im).enhance(DIM)
         im.save(os.path.join(out, slot + ".png"), optimize=True)
         made.append((slot, shot, im.size))
+    for name, im in corner().items():
+        im.save(os.path.join(out, name + ".png"), optimize=True)
+        made.append((name, "buttonbg + text", im.size))
     for name, topic in NEWS.items():
         im = Image.open(os.path.join(NEWS_SRC, topic + ".png")).convert("RGB")
         im = crop_ratio(im, (0.5, 0.5), NEWS_SIZE[0] / NEWS_SIZE[1]).resize(NEWS_SIZE, Image.LANCZOS)
@@ -83,7 +140,7 @@ def main():
     stage = os.path.join(ROOT, "build", "menu_assets")
     shutil.rmtree(stage, ignore_errors=True)
     names = build(a.shots, os.path.join(stage, MENU))
-    files = [MENU + n + ".png" for n in names]
+    files = [MENU + n + ".png" for n in names] + [lang(stage)]
     for jar in JARS:
         path = os.path.join(ROOT, jar)
         before = entries(path)

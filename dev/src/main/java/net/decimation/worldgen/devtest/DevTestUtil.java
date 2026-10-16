@@ -47,6 +47,28 @@ public final class DevTestUtil
         DevTestResults.shot(mode, name);
     }
 
+    /** The buttons of a screen (GuiScreen.buttonList is protected). */
+    @SuppressWarnings("unchecked")
+    public static java.util.List<net.minecraft.client.gui.GuiButton> buttons(net.minecraft.client.gui.GuiScreen screen)
+    {
+        try
+        {
+            java.lang.reflect.Field f = net.minecraft.client.gui.GuiScreen.class.getDeclaredField("buttonList");
+            f.setAccessible(true);
+            return (java.util.List<net.minecraft.client.gui.GuiButton>) f.get(screen);
+        }
+        catch (ReflectiveOperationException e)
+        {
+            throw new IllegalStateException("buttonList", e);
+        }
+    }
+
+    /** A button's label without colour codes. */
+    public static String label(net.minecraft.client.gui.GuiButton b)
+    {
+        return b.displayString == null ? "" : net.minecraft.util.EnumChatFormatting.getTextWithoutFormattingCodes(b.displayString).trim();
+    }
+
     public static void deleteRecursive(File f)
     {
         File[] kids = f.listFiles();

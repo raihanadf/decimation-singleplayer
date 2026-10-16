@@ -171,6 +171,8 @@ public class DecimationWorldGen
             net.decimation.fixes.MenuNews news = new net.decimation.fixes.MenuNews();
             net.minecraftforge.common.MinecraftForge.EVENT_BUS.register(news);
             cpw.mods.fml.common.FMLCommonHandler.instance().bus().register(news);
+            // "Continue" under Play: the last played world in one click
+            net.minecraftforge.common.MinecraftForge.EVENT_BUS.register(new net.decimation.fixes.MenuContinue());
         }
         cpw.mods.fml.common.FMLCommonHandler.instance().bus().register(new net.decimation.fixes.WorldClock());
         net.minecraftforge.common.MinecraftForge.EVENT_BUS.register(new Areas());

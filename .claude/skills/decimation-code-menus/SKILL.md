@@ -17,6 +17,7 @@ Facts and the traced menu and HUD: docs/decimation_code/menus.md.
 | loot and gear screen | PlayerInventoryScreen (deci/g/g), GUI id GUI_LOOT |
 | stats shown | fixes/LocalStats, PatchMenuStats |
 | our main menu news and background slideshow | fixes/MenuNews, fixes/MenuBackground, PatchMenuBackground, tools/menu_assets.py (docs/main_menu.md) |
+| our links, name, version, Continue | PatchMenuTexts, fixes/MenuTexts, fixes/MenuContinue (docs/main_menu.md 2b) |
 
 ## Rules
 

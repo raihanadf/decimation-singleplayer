@@ -767,6 +767,20 @@ public final class Deci
         deci.j.a.a(x, y, texture, w, h, zoom, alpha);
     }
 
+    /** One of Decimation's own menu buttons (DeciMenuButton deci.d.f): black, the label, `tooltip` on hover. */
+    @cpw.mods.fml.relauncher.SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)
+    public static net.minecraft.client.gui.GuiButton menuButton(int id, int x, int y, int w, int h, String label, String tooltip)
+    {
+        return new deci.d.f(id, x, y, w, h, label, tooltip, java.awt.Color.black);
+    }
+
+    /** The addresses of the menu's two red text links top right (ClientResources deci.b.c.aZ and bb, once Discord and Twitter). */
+    @cpw.mods.fml.relauncher.SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)
+    public static String[] menuLinks()
+    {
+        return new String[] {String.valueOf(deci.b.c.aZ), String.valueOf(deci.b.c.bb)};
+    }
+
     /** Changes the small line under a news panel's title (addNewsPanel). */
     @cpw.mods.fml.relauncher.SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)
     public static void newsLine(Object panel, String line)

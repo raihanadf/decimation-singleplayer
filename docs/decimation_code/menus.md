@@ -54,6 +54,8 @@ Traced `deci.i,net.decimation.mod.common.utils.h,deci.g.j,net.decimation.fixes.L
 | turf banners for our places | worldgen/PlaceNames, PatchTurfNames (clans.md) |
 | our news in the main menu's news panels (GitHub, Updates, Website, Coming soon) | fixes/MenuNews, `Deci.addNewsPanel` (docs/main_menu.md) |
 | real scenes as the menu background, a new one every 7 s | fixes/MenuBackground, tools/patches/PatchMenuBackground.java, tools/menu_assets.py |
+| our links, name and version in the menu, the window title | tools/patches/PatchMenuTexts.java, fixes/MenuTexts |
+| Continue (the last world) under Play | fixes/MenuContinue, `Deci.menuButton` |
 
 ## 6. Checks
 

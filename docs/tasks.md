@@ -19,6 +19,7 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [ ] main menu: the user's look in game (needs a release with v0.63.0)
 - [~] Decimation logo (menu banner.png) in the website's top bar: site fc0d159 local, waits for the push and live check
 - [x] main menu news panels: real topic pictures (GitHub repo, release list, website top, coming soon cards) in the jars
+- [x] main menu v0.64.0: Website / GitHub links, DeciRemnant and our version, Continue, our corner (dev client)
 - [ ] "Entity is already tracked" at every dev world load (bug.md): find which entity
 - [ ] survivor partner idea: design talk (docs/ideas.md item 21)
 - [x] backend thread leak: PatchBackend v2, no BoehMod connection (v0.62.8)

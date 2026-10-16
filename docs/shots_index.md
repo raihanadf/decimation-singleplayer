@@ -88,6 +88,12 @@ chunks at the camera and 48 ahead, up to 120 s).
   button, About text) and the release list with 0.59.0 Pre-release; `news_src/website.png` (1160 x 500): the site's top
   with the Decimation logo; `news_src/coming.png` (928 x 400): the coming soon title and its six cards.
 - `news_pictures_v2.png`: the four news pictures as they are in the dev jar (464 x 200 each), read 17 Oktober 2026.
+- `mainmenu_v064_home.png` (v0.64.0 work, 1440 x 810): "DeciRemnant: Zombie Apocalypse / Main Menu", v0.63.0 under the
+  DECIMATION logo, red Website and GitHub top right; Play, then Continue, My Community, Server Status, Settings, Exit
+  Game one row lower; the four news panels with topic pictures (GitHub page, release list with 0.59.0, website top,
+  coming soon cards; Updates line "Up to date: 0.63.0"); background a city refuge among towers; bottom right our
+  corner: "DeciRemnant", "Download and guides", "deciremnant.vercel.app" instead of FURY. `mainmenu_v064_next.png`: the
+  next background picture.
 
 ## website_guide_v0.62.9/ (install guide pictures and the server guide page, 17 Oktober 2026; docs/website.md 3b, 6)
 

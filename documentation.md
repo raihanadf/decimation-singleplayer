@@ -310,7 +310,10 @@ Decimation's own main menu, with our content in its own parts: the four news pan
 GitHub repository, the release check (Up to date / a new version is out; a click opens the release), our website and
 its coming soon list; a click opens the page in the browser. The background shows six real scenes of our world, a new
 one every 7 seconds with a short fade, moving with Decimation's own slow sway, zoom and mouse parallax; the dark lava
-cube planet is gone. Details: docs/main_menu.md.
+cube planet is gone. Since v0.64 the menu says DeciRemnant and our version (title line, under the logo, the welcome
+box, the window title), the red links top right open our website and GitHub, a Continue button under Play opens the
+world you played last, and the bottom right corner shows DeciRemnant instead of BoehMod's store advert. Details:
+docs/main_menu.md.
 
 ## Bug and feature tracking
 

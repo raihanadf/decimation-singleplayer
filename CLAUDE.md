@@ -344,6 +344,8 @@ SRG→MCP from the old root `src/` via `mcp_stable/12` CSVs; the root `src/` +
   answers net.decimation.fixes.Updater.required() (our auto update), patched from the original class
   with our compiled classes on the Javassist path;
   `PatchLootRolls.java` (2026-10-13, bug.md): IntRange.pick (deci/aB/a) inclusive, loot counts 1 .. n;
+  `PatchMenuTexts.java` (2026-10-17, docs/main_menu.md 2b, ASM on the jar's current classes): menu links, title line,
+  version and window title (net.decimation.fixes.MenuTexts);
   `PatchMenuBackground.java` (2026-10-17, docs/main_menu.md): RenderUtil.drawMenuBackground (deci/j/a.b) without its
   black layer, cube planet and glow sprites, its picture drawn by fixes/MenuBackground (slideshow; our classes on the
   Javassist path, third argument);
@@ -992,6 +994,10 @@ of the last session:
   menu textures in the three jars by tools/menu_assets.py (never committed). Dev test `mainmenu`; run it LAST in a
   live game (it leaves the world: tests waiting for a player then hang). Dev test `guideshots`: Minecraft screens
   for the website's guides (docs/website.md 3b, 6).
+  v0.64.0 (17 Oktober 2026, docs/main_menu.md 2b): menu links Website / GitHub, our name and version where Decimation
+  showed its own (title line, under the logo, welcome box, window title; Decimation's mod version stays 1.21.10f),
+  Continue under Play (fixes/MenuContinue), our corner instead of the FURY store advert; tools/patches/
+  PatchMenuTexts.java (ASM, 20 texts in 10 classes, three jars), fixes/MenuTexts; news pictures are real topic shots.
   Gun study (10 Oktober 2026): docs/gun_style_guide.md, tools/guns/study.py
   (renders / measures Decimation's guns from the jar, `attach` adds
   attachments as the game places them), dev test mode `gunview` (hip, aim

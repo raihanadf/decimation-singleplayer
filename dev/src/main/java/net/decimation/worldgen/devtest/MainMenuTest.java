@@ -67,6 +67,24 @@ public class MainMenuTest extends DevTestMode
                     order = panels.get(i).startsWith(TITLES[i] + " | ");
                 }
                 DevTestResults.check(name(), "news panels", titles, order, "GitHub, Updates, Website, Coming soon, each with a line and an https address");
+                // user, 17 Oktober 2026: links to our site, our version and name, Continue last world
+                String website = "", github = "", cont = "";
+                for (net.minecraft.client.gui.GuiButton b : DevTestUtil.buttons(mc.currentScreen))
+                {
+                    String l = DevTestUtil.label(b);
+                    website = b.id == 12 ? l : website;
+                    github = b.id == 15 ? l : github;
+                    cont = l.startsWith("Continue") ? l : cont;
+                }
+                String[] links = Deci.menuLinks();
+                DevTestResults.check(name(), "top right links", website + " " + links[0] + ", " + github + " " + links[1],
+                                     "Website".equals(website) && "GitHub".equals(github)
+                                     && links[0].equals(net.decimation.fixes.MenuNews.SITE) && links[1].equals(net.decimation.fixes.MenuNews.REPO),
+                                     "Website to the site, GitHub to the repo");
+                String title = org.lwjgl.opengl.Display.getTitle();
+                DevTestResults.check(name(), "window title", title, title.startsWith("DeciRemnant v") && title.endsWith("(Minecraft 1.7.10)"),
+                                     "DeciRemnant v<our version> (Minecraft 1.7.10)");
+                DevTestResults.check(name(), "continue button", cont, !cont.isEmpty(), "a Continue button (saves exist in the dev run folder)");
                 step = 2;
                 ticks = 0;
                 return true;
