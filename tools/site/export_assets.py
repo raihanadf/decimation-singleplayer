@@ -3,7 +3,7 @@
     python3 tools/site/export_assets.py SITE_DIR                 # stand in screenshots from docs/shots
     python3 tools/site/export_assets.py SITE_DIR --shots DIR     # siteshots output: DIR/site_<name>.png
     python3 tools/site/export_assets.py SITE_DIR --guide DIR     # ONLY the guide pictures: DIR/guide_<name>.png
-    python3 tools/site/export_assets.py SITE_DIR --logo          # ONLY the Decimation logo (the main menu's banner)
+    python3 tools/site/export_assets.py SITE_DIR --logo FILE     # ONLY the logos: ours from FILE, BoehMod's from the jar
 
 Item icons and the two torn menu textures come from Decimation.jar.original.bak, the MAC-10 icon is ours, the
 dirt strip is generated (seeded noise). Screenshots become JPEG (at most 1920 wide) plus og.jpg (1200 x 630 from
@@ -25,7 +25,7 @@ import random
 import sys
 import zipfile
 
-from PIL import Image
+from PIL import Image, ImageFilter
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 JAR = os.path.join(ROOT, "Decimation.jar.original.bak")
@@ -61,7 +61,7 @@ STAND_INS = {
     "airport": ("airport_v0.62.3/airport_helipad.png", None),
     "gun": ("mac10_v0.37/gunview_mac10.png", None),
 }
-LOGO = "assets/deci/textures/gui/menu/banner.png"  # the DECIMATION banner of the main menu (user, 17 Oktober 2026)
+BOEHMOD_LOGO = "assets/deci/textures/gui/menu/boehmod_big.png"  # BoehMod's logo of the main menu: the footer credit
 GUI_BOX = (225, 20, 1215, 800)  # the buttons and fields of a GUI scale 3 screen in a 1440 x 810 window
 GUIDE = {"worldtype": GUI_BOX, "multiplayer": GUI_BOX, "addserver": GUI_BOX}
 
@@ -111,13 +111,45 @@ def guide(site, src_dir):
         f.write("\n")
 
 
-def logo(site):
-    """The main menu's DECIMATION banner as the site logo: public/ui/decimation-logo.webp (lossless, alpha kept)."""
-    out = os.path.join(site, "public", "ui", "decimation-logo.webp")
+def clear_paper(im):
+    """Our logo came on white paper (user, 17 Oktober 2026: "idk you can put invicible background or not"): near white
+    pixels (all channels 232 and up) become clear, and only grey edge pixels within 2 px of them get a partial alpha
+    (white taken out of their colour), so the coral letters and the barbed wire keep their full colour."""
+    im = im.convert("RGB")
+    w, h = im.size
+    px = list(im.getdata())
+    paper = Image.new("L", (w, h))
+    paper.putdata([255 if min(p) >= 232 else 0 for p in px])
+    band = list(paper.filter(ImageFilter.MaxFilter(5)).getdata())
+    flat = list(paper.getdata())
+    out = []
+    for i, (r, g, b) in enumerate(px):
+        if flat[i]:
+            out.append((0, 0, 0, 0))
+        elif band[i] and max(r, g, b) - min(r, g, b) < 45:
+            a = max(0.05, min(1.0, max(255 - r, 255 - g, 255 - b) / 255.0 / 0.85))
+            out.append(tuple(int(max(0, min(255, round((c - 255 * (1 - a)) / a)))) for c in (r, g, b)) + (int(round(a * 255)),))
+        else:
+            out.append((r, g, b, 255))
+    clear = Image.new("RGBA", (w, h))
+    clear.putdata(out)
+    return clear.crop(clear.getbbox())
+
+
+def logo(site, ours):
+    """The site's logos: OUR official logo from `ours` (paper cleared, 120 px high: sharp at 40 px on 3x screens) as
+    public/ui/deciremnant-logo.webp (lossy WebP 90, alpha exact), and BoehMod's logo from the jar for the footer credit as
+    public/ui/boehmod-logo.webp (lossless WebP)."""
+    ui = os.path.join(site, "public", "ui")
+    mark = clear_paper(Image.open(ours))
+    mark = mark.resize((round(mark.width * 120 / mark.height), 120), Image.LANCZOS)
+    mark.save(os.path.join(ui, "deciremnant-logo.webp"), "WEBP", quality=90, alpha_quality=100, method=6)  # a drawing: lossy is fine
     with zipfile.ZipFile(JAR) as z:
-        im = Image.open(io.BytesIO(z.read(LOGO))).convert("RGBA")
-    im.save(out, "WEBP", lossless=True)
-    print("logo %d x %d -> %s (%d bytes)" % (im.width, im.height, os.path.relpath(out, site), os.path.getsize(out)))
+        boeh = Image.open(io.BytesIO(z.read(BOEHMOD_LOGO))).convert("RGBA")
+    boeh = boeh.resize((round(boeh.width * 64 / boeh.height), 64), Image.LANCZOS)
+    boeh.save(os.path.join(ui, "boehmod-logo.webp"), "WEBP", lossless=True)
+    for name, im in (("deciremnant-logo.webp", mark), ("boehmod-logo.webp", boeh)):
+        print("logo %-22s %4d x %-3d %6d bytes" % (name, im.width, im.height, os.path.getsize(os.path.join(ui, name))))
 
 
 def site_icons(site):
@@ -160,13 +192,13 @@ def main():
     ap.add_argument("site")
     ap.add_argument("--shots", help="folder with site_<name>.png from the siteshots dev test")
     ap.add_argument("--guide", help="folder with guide_<name>.png from the guideshots dev test (exports only these)")
-    ap.add_argument("--logo", action="store_true", help="export only the Decimation logo (the main menu's banner)")
+    ap.add_argument("--logo", metavar="FILE", help="export only the logos: our official logo from FILE, BoehMod's from the jar")
     a = ap.parse_args()
     if a.guide:
         guide(os.path.abspath(a.site), a.guide)
         return
     if a.logo:
-        logo(os.path.abspath(a.site))
+        logo(os.path.abspath(a.site), a.logo)
         return
     pub = os.path.join(os.path.abspath(a.site), "public")
     for d in ("icons", "ui", "shots"):
