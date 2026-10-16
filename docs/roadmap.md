@@ -137,7 +137,8 @@ docs/gun_model_spec.md); every user review goes into its lessons and casebook.
    v1 LIVE 16 Oktober 2026: https://deciremnant.vercel.app/ (checked live). Still open: the community server list
    (spec section 11) and the user's verdict on the live site.
    SEO 16 Oktober 2026 (docs/website.md 9b): keywords decimation and minecraft, robots.txt, sitemap.xml, canonical,
-   JSON-LD, own icons; site commit 546f637 live checked (Lighthouse 100 on mobile and desktop); Search Console (user).
+   JSON-LD, own icons; site commit 546f637 live checked (Lighthouse 100 on mobile and desktop); Search Console
+   verified and sitemap.xml submitted by the user 17 Oktober 2026 (indexing not seen from here [not verified]).
 
 ## Code and tools
 

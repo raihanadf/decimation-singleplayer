@@ -100,4 +100,6 @@ Facts, decisions and the page text: docs/website.md (the spec). Site code: the P
 - Search Console: the user picked the HTML file method and downloaded the file; it went into public/ test first (RED,
   then GREEN), served 200 by a local production build; site commit 294adc4, live after the push (200, exact content). GITHUB_TOKEN: the user creates and pastes
   it; never through the chat.
+- 17 Oktober 2026: the user verified the property and submitted sitemap.xml. Whether Google crawls and ranks the page
+  shows only in the user's Search Console: ask, never claim it.
 

@@ -290,8 +290,9 @@ BoehMod page).
 - Google Search Console (user's account): HTML file method, `public/googlec28e26622fed860e.html` in the site repo
   (site commit 294adc4, served 200 by a local production build). It must stay: Google checks it again later;
   tests/seo.test.ts fails without it. Live since the user's push (checked 16 Oktober 2026: 200, exact content).
-  Then the user clicks Verify and submits https://deciremnant.vercel.app/sitemap.xml [not verified: the user's
-  Search Console].
+  Verified by the user, and https://deciremnant.vercel.app/sitemap.xml submitted (user, 17 Oktober 2026). Rechecked
+  live the same day: the file, sitemap.xml (the one page) and robots.txt all 200. Google's sitemap status, crawling
+  and ranking are seen only in the user's Search Console [not verified].
 
 ## 10. Design talk record (user revisions)
 
