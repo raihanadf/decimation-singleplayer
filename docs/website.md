@@ -265,6 +265,24 @@ BoehMod page).
   maven.minecraftforge.net.
 - 4 GB of memory as advice [inferred, not measured].
 
+## 9b. Search (SEO audit 16 Oktober 2026, searchfit-seo plugin + Lighthouse 12)
+
+- Target keywords (user): "decimation" and "minecraft". Title "Decimation Minecraft mod in singleplayer | DeciRemnant"
+  (54), description of 151 characters with both, the same in Open Graph and Twitter, both in the first paragraph
+  (LEAD) and in every screenshot and hero alt text ("Decimation Minecraft mod screenshot: ..."). The visible h1 stays as
+  approved. Guarded by tests/seo.test.ts in the site repo (lengths, keywords, canonical, Open Graph, crawl files,
+  JSON-LD, WebP, icons).
+- Crawl: app/robots.ts (allow all, sitemap link), app/sitemap.ts (the page), canonical "/" with metadataBase.
+- Structured data: JSON-LD WebSite + SoftwareApplication (GameApplication, Minecraft mod, version and download link
+  from the live release, free offer, isBasedOn Decimation by BoehMod).
+- Page outline: release notes' h1 / h2 become h3 under the "What changed" h2.
+- Icons: our MAC-10 on the download orange (app/icon.png 32, app/apple-icon.png 180, app/favicon.ico 16 / 32 / 64),
+  written by tools/site/export_assets.py.
+- Before (live): Lighthouse mobile 96 / 96 / 100 / 100 (performance, accessibility, best practices, SEO); after
+  (local production build): accessibility 100, SEO 100, every flagged audit passing.
+- For the user: Google Search Console, verify the site and submit https://deciremnant.vercel.app/sitemap.xml (not
+  done yet [not verified]).
+
 ## 10. Design talk record (user revisions)
 
 1. First look, three directions (ivory field report, warm night, game menu echo): "B looks best, but can be more

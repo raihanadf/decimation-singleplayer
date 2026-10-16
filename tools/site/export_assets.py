@@ -80,6 +80,20 @@ def hashed(im, folder, name):
     return fname
 
 
+def site_icons(site):
+    """Favicon and touch icon of the site: our MAC-10 (our own art) on the download button's orange, readable on light
+    and dark browser tabs. Writes app/icon.png (32), app/apple-icon.png (180) and app/favicon.ico (16, 32, 64)."""
+    gun = Image.open(MAC10).convert("RGBA")
+    orange = (248, 152, 56, 255)
+    icon = Image.new("RGBA", (32, 32), orange)
+    icon.alpha_composite(gun.resize((28, 28), Image.NEAREST), (2, 2))
+    icon.save(os.path.join(site, "app", "icon.png"))
+    apple = Image.new("RGBA", (180, 180), orange)
+    apple.alpha_composite(gun.resize((160, 160), Image.NEAREST), (10, 10))
+    apple.convert("RGB").save(os.path.join(site, "app", "apple-icon.png"))
+    icon.save(os.path.join(site, "app", "favicon.ico"), sizes=[(16, 16), (32, 32), (64, 64)])
+
+
 def shot(src, crop):
     im = Image.open(src).convert("RGB")
     if crop:
@@ -113,8 +127,13 @@ def main():
     for name, entry in ICONS.items():
         Image.open(io.BytesIO(z.read(entry))).save(os.path.join(pub, "icons", name + ".png"))
     for name, entry in UI.items():
-        Image.open(io.BytesIO(z.read(entry))).save(os.path.join(pub, "ui", name + ".png"))
+        # WebP (lossless, alpha kept) is about half the PNG; the torn edges are used as CSS mask and background
+        Image.open(io.BytesIO(z.read(entry))).convert("RGBA").save(os.path.join(pub, "ui", name + ".webp"), "WEBP", lossless=True)
+        old = os.path.join(pub, "ui", name + ".png")
+        if os.path.isfile(old):
+            os.remove(old)
     Image.open(MAC10).save(os.path.join(pub, "icons", "mac10.png"))
+    site_icons(os.path.abspath(a.site))
     dirt(os.path.join(pub, "ui", "dirt.png"))
     shots_dir = os.path.join(pub, "shots")
     for old in glob.glob(os.path.join(shots_dir, "*.jpg")) + [os.path.join(pub, "og.jpg")]:
@@ -142,7 +161,7 @@ def main():
     with open(os.path.join(shots_dir, "manifest.json"), "w") as f:
         json.dump(manifest, f, indent=2, sort_keys=True)
         f.write("\n")
-    print("icons %d, ui 3, shots %d" % (len(ICONS) + 1, len(SUBJECTS) - len(missing)))
+    print("icons %d, ui 3 (panel and mask as WebP), site icons 3, shots %d" % (len(ICONS) + 1, len(SUBJECTS) - len(missing)))
     if missing:
         print("MISSING:\n  " + "\n  ".join(missing))
         sys.exit(1)

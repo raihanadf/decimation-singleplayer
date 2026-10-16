@@ -46,6 +46,10 @@ Facts, decisions and the page text: docs/website.md (the spec). Site code: the P
    screen allows (1440 x 810 here), read every shot, and reshoot a first visit (fresh chunks draw for minutes).
 12. Keyboard: an overlay (the screenshot lightbox, the phone menu) takes focus when it opens, closes on Escape and
    gives focus back to the control that opened it; test it in Vitest and once in a real browser.
+13. Search: the site is found by "decimation" and "minecraft" (user). Both go in the title (at most 60 characters),
+   the description (120 to 160), Open Graph and Twitter, the first paragraph, every picture's alt and the JSON-LD;
+   robots.txt, sitemap.xml and the canonical stay; tests/seo.test.ts guards all of it. Audit with Lighthouse locally
+   (Google's free PageSpeed API runs out of quota) and read every flagged audit, not only the scores.
 
 ## Casebook (never delete a case)
 
@@ -81,4 +85,13 @@ Facts, decisions and the page text: docs/website.md (the spec). Site code: the P
   lightbox focus in and back, Escape closes the phone menu (two tests RED then GREEN, real browser checked), Vite's own
   tsconfig paths, the site README. Site commit 680fb97. Live checked after the user's push: focus into the zoomed
   shot and back, Escape on the phone menu, width 390, no console errors, all links.
+
+### Case 5: SEO audit (16 Oktober 2026)
+- User: "audit the seo using seo plugin", then all findings fixed: "i just want to search keyword for this website is
+  decimation and minecraft, so it can easily find by people".
+- Found: no robots.txt / sitemap.xml / canonical, description 181 characters, Open Graph without url / type /
+  site_name / locale, no structured data, 8 h2 from the release notes in the changelog, template favicon, gallery
+  alts repeating their captions, a link told apart by colour only, hero without fetchpriority (Next 16 deprecated
+  priority), PNG textures. Lighthouse SEO said 100 before: it checks only the basics.
+- Fixed in site commit 546f637; local Lighthouse accessibility 100, SEO 100; heading order needed h3, not h4.
 
