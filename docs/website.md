@@ -128,7 +128,8 @@ two columns of equal shots.
 | label | #E08A5A | section labels, step numbers (game shadow #382216) |
 | link | #E59468 | links |
 | download | #F89838 | torn orange button, white text, shadow #3E260E, edges #A85E18 / #FFB868 |
-| splash | #FFFF55 | splash text, "Idea" tag (shadow #3F3F15) |
+| splash | #FFFF55 | splash text and the "Planned" tag (shadow #3F3F15) |
+| idea | #55FFFF | the "Idea" tag (shadow #153F3F) |
 | slot | #15110F | icon slots, inner edges #0B0908 / #3B332C |
 
 Tried and rejected: Decimation's own menu palette (red tinted hero, torn black panels everywhere, logo coral)

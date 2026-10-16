@@ -325,9 +325,9 @@
     "semantic_hash": "0145e0863788d451e8ae4273d3c2abdd"
   },
   "docs/shots_index.md": {
-    "mtime": 1792142134.854846,
-    "ast_hash": "3e12be96db56a251195466d74191a8db",
-    "semantic_hash": "3e12be96db56a251195466d74191a8db"
+    "mtime": 1792142785.676221,
+    "ast_hash": "b9022609db7afb7469c4797b613fafa3",
+    "semantic_hash": "b9022609db7afb7469c4797b613fafa3"
   },
   "docs/interior_spec.md": {
     "mtime": 1791385593.9436893,
@@ -1740,8 +1740,13 @@
     "semantic_hash": "0b01f6bc58736aba59f79c84e8038db8"
   },
   "docs/website.md": {
-    "mtime": 1792142109.5609653,
-    "ast_hash": "6ae1d3d7bafd1ec58bf7d4872d11c269",
-    "semantic_hash": "6ae1d3d7bafd1ec58bf7d4872d11c269"
+    "mtime": 1792142785.675867,
+    "ast_hash": "bd55ad2d895558676756c7c3d5cdd93a",
+    "semantic_hash": "bd55ad2d895558676756c7c3d5cdd93a"
+  },
+  "docs/website_plan.md": {
+    "mtime": 1792143416.6919205,
+    "ast_hash": "ca7516161f476d11e211003a75fccf75",
+    "semantic_hash": "ca7516161f476d11e211003a75fccf75"
   }
 }

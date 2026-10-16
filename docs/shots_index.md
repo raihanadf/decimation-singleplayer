@@ -21,7 +21,7 @@ How shots are made: `./gradlew runClient -Pautotest` (street views),
   3 screenshots, grass strip under the hero). Revised by the user (no grass, real Minecraft font, real icons,
   more shots, coming soon, proper install).
 - round4_page_v2_top / middle / bottom.png: the revised page: Minecraft Standard font at 12 / 18 / 24 / 36 px,
-  Decimation item icons in slots, 10 shot gallery, coming soon cards (green Planned, yellow Idea), install tabs,
+  Decimation item icons in slots, 10 shot gallery, coming soon cards (yellow Planned, aqua Idea), install tabs,
   changelog, help, footer. User: "really nice".
 - round5_decimation_colours_rejected.png: the same page in Decimation's menu palette (red tinted hero, torn black
   panels, logo coral): "really worse"; only its two hero buttons were kept.
