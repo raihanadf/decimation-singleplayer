@@ -29,6 +29,8 @@ Facts and the traced menu and HUD: docs/decimation_code/menus.md.
 5. Change Decimation's menu with its OWN parts (user, 17 Oktober 2026: "just use component from decimation gui menu its
    self"): its news panels (ArticlePanel through `Deci.addNewsPanel`), its background drawing, its textures; no new
    widgets.
+6. Texts we put into the game carry no dash either (the user's rule for everything we write): "DeciRemnant: Zombie
+   Apocalypse" and "DeciRemnant v0.64.0 (Minecraft 1.7.10)", not Decimation's " - " style. Scan patched strings too.
 
 ## Common mistakes
 
