@@ -684,7 +684,7 @@ public final class CityGate
 
     /**
      * Entry control point: two jersey barrier rows staggered into a zigzag (d 2 closes the west half, d 5
-     * the east half), a sandbag fighting position on the west sidewalk at the line, a guard tower with a
+     * the east half), a sandbag fighting position on the west sidewalk one row off the line, a guard tower with a
      * ladder and sandbag parapet on the east sidewalk, a searchlight and the flag behind the position,
      * hedgehogs at the approach, a warning sign.
      */
@@ -700,19 +700,21 @@ public final class CityGate
         {
             prop(a, 1, 5, "BlockBarrier", S);
         }
-        // fighting position: front wall along the line, side wall by the road, open behind
+        // fighting position: front wall one row off the line, side wall by the road, open behind. A 2 high wall
+        // touching the line's fence was a stair over it (a 1 high sandbag beside it, the fence top's wire walkable:
+        // dev test gatewalk, 17 Oktober 2026)
         for (int y = 1; y <= 2; y++)
         {
             for (int a = 0; a <= 2; a++)
             {
-                plain(a, y, 1, sand, 0);
+                plain(a, y, 2, sand, 0);
             }
-            plain(2, y, 2, sand, 0);
             plain(2, y, 3, sand, 0);
+            plain(2, y, 4, sand, 0);
         }
-        prop(0, 1, 3, "BlockMilitaryCrate", E);
-        prop(1, 1, 6, "BlockSpotlight", S);
-        prop(0, 1, 8, "BlockFlagPollUAHD", S);
+        prop(0, 1, 4, "BlockMilitaryCrate", E);
+        prop(1, 1, 7, "BlockSpotlight", S);                     // behind the position (drawn wider than its cell)
+        prop(0, 1, 10, "BlockFlagPollUAHD", S);                 // clear of the spotlight's drawn box
         // guard tower x 13..15, z 4..7: legs, deck at 4, parapet at 5, ladder at (14, 7) on a back panel
         for (int y = 1; y <= 4; y++)
         {

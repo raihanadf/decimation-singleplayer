@@ -30,8 +30,8 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [x] one skill per Decimation feature (.claude/skills/decimation-code*)
 - [ ] flaky shots checks: AKM count, spotting at 70 (pending, user)
 - [ ] loot step 2 questions (docs/systems_plan.md section 8)
-- [ ] gate walk tests for the other gate looks
-- [ ] tools/hwmap.py on the sized city layout
+- [x] gate walk tests for every gate look: path finder check; checkpoint HESCO stair fixed (v0.64.4)
+- [x] tools/hwmap.py on the sized city layout (tools/citylayout.py, identical to Java)
 - [ ] black mobs: graphics log line from the brother's laptop
 - [ ] graph.json over 5 MB: keep committing or not
 - [x] 64 district city refuge check: seed 1, 4 refuges, none in wasteland (gatescan lists refuges now)

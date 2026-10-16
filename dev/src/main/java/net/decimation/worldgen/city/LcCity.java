@@ -72,6 +72,12 @@ public final class LcCity
     }
 
     /** Dev scan of the wasteland gates around a point (WastelandFence.scan; DevPregen, -Ddeciworldgen.gatescan). */
+    /** Metadata of the wire on top of the inside fence (WastelandFence.column) for a line along x or z (dev tests). */
+    public static int fenceWireMeta(net.minecraft.block.Block wire, boolean alongX)
+    {
+        return Math.max(2, PropFacing.along(wire, alongX, 0));
+    }
+
     public static void gateScan(long seed, int x, int z, int r)
     {
         WastelandFence.scan(seed, x, z, r);

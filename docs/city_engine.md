@@ -371,7 +371,7 @@ level 0 only); our cities had no such gaps (rivers kept 32 blocks off).
   block below the street, white railings); the user wanted the road look.
 - Railway: a station never on a segment touching the river (the next of the
   three segments, else none); tunnels pass under the canals (bed 56, tunnel
-  top 54). tools/hwmap.py --rails ignores rivers.
+  top 54). tools/hwmap.py --rails ignores rivers and airports (a station moved off either is not modelled).
 - Content: none since v0.45.1 (`tools/lcpack.py --rails` no longer exports
   bridge parts; an old "bridges" entry in a pack's index.json is ignored).
 - Dev test `bridge`: switches city rivers on for the session, takes the first
@@ -441,8 +441,13 @@ compact blobs, cities and roads less rare, 1 wasteland sector per 4 city sectors
   a sector with no block that fits is skipped for the next). Older worlds keep one per city sector. Checked 17
   Oktober 2026 (gatescan on a fresh seed 1 server world): the 64 district city at x 1280 .. 2303, z -2560 .. -1537
   has 4, none in its 4 wasteland sectors (docs/safezone.md section 7). `gatescan` lists refuges since then.
-- Not changed: rails per highway line. `tools/hwmap.py` and the Python sector copies know only the
-  old layout [their maps are wrong for new worlds].
+- Not changed: rails per highway line. `tools/hwmap.py` and `tools/edgescan.py` follow the sized layout since 17
+  Oktober 2026: `tools/citylayout.py` ports CityLayout and Sectors.regionSector bit for bit (java.util.Random, float
+  rolls such as 0.65f, Java's %.1f rounding); checked against the Java classes: the CityLayout map and statistics of
+  seeds 1, 2, 12345, -7 and 424242 identical, 171000 sectors and 6480 plans in far areas identical, hwmap's highway and
+  rail kind of 5.2 million chunks identical (10 seeds, both layouts). `--old-layout` gives worlds made before v0.60;
+  edgescan warns when the world's `!citySizes` flag says otherwise. With the sized layout L links nearly vanish (the
+  isolation test reaches maxGap() + 1 = 6 sectors, more than a 5 sector cell).
 
 ## Verified (seed 1, Decimation world type, fresh server world)
 

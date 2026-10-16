@@ -135,6 +135,10 @@ general: decimation-props; all of them: decimation-worldgen.
    fence beside a gate, else they walk round its end) and test at night (infected burn by day). Rare
    variants (5 %) are found by scanning the decisions over a large area first (servertest gatescan), then
    generating only around a hit.
+27. A shut barrier must not be climbable: a straight push misses stairs, so also ask the path finder for a way
+   through (gatewalk). Any 1 high block beside a 2 high one beside the 3 high fence is a stair; concertina wire on
+   a fence top does not stop walking. Keep 2 high structures off the line (17 Oktober 2026: the checkpoint's
+   sandbag position plus the HESCO closure's sandbag made one).
 
 ## Casebook (never delete a case)
 
@@ -261,3 +265,12 @@ general: decimation-props; all of them: decimation-worldgen.
   the line; dev test gates 30 looks x states.
 - Untested items closed after the push: gatescan over 3000 blocks (rates as designed), compact toll and broken
   edge gate generated and read back, 25 landmines saved at two wire gates, gatewalk all PASS.
+
+### Case 12: every gate look walked, a stair over the checkpoint (v0.64.4, 17 Oktober 2026)
+- Overnight task from the open list: gatewalk covered only the toll and the compact toll. Extended to all six looks x
+  five states; first run every lane empty (a fresh world: chunks not ready), then the corner gates' bodies despawned
+  (about 128 blocks from the player: made persistent); containers/open let no straight push through (its way bends:
+  a path finder check added, lesson 27); checkpoint/hesco had a path over the line (sandbag 1 high, fighting position
+  2 high, fence 3 high, wire walkable). The position moved one row off the line; the gates test then caught its
+  spotlight overlapping the moved wall and the flag (both moved back). 55 of 55 gatewalk checks, 0 prop clashes.
+

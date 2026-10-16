@@ -164,6 +164,14 @@ edge gates shut with the same closures.
   the gate): every shut toll and compact toll stopped 10 of 10 lanes (two runs); both open ones let 6 of 10
   through (the two traffic lanes; the booth island blocks the middle). Test traps found on the way: infected
   burn in daylight in the sky; a sky gate without the line's fence beside it lets bodies walk round its end.
+  Since 17 Oktober 2026 (v0.64.4) `gatewalk` builds every look (compact toll, toll, checkpoint, containers,
+  quarantine, police) in every state, the line's sidewalk fence as the real one (bars 3 high, wire or a post on
+  top), bodies that never despawn (the corner gates are about 128 blocks from the player), and asks vanilla's path
+  finder for a way from the approach to 4 past the line within 18 blocks: open gates need one (the containers' way
+  bends round a container, so its pushed lanes are only noted), shut gates none and 0 of 10 pushed through. Found:
+  the checkpoint with the HESCO closure had a stair over the line (the closure's 1 high sandbag beside the
+  checkpoint's 2 high sandbag position, then the 3 high fence, whose wire on top does not stop walking). Fixed by
+  moving the position one row off the line (spotlight and flag back too, 0 prop clashes); 55 of 55 checks PASS.
 - Checked: seed 1 server (pregen 1472,448,18): 15 connector gates, no plain; west land edge: the crossing's
   arm toward the land is sidewalk (T); the edge gates at z 320 and 448 are buses level at y 65..67 across
   z 323..332 with posts at both ends on the fence line.

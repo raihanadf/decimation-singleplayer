@@ -945,7 +945,8 @@ of the last session:
   v0.60.0: cities of 4 to 64 districts (worldgen/CityLayout, docs/city_engine.md "City sizes"): cells of
   5 x 5 sectors, one compact city each, 1 wasteland sector per 4 beside a military sector; new worlds only
   (`!citySizes`, ON by default: a new world's spawn search runs before WorldEvent.Load). Caches of sector
-  answers must carry CityLayout.epoch(). tools/hwmap.py knows only the old layout.
+  answers must carry CityLayout.epoch(). tools/hwmap.py and edgescan.py follow the sized layout since 17 Oktober 2026
+  (tools/citylayout.py, a bit exact port checked against Java; --old-layout for older worlds).
   v0.60.2: refuges in sized cities 1 per 4 city sectors (round, at least 1, spread apart, never wasteland;
   LcCity.refugeSectors; user 13 Oktober 2026). Releases are batched (user): no upload per small version.
   v0.61.0: wasteland gates in the inside fence (docs/wasteland.md "v0.61.0"): military/CityGate looks x states
@@ -1016,6 +1017,9 @@ of the last session:
   (the airport's far posts stayed empty: their chunks were not loaded at the first visit), guards keep a 4 block home
   area at their post (entity data deciworldgen_post, set again on load). Dev test `garrison` (fresh seed 1 world, a
   real airport, creative player).
+  v0.64.4 (17 Oktober 2026, bug.md, docs/wasteland.md): the checkpoint gate's sandbag position one row off the line
+  (with HESCO it made a stair over the shut line: concertina wire on a fence top does not stop walking); dev test
+  `gatewalk` covers every look and asks the path finder for a way through (open: yes, shut: no).
   Gun study (10 Oktober 2026): docs/gun_style_guide.md, tools/guns/study.py
   (renders / measures Decimation's guns from the jar, `attach` adds
   attachments as the game places them), dev test mode `gunview` (hip, aim

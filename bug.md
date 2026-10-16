@@ -105,6 +105,17 @@ not something we introduced or need to fix) see `documentation.md`.
   runs did not crash. Cause unknown [not verified]; the lot code only plans blocks, it touches no
   world. Watch for it again (an "Entity is already tracked" error came just before).
 
+### Checkpoint gate with HESCO: a stair over the shut line (found 17 Oktober 2026, FIXED v0.64.4)
+- Found by `gatewalk` extended to every gate look with a path finder check (docs/wasteland.md): the checkpoint
+  look in the HESCO state, meant to be shut, had a way through: the HESCO closure's 1 high sandbag at lane 3, the
+  checkpoint's 2 high sandbag fighting position beside it at lanes 0..2 touching the line, then the line's 3 high
+  sidewalk fence, whose concertina wire on top does not stop walking (the path went through the wire cell), and down
+  past the line. One pushed body got through in one run. The steel state's random sandbags could make the same stair.
+- Fix (military/CityGate.checkpoint): the fighting position stands one row off the line, so its wall never touches
+  the fence; the spotlight and the flag moved back with it (0 prop clashes).
+- Checks: RED path found (route logged: lane 3 at y 2, lane 2 at y 3, lane 1 at the line at y 4, down past it);
+  GREEN 55 of 55 (30 path checks, 25 shut lane counts).
+
 ### Airport garrison: far posts never manned, guards wandered off (found 17 Oktober 2026, FIXED v0.64.3)
 - Found by the new dev test `garrison` (fresh seed 1 world, the airport at 272, -2032; docs/airport.md section 12):
   the first visit manned 14 of 16 posts. Garrisons.man spawned every post when a player came within 40 blocks of the
