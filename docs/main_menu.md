@@ -18,12 +18,18 @@ changed in it.
   with its hover sound and link mark, a click opens the page) four times, in the 2 x 2 grid Decimation keeps for news
   right of the buttons (GuiMenuHome would fill it only from BoehMod's dead backend):
 
-  | Panel | Line | Opens | Picture |
+  | Panel | Line | Opens | Picture (a real picture of the topic) |
   |---|---|---|---|
-  | GitHub | Source code, issues, all releases | the public repo | our MAC-10 in hand |
-  | Updates | follows fixes/Updater: "Checking GitHub releases", "Up to date: 0.62.9" (dev suffix cut), "New version X is out", "Release check failed, see GitHub" | the newest release's page, else the release list | the airport |
-  | Website | Download, install and server guides | deciremnant.vercel.app | a survivor camp |
-  | Coming soon | What we are building next | the site's #coming | a base at sunset |
+  | GitHub | Source code, issues, all releases | the public repo | our repo page on GitHub (dark) |
+  | Updates | follows fixes/Updater: "Checking GitHub releases", "Up to date: 0.62.9" (dev suffix cut), "New version X is out", "Release check failed, see GitHub" | the newest release's page, else the release list | the release list on GitHub with 0.59.0 |
+  | Website | Download, install and server guides | deciremnant.vercel.app | the site's top with the Decimation logo |
+  | Coming soon | What we are building next | the site's #coming | the site's coming soon cards |
+
+  The first pictures were scenes of our world (MAC-10, airport, camp, base at sunset); the user: "replace the picture of
+  news panel to real topic image rather using placeholder like that". The topic pictures are agent-browser screenshots
+  at 2.32 : 1 in docs/shots/main_menu_v0.62.9/news_src/ (GitHub pages in dark mode at 928 x 400, the site's top at
+  1160 x 500, the coming soon cards at 928 x 400), made 464 x 200 by tools/menu_assets.py. Retake them when they go
+  stale: the Updates picture shows the newest release (0.59.0), the website pictures the site as it is.
 
   Main menu only: in a world the same screen is the pause menu, no panels there.
 - **Background**: Decimation's own background drawing (one picture with its slow sway, slow zoom in and out and the
@@ -41,7 +47,7 @@ changed in it.
 | fixes/MenuBackground | the slideshow: `draw(x, y, picked, w, h, zoom)` replaces the menu's one picture draw (Deci.drawCentered, and the alpha one for the fade); `shown()` for tests. Finds background0.png, background1.png ... in Decimation's menu textures. |
 | Deci | isHomeMenu, addNewsPanel (ArticlePanel deci.d.c, DeciScreen.addPanel deci.d.i.a), newsLine, newsPicture (deci.d.c.et), newsPanels (tests), menuShown (ClientState.bO and isMenuFadedOut), menuBackground (ClientState.bC), drawCentered (RenderUtil deci.j.a.a, two forms) |
 | tools/patches/PatchMenuBackground.java | Javassist on RenderUtil.drawMenuBackground (deci.j.a.b(GuiScreen)): removes the black layer, the two cube draws and the six glow sprites, sends the picture draw to MenuBackground.draw. Three jars. |
-| tools/menu_assets.py | writes background0..5.png and news_github / update / website / coming.png into Decimation's menu textures in the three jars (from docs/shots/site_v0.62.9); Decimation art, never committed |
+| tools/menu_assets.py | writes background0..5.png (from docs/shots/site_v0.62.9) and news_github / update / website / coming.png (from news_src) into Decimation's menu textures in the three jars; Decimation art, never committed |
 
 ## 4. Rebuild (after new site shots, before a release)
 
@@ -75,7 +81,7 @@ changed in it.
   (tools/onejar.py from dist/Decimation.jar) carries this. The dev client shows it now.
 - Untouched (user: nothing new): My Community, Server Status, the FURY store advert, Discord / Twitter, "Not
   Supporter :(" (all dead, menus.md section 7).
-- The Decimation logo (banner.png) on the website, later (user).
+- The Decimation logo (banner.png) on the website: built 17 Oktober 2026 (site fc0d159), live after the user's push.
 
 ## 7. References looked at first (skill decimation-website lesson 17)
 

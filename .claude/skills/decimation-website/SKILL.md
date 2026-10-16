@@ -34,10 +34,11 @@ Facts, decisions and the page text: docs/website.md (the spec). Site code: the P
 6. Show what was built: 6 to 10 screenshots of our features in real worlds; never sky test platforms, window
    bars or HUDs.
 7. Coming soon lists only roadmap items, tagged Planned or Idea, no dates.
-8. Fan site: say unofficial, credit BoehMod, carry Mojang's "not an official Minecraft product" line, never the
-   Decimation logo image. CHANGING (user, 17 Oktober 2026): "later you put real decimation logo from main menu to add it
-   on website logo too": the menu's banner.png becomes the site logo when that task is done (docs/tasks.md).
-9. Check the page like a visitor and measure it: full page at 1300 and 390 wide after scrolling once (lazy images),
+8. Fan site: say unofficial, credit BoehMod, carry Mojang's "not an official Minecraft product" line. The site logo IS
+   the DECIMATION banner of the game's main menu (user, 17 Oktober 2026: "put the decimation logo on website"), with
+   "DeciRemnant" beside it; the old rule "never the Decimation logo image" is gone.
+9. Check the page like a visitor and measure it: full page at 1300 and 390 wide after scrolling once (lazy images), the
+   top bar at tablet widths 768 to 1024 (links running off the edge, case 7),
    `scrollWidth` at 390, overlap of the splash with the hero text by bounding boxes, font sizes in use, console
    errors, every link (scripts/check-links.mjs). The splash covered the title on phones; only the measurement said so.
 10. Every picture the site serves is named by its content hash (tools/site/export_assets.py writes
@@ -140,4 +141,13 @@ Facts, decisions and the page text: docs/website.md (the spec). Site code: the P
   sitemap.xml lists both, no tabs on the home page, all links, no sideways scroll at 390, fonts 12 / 18 / 24 / 36, 0
   dashes, no broken pictures; Lighthouse home 98 / 100 / 100 / 100 mobile and 100 desktop, server guide 98 / 100 / 100
   / 100 mobile and 100 desktop.
+
+### Case 7: the Decimation logo, tablets (17 Oktober 2026)
+- User: "now put the decimation logo on website" (asked earlier as "later"). The menu banner (461 x 101) as WebP in the
+  top bar, 40 px high (28 on phones), "DeciRemnant" at 12 px beside it, like the famous pattern of logo plus site name
+  (wikis, Modrinth project pages). Test first (RED: no logo image in the brand link), 62 tests.
+- Measuring every width found what the shots at 1300 and 390 hid: logo plus six links need about 990 px; from 760 to
+  986 px the links ran off the right edge (it began with the Server link). Fix: the links fold into the Menu button
+  below 1024 px; gap between logo and links checked at 1025, 1100, 1300 (46 px and more).
+- Lesson: measure the top bar at tablet widths too (768 to 1024), not only desktop and phone.
 

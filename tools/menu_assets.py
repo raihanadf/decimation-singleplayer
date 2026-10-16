@@ -6,10 +6,12 @@ scene", "just use component from decimation gui menu its self").
   RenderUtil.drawMenuBackground with its slow sway, mouse parallax and zoom; PatchMenuBackground removes the black
   layer and the cube planet over them) become six real scenes of our world (background0..5), dimmed for the buttons
   in front; fixes/MenuBackground shows them one after another, 7 seconds each.
-- The pictures of our four news panels (textures/gui/menu/news_<id>.png, fixes/MenuNews), cropped to the panel's
-  picture box (116 x 50, so 2.32 : 1).
+- The pictures of our four news panels (textures/gui/menu/news_<id>.png, fixes/MenuNews), each a real picture of its
+  topic (user: "replace the picture of news panel to real topic image"): our GitHub repository page, its newest
+  release, the website's top and the website's coming soon cards, taken with agent-browser at 2.32 : 1 (the panel's
+  picture box is 116 x 50) into docs/shots/main_menu_v0.62.9/news_src/ (docs/main_menu.md).
 
-Source: the website's real screenshots (docs/shots/site_v0.62.9, dev test siteshots). Written with `zip` into the
+Sources: the website's real screenshots (docs/shots/site_v0.62.9, dev test siteshots) and news_src. Written with `zip` into the
 three jars that carry Decimation (Decimation.jar.patched, dist/Decimation.jar, dev/libs/Decimation-base.jar); nothing
 here is committed (Decimation art). Run it again after new site shots and before a release (tools/onejar.py takes
 dist/Decimation.jar).
@@ -31,13 +33,9 @@ MENU = "assets/deci/textures/gui/menu/"
 BACKGROUNDS = {"background0": "site_hero", "background1": "site_refuge", "background2": "site_gate",
                "background3": "site_bridge", "background4": "site_base", "background5": "site_airport"}
 DIM, COLOUR = 0.62, 0.8  # brightness and saturation of the backgrounds: the menu's text stays readable on them
-# news panel -> site shot and the crop's centre (fraction of width, height)
-NEWS = {
-    "news_github": ("site_gun", (0.42, 0.62)),      # our own MAC-10: the code on GitHub
-    "news_update": ("site_airport", (0.5, 0.55)),   # the newest feature of the latest work
-    "news_website": ("site_camp", (0.5, 0.5)),
-    "news_coming": ("site_base", (0.5, 0.45)),      # sunset over a base: what comes next
-}
+# news panel -> its topic picture in news_src (taken at 2.32 : 1; cropped around the centre if not)
+NEWS = {"news_github": "github", "news_update": "update", "news_website": "website", "news_coming": "coming"}
+NEWS_SRC = os.path.join(ROOT, "docs", "shots", "main_menu_v0.62.9", "news_src")
 NEWS_SIZE = (464, 200)
 
 
@@ -59,11 +57,11 @@ def build(shots, out):
         im = ImageEnhance.Brightness(im).enhance(DIM)
         im.save(os.path.join(out, slot + ".png"), optimize=True)
         made.append((slot, shot, im.size))
-    for name, (shot, centre) in NEWS.items():
-        im = Image.open(os.path.join(shots, shot + ".png")).convert("RGB")
-        im = crop_ratio(im, centre, NEWS_SIZE[0] / NEWS_SIZE[1]).resize(NEWS_SIZE, Image.LANCZOS)
+    for name, topic in NEWS.items():
+        im = Image.open(os.path.join(NEWS_SRC, topic + ".png")).convert("RGB")
+        im = crop_ratio(im, (0.5, 0.5), NEWS_SIZE[0] / NEWS_SIZE[1]).resize(NEWS_SIZE, Image.LANCZOS)
         im.save(os.path.join(out, name + ".png"), optimize=True)
-        made.append((name, shot, im.size))
+        made.append((name, "news_src/" + topic, im.size))
     for name, shot, size in made:
         print("%-12s from %-13s %4d x %d" % (name, shot, size[0], size[1]))
     return [n for n, _, _ in made]

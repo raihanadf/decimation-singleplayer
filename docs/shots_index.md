@@ -54,6 +54,15 @@ chunks at the camera and 48 ahead, up to 120 s).
   added to a priority crawl queue; Crawl rows (last crawl, crawled as, crawl allowed, page fetch, indexing allowed)
   all N/A. The baseline for the indexing check on 20 Oktober 2026.
 
+## website_logo_v0.63.0/ (the Decimation logo in the site's top bar, local build, 17 Oktober 2026; skill case 7)
+- `top_1300.png`, `top_1000.png`: the red DECIMATION banner with barbed wire top left (40 px high), "DeciRemnant" beside
+  it, the six links on the right; hero, splash and title as before.
+- `top_390.png`: phone: smaller banner (28 px), "DeciRemnant", Menu button; splash "Traders are open!" clear of it.
+- `top_760.png` (first build, 34 px banner, no fold yet): the bug: "DeciRemnant" runs into "Features" and the links are
+  cut at the right edge ("Ch..."). `top_820.png`, `top_960.png` (second build, fold below 960 at the time): Menu button
+  instead of the links. `server_menu_open_820.png`: the server guide at 820 with the Menu open (links in a box under
+  the button, inside the window).
+
 ## main_menu_v0.62.9/ (Decimation's main menu, 17 Oktober 2026; docs/decimation_code/menus.md section 7)
 - `user_menu_prism.png` (the user's Prism game, window "Minecraft - Decimation v1.21.10f", 2000 x 1301): DECIMATION
   banner top left with v1.21.10f, "Decimation - Zombie Apocalypse / Main Menu", red Discord and Twitter top right,
@@ -75,6 +84,10 @@ chunks at the camera and 48 ahead, up to 120 s).
   difference 0.49 in a background area): Decimation's own sway and zoom are slow.
 - `mainmenu_slide_base.png`, `mainmenu_slide_airport.png`: the slideshow: the base at sunset, then about 7 s later the
   airport from above (runway, taxiway markings), same panels in front.
+- `news_src/github.png`, `news_src/update.png` (GitHub in dark mode, 928 x 400): our repo page (name, tabs, Code
+  button, About text) and the release list with 0.59.0 Pre-release; `news_src/website.png` (1160 x 500): the site's top
+  with the Decimation logo; `news_src/coming.png` (928 x 400): the coming soon title and its six cards.
+- `news_pictures_v2.png`: the four news pictures as they are in the dev jar (464 x 200 each), read 17 Oktober 2026.
 
 ## website_guide_v0.62.9/ (install guide pictures and the server guide page, 17 Oktober 2026; docs/website.md 3b, 6)
 

@@ -3,6 +3,7 @@
     python3 tools/site/export_assets.py SITE_DIR                 # stand in screenshots from docs/shots
     python3 tools/site/export_assets.py SITE_DIR --shots DIR     # siteshots output: DIR/site_<name>.png
     python3 tools/site/export_assets.py SITE_DIR --guide DIR     # ONLY the guide pictures: DIR/guide_<name>.png
+    python3 tools/site/export_assets.py SITE_DIR --logo          # ONLY the Decimation logo (the main menu's banner)
 
 Item icons and the two torn menu textures come from Decimation.jar.original.bak, the MAC-10 icon is ours, the
 dirt strip is generated (seeded noise). Screenshots become JPEG (at most 1920 wide) plus og.jpg (1200 x 630 from
@@ -60,6 +61,7 @@ STAND_INS = {
     "airport": ("airport_v0.62.3/airport_helipad.png", None),
     "gun": ("mac10_v0.37/gunview_mac10.png", None),
 }
+LOGO = "assets/deci/textures/gui/menu/banner.png"  # the DECIMATION banner of the main menu (user, 17 Oktober 2026)
 GUI_BOX = (225, 20, 1215, 800)  # the buttons and fields of a GUI scale 3 screen in a 1440 x 810 window
 GUIDE = {"worldtype": GUI_BOX, "multiplayer": GUI_BOX, "addserver": GUI_BOX}
 
@@ -109,6 +111,15 @@ def guide(site, src_dir):
         f.write("\n")
 
 
+def logo(site):
+    """The main menu's DECIMATION banner as the site logo: public/ui/decimation-logo.webp (lossless, alpha kept)."""
+    out = os.path.join(site, "public", "ui", "decimation-logo.webp")
+    with zipfile.ZipFile(JAR) as z:
+        im = Image.open(io.BytesIO(z.read(LOGO))).convert("RGBA")
+    im.save(out, "WEBP", lossless=True)
+    print("logo %d x %d -> %s (%d bytes)" % (im.width, im.height, os.path.relpath(out, site), os.path.getsize(out)))
+
+
 def site_icons(site):
     """Favicon and touch icon of the site: our MAC-10 (our own art) on the download button's orange, readable on light
     and dark browser tabs. Writes app/icon.png (32), app/apple-icon.png (180) and app/favicon.ico (16, 32, 64)."""
@@ -149,9 +160,13 @@ def main():
     ap.add_argument("site")
     ap.add_argument("--shots", help="folder with site_<name>.png from the siteshots dev test")
     ap.add_argument("--guide", help="folder with guide_<name>.png from the guideshots dev test (exports only these)")
+    ap.add_argument("--logo", action="store_true", help="export only the Decimation logo (the main menu's banner)")
     a = ap.parse_args()
     if a.guide:
         guide(os.path.abspath(a.site), a.guide)
+        return
+    if a.logo:
+        logo(os.path.abspath(a.site))
         return
     pub = os.path.join(os.path.abspath(a.site), "public")
     for d in ("icons", "ui", "shots"):

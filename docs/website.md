@@ -34,7 +34,7 @@ a full install guide, screenshots of what we built, what is coming, the changelo
 | Look | warm night (dark brown, clay), the Minecraft GUI font at the game's sizes, real item icons, the yellow splash text, Decimation's torn orange and black buttons; no grass strip |
 | Sharing | releases are public (CLAUDE.md and documentation.md updated: no longer "not for redistribution") |
 | Name | DeciRemnant |
-| Logo (17 Oktober 2026, LATER) | the real Decimation logo from the main menu (textures/gui/menu/banner.png) as the site's logo (user: "later you put real decimation logo from main menu to add it on website logo too"); replaces the rule "never the Decimation logo image" (skill lesson 8) when it is done |
+| Logo (17 Oktober 2026) | the real Decimation logo from the main menu (textures/gui/menu/banner.png) as the site's logo (user: "later you put real decimation logo from main menu to add it on website logo too", then "now put the decimation logo on website"); replaces the rule "never the Decimation logo image" (skill lesson 8); site commit fc0d159 |
 | Install and server (17 Oktober 2026) | install for new players only with a lined requirements table and real game screens; the server guide on its own docs page /docs/server with a side menu |
 
 ## 3. The page, top to bottom
@@ -43,8 +43,12 @@ The approved mockup is `page-full-v4.html` in `.superpowers/brainstorm/60609-179
 ignored: it holds Decimation art). Pictures of the mockups: docs/shots/website_design_v0.62/ (shots_index.md).
 
 1. **Hero**: full width screenshot (a generated city from above), darkened toward the bottom.
-   - Top bar: brand "DeciRemnant" left; links Features, Screenshots, Install, Server, Changelog, GitHub (since 17
-     Oktober 2026 absolute: /#features ... and /docs/server, so the same bar works on every page).
+   - Top bar: the DECIMATION banner of the game's main menu (public/ui/decimation-logo.webp from
+     textures/gui/menu/banner.png, 40 px high, 28 on phones; `export_assets.py --logo`) with "DeciRemnant" beside it
+     (12 px) on the left; links Features, Screenshots, Install, Server, Changelog, GitHub (since 17 Oktober 2026
+     absolute: /#features ... and /docs/server, so the same bar works on every page). Logo and six links need about
+     990 px in a row: below 1024 px the links fold into the Menu button (measured: they ran off the right edge at 760
+     to 986 px).
    - Label "Minecraft 1.7.10 · unofficial", title "Decimation, alive again in singleplayer".
    - Splash text in yellow, turned 20 degrees, pulsing like the game's title screen, one picked at random per
      visit (click: next one): "Now with airports!", "Up to 64 districts!", "No dead servers!", "Mind the
