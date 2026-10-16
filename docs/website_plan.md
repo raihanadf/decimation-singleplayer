@@ -78,7 +78,7 @@ This repo:
 
 ## Part A: the site (works on its own with the stand in screenshots)
 
-### Task A1: Scaffold the site repo
+### Task 1 (A1): Scaffold the site repo
 
 **Files:**
 - Create: `~/Projects/deciremnant` (create-next-app), `vitest.config.mts`, `.gitignore` additions
@@ -151,7 +151,7 @@ cd ~/Projects/deciremnant && git init -b main && git add -A && git commit -m "Ne
 ```
 Check `git ls-files | grep -E '\.(jar|otf|png|jpg)$'` prints nothing yet.
 
-### Task A2: Release logic (pure functions, test first)
+### Task 2 (A2): Release logic (pure functions, test first)
 
 **Files:**
 - Create: `lib/releases.ts`
@@ -365,7 +365,7 @@ Run: `npm test -- tests/releases.test.ts` Expected: all 11 tests PASS.
 git add lib/releases.ts tests/releases.test.ts && git commit -m "Release picker: newest release with Decimation.jar, changelog entries, size and date formats"
 ```
 
-### Task A3: Release data loader with the build fallback (test first)
+### Task 3 (A3): Release data loader with the build fallback (test first)
 
 **Files:**
 - Create: `lib/github.ts`, `lib/load.ts`
@@ -523,7 +523,7 @@ Run: `npm test` Expected: all tests PASS (smoke, releases, load).
 git add lib/github.ts lib/load.ts tests/load.test.ts && git commit -m "GitHub release loader: 600 s cache, build fallback, run time errors keep the last page"
 ```
 
-### Task A4: Game art and the font into the site repo
+### Task 4 (A4): Game art and the font into the site repo
 
 **Files:**
 - Create (mod repo): `tools/site/export_assets.py`
@@ -698,7 +698,7 @@ cd ~/Projects/deciremnant && git add public app/fonts && git commit -m "Game art
 ```
 Before the first commit check `git -C ~/Projects/Decimation status --short | grep -E 'png|jpg|otf'` prints nothing.
 
-### Task A5: Content and the inline formatter (test first)
+### Task 5 (A5): Content and the inline formatter (test first)
 
 **Files:**
 - Create: `content/types.ts`, `content/site.ts`, `content/features.ts`, `content/coming.ts`, `content/shots.ts`, `content/install.ts`, `content/help.ts`, `content/splashes.ts`, `lib/inline.tsx`
@@ -958,7 +958,7 @@ Run: `npm test` Expected: all PASS (inline 2, content 5 and the earlier ones).
 git add content lib/inline.tsx tests/inline.test.tsx tests/content.test.ts && git commit -m "Page texts in content/ and the inline code and bold formatter"
 ```
 
-### Task A6: Styles, font and layout
+### Task 6 (A6): Styles, font and layout
 
 **Files:**
 - Modify: `app/layout.tsx`, `app/globals.css`
@@ -1135,7 +1135,7 @@ Run: `npm run build && npm run typecheck` Expected: build passes (the page is st
 git add app/layout.tsx app/globals.css && git commit -m "Layout with the Minecraft font and the warm night styles"
 ```
 
-### Task A7: Components (tests first where they act)
+### Task 7 (A7): Components (tests first where they act)
 
 **Files:**
 - Create: `components/Nav.tsx`, `Hero.tsx`, `Splash.tsx`, `Download.tsx`, `Section.tsx`, `CardGrid.tsx`, `Gallery.tsx`, `Install.tsx`, `Changelog.tsx`, `Help.tsx`, `Footer.tsx`
@@ -1538,7 +1538,7 @@ Run: `npm test` Expected: all PASS (components 7 and the earlier ones). If `next
 git add components tests/components.test.tsx && git commit -m "Page components: hero, splash, download, cards, gallery, install tabs, changelog, help, footer"
 ```
 
-### Task A8: Put the page together and check it like a visitor
+### Task 8 (A8): Put the page together and check it like a visitor
 
 **Files:**
 - Modify: `app/page.tsx`
@@ -1682,7 +1682,7 @@ git add app/page.tsx scripts/check-links.mjs && git commit -m "The page put toge
 
 With the normal build from Step 4 still built: start the server with a dead API (`RELEASES_API=http://127.0.0.1:9/x node node_modules/next/dist/bin/next start -p 3000 > "$SCRATCH/stale.log" 2>&1 & echo $! > "$SCRATCH/next.pid"`), request the page once, wait 610 s in the background (Bash `run_in_background`, then the notification), request it twice more with `curl -s -D - localhost:3000 -o "$SCRATCH/page.html"`. Expected: both answers 200, `Download 0.59.0` still in `page.html` (the build's data), header `x-nextjs-cache` STALE or HIT. Stop it with `kill $(cat "$SCRATCH/next.pid")`.
 
-### Task A9: Check the install guide's facts (spec section 9)
+### Task 9 (A9): Check the install guide's facts (spec section 9)
 
 **Files:**
 - Modify: `content/install.ts` (only where a check finds a difference); in the mod repo `docs/website.md` section 9
@@ -1718,7 +1718,7 @@ cd ~/Projects/Decimation && git add docs/website.md && git commit -m "Website sp
 
 ## Part B: the `siteshots` dev test (this repo)
 
-### Task B1: Window size for the dev client
+### Task 10 (B1): Window size for the dev client
 
 **Files:**
 - Modify: `dev/dependencies.gradle` (append), `tools/devtest.py:116-135` (live start)
@@ -1767,7 +1767,7 @@ Expected: `(1920, 1080)`. If it is still `(854, 480)`, the run task dropped the 
 git add dev/dependencies.gradle tools/devtest.py && git commit -m "Dev client window size (-Pwindow, devtest.py --window) and -Pshots for the website screenshots"
 ```
 
-### Task B2: The `siteshots` mode
+### Task 11 (B2): The `siteshots` mode
 
 **Files:**
 - Create: `dev/src/main/java/net/decimation/worldgen/devtest/SiteShotsTest.java`, `tools/site/siteshots.tsv`
@@ -2090,7 +2090,7 @@ git add dev/src/main/java/net/decimation/worldgen/devtest/SiteShotsTest.java dev
 git commit -m "siteshots dev test: website screenshots from camera rows in tools/site/siteshots.tsv"
 ```
 
-### Task B3: Find the subjects and shoot all eleven
+### Task 12 (B3): Find the subjects and shoot all eleven
 
 **Files:**
 - Create: `tools/site/subjects.py`
@@ -2190,7 +2190,7 @@ Check `git status --short | grep -E 'png|jpg'` prints nothing (docs/shots stays 
 
 ## Part C: go live
 
-### Task C1: The real screenshots into the site
+### Task 13 (C1): The real screenshots into the site
 
 **Files:**
 - Modify (site repo, by the tool): `public/shots/*.jpg`, `public/og.jpg`
@@ -2210,7 +2210,7 @@ In the site repo repeat Task A8 steps 2, 4, 5, 6 and 7 (tests, build, desktop an
 cd ~/Projects/deciremnant && git add public && git commit -m "Real screenshots from the siteshots dev test"
 ```
 
-### Task C2: GitHub, Vercel, live check, docs
+### Task 14 (C2): GitHub, Vercel, live check, docs
 
 **Files:**
 - Modify (mod repo): `docs/website.md`, `docs/roadmap.md`, `docs/tasks.md`, `CLAUDE.md`, `.claude/skills/decimation-website/SKILL.md`, graph files
