@@ -1,51 +1,62 @@
 #!/usr/bin/env python3
 """Check the ramps between Lost Cities style cities (LcCity) and the land.
 
-    python3 tools/edgescan.py WORLD_DIR [RADIUS_CHUNKS]
+    python3 tools/edgescan.py WORLD_DIR [RADIUS_CHUNKS] [--old-layout]
 
 City cells are recomputed from the seed (same sector map as Sectors.java,
-java.util.Random reimplemented). Every column outside the city within EDGE
-(24) blocks of a city cell whose grading window is populated is read; for
-each neighbouring pair (both in the band, or one on the city's border
-column) the surface step is counted. Reports the step histogram, the share
-of steps over 1 block, and the worst spots (cliffs). The street level is 64.
+tools/citylayout.py): the sized city layout of worlds made since v0.60.0,
+or with --old-layout the one of older worlds, where every sector rolls city
+on its own (the v0.56 wasteland ring of worlds made in v0.56 to v0.57.0 is
+not modelled). A warning says when the world's stored layout (StructureData
+!citySizes) disagrees. Every column outside the city within EDGE (24)
+blocks of a city cell whose grading window is populated is read; for each
+neighbouring pair (both in the band, or one on the city's border column)
+the surface step is counted. Reports the step histogram, the share of steps
+over 1 block, and the worst spots (cliffs). The street level is 64.
 Highway chunks (tools/hwmap.py) are left out.
 """
+import gzip
 import os
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import citylayout as cl  # noqa: E402
 import worldcheck as wc  # noqa: E402
 from gradescan import surface  # noqa: E402
 from wallscan import populated  # noqa: E402
 
 CELL, EDGE, REGION = 64, 24, 16
-MASK = (1 << 48) - 1
-
-
-def jrandom_float(seed):
-    s = (seed ^ 0x5DEECE66D) & MASK
-    s = (s * 0x5DEECE66D + 0xB) & MASK
-    return (s >> 24) / float(1 << 24)
-
-
-def s64(v):
-    v &= (1 << 64) - 1
-    return v - (1 << 64) if v >> 63 else v
 
 
 def region_sector(seed, rx, rz):
-    roll = jrandom_float(s64(seed ^ s64(rx * 875949887 + rz * 656887297)))
-    return 0 if roll < 0.40 else 1 if roll < 0.65 else 2 if roll < 0.80 else 3
+    """Sectors.regionSector (0 wild, 1 civilian, 2 city, 3 military); old layout after cl.set_on(False)."""
+    return cl.region_sector(seed, rx, rz)
 
 
 def is_city(seed, cx, cz):
     return region_sector(seed, (cx * 4) // REGION, (cz * 4) // REGION) == 2
 
 
+def stored_layout(world_dir):
+    """The world's StructureData !citySizes: 1 sized, 0 old, None when never opened since v0.60.0."""
+    try:
+        data = wc.read_nbt(gzip.open(os.path.join(world_dir, "data", "deciworldgen_structures.dat")).read())
+        return data["data"]["baseY"].get("!citySizes")
+    except Exception:  # missing, half written or foreign file: the warning is only advice
+        return None
+
+
 def main():
-    world_dir = sys.argv[1]
-    radius = int(sys.argv[2]) if len(sys.argv) > 2 else 12
+    args = [a for a in sys.argv[1:] if not a.startswith("--")]
+    old = "--old-layout" in sys.argv
+    cl.set_on(not old)
+    world_dir = args[0]
+    radius = int(args[1]) if len(args) > 1 else 12
+    stored = stored_layout(world_dir)
+    if (stored == 1) == old:
+        print("warning: the world stores %s, %s" % (
+            "city sizes on" if stored == 1 else "city sizes off" if stored == 0 else "no city sizes flag (older than v0.60.0)",
+            "drop --old-layout" if old else "rerun with --old-layout"))
     w = wc.World(world_dir)
     seed = wc.read_nbt(__import__("gzip").open(os.path.join(world_dir, "level.dat")).read())["Data"]["RandomSeed"]
     spawn = wc.read_nbt(__import__("gzip").open(os.path.join(world_dir, "level.dat")).read())["Data"]
@@ -110,7 +121,7 @@ def main():
                 if step > 2:
                     worst.append((step, x, z, a, b))
     pairs = sum(hist.values())
-    print("seed %d, %d band columns, %d pairs" % (seed, cols, pairs))
+    print("seed %d, %s layout, %d band columns, %d pairs" % (seed, "sized" if cl.ON else "old", cols, pairs))
     print("steps:", ", ".join("%d: %d" % (k, hist[k]) for k in sorted(hist)))
     if pairs:
         print("over 1 block: %.1f%%, over 2: %.2f%%" % (
