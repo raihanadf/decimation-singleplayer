@@ -11,6 +11,33 @@ How shots are made: `./gradlew runClient -Pautotest` (street views),
 `-Paudit` (building audit), `-Pgallery` (prop gallery); output in
 `dev/run/client/screenshots/`, then copied here into a versioned folder.
 
+## site_v0.62.9/ (website screenshots, dev test siteshots, fresh seed 1 world, 1440 x 810, 16 Oktober 2026)
+Camera rows in tools/site/siteshots.tsv (subjects found with tools/site/subjects.py on seed 1 server logs, aimed with
+tools/topdown_blocks.py maps). Every shot: no GUI, no window bar, real generated world (no sky test).
+- site_hero.png: the 48 district city from above (1650, 140, 420 looking south, pitch 32): white and glass towers,
+  street grid, slightly hazy at the far edge.
+- site_city.png: street level in that city (1400, 520 looking east): asphalt with centre dashes, cobble patches, low
+  buildings, towers on the horizon.
+- site_highway.png: the highway north of spawn (x 0) from 8 up: two lanes, hedge median, lamp posts, wrecks far ahead.
+- site_bridge.png: from inside a canal at water level (1584, 67, 604 looking north): water, stone quay with iron
+  railings, the bridge street with planters and benches above, towers behind.
+- site_rail.png: an underground station (1448, 49, 520 looking east): platform, pillars, cobwebs, the track into a lit
+  tunnel.
+- site_gate.png: a wasteland city street (212, 520 looking east): chain link fence with coiled wire on the left, a
+  military truck wreck, rubbish bags, the police checkpoint (256, 520) further down.
+- site_camp.png: the survivor camp from above (213, 20 looking south, pitch 40): wooden wall and towers, striped market
+  stalls, tents, the plaza.
+- site_refuge.png: the city refuge from the street corner to the north west (1925, 580): the fortified grey building,
+  wall, flags, guarded streets, towers around.
+- site_base.png: the combat outpost (-71, 137) at sunset from the east (0, 161 looking west): HESCO square, huts, TOC,
+  orange sky with the sun.
+- site_airport.png: the airport (-768, -1664) from the south (-640, -1490, pitch 25): runway with markings, parked
+  fighters and helicopters, hangars, tower; hazy far side.
+- site_gun.png: first person with our MAC-10 on a city street (1460, 272 looking east), no HUD.
+Rejected on the way (not kept): hero over the clouds (round 1), walls filling the city and bridge frames, the rail shot
+taken before the camera moved (fixed: counters reset per row), half drawn chunks on first visits (fixed: wait for the
+chunks at the camera and 48 ahead, up to 120 s).
+
 ## website_design_v0.62/ (DeciRemnant website mockups, browser companion, 16 Oktober 2026; docs/website.md)
 - round1_three_looks.png: the top of the page in three looks (A ivory field report, B warm night with the city
   shot as full width hero, C black and blood red game menu echo). User: "B looks best, but can be more minecraft".

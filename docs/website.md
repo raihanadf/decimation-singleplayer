@@ -202,7 +202,8 @@ BoehMod page).
 
 ## 6. Screenshots
 
-- Eleven shots at 1920 x 1080 from REAL generated worlds (seed 1, world type Decimation, current version): no sky
+- Eleven shots at 1440 x 810 (planned 1920 x 1080; macOS caps the dev client window at this screen, 1470 x 895, so
+  the largest 16:9 size that fits is used, measured 16 Oktober 2026) from REAL generated worlds (seed 1, world type Decimation, current version): no sky
   test platforms, no window bar, HUD hidden (F1), clouds as the player sees them, noon light except the base.
 
   | Shot | Subject |
@@ -221,9 +222,11 @@ BoehMod page).
 
 - Made by a new dev test mode `siteshots` in this repo (dev/src/main/java/net/decimation/worldgen/devtest):
   finds each subject in the seed 1 world from our generation data (city plans, StructureData places, airport and
-  gate scans), generates the chunks, places the camera, waits for the chunks to draw, shoots; window 1920 x 1080.
+  gate scans), generates the chunks, places the camera, waits for the chunks to draw, shoots; window set with
+  `-Pwindow=1440x810` (one launch) or `devtest.py --live --window=1440x810`.
   Re-run for new versions. The user may replace any shot with their own.
-- Output stays local (dev/run/client/devtest/siteshots/, kept in docs/shots/site_v<version>/, git ignored) and is
+- SHOT 16 Oktober 2026: all eleven in docs/shots/site_v0.62.9/ (shots_index.md); camera rows in tools/site/siteshots.tsv.
+- Output stays local (dev/run/client/screenshots/site_<name>.png, kept in docs/shots/site_v<version>/, git ignored) and is
   described in docs/shots_index.md; copied into the site repo's public/shots by a small script.
 
 ## 7. Checks before calling it done

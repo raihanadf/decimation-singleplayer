@@ -105,6 +105,15 @@ not something we introduced or need to fix) see `documentation.md`.
   runs did not crash. Cause unknown [not verified]; the lot code only plans blocks, it touches no
   world. Watch for it again (an "Entity is already tracked" error came just before).
 
+### "Entity is already tracked" at every dev world load (seen 16 Oktober 2026, Open, not analysed)
+- Vanilla's EntityTracker logs `"Silently" catching entity tracking error ... IllegalStateException: Entity is already
+  tracked!` right after the player joins: 32 times when the live game opened the fresh deciworldgen_devtest world of
+  the siteshots run (build/live.log, 17:07:43, during "Saving chunks"), and in 39 of the last 40 dev client logs
+  (dev/run/client/logs/*.log.gz). An entity is added to the tracker twice, most likely loaded twice from the saved
+  chunks [inferred]; candidates: our residents (SafezoneSites keeper "filled: 20 residents spawned" came right
+  after), loot bodies, Decimation NPCs. No crash; vanilla catches it. Not looked at yet: which entity class, and
+  whether duplicates stay in the world.
+
 
 ### Wasteland fence floating over half slab sidewalks (reported 14 Oktober 2026 by the user, FIXED v0.61.0)
 - User shot docs/shots/wasteland_gate_v0.60.2_review/user_fence_float.png: the inside fence posts and bars

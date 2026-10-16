@@ -9,7 +9,8 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [x] usage pane: group tasks into working now and pending
 - [x] study each Decimation feature: how its code works, its purpose (docs/decimation_code/)
 - [x] WorldClock day never advances: saved day counter (v0.62.9)
-- [~] DeciRemnant website: spec written (docs/website.md), user review, then the implementation plan
+- [~] DeciRemnant website: site built (private repo), screenshots shot; next: real shots into the site, then GitHub and Vercel
+- [ ] "Entity is already tracked" at every dev world load (bug.md): find which entity
 - [ ] survivor partner idea: design talk (docs/ideas.md item 21)
 - [x] backend thread leak: PatchBackend v2, no BoehMod connection (v0.62.8)
 - [x] one skill per Decimation feature (.claude/skills/decimation-code*)

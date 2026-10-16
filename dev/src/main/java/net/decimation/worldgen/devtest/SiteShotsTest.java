@@ -34,7 +34,7 @@ public class SiteShotsTest extends DevTestMode
     /** Shots need the current generation everywhere: a fresh seed 1 world. */
     public boolean freshWorld() { return true; }
 
-    private static final int MIN_WAIT = 200, QUIET = 60, MAX_WAIT = 1200, GROUND_WAIT = 100;
+    private static final int MIN_WAIT = 200, QUIET = 60, MAX_WAIT = 2400, GROUND_WAIT = 100, SETTLED = 20;
 
     /** One camera row of the TSV. */
     static final class Row
@@ -105,7 +105,7 @@ public class SiteShotsTest extends DevTestMode
     private volatile List<Row> rows;
     private volatile int index;
     private volatile int placed = -1;
-    private int serverRow = -1, serverT, waited, quiet;
+    private int serverRow = -1, serverT, clientRow = -1, waited, quiet;
     private double groundY;
     private float savedFov, savedGamma;
     private int savedDistance;
@@ -153,11 +153,17 @@ public class SiteShotsTest extends DevTestMode
             return false;
         }
         Row r = rows.get(i);
+        if (clientRow != i)
+        {
+            clientRow = i; // a new row waits from zero, even when the server placed it at once
+            waited = 0;
+            quiet = 0;
+        }
         boolean gun = "gun".equals(r.name);
         mc.gameSettings.fovSetting = 70.0F;
         mc.gameSettings.gammaSetting = 0.6F;
         mc.gameSettings.renderDistanceChunks = 16;
-        mc.gameSettings.clouds = true;
+        mc.gameSettings.clouds = mc.thePlayer == null || mc.thePlayer.posY < 120; // above the clouds they hide the view
         mc.gameSettings.hideGUI = !gun;
         hud.active = gun;
         if (mc.thePlayer == null || placed < i)
@@ -174,7 +180,8 @@ public class SiteShotsTest extends DevTestMode
         mc.thePlayer.rotationYaw = mc.thePlayer.prevRotationYaw = r.yaw;
         mc.thePlayer.rotationPitch = mc.thePlayer.prevRotationPitch = r.pitch;
         waited++;
-        quiet = chunkUpdates(mc) == 0 ? quiet + 1 : 0;
+        int updates = chunkUpdates(mc);
+        quiet = updates <= SETTLED && chunksReady(mc, r) ? quiet + 1 : 0; // a fresh world never reaches 0 updates
         if (waited < MIN_WAIT || quiet < QUIET && waited < MAX_WAIT)
         {
             return true;
@@ -184,11 +191,19 @@ public class SiteShotsTest extends DevTestMode
         File out = new File(mc.mcDataDir, "screenshots/" + file);
         DevTestResults.shot(name(), file);
         DevTestResults.value(name(), "shot " + r.name, mc.displayWidth + " x " + mc.displayHeight + ", waited " + waited
-                             + " ticks" + (quiet < QUIET ? " (chunks still drawing)" : ""));
+                             + " ticks" + (quiet < QUIET ? " (chunks still drawing, " + updates + " updates/s)" : ""));
         DevTestResults.check(name(), "saved " + r.name, out.isFile(), out.isFile(), "a png in screenshots/");
         FMLLog.info("[%s] siteshots %s at %.1f %s %.1f yaw %.0f pitch %.0f", DecimationWorldGen.MODID, r.name, r.x, r.y, r.z, r.yaw, r.pitch);
         index = i + 1;
         return true;
+    }
+
+    /** True when the client has the chunks under the camera and 48 blocks ahead (a far teleport starts empty). */
+    private static boolean chunksReady(Minecraft mc, Row r)
+    {
+        double ax = -Math.sin(Math.toRadians(r.yaw)) * 48, az = Math.cos(Math.toRadians(r.yaw)) * 48;
+        return !mc.theWorld.getChunkFromBlockCoords((int) Math.floor(r.x), (int) Math.floor(r.z)).isEmpty()
+            && !mc.theWorld.getChunkFromBlockCoords((int) Math.floor(r.x + ax), (int) Math.floor(r.z + az)).isEmpty();
     }
 
     /** "60 fps, 12 chunk updates": the chunk updates of the last second. */

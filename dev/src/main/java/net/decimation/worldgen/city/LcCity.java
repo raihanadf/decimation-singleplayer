@@ -583,6 +583,8 @@ public final class LcCity
             }
             out.add(new net.decimation.worldgen.military.CityRefugePlan("lcz_" + cellX + "_" + cellZ,
                 seed ^ hl(seed ^ 0x52454655L, cellX, cellZ), bx + 16, bz + 16, refuge[2], g));
+            cpw.mods.fml.common.FMLLog.info("[deciworldgen] city refuge lcz_%d_%d planned at %d,%d (turns %d)",
+                                            cellX, cellZ, bx + 16, bz + 16, refuge[2]);
         }
         List<LcContent.Building> pool = new ArrayList<LcContent.Building>();
         List<LcContent.Building> big = new ArrayList<LcContent.Building>();

@@ -126,6 +126,8 @@ public class LargeSites
             return null;
         }
         long seed = world.getSeed() ^ (siteX * 341873128712L + siteZ * 132897987541L) ^ 0xF0B5L;
+        cpw.mods.fml.common.FMLLog.info("[deciworldgen] military base M%d_%d size %d planned at %d,%d (turns %d)",
+                                        siteX, siteZ, size, x, z, turns);
         return new net.decimation.worldgen.military.MilitaryBasePlan("M" + siteX + "_" + siteZ, size, seed, x, z, turns);
     }
 
