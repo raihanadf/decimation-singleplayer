@@ -80,11 +80,13 @@ ignored: it holds Decimation art). Pictures of the mockups: docs/shots/website_d
      1. Install Prism Launcher: get it from prismlauncher.org (Windows, macOS, Linux) and add your Microsoft account.
      2. Make a Forge 1.7.10 instance: Add Instance, pick version 1.7.10, then Mod loader: Forge, version
         10.13.4.1614. Name it Decimation.
-     3. Java and memory: edit the instance, Settings: choose Java 8 and set the maximum memory to 4096 MB or more.
-     4. Add the mod: download Decimation.jar above. Edit the instance, Mods, Add file, and pick it.
-     5. First start: launch. The first start takes a little longer. Decimation's own menu opens: click Play.
-     6. Create the world: Singleplayer, Create New World, More World Options, then click World Type until it
-        says Decimation. Create.
+     3. Java and memory: edit the instance, Settings, Java: Java 8 (Prism 9 or newer downloads it by itself), and
+        set Maximum Memory Usage to 4096 MB or more.
+     4. Add the mod: download Decimation.jar above. Edit the instance, Mods, Add File, and pick it.
+     5. First start: launch. The first start takes a little longer. Decimation's own menu opens: click Play, then
+        Singleplayer on the server page.
+     6. Create the world: Create New World, More World Options, then click World Type until it says Decimation.
+        Create.
    - Tab **Already have Decimation**: back up the saves folder; replace mods/Decimation.jar (keep the name);
      delete any deciworldgen jar (it is inside Decimation.jar now), the voice chat jar is optional; old worlds
      keep working, cities, bases and airports appear in new worlds with the world type Decimation.
@@ -242,13 +244,17 @@ BoehMod page).
 - New version with big visual changes: re-run `siteshots`, copy, push.
 - Install steps change (Forge, launcher): edit `content/install.ts`.
 
-## 9. Not verified yet
+## 9. Not verified yet (and what was checked, 16 Oktober 2026)
 
 - `deciremnant` free on Vercel; the Hobby plan fits.
-- Prism Launcher wording (Add Instance, Mod loader, Edit instance, Settings, Mods, Add file) against its current
-  version; Prism offering Java 8 itself (seen once: bug.md, the brother's laptop got Java from Prism).
-- The screen after Decimation's Play on a fresh install (Singleplayer next) [inferred].
-- Forge installer and universal jar file names for 10.13.4.1614 [inferred from Forge's naming].
+- CHECKED Prism Launcher wording: its wiki ("Add Instance", pick a version and modloader, right click the instance
+  and "Edit", the "Mods" tab, Java downloaded automatically in Prism 9.0+: "Java 8 for pre-1.17") and its source
+  (Mods page action "&Add File", Java settings "Maximum Memory Usage"). The guide uses those words.
+- CHECKED in Decimation's code (deobf GuiMenuBase case 9, GuiMenuOfficialServers): "Play" opens the official
+  servers page (after fetching that list), which has a small "Singleplayer" button opening Minecraft's world list.
+  Not yet clicked through in the game with the dead backend [not verified in game].
+- CHECKED Forge files: forge-1.7.10-10.13.4.1614-1.7.10-installer.jar and -universal.jar answer 200 on
+  maven.minecraftforge.net.
 - 4 GB of memory as advice [inferred, not measured].
 
 ## 10. Design talk record (user revisions)
