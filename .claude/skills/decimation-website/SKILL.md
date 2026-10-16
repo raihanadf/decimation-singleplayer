@@ -48,7 +48,7 @@ Facts, decisions and the page text: docs/website.md (the spec). Site code: the P
    gives focus back to the control that opened it; test it in Vitest and once in a real browser.
 13. Search: the site is found by "decimation" and "minecraft" (user). Both go in the title (at most 60 characters),
    the description (120 to 160), Open Graph and Twitter, the first paragraph, every picture's alt and the JSON-LD;
-   robots.txt, sitemap.xml and the canonical stay; tests/seo.test.ts guards all of it. Audit with Lighthouse locally
+   robots.txt, sitemap.xml, the canonical and the Search Console file (public/google*.html) stay; tests/seo.test.ts guards all of it. Audit with Lighthouse locally
    (Google's free PageSpeed API runs out of quota) and read every flagged audit, not only the scores.
 
 ## Casebook (never delete a case)
@@ -97,4 +97,7 @@ Facts, decisions and the page text: docs/website.md (the spec). Site code: the P
 - Live after the user's push: Lighthouse 100 in all four categories on mobile and desktop (was 96 / 96 / 100 / 100 on
   mobile), every head tag, crawl file, icon and link checked; desktop and phone pages read (docs/shots/
   website_live_v0.62.9/).
+- Search Console: the user picked the HTML file method and downloaded the file; it went into public/ test first (RED,
+  then GREEN), served 200 by a local production build; site commit 294adc4. GITHUB_TOKEN: the user creates and pastes
+  it; never through the chat.
 

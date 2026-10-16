@@ -287,8 +287,10 @@ BoehMod page).
   h1, no skipped heading level, every picture with alt (11 screenshots carry both keywords), no dash characters, all
   links. The canonical prints the root without its trailing slash: the same address as the sitemap's (an empty path
   is "/").
-- For the user: Google Search Console, verify the site and submit https://deciremnant.vercel.app/sitemap.xml (not
-  done yet [not verified]).
+- Google Search Console (user's account): HTML file method, `public/googlec28e26622fed860e.html` in the site repo
+  (site commit 294adc4, served 200 by a local production build). It must stay: Google checks it again later;
+  tests/seo.test.ts fails without it. Then the user clicks Verify and submits
+  https://deciremnant.vercel.app/sitemap.xml [not verified until the push and the user's Verify].
 
 ## 10. Design talk record (user revisions)
 
