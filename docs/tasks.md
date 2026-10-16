@@ -10,11 +10,12 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [x] study each Decimation feature: how its code works, its purpose (docs/decimation_code/)
 - [x] WorldClock day never advances: saved day counter (v0.62.9)
 - [x] DeciRemnant website v1 live: https://deciremnant.vercel.app/ (checked live)
-- [ ] DeciRemnant: the user's verdict on the live site; GITHUB_TOKEN in Vercel (recommended)
+- [ ] DeciRemnant: GITHUB_TOKEN in Vercel (recommended; user). Verdict given 17 Oktober: kept, study famous sites next time
 - [x] DeciRemnant SEO (decimation + minecraft): live, Lighthouse 100 on mobile and desktop
 - [x] Google Search Console: verified, sitemap.xml submitted, indexing requested (user, 17 Oktober 2026)
 - [ ] 20 Oktober 2026: tell the user to check Google indexing of deciremnant.vercel.app (docs/website.md 9b)
-- [~] DeciRemnant: install for new players (lined table, game screens) + server guide /docs/server: site 9f2bfcd local, waits for the user's look, push, live check
+- [x] DeciRemnant: install for new players (lined table, game screens) + server guide /docs/server: live checked
+- [~] Decimation main menu: code studied (docs/decimation_code/menus.md 7), talk with the user next
 - [ ] "Entity is already tracked" at every dev world load (bug.md): find which entity
 - [ ] survivor partner idea: design talk (docs/ideas.md item 21)
 - [x] backend thread leak: PatchBackend v2, no BoehMod connection (v0.62.8)

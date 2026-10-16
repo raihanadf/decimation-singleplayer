@@ -161,6 +161,11 @@ release Decimation.jar from GitHub (240980301 bytes, sha256 9e20395d... = GitHub
   anticheat a second after login (the dev client's mods/1.7.10 is empty, so it sent no hashes). With one identical small
   file in the server's mods and the client's mods/1.7.10: in the server's world for 10 s, no kick. How the check works:
   docs/decimation_code/backend.md section 3b.
+- LIVE 17 Oktober 2026 (site commit 9f2bfcd pushed by the user): / and /docs/server 200, sitemap.xml lists both, the
+  home page has no tabs, the lined table and the Server guide link; all links on both pages; at 1300 and 390 no
+  sideways scroll, fonts 12 / 18 / 24 / 36, 0 dashes, no broken pictures. Lighthouse 12: home mobile 98 / 100 / 100 /
+  100 (LCP 2.1 s; earlier runs 99 and 100, run to run noise [inferred]), desktop 100 x 4; server guide mobile 98 / 100 /
+  100 / 100 (LCP 2.0 s), desktop 100 x 4.
 
 ## 4. Look
 
@@ -375,6 +380,9 @@ BoehMod page).
    page now, suggest your design). and the installation, better to put real image instead of step list only. for
    requierement, make list table lined style instead using boxed styled". Choices: pictures "game screens only" (no
    Prism, no Decimation menu), each picture beside its step's text, the server page as docs with a side menu (3b).
+7. Verdict on 6 (17 Oktober 2026): "not bad but i think you need to learn famous web before making things like this,
+   noted that. i take this, we can figure it out later": kept as built; study famous sites of the kind before the next
+   design (skill lesson 17).
 
 ## 11. Later (not v1)
 

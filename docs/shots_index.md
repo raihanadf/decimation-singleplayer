@@ -54,6 +54,19 @@ chunks at the camera and 48 ahead, up to 120 s).
   added to a priority crawl queue; Crawl rows (last crawl, crawled as, crawl allowed, page fetch, indexing allowed)
   all N/A. The baseline for the indexing check on 20 Oktober 2026.
 
+## main_menu_v0.62.9/ (Decimation's main menu, 17 Oktober 2026; docs/decimation_code/menus.md section 7)
+- `user_menu_prism.png` (the user's Prism game, window "Minecraft - Decimation v1.21.10f", 2000 x 1301): DECIMATION
+  banner top left with v1.21.10f, "Decimation - Zombie Apocalypse / Main Menu", red Discord and Twitter top right,
+  profile card (ucilmenangis, Human Kills 0 (K/D 0), Deaths 0, Zombie Kills 8, "Not Supporter :(", the player model
+  with a Santa hat), green Play beside the home icon, My Community >>, Server Status >>, Settings >>, Exit Game; a huge
+  dark lava rock shape on the left (the rotating "earth" cube), a white glowing diamond on the right (the "sun" cube)
+  on black; BOEHMOD logo and copyright bottom left, "Total Human Kills: 0 / Total Infected Kills: 8" bottom centre,
+  the FURY "Join the fury" advert bottom right.
+- `menu_assets_sheet.png` (made from the jar): background0..2 (red tinted Decimation scenes, 960 x 540), earth.png
+  (4096 x 2048 lava rock cube map), earth_scorches, sun.png (plain white), sideshadow, background_fog, banner.png
+  (DECIMATION logo), donor_rank_0 (FURY advert), serverbackgrounds newyork0 (city street with military vehicles) and
+  bukovka1 (wall and forest).
+
 ## website_guide_v0.62.9/ (install guide pictures and the server guide page, 17 Oktober 2026; docs/website.md 3b, 6)
 
 Game screens from the dev test `guideshots` (1440 x 810, GUI scale 3, dirt background, no world behind):

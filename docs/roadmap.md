@@ -121,7 +121,10 @@ docs/gun_model_spec.md); every user review goes into its lessons and casebook.
 1. **Main menu GUI fix** (user, 10 Oktober 2026: "later in future, we fix
    the GUI on main menu, not our priority"). The offline banner / "Play
    offline" and the Human Kills counters are DONE (v0.42.2, bug.md); anything
-   else on the menu: ask the user.
+   else on the menu: ask the user. TALK STARTED 17 Oktober 2026 (the user's Prism shot): code studied element by
+   element in docs/decimation_code/menus.md section 7 (dead parts: My Community, Server Status, the FURY store advert,
+   Discord / Twitter, "Not Supporter"; the background is a rotating lava "earth" cube and a white "sun" cube); the
+   user's goal for the menu not asked yet.
 2. **Project website** (user, 16 Oktober 2026: "use our website later for download page or to list the community
    server"; earlier note docs/ideas.md item 20: a Vercel project page). Designed 16 Oktober 2026 (below); first ideas:
    - a project page with the download link (the GitHub releases our updater already reads; Vercel serves no jars);
@@ -143,7 +146,8 @@ docs/gun_model_spec.md); every user review goes into its lessons and casebook.
    INSTALL AND SERVER GUIDE 17 Oktober 2026 (user review; docs/website.md 3 item 6 and 3b): install for new players
    only, requirements as a lined table, real game screens beside steps (dev test guideshots); server guide on its own
    docs page /docs/server with a side menu, every command and line from a real test server, Decimation's anticheat and
-   server rules under Problems. Site commit 9f2bfcd local: waits for the user's look, the push and the live check.
+   server rules under Problems. Site commit 9f2bfcd pushed and checked live 17 Oktober 2026 ("not bad", kept; study
+   famous sites first next time).
 
 ## Code and tools
 

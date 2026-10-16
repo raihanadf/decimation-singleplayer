@@ -325,9 +325,9 @@
     "semantic_hash": "0145e0863788d451e8ae4273d3c2abdd"
   },
   "docs/shots_index.md": {
-    "mtime": 1792178709.6404645,
-    "ast_hash": "6e55e075148731ea818ce46b0df6be6d",
-    "semantic_hash": "6e55e075148731ea818ce46b0df6be6d"
+    "mtime": 1792179498.1522064,
+    "ast_hash": "62709b3c7095ee622b79f815ee0b3d1e",
+    "semantic_hash": "62709b3c7095ee622b79f815ee0b3d1e"
   },
   "docs/interior_spec.md": {
     "mtime": 1791385593.9436893,
@@ -655,9 +655,9 @@
     "semantic_hash": "59092135d7782c740ec478643992e90b"
   },
   "docs/roadmap.md": {
-    "mtime": 1792178691.44573,
-    "ast_hash": "9bf823af7807212f9ee3816b102ca38d",
-    "semantic_hash": "9bf823af7807212f9ee3816b102ca38d"
+    "mtime": 1792179498.1511548,
+    "ast_hash": "25cabb9b6780c8bf6359f81c331ea024",
+    "semantic_hash": "25cabb9b6780c8bf6359f81c331ea024"
   },
   "dev/src/main/java/net/decimation/worldgen/LegacyStreets.java": {
     "mtime": 1791487239.5087948,
@@ -1540,9 +1540,9 @@
     "semantic_hash": "294036847a9caffda351bfa855a78636"
   },
   "docs/tasks.md": {
-    "mtime": 1792178675.56915,
-    "ast_hash": "917237d54851227a63f586a76965bf05",
-    "semantic_hash": "917237d54851227a63f586a76965bf05"
+    "mtime": 1792179477.001954,
+    "ast_hash": "74fd85acdd82163158d02f8621f97c14",
+    "semantic_hash": "74fd85acdd82163158d02f8621f97c14"
   },
   "tools/skillcheck.py": {
     "mtime": 1792098139.5315723,
@@ -1695,9 +1695,9 @@
     "semantic_hash": "c59d8e32048732ff41cb53ad71b74213"
   },
   "docs/decimation_code/menus.md": {
-    "mtime": 1792097617.4078689,
-    "ast_hash": "ec6e91163265c693be516e9b088f65ee",
-    "semantic_hash": "ec6e91163265c693be516e9b088f65ee"
+    "mtime": 1792179274.83958,
+    "ast_hash": "30e42c9cbd453e350e0550a78ddcf709",
+    "semantic_hash": "30e42c9cbd453e350e0550a78ddcf709"
   },
   ".claude/skills/decimation-code-rendering/SKILL.md": {
     "mtime": 1792098116.9846776,
@@ -1735,14 +1735,14 @@
     "semantic_hash": "e8564bc6458835de29bc9ea8ba1e842c"
   },
   ".claude/skills/decimation-website/SKILL.md": {
-    "mtime": 1792178669.9974914,
-    "ast_hash": "2f3d20be59a2178731123c12113b3d6e",
-    "semantic_hash": "2f3d20be59a2178731123c12113b3d6e"
+    "mtime": 1792179466.559228,
+    "ast_hash": "8a113496b156c1a5e8f9eb5cf73986e7",
+    "semantic_hash": "8a113496b156c1a5e8f9eb5cf73986e7"
   },
   "docs/website.md": {
-    "mtime": 1792178649.9956496,
-    "ast_hash": "3a2e73cf5c0d37413982179df0ffc081",
-    "semantic_hash": "3a2e73cf5c0d37413982179df0ffc081"
+    "mtime": 1792179468.753589,
+    "ast_hash": "bc94aecab2b27f93c31d98ca6b284a61",
+    "semantic_hash": "bc94aecab2b27f93c31d98ca6b284a61"
   },
   "docs/website_plan.md": {
     "mtime": 1792162650.3638773,

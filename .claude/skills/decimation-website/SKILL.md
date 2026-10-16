@@ -59,6 +59,10 @@ Facts, decisions and the page text: docs/website.md (the spec). Site code: the P
 16. A docs page (/docs/<topic>) states only what was run: every command and console line from a real test server
    (scratchpad, release jar), every rule from code plus what the run showed. A first run teaches what the guide
    misses (the anticheat kick was found that way).
+17. Study famous sites of the same kind BEFORE designing (user: "you need to learn famous web before making things like
+   this"): for a docs page well known docs (Next.js, Stripe, Tailwind, Fabric / NeoForge, the Minecraft Wiki), for a
+   download page Modrinth / CurseForge. Look at 3 to 5, write down the patterns taken (navigation, step layout, code
+   blocks, callouts), then mock up. The server guide was built from previews only: "not bad", kept for now.
 
 ## Casebook (never delete a case)
 
@@ -130,5 +134,9 @@ Facts, decisions and the page text: docs/website.md (the spec). Site code: the P
   pages at 1300 and 390 read, no sideways scroll, fonts 12 / 18 / 24 / 36, 0 dashes, links ok, keyboard zoom in a real
   browser, Lighthouse server page 98 / 100 / 100 / 100 mobile and 100 desktop (local home 95 is HTTP/1.1 local
   serving: same script bytes as live, which scores 99). Evidence docs/shots/website_guide_v0.62.9/.
-- Open: the user's look verdict, the push, the live check.
+- User verdict: "not bad but i think you need to learn famous web before making things like this, noted that. i take
+  this, we can figure it out later" (lesson 17). Pushed (9f2bfcd) and checked live 17 Oktober 2026: both pages 200,
+  sitemap.xml lists both, no tabs on the home page, all links, no sideways scroll at 390, fonts 12 / 18 / 24 / 36, 0
+  dashes, no broken pictures; Lighthouse home 98 / 100 / 100 / 100 mobile and 100 desktop, server guide 98 / 100 / 100
+  / 100 mobile and 100 desktop.
 
