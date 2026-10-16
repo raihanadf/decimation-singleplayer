@@ -2258,3 +2258,31 @@ Expected: pictures read and right, `scrollWidth` 390 or less, no errors, `all li
 git add docs CLAUDE.md .claude/skills/decimation-website graphify-out && git commit -m "DeciRemnant website live: docs, roadmap, skill case 2"
 ```
 Then ask the user to look at the live site and record their verdict in the skill.
+
+## Rulings made during execution (16 Oktober 2026)
+
+From the execution ledgers (git ignored workspaces); every deviation from the tasks above, why, and its cost if wrong.
+
+- Task 7: Ruling: component tests saw renders of earlier tests (Testing Library auto cleanup needs Vitest globals); added tests/setup.ts with afterEach(cleanup) as setupFiles in vitest.config.mts; cost if wrong: none, test isolation only.
+- Task 8: Ruling: step 3 expected 'Download from GitHub' once in the HTML; it appears twice because Next.js repeats the text in its RSC payload; the page shows the button once; cost if wrong: none.
+- Task 8: Ruling: phone check found the splash over the hero label (measured overlap=true at 390 px); phone CSS now puts it at top 72px under the nav (overlap=false at 390 and 1300); cost if wrong: none.
+- Task 9: Ruling: Decimation's Play opens the official servers page with a small Singleplayer button (code); step 5 now says click Play, then Singleplayer; still to see in game: B1 live start can click it; cost if wrong: one sentence.
+- Task 13: Ruling: after exporting the real shots the page still showed the old pictures: the image optimiser answers with Cache-Control max-age=14400, so browsers keep a picture under the same URL for 4 hours; export_assets.py now names every picture by content hash (subject-<sha1 8>.jpg, public/shots/manifest.json, old files removed, og image moved into shots/), content/shots.ts reads the manifest (heroFile, ogFile); test "names every picture by its content hash" RED then GREEN; cost if wrong: none, the URLs just change with each new picture.
+- Task 13: Ruling: captions matched to the shots: gate "Wasteland fence and checkpoint", refuge "A fortified city refuge", base "A military outpost at sunset".
+- Ruling: plan headings "Task A1" etc. renamed "Task 1 (A1)" .. "Task 14 (C2)"; task-brief only matches numeric task headings; cost if wrong: none (labels kept in brackets).
+- Ruling: Part A tasks (1..9) commit in ~/Projects/deciremnant, so their task-start/task-done run there with the absolute plan path and their ledger lines live in ~/Projects/deciremnant/.superpowers/sdd/website_plan/progress.md; Part B and C (10..14) are recorded here; cost if wrong: a resume must read both ledgers.
+- Ruling: no worktree or new branch; the user's standing git rules: work on the existing branch main (this repo's log commits straight to main; the new site repo starts on main); the user said "go"; cost if wrong: none for a new repo, main here as always.
+- Ruling: final whole-branch review is a self-review (user rule: no subagents); cost if wrong: weaker review, said in the final message.
+- Task 1: Ruling: @types/node ^20 from the template conflicts with vitest 5.0.5 (peer ^22 or >=24); installed @types/node ^24 (Node 24.12 runs here); cost if wrong: Vercel on Node 22 would type against 24 APIs we do not use.
+- Task 10: Ruling: -Pwindow=1920x1080 reaches Minecraft but macOS caps the window at 1470 x 895 on this screen; shots use 1440 x 810 (largest 16:9 that fits, measured exactly); docs/website.md section 6 gets that size in Task 12; cost if wrong: smaller shots than the spec's 1920 x 1080 (still sharp at the site's sizes).
+- Task 12: Ruling: our FMLLog lines land in dev/run/server/logs/fml-server-latest.log, not latest.log as the plan says; subjects.py is run on the fml log; cost if wrong: none.
+- Task 12: Ruling: instead of servertest pregen=0,0,40 (6561 chunks) used targeted runs: pregen 1536,512,12 with gatescan 0,0,3000, then keep + pregen 0,0,14 and 1920,768,16; plus top down block maps (tools/topdown_blocks.py) of the server and client worlds to aim; cost if wrong: none, every subject found.
+- Task 12: Ruling: siteshots tuned while shooting: clouds off above y 120; settled = 20 or fewer chunk updates a second (a fresh world never reaches 0) AND the chunks at the camera and 48 blocks ahead loaded; MAX_WAIT 2400 ticks; per row reset of the wait counters (bug: a row with absolute y was shot before the camera moved); cost if wrong: slower runs only.
+- Task 12: Ruling: the edge gate at 0,-509 never showed in frame; the gate shot is the wasteland street with fence, wire and the police checkpoint at 256,520; refuge shot is the exterior (not the market hall); base is a combat outpost; captions to match in Task 13; cost if wrong: caption wording.
+- Final review: self-review (no subagent tool, user rule); site repo e1404e0..5297a11 and mod repo dca1189..ff94ec0 read for plan alignment, errors, edge cases, security.
+- Final: Ruling: Important: unauthenticated GitHub API calls from Vercel share build and function IPs (60 an hour per IP) [inferred]: a 403 at build gives the fallback page, a 403 at refresh keeps the old page, so the button could stay on "Download from GitHub" for long; the code already sends GITHUB_TOKEN when set; fix = Task 14 user step: add a GITHUB_TOKEN environment variable in Vercel (fine grained token, public repositories read only); no code change; cost if wrong: the fallback link still downloads from GitHub.
+- Final: minor (deferred): placement log lines repeat each time a plan is recomputed ("military base ... planned at" 81 times in one server run); dedupe with a set if it bothers.
+- Final: minor (deferred): lightbox does not move focus into the dialog; the phone menu does not close on Escape.
+- Final: minor (deferred): Vite suggests resolve.tsconfigPaths instead of the vite-tsconfig-paths plugin (notice only).
+- Final: minor (deferred): the site repo README is still the create-next-app template.
+- Final: Ruling: metadataBase is https://deciremnant.vercel.app; if Vercel gives another address in Task 14, update app/layout.tsx then; cost if wrong: Open Graph previews point at the wrong host.

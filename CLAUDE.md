@@ -130,8 +130,8 @@ Knowledge index:
 - `docs/safezone.md`: safezone sites: survivor camps (layout, residents and their keeper,
   placement, test) and city refuges (our fortified building, one per city region, section 7).
 - `docs/ideas.md`: the user's future feature ideas (12 Oktober 2026), not designed yet.
-- `docs/website.md`: SPEC of DeciRemnant, the project website (private repo `deciremnant`, Next.js on Vercel,
-  deciremnant.vercel.app): page text, look (Minecraft Standard font at the game's sizes, item icons), release data,
+- `docs/website.md`: SPEC of DeciRemnant, the project website, LIVE at https://deciremnant.vercel.app/ (private repo
+  github.com/ucilmenangis/deciremnant, local ~/Projects/deciremnant, Next.js on Vercel): page text, look (Minecraft Standard font at the game's sizes, item icons), release data,
   screenshots (dev test `siteshots`: camera rows tools/site/siteshots.tsv, `-Pwindow=1440x810` / `devtest.py --live
   --window=1440x810`, subjects from server logs with tools/site/subjects.py), art export tools/site/export_assets.py
   (content hash names), checks; skill decimation-website.

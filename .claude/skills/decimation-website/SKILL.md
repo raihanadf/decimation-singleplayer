@@ -55,8 +55,8 @@ Facts, decisions and the page text: docs/website.md (the spec). Site code: the P
 - Outcome: docs/website.md, approved v4 mockup.
 
 ### Case 2: the build (16 Oktober 2026)
-- Site repo ~/Projects/deciremnant (private, local; 33 tests), plan docs/website_plan.md executed task by task, ledgers
-  in both repos' .superpowers/sdd/website_plan/progress.md.
+- Site repo ~/Projects/deciremnant (private, local; 33 tests), plan docs/website_plan.md executed task by task, the
+  rulings at the end of that plan.
 - Found on the way, each fixed and checked: @types/node 20 from the template blocked Vitest 5 (24 now); Testing
   Library cleanup needs a setup file without Vitest globals; the phone splash covered the hero label (measured
   overlap, moved under the nav); full page shots showed empty icon slots (lazy images: scroll first); the real
@@ -66,4 +66,11 @@ Facts, decisions and the page text: docs/website.md (the spec). Site code: the P
   the Mac slept for 75 minutes during a run (server "Running 4500894ms behind"); siteshots tuned (clouds off above
   y 120, wait for the chunks at the camera and 48 ahead, counters reset per row: a row was shot before the camera
   moved). Four rounds; evidence docs/shots/site_v0.62.9/ (shots_index.md).
+
+### Case 3: live (16 Oktober 2026)
+- The user created nothing by hand but the push and the Vercel import; `gh repo create ... --private --source . --remote
+  origin` (no push) made the repo. Live at https://deciremnant.vercel.app/: served from Vercel's cache (HIT,
+  prerendered), real release data (Download 0.59.0, 241 MB), desktop and phone pictures read, width 390, no console
+  errors, fonts 12 / 18 / 24 / 36 px, all links (jar 302), Open Graph picture 200.
+- Open: the user's verdict on the live site; a GITHUB_TOKEN in Vercel (cannot be seen from outside).
 

@@ -9,7 +9,8 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [x] usage pane: group tasks into working now and pending
 - [x] study each Decimation feature: how its code works, its purpose (docs/decimation_code/)
 - [x] WorldClock day never advances: saved day counter (v0.62.9)
-- [~] DeciRemnant website: built and checked locally with the real shots; next: GitHub repo and Vercel (user), live check
+- [x] DeciRemnant website v1 live: https://deciremnant.vercel.app/ (checked live)
+- [ ] DeciRemnant: the user's verdict on the live site; GITHUB_TOKEN in Vercel (recommended)
 - [ ] "Entity is already tracked" at every dev world load (bug.md): find which entity
 - [ ] survivor partner idea: design talk (docs/ideas.md item 21)
 - [x] backend thread leak: PatchBackend v2, no BoehMod connection (v0.62.8)

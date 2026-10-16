@@ -1,7 +1,11 @@
 # DeciRemnant: the project website (spec)
 
 Spec written 16 Oktober 2026 from the design talk with the user (brainstorming, mockups in the browser
-companion). Status: SPEC, waiting for the user's review; nothing built yet. Roadmap: docs/roadmap.md UI 2.
+companion). Status: LIVE since 16 Oktober 2026 at https://deciremnant.vercel.app/ (private repo
+github.com/ucilmenangis/deciremnant, deployed by the user on Vercel); built by docs/website_plan.md (tasks 1..14,
+rulings at its end). Checked live: desktop and phone pictures read, phone width 390 without sideways scroll, no
+console errors, fonts only 12 / 18 / 24 / 36 px, every link (the jar link redirects to GitHub), Open Graph picture.
+Roadmap: docs/roadmap.md UI 2.
 Skill: .claude/skills/decimation-website (lessons and casebook from the design talk).
 
 ## 1. What it is
@@ -249,7 +253,8 @@ BoehMod page).
 
 ## 9. Not verified yet (and what was checked, 16 Oktober 2026)
 
-- `deciremnant` free on Vercel; the Hobby plan fits.
+- CHECKED: `deciremnant` was free on Vercel (live at deciremnant.vercel.app). Whether a GITHUB_TOKEN is set there is
+  not visible from outside [not verified]; without it GitHub may refuse the release list from Vercel's shared IPs.
 - CHECKED Prism Launcher wording: its wiki ("Add Instance", pick a version and modloader, right click the instance
   and "Edit", the "Mods" tab, Java downloaded automatically in Prism 9.0+: "Java 8 for pre-1.17") and its source
   (Mods page action "&Add File", Java settings "Maximum Memory Usage"). The guide uses those words.
