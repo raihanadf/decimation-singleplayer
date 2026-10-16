@@ -15,7 +15,9 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [x] Google Search Console: verified, sitemap.xml submitted, indexing requested (user, 17 Oktober 2026)
 - [ ] 20 Oktober 2026: tell the user to check Google indexing of deciremnant.vercel.app (docs/website.md 9b)
 - [x] DeciRemnant: install for new players (lined table, game screens) + server guide /docs/server: live checked
-- [~] Decimation main menu: code studied (docs/decimation_code/menus.md 7), talk with the user next
+- [x] Decimation main menu: news panels (GitHub, Updates, Website, Coming soon) + real scene background every 7 s (v0.63.0, dev client)
+- [ ] main menu: the user's look in game (needs a release with v0.63.0)
+- [ ] later: the real Decimation logo (menu banner.png) as the website's logo (user, 17 Oktober 2026)
 - [ ] "Entity is already tracked" at every dev world load (bug.md): find which entity
 - [ ] survivor partner idea: design talk (docs/ideas.md item 21)
 - [x] backend thread leak: PatchBackend v2, no BoehMod connection (v0.62.8)

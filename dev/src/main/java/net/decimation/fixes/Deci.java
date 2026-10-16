@@ -709,6 +709,102 @@ public final class Deci
         return new deci.i.e(deci.a.b.a());
     }
 
+    /** True for Decimation's home menu (GuiMenuHome deci.i.e): the main menu, and in a world the pause menu. */
+    @cpw.mods.fml.relauncher.SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)
+    public static boolean isHomeMenu(net.minecraft.client.gui.GuiScreen screen)
+    {
+        return screen instanceof deci.i.e;
+    }
+
+    /**
+     * Adds one of Decimation's own news panels (ArticlePanel deci.d.c, 120 x 70: title, one small line, a picture
+     * under them, red on hover, a click opens `url`) to a menu screen (DeciScreen.addPanel, deci.d.i.a). `picture`
+     * is the key of its picture in ArticlePanel's picture map (newsPicture): a key missing there is downloaded as a
+     * URL every frame, so always put it first. Returns the panel for newsLine.
+     */
+    @cpw.mods.fml.relauncher.SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)
+    public static Object addNewsPanel(net.minecraft.client.gui.GuiScreen screen, int x, int y, String title, String line,
+                                      String url, String picture)
+    {
+        deci.d.c panel = new deci.d.c(1, x, y, (deci.d.i) screen);
+        panel.eu = title;
+        panel.ev = line;
+        panel.ew = url;
+        panel.ex = picture;
+        ((deci.d.i) screen).a(panel);
+        return panel;
+    }
+
+    /**
+     * Decimation's menu shows its buttons and panels: the welcome box is closed (ClientState.bO) and the loading fade
+     * is over (ClientState.isMenuFadedOut, deci.b.i.F).
+     */
+    @cpw.mods.fml.relauncher.SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)
+    public static boolean menuShown()
+    {
+        return deci.b.i.bO && deci.b.i.F();
+    }
+
+    /** Which of Decimation's three menu backgrounds this launch shows (ClientState.bC, 0 to 2, random per launch). */
+    @cpw.mods.fml.relauncher.SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)
+    public static int menuBackground()
+    {
+        return deci.b.i.bC;
+    }
+
+    /** RenderUtil.drawTextureCentered (deci.j.a.a): a picture `zoom` times its size, as the menu background draws it. */
+    @cpw.mods.fml.relauncher.SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)
+    public static void drawCentered(double x, double y, net.minecraft.util.ResourceLocation texture, float w, float h, float zoom)
+    {
+        deci.j.a.a(x, y, texture, w, h, zoom);
+    }
+
+    /** RenderUtil.drawTextureCenteredAlpha (deci.j.a.a): the same with an alpha; leaves the GL colour at it. */
+    @cpw.mods.fml.relauncher.SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)
+    public static void drawCentered(double x, double y, net.minecraft.util.ResourceLocation texture, float w, float h, float zoom,
+                                    double alpha)
+    {
+        deci.j.a.a(x, y, texture, w, h, zoom, alpha);
+    }
+
+    /** Changes the small line under a news panel's title (addNewsPanel). */
+    @cpw.mods.fml.relauncher.SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)
+    public static void newsLine(Object panel, String line)
+    {
+        ((deci.d.c) panel).ev = line;
+    }
+
+    /** The picture news panels show for `key` (ArticlePanel's static picture map, deci.d.c.et). */
+    @cpw.mods.fml.relauncher.SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)
+    public static void newsPicture(String key, net.minecraft.util.ResourceLocation texture)
+    {
+        deci.d.c.et.put(key, texture);
+    }
+
+    /** Title and line of every news panel on a menu screen (DeciScreen's panel list eX), for dev tests. */
+    @cpw.mods.fml.relauncher.SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)
+    public static java.util.List<String> newsPanels(net.minecraft.client.gui.GuiScreen screen)
+    {
+        java.util.List<String> out = new java.util.ArrayList<String>();
+        try
+        {
+            java.lang.reflect.Field f = deci.d.i.class.getDeclaredField("eX"); // protected panel list
+            f.setAccessible(true);
+            for (Object o : (java.util.List<?>) f.get(screen))
+            {
+                if (o instanceof deci.d.c)
+                {
+                    out.add(((deci.d.c) o).eu + " | " + ((deci.d.c) o).ev + " | " + ((deci.d.c) o).ew);
+                }
+            }
+        }
+        catch (ReflectiveOperationException e)
+        {
+            out.add("unreadable: " + e);
+        }
+        return out;
+    }
+
     /** The totals line at the bottom of the main menu (DeciConstants.globalHumanDeaths / globalZombieDeaths). */
     public static void setStatTotals(long humans, long infected)
     {

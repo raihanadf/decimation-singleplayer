@@ -66,6 +66,15 @@ chunks at the camera and 48 ahead, up to 120 s).
   (4096 x 2048 lava rock cube map), earth_scorches, sun.png (plain white), sideshadow, background_fog, banner.png
   (DECIMATION logo), donor_rank_0 (FURY advert), serverbackgrounds newyork0 (city street with military vehicles) and
   bukovka1 (wall and forest).
+- `mainmenu_home_bg0.png` (dev client, v0.63.0 work, 1440 x 810): the new menu: our city from above as the background
+  (dimmed, zoomed by Decimation's own drawing, dark top and bottom, side shadow), no cube planet; profile card, Play
+  and the other buttons; right of them four of Decimation's news panels: GitHub (MAC-10 in hand), Updates "Up to date:
+  0.62.9" (airport), Website "Download, install and server guides" (camp), Coming soon "What we are building next"
+  (base at sunset); FURY advert and totals line as before.
+- `mainmenu_later_bg0.png`: 10 s later with the single picture (before the slideshow): nearly the same frame (mean pixel
+  difference 0.49 in a background area): Decimation's own sway and zoom are slow.
+- `mainmenu_slide_base.png`, `mainmenu_slide_airport.png`: the slideshow: the base at sunset, then about 7 s later the
+  airport from above (runway, taxiway markings), same panels in front.
 
 ## website_guide_v0.62.9/ (install guide pictures and the server guide page, 17 Oktober 2026; docs/website.md 3b, 6)
 

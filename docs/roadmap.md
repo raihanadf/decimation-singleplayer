@@ -124,7 +124,10 @@ docs/gun_model_spec.md); every user review goes into its lessons and casebook.
    else on the menu: ask the user. TALK STARTED 17 Oktober 2026 (the user's Prism shot): code studied element by
    element in docs/decimation_code/menus.md section 7 (dead parts: My Community, Server Status, the FURY store advert,
    Discord / Twitter, "Not Supporter"; the background is a rotating lava "earth" cube and a white "sun" cube); the
-   user's goal for the menu not asked yet.
+   user's goal for the menu not asked yet. DONE v0.63.0 (17 Oktober 2026, docs/main_menu.md): Decimation's own news
+   panels with our GitHub / Updates / Website / Coming soon, its background showing six real scenes, a new one every
+   7 s (PatchMenuBackground, tools/menu_assets.py). Open: the user's look in game (needs a release), the dead buttons
+   (left as they are: "no need to add something new"), the Decimation logo on the website (later, user).
 2. **Project website** (user, 16 Oktober 2026: "use our website later for download page or to list the community
    server"; earlier note docs/ideas.md item 20: a Vercel project page). Designed 16 Oktober 2026 (below); first ideas:
    - a project page with the download link (the GitHub releases our updater already reads; Vercel serves no jars);

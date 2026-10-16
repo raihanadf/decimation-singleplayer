@@ -167,6 +167,10 @@ public class DecimationWorldGen
         if (cpw.mods.fml.common.FMLCommonHandler.instance().getSide().isClient())
         {
             net.minecraftforge.common.MinecraftForge.EVENT_BUS.register(new net.decimation.fixes.UpdateScreen.Hook());
+            // our news in the main menu's own news panels (GitHub, releases, website, coming soon)
+            net.decimation.fixes.MenuNews news = new net.decimation.fixes.MenuNews();
+            net.minecraftforge.common.MinecraftForge.EVENT_BUS.register(news);
+            cpw.mods.fml.common.FMLCommonHandler.instance().bus().register(news);
         }
         cpw.mods.fml.common.FMLCommonHandler.instance().bus().register(new net.decimation.fixes.WorldClock());
         net.minecraftforge.common.MinecraftForge.EVENT_BUS.register(new Areas());

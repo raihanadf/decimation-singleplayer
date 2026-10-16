@@ -961,6 +961,15 @@ city", chain link + wire, asphalt ramp for the street stairs, bridge damage "gra
 hole"; and the subway station "on side building instead on road". Details: docs/wasteland.md "v0.56.0",
 docs/city_engine.md "Open" (v0.56.0). The city edge gradient of v0.55.0 accepted ("i like it").
 
+### Main menu: our news in Decimation's news panels, real scene slideshow (DONE v0.63.0, 17 Oktober 2026)
+User: "lets make the news panel now. 1. github repo, 2. update release, 3. our website release, 4. Coming soon
+feature"; "replace with real scene with your suggestion animation"; "just use component from decimation gui menu its
+self, no need to add something new on it"; "make the background image, changed every 7 second". Built with Decimation's
+own parts: four of its news panels (ArticlePanel) in its own news grid, its own background drawing with six real scenes
+of our world, 7 s each with a fade, the black layer and lava cube planet removed (PatchMenuBackground, three jars).
+Checked in the dev client (dev test mainmenu, RED then PASS twice; menu and stats still PASS). Waiting for the user's
+look in game (needs a release: their Prism has the old jars). Details: docs/main_menu.md.
+
 ### Zones, factions and world (user list 9 Oktober 2026, "later")
 Only the list and starting points; scope of each is `[not decided]`, ask
 the user before building.

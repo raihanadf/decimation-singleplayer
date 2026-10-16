@@ -137,6 +137,9 @@ Knowledge index:
   (content hash names), checks; skill decimation-website. Since 17 Oktober 2026 also the server guide page
   /docs/server (section 3b: every command from a real scratchpad Forge server with the release jar) and guide pictures
   of Minecraft's own screens (dev test `guideshots`, `export_assets.py --guide`).
+- `docs/main_menu.md`: OUR main menu changes (v0.63.0): Decimation's news panels with our four items, the real scene
+  background slideshow, PatchMenuBackground, tools/menu_assets.py, dev test mainmenu; how Decimation's menu works
+  element by element: docs/decimation_code/menus.md section 7.
 - `docs/systems_plan.md`: PLAN of every open feature together (loot, human NPCs, zombies, world and
   zones) with the shared core (world clock, pools, body entity, tier table, areas, protection
   table, group spawner) and the build order; user choices of 13 Oktober 2026.
@@ -341,6 +344,9 @@ SRG→MCP from the old root `src/` via `mcp_stable/12` CSVs; the root `src/` +
   answers net.decimation.fixes.Updater.required() (our auto update), patched from the original class
   with our compiled classes on the Javassist path;
   `PatchLootRolls.java` (2026-10-13, bug.md): IntRange.pick (deci/aB/a) inclusive, loot counts 1 .. n;
+  `PatchMenuBackground.java` (2026-10-17, docs/main_menu.md): RenderUtil.drawMenuBackground (deci/j/a.b) without its
+  black layer, cube planet and glow sprites, its picture drawn by fixes/MenuBackground (slideshow; our classes on the
+  Javassist path, third argument);
   `PatchVehicleArrows.java` (2026-10-11, bug.md vehicle entry): indirect player hits
   (arrows, thrown, TNT) on deci/ad/e take the health path, not pickup;
   `PatchInfectedAI.java` (2026-10-10, docs/performance.md): infected
@@ -978,6 +984,14 @@ of the last session:
   v0.62.9: WorldClock day fixed (bug.md): a saved counter (fixes/WorldClock.Data, <world>/data/deciworldgen_clock.dat;
   older worlds start at total ticks / 24000) counts each midnight the raw time passes; Decimation's reset to 0 counts
   nothing. Never take days from getWorldTime() / 24000: use WorldClock.day(). Dev test core checks two midnights.
+  v0.63.0 (17 Oktober 2026, docs/main_menu.md): the main menu with Decimation's OWN parts (user: "just use component
+  from decimation gui menu its self"): four of its news panels (ArticlePanel) with our GitHub, Updates (fixes/Updater
+  state), Website and Coming soon (fixes/MenuNews, Forge InitGuiEvent, Deci.addNewsPanel); its background drawing
+  shows six real scenes of our world, a new one every 7 s with a fade (fixes/MenuBackground), the black layer and the
+  lava cube planet removed (tools/patches/PatchMenuBackground.java, three jars); the pictures go into Decimation's
+  menu textures in the three jars by tools/menu_assets.py (never committed). Dev test `mainmenu`; run it LAST in a
+  live game (it leaves the world: tests waiting for a player then hang). Dev test `guideshots`: Minecraft screens
+  for the website's guides (docs/website.md 3b, 6).
   Gun study (10 Oktober 2026): docs/gun_style_guide.md, tools/guns/study.py
   (renders / measures Decimation's guns from the jar, `attach` adds
   attachments as the game places them), dev test mode `gunview` (hip, aim

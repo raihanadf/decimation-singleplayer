@@ -50,7 +50,7 @@ M	deci/d/f	a	(Minecraft,int,int)	drawLabel	M
 M	deci/d/g	Q	()	getOption	H
 M	deci/d/i	b	(GuiButton)	addButton	H
 M	deci/d/i	e	(int)	removeButton	H
-M	deci/d/i	a	(deci.d.b)	openUri	L
+M	deci/d/i	a	(deci.d.b)	addPanel	H
 M	deci/d/i	R	()	updatePanels	H
 M	deci/d/i	c	(GuiButton)	panelsActionPerformed	H
 M	deci/d/i	a	(int,int,float)	drawPanels	H

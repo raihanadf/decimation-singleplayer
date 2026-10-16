@@ -16,6 +16,7 @@ Facts and the traced menu and HUD: docs/decimation_code/menus.md.
 | HUD | IngameHud (deci/g/j), once a frame |
 | loot and gear screen | PlayerInventoryScreen (deci/g/g), GUI id GUI_LOOT |
 | stats shown | fixes/LocalStats, PatchMenuStats |
+| our main menu news and background slideshow | fixes/MenuNews, fixes/MenuBackground, PatchMenuBackground, tools/menu_assets.py (docs/main_menu.md) |
 
 ## Rules
 
@@ -24,6 +25,9 @@ Facts and the traced menu and HUD: docs/decimation_code/menus.md.
    (LocalStats does that for stats).
 3. Test live: `python3 tools/devtest.py --live menu` and `stats`; screenshots on the sheet show the result.
 4. Screens closed by the test harness: set `DevAutoTest.keepScreen` while a test needs a screen open.
+5. Change Decimation's menu with its OWN parts (user, 17 Oktober 2026: "just use component from decimation gui menu its
+   self"): its news panels (ArticlePanel through `Deci.addNewsPanel`), its background drawing, its textures; no new
+   widgets.
 
 ## Common mistakes
 

@@ -35,7 +35,8 @@ Facts, decisions and the page text: docs/website.md (the spec). Site code: the P
    bars or HUDs.
 7. Coming soon lists only roadmap items, tagged Planned or Idea, no dates.
 8. Fan site: say unofficial, credit BoehMod, carry Mojang's "not an official Minecraft product" line, never the
-   Decimation logo image.
+   Decimation logo image. CHANGING (user, 17 Oktober 2026): "later you put real decimation logo from main menu to add it
+   on website logo too": the menu's banner.png becomes the site logo when that task is done (docs/tasks.md).
 9. Check the page like a visitor and measure it: full page at 1300 and 390 wide after scrolling once (lazy images),
    `scrollWidth` at 390, overlap of the splash with the hero text by bounding boxes, font sizes in use, console
    errors, every link (scripts/check-links.mjs). The splash covered the title on phones; only the measurement said so.

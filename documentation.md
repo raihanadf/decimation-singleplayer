@@ -304,6 +304,14 @@ watchtowers manned by guards, a market street of six traders, a campfire plaza, 
 family tents, a garden, civilians and a few armed survivors. Fallen residents come back after a
 while when nobody is watching. Details: docs/safezone.md.
 
+## Main menu (v0.63)
+
+Decimation's own main menu, with our content in its own parts: the four news panels right of the buttons show our
+GitHub repository, the release check (Up to date / a new version is out; a click opens the release), our website and
+its coming soon list; a click opens the page in the browser. The background shows six real scenes of our world, a new
+one every 7 seconds with a short fade, moving with Decimation's own slow sway, zoom and mouse parallax; the dark lava
+cube planet is gone. Details: docs/main_menu.md.
+
 ## Bug and feature tracking
 
 Dated history moved out of this file - see `bug.md` (fixed/open/pending bugs)

@@ -34,6 +34,7 @@ a full install guide, screenshots of what we built, what is coming, the changelo
 | Look | warm night (dark brown, clay), the Minecraft GUI font at the game's sizes, real item icons, the yellow splash text, Decimation's torn orange and black buttons; no grass strip |
 | Sharing | releases are public (CLAUDE.md and documentation.md updated: no longer "not for redistribution") |
 | Name | DeciRemnant |
+| Logo (17 Oktober 2026, LATER) | the real Decimation logo from the main menu (textures/gui/menu/banner.png) as the site's logo (user: "later you put real decimation logo from main menu to add it on website logo too"); replaces the rule "never the Decimation logo image" (skill lesson 8) when it is done |
 | Install and server (17 Oktober 2026) | install for new players only with a lined requirements table and real game screens; the server guide on its own docs page /docs/server with a side menu |
 
 ## 3. The page, top to bottom

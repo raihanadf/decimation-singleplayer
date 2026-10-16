@@ -52,11 +52,15 @@ Traced `deci.i,net.decimation.mod.common.utils.h,deci.g.j,net.decimation.fixes.L
 | stats on menu and HUD | fixes/LocalStats, tools/patches/PatchMenuStats.java |
 | our loot inventory on Decimation's loot screen | fixes/Loot (loot.md) |
 | turf banners for our places | worldgen/PlaceNames, PatchTurfNames (clans.md) |
+| our news in the main menu's news panels (GitHub, Updates, Website, Coming soon) | fixes/MenuNews, `Deci.addNewsPanel` (docs/main_menu.md) |
+| real scenes as the menu background, a new one every 7 s | fixes/MenuBackground, tools/patches/PatchMenuBackground.java, tools/menu_assets.py |
 
 ## 6. Checks
 
 - `python3 tools/devtest.py --live menu` ("Play" not "Update"), `stats` (local counters on menu and HUD), `update`
   (needs tools/fake_release_server.py), `loot` (the loot screen).
+- `python3 tools/devtest.py --live mainmenu` (our four news panels, the background changes within 7 s); run it after
+  the tests that need a player: it leaves the world.
 
 ## 7. The main menu, element by element (17 Oktober 2026; the user's Prism shot docs/shots/main_menu_v0.62.9/)
 
@@ -99,6 +103,5 @@ Other art in the jar for menus: serverbackgrounds/newyork0..7 and bukovka0..7 (1
 shown behind hovered servers), banner_battlegrounds, background_fade, buttonbg / buttonbg_red (the torn buttons the
 website uses). Contact sheet: docs/shots/main_menu_v0.62.9/menu_assets_sheet.png.
 
-Changing it [inferred, not tried]: our own GuiOpenEvent handler at the lowest priority can replace GuiMenuHome with a
-screen of ours after Decimation's swap (no jar patch); a Javassist patch of `GuiMenuBase.addMenuButtons` /
-`GuiMenuBase.drawScreen` would have to go into three jars.
+Changing it: done in v0.63.0 with Decimation's own parts (docs/main_menu.md): its news panels added from a Forge
+InitGuiEvent (no jar patch), its background drawing patched (`RenderUtil.drawMenuBackground`, three jars).
