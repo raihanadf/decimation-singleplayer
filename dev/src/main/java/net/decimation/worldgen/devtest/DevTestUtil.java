@@ -47,13 +47,24 @@ public final class DevTestUtil
         DevTestResults.shot(mode, name);
     }
 
-    /** The buttons of a screen (GuiScreen.buttonList is protected). */
+    /**
+     * The buttons of a screen (GuiScreen.buttonList is protected). Reflection names: MCP in the dev client, SRG in the
+     * shipped game (the production client runs these tests too: docs/production_test.md).
+     */
     @SuppressWarnings("unchecked")
     public static java.util.List<net.minecraft.client.gui.GuiButton> buttons(net.minecraft.client.gui.GuiScreen screen)
     {
         try
         {
-            java.lang.reflect.Field f = net.minecraft.client.gui.GuiScreen.class.getDeclaredField("buttonList");
+            java.lang.reflect.Field f;
+            try
+            {
+                f = net.minecraft.client.gui.GuiScreen.class.getDeclaredField("buttonList");
+            }
+            catch (NoSuchFieldException shipped)
+            {
+                f = net.minecraft.client.gui.GuiScreen.class.getDeclaredField("field_146292_n");
+            }
             f.setAccessible(true);
             return (java.util.List<net.minecraft.client.gui.GuiButton>) f.get(screen);
         }
@@ -82,25 +93,31 @@ public final class DevTestUtil
         return null;
     }
 
-    /** What a click on the button does: the screen's actionPerformed (Decimation's menu buttons too). */
+    /**
+     * What a click on the button does: the screen's actionPerformed (Decimation's menu buttons too); func_146284_a in
+     * the shipped game.
+     */
     public static void press(net.minecraft.client.gui.GuiScreen screen, net.minecraft.client.gui.GuiButton b)
     {
         for (Class<?> c = screen.getClass(); c != null; c = c.getSuperclass())
         {
-            try
+            for (String name : new String[] {"actionPerformed", "func_146284_a"})
             {
-                java.lang.reflect.Method m = c.getDeclaredMethod("actionPerformed", net.minecraft.client.gui.GuiButton.class);
-                m.setAccessible(true);
-                m.invoke(screen, b);
-                return;
-            }
-            catch (NoSuchMethodException e)
-            {
-                // try the parent class
-            }
-            catch (ReflectiveOperationException e)
-            {
-                throw new IllegalStateException("press " + b.displayString, e);
+                try
+                {
+                    java.lang.reflect.Method m = c.getDeclaredMethod(name, net.minecraft.client.gui.GuiButton.class);
+                    m.setAccessible(true);
+                    m.invoke(screen, b);
+                    return;
+                }
+                catch (NoSuchMethodException e)
+                {
+                    // the other name, then the parent class
+                }
+                catch (ReflectiveOperationException e)
+                {
+                    throw new IllegalStateException("press " + b.displayString, e);
+                }
             }
         }
         throw new IllegalStateException("no actionPerformed on " + screen.getClass());
