@@ -655,9 +655,9 @@
     "semantic_hash": "59092135d7782c740ec478643992e90b"
   },
   "docs/roadmap.md": {
-    "mtime": 1792154774.0259757,
-    "ast_hash": "edaee9e5f43a58162077350a64afd89e",
-    "semantic_hash": "edaee9e5f43a58162077350a64afd89e"
+    "mtime": 1792165028.9049978,
+    "ast_hash": "1de992846f5819abf25e6e5373b8288f",
+    "semantic_hash": "1de992846f5819abf25e6e5373b8288f"
   },
   "dev/src/main/java/net/decimation/worldgen/LegacyStreets.java": {
     "mtime": 1791487239.5087948,
@@ -1540,9 +1540,9 @@
     "semantic_hash": "294036847a9caffda351bfa855a78636"
   },
   "docs/tasks.md": {
-    "mtime": 1792154774.0264566,
-    "ast_hash": "876e1ae34c7f3d6a37aed5f9fad9bacd",
-    "semantic_hash": "876e1ae34c7f3d6a37aed5f9fad9bacd"
+    "mtime": 1792165028.9047647,
+    "ast_hash": "72ee1846a808c0dfd54014eae6012e43",
+    "semantic_hash": "72ee1846a808c0dfd54014eae6012e43"
   },
   "tools/skillcheck.py": {
     "mtime": 1792098139.5315723,
