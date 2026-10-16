@@ -132,7 +132,9 @@ Knowledge index:
 - `docs/ideas.md`: the user's future feature ideas (12 Oktober 2026), not designed yet.
 - `docs/website.md`: SPEC of DeciRemnant, the project website (private repo `deciremnant`, Next.js on Vercel,
   deciremnant.vercel.app): page text, look (Minecraft Standard font at the game's sizes, item icons), release data,
-  screenshots (`siteshots` test), checks; skill decimation-website.
+  screenshots (dev test `siteshots`: camera rows tools/site/siteshots.tsv, `-Pwindow=1440x810` / `devtest.py --live
+  --window=1440x810`, subjects from server logs with tools/site/subjects.py), art export tools/site/export_assets.py
+  (content hash names), checks; skill decimation-website.
 - `docs/systems_plan.md`: PLAN of every open feature together (loot, human NPCs, zombies, world and
   zones) with the shared core (world clock, pools, body entity, tier table, areas, protection
   table, group spawner) and the build order; user choices of 13 Oktober 2026.

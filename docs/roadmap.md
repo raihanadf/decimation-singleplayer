@@ -131,7 +131,9 @@ docs/gun_model_spec.md); every user review goes into its lessons and casebook.
    protocol a website cannot answer; cut by PatchBackend v2 in v0.62.8 (bug.md "Backend reconnect leaks a thread").
    SPEC WRITTEN 16 Oktober 2026 after the design talk: docs/website.md (DeciRemnant, deciremnant.vercel.app,
    private repo, Next.js on Vercel, v1 download + guide); skill decimation-website. Waiting for the user's review,
-   then the implementation plan.
+   then the implementation plan. BUILT 16 Oktober 2026 (plan docs/website_plan.md tasks 1..13): site repo
+   ~/Projects/deciremnant (local, 33 tests, checked at desktop and phone width), eleven real screenshots; waiting for
+   the user: the private GitHub repo, Vercel import, a GITHUB_TOKEN there, then the live check (task 14).
 
 ## Code and tools
 
