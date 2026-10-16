@@ -185,9 +185,9 @@
     "semantic_hash": "0eb8c9d8e9e0e9840f107f630d3faa21"
   },
   "dev/src/main/java/net/decimation/worldgen/LargeSites.java": {
-    "mtime": 1792144935.6463287,
-    "ast_hash": "6c3c8181b245f4aa53093ea5bc5f0f56",
-    "semantic_hash": "6c3c8181b245f4aa53093ea5bc5f0f56"
+    "mtime": 1792162435.1438382,
+    "ast_hash": "82ed47090e92fe104771434a8b809f80",
+    "semantic_hash": "82ed47090e92fe104771434a8b809f80"
   },
   "dev/src/main/java/net/decimation/worldgen/Plan.java": {
     "mtime": 1791484694.0373054,
@@ -1735,9 +1735,9 @@
     "semantic_hash": "e8564bc6458835de29bc9ea8ba1e842c"
   },
   ".claude/skills/decimation-website/SKILL.md": {
-    "mtime": 1792154774.0274713,
-    "ast_hash": "36145a305d351bddbd0f379ce27ddc23",
-    "semantic_hash": "36145a305d351bddbd0f379ce27ddc23"
+    "mtime": 1792162650.3642635,
+    "ast_hash": "a9cb1939d0c01df86fe58275497cc275",
+    "semantic_hash": "a9cb1939d0c01df86fe58275497cc275"
   },
   "docs/website.md": {
     "mtime": 1792154774.025414,
@@ -1745,9 +1745,9 @@
     "semantic_hash": "559cfafe3d64d01019e7ea35adf4ce7c"
   },
   "docs/website_plan.md": {
-    "mtime": 1792154774.0689633,
-    "ast_hash": "b8b1f3309ef8de1fe7b73805e492a2c3",
-    "semantic_hash": "b8b1f3309ef8de1fe7b73805e492a2c3"
+    "mtime": 1792162650.3638773,
+    "ast_hash": "5d1b102304eb0b636d678a979c1606ce",
+    "semantic_hash": "5d1b102304eb0b636d678a979c1606ce"
   },
   "dev/src/main/java/net/decimation/worldgen/devtest/SiteShotsTest.java": {
     "mtime": 1792152488.6815445,

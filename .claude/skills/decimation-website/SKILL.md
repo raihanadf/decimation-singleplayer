@@ -44,6 +44,8 @@ Facts, decisions and the page text: docs/website.md (the spec). Site code: the P
 11. Screenshots come from the real world by the siteshots dev test: find subjects in the server log
    (tools/site/subjects.py), aim with top down block maps (tools/topdown_blocks.py), shoot at the largest 16:9 the
    screen allows (1440 x 810 here), read every shot, and reshoot a first visit (fresh chunks draw for minutes).
+12. Keyboard: an overlay (the screenshot lightbox, the phone menu) takes focus when it opens, closes on Escape and
+   gives focus back to the control that opened it; test it in Vitest and once in a real browser.
 
 ## Casebook (never delete a case)
 
@@ -73,4 +75,9 @@ Facts, decisions and the page text: docs/website.md (the spec). Site code: the P
   prerendered), real release data (Download 0.59.0, 241 MB), desktop and phone pictures read, width 390, no console
   errors, fonts 12 / 18 / 24 / 36 px, all links (jar 302), Open Graph picture 200.
 - Open: the user's verdict on the live site; a GITHUB_TOKEN in Vercel (cannot be seen from outside).
+
+### Case 4: deferred minors (16 Oktober 2026)
+- User: "fix the deferred minors". Fixed: base placement line logged once (3 lines for 3 bases, was up to 122),
+  lightbox focus in and back, Escape closes the phone menu (two tests RED then GREEN, real browser checked), Vite's own
+  tsconfig paths, the site README. Site commit 680fb97.
 

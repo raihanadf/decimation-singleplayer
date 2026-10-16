@@ -2286,3 +2286,14 @@ From the execution ledgers (git ignored workspaces); every deviation from the ta
 - Final: minor (deferred): Vite suggests resolve.tsconfigPaths instead of the vite-tsconfig-paths plugin (notice only).
 - Final: minor (deferred): the site repo README is still the create-next-app template.
 - Final: Ruling: metadataBase is https://deciremnant.vercel.app; if Vercel gives another address in Task 14, update app/layout.tsx then; cost if wrong: Open Graph previews point at the wrong host.
+
+## Deferred minors fixed (16 Oktober 2026, after the user's "fix the deferred minors")
+
+- Placement log lines: "military base ... planned at" logged once per site (LargeSites BASE_LOGGED, like the camps);
+  measured on a fresh seed 1 server run: 3 bases, 3 lines (was up to 122 repeats of one line).
+- Lightbox focus: opening a screenshot moves focus into the dialog, closing (click or Escape) gives it back to the
+  picture's button; the phone menu closes on Escape and focus returns to the Menu button. Tests "moves focus into the
+  open picture ..." and "closes the phone menu on Escape ..." RED then GREEN; checked in a real browser too.
+- Vite: resolve.tsconfigPaths instead of the vite-tsconfig-paths plugin (notice gone, 35 tests pass).
+- README of the site repo written (what, run, how it works, update, credits).
+

@@ -25,6 +25,8 @@ public class LargeSites
     static final float CAMP_CHANCE = 0.05f;
     /** Camp sites already logged (one line per site). */
     private static final java.util.Set<String> CAMP_LOGGED = java.util.Collections.synchronizedSet(new java.util.HashSet<String>());
+    /** Military base sites already logged (one line per site; plan() runs again for every chunk of the site). */
+    private static final java.util.Set<String> BASE_LOGGED = java.util.Collections.synchronizedSet(new java.util.HashSet<String>());
 
     private final List<Schematic> schematics;
     private final Map<Integer, StructureGenerator.Sub> subs;
@@ -126,8 +128,11 @@ public class LargeSites
             return null;
         }
         long seed = world.getSeed() ^ (siteX * 341873128712L + siteZ * 132897987541L) ^ 0xF0B5L;
-        cpw.mods.fml.common.FMLLog.info("[deciworldgen] military base M%d_%d size %d planned at %d,%d (turns %d)",
-                                        siteX, siteZ, size, x, z, turns);
+        if (BASE_LOGGED.add(siteX + "_" + siteZ))
+        {
+            cpw.mods.fml.common.FMLLog.info("[deciworldgen] military base M%d_%d size %d planned at %d,%d (turns %d)",
+                                            siteX, siteZ, size, x, z, turns);
+        }
         return new net.decimation.worldgen.military.MilitaryBasePlan("M" + siteX + "_" + siteZ, size, seed, x, z, turns);
     }
 
