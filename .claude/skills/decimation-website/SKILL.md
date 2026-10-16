@@ -79,5 +79,6 @@ Facts, decisions and the page text: docs/website.md (the spec). Site code: the P
 ### Case 4: deferred minors (16 Oktober 2026)
 - User: "fix the deferred minors". Fixed: base placement line logged once (3 lines for 3 bases, was up to 122),
   lightbox focus in and back, Escape closes the phone menu (two tests RED then GREEN, real browser checked), Vite's own
-  tsconfig paths, the site README. Site commit 680fb97.
+  tsconfig paths, the site README. Site commit 680fb97. Live checked after the user's push: focus into the zoomed
+  shot and back, Escape on the phone menu, width 390, no console errors, all links.
 
