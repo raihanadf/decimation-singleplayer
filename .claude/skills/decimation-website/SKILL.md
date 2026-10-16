@@ -94,4 +94,7 @@ Facts, decisions and the page text: docs/website.md (the spec). Site code: the P
   alts repeating their captions, a link told apart by colour only, hero without fetchpriority (Next 16 deprecated
   priority), PNG textures. Lighthouse SEO said 100 before: it checks only the basics.
 - Fixed in site commit 546f637; local Lighthouse accessibility 100, SEO 100; heading order needed h3, not h4.
+- Live after the user's push: Lighthouse 100 in all four categories on mobile and desktop (was 96 / 96 / 100 / 100 on
+  mobile), every head tag, crawl file, icon and link checked; desktop and phone pages read (docs/shots/
+  website_live_v0.62.9/).
 

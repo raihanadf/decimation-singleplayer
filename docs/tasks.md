@@ -11,7 +11,7 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [x] WorldClock day never advances: saved day counter (v0.62.9)
 - [x] DeciRemnant website v1 live: https://deciremnant.vercel.app/ (checked live)
 - [ ] DeciRemnant: the user's verdict on the live site; GITHUB_TOKEN in Vercel (recommended)
-- [~] DeciRemnant SEO (decimation + minecraft): site 546f637 waits for the user's push, then the live check
+- [x] DeciRemnant SEO (decimation + minecraft): live, Lighthouse 100 on mobile and desktop
 - [ ] Google Search Console: verify the site, submit sitemap.xml (user)
 - [ ] "Entity is already tracked" at every dev world load (bug.md): find which entity
 - [ ] survivor partner idea: design talk (docs/ideas.md item 21)

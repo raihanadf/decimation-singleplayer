@@ -325,9 +325,9 @@
     "semantic_hash": "0145e0863788d451e8ae4273d3c2abdd"
   },
   "docs/shots_index.md": {
-    "mtime": 1792153274.9434261,
-    "ast_hash": "e71c70e2b2241a4c9cd3405245ca0e98",
-    "semantic_hash": "e71c70e2b2241a4c9cd3405245ca0e98"
+    "mtime": 1792165478.8408089,
+    "ast_hash": "857e18fc3a1148c5d138c90475430c14",
+    "semantic_hash": "857e18fc3a1148c5d138c90475430c14"
   },
   "docs/interior_spec.md": {
     "mtime": 1791385593.9436893,
@@ -655,9 +655,9 @@
     "semantic_hash": "59092135d7782c740ec478643992e90b"
   },
   "docs/roadmap.md": {
-    "mtime": 1792165028.9049978,
-    "ast_hash": "1de992846f5819abf25e6e5373b8288f",
-    "semantic_hash": "1de992846f5819abf25e6e5373b8288f"
+    "mtime": 1792165478.839726,
+    "ast_hash": "3ba49efe2a8734162a682f6f5833ad50",
+    "semantic_hash": "3ba49efe2a8734162a682f6f5833ad50"
   },
   "dev/src/main/java/net/decimation/worldgen/LegacyStreets.java": {
     "mtime": 1791487239.5087948,
@@ -1540,9 +1540,9 @@
     "semantic_hash": "294036847a9caffda351bfa855a78636"
   },
   "docs/tasks.md": {
-    "mtime": 1792165028.9047647,
-    "ast_hash": "72ee1846a808c0dfd54014eae6012e43",
-    "semantic_hash": "72ee1846a808c0dfd54014eae6012e43"
+    "mtime": 1792165478.8393853,
+    "ast_hash": "420e4cb8ea5e39db013d9faddf608036",
+    "semantic_hash": "420e4cb8ea5e39db013d9faddf608036"
   },
   "tools/skillcheck.py": {
     "mtime": 1792098139.5315723,
@@ -1735,14 +1735,14 @@
     "semantic_hash": "e8564bc6458835de29bc9ea8ba1e842c"
   },
   ".claude/skills/decimation-website/SKILL.md": {
-    "mtime": 1792164906.1551688,
-    "ast_hash": "84e99473edb0b3ee90db4a5fcc044b1c",
-    "semantic_hash": "84e99473edb0b3ee90db4a5fcc044b1c"
+    "mtime": 1792165478.8390088,
+    "ast_hash": "f9c3ba7ef61263b197302d6bd9a45ddd",
+    "semantic_hash": "f9c3ba7ef61263b197302d6bd9a45ddd"
   },
   "docs/website.md": {
-    "mtime": 1792164906.1548886,
-    "ast_hash": "de9e256bfc8dee2df068533760c53d15",
-    "semantic_hash": "de9e256bfc8dee2df068533760c53d15"
+    "mtime": 1792165478.8387425,
+    "ast_hash": "ae3341ebdba41f73ea950b4866795a4c",
+    "semantic_hash": "ae3341ebdba41f73ea950b4866795a4c"
   },
   "docs/website_plan.md": {
     "mtime": 1792162650.3638773,

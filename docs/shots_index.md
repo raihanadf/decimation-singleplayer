@@ -38,6 +38,18 @@ Rejected on the way (not kept): hero over the clouds (round 1), walls filling th
 taken before the camera moved (fixed: counters reset per row), half drawn chunks on first visits (fixed: wait for the
 chunks at the camera and 48 ahead, up to 120 s).
 
+## website_live_v0.62.9/ (DeciRemnant live after the SEO commit 546f637, agent-browser, 16 Oktober 2026)
+
+- `seo_live_desktop.png` (1300 wide, full page) and `seo_live_desktop_overview.png` (two columns): hero with the
+  splash "Now with airports!", lead with Decimation, BoehMod and Minecraft 1.7.10, torn orange "Download 0.59.0 ·
+  241 MB" and torn black "Install guide >>" (WebP textures drawn), underlined "All versions on GitHub"; six feature
+  cards with item icons; ten screenshots; six coming soon cards; install guide (4 facts, 4 tabs, 6 steps); changelog
+  with 0.59.0 open, its headings "Install (once)" and "Changes since 0.58.0" as bold h3 a little larger than the note
+  text; four questions; underlined "Every release on GitHub" and "Report a bug"; footer.
+- `seo_live_phone.png` (390 wide) and `seo_live_phone_overview.png` (three columns): the same page in one column,
+  splash "Up to 64 districts!" above the title without touching it, buttons stacked, gallery two wide, no sideways
+  scroll.
+
 ## website_design_v0.62/ (DeciRemnant website mockups, browser companion, 16 Oktober 2026; docs/website.md)
 - round1_three_looks.png: the top of the page in three looks (A ivory field report, B warm night with the city
   shot as full width hero, C black and blood red game menu echo). User: "B looks best, but can be more minecraft".

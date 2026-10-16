@@ -278,8 +278,15 @@ BoehMod page).
 - Page outline: release notes' h1 / h2 become h3 under the "What changed" h2.
 - Icons: our MAC-10 on the download orange (app/icon.png 32, app/apple-icon.png 180, app/favicon.ico 16 / 32 / 64),
   written by tools/site/export_assets.py.
-- Before (live): Lighthouse mobile 96 / 96 / 100 / 100 (performance, accessibility, best practices, SEO); after
-  (local production build): accessibility 100, SEO 100, every flagged audit passing.
+- Lighthouse 12 on the live site (performance, accessibility, best practices, SEO): before mobile 96 / 96 / 100 / 100,
+  desktop 100 / 96 / 100 / 100; after the push of 546f637 mobile 100 / 100 / 100 / 100 (LCP 1.8 s, CLS 0), desktop
+  100 / 100 / 100 / 100 (LCP 0.5 s). Left, no score effect: unused framework JavaScript 55 KiB, legacy JavaScript
+  14 KiB (Next.js chunks), panel / mask textures 17 KiB, hero 29 KiB larger than shown on desktop.
+- Live checked 16 Oktober 2026: title 54, description 151, Open Graph and Twitter complete, canonical, robots.txt,
+  sitemap.xml, JSON-LD (WebSite + SoftwareApplication with the release's version and jar link), three icons 200, one
+  h1, no skipped heading level, every picture with alt (11 screenshots carry both keywords), no dash characters, all
+  links. The canonical prints the root without its trailing slash: the same address as the sitemap's (an empty path
+  is "/").
 - For the user: Google Search Console, verify the site and submit https://deciremnant.vercel.app/sitemap.xml (not
   done yet [not verified]).
 
