@@ -36,3 +36,7 @@ Facts and the verified turn order: docs/decimation_code/npcs.md. Our tiers: new_
 - Expecting the client to show the server's gun: Decimation rolls guns per side; use NpcLoadouts' synced gun.
 - Spawning in the air for a test: the client copy falls; stand NPCs on the DevTestArena floor.
 - Forgetting traders are FactionHumanEntity too: a "every human" rule hits traders unless they are excluded.
+- Spawning a mob from an EntityJoinWorldEvent handler while a chunk loads: World.addLoadedEntities walks the chunk's
+  live list and adds the new mob again (Decimation's PlayerJoinSync swaps did: double speed mobs; fixes/JoinOnce now
+  cancels such second joins). Check with `python3 tools/devtest.py doublejoin`; -Ptrackdebug logs any entity that
+  joins twice with both stacks.

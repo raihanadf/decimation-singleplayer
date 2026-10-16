@@ -1008,6 +1008,10 @@ of the last session:
   the Community tab "coming soon", status rows Global Server / Community Server / Download Offline, "My Supporter" is
   "Early access"; dev test `menupages` (run last). Check class texts by exact old strings: "Supporter" also matches
   the field name isSupporter.
+  v0.64.2 (17 Oktober 2026, bug.md "Entity is already tracked"): Decimation's mob swaps (PlayerJoinSync: bloater /
+  hulk / mech / frail) spawned during a chunk load were added twice and updated twice a tick (double speed); fixes/
+  JoinOnce cancels a join of an entity the world already holds. Dev test `doublejoin`; dev flag -Ptrackdebug
+  (devtest/TrackDebug) logs any entity that joins a world twice with both stacks (FML log, not latest.log).
   Gun study (10 Oktober 2026): docs/gun_style_guide.md, tools/guns/study.py
   (renders / measures Decimation's guns from the jar, `attach` adds
   attachments as the game places them), dev test mode `gunview` (hip, aim

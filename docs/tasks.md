@@ -24,7 +24,7 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [x] main menu v0.64.1: server pages coming soon (Bukovka, Chernarus), status rows, Early access (dev test menupages)
 - [~] release 0.64.1: one jar built and production tested (server Done, client 22 PASS); waits for the user's push of main + tag, then the GitHub release
 - [ ] forum on our website for My Community (later, roadmap UI 3)
-- [ ] "Entity is already tracked" at every dev world load (bug.md): find which entity
+- [x] "Entity is already tracked": swapped mobs added twice at chunk load, double speed; fixes/JoinOnce (v0.64.2)
 - [ ] survivor partner idea: design talk (docs/ideas.md item 21)
 - [x] backend thread leak: PatchBackend v2, no BoehMod connection (v0.62.8)
 - [x] one skill per Decimation feature (.claude/skills/decimation-code*)

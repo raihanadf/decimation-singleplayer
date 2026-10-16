@@ -138,6 +138,10 @@ tasks.matching { it.name.startsWith("runClient") }.configureEach {
     if (project.hasProperty("cityfps")) {
         jvmArgs("-Ddeciworldgen.autotest.cityfps=true")
     }
+    // -Ptrackdebug: log which entity joins a world twice ("Entity is already tracked", devtest/TrackDebug, bug.md)
+    if (project.hasProperty("trackdebug")) {
+        jvmArgs("-Ddeciworldgen.trackdebug=true")
+    }
     // -Pprops: fps with many props in view / hidden (last autotest world)
     if (project.hasProperty("props")) {
         jvmArgs("-Ddeciworldgen.autotest.props=true")

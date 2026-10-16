@@ -175,6 +175,8 @@ public class DecimationWorldGen
             net.minecraftforge.common.MinecraftForge.EVENT_BUS.register(new net.decimation.fixes.MenuContinue());
         }
         cpw.mods.fml.common.FMLCommonHandler.instance().bus().register(new net.decimation.fixes.WorldClock());
+        // an entity joins a world once: Decimation's mob swaps during a chunk load added the new mob twice (bug.md)
+        net.minecraftforge.common.MinecraftForge.EVENT_BUS.register(new net.decimation.fixes.JoinOnce());
         net.minecraftforge.common.MinecraftForge.EVENT_BUS.register(new Areas());
         // loot of our own on Decimation's loot screen (docs/loot_levels.md): opener and the body entity
         cpw.mods.fml.common.FMLCommonHandler.instance().bus().register(new net.decimation.fixes.Loot());
@@ -382,6 +384,12 @@ public class DecimationWorldGen
         {
             cpw.mods.fml.common.FMLCommonHandler.instance().bus().register(new DevPregen());
             FMLLog.info("[%s] PREGEN enabled", MODID);
+        }
+        // -Ptrackdebug: which entity joins a world twice (bug.md "Entity is already tracked"; devtest/TrackDebug)
+        if (Boolean.getBoolean(net.decimation.worldgen.devtest.TrackDebug.PROPERTY))
+        {
+            net.minecraftforge.common.MinecraftForge.EVENT_BUS.register(new net.decimation.worldgen.devtest.TrackDebug());
+            FMLLog.info("[%s] TRACKDEBUG enabled", MODID);
         }
 
         // PROPERTY is a compile-time constant, so a dedicated server never

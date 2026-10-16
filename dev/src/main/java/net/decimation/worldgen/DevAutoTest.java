@@ -148,6 +148,7 @@ public class DevAutoTest
         if (name.equals("guideshots")) return new net.decimation.worldgen.devtest.GuideShotsTest();
         if (name.equals("mainmenu")) return new net.decimation.worldgen.devtest.MainMenuTest();
         if (name.equals("menupages")) return new net.decimation.worldgen.devtest.MenuPagesTest();
+        if (name.equals("doublejoin")) return new net.decimation.worldgen.devtest.DoubleJoinTest();
         if (name.equals("rail")) return new net.decimation.worldgen.devtest.RailTest();
         if (name.equals("bridge")) return new net.decimation.worldgen.devtest.BridgeTest();
         if (name.equals("cityprops")) return new net.decimation.worldgen.devtest.CityPropsTest();

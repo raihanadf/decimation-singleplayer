@@ -105,15 +105,25 @@ not something we introduced or need to fix) see `documentation.md`.
   runs did not crash. Cause unknown [not verified]; the lot code only plans blocks, it touches no
   world. Watch for it again (an "Entity is already tracked" error came just before).
 
-### "Entity is already tracked" at every dev world load (seen 16 Oktober 2026, Open, not analysed)
-- Vanilla's EntityTracker logs `"Silently" catching entity tracking error ... IllegalStateException: Entity is already
-  tracked!` right after the player joins: 32 times when the live game opened the fresh deciworldgen_devtest world of
-  the siteshots run (build/live.log, 17:07:43, during "Saving chunks"), and in 39 of the last 40 dev client logs
-  (dev/run/client/logs/*.log.gz). An entity is added to the tracker twice, most likely loaded twice from the saved
-  chunks [inferred]; candidates: our residents (SafezoneSites keeper "filled: 20 residents spawned" came right
-  after), loot bodies, Decimation NPCs. No crash; vanilla catches it. Not looked at yet: which entity class, and
-  whether duplicates stay in the world.
-
+### "Entity is already tracked" at every world load: swapped mobs added twice, double speed (seen 16 Oktober 2026, FIXED v0.64.2)
+- Seen: vanilla's EntityTracker logged `"Silently" catching entity tracking error ... IllegalStateException: Entity is
+  already tracked!` 12 to 32 times at each load of a world, in 39 of 40 dev client logs; also once beside the
+  grass ticking crash above.
+- Found 17 Oktober 2026 with the dev diagnostic -Ptrackdebug (devtest/TrackDebug: remembers where each entity joined,
+  logs both stacks when an id joins twice): the entity was a BloaterEntity (deci.ag.e), first joined inside
+  Decimation's PlayerJoinSync (deci.an.e) handler, then again in World.addLoadedEntities of the same chunk load.
+- Cause: PlayerJoinSync swaps joining mobs by spawning the new one at once (1 in 10 infected, not bloaters: a bloater
+  3 in 10, else a hulk; 5 in 100 soldiers: a mech; an infected in the rain: a frail, and both rolls can fire for one
+  infected). During a chunk load that runs inside World.addLoadedEntities, which walks the chunk's LIVE entity list by
+  index: spawnEntityInWorld appends the new mob to that list and adds it to the world, then the walk reaches it and
+  adds it again. The world listed it twice and updated it twice a tick: double speed movement, AI and attacks until it
+  died or its chunk unloaded, for every swapped mob that came with a loaded chunk (in singleplayer: all the time).
+- Fix (no jar patch): fixes/JoinOnce cancels the join of an entity the world already holds (WorldServer's id map has
+  this very object), at HIGHEST priority so Decimation never rolls a swap for it again; one map lookup per join.
+- Checks: dev test `doublejoin` puts 80 plain infected into an arena chunk's list the way a disk load does and runs
+  addLoadedEntities on it. RED before: 8 swapped, 8 listed twice, 40 updates in 20 ticks; after: 6 swapped, 0 listed
+  twice, 20 updates in 20 ticks. A world load with -Ptrackdebug: 0 "already tracked" errors (was 12), 0 duplicate
+  joins; `zombies` and `menu` still PASS.
 
 ### Wasteland fence floating over half slab sidewalks (reported 14 Oktober 2026 by the user, FIXED v0.61.0)
 - User shot docs/shots/wasteland_gate_v0.60.2_review/user_fence_float.png: the inside fence posts and bars

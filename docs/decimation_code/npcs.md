@@ -53,6 +53,12 @@ Dev test `shots` (153 s, bandits, soldiers and Soviets in the arena), trace pref
 - `entityToAttack` is never cleared (the last enemy seen stays); only `getAITarget` (revenge, expires) means
   fighting. GunNoise reads that (CLAUDE.md v0.43.3).
 - Decimation never reacts to a creative player (every isHostileTo excludes creative).
+- PlayerJoinSync (deci.an.e, EntityJoinWorldEvent, both sides) swaps joining mobs by spawning the new one at once:
+  1 in 10 infected (not bloaters) become a bloater (3 in 10) or a hulk, 5 in 100 soldiers a mech, an infected in the
+  rain a frail (both rolls can fire for one infected); the old one is cancelled and set dead. During a chunk load
+  (World.addLoadedEntities walks the chunk's live list) the new mob was added twice: two updates a tick (40 in 20
+  ticks, measured) and "Entity is already tracked!". Fixed by fixes/JoinOnce in v0.64.2 (bug.md; dev test
+  `doublejoin`). The swaps also roll again for every infected saved in a chunk, at each load.
 - InfectedEntity overrides `canEntityBeSeen` but marks it client only (@SideOnly(CLIENT)): a dedicated server uses
   vanilla's check, singleplayer Decimation's (ClientProxy.LineOfSight) even on the server thread [inferred].
 - Cost [inferred, not profiled]: findTarget rays every living entity in range before asking isHostileTo, every tick

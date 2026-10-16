@@ -41,7 +41,7 @@ drop, damage, zones) traced `deci.aK,deci.an,deci.aL` (16 Oktober 2026).
 | PlayerDataAttacher | main class | EntityConstructing | both | runs | |
 | VehicleSeatDamageGuard | main class | LivingHurtEvent | both | runs | |
 | ItemEntityClickPickup | main class | EntityInteractEvent | both | runs [not seen in this trace] | |
-| PlayerJoinSync | main class | EntityJoinWorldEvent | both | runs | |
+| PlayerJoinSync | main class | EntityJoinWorldEvent | both | runs | its mob swaps during a chunk load added the new mob twice: fixes/JoinOnce (v0.64.2) |
 | DeathHandler | main class | LivingDeathEvent | both | runs (NPC humanity on kill) | fixes/HumanityKillHandler adds the isServer gated rules |
 | BottlecapTossGuard | main class | ItemTossEvent | both | runs [not seen] | |
 | DamageModifierHandler | main class | LivingHurtEvent | both, isServer() inside | runs, server branch off | |
