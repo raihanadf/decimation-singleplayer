@@ -49,6 +49,10 @@ chunks at the camera and 48 ahead, up to 120 s).
 - `seo_live_phone.png` (390 wide) and `seo_live_phone_overview.png` (three columns): the same page in one column,
   splash "Up to 64 districts!" above the title without touching it, buttons stacked, gallery two wide, no sideways
   scroll.
+- `search_console_indexing_requested.png` (the user's screenshot, Firefox, 17 Oktober 2026 01:30 WIB): Search Console
+  URL Inspection of https://deciremnant.vercel.app/ says "URL is not on Google"; green box "Indexing requested", URL
+  added to a priority crawl queue; Crawl rows (last crawl, crawled as, crawl allowed, page fetch, indexing allowed)
+  all N/A. The baseline for the indexing check on 20 Oktober 2026.
 
 ## website_design_v0.62/ (DeciRemnant website mockups, browser companion, 16 Oktober 2026; docs/website.md)
 - round1_three_looks.png: the top of the page in three looks (A ivory field report, B warm night with the city

@@ -292,7 +292,14 @@ BoehMod page).
   tests/seo.test.ts fails without it. Live since the user's push (checked 16 Oktober 2026: 200, exact content).
   Verified by the user, and https://deciremnant.vercel.app/sitemap.xml submitted (user, 17 Oktober 2026). Rechecked
   live the same day: the file, sitemap.xml (the one page) and robots.txt all 200. Google's sitemap status, crawling
-  and ranking are seen only in the user's Search Console [not verified].
+  and ranking are seen only in the user's Search Console [not verified]. Indexing of the home page requested by the
+  user (URL Inspection, 17 Oktober 2026 01:30 WIB): "URL is not on Google", last crawl N/A, added to Google's
+  priority crawl queue (shot docs/shots/website_live_v0.62.9/search_console_indexing_requested.png).
+- INDEXING CHECK ON 20 Oktober 2026 (the user asked to be told that day): the user opens Search Console, URL
+  Inspection of https://deciremnant.vercel.app/ (wanted: "URL is on Google"), Pages (1 indexed), Sitemaps (status
+  Success, 1 discovered page), Performance (first impressions for decimation / minecraft searches). From here: a
+  Google search for site:deciremnant.vercel.app in agent-browser (stop at any CAPTCHA). Still not indexed then is
+  normal for a new site: look again a week later [inferred].
 
 ## 10. Design talk record (user revisions)
 
