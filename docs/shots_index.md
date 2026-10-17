@@ -1592,3 +1592,17 @@ User screenshots, creative mode, the milbase sky test bases; each finding is fix
   deci 1.21.10f, deciworldgen 0.43.0, gvc 0.6.1" (the dev jar's version text; the release jar reads the git tag),
   "Connection DeciRemnant relay (free, the limit is shared)", Start hosting. Decimation's HUD (stats top right, food and
   water icons) shows at the edges as it does behind Decimation's own pause menu.
+
+## forum_design_v0.64.8/ (DeciRemnant forum, first mockup, 18 Oktober 2026)
+- refs/: famous game forums studied first (skill decimation-website lesson 17). factorio.png (phpBB: boards grouped
+  General / Support, icon, topics, posts, last post), factorio_bugs.png (bugs split into state boards: Resolved,
+  Assigned, Not a bug, Pending, Duplicates, Won't fix), zomboid.png (Invision: grouped boards with accent icons, New
+  Topics sidebar; bug titles carry [version], body template Branch / Version / Mode / Mods / Save / Steps),
+  vintage.png (Invision; posting limited to game owners after bot spam floods), discourse.png (Godot, Discourse:
+  category sidebar, Latest / Hot / Top, topic rows with tags, avatars, replies, views, activity). Klei, Paradox and
+  the Minecraft Forum answered with a Cloudflare challenge (no shot).
+- mockup_v1.html (open it beside the site's public/ and .next/static, see docs/forum.md): home.png (forum home, three
+  groups, item icons in slots, right column release / new topics / numbers / rules), bugs.png (one bug list with
+  status tags and version, filter chips), topic.png (report table on top, log block, Team badge, status event,
+  marked answer, +1), newbug.png (report form with similar topics warning), builds2.png (gallery cards with tags),
+  home_phone.png (390 wide, no sideways scroll). Verdict: shown to the user, waiting.
