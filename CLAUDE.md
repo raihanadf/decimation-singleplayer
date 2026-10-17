@@ -65,6 +65,8 @@ finding (not only at the end of a task), before moving on:
    new nodes / edges to a JSON and run `tools/graph_carry.py EXTRA.json
    DOC...` between prepare and finish (carries over what graph.json has
    from those docs; see its docstring). Agent only for new docs or rewrites.
+   finish refuses a graph that got smaller; after removing code, check the
+   lost nodes are the removed ones and run `finish --force`.
 3. Mark anything not verified in game or in code `[not verified]` /
    `[inferred]` in the doc itself.
 4. Visual evidence (user rule 2026-10-07: never re-shoot or re-analyse
