@@ -206,3 +206,12 @@ Not covered yet: voice chat, zone banners on walking into a zone, online mode wi
 Approach A chosen (our Cloudflare relay and list; playit.gg addresses as the fallback if it is down), screens approved
 in the browser mockup. Spec: docs/superpowers/specs/2026-10-18-player-hosting-part1-design.md (waits for the user's
 review, then the implementation plan). Real case test planned with the user's brother's Linux laptop over Tailscale.
+
+## 11. Build notes (part 1, from 18 Oktober 2026)
+- Relay tests use @cloudflare/vitest-plugin (the renamed vitest-pool-workers) with vitest 4; `cd relay && npx vitest run`.
+- Background security reviews of the relay commits led to: at most 200 worlds and 2 per address, a request body read
+  at most 8 KB while streaming, join deadlines never postponed by later joins, one data socket per joiner, a host's
+  control socket reconnect keeps its players (relay suite 20 tests).
+- TLS check (plan Task 4): the mod's WebSocket client on Minecraft's netty 4.0.10 reached wss://ws.postman-echo.com/raw
+  with Java 1.8.0_504 (zulu 8 on this Mac): "TLS OK". Mojang's bundled Java 8u51 (older root certificates) is not on
+  this Mac [not verified].
