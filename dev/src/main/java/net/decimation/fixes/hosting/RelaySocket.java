@@ -101,6 +101,7 @@ public final class RelaySocket
                         e.setUseClientMode(true);
                         SSLParameters p = e.getSSLParameters();
                         p.setServerNames(Collections.<SNIServerName>singletonList(new SNIHostName(host)));
+                        p.setEndpointIdentificationAlgorithm("HTTPS"); // the certificate must name this host
                         e.setSSLParameters(p);
                         ch.pipeline().addLast(new SslHandler(e));
                     }
