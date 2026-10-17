@@ -110,9 +110,9 @@
     "semantic_hash": "de153d1f8408971d6190e16a7d4256f9"
   },
   "CLAUDE.md": {
-    "mtime": 1792222533.7326348,
-    "ast_hash": "6c197e39cae05f72037f55c5ba2a4c37",
-    "semantic_hash": "6c197e39cae05f72037f55c5ba2a4c37"
+    "mtime": 1792226173.3413043,
+    "ast_hash": "7c94f407af349da6b0eb107a0ea6980b",
+    "semantic_hash": "7c94f407af349da6b0eb107a0ea6980b"
   },
   "DECIMATION_MOD_TASK.md": {
     "mtime": 1784958353.0126374,
@@ -120,9 +120,9 @@
     "semantic_hash": "aa4550575e47e7c1d0b020a51afbb501"
   },
   "bug.md": {
-    "mtime": 1792224844.8912344,
-    "ast_hash": "12b76d5d7b0cebd61fa979202a177600",
-    "semantic_hash": "12b76d5d7b0cebd61fa979202a177600"
+    "mtime": 1792226173.3420503,
+    "ast_hash": "fe271183418d9a5507b34a8373023d69",
+    "semantic_hash": "fe271183418d9a5507b34a8373023d69"
   },
   "create_weapons.md": {
     "mtime": 1791653625.5948887,
@@ -1540,9 +1540,9 @@
     "semantic_hash": "294036847a9caffda351bfa855a78636"
   },
   "docs/tasks.md": {
-    "mtime": 1792222561.0179896,
-    "ast_hash": "0a810be28cbdb651ed191da833e83ed9",
-    "semantic_hash": "0a810be28cbdb651ed191da833e83ed9"
+    "mtime": 1792226173.340713,
+    "ast_hash": "36a15e840a6233970c6568c0b696ef71",
+    "semantic_hash": "36a15e840a6233970c6568c0b696ef71"
   },
   "tools/skillcheck.py": {
     "mtime": 1792098139.5315723,
@@ -1740,9 +1740,9 @@
     "semantic_hash": "1f93e33bbb4c21bee99ecc911ea6b73c"
   },
   "docs/website.md": {
-    "mtime": 1792216212.6751306,
-    "ast_hash": "7cee044360e00cf97157f1deb0387023",
-    "semantic_hash": "7cee044360e00cf97157f1deb0387023"
+    "mtime": 1792226194.9453855,
+    "ast_hash": "003ea19b4c37ab2b278899328701747d",
+    "semantic_hash": "003ea19b4c37ab2b278899328701747d"
   },
   "docs/website_plan.md": {
     "mtime": 1792162650.3638773,
@@ -1795,9 +1795,9 @@
     "semantic_hash": "6171606ef61617ea7f40a4377dc577f9"
   },
   "docs/main_menu.md": {
-    "mtime": 1792222546.4506876,
-    "ast_hash": "6c81f4ba669afad3e712c532d81bb70d",
-    "semantic_hash": "6c81f4ba669afad3e712c532d81bb70d"
+    "mtime": 1792226173.3426974,
+    "ast_hash": "6cdbb9273489467535277690c2bcd7fd",
+    "semantic_hash": "6cdbb9273489467535277690c2bcd7fd"
   },
   "dev/src/main/java/net/decimation/fixes/MenuContinue.java": {
     "mtime": 1792186370.756785,

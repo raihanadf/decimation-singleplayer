@@ -27,8 +27,8 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [x] in-game update finds the running jar (v0.64.7 local; players on 0.59 .. 0.64.6 install the next release by hand once)
 - [x] update runs on Decimation's own progress screen, Quit game / Later (v0.64.7; dev and production client)
 - [x] our DeciRemnant logo in Decimation's menu banners (v0.64.7; dev and production client)
-- [ ] release 0.64.7: user's push and go; Chernarus credit line in its notes
-- [ ] site coming soon cards (forum, official servers): site commit 8c1ee48 waits for the user's push
+- [x] release 0.64.7 published 17 Oktober 2026 15:33 (pre-release, digest = local sha256 ad4197ab); real self update 0.64.6 to 0.64.7 checked
+- [x] site coming soon cards (forum, official servers): live 17 Oktober 2026
 - [x] "Entity is already tracked": swapped mobs added twice at chunk load, double speed; fixes/JoinOnce (v0.64.2)
 - [ ] survivor partner idea: design talk (docs/ideas.md item 21)
 - [x] backend thread leak: PatchBackend v2, no BoehMod connection (v0.62.8)

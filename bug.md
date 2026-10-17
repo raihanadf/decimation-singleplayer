@@ -118,6 +118,8 @@ not something we introduced or need to fix) see `documentation.md`.
   (its sha256 then equals the published 0.64.6). UpdateTest used MCP only reflection: now DevTestUtil.
 - Seen again by the user 17 Oktober 2026 15:11 in Prism ("Decimation, but better.", its jar 240980301 bytes = the 0.59.0
   release): expected, the screen comes from the 0.59 code in that jar; 0.64.7 is not published and cannot change it.
+- Released in 0.64.7 (17 Oktober 2026 15:33); after it the production client running 0.64.7 as "0.64.6" updated
+  itself from GitHub (dev test `update real=true jar=true from=0.64.6 expect=0.64.7`, all PASS).
 - Way out for an old game: install the release by hand (replace mods/Decimation.jar), or start it with the JVM argument
   -Ddeciworldgen.update.target=<full path of mods/Decimation.jar>: every version 0.59.0 .. 0.64.6 reads that property
   first (checked in the tags 0.59.0, 0.60.1, 0.62.8, 0.64.6), then the old updater downloads and swaps as normal. How

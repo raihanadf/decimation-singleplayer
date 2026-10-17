@@ -187,15 +187,15 @@ review: a total per class could hide a missing text behind a doubled one; the st
 
 ## 6. Open
 
-- The user's look in their own game: released in 0.64.6 (17 Oktober 2026, GitHub pre-release); players on 0.59.0 or
-  newer see "Update" in the menu. The dev client shows it too.
+- The user's look in their own game: released in 0.64.6, the update screen and logo in 0.64.7 (17 Oktober 2026,
+  GitHub pre-releases). Players on 0.59.0 .. 0.64.6 install 0.64.7 by hand once (bug.md); the dev client shows it too.
 - Still dead and kept (not picked): My Community, Server Status, "Not Supporter :(", and Play still opens the dead
   official server list first (menus.md section 7). Since v0.64.1 those pages say coming soon (section 2c).
 - Later (user): a forum on our website for the My Community popup's Forums line (roadmap UI 3); Global Server,
   Community Server, Download and the Bukovka / Chernarus rows wait for real servers (MenuServers holds the rows).
 - Answered by the user (17 Oktober 2026): toasts say DeciRemnant and the Website row pings our site (both v0.64.7);
   the red X icon of an unreachable row stays ("no problem"); the Chernarus pictures are not the user's, their creator
-  allowed their use; a credit line goes into the next release notes (creator's name not known here) [open].
+  allowed their use; credited in the 0.64.7 release notes (creator's name not known here).
 - The Decimation logo (banner.png) on the website: built 17 Oktober 2026 (site fc0d159), live after the user's push.
 
 ## 7. References looked at first (skill decimation-website lesson 17)
