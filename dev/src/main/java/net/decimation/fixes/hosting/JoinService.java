@@ -17,6 +17,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public final class JoinService
 {
     public static final JoinService INSTANCE = new JoinService();
+    /** The text of lang deciworldgen.host.full (plain Java here: tests run without Minecraft's language files). */
+    static final String FULL = "The free relay is full until tomorrow 07:00 WIB";
 
     public interface Toasts
     {
@@ -108,21 +110,27 @@ public final class JoinService
         {
             public void run()
             {
-                JoinHook h = hook;
-                if (h != null)
-                {
-                    h.joining(e.name, port);
-                }
                 try
                 {
-                    Pipe.start(s, new RelayClient(RelayClient.base()).joinSocket(e.room), true, null);
+                    Pipe.start(s, new RelayClient(RelayClient.base()).joinSocket(e.room), true, null, null, new Pipe.First()
+                    {
+                        public void bytes(byte[] first)
+                        {
+                            JoinHook h = hook;
+                            if (h != null && LoginName.nextState(first) == 2)
+                            {
+                                h.joining(e.name, port); // a real join, not a Community row's ping
+                            }
+                        }
+                    });
                 }
                 catch (IOException ex)
                 {
                     close(s);
-                    // the relay refuses the upgrade: 409 full, 404 not listed or no host (spec 5)
+                    // the relay refuses the upgrade: 429 / 1015 / 1027 the free daily limit, 409 full, 404 no host (spec 5)
                     String m = String.valueOf(ex.getMessage());
-                    toasts.show(m.contains("409") ? "This world is full (" + e.max + "/" + e.max + ")" : "The host stopped hosting");
+                    toasts.show(m.contains("429") || m.contains("1015") || m.contains("1027") ? FULL
+                                : m.contains("409") ? "This world is full (" + e.max + "/" + e.max + ")" : "The host stopped hosting");
                 }
             }
         }, "DeciRemnant join pipe");

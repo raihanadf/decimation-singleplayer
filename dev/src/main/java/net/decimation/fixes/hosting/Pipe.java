@@ -40,9 +40,24 @@ public final class Pipe
         return start(tcp, relayUri, waitReady, onClose, null);
     }
 
+    /** Told the first bytes read from the TCP side (the join side tells a login from a Community row's ping). */
+    public interface First
+    {
+        void bytes(byte[] first);
+    }
+
+    private First first;
+
     public static Pipe start(Socket tcp, URI relayUri, boolean waitReady, Runnable onClose, final Gate gate) throws IOException
     {
+        return start(tcp, relayUri, waitReady, onClose, gate, null);
+    }
+
+    public static Pipe start(Socket tcp, URI relayUri, boolean waitReady, Runnable onClose, final Gate gate, First first)
+        throws IOException
+    {
         final Pipe p = new Pipe(tcp, onClose);
+        p.first = first;
         final OutputStream out = tcp.getOutputStream();
         final java.io.ByteArrayOutputStream held = new java.io.ByteArrayOutputStream();
         final boolean[] open = {gate == null};
@@ -125,6 +140,12 @@ public final class Pipe
             byte[] b = new byte[16384];
             for (int n; (n = in.read(b)) > 0; )
             {
+                if (first != null)
+                {
+                    First f = first;
+                    first = null;
+                    f.bytes(java.util.Arrays.copyOf(b, n));
+                }
                 relay.send(b, 0, n);
             }
         }

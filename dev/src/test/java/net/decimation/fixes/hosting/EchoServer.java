@@ -48,6 +48,14 @@ final class EchoServer
                                 FullHttpRequest r = (FullHttpRequest) msg;
                                 hs = new WebSocketServerHandshakerFactory("ws://127.0.0.1" + r.getUri(), null, false, 1 << 20).newHandshaker(r);
                                 hs.handshake(ctx.channel(), r);
+                                if (r.getUri().startsWith("/join/"))
+                                {
+                                    ctx.writeAndFlush(new TextWebSocketFrame("{\"ready\":true}")); // as the relay does once the host answers
+                                }
+                                if (r.getUri().startsWith("/join/full"))
+                                {
+                                    ctx.close();
+                                }
                                 return;
                             }
                             WebSocketFrame f = (WebSocketFrame) msg;

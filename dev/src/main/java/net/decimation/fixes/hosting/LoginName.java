@@ -83,6 +83,25 @@ final class LoginName
         return name.indexOf('\u0000') >= 0 ? BAD : name;
     }
 
+    /** The handshake's next state (1 status ping, 2 login), -1 while it cannot be read yet or at all. */
+    static int nextState(byte[] b)
+    {
+        int[] at = {0};
+        int len = varint(b, at);
+        if (len < 0 || len > 300 || b.length < at[0] + len || varint(b, at) != 0)
+        {
+            return -1;
+        }
+        varint(b, at); // protocol
+        int addr = varint(b, at);
+        if (addr < 0 || addr > 255)
+        {
+            return -1;
+        }
+        at[0] += addr + 2;
+        return at[0] < b.length ? varint(b, at) : -1;
+    }
+
     /** A VarInt at at[0] (moved past it); -1 when the bytes end inside it, -2 when it is longer than 5 bytes. */
     private static int varint(byte[] b, int[] at)
     {
