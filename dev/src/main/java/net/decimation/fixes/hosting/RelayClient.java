@@ -42,7 +42,8 @@ public final class RelayClient
     /** -Ddeciworldgen.relay overrides the deployed address (dev tests, a local `wrangler dev`). */
     public static String base()
     {
-        return System.getProperty("deciworldgen.relay", DEPLOYED);
+        String p = System.getProperty("deciworldgen.relay");
+        return p == null || p.trim().isEmpty() ? DEPLOYED : p.trim(); // an empty setting means the deployed relay
     }
 
     public String[] host(String name, String player, boolean online, int max, ModSet mods, String version) throws IOException

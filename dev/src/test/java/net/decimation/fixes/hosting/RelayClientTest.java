@@ -108,4 +108,20 @@ class RelayClientTest
         assertEquals("ws://127.0.0.1:" + http.getAddress().getPort() + "/join/r0", client().joinSocket("r0").toString());
         assertTrue(new RelayClient("https://x.workers.dev").hostSocket("r0", "s0").toString().startsWith("wss://x.workers.dev/host/r0?secret="));
     }
+
+    @Test
+    void anEmptyRelaySettingMeansTheDeployedRelay()
+    {
+        String before = System.getProperty("deciworldgen.relay");
+        System.setProperty("deciworldgen.relay", "");
+        try
+        {
+            assertEquals(RelayClient.DEPLOYED, RelayClient.base());
+        }
+        finally
+        {
+            if (before == null) System.clearProperty("deciworldgen.relay"); else System.setProperty("deciworldgen.relay", before);
+        }
+    }
 }
+
