@@ -110,9 +110,9 @@
     "semantic_hash": "de153d1f8408971d6190e16a7d4256f9"
   },
   "CLAUDE.md": {
-    "mtime": 1792194178.0415168,
-    "ast_hash": "c22aab6da654577fc32348120652b175",
-    "semantic_hash": "c22aab6da654577fc32348120652b175"
+    "mtime": 1792195409.5559642,
+    "ast_hash": "4f4e8de7a25abc3486d2c0405ba52d96",
+    "semantic_hash": "4f4e8de7a25abc3486d2c0405ba52d96"
   },
   "DECIMATION_MOD_TASK.md": {
     "mtime": 1784958353.0126374,
@@ -325,9 +325,9 @@
     "semantic_hash": "0145e0863788d451e8ae4273d3c2abdd"
   },
   "docs/shots_index.md": {
-    "mtime": 1792193073.09865,
-    "ast_hash": "7f14454a92f33b48d7be57e2f98a3e5e",
-    "semantic_hash": "7f14454a92f33b48d7be57e2f98a3e5e"
+    "mtime": 1792194296.9361634,
+    "ast_hash": "ef8e83eff0649b61951a4b64ebfbc44d",
+    "semantic_hash": "ef8e83eff0649b61951a4b64ebfbc44d"
   },
   "docs/interior_spec.md": {
     "mtime": 1791385593.9436893,
@@ -1540,9 +1540,9 @@
     "semantic_hash": "294036847a9caffda351bfa855a78636"
   },
   "docs/tasks.md": {
-    "mtime": 1792194178.0400472,
-    "ast_hash": "0010623893bb850c7cc716bb41a82e4d",
-    "semantic_hash": "0010623893bb850c7cc716bb41a82e4d"
+    "mtime": 1792194307.8479867,
+    "ast_hash": "b72f41fab7ee5e8292ebe17c2ea93a50",
+    "semantic_hash": "b72f41fab7ee5e8292ebe17c2ea93a50"
   },
   "tools/skillcheck.py": {
     "mtime": 1792098139.5315723,
