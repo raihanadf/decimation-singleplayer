@@ -120,9 +120,9 @@
     "semantic_hash": "aa4550575e47e7c1d0b020a51afbb501"
   },
   "bug.md": {
-    "mtime": 1792226173.3420503,
-    "ast_hash": "fe271183418d9a5507b34a8373023d69",
-    "semantic_hash": "fe271183418d9a5507b34a8373023d69"
+    "mtime": 1792231108.9888816,
+    "ast_hash": "954018383790994024d568af55da9111",
+    "semantic_hash": "954018383790994024d568af55da9111"
   },
   "create_weapons.md": {
     "mtime": 1791653625.5948887,
@@ -1540,9 +1540,9 @@
     "semantic_hash": "294036847a9caffda351bfa855a78636"
   },
   "docs/tasks.md": {
-    "mtime": 1792230898.0926545,
-    "ast_hash": "5ffb3c6ef4a425a03bb7ebfc0386e3ee",
-    "semantic_hash": "5ffb3c6ef4a425a03bb7ebfc0386e3ee"
+    "mtime": 1792231108.991233,
+    "ast_hash": "688e829201fd96ac6a7de1ca434ab167",
+    "semantic_hash": "688e829201fd96ac6a7de1ca434ab167"
   },
   "tools/skillcheck.py": {
     "mtime": 1792098139.5315723,

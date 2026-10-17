@@ -30,7 +30,8 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [x] release 0.64.7 published 17 Oktober 2026 15:33 (pre-release, digest = local sha256 ad4197ab); real self update 0.64.6 to 0.64.7 checked
 - [x] site coming soon cards (forum, official servers): live 17 Oktober 2026
 - [x] release 0.64.8 published 16:53 (digest = local sha256 73049bc7); real update 0.64.7 to 0.64.8 checked in the production client
-- [ ] user: real auto update in Prism ("Decimation, but better." on 0.64.7): Update, Complete!, Quit game, title v0.64.8
+- [x] user: real auto update in Prism 0.64.7 to 0.64.8 worked (16:57, title v0.64.8, Updates "Up to date: 0.64.8")
+- [ ] update screen bar stops at about 80 % on some window sizes (bug.md, Decimation's integer rounding)
 - [x] "Entity is already tracked": swapped mobs added twice at chunk load, double speed; fixes/JoinOnce (v0.64.2)
 - [ ] survivor partner idea: design talk (docs/ideas.md item 21)
 - [x] backend thread leak: PatchBackend v2, no BoehMod connection (v0.62.8)

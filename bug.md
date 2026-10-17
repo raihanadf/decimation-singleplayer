@@ -105,6 +105,16 @@ not something we introduced or need to fix) see `documentation.md`.
   runs did not crash. Cause unknown [not verified]; the lot code only plans blocks, it touches no
   world. Watch for it again (an "Entity is already tracked" error came just before).
 
+### Update screen bar stops short of full (found 17 Oktober 2026 in the user's Prism, OPEN)
+- The user's real auto update 0.64.7 to 0.64.8 (16:56): "SAFE TO CLOSE GAME!", 239.5mb/239.5mb, Quit game and Later,
+  but the green bar about 80 % long. After Quit game and a restart the title read DeciRemnant v0.64.8: the update itself
+  worked (first real auto update by a player's game).
+- Cause [inferred from GuiUpdateProgress.drawScreen]: bar length = (width / 2) / 100 * percent in integers; with a GUI
+  width of 500 that is 2 * 100 = 200 of 250 pixels. Decimation's own bug; the dev shots happened to use widths where
+  it rounds less.
+- Fix idea: UpdateProgress puts percent * (width / 2) / (100 * ((width / 2) / 100)) into downloadPercent, so the
+  drawn bar matches the real share; test with the screen width of the user's window.
+
 ### In-game update never worked in a shipped game: "does not run from a jar (dev folder)" (found 17 Oktober 2026, FIXED v0.64.7)
 - Seen by the user in Prism on 0.59: Update, then "this game does not run from a jar (dev folder): nothing to replace".
 - Cause: Updater.target read our class's code source, which under Forge's class loader is a "jar:file:...!/..."
