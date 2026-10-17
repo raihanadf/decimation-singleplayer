@@ -110,6 +110,12 @@ public final class HostService
         inLine = false;
     }
 
+    /** Tests: as before the first start. */
+    void clearForTests()
+    {
+        settings = null;
+    }
+
     void playingForTests(Playing p)
     {
         playing = p;
@@ -514,7 +520,11 @@ public final class HostService
             return Pipe.Gate.DENY;
         }
         Settings s = settings;
-        if (name.equals(LoginName.STATUS) || s == null || s.online)
+        if (s == null || state == State.OFF)
+        {
+            return Pipe.Gate.DENY; // nothing hosted: fail closed
+        }
+        if (name.equals(LoginName.STATUS) || s.online)
         {
             return Pipe.Gate.ALLOW; // a status ping, or Mojang checks the account
         }

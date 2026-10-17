@@ -227,5 +227,14 @@ class HostServiceTest
         assertEquals(2, hosts.get());
         assertEquals(1, stops.get());
     }
+
+    @Test
+    void noHostingMeansNoLogin()
+    {
+        HostService.INSTANCE.stop();
+        HostService.INSTANCE.clearForTests();
+        byte[] a = LoginNameTest.join(LoginNameTest.handshake(2), LoginNameTest.loginStart("Rizky"));
+        assertEquals(Pipe.Gate.DENY, HostService.INSTANCE.admit(a), "the gate fails closed when nothing is hosted");
+    }
 }
 
