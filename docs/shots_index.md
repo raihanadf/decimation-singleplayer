@@ -279,6 +279,18 @@ Site checks of the local build (agent-browser):
   beside it lies further west, not in the picture), a highway comes in from the west at z about 520
   and one from the north at x about 1545; small lakes north of the city.
 
+## update_v0.64.7/ (Decimation's own update screen and our logo, 17 Oktober 2026)
+- prod_update_progress.png / prod_update_ready.png: production client (the one jar), in a world (the HUD shows
+  through Decimation's half black layer; from the menu it is fully black). Decimation's GuiUpdateProgress: our banner
+  (Decimation's soldier and infected over the DeciRemnant logo), "DO NOT CLOSE YOUR GAME!" (red) while downloading,
+  "SAFE TO CLOSE GAME!" (green) when ready, "Downloading: Decimation.jar (239.0mb)", our two lines, "Downloading:
+  DeciRemnant 0.64.6 from GitHub", full green bar with the flare, "239.0mb/239.0mb", buttons Quit game and Later under
+  it.
+- dev_sheet_mainmenu_logo.png: home menu (two shots): the DeciRemnant logo top left where DECIMATION was, v0.64.6 under
+  it, everything else as section main_menu_v0.64.0.
+- dev_sheet_menupages_logo.png: community popup, official list and status page with the new logo top left; status
+  rows Global / Community / Download Offline, Website (Official DeciRemnant Website) Online.
+
 ## update_v0.59/ (auto update, dev test `update` against the fake release server, 13 Oktober 2026)
 - sheet_update_real.png: the same three screens against the real GitHub release 0.59.0 (229 MB).
 - sheet_update.png: update_menu: Decimation's home menu with a red "Update" button where Resume / Play

@@ -33,7 +33,8 @@ Status values: `Done` / `Decided` (direction agreed, not built yet) /
   newest release with a "Decimation.jar" asset above our mcmod.info version. Decimation's own
   UpdateChecker.isUpdateRequired (tools/patches/PatchNoUpdate.java v2) answers Updater.required(), so its
   menu button says "Update" only then, "Play" otherwise. The button's page (GuiMenuUpdates) is swapped
-  for fixes/UpdateScreen (GuiOpenEvent): download at once into "<jar>.download" beside the running jar
+  for fixes/UpdateScreen (GuiOpenEvent; since v0.64.7 Decimation's own progress screen GuiUpdateProgress through
+  fixes/UpdateProgress, UpdateScreen only for a failure: docs/main_menu.md 2d): download at once into "<jar>.download" beside the running jar
   with a progress bar, checked against GitHub's sha256 digest, then "Quit game" / "Later"; the swap runs
   when the game closes (fixes/UpdateSwap as its own Java process from a temp copy: Windows locks a
   loaded jar). config/deciworldgen_update.cfg: enabled, api.

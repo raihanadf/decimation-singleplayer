@@ -87,6 +87,30 @@ Chernarus pictures ("here the chernarus location"). Shots: docs/shots/main_menu_
   old domain gets our players' connections. The status page's pinger has no timeout: on Decimation's dead hosts it sat
   at "Pinging..." for over 20 s (a resolving host that never answers holds the socket about 75 s).
 
+## 2d. v0.64.7 (17 Oktober 2026): Decimation's own update screen, our logo
+
+- **Update** (user: "why not using from decimation instead? as i know decimation has it owns update loading screen"):
+  the menu's Update button opens Decimation's own progress screen GuiUpdateProgress (deci.i.m: black page, the banner
+  with the soldier and the infected, "DO NOT CLOSE YOUR GAME!" in red while it downloads, "SAFE TO CLOSE GAME!" in green
+  after, "Downloading: Decimation.jar (12.8mb)", two lines, "Downloading: DeciRemnant 0.64.6 from GitHub", the green
+  bar with its flare, "40.0mb/12.8mb" (Decimation prints total first)). fixes/UpdateProgress fills the fields it draws
+  (UpdateChecker azL .. azP and fileName, Deci.setUpdateProgress) from our download each client tick. When the jar is
+  checked: **Quit game** and **Later** under the bar (that screen draws its black layer over its own buttons, so ours
+  are drawn again on DrawScreenEvent.Post). A failed download or a check that found nothing yet shows our old
+  UpdateScreen (the reason, Try again / Back). The two lines come from Decimation's lang file, rewritten by
+  tools/menu_assets.py (no "your game may freeze", no "your game will Shut down": ours does neither).
+- **Logo** (user: "replace old logo on decimation with our new logo"): banner.png (top left of every menu page; in game
+  too) and banner_intro.png (home page fade in, update screen) carry our official DeciRemnant logo (the website's,
+  docs/shots/main_menu_v0.64.0/logo_src, white paper cleared by tools/site/export_assets.py clear_paper), at twice
+  Decimation's size (drawn by UV 0..1: sharper, same place). banner_intro keeps Decimation's soldier and infected; only
+  its lettering and barbed wire (row 127 down) are replaced. The window icon (a character portrait, no name) and the
+  BoehMod logo (credit) stay. tools/menu_assets.py logos(), three jars.
+- Checked (RED first, then PASS): `update` (fake release: Decimation's screen opens, it shows 33 % / downloading /
+  13.5 of 40.0 MB, ready: Quit game and Later, safe to close), `menu` ("menu logo is ours": 922 x 202 and 1024 x 480
+  loaded, was 461 x 101 and 512 x 240); in the production client with the one jar: `menu update mainmenu menupages
+  real=true jar=true from=0.59.0 expect=0.64.6` all PASS, the real 238 MB release downloaded in 19 s on Decimation's
+  screen and swapped into mods/Decimation.jar. Shots docs/shots/update_v0.64.7 (shots_index.md).
+
 ## 3. Code map
 
 | Piece | Job |
@@ -101,6 +125,8 @@ Chernarus pictures ("here the chernarus location"). Shots: docs/shots/main_menu_
 | tools/patches/PatchMenuTexts.java | ASM on the ORIGINAL classes plus PatchMenuStats (base.jar, section 4b): 47 texts in 12 classes since v0.64.1 (labels, title, version calls, link addresses, window title; status rows and hosts in deci/i/h; row state, "?/?" and " - 0ms" in ListElement deci/d/p; official line and Community tooltip in deci/i/i; popup, toast and profile texts in deci/d/k, i/a, i/e, i/k). Three jars. |
 | fixes/MenuServers | the official list's rows (Bukovka, Chernarus on *.deciremnant.invalid, pictures by map key) through Deci.officialServer (ServerListEntry deci.k.a, setBackground y) |
 | tools/patches/PatchOfficialServers.java | Javassist: ServerListPinger.officialServers (deci.k.b.bg) returns MenuServers.official(). Three jars. |
+| fixes/UpdateProgress | the update on Decimation's progress screen: GuiOpenEvent swaps GuiMenuUpdates (deci.i.l) for it and starts Updater.download; client tick mirrors the download (Deci.setUpdateProgress) and falls back to UpdateScreen on a failure; InitGuiEvent.Post adds Quit game / Later when ready, DrawScreenEvent.Post draws them over the black layer, ActionPerformedEvent.Pre handles them. Registered on both buses. |
+| tools/menu_assets.py logos() | banner.png 922 x 202 and banner_intro.png 1024 x 480 with our logo (source docs/shots/main_menu_v0.64.0/logo_src), the update screen's two lang lines |
 | Deci (tests) | officialRows, showRowPicture (ListElement fH / fK), statusRows (deci.i.h iS..iV, ServerPinger deci.l.a), toasts (ToastNotification deci.b.b S, R, W), popupLines / clickPopupLine (DeciSubScreen deci.d.j fa, fb, g), menuTooltip (DeciMenuButton eN) |
 
 ## 4. Rebuild (after new site shots, before a release)
@@ -167,9 +193,9 @@ review: a total per class could hide a missing text behind a doubled one; the st
   official server list first (menus.md section 7). Since v0.64.1 those pages say coming soon (section 2c).
 - Later (user): a forum on our website for the My Community popup's Forums line (roadmap UI 3); Global Server,
   Community Server, Download and the Bukovka / Chernarus rows wait for real servers (MenuServers holds the rows).
-- Offered, not asked: toasts still carry Decimation's title "Decimation" (ToastNotification), the Website status row
-  pings BoehMod's site, an unreachable row keeps Decimation's red X icon. [not verified] where the Chernarus pictures
-  come from (credit them if they are not the user's own).
+- Answered by the user (17 Oktober 2026): toasts say DeciRemnant and the Website row pings our site (both v0.64.7);
+  the red X icon of an unreachable row stays ("no problem"); the Chernarus pictures are not the user's, their creator
+  allowed their use; a credit line goes into the next release notes (creator's name not known here) [open].
 - The Decimation logo (banner.png) on the website: built 17 Oktober 2026 (site fc0d159), live after the user's push.
 
 ## 7. References looked at first (skill decimation-website lesson 17)

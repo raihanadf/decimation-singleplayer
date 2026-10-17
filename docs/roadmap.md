@@ -297,6 +297,8 @@ menu, a survivor partner who follows the player and carries the gear the player 
   and camera points fixed; v0.62.3 fighters F-15 size (user); waiting for the user's look (new worlds).
 - v0.58.0 one release jar with everything; v0.59.0 auto update from GitHub releases; v0.59.1 the update
   check survives GitHub's API rate limit (ETag cache, release feed fallback; new_feature.md).
+  v0.64.7: the updater finds the running jar (it never could in a shipped game), the download runs on Decimation's
+  own progress screen, our DeciRemnant logo in Decimation's banners (docs/main_menu.md 2d).
 - v0.57.1 wasteland city = a whole city sector inside its city, streets joined through gates in the
   fence (user review of the v0.56 ring: "thas absurd"); new worlds; waiting for the user's look.
   Next ideas from the same review: a military airport in a wasteland city, cities of 8 to 64 districts

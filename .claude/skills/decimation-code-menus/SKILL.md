@@ -13,6 +13,7 @@ Facts and the traced menu and HUD: docs/decimation_code/menus.md.
 |---|---|
 | main menu pages | GuiMenuBase / GuiMenuHome (deci/i/a, deci/i/e) and deci/i/f..m |
 | Play or Update | UpdateChecker.isUpdateRequired (net/decimation/mod/common/utils/h) -> our fixes/Updater (PatchNoUpdate) |
+| update progress | Decimation's GuiUpdateProgress (deci/i/m) fed by fixes/UpdateProgress (UpdateChecker fields) |
 | HUD | IngameHud (deci/g/j), once a frame |
 | loot and gear screen | PlayerInventoryScreen (deci/g/g), GUI id GUI_LOOT |
 | stats shown | fixes/LocalStats, PatchMenuStats |

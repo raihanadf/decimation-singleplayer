@@ -26,7 +26,7 @@ import net.minecraftforge.common.config.Configuration;
  *   release with a "Decimation.jar" asset whose version is above ours (mcmod.info);
  * - required(): what Decimation's UpdateChecker.isUpdateRequired answers (tools/patches/PatchNoUpdate,
  *   v2): true once a newer release is known, so its menu shows "Update"; its update page is replaced by
- *   UpdateScreen;
+ *   Decimation's own progress screen (UpdateProgress; UpdateScreen for a failure);
  * - download(): the asset into "<jar>.download" beside the running jar with progress, checked against
  *   GitHub's sha256 (or the size), then staged; the swap (UpdateSwap, its own process) runs when the
  *   game closes ("Quit game" or later), because a loaded jar cannot be replaced on Windows.

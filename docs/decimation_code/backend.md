@@ -74,7 +74,7 @@ api.mojang.com, mcapi.ca, discord, twitter.
 | Need | Use |
 |---|---|
 | no BoehMod connection, no reconnect threads | tools/patches/PatchBackend.java v2 (v1: 300 ms timeout) |
-| "Play" without the voice chat jar, our releases | tools/patches/PatchNoUpdate.java, fixes/Updater, fixes/UpdateScreen |
+| "Play" without the voice chat jar, our releases | tools/patches/PatchNoUpdate.java, fixes/Updater, fixes/UpdateProgress, fixes/UpdateScreen |
 | stats without the backend | fixes/LocalStats, PatchMenuStats |
 
 ## 6. Checks

@@ -944,6 +944,40 @@ public final class Deci
         return out;
     }
 
+    /** Decimation's update progress screen (GuiUpdateProgress deci.i.m: banner, texts, green bar), shown by our updater. */
+    @cpw.mods.fml.relauncher.SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)
+    public static net.minecraft.client.gui.GuiScreen updateProgressScreen()
+    {
+        return new deci.i.m(deci.a.b.a());
+    }
+
+    @cpw.mods.fml.relauncher.SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)
+    public static boolean isUpdateProgress(net.minecraft.client.gui.GuiScreen screen)
+    {
+        return screen instanceof deci.i.m;
+    }
+
+    /**
+     * What Decimation's progress screen shows (UpdateChecker net.decimation.mod.common.utils.h: downloadUrl azL, percent
+     * azM, downloading azN, downloaded MB azO, total MB azP; fileName is not renamed), filled from our download.
+     */
+    public static void setUpdateProgress(String source, String file, int percent, boolean downloading, double doneMb, double totalMb)
+    {
+        net.decimation.mod.common.utils.h.azL = source;
+        net.decimation.mod.common.utils.h.fileName = file;
+        net.decimation.mod.common.utils.h.azM = percent;
+        net.decimation.mod.common.utils.h.azN = downloading;
+        net.decimation.mod.common.utils.h.azO = doneMb;
+        net.decimation.mod.common.utils.h.azP = totalMb;
+    }
+
+    /** The progress screen's numbers as "percent | downloading | done MB of total MB" (dev tests). */
+    public static String updateProgress()
+    {
+        return net.decimation.mod.common.utils.h.azM + " | " + net.decimation.mod.common.utils.h.azN + " | "
+            + net.decimation.mod.common.utils.h.azO + " of " + net.decimation.mod.common.utils.h.azP + " MB";
+    }
+
     /** The titles of every toast on screen or waiting (ToastNotification deci.b.b X), oldest first. */
     @cpw.mods.fml.relauncher.SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)
     public static java.util.List<String> toastTitles()

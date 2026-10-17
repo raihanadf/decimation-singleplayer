@@ -1036,6 +1036,9 @@ of the last session:
   read itself as a dev folder, so players of 0.59 .. 0.64.6 must install the next release by hand once); toasts
   titled DeciRemnant, the status page's Website row pings deciremnant.vercel.app (PatchMenuTexts, 51 texts in 13
   classes, a text found at least once per class). Test `update jar=true` (production client) swaps the real jar.
+  The update runs on Decimation's OWN progress screen (user; fixes/UpdateProgress fills UpdateChecker's fields, Quit game
+  / Later drawn over its black layer; UpdateScreen only on failure); our DeciRemnant logo in banner.png and
+  banner_intro.png (tools/menu_assets.py logos(), twice Decimation's size, three jars); docs/main_menu.md 2d.
   RELEASE 0.64.6 published 17 Oktober 2026 (GitHub pre-release, Decimation.jar + .sha256; GitHub's asset digest equals
   the local sha256 d6b8dfe2...; notes dist/onejar/RELEASE_NOTES_0.64.6.md): everything since 0.59.0.
   Gun study (10 Oktober 2026): docs/gun_style_guide.md, tools/guns/study.py

@@ -14,7 +14,7 @@ import javassist.CtMethod;
  *
  * v2 (v0.59.0, auto update, docs/ideas.md item 20): gI answers net.decimation.fixes.Updater.required(),
  * true only once OUR GitHub releases have a newer version; the "Update" button then opens our update
- * screen (Updater, UpdateScreen.Hook swaps Decimation's update page). Needs our compiled classes on the
+ * screen (Updater; since v0.64.7 UpdateProgress swaps Decimation's update page for its progress screen). Needs our compiled classes on the
  * Javassist class path (third argument); patch from the ORIGINAL class (Decimation.jar.original.bak
  * copied to a name ending in .jar).
  *

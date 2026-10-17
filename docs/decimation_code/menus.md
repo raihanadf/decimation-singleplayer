@@ -39,7 +39,8 @@ Traced `deci.i,net.decimation.mod.common.utils.h,deci.g.j,net.decimation.fixes.L
   our LocalStats fills the profile numbers, PatchMenuStats renames the labels, the session flag is set valid
   (green Play).
 - Without mods/DecimationVoiceChat.jar Decimation's menu demanded an update: PatchNoUpdate; our own update check
-  (fixes/Updater, UpdateScreen) replaces it.
+  (fixes/Updater) replaces it; since v0.64.7 the download runs on Decimation's own progress screen (GuiUpdateProgress
+  deci/i/m, fixes/UpdateProgress fills its UpdateChecker fields), our UpdateScreen only for a failure.
 - The boot jumpscare intro played its frames from a busy wait thread (the one off intro skip patch).
 - MenuFakeWorld's overrides of Forge world methods were renamed by the obfuscator and never run (the `...Lost`
   methods, architecture.md "Method naming pass").
@@ -48,7 +49,7 @@ Traced `deci.i,net.decimation.mod.common.utils.h,deci.g.j,net.decimation.fixes.L
 
 | Need | Use |
 |---|---|
-| "Play" without the voice chat jar, our updates | tools/patches/PatchNoUpdate.java, fixes/Updater, fixes/UpdateScreen, fixes/UpdateSwap |
+| "Play" without the voice chat jar, our updates | tools/patches/PatchNoUpdate.java, fixes/Updater, fixes/UpdateProgress (Decimation's progress screen), fixes/UpdateScreen (failures), fixes/UpdateSwap |
 | stats on menu and HUD | fixes/LocalStats, tools/patches/PatchMenuStats.java |
 | our loot inventory on Decimation's loot screen | fixes/Loot (loot.md) |
 | turf banners for our places | worldgen/PlaceNames, PatchTurfNames (clans.md) |

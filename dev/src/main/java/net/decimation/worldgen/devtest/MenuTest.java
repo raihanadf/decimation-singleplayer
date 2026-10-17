@@ -35,6 +35,10 @@ public class MenuTest extends DevTestMode
             DevTestResults.check(name(), "update target", target == null ? "none" : target.getPath(),
                                  dev ? target == null : target != null && target.isFile() && target.getName().endsWith(".jar"),
                                  dev ? "none (dev folder)" : "the running jar (mods/Decimation.jar)");
+            // our logo in Decimation's banners (tools/menu_assets.py logos(): twice the old size; user 17 Oktober 2026)
+            DevTestResults.check(name(), "menu logo is ours", texture(mc, "banner") + ", " + texture(mc, "banner_intro"),
+                                 "922 x 202, 1024 x 480".equals(texture(mc, "banner") + ", " + texture(mc, "banner_intro")),
+                                 "922 x 202, 1024 x 480 (Decimation's: 461 x 101, 512 x 240)");
             net.decimation.worldgen.DevAutoTest.keepScreen = true;
             mc.displayGuiScreen(Deci.homeMenu());
         }
@@ -46,5 +50,22 @@ public class MenuTest extends DevTestMode
             done = true;
         }
         return !done;
+    }
+
+    /** Size of a texture of Decimation's menu as the game loads it ("w x h"). */
+    private static String texture(Minecraft mc, String name)
+    {
+        try
+        {
+            java.io.InputStream in = mc.getResourceManager().getResource(
+                new net.minecraft.util.ResourceLocation("deci", "textures/gui/menu/" + name + ".png")).getInputStream();
+            java.awt.image.BufferedImage im = javax.imageio.ImageIO.read(in);
+            in.close();
+            return im.getWidth() + " x " + im.getHeight();
+        }
+        catch (Exception e)
+        {
+            return e.toString();
+        }
     }
 }

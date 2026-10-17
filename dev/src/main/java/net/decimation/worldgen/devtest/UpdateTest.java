@@ -5,18 +5,18 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 
 import net.decimation.fixes.Deci;
-import net.decimation.fixes.UpdateScreen;
 import net.decimation.fixes.Updater;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 
 /**
- * Auto update end to end (fixes/Updater, UpdateScreen, UpdateSwap, PatchNoUpdate v2) against
+ * Auto update end to end (fixes/Updater, UpdateProgress, UpdateSwap, PatchNoUpdate v2) against
  * tools/fake_release_server.py (start it first; port from -Pport / port=, default 8765): the check finds
  * the fake release, Decimation's update check answers true, the home menu shows its Update button
- * (update_menu), the button opens our screen, the download runs with a progress bar (update_progress),
- * is checked and ready (update_ready), and the swap helper replaces a stand in jar
+ * (update_menu), the button opens Decimation's own progress screen (deci.i.m), the download runs with its
+ * bar showing our numbers (update_progress), is checked and ready with Quit game / Later on that screen
+ * (update_ready), and the swap helper replaces a stand in jar
  * (run/client/devtest/update_target/Decimation.jar) with the download.
  * real=true: against our real GitHub releases instead, the running version pretended to be `from`
  * (default 0.58.0), expecting `expect` (default 0.59.0): the real jar downloads, is checked against
@@ -138,8 +138,9 @@ public class UpdateTest extends DevTestMode
                             DevTestResults.value(name(), "click", e.toString());
                         }
                     }
-                    DevTestResults.check(name(), "Update opens our screen", mc.currentScreen == null ? "none" : mc.currentScreen.getClass().getName(),
-                                         mc.currentScreen instanceof UpdateScreen, "UpdateScreen");
+                    DevTestResults.check(name(), "Update opens Decimation's progress screen", mc.currentScreen == null ? "none"
+                                         : mc.currentScreen.getClass().getName(), Deci.isUpdateProgress(mc.currentScreen),
+                                         "GuiUpdateProgress (deci.i.m), user 17 Oktober 2026");
                     next(3);
                 }
                 break;
@@ -148,6 +149,9 @@ public class UpdateTest extends DevTestMode
                 {
                     progressShot = true;
                     DevTestUtil.screenshot(mc, name(), "update_progress");
+                    String shown = Deci.updateProgress();
+                    DevTestResults.check(name(), "progress screen shows our download", shown,
+                                         shown.contains("| true |") && !shown.startsWith("0 |"), "a percent above 0, downloading");
                 }
                 if (s == Updater.State.READY || s == Updater.State.FAILED || System.currentTimeMillis() - started > 20 * 60 * 1000L)
                 {
@@ -160,6 +164,15 @@ public class UpdateTest extends DevTestMode
                 if (frames - at == 20)
                 {
                     DevTestUtil.screenshot(mc, name(), "update_ready");
+                    StringBuilder labels = new StringBuilder();
+                    for (GuiButton b : DevTestUtil.buttons(mc.currentScreen))
+                    {
+                        labels.append(b.visible ? DevTestUtil.label(b) + ";" : "");
+                    }
+                    DevTestResults.check(name(), "ready: Quit game and Later", Deci.updateProgress() + ", buttons " + labels,
+                                         Deci.isUpdateProgress(mc.currentScreen) && labels.toString().contains("Quit game")
+                                         && labels.toString().contains("Later") && Deci.updateProgress().contains("| false |"),
+                                         "Decimation's screen, safe to close, Quit game and Later");
                     int code = Updater.swap(true);
                     byte[] head = head(target, 6);
                     String want = real ? "PK" : "NEWJAR";            // a real release is a zip
