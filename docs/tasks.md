@@ -22,7 +22,7 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [x] main menu news panels: real topic pictures (GitHub repo, release list, website top, coming soon cards) in the jars
 - [x] main menu v0.64.0: Website / GitHub links, DeciRemnant and our version, Continue, our corner (dev client)
 - [x] main menu v0.64.1: server pages coming soon (Bukovka, Chernarus), status rows, Early access (dev test menupages)
-- [~] release 0.64.1: one jar built and production tested (server Done, client 22 PASS); waits for the user's push of main + tag, then the GitHub release
+- [~] release 0.64.4 (menu pages, double speed mobs, garrisons, checkpoint gate): one jar and production test after the regression run; waits for the user's push of main + tags, then the GitHub release
 - [ ] forum on our website for My Community (later, roadmap UI 3)
 - [x] "Entity is already tracked": swapped mobs added twice at chunk load, double speed; fixes/JoinOnce (v0.64.2)
 - [ ] survivor partner idea: design talk (docs/ideas.md item 21)
