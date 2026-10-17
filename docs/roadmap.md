@@ -135,6 +135,7 @@ docs/gun_model_spec.md); every user review goes into its lessons and casebook.
    user's Chernarus pictures behind the page on hover), both "Coming soon", Players Online "Coming soon", the Community
    tab "Community server coming soon"; the status page's rows Global Server, Community Server, Download (Offline); "My
    Supporter" is "Early access". Offered, not asked: toast title "Decimation", the Website status row, the red X icon.
+   RELEASED in 0.64.6 (17 Oktober 2026, pre-release on GitHub, with the night's fixes); the user's look in game open.
 2. **Project website** (user, 16 Oktober 2026: "use our website later for download page or to list the community
    server"; earlier note docs/ideas.md item 20: a Vercel project page). Designed 16 Oktober 2026 (below); first ideas:
    - a project page with the download link (the GitHub releases our updater already reads; Vercel serves no jars);
@@ -159,7 +160,8 @@ docs/gun_model_spec.md); every user review goes into its lessons and casebook.
    server rules under Problems. Site commit 9f2bfcd pushed and checked live 17 Oktober 2026 ("not bad", kept; study
    famous sites first next time).
    OUR OFFICIAL LOGO 17 Oktober 2026 (user: "we have our official logo now"): top bar logo with its white paper made
-   clear, BoehMod's logo as the footer credit (site 72cc3c7, waits for the push and the live check).
+   clear, BoehMod's logo as the footer credit (site 72cc3c7, live checked 17 Oktober 2026 after the user's push: both
+   logos load, no sideways scroll at 390, fonts 12 / 18 / 24 / 36, 0 console errors, all links).
 3. **Forum on our website** (user, 17 Oktober 2026: "for my community, later we make forum on our website on it"): the
    My Community popup's Forums line (now BoehMod's forums, ClientResources httpsWwwBoehmodCom) opens a forum on
    deciremnant.vercel.app. Not designed yet; later.

@@ -70,6 +70,12 @@ chunks at the camera and 48 ahead, up to 120 s).
   logo left of the credit line ("Unofficial fan project. Decimation belongs to BoehMod. ...") with GitHub on the right;
   on phones the logo, the line and GitHub stacked.
 
+## website_live_v0.64.6/ (the live site after the push of 72cc3c7, 17 Oktober 2026; skill decimation-website case 8)
+- `home_1300_full.png` (1300 x 4970) and `home_390_full.png` (390 x 7078), taken after one scroll down: top bar with our
+  official logo (red DECIREMNANT lettering and grey wire, no white box) and the six links (Menu button on the phone,
+  splash "Mind the landmines!"); the footer's dirt strip, BoehMod's orange logo left of the credit line, GitHub on the
+  right (on the phone stacked: logo, line, GitHub). Download still 0.59.0 then (the page refreshes every few minutes).
+
 ## wasteland_gate_v0.64.6/ (the checkpoint gate with its flag back, 17 Oktober 2026)
 - `gates_checkpoint_<state>_front.png` / `_top.png` (open, wire, steel, bus, hesco; dev test `gates`, 854 x 480): as
   v0.64.4, plus the blue UAHD flag on its tall pole on the east sidewalk before the guard tower (front view: right of

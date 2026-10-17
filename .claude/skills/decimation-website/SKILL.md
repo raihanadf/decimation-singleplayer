@@ -161,3 +161,6 @@ Facts, decisions and the page text: docs/website.md (the spec). Site code: the P
   phones); BoehMod's boehmod_big.png from the jar, 64 px high, 26 px in the footer.
 - Tests first: the brand link holds our logo with alt DeciRemnant and no text; the footer holds BoehMod's logo; the
   narrower logo moved the fold of the links to 900 px (measured 1300 gap 456 px, 1000 gap 156, 901 gap 57). Site 72cc3c7.
+- Live after the user's push (17 Oktober 2026): logo 179 x 40 and credit 171 x 26 load at 1300, 125 x 28 and 171 x 26
+  at 390, no sideways scroll, fonts 12 / 18 / 24 / 36, 0 console errors, all links on both pages; shots
+  docs/shots/website_live_v0.64.6/.

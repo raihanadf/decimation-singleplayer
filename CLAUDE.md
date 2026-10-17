@@ -1032,6 +1032,8 @@ of the last session:
   exist; refused spawns retried 5 times; the checkpoint's flag was outside its canvas (Canvas.set drops those
   silently): moved, and CityGate now logs props outside the canvas. Never iterate loadedEntityList while calling
   anything that can load chunks (path searches, getChunkFromChunkCoords).
+  RELEASE 0.64.6 published 17 Oktober 2026 (GitHub pre-release, Decimation.jar + .sha256; GitHub's asset digest equals
+  the local sha256 d6b8dfe2...; notes dist/onejar/RELEASE_NOTES_0.64.6.md): everything since 0.59.0.
   Gun study (10 Oktober 2026): docs/gun_style_guide.md, tools/guns/study.py
   (renders / measures Decimation's guns from the jar, `attach` adds
   attachments as the game places them), dev test mode `gunview` (hip, aim

@@ -159,8 +159,8 @@ review: a total per class could hide a missing text behind a doubled one; the st
 
 ## 6. Open
 
-- The user's look in their own game: their Prism instance has the old jars (Prism is off limits for us); a release
-  (tools/onejar.py from dist/Decimation.jar) carries this. The dev client shows it now.
+- The user's look in their own game: released in 0.64.6 (17 Oktober 2026, GitHub pre-release); players on 0.59.0 or
+  newer see "Update" in the menu. The dev client shows it too.
 - Still dead and kept (not picked): My Community, Server Status, "Not Supporter :(", and Play still opens the dead
   official server list first (menus.md section 7). Since v0.64.1 those pages say coming soon (section 2c).
 - Later (user): a forum on our website for the My Community popup's Forums line (roadmap UI 3); Global Server,

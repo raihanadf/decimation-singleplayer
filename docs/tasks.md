@@ -18,11 +18,11 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [x] Decimation main menu: news panels (GitHub, Updates, Website, Coming soon) + real scene background every 7 s (v0.63.0, dev client)
 - [ ] main menu: the user's look in game (needs a release with v0.63.0)
 - [x] Decimation logo in the website's top bar (site fc0d159), then replaced by our official logo
-- [~] our official logo in the top bar, BoehMod logo in the footer: site 72cc3c7, waits for the push and live check
+- [x] our official logo in the top bar, BoehMod logo in the footer: site 72cc3c7 live checked (1300 and 390, links, console)
 - [x] main menu news panels: real topic pictures (GitHub repo, release list, website top, coming soon cards) in the jars
 - [x] main menu v0.64.0: Website / GitHub links, DeciRemnant and our version, Continue, our corner (dev client)
 - [x] main menu v0.64.1: server pages coming soon (Bukovka, Chernarus), status rows, Early access (dev test menupages)
-- [~] release 0.64.6 (menu pages, double speed mobs, garrisons, checkpoint gate, review fixes): one jar built and production tested (sha256 d6b8dfe2); waits for the user's push of main + tags, then the GitHub release
+- [x] release 0.64.6 published 17 Oktober 2026 (pre-release; GitHub's digest = local sha256 d6b8dfe2)
 - [ ] forum on our website for My Community (later, roadmap UI 3)
 - [x] "Entity is already tracked": swapped mobs added twice at chunk load, double speed; fixes/JoinOnce (v0.64.2)
 - [ ] survivor partner idea: design talk (docs/ideas.md item 21)
