@@ -3,7 +3,6 @@ package net.decimation.fixes.hosting;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.net.URI;
-import java.util.Collections;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
@@ -60,7 +59,14 @@ class RelaySocketTest
             s.send(new byte[] {(byte) i}, 0, 1);
         }
         Thread.sleep(300);
-        assertEquals(Collections.singletonList(20), EchoServer.frameSizes);
+        // 20 one byte writes: at most 2 frames (the writes may straddle one 50 ms flush), never 20
+        int sum = 0;
+        for (int n : EchoServer.frameSizes)
+        {
+            sum += n;
+        }
+        assertEquals(20, sum);
+        assertTrue(EchoServer.frameSizes.size() <= 2, EchoServer.frameSizes.toString());
         s.close("done");
     }
 

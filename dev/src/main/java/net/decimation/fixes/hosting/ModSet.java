@@ -44,6 +44,19 @@ public final class ModSet
         return of(l);
     }
 
+    /** ModSet.current() in a game; an empty set outside one (unit tests). */
+    static ModSet current0()
+    {
+        try
+        {
+            return current();
+        }
+        catch (Throwable t)
+        {
+            return of(new ArrayList<String[]>());
+        }
+    }
+
     /** This game's DeciRemnant version (deciworldgen's version from mcmod.info, filled from the git tag). */
     public static String ourVersion()
     {
