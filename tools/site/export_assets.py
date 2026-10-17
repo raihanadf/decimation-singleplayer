@@ -4,6 +4,7 @@
     python3 tools/site/export_assets.py SITE_DIR --shots DIR     # siteshots output: DIR/site_<name>.png
     python3 tools/site/export_assets.py SITE_DIR --guide DIR     # ONLY the guide pictures: DIR/guide_<name>.png
     python3 tools/site/export_assets.py SITE_DIR --logo FILE     # ONLY the logos: ours from FILE, BoehMod's from the jar
+    python3 tools/site/export_assets.py SITE_DIR --camo          # ONLY the camo panel texture (marines' urban camo)
 
 Item icons and the two torn menu textures come from Decimation.jar.original.bak, the MAC-10 icon is ours, the
 dirt strip is generated (seeded noise). Screenshots become JPEG (at most 1920 wide) plus og.jpg (1200 x 630 from
@@ -86,6 +87,28 @@ def hashed(im, folder, name):
     fname = "%s-%s.jpg" % (name, hashlib.sha1(data).hexdigest()[:8])
     with open(os.path.join(folder, fname), "wb") as f:
         f.write(data)
+    return fname
+
+
+# the marines' urban digital camo (Decimation's outfit texture): the site's faint panel texture (user, 17 Oktober 2026:
+# "combine with 1. + 2 military soldier outfits texture", mockup approved with subtle camo)
+CAMO = ("assets/deci/textures/model/armor/marineurban.png", (132, 9, 148, 25))
+
+
+def camo(site):
+    """public/ui/camo-urban-<hash8>.png: a 16 x 16 opaque patch of the marines' urban camo, tiled by CSS at 64 px."""
+    with zipfile.ZipFile(JAR) as z:
+        im = Image.open(io.BytesIO(z.read(CAMO[0]))).convert("RGB").crop(CAMO[1])
+    buf = io.BytesIO()
+    im.save(buf, "PNG", optimize=True)
+    data = buf.getvalue()
+    folder = os.path.join(site, "public", "ui")
+    for old in glob.glob(os.path.join(folder, "camo-urban-*.png")):
+        os.remove(old)
+    fname = "camo-urban-%s.png" % hashlib.sha1(data).hexdigest()[:8]
+    with open(os.path.join(folder, fname), "wb") as f:
+        f.write(data)
+    print("camo %s %d bytes (put this name in app/globals.css)" % (fname, len(data)))
     return fname
 
 
@@ -193,7 +216,11 @@ def main():
     ap.add_argument("--shots", help="folder with site_<name>.png from the siteshots dev test")
     ap.add_argument("--guide", help="folder with guide_<name>.png from the guideshots dev test (exports only these)")
     ap.add_argument("--logo", metavar="FILE", help="export only the logos: our official logo from FILE, BoehMod's from the jar")
+    ap.add_argument("--camo", action="store_true", help="export only the camo panel texture (marines' urban camo)")
     a = ap.parse_args()
+    if a.camo:
+        camo(os.path.abspath(a.site))
+        return
     if a.guide:
         guide(os.path.abspath(a.site), a.guide)
         return

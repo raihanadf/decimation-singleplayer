@@ -24,9 +24,10 @@ Facts, decisions and the page text: docs/website.md (the spec). Site code: the P
    pixel font (Pixelify Sans) was rejected.
 2. Icons are the game's real item icons (Decimation's, ours for our guns) in inventory slots, never hand drawn
    ones.
-3. This site's palette is warm night (dark brown, clay). Decimation's red and black menu palette was "really
-   worse" as a whole page; its torn orange and torn black buttons were liked. Try a new direction one element at
-   a time and keep the way back.
+3. Palette: coral on charcoal since 17 Oktober 2026 (the user's pick: our logo's coral as the one accent, barbed wire
+   tan labels, the marines' urban camo faint under panels); warm night (dark brown, clay) before it. Decimation's red
+   and black menu palette as a whole page was "really worse"; its torn buttons were liked (the download one is coral
+   now). Show a new direction as a mockup with a switch to the current look before building (case 9).
 4. No decoration that reads as a game block strip across the hero (the grass strip was removed).
 5. The install guide is the NEW PLAYER path only, complete for a first time player: requirements, launcher, Forge
    version, Java, memory, world type; never a three line summary. Updating lives in Questions; the server has its own
@@ -151,6 +152,20 @@ Facts, decisions and the page text: docs/website.md (the spec). Site code: the P
   986 px the links ran off the right edge (it began with the Server link). Fix: the links fold into the Menu button
   below 1024 px; gap between logo and links checked at 1025, 1100, 1300 (46 px and more).
 - Lesson: measure the top bar at tablet widths too (768 to 1024), not only desktop and phone.
+
+### Case 9: palette and title screen hero (17 Oktober 2026)
+- User: "changes on color pallete and hero section"; AskUserQuestion with four palettes and three hero layouts; answers
+  "combine with 1. + 2 military soldier outfits texture" and "title screen style first. show me the mockup".
+- References first (lesson 17): Hytale, 7 Days to Die, Rust, Project Zomboid hero sections shot with agent-browser
+  (zsh: a `for n u in ...` loop, `set --` does not split; absolute screenshot paths). Outfit textures are UV maps:
+  the camo was found as the most varied fully opaque 16 x 16 patch per texture (pure PIL, no numpy here).
+- Mockup (scratchpad, real assets, New / Current and camo switches) checked at 1300, 1024, 390 before showing; the
+  splash first covered the tagline, then the logo. Verdict "good, subtle camo, add small logo on scroll, build it".
+- Build (site e76694d): tests first (big logo, download inside the hero, six scenes every 7 s with the caption, the bar
+  solid with the logo after a scroll and on other pages; 67 tests). Measuring the splash at 8 widths with the longest
+  lines found overlaps the shots missed (tablet: off the right edge; phones and up to 1180 px: on the tagline): fixed by
+  placement and gaps, then 0 overlaps from 320 to 1440 px. A see-through solid bar showed the heading behind it: opaque.
+- Lesson: measure a rotated element by its bounding box against its neighbours at every width, with the longest text.
 
 ### Case 8: our official logo, BoehMod in the footer (17 Oktober 2026)
 - User: "we have our official logo now @Code_Generated_Image.png, but i think its still use white background" and "add

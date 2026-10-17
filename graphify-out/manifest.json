@@ -325,9 +325,9 @@
     "semantic_hash": "0145e0863788d451e8ae4273d3c2abdd"
   },
   "docs/shots_index.md": {
-    "mtime": 1792230409.1600661,
-    "ast_hash": "f355e5becdda01aacb17b4d6602537ff",
-    "semantic_hash": "f355e5becdda01aacb17b4d6602537ff"
+    "mtime": 1792232851.3593016,
+    "ast_hash": "b9173b400b329a70ecc8a0905d1e36b7",
+    "semantic_hash": "b9173b400b329a70ecc8a0905d1e36b7"
   },
   "docs/interior_spec.md": {
     "mtime": 1791385593.9436893,
@@ -1540,9 +1540,9 @@
     "semantic_hash": "294036847a9caffda351bfa855a78636"
   },
   "docs/tasks.md": {
-    "mtime": 1792231108.991233,
-    "ast_hash": "688e829201fd96ac6a7de1ca434ab167",
-    "semantic_hash": "688e829201fd96ac6a7de1ca434ab167"
+    "mtime": 1792232851.3604765,
+    "ast_hash": "f64c0c77aad9d55c32b1585aadb8dae2",
+    "semantic_hash": "f64c0c77aad9d55c32b1585aadb8dae2"
   },
   "tools/skillcheck.py": {
     "mtime": 1792098139.5315723,
@@ -1735,14 +1735,14 @@
     "semantic_hash": "e8564bc6458835de29bc9ea8ba1e842c"
   },
   ".claude/skills/decimation-website/SKILL.md": {
-    "mtime": 1792215418.4318774,
-    "ast_hash": "1f93e33bbb4c21bee99ecc911ea6b73c",
-    "semantic_hash": "1f93e33bbb4c21bee99ecc911ea6b73c"
+    "mtime": 1792232851.3586261,
+    "ast_hash": "d6e519747a285f91311801fcf1fa0d0c",
+    "semantic_hash": "d6e519747a285f91311801fcf1fa0d0c"
   },
   "docs/website.md": {
-    "mtime": 1792226194.9453855,
-    "ast_hash": "003ea19b4c37ab2b278899328701747d",
-    "semantic_hash": "003ea19b4c37ab2b278899328701747d"
+    "mtime": 1792232851.357868,
+    "ast_hash": "64f095ff1680684ee08af82e4be10dc4",
+    "semantic_hash": "64f095ff1680684ee08af82e4be10dc4"
   },
   "docs/website_plan.md": {
     "mtime": 1792162650.3638773,
@@ -1755,9 +1755,9 @@
     "semantic_hash": "643a98add20f3d1847554daff837579d"
   },
   "tools/site/export_assets.py": {
-    "mtime": 1792188862.5008075,
-    "ast_hash": "a7991b7ef54bdd0fda0658476cf4c192",
-    "semantic_hash": "a7991b7ef54bdd0fda0658476cf4c192"
+    "mtime": 1792232095.3174872,
+    "ast_hash": "0145314af76435b18b383d54e7016a2b",
+    "semantic_hash": "0145314af76435b18b383d54e7016a2b"
   },
   "tools/site/subjects.py": {
     "mtime": 1792144948.9135313,

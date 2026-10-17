@@ -42,8 +42,19 @@ a full install guide, screenshots of what we built, what is coming, the changelo
 The approved mockup is `page-full-v4.html` in `.superpowers/brainstorm/60609-1792139172/content/` (local, git
 ignored: it holds Decimation art). Pictures of the mockups: docs/shots/website_design_v0.62/ (shots_index.md).
 
-1. **Hero**: full width screenshot (a generated city from above), darkened toward the bottom.
-   - Top bar: our official logo (public/ui/deciremnant-logo.webp, 539 x 120, 40 px high, 28 on phones;
+1. **Hero** (since 17 Oktober 2026, section 10 item 8): the game's title screen. Full height (max(640 px, 92 % of the
+   window)); behind it the same six real scenes as the game's main menu (content/shots.ts heroScenes: city, refuge,
+   gate, bridge, base, airport) fading one into the next every 7 s with a slow drift (components/HeroScenes.tsx; only the
+   first is in the first paint, the others join after 1.5 s); dots bottom left, "Seen in game: <scene>" bottom right;
+   centred: the label, our logo 640 px wide (86 % on phones), the splash just past the logo's right end (below 1180 px
+   under its right end, the tagline then 84 px lower, 58 on phones: measured, no overlap from 320 to 1440 px), the
+   title "Decimation, alive again in singleplayer" at 24 px (18 on phones), the download buttons and release line
+   (components/Download.tsx moved into the hero; the lead paragraph now opens the page under it). Before: a 440 px
+   screenshot band with the title bottom left.
+   - Top bar (since 17 Oktober 2026): fixed; over the hero it has no logo (the hero shows the big one) and no
+     background; once the page is scrolled half a window it turns solid (#0E0E0E, faint camo, a line) with the small
+     logo (user: "add small logo on scroll"); on other pages it is solid from the start (Nav home prop).
+   - Top bar logo: our official logo (public/ui/deciremnant-logo.webp, 539 x 120, 40 px high, 28 on phones;
      `export_assets.py --logo FILE`), alt "DeciRemnant", no text beside it, on the left; links Features, Screenshots,
      Install, Server, Changelog, GitHub (since 17 Oktober 2026 absolute: /#features ... and /docs/server, so the same
      bar works on every page). Logo and six links need about 870 px in a row: below 900 px the links fold into the Menu
@@ -175,22 +186,25 @@ release Decimation.jar from GitHub (240980301 bytes, sha256 9e20395d... = GitHub
 
 ## 4. Look
 
-### Colours (warm night)
+### Colours (coral on charcoal, since 17 Oktober 2026; was warm night)
 
 | Token | Value | Use |
 |---|---|---|
-| bg | #1C1815 | page |
-| card | #26211D | cards, tabs, fold outs |
-| text | #EDE6DA | text, titles |
-| muted | #B9AE9E | body text |
-| dim | #9A8F80 | small print, dates |
-| label | #E08A5A | section labels, step numbers (game shadow #382216) |
-| link | #E59468 | links |
-| download | #F89838 | torn orange button, white text, shadow #3E260E, edges #A85E18 / #FFB868 |
+| bg | #121212 | page (charcoal) |
+| card | #1D1D1D | cards, fold outs; 2 px top line #2C2C2C, coral on hover |
+| deep | #0E0E0E | solid top bar, footer, icon slots |
+| text | #EEEAE4 | text, titles |
+| muted | #ABA59D | body text |
+| dim | #8F8982 | small print, dates |
+| label | #C9A97A | section labels, step numbers: the logo's barbed wire tan (game shadow #322A1E) |
+| link | #F47A62 | links |
+| download | #E8553F | torn coral button (the logo's coral), white text, shadow #3A140D, edges #9E3322 / #FF8C74 |
+| camo | public/ui/camo-urban-<hash>.png | the marines' urban digital camo (Decimation's marineurban.png, 16 x 16 at 132, 9), tiled at 64 px, opacity 0.1 under cards, the solid top bar and the footer (`export_assets.py SITE --camo`) |
 | splash | #FFFF55 | splash text and the "Planned" tag (shadow #3F3F15) |
 | idea | #55FFFF | the "Idea" tag (shadow #153F3F) |
 | slot | #15110F | icon slots, inner edges #0B0908 / #3B332C |
 
+Warm night (dark brown #1C1815, clay #E08A5A, orange download #F89838) was the look from 16 to 17 Oktober 2026.
 Tried and rejected: Decimation's own menu palette (red tinted hero, torn black panels everywhere, logo coral)
 "really worse"; ivory field report and the game menu echo (first round).
 
@@ -350,6 +364,10 @@ only as the footer credit (17 Oktober 2026; the earlier rule "never the Decimati
   desktop 100 / 96 / 100 / 100; after the push of 546f637 mobile 100 / 100 / 100 / 100 (LCP 1.8 s, CLS 0), desktop
   100 / 100 / 100 / 100 (LCP 0.5 s). Left, no score effect: unused framework JavaScript 55 KiB, legacy JavaScript
   14 KiB (Next.js chunks), panel / mask textures 17 KiB, hero 29 KiB larger than shown on desktop.
+- Title screen hero (17 Oktober 2026, local production build, three runs each, mobile): new 86 / 92 / 93 (LCP 3.1 to
+  3.7 s), old hero 91 / 99 / 94; accessibility, best practices, SEO 100; desktop 99 (LCP 0.9 s), CLS 0. The LCP is the
+  first scene (phase "render delay"); a run without the drift animation scored 87 and 93, so the drift is not the cause
+  [inferred]. Local runs are noisy (HTTP/1.1, no CDN): check live after the push.
 - Live checked 16 Oktober 2026: title 54, description 151, Open Graph and Twitter complete, canonical, robots.txt,
   sitemap.xml, JSON-LD (WebSite + SoftwareApplication with the release's version and jar link), three icons 200, one
   h1, no skipped heading level, every picture with alt (11 screenshots carry both keywords), no dash characters, all
@@ -389,6 +407,14 @@ only as the footer credit (17 Oktober 2026; the earlier rule "never the Decimati
 7. Verdict on 6 (17 Oktober 2026): "not bad but i think you need to learn famous web before making things like this,
    noted that. i take this, we can figure it out later": kept as built; study famous sites of the kind before the next
    design (skill lesson 17).
+
+8. Palette and hero (17 Oktober 2026, the user: "i want to do some changes on color pallete and hero section"):
+   palette "combine with 1. + 2 military soldier outfits texture" (coral on charcoal plus the soldiers' outfit
+   textures), hero "title screen style first. show me the mockup". References studied first (lesson 17: Hytale, 7 Days
+   to Die, Rust, Project Zomboid; Minecraft.net did not load): big centred logo over game art, one bright and one quiet
+   button, dark vignette. Mockup with a New / Current switch and camo off / subtle / strong (docs/shots/
+   website_design_v0.64.8): "good, subtle camo, add small logo on scroll, build it". Site commit e76694d (local).
+   The user will add something to a section next (asked to be reminded).
 
 ## 11. Later (not v1)
 

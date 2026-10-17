@@ -279,6 +279,19 @@ Site checks of the local build (agent-browser):
   beside it lies further west, not in the picture), a highway comes in from the west at z about 520
   and one from the north at x about 1545; small lakes north of the city.
 
+## website_design_v0.64.8/ (hero and palette mockup, 17 Oktober 2026, scratchpad mock_hero)
+- both.png: the mockup at 1300, 1024 and 390 px: our logo centred over the city shot, splash "Now with airports!" past
+  the logo's right end (under it on narrow widths), tagline, coral download and black install guide buttons, release
+  line, dots bottom left, caption "Seen in game: a generated city" bottom right, the mockup's switch bottom right.
+- cards.png: the six feature cards with the faint urban camo, subtle (top) and strong (bottom).
+
+## website_v0.64.8/ (the built hero, local production build, 17 Oktober 2026)
+- local_1300_top_and_scrolled.png: top: hero as in the mockup, splash "Up to 64 districts!"; bottom: scrolled, the top bar
+  solid with the small logo, cards with the coral hover line and camo, the screenshot grid.
+- local_390_820_docs.png: phone hero, phone cards, tablet hero (splash clipped at the right edge: fixed after this
+  shot), tablet cards and gallery, the server guide on a phone with the solid bar and logo.
+- local_390_hero.png: phone hero after the fix: splash under the logo's right end, tagline clear of it.
+
 ## update_v0.64.8/ (update screen lines, dev client, fake release 9.9.9, 17 Oktober 2026)
 - dev_update_progress.png: Decimation's progress screen in a world: "DO NOT CLOSE YOUR GAME!", "Downloading:
   DeciRemnant 9.9.9 (40.0mb)", our two lines, "Downloading: 33%", bar a third full with the flare, "13.3mb/40.0mb".
