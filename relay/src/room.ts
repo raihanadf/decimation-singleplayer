@@ -7,12 +7,13 @@ const ANSWER_MS = 10_000;
  * messages forwarded between a joiner and its data socket (spec 3.2). Texts to the host: {"open": id}, {"close": id};
  * to a joiner: {"ready": true}. Closes: 4404 host offline, 4409 full, 4408 host did not answer, 4410 host stopped.
  */
-export class Room extends DurableObject {
+export class Room extends DurableObject<Cloudflare.Env> {
   async fetch(req: Request): Promise<Response> {
     if (req.headers.get('Upgrade') !== 'websocket') return new Response('websocket only', { status: 426 });
     const parts = new URL(req.url).pathname.split('/').filter(Boolean);
     const max = Number(req.headers.get('x-max') ?? '8');
     const [client, server] = Object.values(new WebSocketPair());
+    if (parts[1]) await this.ctx.storage.put('room', parts[1]); // the list entry to drop when the host goes away
     if (parts[0] === 'host' && parts.length === 2) {
       for (const old of this.ctx.getWebSockets('control')) old.close(1000, 'replaced');
       this.ctx.acceptWebSocket(server, ['control']);
@@ -57,6 +58,9 @@ export class Room extends DurableObject {
       if (this.ctx.getWebSockets('control').some((c) => c !== ws)) return; // replaced by a new control socket: keep playing
       for (const s of this.ctx.getWebSockets('join')) s.close(4410, 'host stopped');
       for (const s of this.ctx.getWebSockets('data')) s.close(1000, 'host stopped');
+      // the host quit or lost its connection without saying stop: off the list now, not after 3 min (review)
+      const room = await this.ctx.storage.get<string>('room');
+      if (room) await this.env.LOBBY.get(this.env.LOBBY.idFromName('lobby')).drop(room);
       return;
     }
     const other = this.partner(ws);

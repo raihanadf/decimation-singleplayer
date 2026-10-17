@@ -49,6 +49,10 @@ public class HostMenuTest extends DevTestMode
             case 2:
                 if (wait < 10) return true;
                 DevTestResults.check(name(), "Host Online opens its page", screen(mc), mc.currentScreen instanceof HostScreen, "HostScreen");
+                GuiButton mojang = DevTestUtil.byId(mc.currentScreen, 4); // HostScreen ONLINE
+                String chosen = mojang == null ? "none" : mojang.displayString;
+                DevTestResults.check(name(), "new hosts default to Mojang accounts only", chosen,
+                                     chosen.startsWith("\u00a7a") && chosen.contains("Mojang"), "Mojang accounts only, chosen (user, 18 Oktober 2026)");
                 DevTestUtil.screenshot(mc, name(), "host_page");
                 mc.displayGuiScreen(Deci.homeMenu());
                 step = 3;

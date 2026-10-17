@@ -105,5 +105,15 @@ describe('room', () => {
     await new Promise((r) => setTimeout(r, 100));
     expect(joiner.inbox.some((m) => m && m.closed === 4410)).toBe(false);
   });
+
+  it('a host that goes away without stop leaves the list at once', async () => {
+    const { room, secret } = await register('10.1.0.9');
+    const control = await ws(`/host/${room}?secret=${secret}`);
+    control.socket.close(1000, 'quit');
+    const listed = async () => ((await (await SELF.fetch('https://relay/list')).json()) as any[]).some((e) => e.room === room);
+    const t = Date.now();
+    while ((await listed()) && Date.now() - t < 2000) await new Promise((r) => setTimeout(r, 20));
+    expect(await listed()).toBe(false);
+  });
 });
 

@@ -8,7 +8,6 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.integrated.IntegratedServer;
 import net.minecraft.world.WorldSettings;
 
@@ -24,7 +23,7 @@ public final class HostScreen extends GuiScreen
     private final GuiScreen parent;
     private GuiTextField name;
     private String typed;
-    private boolean online;
+    private boolean online = true; // Mojang accounts only by default (user, 18 Oktober 2026)
     private int max = 4;
     private HostService.State shown;
 
@@ -110,7 +109,8 @@ public final class HostScreen extends GuiScreen
             return;
         }
         s.setOnlineMode(online);
-        String port = s.getPublic() ? HostLan.port() : s.shareToLAN(WorldSettings.GameType.SURVIVAL, false);
+        WorldSettings.GameType mode = mc.theWorld == null ? WorldSettings.GameType.SURVIVAL : mc.theWorld.getWorldInfo().getGameType();
+        String port = s.getPublic() ? HostLan.port() : s.shareToLAN(mode, false); // joiners play the world's own game mode (spec 4.1)
         HostLan.remember(port);
         if (port == null || port.equals("-1"))
         {
@@ -133,21 +133,13 @@ public final class HostScreen extends GuiScreen
         });
     }
 
-    /** Toasts when a start ends full or failed (the start runs on a background thread). */
+    /** Refreshes the page when the state changes (the toasts come from HostService's listener, on any screen). */
     public void updateScreen()
     {
         name.updateCursorCounter();
         HostService.State now = HostService.INSTANCE.state();
         if (now != shown)
         {
-            if (now == HostService.State.FULL_TODAY)
-            {
-                Deci.toast(I18n.format("deciworldgen.host.full"));
-            }
-            else if (now == HostService.State.FAILED)
-            {
-                Deci.toast(I18n.format("deciworldgen.host.failed", HostService.INSTANCE.error()));
-            }
             shown = now;
             initGui();
         }
@@ -176,8 +168,8 @@ public final class HostScreen extends GuiScreen
         HostService.State state = HostService.INSTANCE.state();
         if (state == HostService.State.ONLINE || state == HostService.State.STARTING)
         {
-            IntegratedServer srv = mc.getIntegratedServer();
-            List<?> players = srv == null ? Collections.emptyList() : srv.getConfigurationManager().playerEntityList;
+            // the client's own player list: drawing must never walk the server thread's list (review: a crash risk)
+            List<?> players = mc.getNetHandler() == null ? Collections.emptyList() : mc.getNetHandler().playerInfoList;
             String line = state == HostService.State.ONLINE ? "\u00a7a\u25cf \u00a7f" + I18n.format("deciworldgen.host.listed")
                                                             : "\u00a7e" + I18n.format("deciworldgen.host.starting");
             drawString(fontRendererObj, line + "   " + players.size() + "/" + max, x + 6, 92, 0xFFFFFF);
@@ -186,8 +178,8 @@ public final class HostScreen extends GuiScreen
             int y = 118;
             for (Object o : players) // the players with their ping
             {
-                EntityPlayerMP p = (EntityPlayerMP) o;
-                drawString(fontRendererObj, p.getCommandSenderName() + " \u00a77" + p.ping + " ms", x + 6, y, 0xFFFFFF);
+                net.minecraft.client.gui.GuiPlayerInfo p = (net.minecraft.client.gui.GuiPlayerInfo) o;
+                drawString(fontRendererObj, p.name + " \u00a77" + p.responseTime + " ms", x + 6, y, 0xFFFFFF);
                 y += 10;
             }
         }

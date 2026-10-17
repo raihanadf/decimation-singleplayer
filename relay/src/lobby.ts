@@ -82,6 +82,12 @@ export class Lobby extends DurableObject {
     return { ok: true, max: e.max };
   }
 
+  /** The room's host went away (its control socket closed with no replacement): off the list at once. */
+  async drop(room: string): Promise<void> {
+    await this.load();
+    if (this.entries.delete(room)) await this.save();
+  }
+
   async fetch(req: Request): Promise<Response> {
     await this.load();
     this.prune();

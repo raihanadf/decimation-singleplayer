@@ -150,6 +150,20 @@ public final class CommunityList
         {
             JoinService.INSTANCE.closeAll(); // left the page without joining: free the ports
         }
+        if (Deci.isHomeMenu(e.gui) && mc.theWorld == null && System.currentTimeMillis() - joinedAt > 20_000)
+        {
+            JoinService.INSTANCE.closeAll(); // back on the main menu after a join or a failed one (review: ports leaked)
+        }
+    }
+
+    /** Leaving a joined world frees every local port the page opened (review: they stayed open until the next visit). */
+    @SubscribeEvent
+    public void onDisconnect(cpw.mods.fml.common.network.FMLNetworkEvent.ClientDisconnectionFromServerEvent e)
+    {
+        if (System.currentTimeMillis() - joinedAt > 20_000)
+        {
+            JoinService.INSTANCE.closeAll();
+        }
     }
 
     /** The Community tab tells how many worlds are listed (Decimation's own tooltip said "Offline", then "coming soon"). */

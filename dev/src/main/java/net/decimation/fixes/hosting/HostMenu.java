@@ -18,6 +18,25 @@ public final class HostMenu
     public static final int ID_HOST = 9300;
     private static final int SERVER_STATUS = 11, LAN = 25;
 
+    public HostMenu()
+    {
+        // full or failed hosting is told once, whatever screen is open (review: the toast showed only on the Host page)
+        HostService.INSTANCE.setStateListener(new HostService.StateListener()
+        {
+            public void changed(final HostService.State state, final String error)
+            {
+                Minecraft.getMinecraft().func_152344_a(new Runnable()
+                {
+                    public void run()
+                    {
+                        Deci.toast(state == HostService.State.FULL_TODAY ? I18n.format("deciworldgen.host.full")
+                                                                          : I18n.format("deciworldgen.host.failed", error));
+                    }
+                });
+            }
+        });
+    }
+
     @SubscribeEvent
     public void onInit(GuiScreenEvent.InitGuiEvent.Post e)
     {
@@ -44,7 +63,7 @@ public final class HostMenu
     @SubscribeEvent
     public void onClick(GuiScreenEvent.ActionPerformedEvent.Pre e)
     {
-        if (Deci.isHomeMenu(e.gui) && Minecraft.getMinecraft().theWorld != null && (e.button.id == ID_HOST || e.button.id == LAN))
+        if (Deci.isHomeMenu(e.gui) && Minecraft.getMinecraft().isSingleplayer() && (e.button.id == ID_HOST || e.button.id == LAN))
         {
             e.setCanceled(true);
             Minecraft.getMinecraft().displayGuiScreen(new HostScreen(e.gui));

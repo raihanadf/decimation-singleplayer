@@ -21,8 +21,8 @@ import java.util.Map;
  */
 public final class RelayClient
 {
-    /** The deployed relay (plan Task 11 writes the real address here). */
-    public static final String DEPLOYED = "https://deciremnant-relay.invalid";
+    /** The deployed relay (Cloudflare Workers, the user's account; deployed 18 Oktober 2026). */
+    public static final String DEPLOYED = "https://deciremnant-relay.deciremnant-relay.workers.dev";
 
     public static final class RelayFull extends IOException
     {
