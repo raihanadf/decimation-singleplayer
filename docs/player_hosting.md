@@ -140,5 +140,41 @@ Found on the way (traps and a Decimation bug):
   NullPointerException stops on hundreds of harmless class loading NPEs: attach only after the join.
 - One logged "Couldn't render entity" (NPE drawing the host player once at join, skin not loaded yet), harmless.
 
-Verdict: the idea works with today's game; the relay is plain byte piping. Next design questions: the mod set check
+Verdict (18 Oktober 2026): the idea works with today's game; the relay is plain byte piping. Next design questions: the mod set check
 (item 4), the menu guard (bug.md), online mode switch per host (decision 1), where the free relay runs (decision 2).
+
+## 7. Decisions after the spike (user, 18 Oktober 2026, 02:14)
+- Mods: the public list SHOWS each world's mods (a joiner sees what to install); no change to Forge's check.
+- Relay: check the other free options before Oracle (section 8). The user freed RAM on this Mac (two games fit better).
+
+## 8. Free relay options (web, 18 Oktober 2026; secondary sources unless said, verify before relying)
+
+What the relay must do: hold long connections both ways and carry about 8 kbit/s idle and up to 0.9 Mbit/s while a
+player walks into new chunks (section 6). Since EVERY player has our mod, the transport between the mods can be raw TCP
+or a WebSocket (Minecraft 1.7.10 ships netty 4.0.10 with an HTTP / WebSocket client and TLS [inferred: not tried]); the
+joiner's mod then offers Minecraft a local port.
+
+| Option | Raw TCP | Free how long | Limits that matter | Verdict |
+|---|---|---|---|---|
+| Oracle Cloud Always Free (Arm VM) | yes | always | 10 TB out a month; card needed (credit, or debit that works like credit: no PIN, virtual or prepaid cards, Oracle FAQ); "out of capacity" in busy regions | best capacity; blocked if no card |
+| Cloudflare Workers + Durable Objects (free plan) | no, WebSocket | always | 100,000 requests a day, incoming WebSocket messages count 20 to 1 (official pricing page); duration allowance quoted as 13,000 or 313,000 GB-s a day (two copies of the page disagree); no egress fee | real, small: about 14 to 28 player hours a day [inferred: 20 to 40 messages a second per player]; no card needed [not verified] |
+| playit.gg free | yes | always | host runs playit's own agent program; tunnel count and bandwidth not stated on the pricing page; Premium 3 USD a month | zero cost to us today: the list just stores the host's playit address; extra install for hosts |
+| Google Cloud e2-micro | yes | always | 1 GB out a month (North America), US regions only | useless for a relay (a few player hours a month) |
+| AWS | yes | 6 months (credits 100 to 200 USD since July 2025, official) | account closes after the free plan | not lasting |
+| Fly.io | yes | no free tier for new accounts since October 2024 (third party) | card | no |
+| Koyeb free instance | TCP proxy only on paid plans (launch post); Frankfurt / Washington; sleeps after 1 h | | no |
+| Render free web service | no, WebSocket | 750 h a month | sleeps after 15 min without traffic (WebSocket messages keep it awake since Feb 2026, official); included bandwidth reportedly cut to 5 GB (third party, July 2026) | too little bandwidth |
+| Deno Deploy free | no, WebSocket | always | egress quoted as 100 GB or 20 GiB, CPU 10 to 15 h a month (sources disagree); Classic retired July 2026 | unclear, test before relying |
+
+Ways to need LESS relay (all free): a host with a public address or a port forward is listed directly; UPnP opens the
+port on the host's router (fails under carrier grade NAT); IPv6 direct; UDP hole punching with free public STUN servers
+plus a reliable UDP layer (java-Kcp, Apache 2.0, Netty based: its Netty version against 1.7.10's netty 4.0.10 not
+checked) and signalling through our site: about 7 in 10 pairs direct (section 2), only the rest relayed.
+
+The list itself (who hosts, address, mods, players): free on the same Cloudflare account (Workers KV / D1 / Durable
+Object) or Upstash Redis through Vercel (500,000 commands a month since March 2025, third party): a heartbeat a minute
+per host is 43,200 a month each, so Cloudflare fits a public list better [inferred].
+
+Proposal (for the user): direct first (public address, UPnP, IPv6), Cloudflare Durable Objects as the free fallback
+relay to start, playit.gg addresses accepted on the list as a host's own option; Oracle when a card is available or a
+donation pays a small server; hole punching later to cut relay use.

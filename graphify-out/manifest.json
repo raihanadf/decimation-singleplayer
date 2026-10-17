@@ -1865,9 +1865,9 @@
     "semantic_hash": "98afc42e62b0c82eca115bc1103eded2"
   },
   "docs/player_hosting.md": {
-    "mtime": 1792264235.193541,
-    "ast_hash": "4aaa8f3afbba65647bbccd3344ca2e44",
-    "semantic_hash": "4aaa8f3afbba65647bbccd3344ca2e44"
+    "mtime": 1792264567.4934611,
+    "ast_hash": "c0dd164415ae98fb5a27e7833f9dc2c4",
+    "semantic_hash": "c0dd164415ae98fb5a27e7833f9dc2c4"
   },
   "dev/src/main/java/net/decimation/worldgen/devtest/LanHostTest.java": {
     "mtime": 1792263905.5597372,
