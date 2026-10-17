@@ -655,9 +655,9 @@
     "semantic_hash": "1f50b118f74d69684fab74bda8f9beff"
   },
   "docs/roadmap.md": {
-    "mtime": 1792259422.862641,
-    "ast_hash": "31102e3de75c9cb447ec288b0cb79f0e",
-    "semantic_hash": "31102e3de75c9cb447ec288b0cb79f0e"
+    "mtime": 1792268197.8679187,
+    "ast_hash": "3af2d527fb608c7889c286f1dc02b900",
+    "semantic_hash": "3af2d527fb608c7889c286f1dc02b900"
   },
   "dev/src/main/java/net/decimation/worldgen/LegacyStreets.java": {
     "mtime": 1791487239.5087948,
@@ -1540,9 +1540,9 @@
     "semantic_hash": "294036847a9caffda351bfa855a78636"
   },
   "docs/tasks.md": {
-    "mtime": 1792266776.938577,
-    "ast_hash": "9532b5b7daec023645686ab0afe63d13",
-    "semantic_hash": "9532b5b7daec023645686ab0afe63d13"
+    "mtime": 1792268197.8676677,
+    "ast_hash": "922730fa343a27a8658daebad4d31f00",
+    "semantic_hash": "922730fa343a27a8658daebad4d31f00"
   },
   "tools/skillcheck.py": {
     "mtime": 1792098139.5315723,
@@ -1865,9 +1865,9 @@
     "semantic_hash": "98afc42e62b0c82eca115bc1103eded2"
   },
   "docs/player_hosting.md": {
-    "mtime": 1792266776.936821,
-    "ast_hash": "3e73046638178f5567fb4a857452a1de",
-    "semantic_hash": "3e73046638178f5567fb4a857452a1de"
+    "mtime": 1792268197.8673365,
+    "ast_hash": "1e9baab8f630e22cab8aba75f045eb58",
+    "semantic_hash": "1e9baab8f630e22cab8aba75f045eb58"
   },
   "dev/src/main/java/net/decimation/worldgen/devtest/LanHostTest.java": {
     "mtime": 1792266600.9381435,
@@ -1908,5 +1908,10 @@
     "mtime": 1792265473.9144776,
     "ast_hash": "bfd45c12c9e6573b24043e491ef054bc",
     "semantic_hash": "bfd45c12c9e6573b24043e491ef054bc"
+  },
+  "docs/superpowers/specs/2026-10-18-player-hosting-part1-design.md": {
+    "mtime": 1792268183.1884704,
+    "ast_hash": "15a9a7f9dc8324e8ced254d9e430c9b4",
+    "semantic_hash": "15a9a7f9dc8324e8ced254d9e430c9b4"
   }
 }

@@ -169,7 +169,8 @@ docs/gun_model_spec.md); every user review goes into its lessons and casebook.
    page, Bukovka and Chernarus on the official list say Offline / Coming soon until they exist (fixes/MenuServers holds
    the rows; the community list idea is UI 2). Not designed yet.
    Player hosted worlds through a relay of ours, listed on the Community page: docs/ideas.md item 22 (user, 18 Oktober
-   2026), not designed yet.
+   2026); analysis and spike docs/player_hosting.md; part 1 of 4 specified (docs/superpowers/specs/
+   2026-10-18-player-hosting-part1-design.md).
 
 ## Code and tools
 

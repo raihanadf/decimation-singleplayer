@@ -201,3 +201,8 @@ forgotten on logout (PlayerLoggedOutEvent); RED (0 vs 5) then GREEN (5 vs 5) in 
 `zones` still all PASS. Flaky, not bugs: a bandit at 14 blocks sometimes missed every shot in 20 s (now 8 blocks, 30 s);
 one join dropped right after login with no reason logged (the retry joined).
 Not covered yet: voice chat, zone banners on walking into a zone, online mode with real accounts.
+
+## 10. Part 1 design (18 Oktober 2026)
+Approach A chosen (our Cloudflare relay and list; playit.gg addresses as the fallback if it is down), screens approved
+in the browser mockup. Spec: docs/superpowers/specs/2026-10-18-player-hosting-part1-design.md (waits for the user's
+review, then the implementation plan). Real case test planned with the user's brother's Linux laptop over Tailscale.
