@@ -96,7 +96,7 @@ public class LanJoinTest extends DevTestMode
                 {
                     found = wait; // let the page draw a second (and its rows ping) before the shot and the join
                 }
-                if (i >= 0 && wait - found < 20)
+                if (i >= 0 && wait - found < 80) // the row's ping goes through the relay: about 2 s
                 {
                     break;
                 }

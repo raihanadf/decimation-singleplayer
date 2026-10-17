@@ -103,7 +103,8 @@ public final class CommunityList
                 int port = JoinService.INSTANCE.listen(e, mine);
                 boolean same = version.equals(e.version);
                 rows.add(Deci.communityRow(e.name, port, e.online ? "Mojang accounts" : "Any account"));
-                titles.add((same ? "" : "§7") + e.name + (same ? "" : " §c(needs " + e.version + ")"));
+                // Decimation draws the name and the account type (label) itself: the caption says who hosts (mockup)
+                titles.add(same ? "host " + e.host + " \u00b7 via relay" : "\u00a7cneeds DeciRemnant " + e.version);
                 kept.add(e);
             }
             catch (java.io.IOException ex)

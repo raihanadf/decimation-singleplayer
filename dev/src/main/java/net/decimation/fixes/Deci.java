@@ -982,7 +982,7 @@ public final class Deci
         }
     }
 
-    /** The rows' titles (ListElement fX, private) in order; for dev tests. */
+    /** The rows as "name | caption" (ServerListEntry name, ListElement fX) in order; for dev tests. */
     @cpw.mods.fml.relauncher.SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)
     public static java.util.List<String> communityRowTexts(net.minecraft.client.gui.GuiScreen s)
     {
@@ -1001,8 +1001,10 @@ public final class Deci
             try
             {
                 java.lang.reflect.Field f = deci.d.p.class.getDeclaredField("fX");
+                java.lang.reflect.Field e = deci.d.p.class.getDeclaredField("fF"); // its ServerListEntry
                 f.setAccessible(true);
-                out.add(String.valueOf(f.get(o)));
+                e.setAccessible(true);
+                out.add(((deci.k.a) e.get(o)).getName() + " | " + f.get(o));
             }
             catch (ReflectiveOperationException e)
             {
