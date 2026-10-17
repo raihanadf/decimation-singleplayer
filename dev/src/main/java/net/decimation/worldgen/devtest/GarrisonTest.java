@@ -19,8 +19,8 @@ import net.minecraft.world.WorldSettings;
  * creative players), hovers over seed 1's airport at 272, -2032 until its garrison is registered (worldgen/Garrisons:
  * posts stored when the airport's slices are written), comes within 40 blocks of the first post, then flies over every
  * post in turn (posts far from the first wait for their chunks). Checks: the first visit mans posts, every post gets
- * tried, every post holds a juggernaut or elite Soviet, nobody stands inside a block; saves garrison_post (the first
- * post from 9 blocks away).
+ * tried, every post holds a juggernaut or elite Soviet, nobody stands inside a block, a guard moved 12 blocks off its
+ * post walks back within 15 s; saves garrison_post (the first post from 9 blocks away).
  */
 public class GarrisonTest extends DevTestMode
 {
@@ -31,7 +31,7 @@ public class GarrisonTest extends DevTestMode
 
     /** Seed 1's airport with its runway along x (docs/airport.md section 8). */
     private static final int AX = 272, AZ = -2032, NEAR = 300;
-    private static final int REGISTER_WAIT = 20 * 180, MAN_WAIT = 20 * 30, SETTLE = 60;
+    private static final int REGISTER_WAIT = 20 * 180, MAN_WAIT = 20 * 30, SETTLE = 60, RETURN_WAIT = 20 * 15;
 
     private volatile int ticks, step;
     private volatile boolean done, shoot, shot;
@@ -40,6 +40,8 @@ public class GarrisonTest extends DevTestMode
     private String id;
     private int[][] posts;
     private int stepTicks, tour;
+    private net.minecraft.entity.EntityCreature moved;
+    private int[] movedPost;
 
     public boolean client(Minecraft mc)
     {
@@ -147,10 +149,24 @@ public class GarrisonTest extends DevTestMode
                 }
                 DevTestResults.check(name(), "every post's chunk loaded", loaded, loaded, "true (seen from the airport's middle)");
                 check(w);
-                shoot = true;
+                moved = displace(w);
                 next();
                 return;
             case 4:
+                // the displaced guard walks back to its post once nothing holds its attention
+                if (moved != null && ticks < RETURN_WAIT && away(moved) > 6)
+                {
+                    holdOver(p, moved);
+                    return;
+                }
+                DevTestResults.check(name(), "a guard walks back to its post", moved == null ? "no guard to move"
+                                     : String.format("%.1f blocks from its post after %d ticks", away(moved), ticks),
+                                     moved != null && away(moved) <= 6, "within 6 blocks (moved 12 off, " + RETURN_WAIT + " ticks)");
+                shoot = true;
+                step = 6;
+                ticks = 0;
+                return;
+            case 6:
                 int[] g = posts[0];
                 double hx = g[0] + 6.5, hy = g[1] + 4.5, hz = g[2] + 6.5;
                 double ex = g[0] + 0.5 - hx, ey = g[1] + 1.0 - (hy + 1.62), ez = g[2] + 0.5 - hz;
@@ -218,6 +234,45 @@ public class GarrisonTest extends DevTestMode
         DevTestResults.check(name(), "posts held", held + " of " + posts.length + (missing.length() == 0 ? "" : ", empty: " + missing),
                              held == posts.length, "every post (a juggernaut or elite Soviet within 6 blocks: they walk a little)");
         DevTestResults.check(name(), "garrison NPCs inside a block", inBlock, inBlock == 0, "0");
+    }
+
+    /** Moves the first guard found 12 blocks off its post onto open ground; null if none could be moved. */
+    private net.minecraft.entity.EntityCreature displace(World w)
+    {
+        for (Object o : w.loadedEntityList)
+        {
+            Entity e = (Entity) o;
+            int[] post = e.getEntityData().getIntArray("deciworldgen_post");
+            if (post.length != 3 || !(e instanceof net.minecraft.entity.EntityCreature) || !e.isEntityAlive())
+            {
+                continue;
+            }
+            for (int[] d : new int[][] {{12, 0}, {-12, 0}, {0, 12}, {0, -12}})
+            {
+                int x = post[0] + d[0], z = post[2] + d[1];
+                int y = w.getTopSolidOrLiquidBlock(x, z);
+                if (Math.abs(y - post[1]) <= 2 && !w.getBlock(x, y, z).isNormalCube() && !w.getBlock(x, y + 1, z).isNormalCube())
+                {
+                    ((net.minecraft.entity.EntityCreature) e).setPositionAndUpdate(x + 0.5, y, z + 0.5);
+                    movedPost = post;
+                    DevTestResults.value(name(), "guard moved off its post", post[0] + "," + post[1] + "," + post[2] + " -> " + x + "," + y + "," + z);
+                    return (net.minecraft.entity.EntityCreature) e;
+                }
+            }
+        }
+        return null;
+    }
+
+    private double away(Entity e)
+    {
+        double dx = e.posX - movedPost[0] - 0.5, dz = e.posZ - movedPost[2] - 0.5;
+        return Math.sqrt(dx * dx + dz * dz);
+    }
+
+    /** Keeps the player above the moved guard (its chunks loaded, the garrison tick running). */
+    private static void holdOver(EntityPlayerMP p, Entity e)
+    {
+        hold(p, e.posX, e.posY + 16, e.posZ, 0, 90);
     }
 
     private boolean nearPost(int x, int y, int z)

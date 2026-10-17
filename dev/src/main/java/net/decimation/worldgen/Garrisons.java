@@ -30,7 +30,8 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
  * juggernauts and elite military in turn, never despawning (spawned then and not at generation:
  * Decimation's NPCs would despawn before anyone came). A post whose chunk is not loaded yet waits for
  * it (an airport's posts lie up to 250 blocks apart, beyond the loaded area: until 17 Oktober 2026 they
- * were marked manned without their NPC); per post state in the list "!garm_<id>", 1 each post done. Its spawners (vanilla mob spawner cages) breed Decimation's
+ * were marked manned without their NPC); per post state in the list "!garm_<id>", 1 each post done. Guards keep
+ * a home area at their post and walk back to it after a chase (backToPosts). Its spawners (vanilla mob spawner cages) breed Decimation's
  * infected; every infected that appears within SPAWNER_REACH of one gets the military outfit.
  */
 public class Garrisons
@@ -201,6 +202,43 @@ public class Garrisons
             {
                 FMLLog.info("[%s] garrison %s manned: %d NPCs%s", DecimationWorldGen.MODID, id.substring(PREFIX.length()), n,
                             waiting > 0 ? ", " + waiting + " posts wait for their chunks" : "");
+            }
+        }
+        backToPosts(w);
+    }
+
+    /**
+     * Guards drawn off their posts (a chase, a push) walk back once nothing holds their attention: no revenge target
+     * (Decimation never clears entityToAttack, so getAITarget is the "fighting" sign) and no path of their own. The
+     * home area keeps idle wandering near the post but brings no one back from outside it. Legs of at most 12 blocks,
+     * within the path finder's reach; a guard below a tower post stays at its foot (no ladders in vanilla paths).
+     */
+    private static void backToPosts(WorldServer w)
+    {
+        for (Object o : w.loadedEntityList)
+        {
+            if (!(o instanceof net.minecraft.entity.EntityCreature) || Deci.npcKind((Entity) o) != net.decimation.fixes.NpcKind.SOVIET)
+            {
+                continue;
+            }
+            net.minecraft.entity.EntityCreature c = (net.minecraft.entity.EntityCreature) o;
+            int[] post = c.getEntityData().getIntArray(POST_TAG);
+            if (post.length != 3 || !c.isEntityAlive() || c.getAITarget() != null || !c.getNavigator().noPath())
+            {
+                continue;
+            }
+            double dx = post[0] + 0.5 - c.posX, dz = post[2] + 0.5 - c.posZ, d = Math.sqrt(dx * dx + dz * dz);
+            if (d <= HOME + 2)
+            {
+                continue;
+            }
+            if (d <= 12)
+            {
+                c.getNavigator().tryMoveToXYZ(post[0] + 0.5, post[1], post[2] + 0.5, 0.5);
+            }
+            else
+            {
+                c.getNavigator().tryMoveToXYZ(c.posX + dx * 12 / d, c.posY, c.posZ + dz * 12 / d, 0.5);
             }
         }
     }

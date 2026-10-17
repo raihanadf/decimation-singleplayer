@@ -127,6 +127,10 @@ not something we introduced or need to fix) see `documentation.md`.
   its entity data (deciworldgen_post) and a home area of 4 blocks there, set again on every load.
 - Checks: RED 14 of 16 posts held, 0 of 16 guards with a home; GREEN 16 of 16 posts (14, then 1 and 1 as their chunks
   loaded), 16 of 16 homes, 0 inside a block. Also for the wasteland bunker garrisons (same code).
+- v0.64.5: the home area only bounds idle wandering; a chase (the airport's military infected spawner is close) drew a
+  guard away and nothing brought it back (production client: 15 of 16 posts held). Garrisons.backToPosts walks a guard
+  that is not fighting (no revenge target) and has no path back in legs of at most 12 blocks. Check: a guard moved 12
+  blocks off its post: RED still 9.9 away after 300 ticks; GREEN back within 6 after 174 ticks.
 
 ### "Entity is already tracked" at every world load: swapped mobs added twice, double speed (seen 16 Oktober 2026, FIXED v0.64.2)
 - Seen: vanilla's EntityTracker logged `"Silently" catching entity tracking error ... IllegalStateException: Entity is

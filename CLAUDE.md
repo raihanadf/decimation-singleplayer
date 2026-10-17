@@ -1023,6 +1023,8 @@ of the last session:
   v0.64.4 (17 Oktober 2026, bug.md, docs/wasteland.md): the checkpoint gate's sandbag position one row off the line
   (with HESCO it made a stair over the shut line: concertina wire on a fence top does not stop walking); dev test
   `gatewalk` covers every look and asks the path finder for a way through (open: yes, shut: no).
+  v0.64.5 (17 Oktober 2026): garrison guards walk back to their posts after a chase (Garrisons.backToPosts; the home
+  area alone bounds only idle wandering); dev test `garrison` moves a guard 12 blocks off and expects it back.
   Gun study (10 Oktober 2026): docs/gun_style_guide.md, tools/guns/study.py
   (renders / measures Decimation's guns from the jar, `attach` adds
   attachments as the game places them), dev test mode `gunview` (hip, aim

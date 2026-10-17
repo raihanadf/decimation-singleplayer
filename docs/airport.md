@@ -202,5 +202,7 @@ NPCs ignore creative players). Garrison lca_4_-32: 16 posts, 1 spawner, register
   with every post's chunk loaded: 16 of 16 posts held, 16 of 16 guards with their home at a post, 0 inside a block.
   Shot garrison_post (docs/shots/airport_v0.64.3/, shots_index.md): the entry post, a sandbagged booth with an
   armoured Soviet inside, the perimeter fence and the runway threshold beside it.
+- v0.64.5: guards drawn off by a chase walk back (Garrisons.backToPosts: no revenge target, no path, legs of at most
+  12 blocks); the test moves one 12 blocks off its post: back within 6 after 174 ticks (RED: 9.9 away after 300).
 - Still not checked: how it feels to walk in under fire (survival).
 

@@ -110,9 +110,9 @@
     "semantic_hash": "de153d1f8408971d6190e16a7d4256f9"
   },
   "CLAUDE.md": {
-    "mtime": 1792195409.5559642,
-    "ast_hash": "4f4e8de7a25abc3486d2c0405ba52d96",
-    "semantic_hash": "4f4e8de7a25abc3486d2c0405ba52d96"
+    "mtime": 1792196127.4227345,
+    "ast_hash": "6c94aec1239fe69288f9ca71ebba1888",
+    "semantic_hash": "6c94aec1239fe69288f9ca71ebba1888"
   },
   "DECIMATION_MOD_TASK.md": {
     "mtime": 1784958353.0126374,
@@ -120,9 +120,9 @@
     "semantic_hash": "aa4550575e47e7c1d0b020a51afbb501"
   },
   "bug.md": {
-    "mtime": 1792194178.0410867,
-    "ast_hash": "e8ed1e618d1a5525b0531ca28f88c423",
-    "semantic_hash": "e8ed1e618d1a5525b0531ca28f88c423"
+    "mtime": 1792196127.42179,
+    "ast_hash": "1c61bca91b00b0f8ded561807cd389a9",
+    "semantic_hash": "1c61bca91b00b0f8ded561807cd389a9"
   },
   "create_weapons.md": {
     "mtime": 1791653625.5948887,
@@ -1290,9 +1290,9 @@
     "semantic_hash": "544ee6b9c8752b797fcb3593bedba9bc"
   },
   "dev/src/main/java/net/decimation/worldgen/Garrisons.java": {
-    "mtime": 1792192800.8275197,
-    "ast_hash": "60b0b62bf8bf37f715230e547c24d2e5",
-    "semantic_hash": "60b0b62bf8bf37f715230e547c24d2e5"
+    "mtime": 1792196025.8818767,
+    "ast_hash": "6dac3cc7efcaeffe1b6f7bf0ff4e93eb",
+    "semantic_hash": "6dac3cc7efcaeffe1b6f7bf0ff4e93eb"
   },
   "dev/src/main/java/net/decimation/worldgen/city/WastelandFence.java": {
     "mtime": 1791957626.6714728,
@@ -1505,9 +1505,9 @@
     "semantic_hash": "672ff08d57c9531bb0e60b054e26710c"
   },
   "docs/airport.md": {
-    "mtime": 1792193056.6524105,
-    "ast_hash": "5654dd3c5032dca4f83bc2bbc60bc2c4",
-    "semantic_hash": "5654dd3c5032dca4f83bc2bbc60bc2c4"
+    "mtime": 1792196127.4223762,
+    "ast_hash": "31d5b6e6d4ee2853a44144812cf9e76f",
+    "semantic_hash": "31d5b6e6d4ee2853a44144812cf9e76f"
   },
   "dev/src/main/java/net/decimation/worldgen/devtest/CallTrace.java": {
     "mtime": 1792082560.0302293,
@@ -1540,9 +1540,9 @@
     "semantic_hash": "294036847a9caffda351bfa855a78636"
   },
   "docs/tasks.md": {
-    "mtime": 1792194307.8479867,
-    "ast_hash": "b72f41fab7ee5e8292ebe17c2ea93a50",
-    "semantic_hash": "b72f41fab7ee5e8292ebe17c2ea93a50"
+    "mtime": 1792196127.423448,
+    "ast_hash": "67a2bb2336d9ccb777827c9945f51afa",
+    "semantic_hash": "67a2bb2336d9ccb777827c9945f51afa"
   },
   "tools/skillcheck.py": {
     "mtime": 1792098139.5315723,
@@ -1850,9 +1850,9 @@
     "semantic_hash": "f77f8770796ad007c968066ede5abeda"
   },
   "dev/src/main/java/net/decimation/worldgen/devtest/GarrisonTest.java": {
-    "mtime": 1792192922.2352774,
-    "ast_hash": "69b6ce21315bc9c773adfed5cb329e47",
-    "semantic_hash": "69b6ce21315bc9c773adfed5cb329e47"
+    "mtime": 1792195918.1595871,
+    "ast_hash": "1f375915fdc0615a3de0f710659554ee",
+    "semantic_hash": "1f375915fdc0615a3de0f710659554ee"
   },
   "tools/citylayout.py": {
     "mtime": 1792193244.7861876,
