@@ -143,9 +143,10 @@ Found on the way (traps and a Decimation bug):
 Verdict (18 Oktober 2026): the idea works with today's game; the relay is plain byte piping. Next design questions: the mod set check
 (item 4), the menu guard (bug.md), online mode switch per host (decision 1), where the free relay runs (decision 2).
 
-## 7. Decisions after the spike (user, 18 Oktober 2026, 02:14)
+## 7. Decisions after the spike (user, 18 Oktober 2026, 02:14 and 02:20)
 - Mods: the public list SHOWS each world's mods (a joiner sees what to install); no change to Forge's check.
 - Relay: check the other free options before Oracle (section 8). The user freed RAM on this Mac (two games fit better).
+- No card (user): Oracle is out; the free path is playit.gg and Cloudflare, with the free direct paths in front.
 
 ## 8. Free relay options (web, 18 Oktober 2026; secondary sources unless said, verify before relying)
 
@@ -178,3 +179,25 @@ per host is 43,200 a month each, so Cloudflare fits a public list better [inferr
 Proposal (for the user): direct first (public address, UPnP, IPv6), Cloudflare Durable Objects as the free fallback
 relay to start, playit.gg addresses accepted on the list as a host's own option; Oracle when a card is available or a
 donation pays a small server; hole punching later to cut relay use.
+
+## 9. Joiner side checks (18 Oktober 2026, 02:20 to 02:55; dev tests `lanhost scene=true` + `lanjoin`)
+
+Both games ran tests: the HOST (dev client) `lanhost scene=true` sets each scene up on the server; the JOINER (production
+client with a one jar of the current code, own live port 25598, `devtest.py --live --port=25598 --results=FILE lanjoin`)
+leaves its own world for Decimation's menu, turns fancy graphics on, joins through the relay and asks for one scene
+after another through two files (devtest/LanBus, `bus=DIR` on both), checking each on its own screen. Last two runs
+(a first join, then the rejoin) all PASS (11 and 12 checks):
+- joined through the relay; HUD with fancy graphics did NOT crash after going through the menu (bug.md crash needs the
+  join without the menu);
+- the place names list equals what the server sent this player (5), the safezone list arrived (2);
+- Decimation's own crate (deci:BlockMilitaryCrate) opens its loot screen (deci.g.g) for the remote player;
+- a right click on a hummer SEAT (VehicleSeatEntity deci.ad.c, not the body) seats the joiner; the host sees it riding;
+- the trader screen opens (deci.g.q, 29 offers on the joiner's side) and a buy costs bottlecaps on the host (exact);
+- the joiner's AKM (Deci.fireHeldGun) kills an infected on the host;
+- a bandit's fire hurts the joiner (20 -> 0 or 1) and its tracers are drawn on the joiner (2 to 9).
+Found on the way: **our place names list never came back after a rejoin** (bug.md, FIXED in code): PlaceNames skipped a
+list equal to the last one sent to that player, but the client's list is empty after reconnecting (seen: 0 of 5); now
+forgotten on logout (PlayerLoggedOutEvent); RED (0 vs 5) then GREEN (5 vs 5) in the rejoin run; singleplayer `places` and
+`zones` still all PASS. Flaky, not bugs: a bandit at 14 blocks sometimes missed every shot in 20 s (now 8 blocks, 30 s);
+one join dropped right after login with no reason logged (the retry joined).
+Not covered yet: voice chat, zone banners on walking into a zone, online mode with real accounts.

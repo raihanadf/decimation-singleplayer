@@ -14,3 +14,5 @@ Throwaway quality, kept so the measurement can be repeated.
 
 Run: relay, `python3 tools/devtest.py --live lanhost online=false wait=9000`, agent once the port file exists, then
 the joiner. One Mac with 16 GB runs both games only just (swap); see the traps in docs/player_hosting.md section 6.
+- `run_join_live.sh.example`: the joiner with its own live test port (25598) and the shared LanBus folder (BUSDIR) for
+  `lanjoin`; it joins from Decimation's menu by itself (no --server).

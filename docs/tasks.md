@@ -41,6 +41,8 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [ ] survivor partner idea: design talk (docs/ideas.md item 21)
 - [~] player hosted worlds through our relay: spike done, mods shown on the list, free relays compared (docs/player_hosting.md 6..8); next: user picks the relay, then design
 - [ ] HUD crash when a world is joined without Decimation's menu (bug.md, found in the hosting spike)
+- [x] place names gone after a rejoin: PlaceNames forgets a player on logout (bug.md, in code, next release)
+- [x] hosting spike joiner side: crate, hummer, trader, AKM, bandit fire and tracers, lists all PASS (docs/player_hosting.md 9)
 - [x] backend thread leak: PatchBackend v2, no BoehMod connection (v0.62.8)
 - [x] one skill per Decimation feature (.claude/skills/decimation-code*)
 - [ ] flaky shots checks: AKM count, spotting at 70 (pending, user)

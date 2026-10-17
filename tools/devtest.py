@@ -21,6 +21,7 @@ LIVE (no game launch per run, docs/roadmap.md "Live dev test mode"):
     python3 tools/devtest.py --live --window=1920x1080 MODE   # start the live game with that window size
     python3 tools/devtest.py --live MODE -Ptrace=deci.aE,deci.n.d   # record the run's calls (docs/call_trace.md)
     python3 tools/devtest.py --live --trace=deci/aE MODE ...        # start the game marking only those packages
+    python3 tools/devtest.py --live --port=25598 --results=FILE MODE  # a second game on its own live port
 
 --live sends the modes to a game started with `gradlew runClient -Plive`
 (devtest/DevTestLive, 127.0.0.1:25599); if none answers it starts one in the
@@ -116,6 +117,9 @@ def live_ready(wait):
 
 def run_live(modes, extra, swap, angelica=False, task="runClient", dress=False):
     trace = any(e.startswith("-Ptrace=") for e in extra)
+    if live_send("ping", 5) is None and PORT != 25599:
+        print("no live game on port %d (only the dev client on 25599 is started from here)" % PORT)
+        return False
     if live_send("ping", 5) is None:
         print("no live game: starting one (log %s)..." % os.path.relpath(LIVE_LOG, ROOT))
         os.makedirs(os.path.dirname(LIVE_LOG), exist_ok=True)
@@ -164,7 +168,13 @@ def run_live(modes, extra, swap, angelica=False, task="runClient", dress=False):
 
 
 def main():
+    global PORT, RESULTS
     args = sys.argv[1:]
+    for a in args:  # a second game (the production client as a joiner, docs/player_hosting.md) on its own port
+        if a.startswith("--port="):
+            PORT = int(a[len("--port="):])
+        if a.startswith("--results="):
+            RESULTS = a[len("--results="):]
     modes = [a for a in args if not a.startswith("-")]
     extra = [a for a in args if a.startswith("-P")]
     if "--stop" in args:

@@ -31,6 +31,14 @@ public class LanHostTest extends DevTestMode
 
     private final boolean online = "true".equals(System.getProperty("deciworldgen.autotest.online"));
     private final int wait = Integer.parseInt(System.getProperty("deciworldgen.autotest.wait", "2400"));
+    /** scene=true: no timed steps; the joiner's test (LanJoinTest) asks for each scene through LanBus. */
+    private final boolean scene = "true".equals(System.getProperty("deciworldgen.autotest.scene"));
+    private String lastReq = "";
+    private final java.util.List<Entity> made = new java.util.ArrayList<Entity>();
+    private int crateX, crateY, crateZ;
+    private EntityLiving target;
+    private float sceneMin = 20;
+    private boolean watchHealth;
     private volatile int ticks, joinedAt = -1;
     private volatile boolean done;
     private EntityPlayerMP joiner;
@@ -98,6 +106,11 @@ public class LanHostTest extends DevTestMode
             deaths++; // a respawn makes a new player object
             joiner = now;
         }
+        if (!players.contains(joiner) && scene)
+        {
+            joinedAt = -1; // the joiner's test leaves and joins again first (the rejoin case): wait for the new join
+            return;
+        }
         if (!players.contains(joiner))
         {
             DevTestResults.check(name(), "joiner stays connected", "left at step " + (t - joinedAt), false, "to the end");
@@ -106,6 +119,11 @@ public class LanHostTest extends DevTestMode
         }
         int j = t - joinedAt;
         World w = joiner.worldObj;
+        if (scene)
+        {
+            scene(host, w, j);
+            return;
+        }
         if (j == 80) // spawn protection is over after 60 ticks
         {
             Deci.Player d = Deci.player(joiner);
@@ -199,6 +217,194 @@ public class LanHostTest extends DevTestMode
     }
 
     private static int lastPort = -1;
+
+    private static int size(List<?> l)
+    {
+        return l == null ? -1 : l.size();
+    }
+
+    /** One request of the joiner's test per tick: set the scene up here on the server, answer, the joiner checks. */
+    private void scene(EntityPlayerMP host, World w, int j)
+    {
+        if (j == 1)
+        {
+            LanBus.clear();
+        }
+        if (watchHealth)
+        {
+            sceneMin = Math.min(sceneMin, joiner.getHealth());
+            joiner.setHealth(Math.max(joiner.getHealth(), 6)); // alive: a respawn would end the scene
+        }
+        String[] req = LanBus.read("req");
+        if (req == null || req.length < 2 || String.join(" ", req).equals(lastReq))
+        {
+            return;
+        }
+        lastReq = String.join(" ", req);
+        String n = req[0], verb = req[1], answer = "ok";
+        int x = DevTestArena.X, y = DevTestArena.Y, z = DevTestArena.Z;
+        if (verb.equals("arena"))
+        {
+            w.getWorldInfo().setRaining(false);
+            w.getWorldInfo().setThundering(false);
+            w.setWorldTime(6000);
+            DevTestArena.build(w, host);
+            host.setGameType(WorldSettings.GameType.CREATIVE);
+            host.setPositionAndUpdate(x - 40, y, z);
+            joiner.setGameType(WorldSettings.GameType.SURVIVAL);
+            joiner.inventory.clearInventory(null, -1);
+            joiner.playerNetServerHandler.setPlayerLocation(x + 0.5, y, z + 0.5, 180, 0);
+            Deci.player(joiner).healFully();
+            joiner.setHealth(joiner.getMaxHealth());
+            answer = "ok " + size(Deci.clientTurfs()) + " " + size(Deci.clientSafezones()); // the host's own lists
+        }
+        else if (verb.equals("crate"))
+        {
+            String pick = null;
+            for (String b : Deci.lootTable().keySet())
+            {
+                if (b.startsWith("deci:") && (pick == null || b.toLowerCase().contains("crate") && !pick.toLowerCase().contains("crate")))
+                {
+                    pick = b;
+                }
+            }
+            net.minecraft.block.Block b = pick == null ? null : net.minecraft.block.Block.getBlockFromName(pick);
+            crateX = x;
+            crateY = y;
+            crateZ = z - 2;
+            if (b != null)
+            {
+                w.setBlock(crateX, crateY, crateZ, b, 0, 3);
+                Deci.clearLootCooldowns();
+            }
+            answer = (b == null ? "none" : "ok") + " " + crateX + " " + crateY + " " + crateZ + " " + pick;
+        }
+        else if (verb.equals("hummer"))
+        {
+            w.setBlockToAir(crateX, crateY, crateZ);
+            Entity h = Deci.newHummer(w, x + 0.5, y, z + 5.5);
+            if (h != null && !w.spawnEntityInWorld(h))
+            {
+                h = null;
+            }
+            if (h != null)
+            {
+                made.add(h);
+            }
+            Entity seat = h == null ? null : Deci.vehicleDriverSeat(h);
+            answer = (h == null ? "none" : "ok") + " " + (h == null ? -1 : h.getEntityId()) + " " + (seat == null ? -1 : seat.getEntityId());
+        }
+        else if (verb.equals("lists"))
+        {
+            answer = "ok " + net.decimation.worldgen.PlaceNames.sentCount(joiner.getUniqueID()) + " " + size(Deci.clientSafezones());
+        }
+        else if (verb.equals("riding"))
+        {
+            answer = "ok " + (joiner.ridingEntity == null ? "none" : joiner.ridingEntity.getClass().getSimpleName());
+            if (joiner.ridingEntity != null)
+            {
+                joiner.mountEntity(null);
+            }
+            for (Entity e : made)
+            {
+                e.setDead();
+            }
+            made.clear();
+            joiner.playerNetServerHandler.setPlayerLocation(x + 0.5, y, z + 0.5, 180, 0);
+        }
+        else if (verb.equals("trader"))
+        {
+            Deci.player(joiner).addBottlecaps(1000);
+            Entity tr = net.minecraft.entity.EntityList.createEntityByName("TraderFood", w);
+            boolean ok = false;
+            for (int i = 0; tr != null && i < 5 && !ok; i++)
+            {
+                tr.setLocationAndAngles(x + 0.5, y, z - 2.5, 0, 0);
+                ok = w.spawnEntityInWorld(tr);
+            }
+            if (ok)
+            {
+                made.add(tr);
+            }
+            answer = (ok ? "ok" : "none") + " " + (ok ? tr.getEntityId() : -1) + " " + Deci.player(joiner).bottlecaps();
+        }
+        else if (verb.equals("caps"))
+        {
+            answer = "ok " + Deci.player(joiner).bottlecaps();
+            for (Entity e : made)
+            {
+                e.setDead();
+            }
+            made.clear();
+        }
+        else if (verb.equals("gun"))
+        {
+            net.minecraft.item.ItemStack g = new net.minecraft.item.ItemStack(cpw.mods.fml.common.registry.GameRegistry.findItem("deci", "akm"));
+            g.stackTagCompound = new net.minecraft.nbt.NBTTagCompound();
+            g.stackTagCompound.setInteger("ammo", 30);
+            joiner.inventory.setInventorySlotContents(joiner.inventory.currentItem, g);
+            joiner.inventoryContainer.detectAndSendChanges();
+            joiner.capabilities.disableDamage = true;
+            target = null;
+            for (int i = 0; i < 10 && target == null; i++)
+            {
+                EntityLiving e = Deci.newInfected(w);
+                e.setLocationAndAngles(x + 0.5, y, z - 4.5, 0, 0);
+                if (w.spawnEntityInWorld(e))
+                {
+                    target = e;
+                    made.add(e);
+                }
+            }
+            answer = (target == null ? "none -1 0" : "ok " + target.getEntityId() + " " + target.getHealth());
+        }
+        else if (verb.equals("target"))
+        {
+            answer = "ok " + (target == null ? "none" : target.isDead + " " + target.getHealth()) + " " + Deci.gunAmmo(joiner.getHeldItem());
+            for (Entity e : made)
+            {
+                e.setDead();
+            }
+            made.clear();
+            joiner.capabilities.disableDamage = false;
+        }
+        else if (verb.equals("bandit"))
+        {
+            Deci.player(joiner).healFully();
+            joiner.setHealth(joiner.getMaxHealth());
+            sceneMin = joiner.getMaxHealth();
+            watchHealth = true;
+            EntityLiving bd = null;
+            for (int i = 0; i < 10 && bd == null; i++)
+            {
+                EntityLiving e = Deci.newBandit(w);
+                e.setLocationAndAngles(x + 0.5, y, z - 8.5, 0, 0);
+                if (w.spawnEntityInWorld(e))
+                {
+                    bd = e;
+                    made.add(e);
+                }
+            }
+            answer = (bd == null ? "none -1" : "ok " + bd.getEntityId());
+        }
+        else if (verb.equals("health"))
+        {
+            watchHealth = false;
+            answer = "ok " + sceneMin + " " + joiner.getMaxHealth() + " " + deaths;
+            for (Entity e : made)
+            {
+                e.setDead();
+            }
+            made.clear();
+        }
+        else if (verb.equals("end"))
+        {
+            DevTestResults.value(name(), "scenes done", "joiner respawns " + deaths);
+            done = true;
+        }
+        LanBus.write("res", n + " " + verb + " " + answer);
+        DevTestResults.value(name(), "scene " + verb, answer);
+    }
 
     private EntityLiving spawn(EntityLiving e, World w, int dx)
     {

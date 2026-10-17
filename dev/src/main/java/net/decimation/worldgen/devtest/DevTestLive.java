@@ -37,7 +37,8 @@ import cpw.mods.fml.common.FMLLog;
  */
 public final class DevTestLive
 {
-    public static final int PORT = 25599;
+    /** 25599; a second game on this Mac (a joiner, docs/player_hosting.md) sets -Ddeciworldgen.autotest.liveport. */
+    public static final int PORT = Integer.getInteger("deciworldgen.autotest.liveport", 25599);
     public static final String PROPERTY = "deciworldgen.autotest.live";
 
     /** A run request: the modes, and the reply slot the game thread fills. */

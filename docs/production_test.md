@@ -81,3 +81,6 @@ Checked with it: bundled content unpacked, cities generated, no errors (bug.md v
   so copy dev/libs/DecimationVoiceChat.jar into its mods for the run and remove it after (Forge refused it otherwise).
 - Traps: fancy graphics + joining at start crashes Decimation's HUD (bug.md); with two games this Mac swaps and Forge's
   handshake can time out ("Timeout waiting for client thread to catch up!"): render distance 4, fancy off, retry.
+- Joiner checks (section 9 of docs/player_hosting.md): the production client gets a one jar of the CURRENT code
+  (`tools/onejar.py dev/build/libs/deciworldgen-<ver>.jar SCRATCH/Decimation.jar`, never dist/onejar) and its own live
+  port (tools/hostspike/run_join_live.sh.example); put the release jar back after.
