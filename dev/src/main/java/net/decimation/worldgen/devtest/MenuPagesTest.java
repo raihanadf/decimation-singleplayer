@@ -83,6 +83,9 @@ public class MenuPagesTest extends DevTestMode
                 List<String> toasts = Deci.toasts();
                 DevTestResults.check(name(), "early access click", toasts, toasts.contains("★ Early access is coming soon!"),
                                      "a toast: ★ Early access is coming soon!");
+                List<String> titles = Deci.toastTitles();
+                DevTestResults.check(name(), "toast title", titles, !titles.isEmpty() && titles.get(titles.size() - 1).equals("DeciRemnant"),
+                                     "DeciRemnant (was Decimation)");
                 DevTestUtil.screenshot(mc, name(), "menupages_community");
                 mc.displayGuiScreen(Deci.homeMenu());
                 next();
@@ -145,7 +148,7 @@ public class MenuPagesTest extends DevTestMode
             case 7:
                 List<String> status = Deci.statusRows(mc.currentScreen);
                 boolean done = status.size() == 4;
-                for (int i = 0; done && i < 3; i++)
+                for (int i = 0; done && i < 4; i++)   // the website row answers over the network
                 {
                     done = !status.get(i).endsWith("| Pinging...");
                 }
@@ -159,6 +162,9 @@ public class MenuPagesTest extends DevTestMode
                     rowsOk = status.get(i).equals(STATUS[i]);
                 }
                 DevTestResults.check(name(), "status rows", status, rowsOk, "Global Server, Community Server, Download: Offline");
+                String site = status.size() == 4 ? status.get(3) : "";
+                DevTestResults.check(name(), "website row", site, site.equals("Website | Official DeciRemnant Website | Online"),
+                                     "our website, Online");
                 next();
                 return true;
             case 8:

@@ -1032,6 +1032,10 @@ of the last session:
   exist; refused spawns retried 5 times; the checkpoint's flag was outside its canvas (Canvas.set drops those
   silently): moved, and CityGate now logs props outside the canvas. Never iterate loadedEntityList while calling
   anything that can load chunks (path searches, getChunkFromChunkCoords).
+  v0.64.7 (17 Oktober 2026, local): the in-game updater finds the running jar (bug.md: every shipped game since 0.59
+  read itself as a dev folder, so players of 0.59 .. 0.64.6 must install the next release by hand once); toasts
+  titled DeciRemnant, the status page's Website row pings deciremnant.vercel.app (PatchMenuTexts, 51 texts in 13
+  classes, a text found at least once per class). Test `update jar=true` (production client) swaps the real jar.
   RELEASE 0.64.6 published 17 Oktober 2026 (GitHub pre-release, Decimation.jar + .sha256; GitHub's asset digest equals
   the local sha256 d6b8dfe2...; notes dist/onejar/RELEASE_NOTES_0.64.6.md): everything since 0.59.0.
   Gun study (10 Oktober 2026): docs/gun_style_guide.md, tools/guns/study.py

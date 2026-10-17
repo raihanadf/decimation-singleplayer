@@ -944,6 +944,22 @@ public final class Deci
         return out;
     }
 
+    /** The titles of every toast on screen or waiting (ToastNotification deci.b.b X), oldest first. */
+    @cpw.mods.fml.relauncher.SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)
+    public static java.util.List<String> toastTitles()
+    {
+        java.util.List<String> out = new java.util.ArrayList<String>();
+        if (deci.b.b.S != null)
+        {
+            out.add(deci.b.b.S.X);
+        }
+        for (deci.b.b t : deci.b.b.R)
+        {
+            out.add(t.X);
+        }
+        return out;
+    }
+
     /** Title and line of every entry of a Decimation popup menu (DeciSubScreen deci.d.j: fa, fb), e.g. My Community. */
     @cpw.mods.fml.relauncher.SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)
     public static java.util.List<String> popupLines(net.minecraft.client.gui.GuiScreen screen)

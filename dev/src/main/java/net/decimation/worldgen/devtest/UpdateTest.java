@@ -24,7 +24,8 @@ import net.minecraft.client.gui.GuiScreen;
  * Fallback (rate limit): the fake server started with LIMITED answers the API with 403 and the check must
  * come from the release feed (`source=feed`); `feedonly=true` points the API at a dead address (works with
  * real=true against GitHub's own feed). A fake run that got its answer from the API asks again and must get
- * "api (not modified)" (ETag, not counted by GitHub).
+ * "api (not modified)" (ETag, not counted by GitHub). jar=true (with real=true, in the scratchpad production client):
+ * the swap replaces the running mods/Decimation.jar itself, found by Updater.target.
  */
 public class UpdateTest extends DevTestMode
 {
@@ -36,6 +37,8 @@ public class UpdateTest extends DevTestMode
     private long started;
     private String versionBefore;
     private final boolean real = "true".equals(System.getProperty("deciworldgen.autotest.real"));
+    /** jar=true: replace the running jar itself (a shipped game only), not the stand in. */
+    private final boolean useJar = "true".equals(System.getProperty("deciworldgen.autotest.jar"));
     private final String expect = System.getProperty("deciworldgen.autotest.expect", real ? "0.59.0" : "9.9.9");
     private final boolean feedOnly = "true".equals(System.getProperty("deciworldgen.autotest.feedonly"));
     private final String source = prop("source", feedOnly ? "feed" : "api");
@@ -52,12 +55,26 @@ public class UpdateTest extends DevTestMode
         {
             case 0:
                 String port = System.getProperty("deciworldgen.autotest.port", "8765");
-                target = new File(mc.mcDataDir, "devtest/update_target/Decimation.jar");
-                target.getParentFile().mkdirs();
-                write(target, "OLDJAR".getBytes());
-                new File(target.getPath() + ".download").delete();
-                new File(target.getParentFile(), "update.log").delete();
-                System.setProperty("deciworldgen.update.target", target.getPath());
+                if (useJar)
+                {
+                    // the game's own jar (Updater.target): only in a shipped game, the scratchpad production client
+                    target = Updater.target();
+                    DevTestResults.check(name(), "the running jar as target", target, target != null, "mods/Decimation.jar");
+                    if (target == null)
+                    {
+                        step = 99;
+                        return false;
+                    }
+                }
+                else
+                {
+                    target = new File(mc.mcDataDir, "devtest/update_target/Decimation.jar");
+                    target.getParentFile().mkdirs();
+                    write(target, "OLDJAR".getBytes());
+                    new File(target.getPath() + ".download").delete();
+                    new File(target.getParentFile(), "update.log").delete();
+                    System.setProperty("deciworldgen.update.target", target.getPath());
+                }
                 Updater.reset();
                 Updater.forgetCache();
                 String dead = "http://127.0.0.1:9/none";
@@ -114,7 +131,7 @@ public class UpdateTest extends DevTestMode
                     {
                         try
                         {
-                            mc.currentScreen.getClass().getMethod("actionPerformed", GuiButton.class).invoke(mc.currentScreen, b);
+                            DevTestUtil.press(mc.currentScreen, b);       // MCP or SRG name: dev and shipped game
                         }
                         catch (Exception e)
                         {
@@ -189,26 +206,9 @@ public class UpdateTest extends DevTestMode
         at = frames;
     }
 
-    @SuppressWarnings("unchecked")
     private static GuiButton button(GuiScreen screen, int id)
     {
-        try
-        {
-            java.lang.reflect.Field f = GuiScreen.class.getDeclaredField("buttonList");
-            f.setAccessible(true);
-            for (Object o : (java.util.List<Object>) f.get(screen))
-            {
-                if (((GuiButton) o).id == id)
-                {
-                    return (GuiButton) o;
-                }
-            }
-        }
-        catch (Exception e)
-        {
-            DevTestResults.value("update", "buttons", e.toString());
-        }
-        return null;
+        return DevTestUtil.byId(screen, id);            // buttonList by MCP or SRG name
     }
 
     private static void write(File f, byte[] b)

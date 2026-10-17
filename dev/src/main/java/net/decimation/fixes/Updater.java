@@ -99,15 +99,32 @@ public final class Updater
         {
             return new File(t);
         }
-        try
+        if (Boolean.TRUE.equals(net.minecraft.launchwrapper.Launch.blackboard.get("fml.deobfuscatedEnvironment")))
         {
-            File f = new File(Updater.class.getProtectionDomain().getCodeSource().getLocation().toURI());
-            return f.isFile() ? f : null;
+            return null;                                  // the dev client: its mod jar is Gradle's build output, never replaced
         }
-        catch (Exception e)
+        // Forge knows the file our mod came from; a class's code source is a "jar:file:...!/..." address under
+        // Forge's class loader, which is no file (until 0.64.6 every shipped game read it as a dev folder: bug.md)
+        ModContainer c = Loader.instance().getIndexedModList().get("deciworldgen");
+        File f = c == null ? null : c.getSource();
+        if (f == null)
         {
-            return null;
+            try
+            {
+                java.net.URL u = Updater.class.getProtectionDomain().getCodeSource().getLocation();
+                String s = u.toString();
+                if (s.startsWith("jar:"))
+                {
+                    s = s.substring(4, s.indexOf("!/") > 0 ? s.indexOf("!/") : s.length());
+                }
+                f = new File(new java.net.URI(s));
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
         }
+        return f.isFile() ? f : null;
     }
 
     /** Starts the release check on a background thread (once at a time). */

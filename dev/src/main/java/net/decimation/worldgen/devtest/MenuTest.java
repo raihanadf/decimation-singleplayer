@@ -29,6 +29,12 @@ public class MenuTest extends DevTestMode
             boolean voice = new File("mods/DecimationVoiceChat.jar").exists();
             DevTestResults.value(name(), "mods/DecimationVoiceChat.jar present", voice);
             DevTestResults.check(name(), "update required", Deci.updateRequired(), !Deci.updateRequired(), "false");
+            // the jar an update replaces (fixes/Updater.target): the running jar in a shipped game, none in a dev folder
+            boolean dev = Boolean.TRUE.equals(net.minecraft.launchwrapper.Launch.blackboard.get("fml.deobfuscatedEnvironment"));
+            File target = net.decimation.fixes.Updater.target();
+            DevTestResults.check(name(), "update target", target == null ? "none" : target.getPath(),
+                                 dev ? target == null : target != null && target.isFile() && target.getName().endsWith(".jar"),
+                                 dev ? "none (dev folder)" : "the running jar (mods/Decimation.jar)");
             net.decimation.worldgen.DevAutoTest.keepScreen = true;
             mc.displayGuiScreen(Deci.homeMenu());
         }

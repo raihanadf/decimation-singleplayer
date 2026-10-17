@@ -81,6 +81,8 @@ Chernarus pictures ("here the chernarus location"). Shots: docs/shots/main_menu_
   BoehMod's forums; the user: "later we make forum on our website on it"), GitHub ("Source code, issues, all releases").
 - The profile cards say **No early access** (was "Not Supporter :(" and "Is not a Supporter :("), the lounge title
   "★ Early access lounge" (nobody reaches it: no player is a supporter without BoehMod's backend).
+- Since v0.64.7 (user): toasts carry the title DeciRemnant (ToastNotification deci/b/b), and the status page's fourth
+  row is our Website (Official DeciRemnant Website, deciremnant.vercel.app port 80, Online when the site answers).
 - No network: every row's host ends in .invalid (RFC 6761: never resolves), so the pings fail at once and nobody's
   old domain gets our players' connections. The status page's pinger has no timeout: on Decimation's dead hosts it sat
   at "Pinging..." for over 20 s (a resolving host that never answers holds the socket about 75 s).

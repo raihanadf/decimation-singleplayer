@@ -39,7 +39,7 @@ import org.objectweb.asm.Opcodes;
  *
  * Reads the classes of the jar it is given and writes the patched ones; give it the ORIGINAL classes with only
  * PatchMenuStats applied (deci.i.a and deci.i.e carry it), never a jar this patch already ran on (its texts are gone
- * there). Every text of the plan must be changed exactly once in its class, or the patch stops. The welcome box
+ * there). Every text of the plan must be found in its class (at least once), or the patch stops. The welcome box
  * sentence is Decimation's lang file (tools/menu_assets.py). Steps: docs/main_menu.md 4b.
  *
  *   ASM=~/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm-debug-all/5.0.3/f9e3*.../asm-debug-all-5.0.3.jar
@@ -92,6 +92,12 @@ public class PatchMenuTexts
         status.put("Network", "Download");
         status.put("Official Decimation Management Server", "DeciRemnant download server");
         status.put("network.mcdecimation.net", "download.deciremnant.invalid");
+        // user, 17 Oktober 2026: the Website row checks our site, toasts say DeciRemnant
+        status.put("Official BoehMod Website", "Official DeciRemnant Website");
+        status.put("www.boehmod.com", "deciremnant.vercel.app");
+        Map<String, Object> toast = new HashMap<String, Object>();
+        toast.put("Decimation", "DeciRemnant");                       // the title of every toast (both constructors)
+        plan.put("deci/b/b", toast);
         plan.put("deci/i/h", status);
         Map<String, Object> row = new HashMap<String, Object>();
         row.put("Not Reachable", "§6Coming soon");
@@ -124,7 +130,7 @@ public class PatchMenuTexts
             ClassReader r = new ClassReader(read(jar.getInputStream(e)));
             ClassWriter w = new ClassWriter(0); // same stack effect (a String pushed), no frame change
             final int[] changed = {0};
-            final Map<Object, Integer> seen = new HashMap<Object, Integer>();     // per text: a doubled one could hide a missing one
+            final Map<Object, Integer> seen = new HashMap<Object, Integer>();     // per text: a missing one stops the patch
             r.accept(new ClassVisitor(Opcodes.ASM5, w)
             {
                 @Override
@@ -160,10 +166,9 @@ public class PatchMenuTexts
             }, 0);
             for (Object k : swaps.keySet())
             {
-                if (!Integer.valueOf(1).equals(seen.get(k)))
+                if (!seen.containsKey(k))
                 {
-                    throw new IllegalStateException(p.getKey() + ": \"" + k + "\" changed " + (seen.containsKey(k) ? seen.get(k) : 0)
-                                                    + " times, expected once");
+                    throw new IllegalStateException(p.getKey() + ": \"" + k + "\" not found, nothing changed");
                 }
             }
             File out = new File(a[1], p.getKey() + ".class");

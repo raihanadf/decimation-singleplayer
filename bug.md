@@ -105,6 +105,18 @@ not something we introduced or need to fix) see `documentation.md`.
   runs did not crash. Cause unknown [not verified]; the lot code only plans blocks, it touches no
   world. Watch for it again (an "Entity is already tracked" error came just before).
 
+### In-game update never worked in a shipped game: "does not run from a jar (dev folder)" (found 17 Oktober 2026, FIXED v0.64.7)
+- Seen by the user in Prism on 0.59: Update, then "this game does not run from a jar (dev folder): nothing to replace".
+- Cause: Updater.target read our class's code source, which under Forge's class loader is a "jar:file:...!/..."
+  address; new File(URI) refused it and the updater took it for a dev folder. Every version from 0.59.0 to 0.64.6 has
+  this: their players must install the next release by hand once. The update tests used a stand in target and the
+  production tests never pressed Update, so nothing caught it.
+- Fix: the mod's source file from Forge (ModContainer.getSource), a jar: address read as a fallback, nothing in a
+  deobfuscated (dev) game. Checks: dev test `menu` "update target" (RED none in the production client, GREEN
+  mods/Decimation.jar; none in the dev client); `update real=true from=0.59.0 expect=0.64.6 jar=true` in the
+  production client: GitHub check, Update button, our screen, 238 MB in 29 s, checksum, the running jar swapped
+  (its sha256 then equals the published 0.64.6). UpdateTest used MCP only reflection: now DevTestUtil.
+
 ### Checkpoint gate with HESCO: a stair over the shut line (found 17 Oktober 2026, FIXED v0.64.4)
 - Found by `gatewalk` extended to every gate look with a path finder check (docs/wasteland.md): the checkpoint
   look in the HESCO state, meant to be shut, had a way through: the HESCO closure's 1 high sandbag at lane 3, the
