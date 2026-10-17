@@ -69,4 +69,8 @@ Checked with it: bundled content unpacked, cities generated, no errors (bug.md v
   (3.695s)", clean stop. Client one launch `garrison`: all PASS (13 posts at the first visit, the rest as their chunks
   filled in, 16 homes, a guard back after 174 ticks). Client live `doublejoin gates menu stats mainmenu menupages`
   (gates=checkpoint/hesco): 27 PASS, 0 FAIL; title "DeciRemnant v0.64.6", the checkpoint's flag counted once.
+- After publishing 0.64.6 (17 Oktober 2026): an older release jar (deciworldgen 0.60.1) in the production client logged
+  "update 0.64.6 available (238 MB) from the api, running 0.60.1, sha256 known": players on older versions get the
+  Update button. Trap: an older jar cannot open a test world made by a newer one (Forge's missing blocks prompt,
+  "Unidentified block: deciworldgen:boom_barrier"), so a live run on it hangs; read the startup log instead.
 

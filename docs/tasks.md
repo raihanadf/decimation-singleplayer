@@ -22,7 +22,7 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [x] main menu news panels: real topic pictures (GitHub repo, release list, website top, coming soon cards) in the jars
 - [x] main menu v0.64.0: Website / GitHub links, DeciRemnant and our version, Continue, our corner (dev client)
 - [x] main menu v0.64.1: server pages coming soon (Bukovka, Chernarus), status rows, Early access (dev test menupages)
-- [x] release 0.64.6 published 17 Oktober 2026 (pre-release; GitHub's digest = local sha256 d6b8dfe2)
+- [x] release 0.64.6 published 17 Oktober 2026 (pre-release; GitHub's digest = local sha256 d6b8dfe2); site download 0.64.6 at 12:45, old clients see Update
 - [ ] forum on our website for My Community (later, roadmap UI 3)
 - [x] "Entity is already tracked": swapped mobs added twice at chunk load, double speed; fixes/JoinOnce (v0.64.2)
 - [ ] survivor partner idea: design talk (docs/ideas.md item 21)
