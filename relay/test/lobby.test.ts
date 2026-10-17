@@ -66,4 +66,28 @@ describe('lobby', () => {
     expect(await lobby().check(room, null)).toEqual({ ok: true, max: 4 });
     expect(await lobby().check('nosuchroom000000', null)).toEqual({ ok: false, max: 0 });
   });
+
+  it('refuses a body over 8 KB without reading it into the list', async () => {
+    const big = JSON.stringify({ name: 'Big', host: 'Ucil', online: false, max: 4, mods: [['x'.repeat(60), 'y'.repeat(30)]], version: '1', pad: 'z'.repeat(9000) });
+    const r = await SELF.fetch('https://relay/list/host', { method: 'POST', headers: { 'CF-Connecting-IP': '10.0.0.30' }, body: big });
+    expect(r.status).toBe(413);
+  });
+
+  it('holds at most 200 worlds: the next registration is refused', async () => {
+    await run(lobby(), (o: any) => {
+      for (let i = 0; i < 200; i++) o.entries.set('fill' + i, { room: 'fill' + i, secret: 's', name: 'f', host: 'h', online: false, players: 0, max: 2, mods: [], version: '1', since: o.now(), seen: o.now() });
+    });
+    expect((await host('One too many', {}, '10.0.0.31')).status).toBe(503);
+    await run(lobby(), (o: any) => { for (let i = 0; i < 200; i++) o.entries.delete('fill' + i); });
+  });
+
+  it('forgets addresses older than a minute', async () => {
+    await host('Forget world', {}, '10.0.0.32');
+    await run(lobby(), (o: any) => { o.offset = 61_000; });
+    await host('Another', {}, '10.0.0.33');
+    let kept = -1;
+    await run(lobby(), (o: any) => { kept = o.registered.has('10.0.0.32') ? 1 : 0; o.offset = 0; });
+    expect(kept).toBe(0);
+  });
 });
+

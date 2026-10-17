@@ -7,6 +7,8 @@ export interface Entry {
 }
 
 const STALE_MS = 180_000;
+const MAX_BODY = 8192;
+const MAX_WORLDS = 200;
 const NAME = /^[^§]{1,32}$/;
 const PLAYER = /^[A-Za-z0-9_]{1,16}$/;
 
@@ -62,9 +64,20 @@ export class Lobby extends DurableObject {
       return json([...this.entries.values()].map(({ secret, seen, ...pub }) => ({ ...pub, route: 'relay' })));
     }
     if (req.method !== 'POST') return json({ error: 'method' }, 405);
-    const body = (await req.json().catch(() => null)) as any;
+    // never read more than 8 KB: a list entry is far smaller (abuse guard)
+    if (Number(req.headers.get('content-length') ?? '0') > MAX_BODY) return json({ error: 'too large' }, 413);
+    const text = await req.text();
+    if (text.length > MAX_BODY) return json({ error: 'too large' }, 413);
+    let body: any = null;
+    try {
+      body = JSON.parse(text);
+    } catch {
+      body = null;
+    }
     if (!body) return json({ error: 'json' }, 400);
     if (path === '/list/host') {
+      for (const [k, at] of this.registered) if (this.now() - at >= 60_000) this.registered.delete(k); // memory stays small
+      if (this.entries.size >= MAX_WORLDS) return json({ error: 'list full' }, 503);
       const ip = req.headers.get('CF-Connecting-IP') ?? 'unknown';
       const last = this.registered.get(ip) ?? -Infinity;
       if (this.now() - last < 60_000) return json({ error: 'too often' }, 429);
