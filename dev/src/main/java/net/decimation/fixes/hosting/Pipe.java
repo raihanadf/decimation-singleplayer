@@ -46,7 +46,7 @@ public final class Pipe
         final OutputStream out = tcp.getOutputStream();
         final java.io.ByteArrayOutputStream held = new java.io.ByteArrayOutputStream();
         final boolean[] open = {gate == null};
-        p.relay = RelaySocket.open(relayUri, new RelaySocket.Listener()
+        RelaySocket relay = RelaySocket.open(relayUri, new RelaySocket.Listener()
         {
             public void binary(byte[] d)
             {
@@ -90,6 +90,12 @@ public final class Pipe
                 p.close();
             }
         });
+        p.relay = relay;
+        if (p.closed && relay.isOpen())
+        {
+            relay.close("pipe closed"); // refused (gate) before the open returned: never leave it open (review)
+            return p;
+        }
         if (!waitReady)
         {
             p.ready.countDown();
@@ -127,6 +133,11 @@ public final class Pipe
             // the socket closed
         }
         close();
+    }
+
+    public boolean isClosed()
+    {
+        return closed;
     }
 
     public void close()
