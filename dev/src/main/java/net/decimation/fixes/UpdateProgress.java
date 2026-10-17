@@ -115,14 +115,18 @@ public class UpdateProgress
         }
     }
 
-    /** Our download as Decimation's screen shows it: name, MB with one decimal, percent, where it comes from. */
+    /** Our download as Decimation's screen shows it: version and size, percent, done of total MB (one decimal). */
     static void mirror()
     {
         Updater.State s = Updater.state();
         long size = Updater.size(), done = s == Updater.State.READY ? size : Updater.downloaded();
         int percent = s == Updater.State.READY ? 100 : size <= 0 ? 0 : (int) Math.min(100, done * 100 / size);
-        String from = "DeciRemnant " + (Updater.latest() == null ? "" : Updater.latest() + " ") + "from GitHub";
-        Deci.setUpdateProgress(from, Updater.ASSET, percent, s == Updater.State.DOWNLOADING, mb(done), mb(size));
+        // as Decimation's own updater filled them: the status line "Downloading: 33%", then "Complete!"; the file line
+        // names the version and its size; the size line reads done / total (the screen prints "total field / downloaded
+        // field", so they go in swapped)
+        String status = s == Updater.State.READY ? net.minecraft.client.resources.I18n.format("menu.updating.complete") : percent + "%";
+        String file = "DeciRemnant" + (Updater.latest() == null ? "" : " " + Updater.latest());
+        Deci.setUpdateProgress(status, file, percent, s == Updater.State.DOWNLOADING, mb(size), mb(done));
     }
 
     private static double mb(long bytes)

@@ -958,24 +958,40 @@ public final class Deci
     }
 
     /**
-     * What Decimation's progress screen shows (UpdateChecker net.decimation.mod.common.utils.h: downloadUrl azL, percent
-     * azM, downloading azN, downloaded MB azO, total MB azP; fileName is not renamed), filled from our download.
+     * What Decimation's progress screen shows (UpdateChecker net.decimation.mod.common.utils.h: downloadUrl azL, its
+     * status line after "Downloading:"; percent azM, the bar; downloading azN, red DO NOT CLOSE or green SAFE TO CLOSE;
+     * downloadedBytes azO, printed after the file name and LAST on the size line; totalBytes azP, FIRST on the size line;
+     * fileName is not renamed), filled from our download (fixes/UpdateProgress).
      */
-    public static void setUpdateProgress(String source, String file, int percent, boolean downloading, double doneMb, double totalMb)
+    public static void setUpdateProgress(String status, String file, int percent, boolean downloading, double downloadedField,
+                                         double totalField)
     {
-        net.decimation.mod.common.utils.h.azL = source;
+        net.decimation.mod.common.utils.h.azL = status;
         net.decimation.mod.common.utils.h.fileName = file;
         net.decimation.mod.common.utils.h.azM = percent;
         net.decimation.mod.common.utils.h.azN = downloading;
-        net.decimation.mod.common.utils.h.azO = doneMb;
-        net.decimation.mod.common.utils.h.azP = totalMb;
+        net.decimation.mod.common.utils.h.azO = downloadedField;
+        net.decimation.mod.common.utils.h.azP = totalField;
     }
 
     /** The progress screen's numbers as "percent | downloading | done MB of total MB" (dev tests). */
     public static String updateProgress()
     {
         return net.decimation.mod.common.utils.h.azM + " | " + net.decimation.mod.common.utils.h.azN + " | "
-            + net.decimation.mod.common.utils.h.azO + " of " + net.decimation.mod.common.utils.h.azP + " MB";
+            + net.decimation.mod.common.utils.h.azP + " of " + net.decimation.mod.common.utils.h.azO + " MB";   // done of total (UpdateProgress swaps them)
+    }
+
+    /**
+     * The three update lines Decimation's progress screen draws from UpdateChecker (GuiUpdateProgress.drawScreen): file
+     * line "Downloading: fileName (downloadedBytes mb)", status line lang "menu.updating.downloading" + downloadUrl, size
+     * line "totalBytes mb/downloadedBytes mb"; colour codes left out. Dev tests.
+     */
+    @cpw.mods.fml.relauncher.SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)
+    public static String[] updateLines()
+    {
+        return new String[] {"Downloading: " + net.decimation.mod.common.utils.h.fileName + " (" + net.decimation.mod.common.utils.h.azO + "mb)",
+            net.minecraft.client.resources.I18n.format("menu.updating.downloading") + " " + net.decimation.mod.common.utils.h.azL,
+            net.decimation.mod.common.utils.h.azP + "mb/" + net.decimation.mod.common.utils.h.azO + "mb"};
     }
 
     /** The titles of every toast on screen or waiting (ToastNotification deci.b.b X), oldest first. */

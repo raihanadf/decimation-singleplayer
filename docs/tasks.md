@@ -29,6 +29,7 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [x] our DeciRemnant logo in Decimation's menu banners (v0.64.7; dev and production client)
 - [x] release 0.64.7 published 17 Oktober 2026 15:33 (pre-release, digest = local sha256 ad4197ab); real self update 0.64.6 to 0.64.7 checked
 - [x] site coming soon cards (forum, official servers): live 17 Oktober 2026
+- [~] release 0.64.8 (update screen lines) so the user can watch a real auto update in Prism (instance on 0.64.7)
 - [x] "Entity is already tracked": swapped mobs added twice at chunk load, double speed; fixes/JoinOnce (v0.64.2)
 - [ ] survivor partner idea: design talk (docs/ideas.md item 21)
 - [x] backend thread leak: PatchBackend v2, no BoehMod connection (v0.62.8)

@@ -111,6 +111,12 @@ public class ZombieTest extends DevTestMode
                 }
             }
             InfectedVariants.instance().apply(night, InfectedVariants.instance().byName("riot"));
+            // clear sky: in rain or a thunderstorm World.isDaytime() is false at noon too (the frenzy stays on, as it
+            // should); the open live world's weather made "off by day" fail on 17 Oktober 2026
+            w.getWorldInfo().setRaining(false);
+            w.getWorldInfo().setThundering(false);
+            w.getWorldInfo().setRainTime(24000);
+            w.getWorldInfo().setThunderTime(24000);
             w.setWorldTime(18000);
             nightSpeed0 = ratio(night); // Decimation resets the base every tick: compare value / base
             nightHit0 = night.getEntityAttribute(SharedMonsterAttributes.attackDamage).getAttributeValue();

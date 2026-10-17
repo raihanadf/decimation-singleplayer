@@ -279,6 +279,12 @@ Site checks of the local build (agent-browser):
   beside it lies further west, not in the picture), a highway comes in from the west at z about 520
   and one from the north at x about 1545; small lakes north of the city.
 
+## update_v0.64.8/ (update screen lines, dev client, fake release 9.9.9, 17 Oktober 2026)
+- dev_update_progress.png: Decimation's progress screen in a world: "DO NOT CLOSE YOUR GAME!", "Downloading:
+  DeciRemnant 9.9.9 (40.0mb)", our two lines, "Downloading: 33%", bar a third full with the flare, "13.3mb/40.0mb".
+- dev_update_ready.png: "SAFE TO CLOSE GAME!", "Downloading: Complete!", full bar, "40.0mb/40.0mb", Quit game and
+  Later under it.
+
 ## update_v0.64.7/ (Decimation's own update screen and our logo, 17 Oktober 2026)
 - prod_update_progress.png / prod_update_ready.png: production client (the one jar), in a world (the HUD shows
   through Decimation's half black layer; from the menu it is fully black). Decimation's GuiUpdateProgress: our banner

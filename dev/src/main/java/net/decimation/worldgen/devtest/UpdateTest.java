@@ -39,7 +39,7 @@ public class UpdateTest extends DevTestMode
     private final boolean real = "true".equals(System.getProperty("deciworldgen.autotest.real"));
     /** jar=true: replace the running jar itself (a shipped game only), not the stand in. */
     private final boolean useJar = "true".equals(System.getProperty("deciworldgen.autotest.jar"));
-    private final String expect = System.getProperty("deciworldgen.autotest.expect", real ? "0.59.0" : "9.9.9");
+    private final String expect = prop("expect", real ? "0.59.0" : "9.9.9");   // `expect=` on a live run clears it
     private final boolean feedOnly = "true".equals(System.getProperty("deciworldgen.autotest.feedonly"));
     private final String source = prop("source", feedOnly ? "feed" : "api");
 
@@ -82,7 +82,7 @@ public class UpdateTest extends DevTestMode
                 {
                     cpw.mods.fml.common.ModMetadata m = cpw.mods.fml.common.Loader.instance().getIndexedModList().get("deciworldgen").getMetadata();
                     versionBefore = m.version;
-                    m.version = System.getProperty("deciworldgen.autotest.from", "0.58.0");
+                    m.version = prop("from", "0.58.0");
                     Updater.setApi(feedOnly ? dead : Updater.DEFAULT_API, Updater.DEFAULT_WEB);
                 }
                 else
@@ -152,6 +152,15 @@ public class UpdateTest extends DevTestMode
                     String shown = Deci.updateProgress();
                     DevTestResults.check(name(), "progress screen shows our download", shown,
                                          shown.contains("| true |") && !shown.startsWith("0 |"), "a percent above 0, downloading");
+                    // the lines as a player reads them (user, 17 Oktober 2026: update screen polish): version and size,
+                    // the percent where Decimation's own updater put it, done before total
+                    String[] lines = Deci.updateLines();
+                    String total = mb(Updater.size()) + "mb";
+                    DevTestResults.check(name(), "progress lines", String.join(" | ", lines),
+                                         lines[0].equals("Downloading: DeciRemnant " + expect + " (" + total + ")")
+                                         && lines[1].matches("Downloading: [1-9][0-9]?%") && lines[2].endsWith("mb/" + total)
+                                         && !lines[2].startsWith(total),
+                                         "Downloading: DeciRemnant " + expect + " (" + total + ") | Downloading: N% | done/" + total);
                 }
                 if (s == Updater.State.READY || s == Updater.State.FAILED || System.currentTimeMillis() - started > 20 * 60 * 1000L)
                 {
@@ -173,6 +182,11 @@ public class UpdateTest extends DevTestMode
                                          Deci.isUpdateProgress(mc.currentScreen) && labels.toString().contains("Quit game")
                                          && labels.toString().contains("Later") && Deci.updateProgress().contains("| false |"),
                                          "Decimation's screen, safe to close, Quit game and Later");
+                    String[] lines = Deci.updateLines();
+                    String total = mb(Updater.size()) + "mb";
+                    DevTestResults.check(name(), "ready lines", String.join(" | ", lines),
+                                         lines[1].equals("Downloading: Complete!") && lines[2].equals(total + "/" + total),
+                                         "Downloading: Complete! | " + total + "/" + total);
                     int code = Updater.swap(true);
                     byte[] head = head(target, 6);
                     String want = real ? "PK" : "NEWJAR";            // a real release is a zip
@@ -197,6 +211,12 @@ public class UpdateTest extends DevTestMode
                 }
         }
         return !done;
+    }
+
+    /** Megabytes with one decimal, as the screen shows them. */
+    private static double mb(long bytes)
+    {
+        return Math.round(bytes / 104857.6) / 10.0;
     }
 
     /** A test setting; empty (cleared with `key=` on a live run) counts as unset. */

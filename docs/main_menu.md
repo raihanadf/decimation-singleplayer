@@ -111,6 +111,13 @@ Chernarus pictures ("here the chernarus location"). Shots: docs/shots/main_menu_
   real=true jar=true from=0.59.0 expect=0.64.6` all PASS, the real 238 MB release downloaded in 19 s on Decimation's
   screen and swapped into mods/Decimation.jar. Shots docs/shots/update_v0.64.7 (shots_index.md).
 
+- v0.64.8 (user: update screen polish, the release for watching a real auto update in Prism): the lines as Decimation's
+  own updater filled them: "Downloading: DeciRemnant 0.64.8 (239.5mb)" (version and file size), "Downloading: 33%" then
+  "Downloading: Complete!" (its lang key menu.updating.complete), the size line done before total ("80.0mb/239.5mb";
+  the screen prints totalBytes first, so UpdateProgress puts done in totalBytes and the size in downloadedBytes).
+  Dev test `update` checks "progress lines" and "ready lines" (Deci.updateLines), RED first. Shots
+  docs/shots/update_v0.64.8.
+
 ## 3. Code map
 
 | Piece | Job |
