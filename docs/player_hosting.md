@@ -228,3 +228,21 @@ review, then the implementation plan). Real case test planned with the user's br
   session changes the build version (git describe) and makes host and joiner differ.
 - Relay message counts per minute (spec 7) were not measurable with `wrangler dev` [not verified]: read them in the
   Cloudflare dashboard after the deploy (Task 11).
+- Task 11 (18 Oktober 2026, 05:15 to 05:55): the relay is DEPLOYED on the user's free Cloudflare account,
+  https://deciremnant-relay.deciremnant-relay.workers.dev (RelayClient.DEPLOYED; wrangler deploy from relay/, the user
+  logged in with `npx wrangler login`). Found at once: Minecraft's netty 4.0.10 never finished a TLS 1.3 handshake with
+  Cloudflare ("SSLException: handshake timed out"; the echo server earlier spoke TLS 1.2): RelaySocket now offers TLS 1.2
+  only, proven RED then GREEN with a probe (control socket "open true"). Then the two games through the deployed relay:
+  host ONLINE, the Community page row "Spike world / host Developer · via relay - 297ms" (524 ms in another run), Join,
+  1/8; the join took 1 to 2 s; every check of section 9 PASS (05:43 and 05:52). The same Mac talks to Cloudflare's edge
+  and back, so these pings are the relay's own cost; a real joiner adds the way to the host [inferred].
+- "Mojang accounts only" (the default since the user's choice of 18 Oktober 05:18) refused the joiner's offline account:
+  the host logged the profile without id and "lost connection" before the world, the joiner got Minecraft's disconnect
+  screen (05:53). The exact text of that screen was not captured [not verified].
+- Final review of the branch (one fresh reviewer): 1 Critical (the host's lock held across network calls froze the
+  client tick), 10 Important, 14 Minor; all Critical and Important fixed in one pass with tests (ledger
+  .superpowers/sdd/2026-10-18-player-hosting-part1/progress.md), the relay redeployed with them. Deferred minors there.
+- Still open: the real case on the user's brother's Linux laptop over Tailscale (needs his agreement, Java 8, the test
+  jar, and how it is driven); the relay's real message count per minute (the Cloudflare dashboard); a Community row says
+  "x/8" (Minecraft's LAN maximum) while the relay enforces the host's choice; Decimation's HUD crash when a world is
+  joined without its menu (bug.md, open); the website list, kick and ban (part 3).

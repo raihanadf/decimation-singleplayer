@@ -1606,3 +1606,7 @@ User screenshots, creative mode, the milbase sky test bases; each finding is fix
   status tags and version, filter chips), topic.png (report table on top, log block, Team badge, status event,
   marked answer, +1), newbug.png (report form with similar topics warning), builds2.png (gallery cards with tags),
   home_phone.png (390 wide, no sideways scroll). Verdict: shown to the user, waiting.
+- `community_page.png` (854 x 480, the production client with the test jar, as the joiner, 18 Oktober 2026 05:52):
+  Decimation's Community Server List filled from the DEPLOYED relay: "Players Online: 1 in 1 worlds", one row "Spike
+  world" with the caption "host Developer · via relay - 297ms", Decimation's green Join button and "1/8"; Joiner's card
+  on the left (0 kills, "No early access").

@@ -105,6 +105,17 @@ not something we introduced or need to fix) see `documentation.md`.
   runs did not crash. Cause unknown [not verified]; the lot code only plans blocks, it touches no
   world. Watch for it again (an "Entity is already tracked" error came just before).
 
+### Community row Join crashed the game (found 18 Oktober 2026, player hosting, FIXED in code)
+- Seen: a Join from Decimation's Community page (ListElement button 123, FMLClientHandler.connectToServer) threw a
+  NullPointerException and crashed the game when Minecraft's own Multiplayer screen had never been opened: FML's server
+  list cache (serverDataTag) is created only by setupServerList, which GuiMultiplayer calls.
+- Fix: CommunityList calls setupServerList before showing rows. RED (the crash in the two game test) then GREEN.
+
+### The relay connection never finished TLS with Cloudflare (found 18 Oktober 2026, player hosting, FIXED in code)
+- Seen: against the deployed relay the host's control socket failed with "SSLException: handshake timed out" (Java
+  8u504, Minecraft's netty 4.0.10); joiners got "Connection reset by peer". A TLS test echo server (TLS 1.2) had worked.
+- Fix: RelaySocket offers TLS 1.2 only; probe RED then GREEN, the two game test through the deployed relay all PASS.
+
 ### Place names gone after a rejoin (found 18 Oktober 2026, player hosting spike, FIXED in code, next release)
 - Seen: a second player who left and joined the host's world again had an EMPTY turf list (0 entries) while the server
   had sent 5 to that player before (dev test `lanjoin`, docs/player_hosting.md section 9). The same happens in
