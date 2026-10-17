@@ -74,6 +74,9 @@ Chernarus pictures ("here the chernarus location"). Shots: docs/shots/main_menu_
   village with a pond; 720 x 405, sources in docs/shots/main_menu_v0.64.0/chernarus_src), the first three twice.
 - **Community tab** on that page: tooltip "Coming soon" (was "Offline"); a click shows the toast **Community server coming
   soon** (was "Failed to load Community list!").
+  Since player hosting part 1 (18 Oktober 2026, docs/superpowers/specs/2026-10-18-player-hosting-part1-design.md): the
+  tooltip counts the listed worlds ("N worlds") and a click opens Decimation's Community page filled from our relay's
+  list (fixes/hosting/CommunityList); the "coming soon" toast is only reached by code that skips Forge's click event.
 - **Server Status page**: Global Server (Official DeciRemnant server), Community Server (Servers run by players), Download
   (DeciRemnant download server), each **Offline**; the fourth row, Website (BoehMod's site), unchanged and Online.
 - **My Community popup** (the button under Continue): **★ Early access** (line "New features before everyone else!"; a

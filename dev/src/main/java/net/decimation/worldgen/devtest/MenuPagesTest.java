@@ -36,6 +36,7 @@ public class MenuPagesTest extends DevTestMode
             "Download | DeciRemnant download server | Offline"};
     private static final int MY_COMMUNITY = 27, PLAY = 9, COMMUNITY_TAB = 13, SERVER_STATUS = 11;
 
+    private boolean clicked;
     private int step, ticks;
     private IntegratedServer stopping;
 
@@ -128,20 +129,30 @@ public class MenuPagesTest extends DevTestMode
                 DevTestResults.check(name(), "map pictures", missing.isEmpty() ? "16 of 16 load" : "missing " + missing, missing.isEmpty(),
                                      "bukovka0..7 and chernarus0..7 load as textures");
                 String tip = Deci.menuTooltip(DevTestUtil.byId(mc.currentScreen, COMMUNITY_TAB));
-                DevTestResults.check(name(), "community tab tooltip", tip, "Coming soon".equals(tip), "Coming soon");
-                DevTestUtil.press(mc.currentScreen, DevTestUtil.byId(mc.currentScreen, COMMUNITY_TAB));
+                // since player hosting part 1 the tab counts the listed worlds (fixes/hosting/CommunityList)
+                DevTestResults.check(name(), "community tab tooltip", tip, tip != null && tip.endsWith(" worlds"), "N worlds");
                 next();
                 return true;
             case 6:
-                Deci.showRowPicture(mc.currentScreen, 1, 0); // Chernarus' first picture behind the page, as a hover shows it
-                if (ticks < 30)
+                if (!clicked)
                 {
+                    Deci.showRowPicture(mc.currentScreen, 1, 0); // Chernarus' first picture behind the page, as a hover shows it
+                    if (ticks < 30)
+                    {
+                        return true;
+                    }
+                    DevTestUtil.screenshot(mc, name(), "menupages_official");
+                    DevTestUtil.click(mc.currentScreen, DevTestUtil.byId(mc.currentScreen, COMMUNITY_TAB)); // a real click
+                    clicked = true;
                     return true;
                 }
-                List<String> shown = Deci.toasts();
-                DevTestResults.check(name(), "community tab click", shown, shown.contains("Community server coming soon"),
-                                     "a toast: Community server coming soon");
-                DevTestUtil.screenshot(mc, name(), "menupages_official");
+                if (!Deci.isCommunityScreen(mc.currentScreen) && ticks < 30 + 20 * 15)
+                {
+                    return true; // the list is fetched on its own thread
+                }
+                DevTestResults.check(name(), "community tab opens the Community page",
+                                     mc.currentScreen == null ? "none" : mc.currentScreen.getClass().getName(),
+                                     Deci.isCommunityScreen(mc.currentScreen), "GuiMenuCommunityServers (deci.i.j)");
                 DevTestUtil.press(mc.currentScreen, DevTestUtil.byId(mc.currentScreen, SERVER_STATUS));
                 next();
                 return true;
