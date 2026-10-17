@@ -188,6 +188,29 @@ two columns of equal shots.
   broken pictures, 0 console errors, links (only the live canonical 404s before the push), /docs/zones Lighthouse mobile
   96 / 100 / 100 / 100, desktop 100.
 
+## 3d. Audit of every page (17 Oktober 2026 evening, user: "audit and check again each page. and dont forget the seo too")
+
+- 26 pages (home, /docs, 23 feature pages, the server guide) probed at 1300 and 390 px on a local production build:
+  title (60 at most) and description (110 to 160), canonical, Open Graph and Twitter tags, robots, one h1, no skipped
+  heading level, every picture with alt and loaded, no sideways scroll, game font only at 12 / 18 / 24 / 36 px, no dash
+  characters, footer at the bottom, every link named, JSON-LD, duplicate titles / descriptions / canonicals across
+  pages; all 29 internal links 200 and the home anchors present; contact sheets of every page read at both widths.
+- Found and fixed (site 4cf80c8): the user's bug, a short page ended with an empty band under the footer (body now a
+  full height column, the footer pushed down: gap 0 on every page); React 19's "Encountered a script tag" warning in
+  dev (the user saw it): the intro's first paint script moved out of the hero into the root layout as next/script
+  beforeInteractive, its text in lib/intro.ts (it now also answers "skip" off the home page); Next's dev LCP warning
+  (the hero's first scene and the gallery used the same file, the gallery loading it lazily): the hero now opens on the
+  aerial city (used nowhere else); docs pages had no JSON-LD: BreadcrumbList (Docs, area, page) and TechArticle added;
+  docs pages share their own banner as the preview picture; phone tables with long names stacked (name above text); a
+  space before a comma after inline code (code padding 3 px); text: the overview's "Docs for 0.64.8" (would go stale)
+  became a link to all releases, the market hall's "ground floor" (not checked) removed, the camp command described
+  fully (checked in WorldGenCommand). 92 tests (the new SEO and intro script tests RED first).
+- Lighthouse 12 mobile on all 26 pages after the fixes (local production build): accessibility, best practices and SEO
+  100 on every page; performance 95 home (LCP 3.0 s), 96 or 97 every docs page (LCP 2.6 to 2.9 s); no failed audit.
+  Dev console (next dev) clean on home, /docs, a feature page and the server guide.
+- Still to do after the user's push: the same checks live, including each docs page's canonical address (404 until
+  deployed).
+
 ## 3b. The server guide page (/docs/server, 17 Oktober 2026)
 
 User: "for the server put on new page docs (we create new page now, suggest your design)"; picked "Docs with side

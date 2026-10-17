@@ -325,9 +325,9 @@
     "semantic_hash": "0145e0863788d451e8ae4273d3c2abdd"
   },
   "docs/shots_index.md": {
-    "mtime": 1792237043.2698307,
-    "ast_hash": "4df64e250cf513276038fa2d2523bfcf",
-    "semantic_hash": "4df64e250cf513276038fa2d2523bfcf"
+    "mtime": 1792238546.675521,
+    "ast_hash": "5d9adc99e3bb28a2526ffd10568e4759",
+    "semantic_hash": "5d9adc99e3bb28a2526ffd10568e4759"
   },
   "docs/interior_spec.md": {
     "mtime": 1791385593.9436893,
@@ -1540,9 +1540,9 @@
     "semantic_hash": "294036847a9caffda351bfa855a78636"
   },
   "docs/tasks.md": {
-    "mtime": 1792237043.2692096,
-    "ast_hash": "8f5f28b28893f8a0e0a72118224571a5",
-    "semantic_hash": "8f5f28b28893f8a0e0a72118224571a5"
+    "mtime": 1792238546.6749425,
+    "ast_hash": "c4b461bbf64eb7a88a80b8a1c809b835",
+    "semantic_hash": "c4b461bbf64eb7a88a80b8a1c809b835"
   },
   "tools/skillcheck.py": {
     "mtime": 1792098139.5315723,
@@ -1735,14 +1735,14 @@
     "semantic_hash": "e8564bc6458835de29bc9ea8ba1e842c"
   },
   ".claude/skills/decimation-website/SKILL.md": {
-    "mtime": 1792237043.2686384,
-    "ast_hash": "e7a5144b67bed89dddbff4209c91a307",
-    "semantic_hash": "e7a5144b67bed89dddbff4209c91a307"
+    "mtime": 1792238263.7863138,
+    "ast_hash": "d2ff44460950a19778437458e1ef9b10",
+    "semantic_hash": "d2ff44460950a19778437458e1ef9b10"
   },
   "docs/website.md": {
-    "mtime": 1792237043.2681499,
-    "ast_hash": "9665912ae81495dc24d8ca53520beb19",
-    "semantic_hash": "9665912ae81495dc24d8ca53520beb19"
+    "mtime": 1792238546.674579,
+    "ast_hash": "d3033d22f767c65880153791bca17e82",
+    "semantic_hash": "d3033d22f767c65880153791bca17e82"
   },
   "docs/website_plan.md": {
     "mtime": 1792162650.3638773,

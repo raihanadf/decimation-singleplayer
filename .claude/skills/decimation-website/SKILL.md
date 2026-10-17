@@ -153,6 +153,14 @@ Facts, decisions and the page text: docs/website.md (the spec). Site code: the P
   below 1024 px; gap between logo and links checked at 1025, 1100, 1300 (46 px and more).
 - Lesson: measure the top bar at tablet widths too (768 to 1024), not only desktop and phone.
 
+### Case 12: the page audit (17 Oktober 2026)
+- The user found what my checks missed: an empty band under the footer on a short page (I only checked tall pages
+  and 1300 x 900 windows), and React's "script tag" warning in dev (I only read production consoles).
+- Lessons: measure the footer's distance to the page bottom on every page; read the DEV console too (`next dev` shows
+  warnings production hides); exports of a "use client" module are client references on the server, so shared
+  strings go in a plain module (lib/); a picture used twice on one page with different loading rules trips Next's LCP
+  check.
+
 ### Case 11: intro and project docs (17 Oktober 2026)
 - Asked for an intro animation and docs "like other docs coding websites", 5 docs UIs offered. Eight docs sites studied
   first (Next.js, Stripe, Tailwind, NeoForge, Fabric, Minecraft Wiki, Starlight, Mintlify); 3 intros and 5 docs designs

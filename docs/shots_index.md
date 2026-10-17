@@ -304,6 +304,11 @@ Site checks of the local build (agent-browser):
   page), Bandits and soldiers (People, ranks table, infobox), Highways railway and rivers (infobox with the bridge
   picture), Zones on a phone (page chips, one column, infobox after the first part).
 
+## website_v0.64.8/ audit_desktop_0..3.png (page audit, 17 Oktober 2026)
+- Full page thumbnails of the 25 docs pages at 1300 (fixed top bar and area tabs appear mid page: an artefact of
+  full page capture, not of the page): banners, area page lists with item icons, infoboxes, tables, previous / next,
+  footer.
+
 ## website_live_v0.64.8/ (live site after the push, 17 Oktober 2026 17:30)
 - live_1300_820_390.png: the title screen hero live at 1300 (splash "Now with airports!" past the logo), 820 (Menu
   button, splash "No dead servers!" under the logo's right end) and 390 ("Traders are open!" under the logo); download
