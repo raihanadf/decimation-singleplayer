@@ -172,6 +172,12 @@ docs/gun_model_spec.md); every user review goes into its lessons and casebook.
    2026); analysis and spike docs/player_hosting.md; part 1 of 4 specified (docs/superpowers/specs/
    2026-10-18-player-hosting-part1-design.md).
 
+5. **City content replacement** (user, 18 Oktober 2026, "for the worldgen cities we gonna have full replacement due to
+   copyright issue ... move on to new opensource structure (only for city worldgen, other structure on wilderness is
+   okey)"): the converted DeceasedCraft Lost Cities buildings (docs/city_engine.md, tools/lcpack.py) get replaced by an
+   open source pack, the user's pick: ChaoszPack Lost Cities, https://www.curseforge.com/minecraft/mc-mods/chaoszpack-lostcities
+   (license and 1.7.10 format not checked yet). Wilderness structures stay. AFTER the multiplayer (player hosting) work.
+
 ## Code and tools
 
 1. **Port to modern Minecraft**: PARKED (user, 13 Oktober 2026: only when there is time and the

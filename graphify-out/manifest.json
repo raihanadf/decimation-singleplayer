@@ -655,9 +655,9 @@
     "semantic_hash": "1f50b118f74d69684fab74bda8f9beff"
   },
   "docs/roadmap.md": {
-    "mtime": 1792268197.8679187,
-    "ast_hash": "3af2d527fb608c7889c286f1dc02b900",
-    "semantic_hash": "3af2d527fb608c7889c286f1dc02b900"
+    "mtime": 1792268813.6528056,
+    "ast_hash": "72cde5c137fc7698c8cf8caf3d9a2035",
+    "semantic_hash": "72cde5c137fc7698c8cf8caf3d9a2035"
   },
   "dev/src/main/java/net/decimation/worldgen/LegacyStreets.java": {
     "mtime": 1791487239.5087948,
@@ -1540,9 +1540,9 @@
     "semantic_hash": "294036847a9caffda351bfa855a78636"
   },
   "docs/tasks.md": {
-    "mtime": 1792268197.8676677,
-    "ast_hash": "922730fa343a27a8658daebad4d31f00",
-    "semantic_hash": "922730fa343a27a8658daebad4d31f00"
+    "mtime": 1792269467.6450982,
+    "ast_hash": "99e70c4e338b731d448dd06b4d8eb015",
+    "semantic_hash": "99e70c4e338b731d448dd06b4d8eb015"
   },
   "tools/skillcheck.py": {
     "mtime": 1792098139.5315723,
@@ -1913,5 +1913,10 @@
     "mtime": 1792268183.1884704,
     "ast_hash": "15a9a7f9dc8324e8ced254d9e430c9b4",
     "semantic_hash": "15a9a7f9dc8324e8ced254d9e430c9b4"
+  },
+  "docs/superpowers/plans/2026-10-18-player-hosting-part1.md": {
+    "mtime": 1792269467.6445584,
+    "ast_hash": "1bc9bd1b99e5c4c6e0e4913b4ef33674",
+    "semantic_hash": "1bc9bd1b99e5c4c6e0e4913b4ef33674"
   }
 }

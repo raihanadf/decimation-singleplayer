@@ -39,7 +39,8 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [x] page audit of all 26 pages (layout, SEO, links, Lighthouse 95 to 97 / 100 / 100 / 100): fixes in site 4cf80c8, live checked (Lighthouse 98 to 100 / 100 / 100 / 100)
 - [x] "Entity is already tracked": swapped mobs added twice at chunk load, double speed; fixes/JoinOnce (v0.64.2)
 - [ ] survivor partner idea: design talk (docs/ideas.md item 21)
-- [~] player hosting part 1: spec written (docs/superpowers/specs/2026-10-18-player-hosting-part1-design.md), waits for the user's review, then the plan
+- [~] player hosting part 1: spec approved, plan written (docs/superpowers/plans/2026-10-18-player-hosting-part1.md, 11 tasks), waits for the user's review
+- [ ] city content replacement with ChaoszPack Lost Cities (copyright; roadmap, after multiplayer)
 - [ ] HUD crash when a world is joined without Decimation's menu (bug.md, found in the hosting spike)
 - [x] place names gone after a rejoin: PlaceNames forgets a player on logout (bug.md, in code, next release)
 - [x] hosting spike joiner side: crate, hummer, trader, AKM, bandit fire and tracers, lists all PASS (docs/player_hosting.md 9)
