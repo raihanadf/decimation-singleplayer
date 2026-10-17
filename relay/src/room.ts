@@ -20,6 +20,7 @@ export class Room extends DurableObject {
       const id = parts[3];
       const joiner = this.ctx.getWebSockets('join:' + id)[0];
       if (!joiner) return new Response('no such joiner', { status: 404 });
+      if (this.ctx.getWebSockets('data:' + id)[0]) return new Response('already answered', { status: 409 });
       this.ctx.acceptWebSocket(server, ['data', 'data:' + id]);
       joiner.send(JSON.stringify({ ready: true }));
     } else if (parts[0] === 'join') {
@@ -30,7 +31,7 @@ export class Room extends DurableObject {
       this.ctx.acceptWebSocket(server, ['join', 'join:' + id]);
       server.serializeAttachment({ id, at: Date.now() });
       control.send(JSON.stringify({ open: id }));
-      await this.ctx.storage.setAlarm(Date.now() + ANSWER_MS);
+      await this.deadline(Date.now() + ANSWER_MS);
     } else {
       return new Response('path', { status: 404 });
     }
@@ -53,6 +54,7 @@ export class Room extends DurableObject {
   async webSocketClose(ws: WebSocket, _code: number, reason: string) {
     const tags = this.ctx.getTags(ws);
     if (tags.includes('control')) {
+      if (this.ctx.getWebSockets('control').some((c) => c !== ws)) return; // replaced by a new control socket: keep playing
       for (const s of this.ctx.getWebSockets('join')) s.close(4410, 'host stopped');
       for (const s of this.ctx.getWebSockets('data')) s.close(1000, 'host stopped');
       return;
@@ -63,11 +65,21 @@ export class Room extends DurableObject {
     if (join) this.ctx.getWebSockets('control')[0]?.send(JSON.stringify({ close: join.slice(5) }));
   }
 
+  /** Sets the alarm for `at` unless an earlier one is pending: a later join never postpones an earlier deadline. */
+  private async deadline(at: number) {
+    const pending = await this.ctx.storage.getAlarm();
+    if (pending === null || pending > at) await this.ctx.storage.setAlarm(at);
+  }
+
   async alarm() {
     const now = Date.now();
+    let next = Infinity;
     for (const s of this.ctx.getWebSockets('join')) {
       const a = s.deserializeAttachment() as { id: string; at: number } | null;
-      if (a && !this.ctx.getWebSockets('data:' + a.id)[0] && now - a.at >= ANSWER_MS) s.close(4408, 'host did not answer');
+      if (!a || this.ctx.getWebSockets('data:' + a.id)[0]) continue;
+      if (now - a.at >= ANSWER_MS) s.close(4408, 'host did not answer');
+      else next = Math.min(next, a.at + ANSWER_MS);
     }
+    if (next !== Infinity) await this.ctx.storage.setAlarm(next);
   }
 }

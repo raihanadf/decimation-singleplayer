@@ -3,12 +3,38 @@ import { DurableObject } from 'cloudflare:workers';
 /** One hosted world on the public list (docs/superpowers/specs/2026-10-18-player-hosting-part1-design.md 3.3). */
 export interface Entry {
   room: string; secret: string; name: string; host: string; online: boolean; players: number; max: number;
-  mods: [string, string][]; version: string; since: number; seen: number;
+  mods: [string, string][]; version: string; since: number; seen: number; ip: string;
 }
 
 const STALE_MS = 180_000;
 const MAX_BODY = 8192;
 const MAX_WORLDS = 200;
+const PER_ADDRESS = 2;
+
+/** The body as text, read at most `limit` bytes: a longer body is never held in memory (null). */
+async function readCapped(req: Request, limit: number): Promise<string | null> {
+  if (!req.body) return '';
+  const reader = req.body.getReader();
+  const parts: Uint8Array[] = [];
+  let size = 0;
+  for (;;) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    size += value.byteLength;
+    if (size > limit) {
+      await reader.cancel();
+      return null;
+    }
+    parts.push(value);
+  }
+  const all = new Uint8Array(size);
+  let at = 0;
+  for (const p of parts) {
+    all.set(p, at);
+    at += p.byteLength;
+  }
+  return new TextDecoder().decode(all);
+}
 const NAME = /^[^§]{1,32}$/;
 const PLAYER = /^[A-Za-z0-9_]{1,16}$/;
 
@@ -61,13 +87,13 @@ export class Lobby extends DurableObject {
     this.prune();
     const path = new URL(req.url).pathname;
     if (req.method === 'GET' && path === '/list') {
-      return json([...this.entries.values()].map(({ secret, seen, ...pub }) => ({ ...pub, route: 'relay' })));
+      return json([...this.entries.values()].map(({ secret, seen, ip, ...pub }) => ({ ...pub, route: 'relay' })));
     }
     if (req.method !== 'POST') return json({ error: 'method' }, 405);
     // never read more than 8 KB: a list entry is far smaller (abuse guard)
     if (Number(req.headers.get('content-length') ?? '0') > MAX_BODY) return json({ error: 'too large' }, 413);
-    const text = await req.text();
-    if (text.length > MAX_BODY) return json({ error: 'too large' }, 413);
+    const text = await readCapped(req, MAX_BODY);
+    if (text === null) return json({ error: 'too large' }, 413);
     let body: any = null;
     try {
       body = JSON.parse(text);
@@ -79,6 +105,9 @@ export class Lobby extends DurableObject {
       for (const [k, at] of this.registered) if (this.now() - at >= 60_000) this.registered.delete(k); // memory stays small
       if (this.entries.size >= MAX_WORLDS) return json({ error: 'list full' }, 503);
       const ip = req.headers.get('CF-Connecting-IP') ?? 'unknown';
+      let held = 0;
+      for (const e of this.entries.values()) if (e.ip === ip) held++;
+      if (held >= PER_ADDRESS) return json({ error: 'too many worlds' }, 429);
       const last = this.registered.get(ip) ?? -Infinity;
       if (this.now() - last < 60_000) return json({ error: 'too often' }, 429);
       const name = typeof body.name === 'string' ? body.name.trim() : '';
@@ -92,7 +121,7 @@ export class Lobby extends DurableObject {
       this.registered.set(ip, this.now());
       const e: Entry = {
         room: token(16), secret: token(32), name, host: body.host, online: body.online, players: 0, max: body.max,
-        mods: body.mods.map((m: any) => [`${m[0]}`, `${m[1]}`]), version: body.version, since: this.now(), seen: this.now(),
+        mods: body.mods.map((m: any) => [`${m[0]}`, `${m[1]}`]), version: body.version, since: this.now(), seen: this.now(), ip,
       };
       this.entries.set(e.room, e);
       await this.save();

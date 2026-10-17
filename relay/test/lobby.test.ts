@@ -89,5 +89,23 @@ describe('lobby', () => {
     await run(lobby(), (o: any) => { kept = o.registered.has('10.0.0.32') ? 1 : 0; o.offset = 0; });
     expect(kept).toBe(0);
   });
+
+  it('an address holds at most 2 worlds, even a minute apart', async () => {
+    const ip = '10.0.0.40';
+    expect((await host('One', {}, ip)).status).toBe(200);
+    await run(lobby(), (o: any) => { o.offset = 61_000; });
+    expect((await host('Two', {}, ip)).status).toBe(200);
+    await run(lobby(), (o: any) => { o.offset = 122_000; });
+    for (const e of (await list())) await run(lobby(), (o: any) => { const x = o.entries.get(e.room); if (x) x.seen = o.now(); });
+    expect((await host('Three', {}, ip)).status).toBe(429);
+    await run(lobby(), (o: any) => { o.offset = 0; for (const [k, e] of o.entries) if (e.ip === ip) o.entries.delete(k); });
+  });
+
+  it('a chunked body over 8 KB (no length header) is refused', async () => {
+    const chunk = new TextEncoder().encode('{"name":"' + 'z'.repeat(5000));
+    const body = new ReadableStream({ start(c) { c.enqueue(chunk); c.enqueue(chunk); c.close(); } });
+    const r = await SELF.fetch('https://relay/list/host', { method: 'POST', headers: { 'CF-Connecting-IP': '10.0.0.41' }, body, duplex: 'half' } as any);
+    expect(r.status).toBe(413);
+  });
 });
 

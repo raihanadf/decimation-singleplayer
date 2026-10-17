@@ -1,4 +1,4 @@
-import { SELF } from 'cloudflare:test';
+import { SELF, env, runInDurableObject } from 'cloudflare:test';
 import { describe, it, expect } from 'vitest';
 
 async function register(ip: string, max = 4) {
@@ -71,4 +71,39 @@ describe('room', () => {
     const r = await SELF.fetch(`https://relay/host/${room}?secret=wrong`, { headers: { Upgrade: 'websocket' } });
     expect(r.status).toBe(404);
   });
+
+  it('a second data socket for the same joiner is refused', async () => {
+    const { room, secret } = await register('10.1.0.6');
+    const control = await ws(`/host/${room}?secret=${secret}`);
+    await ws(`/join/${room}`);
+    await until(() => control.inbox.length > 0);
+    const id = JSON.parse(control.inbox[0]).open;
+    expect((await ws(`/host/${room}/data/${id}?secret=${secret}`)).status).toBe(101);
+    expect((await ws(`/host/${room}/data/${id}?secret=${secret}`)).status).toBe(409);
+  });
+
+  it('a later join does not push back the first joiner\'s 10 s deadline', async () => {
+    const { room, secret } = await register('10.1.0.7', 8);
+    await ws(`/host/${room}?secret=${secret}`);
+    const before = Date.now();
+    await ws(`/join/${room}`);
+    await new Promise((r) => setTimeout(r, 50));
+    await ws(`/join/${room}`);
+    const stub = env.ROOM.get(env.ROOM.idFromName(room));
+    let alarm: number | null = null;
+    await (runInDurableObject as unknown as (s: unknown, f: (o: any, st: any) => Promise<void>) => Promise<void>)(stub,
+      async (_o, st) => { alarm = await st.storage.getAlarm(); });
+    expect(alarm).not.toBeNull();
+    expect(alarm! - before).toBeLessThanOrEqual(10_000 + 40);
+  });
+
+  it('a host reconnecting its control socket keeps the joiners', async () => {
+    const { room, secret } = await register('10.1.0.8');
+    await ws(`/host/${room}?secret=${secret}`);
+    const joiner = await ws(`/join/${room}`);
+    await ws(`/host/${room}?secret=${secret}`);
+    await new Promise((r) => setTimeout(r, 100));
+    expect(joiner.inbox.some((m) => m && m.closed === 4410)).toBe(false);
+  });
 });
+
