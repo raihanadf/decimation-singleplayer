@@ -1,0 +1,3 @@
+#!/bin/sh
+cd PRODCLIENT/game
+exec ~/.jdks/zulu-8.jdk/Contents/Home/bin/java -Xmx2G -Djava.library.path=PRODCLIENT/natives -Dfml.ignoreInvalidMinecraftCertificates=true -cp "$(cat PRODCLIENT/classpath.txt)" net.minecraft.launchwrapper.Launch --username Joiner --version 1.7.10 --gameDir PRODCLIENT/game --assetsDir $HOME/.gradle/caches/retro_futura_gradle/assets --assetIndex 1.7.10 --uuid 00000000000000000000000000000002 --accessToken 0 --userProperties {} --userType legacy --tweakClass cpw.mods.fml.common.launcher.FMLTweaker --server spike-world.relay.localhost --port 25600

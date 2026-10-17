@@ -74,3 +74,10 @@ Checked with it: bundled content unpacked, cities generated, no errors (bug.md v
   Update button. Trap: an older jar cannot open a test world made by a newer one (Forge's missing blocks prompt,
   "Unidentified block: deciworldgen:boom_barrier"), so a live run on it hangs; read the startup log instead.
 
+
+## Second player through a relay (18 Oktober 2026, player hosting spike)
+- The production client as a joiner: tools/hostspike/run_join.sh.example (`--server NAME --port 25600`, -Xmx2G, no live
+  test port: the dev client holds 25599). Its mods must match the host's: the dev client also loads Gliby's Voice Chat,
+  so copy dev/libs/DecimationVoiceChat.jar into its mods for the run and remove it after (Forge refused it otherwise).
+- Traps: fancy graphics + joining at start crashes Decimation's HUD (bug.md); with two games this Mac swaps and Forge's
+  handshake can time out ("Timeout waiting for client thread to catch up!"): render distance 4, fancy off, retry.

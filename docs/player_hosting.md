@@ -90,10 +90,55 @@ try analyze more deeply". NOT DESIGNED, nothing built. This file is the analysis
 4. **Always on worlds**: a local dedicated server option (B8) and, when there are players, one official server (B9).
 - Honest note: the tech removes a barrier; players still come from being found (website, videos, Discord). Both needed.
 
-## 5. Open decisions (the user's)
-1. Cracked launchers: online accounts only (safe, smaller audience) or allow offline accounts (bigger audience; names
-   can be faked, ops and bans by name break)?
-2. Money: a small rented server for the relay (a few dollars a month), Oracle's free tier (capacity risk), or none
-   (playit.gg / virtual LAN guide only)?
-3. Public list for everyone, or join codes first?
-4. Spike now?
+## 5. Decisions (user, 18 Oktober 2026, 01:09)
+1. Accounts: BOTH. The host picks online or offline mode for their world, as a Decimation server's own setup does.
+2. Money: none. Only free hosting for anything of ours (a donation for a server may come later, never expected).
+3. A public list for everyone.
+4. Spike now ("quick test now for find a truth code"): DONE, section 6.
+
+## 6. Spike results (18 Oktober 2026, 01:10 to 02:15; tools/hostspike, dev test `lanhost`)
+
+Setup on this Mac: HOST = the dev client (live game, world deciworldgen_devtest) opened to LAN by the dev test `lanhost`
+(online mode off); a relay (tools/hostspike/relay.py) and a host agent that connects OUT to it (agent.py, as our mod
+would); JOINER = the production client with the release jar 0.64.8 (docs/production_test.md), started with `--server
+spike-world.relay.localhost --port 25600`, so every byte went through the relay. 10 runs.
+
+What is now TRUE (seen):
+1. **A reverse tunnel carries the whole game unchanged**: server list ping (46 bytes up, 481 down), login, Forge's
+   handshake and play, 0 to 2 ms keep alive locally. Nothing in Minecraft, Forge or Decimation needed changing.
+2. **The relay reads the address the player typed** (`"addr": "spike-world.relay.localhost"` in every handshake):
+   one relay port can serve many worlds by name.
+3. **Offline mode lets an unofficial account in**: the joiner had a legacy token (`--accessToken 0`) and joined a world
+   with online mode off. Online mode with a real Mojang account was NOT tested (no premium account here; never handle
+   one) [not verified]: a legacy account should be refused there [inferred from IntegratedServer / Mojang session check].
+4. **Host and joiner need the same mods**: run 1 was refused by Forge, "Mod rejections [FMLMod:gvc{0.6.1}]" (the host
+   had Gliby's Voice Chat, the joiner only the release jar). Technic players have the voice chat jar, release players do
+   not: the list must show a world's mods, or the hosting must leave the voice chat out of the check (design question).
+5. **Decimation works for the remote player** (host side checks): the joiner's Decimation data exists (bottlecaps 0,
+   humanity 50, water 20); infected went for the joiner and killed it (20 -> 0 health, a Hulk); the joiner respawned
+   (the server makes a new player object: the test looks the joiner up by name); the joiner's infected kill changed ITS
+   humanity (50 -> 52). NOT checked yet: bandit gunfire at the joiner (the bandit picked a Hulk), zone banners, loot
+   screens, vehicles, trading and voice chat on the joiner's side (needs the joiner driven by a test, a second live port).
+6. **Bandwidth through the relay** (host view distance as set; joiner 4 chunks): join burst about 1.1 MB in the first
+   seconds; standing or fighting about 8 kbit/s down; walking or teleporting into new chunks 0.6 to 0.9 Mbit/s down;
+   the joiner sends 2 to 5 kbit/s. So the relay's cost is chunk loading: a player who moves all the time is about
+   0.1 GB a quarter hour at worst; Oracle's 10 TB a month is far more than an early community uses [inferred].
+   The host's upload carries the same bytes per player (8 moving players about 7 Mbit/s up) [inferred].
+
+Found on the way (traps and a Decimation bug):
+- **Decimation HUD crash when a world is joined without its menu** (bug.md): IngameHud.render (deci/g/j.b) reads
+  DecimationMod.fakePlayerProfile (field `B`) when fancy graphics is on; only Decimation's menu (GuiMenuBase) creates it.
+  A game that connects at start (`--server`) crashed 4 to 5 s after joining, 3 times of 3 with fancy graphics, 0 of 2
+  without. Proven with a line tagged copy of the class (tools/hostspike/LineTag.java: crash at instruction 1064, the
+  INVOKEVIRTUAL on the null field after the fancy graphics test). Players who go through Decimation's menu (the
+  Community page) do not hit it [inferred]; a cheap guard is worth it anyway.
+- **Forge's handshake times out on a slow joiner**: "Timeout waiting for client thread to catch up!" (FML
+  waitForPlayClient) when the joiner's main thread was busy right after connecting (this Mac was 14.6 of 15.3 GB into
+  swap with two games). Decimation hashes the mod files on the client at login ("[BoehMod-Anticheat] Detected hash"
+  lines just before the timeout) [inferred as a cause]. Weak laptops may see this; a retry joins.
+- A debugger on the joiner: the dev client already listens on 5005 (hotswap); use 5006. jdb's `catch` on
+  NullPointerException stops on hundreds of harmless class loading NPEs: attach only after the join.
+- One logged "Couldn't render entity" (NPE drawing the host player once at join, skin not loaded yet), harmless.
+
+Verdict: the idea works with today's game; the relay is plain byte piping. Next design questions: the mod set check
+(item 4), the menu guard (bug.md), online mode switch per host (decision 1), where the free relay runs (decision 2).

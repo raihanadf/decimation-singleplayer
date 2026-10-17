@@ -105,6 +105,17 @@ not something we introduced or need to fix) see `documentation.md`.
   runs did not crash. Cause unknown [not verified]; the lot code only plans blocks, it touches no
   world. Watch for it again (an "Entity is already tracked" error came just before).
 
+### HUD crash after joining a world without Decimation's menu (found 18 Oktober 2026, player hosting spike, OPEN)
+- Seen: the production client (release 0.64.8) started with `--server HOST --port P` joined a LAN world and crashed 4 to
+  5 s later, 3 of 3 times with fancy graphics on, 0 of 2 with it off: NullPointerException in IngameHud.render
+  (deci/g/j.b) from ClientEventHandler.onRenderOverlayPost (deci/c/c.a).
+- Cause (proven, docs/player_hosting.md section 6): with fancy graphics the HUD calls
+  `DecimationMod.fakePlayerProfile.getPlayer()` (field B, MenuPreviewWorld) without a null check; only Decimation's menu
+  (GuiMenuBase.initGui) creates it. A line tagged copy of the class put the crash on that call (instruction 1064).
+- Who hits it: anyone who reaches a world without opening Decimation's menu first (a launcher's join on start)
+  [inferred]; players through the menu do not [inferred]. Not fixed yet: a guard (create the profile on world join, or a
+  null check by patch) belongs to the player hosting work.
+
 ### Update screen bar stops short of full (found 17 Oktober 2026 in the user's Prism, OPEN)
 - The user's real auto update 0.64.7 to 0.64.8 (16:56): "SAFE TO CLOSE GAME!", 239.5mb/239.5mb, Quit game and Later,
   but the green bar about 80 % long. After Quit game and a restart the title read DeciRemnant v0.64.8: the update itself
