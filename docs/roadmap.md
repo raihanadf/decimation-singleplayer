@@ -172,6 +172,10 @@ docs/gun_model_spec.md); every user review goes into its lessons and casebook.
    2026); analysis and spike docs/player_hosting.md; part 1 of 4 specified (docs/superpowers/specs/
    2026-10-18-player-hosting-part1-design.md).
 
+6. **Donations through Early access** (user, 18 Oktober 2026: "later, im going back to do some donation on it to support
+   my work. by using supporter role before on in-game that we changed to early access, we can talk that later"):
+   Decimation's Supporter role, shown as "Early access" since v0.64.1 (docs/main_menu.md 2c), becomes the reward for
+   donations that pay for servers. Not designed; talk later.
 5. **City content replacement** (user, 18 Oktober 2026, "for the worldgen cities we gonna have full replacement due to
    copyright issue ... move on to new opensource structure (only for city worldgen, other structure on wilderness is
    okey)"): the converted DeceasedCraft Lost Cities buildings (docs/city_engine.md, tools/lcpack.py) get replaced by an

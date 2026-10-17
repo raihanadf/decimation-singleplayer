@@ -30,6 +30,9 @@ public class LanHostTest extends DevTestMode
     public String name() { return "lanhost"; }
 
     private final boolean online = "true".equals(System.getProperty("deciworldgen.autotest.online"));
+    /** real=true: host through HostService and the relay at relay=ADDRESS (player hosting part 1), not tools/hostspike. */
+    private final boolean real = "true".equals(System.getProperty("deciworldgen.autotest.real"));
+    private int hostStarted;
     private final int wait = Integer.parseInt(System.getProperty("deciworldgen.autotest.wait", "2400"));
     /** scene=true: no timed steps; the joiner's test (LanJoinTest) asks for each scene through LanBus. */
     private final boolean scene = "true".equals(System.getProperty("deciworldgen.autotest.scene"));
@@ -78,7 +81,30 @@ public class LanHostTest extends DevTestMode
             write(port);
             DevTestResults.value(name(), "LAN port", port);
             DevTestResults.value(name(), "online mode", s.isServerInOnlineMode());
+            if (real) // host through the mod's own hosting (plan Task 10), against relay=ADDRESS
+            {
+                String relay = System.getProperty("deciworldgen.autotest.relay");
+                if (relay != null)
+                {
+                    System.setProperty("deciworldgen.relay", relay);
+                }
+                net.decimation.fixes.hosting.HostService.Settings st = new net.decimation.fixes.hosting.HostService.Settings();
+                st.name = "Spike world";
+                st.online = online;
+                st.max = 4;
+                st.player = host.getCommandSenderName();
+                st.version = net.decimation.fixes.hosting.ModSet.ourVersion();
+                final IntegratedServer srv = s;
+                net.decimation.fixes.hosting.HostService.INSTANCE.start(st, lastPort, () -> Math.max(0, srv.getCurrentPlayerCount() - 1));
+                hostStarted = t;
+            }
             return;
+        }
+        if (real && hostStarted > 0 && t == hostStarted + 100) // the start runs on a background thread
+        {
+            net.decimation.fixes.hosting.HostService.State hs = net.decimation.fixes.hosting.HostService.INSTANCE.state();
+            DevTestResults.check(name(), "host state", hs + " " + net.decimation.fixes.hosting.HostService.INSTANCE.error(),
+                                 hs == net.decimation.fixes.hosting.HostService.State.ONLINE, "ONLINE");
         }
         if (joinedAt < 0)
         {
@@ -400,6 +426,10 @@ public class LanHostTest extends DevTestMode
         else if (verb.equals("end"))
         {
             DevTestResults.value(name(), "scenes done", "joiner respawns " + deaths);
+            if (real)
+            {
+                net.decimation.fixes.hosting.HostService.INSTANCE.stop();
+            }
             done = true;
         }
         LanBus.write("res", n + " " + verb + " " + answer);

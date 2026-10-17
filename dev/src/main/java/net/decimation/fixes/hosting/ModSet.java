@@ -38,7 +38,7 @@ public final class ModSet
         {
             if (!BUILT_IN.contains(c.getModId()))
             {
-                l.add(new String[] {c.getModId(), c.getVersion()});
+                l.add(new String[] {c.getModId(), version(c)});
             }
         }
         return of(l);
@@ -62,12 +62,19 @@ public final class ModSet
     {
         try
         {
-            return cpw.mods.fml.common.Loader.instance().getIndexedModList().get("deciworldgen").getVersion();
+            return version(cpw.mods.fml.common.Loader.instance().getIndexedModList().get("deciworldgen"));
         }
         catch (Throwable t)
         {
             return "dev";
         }
+    }
+
+    /** A mod's version as mcmod.info says it (filled from the git tag for ours), else its @Mod version. */
+    private static String version(cpw.mods.fml.common.ModContainer c)
+    {
+        String v = c.getMetadata() == null ? null : c.getMetadata().version;
+        return v == null || v.isEmpty() || v.startsWith("$") ? c.getVersion() : v;
     }
 
     /** "id version" of the first mod of `need` this set lacks or has in another version; null when none. */

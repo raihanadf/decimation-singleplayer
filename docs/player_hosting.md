@@ -215,3 +215,16 @@ review, then the implementation plan). Real case test planned with the user's br
 - TLS check (plan Task 4): the mod's WebSocket client on Minecraft's netty 4.0.10 reached wss://ws.postman-echo.com/raw
   with Java 1.8.0_504 (zulu 8 on this Mac): "TLS OK". Mojang's bundled Java 8u51 (older root certificates) is not on
   this Mac [not verified].
+- Task 10 (18 Oktober 2026, 04:20 to 05:05): the two games through a LOCAL relay (`cd relay && npx wrangler dev`) with
+  the real code path (host: HostService from `lanhost real=true`; joiner: Decimation's Community page filled by
+  CommunityList, joined the way a row's button does): every check of section 9 PASS again (crate, lists, hummer, trader
+  buy, AKM, bandit fire and tracers). Found on the way: (1) a row's Join crashed the game when Minecraft's own
+  Multiplayer screen had never been opened (FMLClientHandler.connectToServer reads FML's server list cache, created only
+  by setupServerList): CommunityList calls setupServerList (RED: the crash, GREEN: the join); (2) ModSet read the
+  @Mod version ("0.43.0" in the dev client) instead of mcmod.info's (the git tag): both games now compare the same
+  version text and a different one is refused, as designed; (3) a crashed host's room stays listed until its 3 minutes
+  run out (the row appears twice for a while). Traps: never run a Gradle build while the live dev game runs (it
+  recompiles the classes the game loads: NoClassDefFoundError HostService$7, the host crashed); a commit by another
+  session changes the build version (git describe) and makes host and joiner differ.
+- Relay message counts per minute (spec 7) were not measurable with `wrangler dev` [not verified]: read them in the
+  Cloudflare dashboard after the deploy (Task 11).

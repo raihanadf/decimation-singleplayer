@@ -918,6 +918,126 @@ public final class Deci
         return out;
     }
 
+    /** Decimation's Community page (GuiMenuCommunityServers deci.i.j) on these rows (ServerListEntry deci.k.a). */
+    @cpw.mods.fml.relauncher.SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)
+    public static net.minecraft.client.gui.GuiScreen communityScreen(java.util.List<Object> rows)
+    {
+        java.util.List<deci.k.a> l = new java.util.ArrayList<deci.k.a>();
+        for (Object o : rows)
+        {
+            l.add((deci.k.a) o);
+        }
+        return new deci.i.j(deci.a.b.a(), l, false);
+    }
+
+    @cpw.mods.fml.relauncher.SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)
+    public static boolean isCommunityScreen(net.minecraft.client.gui.GuiScreen s)
+    {
+        return s instanceof deci.i.j;
+    }
+
+    /** True for Decimation's official server list page (GuiMenuOfficialServers deci.i.i). */
+    @cpw.mods.fml.relauncher.SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)
+    public static boolean isOfficialScreen(net.minecraft.client.gui.GuiScreen s)
+    {
+        return s instanceof deci.i.i;
+    }
+
+    /** One community row on a local port (pinged and joined like a server), the Chernarus pictures on hover. */
+    @cpw.mods.fml.relauncher.SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)
+    public static Object communityRow(String name, int port, String label)
+    {
+        return officialServer("community", name, "127.0.0.1", port, label, "chernarus");
+    }
+
+    /** The page's ScrollPanel (GuiMenuCommunityServers.serverListPanel iW, private final). */
+    @cpw.mods.fml.relauncher.SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)
+    private static deci.d.l communityPanel(net.minecraft.client.gui.GuiScreen s)
+    {
+        try
+        {
+            java.lang.reflect.Field f = deci.i.j.class.getDeclaredField("iW");
+            f.setAccessible(true);
+            return (deci.d.l) f.get(s);
+        }
+        catch (ReflectiveOperationException e)
+        {
+            return null;
+        }
+    }
+
+    /** Replaces the page's rows (ScrollPanel.setElements) with ListElements titled by us (not "Community Server"). */
+    @cpw.mods.fml.relauncher.SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)
+    public static void setCommunityRows(net.minecraft.client.gui.GuiScreen s, java.util.List<Object> rows, java.util.List<String> titles)
+    {
+        java.util.List<deci.d.p> el = new java.util.ArrayList<deci.d.p>();
+        for (int i = 0; i < rows.size(); i++)
+        {
+            el.add(new deci.d.p(0.5f, titles.get(i), (deci.k.a) rows.get(i), false));
+        }
+        deci.d.l panel = communityPanel(s);
+        if (panel != null)
+        {
+            panel.a(el.iterator());
+        }
+    }
+
+    /** The rows' titles (ListElement fX, private) in order; for dev tests. */
+    @cpw.mods.fml.relauncher.SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)
+    public static java.util.List<String> communityRowTexts(net.minecraft.client.gui.GuiScreen s)
+    {
+        java.util.List<String> out = new java.util.ArrayList<String>();
+        deci.d.l panel = s instanceof deci.i.j ? communityPanel(s) : null;
+        if (panel == null)
+        {
+            return out;
+        }
+        for (Object o : panel.fl)
+        {
+            if (!(o instanceof deci.d.p))
+            {
+                continue;
+            }
+            try
+            {
+                java.lang.reflect.Field f = deci.d.p.class.getDeclaredField("fX");
+                f.setAccessible(true);
+                out.add(String.valueOf(f.get(o)));
+            }
+            catch (ReflectiveOperationException e)
+            {
+                out.add("unreadable");
+            }
+        }
+        return out;
+    }
+
+    /** The row under the mouse: Decimation raises a hovered row's fade fH toward 1 (ListElement); -1 when none is over 0.5. */
+    @cpw.mods.fml.relauncher.SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)
+    public static int hoveredCommunityRow(net.minecraft.client.gui.GuiScreen s)
+    {
+        deci.d.l panel = s instanceof deci.i.j ? communityPanel(s) : null;
+        if (panel == null)
+        {
+            return -1;
+        }
+        int best = -1, i = 0;
+        float top = 0.5f;
+        for (Object o : panel.fl)
+        {
+            if (o instanceof deci.d.p)
+            {
+                if (((deci.d.p) o).fH > top)
+                {
+                    top = ((deci.d.p) o).fH;
+                    best = i;
+                }
+                i++;
+            }
+        }
+        return best;
+    }
+
     /** Shows one of Decimation's toasts (ToastNotification.show, deci.b.b.b): title "Decimation", one line. */
     @cpw.mods.fml.relauncher.SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)
     public static void toast(String line)

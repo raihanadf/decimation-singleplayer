@@ -25,12 +25,15 @@ public class LanJoinTest extends DevTestMode
 
     private final String joinHost = System.getProperty("deciworldgen.autotest.joinhost", "spike-world.relay.localhost");
     private final int joinPort = Integer.getInteger("deciworldgen.autotest.joinport", 25600);
+    /** viaList=true: join from the Community page filled from the relay at relay=ADDRESS (player hosting part 1). */
+    private final boolean viaList = "true".equals(System.getProperty("deciworldgen.autotest.viaList"));
     private int step, wait, req;
     private IntegratedServer stopping;
     private String[] res;
     private int hostTurfs = -1, hostSafe = -1, x, y, z, id = -1, seat = -1;
     private long caps;
     private int maxTracers;
+    private int found = -1;
 
     public boolean client(Minecraft mc)
     {
@@ -55,9 +58,60 @@ public class LanJoinTest extends DevTestMode
                 }
                 DevTestResults.value(name(), "menu shown before joining", Deci.menuShown());
                 mc.gameSettings.fancyGraphics = true;
+                if (viaList) // the Community page, filled from the relay's list (player hosting part 1)
+                {
+                    String relay = System.getProperty("deciworldgen.autotest.relay");
+                    if (relay != null)
+                    {
+                        System.setProperty("deciworldgen.relay", relay);
+                    }
+                    net.decimation.fixes.hosting.CommunityList.open(mc);
+                    found = -1;
+                    next(20);
+                    break;
+                }
                 mc.displayGuiScreen(new GuiConnecting(mc.currentScreen, mc, joinHost, joinPort));
                 next(2);
                 break;
+            case 20: // the Community page lists the host's world; join it the way the row's button does
+            {
+                java.util.List<String> rows = Deci.communityRowTexts(mc.currentScreen);
+                int i = -1;
+                for (int k = 0; k < rows.size(); k++)
+                {
+                    if (rows.get(k).contains("Spike world"))
+                    {
+                        i = k;
+                    }
+                }
+                if (i < 0 && wait < 20 * 60) // the host may still be starting: refresh every 5 s, up to a minute
+                {
+                    if (wait % 100 == 50)
+                    {
+                        net.decimation.fixes.hosting.CommunityList.open(mc); // refresh
+                    }
+                    break;
+                }
+                if (i >= 0 && found < 0)
+                {
+                    found = wait; // let the page draw a second (and its rows ping) before the shot and the join
+                }
+                if (i >= 0 && wait - found < 20)
+                {
+                    break;
+                }
+                DevTestResults.check(name(), "row shows Spike world", rows, i >= 0, "a row titled Spike world");
+                DevTestUtil.screenshot(mc, name(), "community_page");
+                if (i < 0)
+                {
+                    return false;
+                }
+                int port = net.decimation.fixes.hosting.JoinService.INSTANCE.portOf("Spike world");
+                cpw.mods.fml.client.FMLClientHandler.instance().connectToServer(mc.currentScreen,
+                    new net.minecraft.client.multiplayer.ServerData("Spike world", "127.0.0.1:" + port)); // ListElement's button 123
+                next(2);
+                break;
+            }
             case 2:
                 if (mc.theWorld != null && mc.thePlayer != null && !mc.isSingleplayer())
                 {
