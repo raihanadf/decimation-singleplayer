@@ -64,19 +64,28 @@ ignored: it holds Decimation art). Pictures of the mockups: docs/shots/website_d
    - Splash text in yellow, turned 20 degrees, pulsing like the game's title screen, one picked at random per
      visit (click: next one): "Now with airports!", "Up to 64 districts!", "No dead servers!", "Mind the
      landmines!", "Traders are open!".
-2. **Download**: lead text "Fixes that make BoehMod's zombie mod work without its dead servers, plus a whole
-   generated world: cities, military bases, airports and safe zones." Torn orange button "Download <version> ·
-   <size>" with the supply drop radio icon; torn black button "Install guide >>"; a line "Pre-release ·
-   <date> · Minecraft 1.7.10 with Forge · All versions on GitHub".
-3. **What it adds** ("A world worth surviving in"), six cards, icon in an inventory slot:
+2. **Download** (inside the hero since 17 Oktober 2026): torn coral button "Download <version> · <size>" with the
+   supply drop radio icon; torn black button "Install guide >>"; a line "Pre-release · <date> · Minecraft 1.7.10 with
+   Forge · All versions on GitHub". The LEAD text stays the page's meta description.
+2b. **About** ("What is DeciRemnant?", section id about, the top bar's Features link; user 17 Oktober 2026: "make some
+   intro whats the mods is, what main purpose is, then what we have been add"): the infected flesh icon in a slot beside
+   the title; two paragraphs (content/about.ts: what Decimation is and why it broke; what DeciRemnant fixes and adds);
+   three facts with a coral top line: One jar, Alone or together, Free and unofficial.
+2c. **Showcase rows** (content/showcase.ts, components/Showcase.tsx): label, item icon and title, a paragraph, points
+   with coral squares, and a real picture with its caption, the picture right, left, right:
+   Singleplayer "Everything works on your own" (gold bottlecap, survivor camp picture), World "Cities to survive in"
+   (map, a generated city), Arsenal "New guns in Decimation's style" (our MAC-10, the MAC-10 shot). Phones: one column,
+   text first.
+3. **And more** (label "What it adds", section id features; user: "change the 6 cards to and more"): six cards on
+   what the rows do not cover, icon in an inventory slot:
 
    | Icon (Decimation item) | Title | Text |
    |---|---|---|
-   | bottlecap | Singleplayer that works | Loot, zones, supply drops, armour and humanity, all without Decimation's dead servers. |
-   | map | Generated cities | 4 to 64 districts each, joined by highways, an underground railway and rivers. |
    | firstaidkit | Safe zones | Survivor camps and city refuges with traders, guards and a clinic. |
    | militarykeycard | Bases and airports | Military bases in three sizes and airfields in wasteland cities, locked rooms and loot inside. |
-   | our MAC-10 icon | Soldiers, bandits, new guns | NPC tiers with real loadouts, plus the MAC-10, UMP9, HK416 and Mk18. |
+   | achivement_trader_bandit | Soldiers and bandits | Ranks up to elites and juggernauts, with snipers and rocket teams. They hear your gunshots and come looking. |
+   | syringe_infection | Infected | New kinds of infected, and a night frenzy: faster and harder hitting after dark. |
+   | graphics_card | Your own server | The same jar runs a Forge server for your friends; the server guide has every step. |
    | radio | Updates in the game | When a new version is out, the menu button says Update. |
 
 4. **Screenshots** ("In the game"): ten shots in a grid of four columns, two of them double size; caption over
@@ -129,7 +138,9 @@ ignored: it holds Decimation art). Pictures of the mockups: docs/shots/website_d
    - The game lags in cities: lower the prop render distance in `config/deciworldgen_props.cfg`.
    - Found a bug?: open an issue on GitHub and attach `logs/fml-client-latest.log`. Link: Report a bug (the
      public repo's issues).
-9. **Footer**: a dirt strip (our own generated texture), then BoehMod's logo (public/ui/boehmod-logo.webp from
+8b. **Closing band** (user: "add some hook button on the end of content"; components/Hook.tsx), after Questions: label
+   "Get it", "The city is waiting. Bring a gun.", one line, Download, Install guide and GitHub (logo and word) buttons.
+9. **Footer** (no dirt strip since 17 Oktober 2026, user): BoehMod's logo (public/ui/boehmod-logo.webp from
    textures/gui/menu/boehmod_big.png, 26 px high) beside "Unofficial fan project. Decimation belongs to BoehMod. Not an
    official Minecraft product; not approved by or associated with Mojang or Microsoft." and a GitHub link; on phones
    stacked.
@@ -228,7 +239,7 @@ Tried and rejected: Decimation's own menu palette (red tinted hero, torn black p
 | MAC-10 icon | ours: dev/src/main/resources/assets/deci/textures/items/gun/smg/mac10.png | |
 | torn orange button | Decimation.jar `assets/deci/textures/gui/menu/buttonbg_red.png` used as a CSS mask over #F89838 | |
 | torn black button | Decimation.jar `assets/deci/textures/gui/menu/buttonbg.png` stretched | |
-| dirt strip | ours, generated (seeded noise in browns) | |
+| GitHub mark | Octicons mark-github (MIT), components/GitHubMark.tsx | top bar and footer show the logo instead of the word (aria-label GitHub); the closing band button has logo and word |
 | font | Minecraft Standard (CC PD) | |
 
 Decimation's files go into the PRIVATE site repo only. The site's own logo is ours (DeciRemnant); BoehMod's logo appears
@@ -358,7 +369,8 @@ only as the footer credit (17 Oktober 2026; the earlier rule "never the Decimati
 - Structured data: JSON-LD WebSite + SoftwareApplication (GameApplication, Minecraft mod, version and download link
   from the live release, free offer, isBasedOn Decimation by BoehMod).
 - Page outline: release notes' h1 / h2 become h3 under the "What changed" h2.
-- Icons: our MAC-10 on the download orange (app/icon.png 32, app/apple-icon.png 180, app/favicon.ico 16 / 32 / 64),
+- Icons: Decimation's map item on a clear background since 17 Oktober 2026 (user; `export_assets.py SITE --icons`;
+  before: our MAC-10 on the download orange) (app/icon.png 32, app/apple-icon.png 180, app/favicon.ico 16 / 32 / 64),
   written by tools/site/export_assets.py.
 - Lighthouse 12 on the live site (performance, accessibility, best practices, SEO): before mobile 96 / 96 / 100 / 100,
   desktop 100 / 96 / 100 / 100; after the push of 546f637 mobile 100 / 100 / 100 / 100 (LCP 1.8 s, CLS 0), desktop
@@ -419,7 +431,13 @@ only as the footer credit (17 Oktober 2026; the earlier rule "never the Decimati
    button, dark vignette. Mockup with a New / Current switch and camo off / subtle / strong (docs/shots/
    website_design_v0.64.8): "good, subtle camo, add small logo on scroll, build it". Site commit e76694d, live
    17 Oktober 2026 17:30 and checked (section 9b).
-   The user will add something to a section next (asked to be reminded).
+   The user's section list came next (item 9).
+9. Sections (17 Oktober 2026): "1. remove dirt texture on footer, 2. make some intro whats the mods is ... 4 section new,
+   1 intro, 2 singleplayer work, 3 generated city, 4 new guns ... each section title has icon logo take from decimation
+   items ... [title + desc] - [image] or the opposite. for the web icon logo use maps item decimation ... no background
+   color ... github text replace it with real github icon logo. and the last is add some hook button on the end of
+   content". Mockup (docs/shots/website_design_v0.64.8 p1, p2, phone) accepted: "acc, change the 6 cards to and more,
+   build it". Site commit 329319f.
 
 ## 11. Later (not v1)
 

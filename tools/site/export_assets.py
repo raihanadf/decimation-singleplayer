@@ -4,6 +4,7 @@
     python3 tools/site/export_assets.py SITE_DIR --shots DIR     # siteshots output: DIR/site_<name>.png
     python3 tools/site/export_assets.py SITE_DIR --guide DIR     # ONLY the guide pictures: DIR/guide_<name>.png
     python3 tools/site/export_assets.py SITE_DIR --logo FILE     # ONLY the logos: ours from FILE, BoehMod's from the jar
+    python3 tools/site/export_assets.py SITE_DIR --icons         # ONLY the tab and touch icons (Decimation's map item)
     python3 tools/site/export_assets.py SITE_DIR --camo          # ONLY the camo panel texture (marines' urban camo)
 
 Item icons and the two torn menu textures come from Decimation.jar.original.bak, the MAC-10 icon is ours, the
@@ -22,7 +23,6 @@ import hashlib
 import io
 import json
 import os
-import random
 import sys
 import zipfile
 
@@ -65,18 +65,6 @@ STAND_INS = {
 BOEHMOD_LOGO = "assets/deci/textures/gui/menu/boehmod_big.png"  # BoehMod's logo of the main menu: the footer credit
 GUI_BOX = (225, 20, 1215, 800)  # the buttons and fields of a GUI scale 3 screen in a 1440 x 810 window
 GUIDE = {"worldtype": GUI_BOX, "multiplayer": GUI_BOX, "addserver": GUI_BOX}
-
-
-def dirt(path):
-    """Our own dirt strip: seeded noise in browns (not Mojang's texture)."""
-    pal = [(115, 82, 56), (128, 92, 63), (101, 72, 49), (140, 101, 70), (88, 63, 42), (155, 118, 84)]
-    weights = [30, 25, 20, 12, 8, 5]
-    r = random.Random(7)
-    im = Image.new("RGB", (16, 16))
-    for y in range(16):
-        for x in range(16):
-            im.putpixel((x, y), r.choices(pal, weights)[0])
-    im.save(path)
 
 
 def hashed(im, folder, name):
@@ -176,17 +164,17 @@ def logo(site, ours):
 
 
 def site_icons(site):
-    """Favicon and touch icon of the site: our MAC-10 (our own art) on the download button's orange, readable on light
-    and dark browser tabs. Writes app/icon.png (32), app/apple-icon.png (180) and app/favicon.ico (16, 32, 64)."""
-    gun = Image.open(MAC10).convert("RGBA")
-    orange = (248, 152, 56, 255)
-    icon = Image.new("RGBA", (32, 32), orange)
-    icon.alpha_composite(gun.resize((28, 28), Image.NEAREST), (2, 2))
-    icon.save(os.path.join(site, "app", "icon.png"))
-    apple = Image.new("RGBA", (180, 180), orange)
-    apple.alpha_composite(gun.resize((160, 160), Image.NEAREST), (10, 10))
-    apple.convert("RGB").save(os.path.join(site, "app", "apple-icon.png"))
-    icon.save(os.path.join(site, "app", "favicon.ico"), sizes=[(16, 16), (32, 32), (64, 64)])
+    """Favicon and touch icon of the site: Decimation's map item, its brown paper on a clear background (user, 17 Oktober
+    2026: "use maps item decimation that brown texture on it, no background color"; was our MAC-10 on orange). Writes
+    app/icon.png (32), app/apple-icon.png (180) and app/favicon.ico (16, 32, 64), scaled by whole pixels."""
+    with zipfile.ZipFile(JAR) as z:
+        m = Image.open(io.BytesIO(z.read(ICONS["map"]))).convert("RGBA")   # 32 x 32, the paper at (2, 5, 30, 26)
+    m.save(os.path.join(site, "app", "icon.png"))
+    apple = Image.new("RGBA", (180, 180), (0, 0, 0, 0))
+    apple.alpha_composite(m.resize((160, 160), Image.NEAREST), (10, 10))
+    apple.save(os.path.join(site, "app", "apple-icon.png"))
+    m.save(os.path.join(site, "app", "favicon.ico"), sizes=[(16, 16), (32, 32), (64, 64)])
+    print("icons: map item, clear background (icon.png, apple-icon.png, favicon.ico)")
 
 
 def shot(src, crop):
@@ -216,10 +204,14 @@ def main():
     ap.add_argument("--shots", help="folder with site_<name>.png from the siteshots dev test")
     ap.add_argument("--guide", help="folder with guide_<name>.png from the guideshots dev test (exports only these)")
     ap.add_argument("--logo", metavar="FILE", help="export only the logos: our official logo from FILE, BoehMod's from the jar")
+    ap.add_argument("--icons", action="store_true", help="export only the site icons (Decimation's map item)")
     ap.add_argument("--camo", action="store_true", help="export only the camo panel texture (marines' urban camo)")
     a = ap.parse_args()
     if a.camo:
         camo(os.path.abspath(a.site))
+        return
+    if a.icons:
+        site_icons(os.path.abspath(a.site))
         return
     if a.guide:
         guide(os.path.abspath(a.site), a.guide)
@@ -241,7 +233,6 @@ def main():
             os.remove(old)
     Image.open(MAC10).save(os.path.join(pub, "icons", "mac10.png"))
     site_icons(os.path.abspath(a.site))
-    dirt(os.path.join(pub, "ui", "dirt.png"))
     shots_dir = os.path.join(pub, "shots")
     for old in glob.glob(os.path.join(shots_dir, "*.jpg")) + [os.path.join(pub, "og.jpg")]:
         if os.path.isfile(old):

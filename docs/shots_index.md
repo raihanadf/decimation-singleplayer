@@ -285,6 +285,18 @@ Site checks of the local build (agent-browser):
   line, dots bottom left, caption "Seen in game: a generated city" bottom right, the mockup's switch bottom right.
 - cards.png: the six feature cards with the faint urban camo, subtle (top) and strong (bottom).
 
+## website_design_v0.64.8/ p1.png, p2.png, phone.png (sections mockup, 17 Oktober 2026)
+- p1 / p2: tab icon strip (old orange MAC-10, new map item on light and dark tabs, touch icon), solid top bar with the
+  GitHub logo, About with the infected flesh icon and three facts, Singleplayer (camp picture right), Cities (city
+  picture left), Arsenal (MAC-10 shot right), the old six cards, the closing band "The city is waiting. Bring a gun."
+  with Download, Install guide, GitHub, the footer without the dirt strip. phone.png: the same in one column.
+
+## website_v0.64.8/ local_sections_1.png, local_sections_3.png (built, local, 17 Oktober 2026)
+- local_sections_1: About, the three showcase rows, "And more" with the new six cards (safe zones, bases and airports,
+  soldiers and bandits, infected, your own server, updates). local_sections_3: install step 6 picture, server guide
+  button, changelog with 0.64.8 open, questions, the closing band (GitHub button then logo only: the word was put back
+  after this shot), footer without the dirt strip, GitHub logo right.
+
 ## website_live_v0.64.8/ (live site after the push, 17 Oktober 2026 17:30)
 - live_1300_820_390.png: the title screen hero live at 1300 (splash "Now with airports!" past the logo), 820 (Menu
   button, splash "No dead servers!" under the logo's right end) and 390 ("Traders are open!" under the logo); download

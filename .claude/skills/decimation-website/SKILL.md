@@ -153,6 +153,16 @@ Facts, decisions and the page text: docs/website.md (the spec). Site code: the P
   below 1024 px; gap between logo and links checked at 1025, 1100, 1300 (46 px and more).
 - Lesson: measure the top bar at tablet widths too (768 to 1024), not only desktop and phone.
 
+### Case 10: About, showcase rows, And more, closing band (17 Oktober 2026)
+- User list: no dirt strip; an intro (what the mod is, its purpose, what we added) and three sections (singleplayer,
+  cities, guns) with a Decimation item icon by each title, text and picture alternating; the map item as the tab
+  icon without background; the GitHub logo instead of the word; a closing button band. Mockup first (the user asked
+  for it again: "show me the mockup and if i acc, execute that"), accepted with "change the 6 cards to and more".
+- Every fact in the new text checked against the code before writing it (tier names in NpcLoadouts, GunNoise,
+  InfectedVariants night frenzy); tests first (footer, top bar logo, About, rows and alternation, And more titles,
+  closing band, RGBA tab icons), 74 tests. The Features link now opens About (test changed first).
+- Lesson: when a new section repeats existing cards, ask whether to keep, cut or turn them into "And more".
+
 ### Case 9: palette and title screen hero (17 Oktober 2026)
 - User: "changes on color pallete and hero section"; AskUserQuestion with four palettes and three hero layouts; answers
   "combine with 1. + 2 military soldier outfits texture" and "title screen style first. show me the mockup".
