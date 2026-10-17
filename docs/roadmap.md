@@ -168,6 +168,8 @@ docs/gun_model_spec.md); every user review goes into its lessons and casebook.
 4. **Real servers behind the menu** (user, 17 Oktober 2026): Global Server, Community Server and Download on the status
    page, Bukovka and Chernarus on the official list say Offline / Coming soon until they exist (fixes/MenuServers holds
    the rows; the community list idea is UI 2). Not designed yet.
+   Player hosted worlds through a relay of ours, listed on the Community page: docs/ideas.md item 22 (user, 18 Oktober
+   2026), not designed yet.
 
 ## Code and tools
 

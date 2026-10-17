@@ -101,3 +101,14 @@ every item below that is not DONE.
 16. **GitHub repo link on the home screen**: on the menu shown before the player clicks Play (the
     "previous hud"), not on Decimation's server screens. The main menu GUI is otherwise "not our
     priority" (roadmap UI 1).
+22. **Host from your own computer, listed as a community server** (user, 18 Oktober 2026: "user that doesnt have
+    server and cant make it, they can make it by it self from their computer as local server, then its bridged to our
+    server so its can be listed on community server. so our server just act as bridge"). The world runs on the
+    player's computer (Minecraft's integrated server, Open to LAN); the mod opens an OUTBOUND connection to a relay of
+    ours (works behind home routers, no port forwarding); the relay gives the world a public address and lists it on
+    Decimation's Community page (roadmap UI 4, the servers.json plan of UI 2). Known as listen server plus relay /
+    tunnel: Minecraft mods e4mc and Essential, playit.gg, Steam Datagram Relay, Unity Relay [not verified: from memory,
+    not looked up]. Notes: through a relay a player's ping is player to relay plus relay to host (only a direct hole
+    punched connection is host only); the relay needs an always on machine with a public address (Vercel cannot hold
+    game connections); the relay carries every byte (bandwidth cost); the world is offline when the host quits.
+    Not designed yet.
