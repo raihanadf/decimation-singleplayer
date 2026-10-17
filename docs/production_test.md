@@ -64,3 +64,9 @@ Checked with it: bundled content unpacked, cities generated, no errors (bug.md v
 - Trap: a live run keeps the open world, so tests that need a fresh world (garrison, siteshots, checks) find nothing
   there ("none within 300 blocks"); run those one launch.
 
+## Results (17 Oktober 2026, release 0.64.6, after the code review fixes)
+- The one jar (sha256 d6b8dfe2...): server fresh seed 1 world: content 0.64.6 unpacked (486 files, 0 failed), "Done
+  (3.695s)", clean stop. Client one launch `garrison`: all PASS (13 posts at the first visit, the rest as their chunks
+  filled in, 16 homes, a guard back after 174 ticks). Client live `doublejoin gates menu stats mainmenu menupages`
+  (gates=checkpoint/hesco): 27 PASS, 0 FAIL; title "DeciRemnant v0.64.6", the checkpoint's flag counted once.
+
