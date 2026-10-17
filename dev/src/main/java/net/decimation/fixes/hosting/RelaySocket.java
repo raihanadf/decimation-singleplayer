@@ -101,6 +101,9 @@ public final class RelaySocket
                     {
                         SSLEngine e = SSLContext.getDefault().createSSLEngine(host, port);
                         e.setUseClientMode(true);
+                        // TLS 1.2 only: Minecraft's netty 4.0.10 never finishes a TLS 1.3 handshake with Cloudflare (timed
+                        // out on the deployed relay, 18 Oktober 2026; with 1.2 the control socket opens)
+                        e.setEnabledProtocols(new String[] {"TLSv1.2"});
                         SSLParameters p = e.getSSLParameters();
                         p.setServerNames(Collections.<SNIServerName>singletonList(new SNIHostName(host)));
                         p.setEndpointIdentificationAlgorithm("HTTPS"); // the certificate must name this host
