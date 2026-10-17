@@ -82,9 +82,15 @@ class RelayClientTest
         status = 429;
         answer = "error code: 1027";
         assertThrows(RelayClient.RelayFull.class, () -> client().list());
+    }
+
+    @Test
+    void aPassing5xxIsNoQuota()
+    {
         status = 503;
         answer = "busy";
-        assertThrows(RelayClient.RelayFull.class, () -> client().list());
+        IOException e = assertThrows(IOException.class, () -> client().list());
+        assertFalse(e instanceof RelayClient.RelayFull, "a transient Cloudflare error must not end hosting for the day");
     }
 
     @Test

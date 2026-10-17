@@ -75,4 +75,14 @@ class RelaySocketTest
     {
         assertThrows(java.io.IOException.class, () -> RelaySocket.open(new URI("ws://127.0.0.1:1/echo"), null));
     }
+
+    @Test
+    void closeStopsTheTickFlush() throws Exception
+    {
+        RelaySocket s = RelaySocket.open(new URI("ws://127.0.0.1:" + port + "/echo"), into(new LinkedBlockingQueue<Object>()));
+        s.close("done");
+        Thread.sleep(200);
+        assertTrue(s.flushStopped(), "the 50 ms flush task is cancelled when the socket closes");
+    }
 }
+

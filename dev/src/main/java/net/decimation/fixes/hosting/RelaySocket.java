@@ -67,10 +67,12 @@ public final class RelaySocket
     private final ByteBuf pending = Unpooled.buffer();
     private volatile boolean open = true;
 
+    private final java.util.concurrent.ScheduledFuture<?> flusher;
+
     private RelaySocket(Channel channel)
     {
         this.channel = channel;
-        channel.eventLoop().scheduleAtFixedRate(new Runnable()
+        flusher = channel.eventLoop().scheduleAtFixedRate(new Runnable()
         {
             public void run()
             {
@@ -188,6 +190,12 @@ public final class RelaySocket
         {
             public void operationComplete(ChannelFuture f)
             {
+                s.flusher.cancel(false); // else every socket ever opened keeps a 50 ms task on the shared threads
+                synchronized (s.pending)
+                {
+                    s.pending.clear();
+                    s.pending.capacity(0);
+                }
                 boolean wasOpen = s.open;
                 s.open = false;
                 if (wasOpen && listener != null)
@@ -232,6 +240,12 @@ public final class RelaySocket
     {
         flush();
         channel.writeAndFlush(new TextWebSocketFrame(s));
+    }
+
+    /** True once the tick flush task is cancelled (tests). */
+    boolean flushStopped()
+    {
+        return flusher.isCancelled();
     }
 
     public boolean isOpen()

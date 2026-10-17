@@ -16,7 +16,7 @@ import java.util.Map;
 
 /**
  * The list calls of the relay (docs/superpowers/specs/2026-10-18-player-hosting-part1-design.md 3.2) over HTTP(S);
- * RelayFull when Cloudflare's free daily limit is reached (spec 5). Our own Lobby answers its refusals as JSON
+ * RelayFull when Cloudflare's free daily limit is reached (spec 5): a 429 or the 1015 / 1027 pages, never a 5xx. Our own Lobby answers its refusals as JSON
  * ({"error": ...}): those are plain IOExceptions, never RelayFull.
  */
 public final class RelayClient
@@ -114,7 +114,8 @@ public final class RelayClient
         InputStream in = status < 400 ? c.getInputStream() : c.getErrorStream();
         String text = in == null ? "" : read(in);
         boolean ours = text.contains("\"error\"");
-        if (!ours && (status == 429 || status >= 500 || text.contains("error code: 1027") || text.contains("error code: 1015")))
+        // the free plan's daily limit: 429 or Cloudflare's 1015 / 1027 pages; a passing 5xx is an ordinary failure (review)
+        if (!ours && (status == 429 || text.contains("error code: 1027") || text.contains("error code: 1015")))
         {
             throw new RelayFull(status + " " + text);
         }
