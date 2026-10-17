@@ -127,5 +127,22 @@ class HostServiceTest
         assertEquals(Pipe.Gate.ALLOW, HostService.INSTANCE.admit(LoginNameTest.handshake(1)));
         assertEquals(Pipe.Gate.MORE, HostService.INSTANCE.admit(LoginNameTest.handshake(2)));
     }
+
+    @Test
+    void twoLoginsWithOneNewNameAtOnceLetOnlyTheFirstIn()
+    {
+        HostService.INSTANCE.start(settings(), 25565, () -> 1);
+        HostService.INSTANCE.playingForTests(() -> java.util.Arrays.asList("Ucil"));
+        byte[] a = LoginNameTest.join(LoginNameTest.handshake(2), LoginNameTest.loginStart("Rizky"));
+        assertEquals(Pipe.Gate.ALLOW, HostService.INSTANCE.admit(a));
+        assertEquals(Pipe.Gate.DENY, HostService.INSTANCE.admit(a), "the first Rizky is still logging in");
+    }
+
+    @Test
+    void unreadableFirstBytesAreRefused()
+    {
+        HostService.INSTANCE.start(settings(), 25565, () -> 1);
+        assertEquals(Pipe.Gate.DENY, HostService.INSTANCE.admit(new byte[] {(byte) 0xFE, 1, (byte) 0xFA}));
+    }
 }
 

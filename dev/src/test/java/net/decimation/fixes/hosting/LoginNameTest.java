@@ -78,12 +78,14 @@ class LoginNameTest
     @Test
     void aStatusPingIsNoLogin()
     {
-        assertEquals("", LoginName.of(handshake(1)));
+        assertEquals(LoginName.STATUS, LoginName.of(handshake(1)));
     }
 
     @Test
-    void garbageIsRefusedAsNoName()
+    void unreadableBytesAreBadNotAllowed()
     {
-        assertEquals("", LoginName.of(new byte[] {(byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, 1}));
+        assertEquals(LoginName.BAD, LoginName.of(new byte[] {(byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, 1}));
+        assertEquals(LoginName.BAD, LoginName.of(new byte[] {(byte) 0xFE, 1, (byte) 0xFA})); // the legacy server list ping
+        assertEquals(LoginName.BAD, LoginName.of(handshake(3)));
     }
 }

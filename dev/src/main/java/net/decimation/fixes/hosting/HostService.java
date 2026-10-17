@@ -107,6 +107,7 @@ public final class HostService
             this.lanPort = lanPort;
             state = State.STARTING;
             error = "";
+            loggingIn.clear();
         }
         run(new Runnable()
         {
@@ -329,20 +330,46 @@ public final class HostService
      * name already playing (the host's too, in any letter case) is refused before it reaches the world; Minecraft would
      * otherwise kick the player who has that name (security reviews, 18 Oktober 2026).
      */
-    int admit(byte[] soFar)
+    synchronized int admit(byte[] soFar)
     {
         String name = LoginName.of(soFar);
         if (name == null)
         {
             return Pipe.Gate.MORE;
         }
+        if (name.equals(LoginName.BAD))
+        {
+            return Pipe.Gate.DENY; // fail closed: never let bytes through that this reader cannot follow
+        }
         Settings s = settings;
-        if (name.isEmpty() || s == null || s.online)
+        if (name.equals(LoginName.STATUS) || s == null || s.online)
         {
             return Pipe.Gate.ALLOW; // a status ping, or Mojang checks the account
         }
-        return nameTaken(name, playing.names()) ? Pipe.Gate.DENY : Pipe.Gate.ALLOW;
+        long now = System.currentTimeMillis();
+        java.util.List<String> taken = new java.util.ArrayList<String>(playing.names());
+        for (java.util.Iterator<java.util.Map.Entry<String, Long>> it = loggingIn.entrySet().iterator(); it.hasNext(); )
+        {
+            java.util.Map.Entry<String, Long> e = it.next();
+            if (now - e.getValue() > LOGIN_MS)
+            {
+                it.remove();
+            }
+            else
+            {
+                taken.add(e.getKey());
+            }
+        }
+        if (nameTaken(name, taken))
+        {
+            return Pipe.Gate.DENY;
+        }
+        loggingIn.put(name, now); // held until the login has had time to finish (two logins with one new name: the first wins)
+        return Pipe.Gate.ALLOW;
     }
+
+    private static final long LOGIN_MS = 30_000;
+    private final java.util.Map<String, Long> loggingIn = new java.util.HashMap<String, Long>();
 
     /** The names playing in the hosted world (the integrated server's list; tests set their own). */
     interface Playing
