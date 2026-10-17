@@ -305,6 +305,46 @@ public final class HostService
         control = null;
     }
 
+    /** True when `name` is already playing here, in any letter case (an offline world trusts names). */
+    static boolean nameTaken(String name, java.util.List<String> playing)
+    {
+        for (String p : playing)
+        {
+            if (p.equalsIgnoreCase(name))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * An "Any account" (offline) world takes any name: a stranger could join as the host or as another player. A login
+     * under a name already playing is refused (security review, 18 Oktober 2026).
+     */
+    @SubscribeEvent
+    public void onLogin(cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent e)
+    {
+        Settings s = settings;
+        if (state == State.OFF || s == null || s.online || !(e.player instanceof net.minecraft.entity.player.EntityPlayerMP))
+        {
+            return;
+        }
+        net.minecraft.entity.player.EntityPlayerMP joined = (net.minecraft.entity.player.EntityPlayerMP) e.player;
+        java.util.List<String> others = new java.util.ArrayList<String>();
+        for (Object o : joined.mcServer.getConfigurationManager().playerEntityList)
+        {
+            if (o != joined)
+            {
+                others.add(((net.minecraft.entity.player.EntityPlayer) o).getCommandSenderName());
+            }
+        }
+        if (nameTaken(joined.getCommandSenderName(), others))
+        {
+            joined.playerNetServerHandler.kickPlayerFromServer("That name is already playing here");
+        }
+    }
+
     /** The world closed (leaving it, quitting): stop hosting at once. */
     public void worldClosed()
     {

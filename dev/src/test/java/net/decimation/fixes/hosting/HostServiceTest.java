@@ -105,4 +105,13 @@ class HostServiceTest
         assertEquals(1, stops.get());
         assertEquals(HostService.State.OFF, HostService.INSTANCE.state());
     }
+
+    @Test
+    void aNameAlreadyPlayingIsTakenInAnyCase()
+    {
+        java.util.List<String> playing = java.util.Arrays.asList("Ucil", "Rizky");
+        assertTrue(HostService.nameTaken("ucil", playing));
+        assertTrue(HostService.nameTaken("RIZKY", playing));
+        assertFalse(HostService.nameTaken("Dimas", playing));
+    }
 }
