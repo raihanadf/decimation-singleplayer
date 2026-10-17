@@ -23,7 +23,9 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [x] main menu v0.64.0: Website / GitHub links, DeciRemnant and our version, Continue, our corner (dev client)
 - [x] main menu v0.64.1: server pages coming soon (Bukovka, Chernarus), status rows, Early access (dev test menupages)
 - [x] release 0.64.6 published 17 Oktober 2026 (pre-release; GitHub's digest = local sha256 d6b8dfe2); site download 0.64.6 at 12:45, old clients see Update
-- [ ] forum on our website for My Community (later, roadmap UI 3)
+- [ ] forum on our website for My Community (later, roadmap UI 3): Discord first (docs/forum.md)
+- [ ] user: create the DeciRemnant Discord server from the site repo's docs/discord/channel-plan.md, send the invite
+- [ ] site: Discord link in top bar and footer, "A forum" card becomes "Join our Discord" (needs the invite)
 - [x] in-game update finds the running jar (v0.64.7 local; players on 0.59 .. 0.64.6 install the next release by hand once)
 - [x] update runs on Decimation's own progress screen, Quit game / Later (v0.64.7; dev and production client)
 - [x] our DeciRemnant logo in Decimation's menu banners (v0.64.7; dev and production client)

@@ -1605,7 +1605,13 @@ User screenshots, creative mode, the milbase sky test bases; each finding is fix
   groups, item icons in slots, right column release / new topics / numbers / rules), bugs.png (one bug list with
   status tags and version, filter chips), topic.png (report table on top, log block, Team badge, status event,
   marked answer, +1), newbug.png (report form with similar topics warning), builds2.png (gallery cards with tags),
-  home_phone.png (390 wide, no sideways scroll). Verdict: shown to the user, waiting.
+  home_phone.png (390 wide, no sideways scroll). Verdict: "all of them good more than i expected".
+- Round 2 (home pages): refs2/ hypixel.png, wynn.png, flarum.png, unity.png, terraria.png, nodebb.png,
+  satisfactory.png (patterns in docs/forum.md). home5.html: v1 plus A Title screen (h5_a3.png), B Feed first
+  (h5_b.png), C Card grid (h5_c.png), D Hub (h5_d.png), E Game menu (h5_e.png); B + Title (ba_fold.png, 1440 x 900:
+  five topics above the fold) is the user's desktop pick. phone.html: the phone layout (phone_desk2.png: home, boards
+  tab, topic), the user's pick "take B for phone". All checked at 1300 and 390 wide. Then the user chose Discord first;
+  the design is on the shelf.
 - `community_page.png` (854 x 480, the production client with the test jar, as the joiner, 18 Oktober 2026 05:52):
   Decimation's Community Server List filled from the DEPLOYED relay: "Players Online: 1 in 1 worlds", one row "Spike
   world" with the caption "host Developer · via relay - 297ms", Decimation's green Join button and "1/8"; Joiner's card

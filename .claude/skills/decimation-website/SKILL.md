@@ -67,6 +67,12 @@ Facts, decisions and the page text: docs/website.md (the spec). Site code: the P
    this"): for a docs page well known docs (Next.js, Stripe, Tailwind, Fabric / NeoForge, the Minecraft Wiki), for a
    download page Modrinth / CurseForge. Look at 3 to 5, write down the patterns taken (navigation, step layout, code
    blocks, callouts), then mock up. The server guide was built from previews only: "not bad", kept for now.
+18. A forum or community feature: ask what keeps people coming back and answer it with data before the look (phone
+   share, visible navigation, replies to newcomers, the newest topics first for a small community); the user asked
+   "based on data?" and picked the phone layout from it. Check every free plan's limit behaviour (what happens AT the
+   limit), not only its size: Neon's awake hours would take a forum down for a month.
+19. Before building a community feature, put the build next to the no build option (a Discord server): the user chose
+   Discord first once it was named.
 
 ## Casebook (never delete a case)
 
@@ -212,3 +218,20 @@ Facts, decisions and the page text: docs/website.md (the spec). Site code: the P
 - Live after the user's push (17 Oktober 2026): logo 179 x 40 and credit 171 x 26 load at 1300, 125 x 28 and 171 x 26
   at 390, no sideways scroll, fonts 12 / 18 / 24 / 36, 0 console errors, all links on both pages; shots
   docs/shots/website_live_v0.64.6/.
+
+### Case 13: intro on every load, the signal after hours away (18 Oktober 2026)
+- User: "bring back it when its reload or if the user not back after few hours ... title screen build animation make it
+  default show up when reloading. for the tv use few hour interval method". Was once per session (sessionStorage).
+- Now: the first paint script stamps localStorage deci-seen on every page load; the home page plays the signal after
+  TV_GAP_HOURS (3, my pick for "few hours") away or on a first visit, otherwise only the build; storage blocked means
+  build only. The overlay shows in build only after the signal (html[data-tv]). Site fdc688f, 96 tests (4 new, RED
+  first); production build checked in a real browser (fresh visit play, reload build, stamp 4 h back play, /docs skip).
+
+### Case 14: the forum brainstorm, then Discord first (18 Oktober 2026)
+- Twelve forums studied in two rounds (docs/forum.md), five full screens (v1), five home variants, a phone layout;
+  the user picked B for phones, B with the title banner for desktop, Google sign in, Turso. Design written (site
+  d18c840) and then shelved: "what if the foums use discord community? since we dont need to figure it out payment at
+  all?" then "ok discord first, make the channel plan" (site 86d00ac).
+- Found on the way: the site's global `.gallery` and `.gh` classes broke mockup layouts (grid rows 132 px, GitHub
+  link styles); a `.cap p` rule leaked into post text. In mockups that reuse the site CSS, prefix new class names.
+- Lessons 18 and 19.

@@ -163,6 +163,12 @@ two columns of equal shots.
 - Cost measured locally with the intro playing: mobile 94, desktop 100, LCP unchanged (the first scene paints under
   the static).
 
+## 3e. Forum (18 Oktober 2026)
+
+- Discord first (docs/forum.md, site repo docs/discord/channel-plan.md); the site gets a Discord link and a "Join our
+  Discord" card once the invite exists. The website forum design is on the shelf (site repo
+  docs/superpowers/specs/2026-10-18-forum-design.md).
+
 ## 3c. Project docs (/docs, since 17 Oktober 2026; design C with B's infobox)
 
 - Content: site repo content/docs.ts. Six areas with an item icon each: Getting started (radio), Survival (gold

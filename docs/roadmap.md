@@ -164,7 +164,9 @@ docs/gun_model_spec.md); every user review goes into its lessons and casebook.
    logos load, no sideways scroll at 390, fonts 12 / 18 / 24 / 36, 0 console errors, all links).
 3. **Forum on our website** (user, 17 Oktober 2026: "for my community, later we make forum on our website on it"): the
    My Community popup's Forums line (now BoehMod's forums, ClientResources httpsWwwBoehmodCom) opens a forum on
-   deciremnant.vercel.app. Not designed yet; later.
+   deciremnant.vercel.app. 18 Oktober 2026: Discord first (user: "ok discord first"), channel plan in the site repo
+   docs/discord/channel-plan.md; the website forum design is on the shelf (docs/forum.md). The Forums line will open
+   the Discord invite once the game is stable.
 4. **Real servers behind the menu** (user, 17 Oktober 2026): Global Server, Community Server and Download on the status
    page, Bukovka and Chernarus on the official list say Offline / Coming soon until they exist (fixes/MenuServers holds
    the rows; the community list idea is UI 2). Not designed yet.
