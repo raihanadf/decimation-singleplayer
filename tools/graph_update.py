@@ -152,15 +152,6 @@ def finish():
                          "source": d.get("_src", u), "target": d.get("_tgt", v)} for u, v, d in G.edges(data=True)],
               "hyperedges": list(G.graph.get("hyperedges", [])), "input_tokens": 0, "output_tokens": 0}
 
-    mf = _stamped_manifest_files(inc["files"], new_ex, Path("."))
-    sem = ("document", "paper", "image")
-    disp = {f for t, fl in inc.get("new_files", {}).items() if t in sem for f in fl}
-    stamped = {f for fl in mf.values() for f in fl}
-    save_manifest(mf, root=".", scan_corpus={f for fl in inc["files"].values() for f in fl},
-                  clear_semantic=(disp - stamped) or None)
-    if disp - stamped:
-        print("WARNING: not stamped (no extraction output), will be re-queued:", sorted(disp - stamped))
-
     G = build_from_json(merged, root=".", directed=False)
     com = cluster(G)
     coh = score_all(G, com)
@@ -170,6 +161,15 @@ def finish():
     # --force: a legitimate shrink (code removed); check the lost node count first
     if not to_json(G, com, str(OUT / "graph.json"), community_labels=labels, force="--force" in sys.argv):
         sys.exit("graphify refused to shrink graph.json; rebuild with --force if intended")
+    # files count as done only once graph.json is written (a refused write used to mark them done anyway)
+    mf = _stamped_manifest_files(inc["files"], new_ex, Path("."))
+    sem = ("document", "paper", "image")
+    disp = {f for t, fl in inc.get("new_files", {}).items() if t in sem for f in fl}
+    stamped = {f for fl in mf.values() for f in fl}
+    save_manifest(mf, root=".", scan_corpus={f for fl in inc["files"].values() for f in fl},
+                  clear_semantic=(disp - stamped) or None)
+    if disp - stamped:
+        print("WARNING: not stamped (no extraction output), will be re-queued:", sorted(disp - stamped))
     (OUT / "GRAPH_REPORT.md").write_text(
         generate(G, com, coh, labels, god_nodes(G), surprising_connections(G, com), det,
                  {"input": 0, "output": 0}, ".", suggested_questions=q), encoding="utf-8")
