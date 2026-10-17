@@ -111,4 +111,4 @@ every item below that is not DONE.
     not looked up]. Notes: through a relay a player's ping is player to relay plus relay to host (only a direct hole
     punched connection is host only); the relay needs an always on machine with a public address (Vercel cannot hold
     game connections); the relay carries every byte (bandwidth cost); the world is offline when the host quits.
-    Not designed yet.
+    Not designed yet. Deeper analysis: docs/player_hosting.md.
