@@ -918,6 +918,13 @@ public final class Deci
         return out;
     }
 
+    /** Shows one of Decimation's toasts (ToastNotification.show, deci.b.b.b): title "Decimation", one line. */
+    @cpw.mods.fml.relauncher.SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)
+    public static void toast(String line)
+    {
+        deci.b.b.b(line);
+    }
+
     /** Every toast notification on screen or waiting (ToastNotification deci.b.b: current S, queue R, lines W), oldest first. */
     @cpw.mods.fml.relauncher.SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)
     public static java.util.List<String> toasts()

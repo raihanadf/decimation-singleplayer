@@ -1584,3 +1584,11 @@ User screenshots, creative mode, the milbase sky test bases; each finding is fix
 - gunview_<gun>(_aim / _npc).png and aim_cmp.png: aim crops with centre lines, M4A4 / HK416 /
   HK416 Tan: rear aperture and post tip on the same line. gunview_hk416tan_att(_npc).png: first
   person with red dot and suppressor (tan furniture, black sight and suppressor).
+
+## hosting_v0.64.9/ (player hosting part 1, 18 Oktober 2026; dev test `hostmenu`)
+- `host_page.png` (854 x 480, dev client, live world, creative): the Host Online page opened from the pause menu: left
+  Resume Game and Back; panel "Host Online", name field "deciworldgen_devtest", "Who can join" with "Any account
+  (offline)" green (chosen) above "Mojang accounts only (online)", "Max players - 4 +", "Mods others need (from your game)
+  deci 1.21.10f, deciworldgen 0.43.0, gvc 0.6.1" (the dev jar's version text; the release jar reads the git tag),
+  "Connection DeciRemnant relay (free, the limit is shared)", Start hosting. Decimation's HUD (stats top right, food and
+  water icons) shows at the edges as it does behind Decimation's own pause menu.
