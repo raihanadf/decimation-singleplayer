@@ -96,6 +96,9 @@ public class LanHostTest extends DevTestMode
                 st.version = net.decimation.fixes.hosting.ModSet.ourVersion();
                 final IntegratedServer srv = s;
                 net.decimation.fixes.hosting.HostService.INSTANCE.start(st, lastPort, () -> Math.max(0, srv.getCurrentPlayerCount() - 1));
+                net.decimation.fixes.hosting.HostLan.limit(srv, st.max); // what HostScreen does
+                DevTestResults.check(name(), "server max players follows the host's choice", srv.getMaxPlayers(),
+                                     srv.getMaxPlayers() == st.max, String.valueOf(st.max));
                 hostStarted = t;
             }
             return;

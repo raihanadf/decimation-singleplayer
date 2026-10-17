@@ -125,7 +125,7 @@ not something we introduced or need to fix) see `documentation.md`.
 - Fix: PlaceNames.onLogout forgets the player (PlayerLoggedOutEvent). RED then GREEN in the rejoin run; `places` and
   `zones` all PASS.
 
-### HUD crash after joining a world without Decimation's menu (found 18 Oktober 2026, player hosting spike, OPEN)
+### HUD crash after joining a world without Decimation's menu (found 18 Oktober 2026, player hosting spike, FIXED in code)
 - Seen: the production client (release 0.64.8) started with `--server HOST --port P` joined a LAN world and crashed 4 to
   5 s later, 3 of 3 times with fancy graphics on, 0 of 2 with it off: NullPointerException in IngameHud.render
   (deci/g/j.b) from ClientEventHandler.onRenderOverlayPost (deci/c/c.a).
@@ -134,7 +134,10 @@ not something we introduced or need to fix) see `documentation.md`.
   (GuiMenuBase.initGui) creates it. A line tagged copy of the class put the crash on that call (instruction 1064).
 - Who hits it: anyone who reaches a world without opening Decimation's menu first (a launcher's join on start)
   [inferred]; players through the menu do not (seen 18 Oktober 2026: `lanjoin` goes through the menu, fancy graphics
-  on, no crash in 3 joins). Not fixed yet: a guard (create the profile on world join, or a
+  on, no crash in 3 joins).
+- Fix (18 Oktober 2026): fixes/HudGuard creates the preview (Deci.ensureMenuPreview, as GuiMenuBase does) on the client
+  tick when a world has none. Dev test `hudguard`: preview removed, back within half a second (RED with the guard
+  stubbed, then GREEN). Not fixed yet: a guard (create the profile on world join, or a
   null check by patch) belongs to the player hosting work.
 
 ### Update screen bar stops short of full (found 17 Oktober 2026 in the user's Prism, OPEN)

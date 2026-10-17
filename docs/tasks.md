@@ -43,7 +43,7 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [ ] survivor partner idea: design talk (docs/ideas.md item 21)
 - [~] player hosting part 1: built, reviewed, relay deployed, two games through it all PASS (docs/player_hosting.md 11); open: brother's laptop real test, push, release (batched)
 - [ ] city content replacement with ChaoszPack Lost Cities (copyright; roadmap, after multiplayer)
-- [ ] HUD crash when a world is joined without Decimation's menu (bug.md, found in the hosting spike)
+- [x] HUD crash when a world is joined without Decimation's menu: fixes/HudGuard (in code, next release)
 - [x] place names gone after a rejoin: PlaceNames forgets a player on logout (bug.md, in code, next release)
 - [x] hosting spike joiner side: crate, hummer, trader, AKM, bandit fire and tracers, lists all PASS (docs/player_hosting.md 9)
 - [x] backend thread leak: PatchBackend v2, no BoehMod connection (v0.62.8)

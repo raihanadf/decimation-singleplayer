@@ -123,6 +123,7 @@ public final class HostScreen extends GuiScreen
         st.max = max;
         st.player = mc.getSession().getUsername();
         st.version = ModSet.ourVersion();
+        HostLan.limit(s, max); // the status ping shows the host's own limit
         HostService.INSTANCE.start(st, Integer.parseInt(port), new HostService.Players()
         {
             public int count()

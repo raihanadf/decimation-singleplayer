@@ -242,7 +242,10 @@ review, then the implementation plan). Real case test planned with the user's br
 - Final review of the branch (one fresh reviewer): 1 Critical (the host's lock held across network calls froze the
   client tick), 10 Important, 14 Minor; all Critical and Important fixed in one pass with tests (ledger
   .superpowers/sdd/2026-10-18-player-hosting-part1/progress.md), the relay redeployed with them. Deferred minors there.
+- Fixed after (18 Oktober 2026 06:15): the hosted world's player limit follows the host's choice (HostLan.limit; the
+  rows said "x/8"; lanhost check "server max players" RED 8 then GREEN 4); Decimation's HUD crash without its menu
+  (fixes/HudGuard, bug.md).
 - Still open: the real case on the user's brother's Linux laptop over Tailscale (needs his agreement, Java 8, the test
-  jar, and how it is driven); the relay's real message count per minute (the Cloudflare dashboard); a Community row says
-  "x/8" (Minecraft's LAN maximum) while the relay enforces the host's choice; Decimation's HUD crash when a world is
-  joined without its menu (bug.md, open); the website list, kick and ban (part 3).
+  jar on the user's Desktop DeciRemnant-hosting-test/, and how it is driven; the user: hosting goes into a release only
+  after it); the relay's real message count per minute (the Cloudflare dashboard); the website list, kick and ban
+  (part 3).

@@ -1040,6 +1040,34 @@ public final class Deci
         return best;
     }
 
+    /** True when DecimationMod's menu player preview (fakePlayerProfile B, MenuPreviewWorld deci.e.b) exists. */
+    @cpw.mods.fml.relauncher.SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)
+    public static boolean hasMenuPreview()
+    {
+        return deci.a.b.a().B != null;
+    }
+
+    /**
+     * Creates the menu player preview as Decimation's menu does (GuiMenuBase): its HUD reads it with fancy graphics and
+     * crashed when a world was reached without the menu (bug.md "HUD crash after joining a world without Decimation's menu").
+     */
+    @cpw.mods.fml.relauncher.SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)
+    public static void ensureMenuPreview()
+    {
+        deci.a.b mod = deci.a.b.a();
+        if (mod.B == null)
+        {
+            mod.B = new deci.e.b(net.minecraft.client.Minecraft.getMinecraft().getSession().func_148256_e());
+        }
+    }
+
+    /** Dev tests only: as if the menu was never opened. */
+    @cpw.mods.fml.relauncher.SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)
+    public static void clearMenuPreview()
+    {
+        deci.a.b.a().B = null;
+    }
+
     /** Shows one of Decimation's toasts (ToastNotification.show, deci.b.b.b): title "Decimation", one line. */
     @cpw.mods.fml.relauncher.SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)
     public static void toast(String line)
