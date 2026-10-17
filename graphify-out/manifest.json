@@ -155,9 +155,9 @@
     "semantic_hash": "9e1e87c18da80bf83e75b4883ee3420a"
   },
   "tools/graph_update.py": {
-    "mtime": 1791348965.63658,
-    "ast_hash": "8d6cfac5f004022d83da9be2f22b6da3",
-    "semantic_hash": "8d6cfac5f004022d83da9be2f22b6da3"
+    "mtime": 1792234532.2406104,
+    "ast_hash": "f1dd321872dfafe39f714c968152ed08",
+    "semantic_hash": "f1dd321872dfafe39f714c968152ed08"
   },
   "dev/src/main/java/net/decimation/fixes/ArmorGunfireHandler.java": {
     "mtime": 1791526201.9726732,

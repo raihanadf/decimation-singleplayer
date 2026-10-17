@@ -167,7 +167,8 @@ def finish():
     labels = relabel(G, com)
     det = rj(".graphify_detect.json", {})
     q = suggest_questions(G, com, labels)
-    if not to_json(G, com, str(OUT / "graph.json"), community_labels=labels):
+    # --force: a legitimate shrink (code removed); check the lost node count first
+    if not to_json(G, com, str(OUT / "graph.json"), community_labels=labels, force="--force" in sys.argv):
         sys.exit("graphify refused to shrink graph.json; rebuild with --force if intended")
     (OUT / "GRAPH_REPORT.md").write_text(
         generate(G, com, coh, labels, god_nodes(G), surprising_connections(G, com), det,
