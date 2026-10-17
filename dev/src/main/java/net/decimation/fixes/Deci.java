@@ -1004,7 +1004,7 @@ public final class Deci
                 java.lang.reflect.Field e = deci.d.p.class.getDeclaredField("fF"); // its ServerListEntry
                 f.setAccessible(true);
                 e.setAccessible(true);
-                out.add(((deci.k.a) e.get(o)).getName() + " | " + f.get(o));
+                out.add(((deci.k.a) e.get(o)).getMotd() + " | " + f.get(o)); // getMotd is the name shown, getName the id
             }
             catch (ReflectiveOperationException e)
             {
