@@ -208,8 +208,12 @@ two columns of equal shots.
 - Lighthouse 12 mobile on all 26 pages after the fixes (local production build): accessibility, best practices and SEO
   100 on every page; performance 95 home (LCP 3.0 s), 96 or 97 every docs page (LCP 2.6 to 2.9 s); no failed audit.
   Dev console (next dev) clean on home, /docs, a feature page and the server guide.
-- Still to do after the user's push: the same checks live, including each docs page's canonical address (404 until
-  deployed).
+- Live after the user's push (17 Oktober 2026, 21:40): the same probe on all 26 pages at 1300 and 390 px passed with
+  nothing flagged, no duplicate titles or descriptions; every canonical and internal link 200, home anchors present,
+  check-links on home, /docs and the server guide all ok; the intro played once, then skipped in the same session; 0
+  console errors; home and place names read at 1300, place names at 390 (footer at the bottom). Lighthouse 12 mobile
+  live: home 98 / 100 / 100 / 100 (LCP 2.4 s), docs pages 98 to 100 / 100 / 100 / 100 (LCP 1.7 to 2.3 s); only the
+  informational network dependency insight is listed, no failed audit.
 
 ## 3b. The server guide page (/docs/server, 17 Oktober 2026)
 

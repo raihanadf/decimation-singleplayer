@@ -160,6 +160,8 @@ Facts, decisions and the page text: docs/website.md (the spec). Site code: the P
   warnings production hides); exports of a "use client" module are client references on the server, so shared
   strings go in a plain module (lib/); a picture used twice on one page with different loading rules trips Next's LCP
   check.
+- Live after the push: all 26 pages pass the probe at both widths, links and canonicals 200, intro once per session,
+  Lighthouse mobile home 98, docs 98 to 100, the other three categories 100 everywhere.
 
 ### Case 11: intro and project docs (17 Oktober 2026)
 - Asked for an intro animation and docs "like other docs coding websites", 5 docs UIs offered. Eight docs sites studied
