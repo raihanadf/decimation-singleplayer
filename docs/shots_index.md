@@ -297,6 +297,13 @@ Site checks of the local build (agent-browser):
   button, changelog with 0.64.8 open, questions, the closing band (GitHub button then logo only: the word was put back
   after this shot), footer without the dirt strip, GitHub logo right.
 
+## website_v0.64.8/ local_intro_signal_build_done.png, local_docs_zones_bandits_travel_phone.png (17 Oktober 2026)
+- intro: TV static "Searching for a signal"; the title screen building (scene coming out of black, label in, logo not
+  yet); done (logo, splash "Now with airports!", tagline, buttons, top bar).
+- docs: Zones (area tabs, World current, camp banner, World pages with item icons, infobox beside Zone kinds, On this
+  page), Bandits and soldiers (People, ranks table, infobox), Highways railway and rivers (infobox with the bridge
+  picture), Zones on a phone (page chips, one column, infobox after the first part).
+
 ## website_live_v0.64.8/ (live site after the push, 17 Oktober 2026 17:30)
 - live_1300_820_390.png: the title screen hero live at 1300 (splash "Now with airports!" past the logo), 820 (Menu
   button, splash "No dead servers!" under the logo's right end) and 390 ("Traders are open!" under the logo); download

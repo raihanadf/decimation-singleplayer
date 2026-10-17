@@ -153,6 +153,18 @@ Facts, decisions and the page text: docs/website.md (the spec). Site code: the P
   below 1024 px; gap between logo and links checked at 1025, 1100, 1300 (46 px and more).
 - Lesson: measure the top bar at tablet widths too (768 to 1024), not only desktop and phone.
 
+### Case 11: intro and project docs (17 Oktober 2026)
+- Asked for an intro animation and docs "like other docs coding websites", 5 docs UIs offered. Eight docs sites studied
+  first (Next.js, Stripe, Tailwind, NeoForge, Fabric, Minecraft Wiki, Starlight, Mintlify); 3 intros and 5 docs designs
+  mocked with one real sample page (Zones). Picked: intro C then B with the scenes held until it ends; docs C (area tabs,
+  banner) with B's infobox and item icons in the sidebar.
+- The intro's phase sits on `<html data-intro>`, set by an inline script before the first paint; a client component then
+  runs the phases. Measured: no Lighthouse cost.
+- 24 pages of facts were written from the code and docs; two claims were wrong on the first pass (base garrisons, rank
+  count) and fixed before building. Measuring every page found a 14 px game font label (the callout's "Tip").
+- Lesson: for docs, read the code behind each fact as you write it, then re-check every claim that names a number or
+  a place before building.
+
 ### Case 10: About, showcase rows, And more, closing band (17 Oktober 2026)
 - User list: no dirt strip; an intro (what the mod is, its purpose, what we added) and three sections (singleplayer,
   cities, guns) with a Decimation item icon by each title, text and picture alternating; the map item as the tab

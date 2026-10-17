@@ -148,6 +148,46 @@ ignored: it holds Decimation art). Pictures of the mockups: docs/shots/website_d
 On phones: one column everywhere, the top bar folds into a menu button, the hero is shorter, the gallery becomes
 two columns of equal shots.
 
+## 3a. Intro (since 17 Oktober 2026, components/Intro.tsx)
+
+- First visit to the home page per browser session, motion allowed: a lost signal (TV static on a canvas, scan lines,
+  "Searching for a signal", at 0.9 s "Signal found" in coral), at 1.4 s the static switches off like an old screen and
+  the title screen builds itself (scene out of black, the logo drops in, the splash pops, label, tagline, buttons, release
+  line and top bar rise), done at 3.0 s. A click or a key skips it; seen once per session (sessionStorage deci-intro);
+  never with reduced motion.
+- An inline script in the hero sets `<html data-intro>` to play / skip before the first paint (no flash of the hero);
+  the phases play, build, done drive the CSS. HeroScenes keeps the first scene until INTRO_DONE, then changes every 7 s.
+- Cost measured locally with the intro playing: mobile 94, desktop 100, LCP unchanged (the first scene paints under
+  the static).
+
+## 3c. Project docs (/docs, since 17 Oktober 2026; design C with B's infobox)
+
+- Content: site repo content/docs.ts. Six areas with an item icon each: Getting started (radio), Survival (gold
+  bottlecap), World (map), People (bandit achievement), Gear (MAC-10), Reference (graphics card); 24 pages plus the
+  server guide (3b) under Getting started. Every page: slug, area, title, item icon, banner picture (a real shot), lead,
+  optional infobox (rows, optional picture), parts of blocks (paragraph, points, facts table, tip, careful, or the
+  install / questions content of the home page).
+- Pages: overview (/docs), install, updating, server; singleplayer fixes, loot and crates, supply drops, traders and
+  bottlecaps, humanity and armour; world type, cities, highways railway and rivers, wasteland districts, military
+  bases, airports, safe zones, zones, place names; bandits and soldiers, survivors and guards, infected; guns sights and
+  magazines; commands, config files, questions.
+- Facts: each checked in the mod's code or docs while writing (NpcLoadouts ranks and health, InfectedVariants kinds and
+  night frenzy, SupplyDropScheduler timing, HumanityKillHandler rules, WorldGenCommand usage, the config files' own
+  comments, docs/zones.md, terrain.md, city_engine.md, military_base.md). Corrected before building: military bases
+  have no garrison code (only wasteland bunkers and airports), 11 armed ranks. deciworldgen_loot.json and
+  deciworldgen_protection.json are groundwork, not used in play yet (said so on the config page).
+- Look: area tabs with item icons under the top bar (sticky), a real screenshot banner with the breadcrumb and the h1,
+  the area's pages with their item icons on the left (current one with a coral line), the article, On this page on the
+  right (hidden below 1100 px), the infobox in a column beside the first part (Minecraft Wiki style: icon and title bar,
+  optional picture, facts), tips (tan line) and careful notes (coral line), previous / next across all pages, "Tell us
+  on GitHub" (issues). Phones: one column, the page list as chips.
+- Search: each page its own title "<page> | Decimation Minecraft mod docs" (60 at most), description "Decimation
+  Minecraft mod docs: <lead>" (160 at most), canonical; the sitemap lists all 25 docs pages. The top bar link Server
+  became Docs (/docs).
+- Checked locally: 88 tests (RED first for every new part), all 25 pages 200, fonts 12 / 24 / 36 only, 0 dashes, no
+  broken pictures, 0 console errors, links (only the live canonical 404s before the push), /docs/zones Lighthouse mobile
+  96 / 100 / 100 / 100, desktop 100.
+
 ## 3b. The server guide page (/docs/server, 17 Oktober 2026)
 
 User: "for the server put on new page docs (we create new page now, suggest your design)"; picked "Docs with side
@@ -438,6 +478,24 @@ only as the footer credit (17 Oktober 2026; the earlier rule "never the Decimati
    color ... github text replace it with real github icon logo. and the last is add some hook button on the end of
    content". Mockup (docs/shots/website_design_v0.64.8 p1, p2, phone) accepted: "acc, change the 6 cards to and more,
    build it". Site commit 329319f.
+
+10. Intro animation and project docs (17 Oktober 2026): "can you add intro animation for this website? for the docs,
+   check out really other docs coding website ... offer me 5 docs UI ... docs include documentation of this project like
+   what feature we have, like singleplayer, generated cities, bandit, npc, zone and many more". Waiting for the user's
+   pick (mockups in the scratchpad; pictures docs/shots/website_design_v0.64.8 intros_abc, docs_designs_abcde).
+   - Docs sites studied (docs_refs_1 / 2): Next.js, Stripe, Tailwind, NeoForge, Fabric, Minecraft Wiki, Starlight,
+     Mintlify. Patterns: three columns (page tree, article about 720 px, "On this page"); top bar with logo, search and
+     a shortcut hint, version badge, GitHub; breadcrumb, title, lead; callouts for tips and warnings; numbered steps;
+     previous / next and "Edit on GitHub" at the end; the wiki's infobox (picture and stats) and Contents box; Stripe's
+     area tabs over a short tree.
+   - Offered: A classic three columns, B wiki with infobox, C area tabs with a picture banner, D card hub and a focused
+     reader, E game GUI (page tree as inventory slots with tooltips). Sample page: Zones, facts from docs/zones.md
+     (the traps / explosives rule in singleplayer [not verified] for a real page).
+   - Intros offered: A boot screen (logo, loading bar, 1.8 s), B the title screen builds itself (scene out of black,
+     logo drops in, splash pops, buttons rise, no overlay), C lost signal (static, "Signal found", old screen switch off).
+   - Picked (18:23): "B + C intro, show the signal intro, then title screen build ... the background image doesnt change
+     until the animation done and after its done the interval can started ... docs C with B infobox and sidebar add
+     decimation items on it based what the topic talking about, build it". Built: site 2dc3fc1 (intro), 85a3c66 (docs).
 
 ## 11. Later (not v1)
 

@@ -34,8 +34,8 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [ ] next release: update screen bar stops at about 80 % on some window sizes (bug.md, Decimation's integer rounding)
 - [ ] next release: Continue tooltip "Open world" reads like an instruction: "Last played: <name>"
 - [x] website: coral on charcoal + camo, title screen hero, small logo on scroll: live 17:30, checked (mobile 93 / 96, desktop 100)
-- [ ] website: the docs pages (after the user's section addition)
 - [~] website sections: About, showcase rows, And more, closing band, map tab icon, GitHub logo, no dirt: site 329319f local, waits for the push
+- [~] website intro (signal then title screen) and project docs (/docs, 24 pages): site 2dc3fc1, 85a3c66 local, wait for the push
 - [x] "Entity is already tracked": swapped mobs added twice at chunk load, double speed; fixes/JoinOnce (v0.64.2)
 - [ ] survivor partner idea: design talk (docs/ideas.md item 21)
 - [x] backend thread leak: PatchBackend v2, no BoehMod connection (v0.62.8)

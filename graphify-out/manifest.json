@@ -325,9 +325,9 @@
     "semantic_hash": "0145e0863788d451e8ae4273d3c2abdd"
   },
   "docs/shots_index.md": {
-    "mtime": 1792234463.9544392,
-    "ast_hash": "aa81cea661425527ff7457d2239d13fa",
-    "semantic_hash": "aa81cea661425527ff7457d2239d13fa"
+    "mtime": 1792237043.2698307,
+    "ast_hash": "4df64e250cf513276038fa2d2523bfcf",
+    "semantic_hash": "4df64e250cf513276038fa2d2523bfcf"
   },
   "docs/interior_spec.md": {
     "mtime": 1791385593.9436893,
@@ -1540,9 +1540,9 @@
     "semantic_hash": "294036847a9caffda351bfa855a78636"
   },
   "docs/tasks.md": {
-    "mtime": 1792234463.9549708,
-    "ast_hash": "e7d5c67035d248c3c6bdba676ac659f2",
-    "semantic_hash": "e7d5c67035d248c3c6bdba676ac659f2"
+    "mtime": 1792237043.2692096,
+    "ast_hash": "8f5f28b28893f8a0e0a72118224571a5",
+    "semantic_hash": "8f5f28b28893f8a0e0a72118224571a5"
   },
   "tools/skillcheck.py": {
     "mtime": 1792098139.5315723,
@@ -1735,14 +1735,14 @@
     "semantic_hash": "e8564bc6458835de29bc9ea8ba1e842c"
   },
   ".claude/skills/decimation-website/SKILL.md": {
-    "mtime": 1792234463.9535887,
-    "ast_hash": "5ab5e7f740dc2c695c1c41dce4c25de7",
-    "semantic_hash": "5ab5e7f740dc2c695c1c41dce4c25de7"
+    "mtime": 1792237043.2686384,
+    "ast_hash": "e7a5144b67bed89dddbff4209c91a307",
+    "semantic_hash": "e7a5144b67bed89dddbff4209c91a307"
   },
   "docs/website.md": {
-    "mtime": 1792234445.428826,
-    "ast_hash": "6e8058d129dc61ef6d5c68f2e3517698",
-    "semantic_hash": "6e8058d129dc61ef6d5c68f2e3517698"
+    "mtime": 1792237043.2681499,
+    "ast_hash": "9665912ae81495dc24d8ca53520beb19",
+    "semantic_hash": "9665912ae81495dc24d8ca53520beb19"
   },
   "docs/website_plan.md": {
     "mtime": 1792162650.3638773,
