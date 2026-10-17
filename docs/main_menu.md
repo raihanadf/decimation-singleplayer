@@ -131,8 +131,9 @@ java -cp tools/lib/javassist.jar:build/patch_servers PatchOfficialServers dist/D
 The input must be the ORIGINAL classes with only PatchMenuStats on them (this patch removes the texts it looks for):
 copy Decimation.jar.original.bak to base.jar, run PatchMenuStats on it and zip its three classes back in, then run
 PatchMenuTexts on base.jar (done 17 Oktober 2026 in build/menutexts_rebuild; base.jar's ten classes matched the jars;
-deci/i/h and deci/d/p, added in v0.64.1, were the original classes in all three jars). The patch counts the texts it
-changed per class and stops when a count differs from its plan.
+deci/i/h and deci/d/p, added in v0.64.1, were the original classes in all three jars). Every text of the plan must
+be changed exactly once in its class, or the patch stops and names it (per text since 17 Oktober 2026, after a code
+review: a total per class could hide a missing text behind a doubled one; the stricter run gave the same 12 classes).
 
 ## 5. Tests
 

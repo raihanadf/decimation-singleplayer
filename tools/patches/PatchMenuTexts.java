@@ -39,7 +39,8 @@ import org.objectweb.asm.Opcodes;
  *
  * Reads the classes of the jar it is given and writes the patched ones; give it the ORIGINAL classes with only
  * PatchMenuStats applied (deci.i.a and deci.i.e carry it), never a jar this patch already ran on (its texts are gone
- * there). The welcome box sentence is Decimation's lang file (tools/menu_assets.py). Steps: docs/main_menu.md 4b.
+ * there). Every text of the plan must be changed exactly once in its class, or the patch stops. The welcome box
+ * sentence is Decimation's lang file (tools/menu_assets.py). Steps: docs/main_menu.md 4b.
  *
  *   ASM=~/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm-debug-all/5.0.3/f9e3*.../asm-debug-all-5.0.3.jar
  *   javac -cp $ASM -source 8 -target 8 -d build/patch_menutexts tools/patches/PatchMenuTexts.java
@@ -123,6 +124,7 @@ public class PatchMenuTexts
             ClassReader r = new ClassReader(read(jar.getInputStream(e)));
             ClassWriter w = new ClassWriter(0); // same stack effect (a String pushed), no frame change
             final int[] changed = {0};
+            final Map<Object, Integer> seen = new HashMap<Object, Integer>();     // per text: a doubled one could hide a missing one
             r.accept(new ClassVisitor(Opcodes.ASM5, w)
             {
                 @Override
@@ -134,6 +136,10 @@ public class PatchMenuTexts
                         public void visitLdcInsn(Object cst)
                         {
                             Object to = cst instanceof String ? swaps.get(cst) : null;
+                            if (to != null)
+                            {
+                                seen.put(cst, seen.containsKey(cst) ? seen.get(cst) + 1 : 1);
+                            }
                             if (to instanceof String)
                             {
                                 changed[0]++;
@@ -152,9 +158,13 @@ public class PatchMenuTexts
                     };
                 }
             }, 0);
-            if (changed[0] != swaps.size())
+            for (Object k : swaps.keySet())
             {
-                throw new IllegalStateException(p.getKey() + ": " + changed[0] + " texts changed, expected " + swaps.size());
+                if (!Integer.valueOf(1).equals(seen.get(k)))
+                {
+                    throw new IllegalStateException(p.getKey() + ": \"" + k + "\" changed " + (seen.containsKey(k) ? seen.get(k) : 0)
+                                                    + " times, expected once");
+                }
             }
             File out = new File(a[1], p.getKey() + ".class");
             out.getParentFile().mkdirs();
