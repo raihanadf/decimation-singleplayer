@@ -150,12 +150,15 @@ two columns of equal shots.
 
 ## 3a. Intro (since 17 Oktober 2026, components/Intro.tsx)
 
-- First visit to the home page per browser session, motion allowed: a lost signal (TV static on a canvas, scan lines,
-  "Searching for a signal", at 0.9 s "Signal found" in coral), at 1.4 s the static switches off like an old screen and
-  the title screen builds itself (scene out of black, the logo drops in, the splash pops, label, tagline, buttons, release
-  line and top bar rise), done at 3.0 s. A click or a key skips it; seen once per session (sessionStorage deci-intro);
-  never with reduced motion.
-- An inline script in the hero sets `<html data-intro>` to play / skip before the first paint (no flash of the hero);
+- Home page, motion allowed, first visit or back after 3 hours or more (TV_GAP_HOURS in lib/intro.ts): a lost signal
+  (TV static on a canvas, scan lines, "Searching for a signal", at 0.9 s "Signal found" in coral), at 1.4 s the static
+  switches off like an old screen and the title screen builds itself (scene out of black, the logo drops in, the splash
+  pops, label, tagline, buttons, release line and top bar rise), done at 3.0 s. Any other load of the home page, a
+  reload too: only the build (1.6 s). A click or a key skips it; never with reduced motion. Every page load stamps
+  localStorage deci-seen; storage blocked means build only. Changed 18 Oktober 2026 (user: "bring back it when its
+  reload or if the user not back after few hours ... title screen build animation make it default show up when
+  reloading. for the tv use few hour interval method"); before that it played once per session (sessionStorage).
+- An inline script (root layout) sets `<html data-intro>` to play / build / skip before the first paint (no flash of the hero);
   the phases play, build, done drive the CSS. HeroScenes keeps the first scene until INTRO_DONE, then changes every 7 s.
 - Cost measured locally with the intro playing: mobile 94, desktop 100, LCP unchanged (the first scene paints under
   the static).
