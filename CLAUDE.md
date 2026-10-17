@@ -1042,6 +1042,9 @@ of the last session:
   v0.64.8 (17 Oktober 2026): update screen lines as Decimation's updater wrote them (version and size, "Downloading:
   33%" then "Complete!", done/total MB; docs/main_menu.md 2d). Test trap: the open live world has weather; in rain or
   a storm World.isDaytime() is false at noon, so day / night checks must clear the weather (ZombieTest does now).
+  RELEASE 0.64.8 published 17 Oktober 2026 16:53 (pre-release, sha256 73049bc7...; notes dist/onejar/RELEASE_NOTES_0.64.8.md;
+  released jars kept in dist/previous/onejar-<version>): the production client with the real 0.64.7 jar updated itself
+  to it from GitHub (239 MB in 29 s, checksum, jar swapped); site Download 0.64.8 at 16:54.
   RELEASE 0.64.7 published 17 Oktober 2026 15:33 (pre-release; asset digest = local sha256 ad4197ab...; notes
   dist/onejar/RELEASE_NOTES_0.64.7.md with the Chernarus credit): checked before on the production server and client
   (26 checks), after it the production client running 0.64.7 as "0.64.6" updated itself from GitHub (239 MB in 31 s,

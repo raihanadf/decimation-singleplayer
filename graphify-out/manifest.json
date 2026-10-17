@@ -110,9 +110,9 @@
     "semantic_hash": "de153d1f8408971d6190e16a7d4256f9"
   },
   "CLAUDE.md": {
-    "mtime": 1792230409.160649,
-    "ast_hash": "5f902489f52f64693961e701ba7d2bb2",
-    "semantic_hash": "5f902489f52f64693961e701ba7d2bb2"
+    "mtime": 1792230898.0939097,
+    "ast_hash": "9c808da1c0a41a3ee2e0b720cc826c08",
+    "semantic_hash": "9c808da1c0a41a3ee2e0b720cc826c08"
   },
   "DECIMATION_MOD_TASK.md": {
     "mtime": 1784958353.0126374,
@@ -1540,9 +1540,9 @@
     "semantic_hash": "294036847a9caffda351bfa855a78636"
   },
   "docs/tasks.md": {
-    "mtime": 1792230418.3039033,
-    "ast_hash": "629fa6f33b3155cdb3b381bec0c62106",
-    "semantic_hash": "629fa6f33b3155cdb3b381bec0c62106"
+    "mtime": 1792230898.0926545,
+    "ast_hash": "5ffb3c6ef4a425a03bb7ebfc0386e3ee",
+    "semantic_hash": "5ffb3c6ef4a425a03bb7ebfc0386e3ee"
   },
   "tools/skillcheck.py": {
     "mtime": 1792098139.5315723,
