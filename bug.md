@@ -116,6 +116,12 @@ not something we introduced or need to fix) see `documentation.md`.
   mods/Decimation.jar; none in the dev client); `update real=true from=0.59.0 expect=0.64.6 jar=true` in the
   production client: GitHub check, Update button, our screen, 238 MB in 29 s, checksum, the running jar swapped
   (its sha256 then equals the published 0.64.6). UpdateTest used MCP only reflection: now DevTestUtil.
+- Seen again by the user 17 Oktober 2026 15:11 in Prism ("Decimation, but better.", its jar 240980301 bytes = the 0.59.0
+  release): expected, the screen comes from the 0.59 code in that jar; 0.64.7 is not published and cannot change it.
+- Way out for an old game: install the release by hand (replace mods/Decimation.jar), or start it with the JVM argument
+  -Ddeciworldgen.update.target=<full path of mods/Decimation.jar>: every version 0.59.0 .. 0.64.6 reads that property
+  first (checked in the tags 0.59.0, 0.60.1, 0.62.8, 0.64.6), then the old updater downloads and swaps as normal. How
+  Prism passes an argument with spaces in the path [not verified].
 
 ### Checkpoint gate with HESCO: a stair over the shut line (found 17 Oktober 2026, FIXED v0.64.4)
 - Found by `gatewalk` extended to every gate look with a path finder check (docs/wasteland.md): the checkpoint
