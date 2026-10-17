@@ -55,3 +55,12 @@ Checked with it: bundled content unpacked, cities generated, no errors (bug.md v
   the shipped game (SRG names there: field_146292_n, func_146284_a). DevTestUtil.buttons / press try both since
   17 Oktober 2026; GuideShotsTest still has its own MCP only copies (dev client only).
 
+## Results (17 Oktober 2026, release 0.64.5)
+- The one jar (sha256 945e7cd4...): server on a fresh seed 1 world: content 0.64.5 unpacked (486 files, 0 failed),
+  "Done (3.990s)", clean stop. Client: live `doublejoin menu stats mainmenu menupages` 25 PASS, 0 FAIL (title
+  "DeciRemnant v0.64.5"); one launch `garrison` (a fresh seed 1 world: start the client with
+  -Ddeciworldgen.autotest.test=garrison instead of .live, scratchpad prodclient/run_garrison.sh) all PASS: 16 of 16
+  posts held, 16 homes, a guard moved 12 off back after 175 ticks.
+- Trap: a live run keeps the open world, so tests that need a fresh world (garrison, siteshots, checks) find nothing
+  there ("none within 300 blocks"); run those one launch.
+
