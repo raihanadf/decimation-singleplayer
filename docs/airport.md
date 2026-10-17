@@ -204,5 +204,8 @@ NPCs ignore creative players). Garrison lca_4_-32: 16 posts, 1 spawner, register
   armoured Soviet inside, the perimeter fence and the runway threshold beside it.
 - v0.64.5: guards drawn off by a chase walk back (Garrisons.backToPosts: no revenge target, no path, legs of at most
   12 blocks); the test moves one 12 blocks off its post: back within 6 after 174 ticks (RED: 9.9 away after 300).
+- v0.64.6 (code review): the walk back iterates a copy of the entity list (a path search can load chunks and add
+  entities: a crash risk, not reproduced in a test), each post waits until the chunks around it exist (populated:
+  its tower written), a refused spawn is tried up to 5 times. bug.md has the details.
 - Still not checked: how it feels to walk in under fire (survival).
 

@@ -171,7 +171,9 @@ edge gates shut with the same closures.
   bends round a container, so its pushed lanes are only noted), shut gates none and 0 of 10 pushed through. Found:
   the checkpoint with the HESCO closure had a stair over the line (the closure's 1 high sandbag beside the
   checkpoint's 2 high sandbag position, then the 3 high fence, whose wire on top does not stop walking). Fixed by
-  moving the position one row off the line (spotlight and flag back too, 0 prop clashes); 55 of 55 checks PASS.
+  moving the position one row off the line (spotlight back too, 0 prop clashes); 54 of 54 checks PASS. v0.64.6: the
+  flag's new spot was outside the canvas and silently dropped (code review): it stands on the east sidewalk before the
+  tower now, CityGate logs any prop outside its canvas, and the gates test counts the flag.
 - Checked: seed 1 server (pregen 1472,448,18): 15 connector gates, no plain; west land edge: the crossing's
   arm toward the land is sidewalk (T); the edge gates at z 320 and 448 are buses level at y 65..67 across
   z 323..332 with posts at both ends on the fence line.

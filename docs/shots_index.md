@@ -70,10 +70,16 @@ chunks at the camera and 48 ahead, up to 120 s).
   logo left of the credit line ("Unofficial fan project. Decimation belongs to BoehMod. ...") with GitHub on the right;
   on phones the logo, the line and GitHub stacked.
 
+## wasteland_gate_v0.64.6/ (the checkpoint gate with its flag back, 17 Oktober 2026)
+- `gates_checkpoint_<state>_front.png` / `_top.png` (open, wire, steel, bus, hesco; dev test `gates`, 854 x 480): as
+  v0.64.4, plus the blue UAHD flag on its tall pole on the east sidewalk before the guard tower (front view: right of
+  the line, beside the tower; top view: top right corner). 0 prop clashes, flag counted once in each state.
+
 ## wasteland_gate_v0.64.4/ (the checkpoint gate after the stair fix, 17 Oktober 2026; docs/wasteland.md, bug.md)
 - `gates_checkpoint_<state>_front.png` / `_top.png` for open, wire, steel, bus, hesco (dev test `gates` in the sky,
   854 x 480): the green camo sandbag fighting position on the west sidewalk now one row off the
-  line, its spotlight behind it, the flag further back; the tall camo guard tower with its ladder on the east
+  line, its spotlight behind it; NO flag (its new spot was outside the canvas and silently dropped: found by the code
+  review, fixed in v0.64.6, see wasteland_gate_v0.64.6); the tall camo guard tower with its ladder on the east
   sidewalk; jersey barriers staggered on the road; on the line: open (nothing), wire (chain link fence with concertina
   on top), steel (plates 3 high, a ragged fourth), bus (a yellow bus across), hesco (HESCO wall 3 high with wire on
   top). 0 prop clashes in all five.

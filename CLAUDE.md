@@ -1025,6 +1025,11 @@ of the last session:
   `gatewalk` covers every look and asks the path finder for a way through (open: yes, shut: no).
   v0.64.5 (17 Oktober 2026): garrison guards walk back to their posts after a chase (Garrisons.backToPosts; the home
   area alone bounds only idle wandering); dev test `garrison` moves a guard 12 blocks off and expects it back.
+  v0.64.6 (17 Oktober 2026, code review by a second agent, bug.md): backToPosts walks a COPY of loadedEntityList (a
+  path search loads chunks, which adds entities: crash risk); each garrison post waits until the chunks around it
+  exist; refused spawns retried 5 times; the checkpoint's flag was outside its canvas (Canvas.set drops those
+  silently): moved, and CityGate now logs props outside the canvas. Never iterate loadedEntityList while calling
+  anything that can load chunks (path searches, getChunkFromChunkCoords).
   Gun study (10 Oktober 2026): docs/gun_style_guide.md, tools/guns/study.py
   (renders / measures Decimation's guns from the jar, `attach` adds
   attachments as the game places them), dev test mode `gunview` (hip, aim

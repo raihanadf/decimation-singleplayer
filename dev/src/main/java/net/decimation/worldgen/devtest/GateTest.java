@@ -104,6 +104,12 @@ public class GateTest extends DevTestMode
                         DevTestResults.value(name(), n + " log", line);
                     }
                     DevTestResults.check(name(), n + " clashes", log.size(), log.isEmpty(), "0");
+                    if (look == 1)
+                    {
+                        // the checkpoint's flag pole (a prop placed outside the canvas is dropped without a word)
+                        int flags = count(w, plan, Block.getBlockFromName("deci:BlockFlagPollUAHD"));
+                        DevTestResults.check(name(), n + " flag", flags, flags == 1, "1 (BlockFlagPollUAHD)");
+                    }
                     if (state == CityGate.WIRE)
                     {
                         DevTestResults.check(name(), n + " landmines", m, m > 0, "> 0");
@@ -216,5 +222,22 @@ public class GateTest extends DevTestMode
         {
             DevTestResults.value("gates", "dump failed", e.toString());
         }
+    }
+
+    /** How many cells of a built gate hold this block (surface to 12 above). */
+    private static int count(World w, CityGatePlan plan, Block b)
+    {
+        int n = 0;
+        for (int x = plan.minX(); x <= plan.maxX(); x++)
+        {
+            for (int z = plan.minZ(); z <= plan.maxZ(); z++)
+            {
+                for (int y = Y; y <= Y + 12; y++)
+                {
+                    n += b != null && w.getBlock(x, y, z) == b ? 1 : 0;
+                }
+            }
+        }
+        return n;
     }
 }

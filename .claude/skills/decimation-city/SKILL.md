@@ -272,5 +272,10 @@ general: decimation-props; all of them: decimation-worldgen.
   (about 128 blocks from the player: made persistent); containers/open let no straight push through (its way bends:
   a path finder check added, lesson 27); checkpoint/hesco had a path over the line (sandbag 1 high, fighting position
   2 high, fence 3 high, wire walkable). The position moved one row off the line; the gates test then caught its
-  spotlight overlapping the moved wall and the flag (both moved back). 55 of 55 gatewalk checks, 0 prop clashes.
+  spotlight overlapping the moved wall and the flag (both moved back). 54 of 54 gatewalk checks, 0 prop clashes.
+- A code review by a second agent then found the flag's new spot (d 10) outside the 9 deep canvas: Canvas.set drops
+  such cells without a word, so "0 clashes" held only because the flag was gone, and the shots description I wrote
+  claimed a flag without looking for it. Fixed in v0.64.6 (flag before the tower, an outside the canvas log, a flag
+  count check). Lesson: when a prop moves, check it is still THERE (count it), not only that nothing clashes; read
+  the picture for the thing you describe.
 

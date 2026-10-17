@@ -114,7 +114,12 @@ not something we introduced or need to fix) see `documentation.md`.
 - Fix (military/CityGate.checkpoint): the fighting position stands one row off the line, so its wall never touches
   the fence; the spotlight and the flag moved back with it (0 prop clashes).
 - Checks: RED path found (route logged: lane 3 at y 2, lane 2 at y 3, lane 1 at the line at y 4, down past it);
-  GREEN 55 of 55 (30 path checks, 25 shut lane counts).
+  GREEN 54 of 54 (30 path checks, 24 shut lane counts).
+- v0.64.6 (found by the code review): the flag moved with the position to d 10, outside the look canvas (d 0..8);
+  Canvas.set drops such cells without a word, so the checkpoint had no flag (and "0 clashes" only because it was
+  missing). Flag now on the east sidewalk before the tower; CityGate's prop helper logs a prop outside the canvas
+  (the gates test reports it as a clash); the gates test counts the checkpoint's flag (RED 0, GREEN 1 in all five
+  states; all 30 gates 0 clashes; gatewalk still 54 of 54).
 
 ### Airport garrison: far posts never manned, guards wandered off (found 17 Oktober 2026, FIXED v0.64.3)
 - Found by the new dev test `garrison` (fresh seed 1 world, the airport at 272, -2032; docs/airport.md section 12):
@@ -131,6 +136,14 @@ not something we introduced or need to fix) see `documentation.md`.
   guard away and nothing brought it back (production client: 15 of 16 posts held). Garrisons.backToPosts walks a guard
   that is not fighting (no revenge target) and has no path back in legs of at most 12 blocks. Check: a guard moved 12
   blocks off its post: RED still 9.9 away after 300 ticks; GREEN back within 6 after 174 ticks.
+- v0.64.6 (code review of the night's changes): (1) backToPosts walked the world's entity list while asking for
+  paths; a path search loads chunks around the guard (about 72 blocks) and a loaded chunk adds its entities to that
+  list, so a ConcurrentModificationException could crash the server: it walks a copy now. Not reproduced in a test
+  (two tries: a lower view distance and an entity in a chunk to reload; the guard's search did not reach it), fixed
+  by reasoning from the vanilla code. (2) A post far from the first spawned once its chunk was loaded, maybe before
+  the chunk was populated and its tower written: each post now waits until the chunks around it exist (as the first
+  post did). (3) A spawn a join handler refused marked the post done for good: up to 5 tries now. garrison test
+  PASS again (13 posts at the first visit, the rest as their chunks filled in, 16 homes, a guard walks back).
 
 ### "Entity is already tracked" at every world load: swapped mobs added twice, double speed (seen 16 Oktober 2026, FIXED v0.64.2)
 - Seen: vanilla's EntityTracker logged `"Silently" catching entity tracking error ... IllegalStateException: Entity is

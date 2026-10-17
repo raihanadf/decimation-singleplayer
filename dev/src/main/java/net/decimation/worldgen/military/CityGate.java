@@ -553,6 +553,11 @@ public final class CityGate
     private void prop(int a, int y, int z, String name, int facing)
     {
         Block b = d(name, null);
+        if (b != null && !c.inside(a, y, z))
+        {
+            log.add("prop outside the canvas: " + name + " at " + a + "," + y + "," + z);   // Canvas.set would drop it silently
+            return;
+        }
         if (b != null)
         {
             c.prop(a, y, z, b, facing);
@@ -684,8 +689,8 @@ public final class CityGate
 
     /**
      * Entry control point: two jersey barrier rows staggered into a zigzag (d 2 closes the west half, d 5
-     * the east half), a sandbag fighting position on the west sidewalk one row off the line, a guard tower with a
-     * ladder and sandbag parapet on the east sidewalk, a searchlight and the flag behind the position,
+     * the east half), a sandbag fighting position on the west sidewalk one row off the line with a searchlight
+     * behind it, a guard tower with a ladder and sandbag parapet on the east sidewalk and the flag before it,
      * hedgehogs at the approach, a warning sign.
      */
     private void checkpoint()
@@ -714,7 +719,7 @@ public final class CityGate
         }
         prop(0, 1, 4, "BlockMilitaryCrate", E);
         prop(1, 1, 7, "BlockSpotlight", S);                     // behind the position (drawn wider than its cell)
-        prop(0, 1, 10, "BlockFlagPollUAHD", S);                 // clear of the spotlight's drawn box
+        prop(13, 1, 2, "BlockFlagPollUAHD", S);                 // east sidewalk before the tower: the spotlight's drawn box fills the west
         // guard tower x 13..15, z 4..7: legs, deck at 4, parapet at 5, ladder at (14, 7) on a back panel
         for (int y = 1; y <= 4; y++)
         {

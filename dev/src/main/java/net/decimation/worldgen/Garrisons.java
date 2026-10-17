@@ -30,8 +30,10 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
  * juggernauts and elite military in turn, never despawning (spawned then and not at generation:
  * Decimation's NPCs would despawn before anyone came). A post whose chunk is not loaded yet waits for
  * it (an airport's posts lie up to 250 blocks apart, beyond the loaded area: until 17 Oktober 2026 they
- * were marked manned without their NPC); per post state in the list "!garm_<id>", 1 each post done. Guards keep
- * a home area at their post and walk back to it after a chase (backToPosts). Its spawners (vanilla mob spawner cages) breed Decimation's
+ * were marked manned without their NPC); per post state in the list "!garm_<id>": 0 waiting, below 0 failed
+ * tries, 1 spawned, 2 given up after TRIES. A post waits until the chunks around it exist (then its chunk is
+ * populated and its building written: a tower guard spawned earlier stood on bare ground). Guards keep a home
+ * area at their post and walk back to it after a chase (backToPosts). Its spawners (vanilla mob spawner cages) breed Decimation's
  * infected; every infected that appears within SPAWNER_REACH of one gets the military outfit.
  */
 public class Garrisons
@@ -46,7 +48,7 @@ public class Garrisons
     static final String PREFIX = "!gar_", POSTS = "!garm_";
     /** A garrison NPC's post (entity data, saved with it): its home area, so it guards the post instead of wandering off. */
     static final String POST_TAG = "deciworldgen_post";
-    private static final int HOME = 4;
+    private static final int HOME = 4, TRIES = 5;
     private static final int EVERY = 40, VISIT = 40, SPAWNER_REACH = 6;
     /** Spawner cells of this world, x / y / z packed (filled at load and on register). */
     private static final Set<Long> spawners = new HashSet<Long>();
@@ -176,17 +178,25 @@ public class Garrisons
             for (int k = 0; k < posts; k++)
             {
                 int i = first + 3 * k;
-                if (done[k] != 0)
+                if (done[k] > 0)
                 {
+                    continue;                                   // 1 spawned, 2 given up
+                }
+                if (!w.checkChunksExist(v[i] - 16, v[i + 1], v[i + 2] - 16, v[i] + 16, v[i + 1], v[i + 2] + 16))
+                {
+                    waiting++;                                  // its chunks not all loaded: not populated, its building not written
                     continue;
                 }
-                if (!w.blockExists(v[i], v[i + 1], v[i + 2]))
+                if (spawn(w, v, i, k))
                 {
-                    waiting++;                                  // its chunk is not loaded: spawning there fails
-                    continue;
+                    n++;
+                    done[k] = 1;
                 }
-                n += spawn(w, v, i, k) ? 1 : 0;
-                done[k] = 1;
+                else
+                {
+                    done[k] = done[k] - 1 <= -TRIES ? 2 : done[k] - 1;   // a join handler said no: a few more tries
+                    waiting += done[k] > 0 ? 0 : 1;
+                }
                 tried++;
             }
             if (fresh || tried > 0)
@@ -215,7 +225,8 @@ public class Garrisons
      */
     private static void backToPosts(WorldServer w)
     {
-        for (Object o : w.loadedEntityList)
+        // a copy: a path search loads chunks around the guard, and a loaded chunk adds its entities to loadedEntityList
+        for (Object o : new java.util.ArrayList<Object>(w.loadedEntityList))
         {
             if (!(o instanceof net.minecraft.entity.EntityCreature) || Deci.npcKind((Entity) o) != net.decimation.fixes.NpcKind.SOVIET)
             {
@@ -348,7 +359,7 @@ public class Garrisons
         return v != null && v[0] != 0;
     }
 
-    /** Posts of a garrison that had their NPC spawned so far (dev tests). */
+    /** Posts of a garrison done so far: spawned, or given up after TRIES (dev tests). */
     public static int postsDone(World w, String id)
     {
         int[] v = StructureData.get(w).list(id);
@@ -360,7 +371,7 @@ public class Garrisons
         int n = 0;
         for (int i = 0; done != null && i < done.length; i++)
         {
-            n += done[i];
+            n += done[i] > 0 ? 1 : 0;
         }
         return n;
     }

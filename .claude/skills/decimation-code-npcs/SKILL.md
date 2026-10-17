@@ -40,3 +40,6 @@ Facts and the verified turn order: docs/decimation_code/npcs.md. Our tiers: new_
   live list and adds the new mob again (Decimation's PlayerJoinSync swaps did: double speed mobs; fixes/JoinOnce now
   cancels such second joins). Check with `python3 tools/devtest.py doublejoin`; -Ptrackdebug logs any entity that
   joins twice with both stacks.
+- Walking `world.loadedEntityList` while calling anything that can load chunks (a path search: tryMoveToXYZ builds a
+  ChunkCache about 72 blocks round the mob; getChunkFromChunkCoords): a loaded chunk adds its entities to that list
+  and the loop dies with a ConcurrentModificationException. Walk a copy (Garrisons.backToPosts since v0.64.6).
