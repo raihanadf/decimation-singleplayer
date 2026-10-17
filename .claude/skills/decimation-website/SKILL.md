@@ -165,6 +165,7 @@ Facts, decisions and the page text: docs/website.md (the spec). Site code: the P
   solid with the logo after a scroll and on other pages; 67 tests). Measuring the splash at 8 widths with the longest
   lines found overlaps the shots missed (tablet: off the right edge; phones and up to 1180 px: on the tagline): fixed by
   placement and gaps, then 0 overlaps from 320 to 1440 px. A see-through solid bar showed the heading behind it: opaque.
+- Live after the push: mobile 93 / 96 (old hero 98), desktop 100, the rest 100; six pictures cost a few points.
 - Lesson: measure a rotated element by its bounding box against its neighbours at every width, with the longest text.
 
 ### Case 8: our official logo, BoehMod in the footer (17 Oktober 2026)

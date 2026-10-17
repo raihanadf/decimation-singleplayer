@@ -285,6 +285,11 @@ Site checks of the local build (agent-browser):
   line, dots bottom left, caption "Seen in game: a generated city" bottom right, the mockup's switch bottom right.
 - cards.png: the six feature cards with the faint urban camo, subtle (top) and strong (bottom).
 
+## website_live_v0.64.8/ (live site after the push, 17 Oktober 2026 17:30)
+- live_1300_820_390.png: the title screen hero live at 1300 (splash "Now with airports!" past the logo), 820 (Menu
+  button, splash "No dead servers!" under the logo's right end) and 390 ("Traders are open!" under the logo); download
+  0.64.8 251 MB, release line, dots and caption.
+
 ## website_v0.64.8/ (the built hero, local production build, 17 Oktober 2026)
 - local_1300_top_and_scrolled.png: top: hero as in the mockup, splash "Up to 64 districts!"; bottom: scrolled, the top bar
   solid with the small logo, cards with the coral hover line and camo, the screenshot grid.

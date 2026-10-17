@@ -368,6 +368,10 @@ only as the footer credit (17 Oktober 2026; the earlier rule "never the Decimati
   3.7 s), old hero 91 / 99 / 94; accessibility, best practices, SEO 100; desktop 99 (LCP 0.9 s), CLS 0. The LCP is the
   first scene (phase "render delay"); a run without the drift animation scored 87 and 93, so the drift is not the cause
   [inferred]. Local runs are noisy (HTTP/1.1, no CDN): check live after the push.
+- Live after the user's push (17 Oktober 2026 17:30, site e76694d): home mobile 93 and 96 / 100 / 100 / 100 (LCP 2.7 and
+  2.6 s; the old hero scored 98), desktop 100 / 100 / 100 / 100 (LCP 0.6 s), CLS 0; server guide mobile 98 / 100 / 100 /
+  100. At 1300, 820 and 390: no sideways scroll, fonts 12 / 18 / 24, 0 dashes, no broken pictures, six scenes, the bar
+  solid with the logo after scrolling, 0 console errors, all links on both pages, camo texture 200.
 - Live checked 16 Oktober 2026: title 54, description 151, Open Graph and Twitter complete, canonical, robots.txt,
   sitemap.xml, JSON-LD (WebSite + SoftwareApplication with the release's version and jar link), three icons 200, one
   h1, no skipped heading level, every picture with alt (11 screenshots carry both keywords), no dash characters, all
@@ -413,7 +417,8 @@ only as the footer credit (17 Oktober 2026; the earlier rule "never the Decimati
    textures), hero "title screen style first. show me the mockup". References studied first (lesson 17: Hytale, 7 Days
    to Die, Rust, Project Zomboid; Minecraft.net did not load): big centred logo over game art, one bright and one quiet
    button, dark vignette. Mockup with a New / Current switch and camo off / subtle / strong (docs/shots/
-   website_design_v0.64.8): "good, subtle camo, add small logo on scroll, build it". Site commit e76694d (local).
+   website_design_v0.64.8): "good, subtle camo, add small logo on scroll, build it". Site commit e76694d, live
+   17 Oktober 2026 17:30 and checked (section 9b).
    The user will add something to a section next (asked to be reminded).
 
 ## 11. Later (not v1)

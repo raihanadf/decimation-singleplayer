@@ -33,7 +33,8 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [x] user: real auto update in Prism 0.64.7 to 0.64.8 worked (16:57, title v0.64.8, Updates "Up to date: 0.64.8")
 - [ ] next release: update screen bar stops at about 80 % on some window sizes (bug.md, Decimation's integer rounding)
 - [ ] next release: Continue tooltip "Open world" reads like an instruction: "Last played: <name>"
-- [~] website: coral on charcoal + camo, title screen hero, small logo on scroll: built, site e76694d local, waits for the push; then the docs pages
+- [x] website: coral on charcoal + camo, title screen hero, small logo on scroll: live 17:30, checked (mobile 93 / 96, desktop 100)
+- [ ] website: the docs pages (after the user's section addition)
 - [ ] REMIND the user after the hero build: they want to add something to a section (17 Oktober 2026)
 - [x] "Entity is already tracked": swapped mobs added twice at chunk load, double speed; fixes/JoinOnce (v0.64.2)
 - [ ] survivor partner idea: design talk (docs/ideas.md item 21)
