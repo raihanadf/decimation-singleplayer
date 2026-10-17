@@ -325,9 +325,9 @@
     "semantic_hash": "0145e0863788d451e8ae4273d3c2abdd"
   },
   "docs/shots_index.md": {
-    "mtime": 1792277807.0540473,
-    "ast_hash": "01cc8ff0ad7c192ed1f51fcb5cceb934",
-    "semantic_hash": "01cc8ff0ad7c192ed1f51fcb5cceb934"
+    "mtime": 1792277896.1596313,
+    "ast_hash": "e8980b06a45f362a908779c11d890009",
+    "semantic_hash": "e8980b06a45f362a908779c11d890009"
   },
   "docs/interior_spec.md": {
     "mtime": 1791385593.9436893,
@@ -655,9 +655,9 @@
     "semantic_hash": "1f50b118f74d69684fab74bda8f9beff"
   },
   "docs/roadmap.md": {
-    "mtime": 1792272265.2096405,
-    "ast_hash": "da249281ad9b24843f5a55491ad29443",
-    "semantic_hash": "da249281ad9b24843f5a55491ad29443"
+    "mtime": 1792277896.1591702,
+    "ast_hash": "50fb0953630f020eb632cc1dc6a883e2",
+    "semantic_hash": "50fb0953630f020eb632cc1dc6a883e2"
   },
   "dev/src/main/java/net/decimation/worldgen/LegacyStreets.java": {
     "mtime": 1791487239.5087948,
@@ -1540,9 +1540,9 @@
     "semantic_hash": "294036847a9caffda351bfa855a78636"
   },
   "docs/tasks.md": {
-    "mtime": 1792277807.0544868,
-    "ast_hash": "4d6ad9b5aafbc630f859dcafc2740c81",
-    "semantic_hash": "4d6ad9b5aafbc630f859dcafc2740c81"
+    "mtime": 1792277896.1593087,
+    "ast_hash": "9d798f2c9b238e3b1a445818d5412421",
+    "semantic_hash": "9d798f2c9b238e3b1a445818d5412421"
   },
   "tools/skillcheck.py": {
     "mtime": 1792098139.5315723,
@@ -1735,14 +1735,14 @@
     "semantic_hash": "e8564bc6458835de29bc9ea8ba1e842c"
   },
   ".claude/skills/decimation-website/SKILL.md": {
-    "mtime": 1792247957.404004,
-    "ast_hash": "efb6c660c0b4d5260798d6d601cee695",
-    "semantic_hash": "efb6c660c0b4d5260798d6d601cee695"
+    "mtime": 1792277935.5460737,
+    "ast_hash": "732e5281ccd6250026c56ac540553110",
+    "semantic_hash": "732e5281ccd6250026c56ac540553110"
   },
   "docs/website.md": {
-    "mtime": 1792271535.137991,
-    "ast_hash": "0af3ed9b3a6a58015175daa03498f23d",
-    "semantic_hash": "0af3ed9b3a6a58015175daa03498f23d"
+    "mtime": 1792277908.7184746,
+    "ast_hash": "6b13b31c7eaffc671d5cdcc653cfbbcd",
+    "semantic_hash": "6b13b31c7eaffc671d5cdcc653cfbbcd"
   },
   "docs/website_plan.md": {
     "mtime": 1792162650.3638773,
@@ -2080,8 +2080,8 @@
     "semantic_hash": "ae8f9a85f9484d20954cf375e1ae1c22"
   },
   "docs/forum.md": {
-    "mtime": 1792272541.4286551,
-    "ast_hash": "3f9713724b1a7cf7af867db24183c86f",
-    "semantic_hash": "3f9713724b1a7cf7af867db24183c86f"
+    "mtime": 1792277935.3251636,
+    "ast_hash": "41ab02be8be1d148d9cf7d2fed113fec",
+    "semantic_hash": "41ab02be8be1d148d9cf7d2fed113fec"
   }
 }
