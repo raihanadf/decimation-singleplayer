@@ -207,5 +207,10 @@ NPCs ignore creative players). Garrison lca_4_-32: 16 posts, 1 spawner, register
 - v0.64.6 (code review): the walk back iterates a copy of the entity list (a path search can load chunks and add
   entities: a crash risk, not reproduced in a test), each post waits until the chunks around it exist (populated:
   its tower written), a refused spawn is tried up to 5 times. bug.md has the details.
+- Test notes (17 Oktober 2026, final regression): a guard walks back at a stroll and its own wander can interrupt, so
+  the test allows 30 s and 6.5 blocks (162 to 300 ticks seen); "posts held" matches each post to its own guard (saved
+  post tag) and counts a guard away fighting as busy, after waiting up to 30 s for strays. A guard put below a raised
+  post (tower, roof) cannot walk back up: vanilla paths climb no ladders (the test moves guards only on their post's
+  level).
 - Still not checked: how it feels to walk in under fire (survival).
 

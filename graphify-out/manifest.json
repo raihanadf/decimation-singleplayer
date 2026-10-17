@@ -110,9 +110,9 @@
     "semantic_hash": "de153d1f8408971d6190e16a7d4256f9"
   },
   "CLAUDE.md": {
-    "mtime": 1792199081.1566193,
-    "ast_hash": "a7cf64bdc36baedcb6ccfcac9efb3e76",
-    "semantic_hash": "a7cf64bdc36baedcb6ccfcac9efb3e76"
+    "mtime": 1792200633.3376927,
+    "ast_hash": "8b91ce0a5732054c737a05f93a7d6118",
+    "semantic_hash": "8b91ce0a5732054c737a05f93a7d6118"
   },
   "DECIMATION_MOD_TASK.md": {
     "mtime": 1784958353.0126374,
@@ -1430,9 +1430,9 @@
     "semantic_hash": "c65a27842aee5ff4b471f84a704c2267"
   },
   "docs/production_test.md": {
-    "mtime": 1792196426.1953416,
-    "ast_hash": "7aa5366ea60f9157a27bad00728884a0",
-    "semantic_hash": "7aa5366ea60f9157a27bad00728884a0"
+    "mtime": 1792199366.9901416,
+    "ast_hash": "3f083a6b23ab44fe26420619cd18b7e9",
+    "semantic_hash": "3f083a6b23ab44fe26420619cd18b7e9"
   },
   "dev/src/main/java/net/decimation/worldgen/CityLayout.java": {
     "mtime": 1791899693.3849845,
@@ -1505,9 +1505,9 @@
     "semantic_hash": "672ff08d57c9531bb0e60b054e26710c"
   },
   "docs/airport.md": {
-    "mtime": 1792199081.1544428,
-    "ast_hash": "776734be9409f4e58877f4f36efed763",
-    "semantic_hash": "776734be9409f4e58877f4f36efed763"
+    "mtime": 1792201403.7595172,
+    "ast_hash": "1085a388dc63a50f950f58f7c72649d7",
+    "semantic_hash": "1085a388dc63a50f950f58f7c72649d7"
   },
   "dev/src/main/java/net/decimation/worldgen/devtest/CallTrace.java": {
     "mtime": 1792082560.0302293,
@@ -1540,9 +1540,9 @@
     "semantic_hash": "294036847a9caffda351bfa855a78636"
   },
   "docs/tasks.md": {
-    "mtime": 1792199081.156815,
-    "ast_hash": "1f68b9294683706a221946ef011a5462",
-    "semantic_hash": "1f68b9294683706a221946ef011a5462"
+    "mtime": 1792199366.9906611,
+    "ast_hash": "f8c004f2bca2c68e541f03c11c6f764f",
+    "semantic_hash": "f8c004f2bca2c68e541f03c11c6f764f"
   },
   "tools/skillcheck.py": {
     "mtime": 1792098139.5315723,
@@ -1850,9 +1850,9 @@
     "semantic_hash": "f77f8770796ad007c968066ede5abeda"
   },
   "dev/src/main/java/net/decimation/worldgen/devtest/GarrisonTest.java": {
-    "mtime": 1792198887.8708382,
-    "ast_hash": "1f375915fdc0615a3de0f710659554ee",
-    "semantic_hash": "1f375915fdc0615a3de0f710659554ee"
+    "mtime": 1792201219.424543,
+    "ast_hash": "abcabf20bf95a6db167caf653b3e1e42",
+    "semantic_hash": "abcabf20bf95a6db167caf653b3e1e42"
   },
   "tools/citylayout.py": {
     "mtime": 1792193244.7861876,

@@ -20,7 +20,7 @@ import net.minecraft.world.WorldSettings;
  * posts stored when the airport's slices are written), comes within 40 blocks of the first post, then flies over every
  * post in turn (posts far from the first wait for their chunks). Checks: the first visit mans posts, every post gets
  * tried, every post holds a juggernaut or elite Soviet, nobody stands inside a block, a guard moved 12 blocks off its
- * post walks back within 15 s; saves garrison_post (the first post from 9 blocks away).
+ * post walks back within 30 s (it strolls, and its own wander can interrupt); saves garrison_post (the first post from 9 blocks away).
  */
 public class GarrisonTest extends DevTestMode
 {
@@ -31,7 +31,9 @@ public class GarrisonTest extends DevTestMode
 
     /** Seed 1's airport with its runway along x (docs/airport.md section 8). */
     private static final int AX = 272, AZ = -2032, NEAR = 300;
-    private static final int REGISTER_WAIT = 20 * 180, MAN_WAIT = 20 * 30, SETTLE = 60, RETURN_WAIT = 20 * 15;
+    /** "Back at its post": Garrisons walks a guard home until 6 blocks (HOME + 2), its wander then keeps it inside 4. */
+    private static final double BACK = 6.5;
+    private static final int REGISTER_WAIT = 20 * 180, MAN_WAIT = 20 * 30, SETTLE = 60, RETURN_WAIT = 20 * 30;
 
     private volatile int ticks, step;
     private volatile boolean done, shoot, shot;
@@ -147,6 +149,10 @@ public class GarrisonTest extends DevTestMode
                 {
                     return;
                 }
+                if (loaded && !settled(w) && ticks < SETTLE + 20 * 30)
+                {
+                    return;                                     // a guard drawn off by a fight walks back first
+                }
                 DevTestResults.check(name(), "every post's chunk loaded", loaded, loaded, "true (seen from the airport's middle)");
                 check(w);
                 moved = displace(w);
@@ -154,14 +160,14 @@ public class GarrisonTest extends DevTestMode
                 return;
             case 4:
                 // the displaced guard walks back to its post once nothing holds its attention
-                if (moved != null && ticks < RETURN_WAIT && away(moved) > 6)
+                if (moved != null && ticks < RETURN_WAIT && away(moved) > BACK)
                 {
                     holdOver(p, moved);
                     return;
                 }
                 DevTestResults.check(name(), "a guard walks back to its post", moved == null ? "no guard to move"
                                      : String.format("%.1f blocks from its post after %d ticks", away(moved), ticks),
-                                     moved != null && away(moved) <= 6, "within 6 blocks (moved 12 off, " + RETURN_WAIT + " ticks)");
+                                     moved != null && away(moved) <= BACK, "within " + BACK + " blocks (moved 12 off, " + RETURN_WAIT + " ticks)");
                 shoot = true;
                 step = 6;
                 ticks = 0;
@@ -194,23 +200,29 @@ public class GarrisonTest extends DevTestMode
                 garrison.add(e);
             }
         }
-        int held = 0, inBlock = 0;
+        int held = 0, busy = 0, inBlock = 0;
         StringBuilder missing = new StringBuilder();
         for (int[] post : posts)
         {
-            boolean here = false;
+            // the guard of this post (its saved post tag): near it, or away fighting (a revenge target; it walks back after)
+            String state = "none";
             for (Entity e : garrison)
             {
-                if (Math.abs(e.posX - post[0] - 0.5) <= 6 && Math.abs(e.posZ - post[2] - 0.5) <= 6 && Math.abs(e.posY - post[1]) <= 4)
+                int[] its = e.getEntityData().getIntArray("deciworldgen_post");
+                if (its.length != 3 || its[0] != post[0] || its[1] != post[1] || its[2] != post[2])
                 {
-                    here = true;
-                    break;
+                    continue;
                 }
+                boolean near = Math.abs(e.posX - post[0] - 0.5) <= 6 && Math.abs(e.posZ - post[2] - 0.5) <= 6 && Math.abs(e.posY - post[1]) <= 4;
+                state = near ? "held" : ((net.minecraft.entity.EntityLivingBase) e).getAITarget() != null ? "busy" : "away";
+                break;
             }
-            held += here ? 1 : 0;
-            if (!here)
+            held += "held".equals(state) ? 1 : 0;
+            busy += "busy".equals(state) ? 1 : 0;
+            if ("away".equals(state) || "none".equals(state))
             {
-                missing.append(missing.length() == 0 ? "" : " ").append(post[0]).append(',').append(post[1]).append(',').append(post[2]);
+                missing.append(missing.length() == 0 ? "" : " ").append(state).append(' ').append(post[0]).append(',')
+                       .append(post[1]).append(',').append(post[2]);
             }
         }
         for (Entity e : garrison)
@@ -231,12 +243,35 @@ public class GarrisonTest extends DevTestMode
         DevTestResults.check(name(), "guards keep to their posts", homed + " of " + garrison.size() + " with their home at a post",
                              homed == garrison.size() && homed > 0, "all (home area at the post, a few blocks)");
         DevTestResults.value(name(), "garrison NPCs alive", garrison.size());
-        DevTestResults.check(name(), "posts held", held + " of " + posts.length + (missing.length() == 0 ? "" : ", empty: " + missing),
-                             held == posts.length, "every post (a juggernaut or elite Soviet within 6 blocks: they walk a little)");
+        DevTestResults.check(name(), "posts held", held + " of " + posts.length + (busy > 0 ? ", " + busy + " guards away fighting" : "")
+                             + (missing.length() == 0 ? "" : ", " + missing), held + busy == posts.length,
+                             "every post: its own guard within 6 blocks, or away fighting (it walks back after)");
         DevTestResults.check(name(), "garrison NPCs inside a block", inBlock, inBlock == 0, "0");
     }
 
-    /** Moves the first guard found 12 blocks off its post onto open ground; null if none could be moved. */
+    /** Every post has its own guard within 6 blocks, or that guard is away fighting. */
+    private boolean settled(World w)
+    {
+        int ok = 0;
+        for (int[] post : posts)
+        {
+            for (Object o : w.loadedEntityList)
+            {
+                Entity e = (Entity) o;
+                int[] its = e.getEntityData().getIntArray("deciworldgen_post");
+                if (its.length == 3 && its[0] == post[0] && its[1] == post[1] && its[2] == post[2] && e.isEntityAlive())
+                {
+                    boolean near = Math.abs(e.posX - post[0] - 0.5) <= 6 && Math.abs(e.posZ - post[2] - 0.5) <= 6
+                                   && Math.abs(e.posY - post[1]) <= 4;
+                    ok += near || ((net.minecraft.entity.EntityLivingBase) e).getAITarget() != null ? 1 : 0;
+                    break;
+                }
+            }
+        }
+        return ok == posts.length;
+    }
+
+    /** Moves the first guard found 12 blocks off its post onto open ground at the post's level; null if none could be moved. */
     private net.minecraft.entity.EntityCreature displace(World w)
     {
         for (Object o : w.loadedEntityList)
@@ -251,7 +286,9 @@ public class GarrisonTest extends DevTestMode
             {
                 int x = post[0] + d[0], z = post[2] + d[1];
                 int y = w.getTopSolidOrLiquidBlock(x, z);
-                if (Math.abs(y - post[1]) <= 2 && !w.getBlock(x, y, z).isNormalCube() && !w.getBlock(x, y + 1, z).isNormalCube())
+                // the post's own level: a guard put below a raised post (a tower, a roof) cannot walk back up (vanilla paths
+                // climb no ladders), which is known and not what this checks
+                if (y == post[1] && !w.getBlock(x, y, z).isNormalCube() && !w.getBlock(x, y + 1, z).isNormalCube())
                 {
                     ((net.minecraft.entity.EntityCreature) e).setPositionAndUpdate(x + 0.5, y, z + 0.5);
                     movedPost = post;

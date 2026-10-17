@@ -859,7 +859,9 @@ of the last session:
   FAIL): run an arena mode first (`--live zombies checks`).
   Order trap (17 Oktober 2026, 19 mode run): `camp` after shooting modes FAILs "player inside counts as safezone"
   (Decimation's combat timer: isPlayerInZone SAFEZONE is false while it runs); `npc` elite goggles 5 / 6 and `noise`
-  suppressed also failed only in that long run. All three PASS alone (`camp npc noise`): run camp before shooting modes.
+  suppressed also failed only in that long run. All three PASS alone (`camp npc noise`). Second long run (camp and refuge
+  right after checks): camp failed the same way and `npc` read 0 damage on the marine body set (the camp's safezone
+  protects the arena). Run camp and refuge in a launch of their own.
   v0.49.0: converted city props fitted to their drawn size at load (city/PropFit: ceiling lights,
   shelf ledges, crates turned or chests, seats turned, floating props dropped), props of turned
   street parts turned (LcCity.partAt), one centred fit-tested wreck per DC street chunk; seed 1
