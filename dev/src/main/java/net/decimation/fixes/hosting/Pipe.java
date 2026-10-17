@@ -15,6 +15,14 @@ import java.util.concurrent.TimeUnit;
  */
 public final class Pipe
 {
+    /** Looks at the first bytes from the relay before any of them reaches the TCP side (the host's login name check). */
+    public interface Gate
+    {
+        int ALLOW = 0, DENY = 1, MORE = 2;
+
+        int decide(byte[] soFar);
+    }
+
     private final Socket tcp;
     private RelaySocket relay;
     private final CountDownLatch ready = new CountDownLatch(1);
@@ -29,14 +37,37 @@ public final class Pipe
 
     public static Pipe start(Socket tcp, URI relayUri, boolean waitReady, Runnable onClose) throws IOException
     {
+        return start(tcp, relayUri, waitReady, onClose, null);
+    }
+
+    public static Pipe start(Socket tcp, URI relayUri, boolean waitReady, Runnable onClose, final Gate gate) throws IOException
+    {
         final Pipe p = new Pipe(tcp, onClose);
         final OutputStream out = tcp.getOutputStream();
+        final java.io.ByteArrayOutputStream held = new java.io.ByteArrayOutputStream();
+        final boolean[] open = {gate == null};
         p.relay = RelaySocket.open(relayUri, new RelaySocket.Listener()
         {
             public void binary(byte[] d)
             {
                 try
                 {
+                    if (!open[0])
+                    {
+                        held.write(d, 0, d.length);
+                        int verdict = held.size() > 4096 ? Gate.DENY : gate.decide(held.toByteArray());
+                        if (verdict == Gate.MORE)
+                        {
+                            return;
+                        }
+                        if (verdict == Gate.DENY)
+                        {
+                            p.close();
+                            return;
+                        }
+                        open[0] = true;
+                        d = held.toByteArray();
+                    }
                     out.write(d);
                     out.flush();
                 }

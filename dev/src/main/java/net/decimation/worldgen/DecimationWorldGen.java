@@ -182,7 +182,6 @@ public class DecimationWorldGen
             net.minecraftforge.common.MinecraftForge.EVENT_BUS.register(host);
             cpw.mods.fml.common.FMLCommonHandler.instance().bus().register(host);
             net.minecraftforge.common.MinecraftForge.EVENT_BUS.register(net.decimation.fixes.hosting.HostService.INSTANCE);
-            cpw.mods.fml.common.FMLCommonHandler.instance().bus().register(net.decimation.fixes.hosting.HostService.INSTANCE); // logins
         }
         cpw.mods.fml.common.FMLCommonHandler.instance().bus().register(new net.decimation.fixes.WorldClock());
         // an entity joins a world once: Decimation's mob swaps during a chunk load added the new mob twice (bug.md)

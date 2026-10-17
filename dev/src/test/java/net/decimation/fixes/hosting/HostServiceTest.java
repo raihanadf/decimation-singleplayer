@@ -114,4 +114,18 @@ class HostServiceTest
         assertTrue(HostService.nameTaken("RIZKY", playing));
         assertFalse(HostService.nameTaken("Dimas", playing));
     }
+
+    @Test
+    void theGateRefusesATakenNameInAnOfflineWorld()
+    {
+        HostService.INSTANCE.start(settings(), 25565, () -> 1);
+        HostService.INSTANCE.playingForTests(() -> java.util.Arrays.asList("Ucil"));
+        byte[] impostor = LoginNameTest.join(LoginNameTest.handshake(2), LoginNameTest.loginStart("ucil"));
+        byte[] friend = LoginNameTest.join(LoginNameTest.handshake(2), LoginNameTest.loginStart("Rizky"));
+        assertEquals(Pipe.Gate.DENY, HostService.INSTANCE.admit(impostor));
+        assertEquals(Pipe.Gate.ALLOW, HostService.INSTANCE.admit(friend));
+        assertEquals(Pipe.Gate.ALLOW, HostService.INSTANCE.admit(LoginNameTest.handshake(1)));
+        assertEquals(Pipe.Gate.MORE, HostService.INSTANCE.admit(LoginNameTest.handshake(2)));
+    }
 }
+

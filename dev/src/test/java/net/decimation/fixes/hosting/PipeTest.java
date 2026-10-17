@@ -62,4 +62,19 @@ class PipeTest
         client.close();
         local.close();
     }
+
+    @Test
+    void aGateRefusalClosesBeforeAnyByteReachesTheTcpSide() throws Exception
+    {
+        ServerSocket local = new ServerSocket(0, 1, InetAddress.getLoopbackAddress());
+        Socket client = new Socket(InetAddress.getLoopbackAddress(), local.getLocalPort());
+        Socket accepted = local.accept();
+        Pipe.start(accepted, URI.create("ws://127.0.0.1:" + port + "/echo"), false, null, bytes -> Pipe.Gate.DENY);
+        client.getOutputStream().write(new byte[] {5, 6});
+        client.setSoTimeout(3000);
+        assertEquals(-1, client.getInputStream().read(), "closed, nothing echoed through");
+        client.close();
+        local.close();
+    }
 }
+

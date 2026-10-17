@@ -202,6 +202,12 @@ public final class HostService
                 {
                     pipes.remove(id);
                 }
+            }, new Pipe.Gate()
+            {
+                public int decide(byte[] soFar)
+                {
+                    return admit(soFar);
+                }
             }));
         }
         catch (IOException e)
@@ -319,30 +325,51 @@ public final class HostService
     }
 
     /**
-     * An "Any account" (offline) world takes any name: a stranger could join as the host or as another player. A login
-     * under a name already playing is refused (security review, 18 Oktober 2026).
+     * The host's gate on each joiner's first bytes: an "Any account" (offline) world takes any name, so a login under a
+     * name already playing (the host's too, in any letter case) is refused before it reaches the world; Minecraft would
+     * otherwise kick the player who has that name (security reviews, 18 Oktober 2026).
      */
-    @SubscribeEvent
-    public void onLogin(cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent e)
+    int admit(byte[] soFar)
     {
+        String name = LoginName.of(soFar);
+        if (name == null)
+        {
+            return Pipe.Gate.MORE;
+        }
         Settings s = settings;
-        if (state == State.OFF || s == null || s.online || !(e.player instanceof net.minecraft.entity.player.EntityPlayerMP))
+        if (name.isEmpty() || s == null || s.online)
         {
-            return;
+            return Pipe.Gate.ALLOW; // a status ping, or Mojang checks the account
         }
-        net.minecraft.entity.player.EntityPlayerMP joined = (net.minecraft.entity.player.EntityPlayerMP) e.player;
-        java.util.List<String> others = new java.util.ArrayList<String>();
-        for (Object o : joined.mcServer.getConfigurationManager().playerEntityList)
+        return nameTaken(name, playing.names()) ? Pipe.Gate.DENY : Pipe.Gate.ALLOW;
+    }
+
+    /** The names playing in the hosted world (the integrated server's list; tests set their own). */
+    interface Playing
+    {
+        java.util.List<String> names();
+    }
+
+    private volatile Playing playing = new Playing()
+    {
+        public java.util.List<String> names()
         {
-            if (o != joined)
+            java.util.List<String> out = new java.util.ArrayList<String>();
+            net.minecraft.server.MinecraftServer srv = net.minecraft.server.MinecraftServer.getServer();
+            if (srv != null && srv.getConfigurationManager() != null)
             {
-                others.add(((net.minecraft.entity.player.EntityPlayer) o).getCommandSenderName());
+                for (Object o : srv.getConfigurationManager().playerEntityList)
+                {
+                    out.add(((net.minecraft.entity.player.EntityPlayer) o).getCommandSenderName());
+                }
             }
+            return out;
         }
-        if (nameTaken(joined.getCommandSenderName(), others))
-        {
-            joined.playerNetServerHandler.kickPlayerFromServer("That name is already playing here");
-        }
+    };
+
+    void playingForTests(Playing p)
+    {
+        playing = p;
     }
 
     /** The world closed (leaving it, quitting): stop hosting at once. */
