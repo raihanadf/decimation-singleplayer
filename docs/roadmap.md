@@ -183,6 +183,9 @@ docs/gun_model_spec.md); every user review goes into its lessons and casebook.
    okey)"): the converted DeceasedCraft Lost Cities buildings (docs/city_engine.md, tools/lcpack.py) get replaced by an
    open source pack, the user's pick: ChaoszPack Lost Cities, https://www.curseforge.com/minecraft/mc-mods/chaoszpack-lostcities
    (license and 1.7.10 format not checked yet). Wilderness structures stay. AFTER the multiplayer (player hosting) work.
+   CHECKED 18 Oktober 2026 (docs/city_replacement.md): ChaosZPack is 1.20.1 with modded blocks and a custom license
+   that allows no modified re-upload without written permission; recommendation: McJty's Lost Cities (MIT, vanilla
+   blocks, lcpack format) plus our own landmark buildings over time. User decision open.
 
 ## Code and tools
 

@@ -47,7 +47,8 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [~] website multiplayer teaser: hero link + section (site 5ca55b6 local); open: user's look, push, live check
 - [~] promotion drafts (docs/promotion.md): Reddit + Discord teaser; user decides on BoehMod permission, posts
 - [ ] bug: joining a world with a missing mod sits on Connecting for 2 minutes (bug.md)
-- [ ] plan: 1.0.0 beta (multiplayer, new buildings, performance, bug fixes), pre-release until then
+- [~] plan: 1.0.0 beta (docs/release_1.0.md), user to confirm scope and order
+- [~] plan: city content replacement (docs/city_replacement.md): ChaosZPack blocked by its license, McJty Lost Cities (MIT) proposed; user decides
 - [ ] city content replacement with ChaoszPack Lost Cities (copyright; roadmap, after multiplayer)
 - [x] HUD crash when a world is joined without Decimation's menu: fixes/HudGuard (in code, next release)
 - [x] place names gone after a rejoin: PlaceNames forgets a player on logout (bug.md, in code, next release)

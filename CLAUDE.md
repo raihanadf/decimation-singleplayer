@@ -134,6 +134,9 @@ Knowledge index:
 - `docs/ideas.md`: the user's future feature ideas (12 Oktober 2026), not designed yet.
 - `docs/player_hosting.md`: ANALYSIS of player hosted worlds bridged by our relay and listed on the Community page
   (ideas item 22, 18 Oktober 2026): code facts, ten ways in four layers, phases, the user's open decisions.
+- `docs/city_replacement.md`: PLAN for legal city content (ChaosZPack checked: license blocks it; McJty Lost Cities MIT
+  recommended); the release jar ships DeceasedCraft's buildings today (474 files).
+- `docs/release_1.0.md`: PLAN of 1.0.0 beta (first non pre-release): scope, open bugs, candidates, gates, order.
 - `docs/promotion.md`: promoting DeciRemnant (multiplayer teaser before its release): research with sources, the
   reupload risk to raise, plan, Reddit and Discord drafts (the user posts).
 - `docs/website.md`: SPEC of DeciRemnant, the project website, LIVE at https://deciremnant.vercel.app/ (private repo
