@@ -158,6 +158,22 @@ public final class HostService
         return pipes.size() + (d == null ? 0 : d.connections());
     }
 
+    /** Dev test: cuts the control socket as a network drop would (the room and players must survive). */
+    public void dropControlForTests()
+    {
+        RelaySocket c = control;
+        if (c != null && c.isOpen())
+        {
+            c.dropForTests();
+        }
+    }
+
+    /** The relay room this host is listed under right now (null when not listed). */
+    public String room()
+    {
+        return room;
+    }
+
     /** True while a direct gate is open with at least one address offered. */
     public boolean direct()
     {

@@ -241,6 +241,30 @@ public class LanJoinTest extends DevTestMode
                     DevTestResults.check(name(), "corpse open on the host's side after a real death", res.length > 3 ? res[3] : "?",
                                          res.length > 3 && !"none".equals(res[3]), "a container");
                     mc.thePlayer.closeScreen();
+                    ask("dropcontrol"); // the host's control socket cut: this player must stay (docs/player_hosting.md 16)
+                    next(51);
+                }
+                break;
+            case 51:
+                if (mc.theWorld == null || mc.thePlayer == null) // kicked
+                {
+                    DevTestResults.check(name(), "still in the world after the host's control socket dropped", "kicked after "
+                                         + wait / 20 + " s", false, "30 s in the world");
+                    return false;
+                }
+                if (wait == 600)
+                {
+                    DevTestResults.check(name(), "still in the world after the host's control socket dropped", "30 s", true,
+                                         "30 s in the world");
+                    ask("controlstate");
+                    next(52);
+                }
+                break;
+            case 52:
+                if (answered())
+                {
+                    DevTestResults.check(name(), "host back on the same room", res.length > 4 ? res[3] + " same " + res[4] : "?",
+                                         res.length > 4 && "ONLINE".equals(res[3]) && "true".equals(res[4]), "ONLINE, same room");
                     next(5);
                 }
                 break;

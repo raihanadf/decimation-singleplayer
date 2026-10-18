@@ -40,6 +40,7 @@ public class LanHostTest extends DevTestMode
     private final java.util.List<Entity> made = new java.util.ArrayList<Entity>();
     private int crateX, crateY, crateZ;
     private Entity corpse;
+    private String droppedRoom;
     /** doMobSpawning before the scenes, put back at "end"; null while untouched. */
     private String spawnRule;
     private EntityLiving target;
@@ -380,6 +381,17 @@ public class LanHostTest extends DevTestMode
             corpse = c;
             joiner.playerNetServerHandler.setPlayerLocation(x + 0.5, y, z + 0.5, 180, 0);
             answer = (c == null ? "none" : "ok") + " " + (c == null ? -1 : c.getEntityId());
+        }
+        else if (verb.equals("dropcontrol")) // the host's control socket cut mid game (docs/player_hosting.md 16)
+        {
+            droppedRoom = net.decimation.fixes.hosting.HostService.INSTANCE.room();
+            net.decimation.fixes.hosting.HostService.INSTANCE.dropControlForTests();
+            answer = "ok " + droppedRoom;
+        }
+        else if (verb.equals("controlstate"))
+        {
+            String now = net.decimation.fixes.hosting.HostService.INSTANCE.room();
+            answer = "ok " + net.decimation.fixes.hosting.HostService.INSTANCE.state() + " " + (now != null && now.equals(droppedRoom));
         }
         else if (verb.equals("corpseopen")) // what the joiner has open on the host's side, nothing else
         {

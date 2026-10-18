@@ -59,14 +59,14 @@ class RelaySocketTest
             s.send(new byte[] {(byte) i}, 0, 1);
         }
         Thread.sleep(300);
-        // 20 one byte writes: at most 2 frames (the writes may straddle one 50 ms flush), never 20
+        // 20 one byte writes: the first goes at once (quiet before), the rest share at most 2 tick frames; never 20
         int sum = 0;
         for (int n : EchoServer.frameSizes)
         {
             sum += n;
         }
         assertEquals(20, sum);
-        assertTrue(EchoServer.frameSizes.size() <= 2, EchoServer.frameSizes.toString());
+        assertTrue(EchoServer.frameSizes.size() <= 3, EchoServer.frameSizes.toString());
         s.close("done");
     }
 
@@ -103,6 +103,28 @@ class RelaySocketTest
         {
             RelaySocket.pingMsForTests(0);
         }
+    }
+
+    @Test
+    void aLoneWriteAfterAQuietMomentGoesAtOnce() throws Exception
+    {
+        BlockingQueue<Object> in = new LinkedBlockingQueue<Object>();
+        RelaySocket s = RelaySocket.open(new URI("ws://127.0.0.1:" + port + "/echo"), into(in));
+        int slow = 0;
+        StringBuilder times = new StringBuilder();
+        for (int i = 0; i < 5; i++)
+        {
+            Thread.sleep(120); // quiet: more than one tick since the last frame
+            long t0 = System.nanoTime();
+            s.send(new byte[] {(byte) i}, 0, 1);
+            assertNotNull(in.poll(3, TimeUnit.SECONDS));
+            long ms = (System.nanoTime() - t0) / 1_000_000;
+            times.append(ms).append(' ');
+            slow += ms >= 20 ? 1 : 0;
+        }
+        // the old tick wait put 3 of 5 over 20 ms on average; one slow round trip on a busy machine is allowed
+        assertTrue(slow <= 1, "a click or a shot should not wait for the 50 ms tick: " + times + "ms");
+        s.close("done");
     }
 }
 

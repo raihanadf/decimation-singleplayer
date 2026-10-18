@@ -235,13 +235,21 @@ public final class RelaySocket
         return s;
     }
 
-    /** Queues bytes for the next tick's frame (or a frame at once when 64 KB are queued). */
+    /** When the last frame went out (nanoTime): a write after a quiet tick goes at once. */
+    private volatile long lastFrame;
+
+    /**
+     * Queues bytes for the next tick's frame, or sends at once when no frame went out in the last tick (a click or a shot
+     * after a quiet moment does not wait up to 50 ms; a busy stream still shares one frame per tick, the message count
+     * stays as before) or when 64 KB are queued.
+     */
     public void send(byte[] b, int off, int len)
     {
         synchronized (pending)
         {
             pending.writeBytes(b, off, len);
-            if (pending.readableBytes() < MAX_FRAME)
+            boolean quiet = System.nanoTime() - lastFrame >= FLUSH_MS * 1_000_000L;
+            if (pending.readableBytes() < MAX_FRAME && !quiet)
             {
                 return;
             }
@@ -260,6 +268,7 @@ public final class RelaySocket
             }
             out = Unpooled.copiedBuffer(pending);
             pending.clear();
+            lastFrame = System.nanoTime();
         }
         channel.writeAndFlush(new BinaryWebSocketFrame(out));
     }
@@ -268,6 +277,12 @@ public final class RelaySocket
     {
         flush();
         channel.writeAndFlush(new TextWebSocketFrame(s));
+    }
+
+    /** Tests: cuts the connection as a network drop does (no close frame; the listener hears it closed). */
+    void dropForTests()
+    {
+        channel.close();
     }
 
     /** True once the tick flush task is cancelled (tests). */
