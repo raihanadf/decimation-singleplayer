@@ -1540,9 +1540,9 @@
     "semantic_hash": "294036847a9caffda351bfa855a78636"
   },
   "docs/tasks.md": {
-    "mtime": 1792282731.1764567,
-    "ast_hash": "ab91edb40e03cc94e2b8751f7d61b9bc",
-    "semantic_hash": "ab91edb40e03cc94e2b8751f7d61b9bc"
+    "mtime": 1792283920.9938836,
+    "ast_hash": "7af9de347b9d5c63778bd7dba65d3a41",
+    "semantic_hash": "7af9de347b9d5c63778bd7dba65d3a41"
   },
   "tools/skillcheck.py": {
     "mtime": 1792098139.5315723,
@@ -1865,9 +1865,9 @@
     "semantic_hash": "98afc42e62b0c82eca115bc1103eded2"
   },
   "docs/player_hosting.md": {
-    "mtime": 1792282731.1753173,
-    "ast_hash": "b65c68c07fd2480b342859c10944d570",
-    "semantic_hash": "b65c68c07fd2480b342859c10944d570"
+    "mtime": 1792283920.993233,
+    "ast_hash": "075d22aa6774f8f319ba8178e5b25312",
+    "semantic_hash": "075d22aa6774f8f319ba8178e5b25312"
   },
   "dev/src/main/java/net/decimation/worldgen/devtest/LanHostTest.java": {
     "mtime": 1792278648.073366,
@@ -2100,8 +2100,8 @@
     "semantic_hash": "098891d1a6033bd6b37e5835ab5f824f"
   },
   "dev/src/main/java/net/decimation/worldgen/devtest/HostOpsTest.java": {
-    "mtime": 1792282365.7550209,
-    "ast_hash": "c2edfc22eb634001ecec0479dbc4abc4",
-    "semantic_hash": "c2edfc22eb634001ecec0479dbc4abc4"
+    "mtime": 1792283421.941163,
+    "ast_hash": "350eafced3aebac30a2ec70790d8ec4c",
+    "semantic_hash": "350eafced3aebac30a2ec70790d8ec4c"
   }
 }

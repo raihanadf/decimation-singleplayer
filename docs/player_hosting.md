@@ -264,5 +264,7 @@ review, then the implementation plan). Real case test planned with the user's br
   entry it added is written to deciworldgen_hostop.txt so a game that crashed while hosting removes it at the next
   start or stop; a host who was an operator already stays one. Joiners never get commands (commandsAllowedForAll
   stays false). Dev test `hostops` (world cheats and the dev client's commands for everyone turned off for the test):
-  RED 2 FAIL (host while hosting, default), GREEN 7 PASS; hostmenu checks the default. In the real game with the
-  brother [not verified yet].
+  RED 2 FAIL (host while hosting, default), GREEN 7 PASS; hostmenu checks the default. Release jar (2d954c1) in the production client: hostops 7 PASS,
+  hostmenu PASS (07:31; the first run showed the test's reflection needs SRG field names too). Real game 07:38: the user
+  hosted with the new jar, kucing joined (07:37:12), "/tp kucing" worked (log: "Teleported DeciHost to kucing"). The
+  brother's own /tp attempt was not tried [not verified]; the joiner side is covered by the hostops check.
