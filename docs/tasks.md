@@ -33,7 +33,7 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [x] site coming soon cards (forum, official servers): live 17 Oktober 2026
 - [x] release 0.64.8 published 16:53 (digest = local sha256 73049bc7); real update 0.64.7 to 0.64.8 checked in the production client
 - [x] user: real auto update in Prism 0.64.7 to 0.64.8 worked (16:57, title v0.64.8, Updates "Up to date: 0.64.8")
-- [ ] next release: update screen bar stops at about 80 % on some window sizes (bug.md, Decimation's integer rounding)
+- [x] update screen bar stops at about 80 %: fixes/UpdateBar (in code, next release; GUI width 500: 250 of 250 px)
 - [ ] next release: Continue tooltip "Open world" reads like an instruction: "Last played: <name>"
 - [x] website: coral on charcoal + camo, title screen hero, small logo on scroll: live 17:30, checked (mobile 93 / 96, desktop 100)
 - [x] website sections: About, showcase rows, And more, closing band, map tab icon, GitHub logo, no dirt: live, checked

@@ -140,7 +140,7 @@ not something we introduced or need to fix) see `documentation.md`.
   stubbed, then GREEN). Not fixed yet: a guard (create the profile on world join, or a
   null check by patch) belongs to the player hosting work.
 
-### Update screen bar stops short of full (found 17 Oktober 2026 in the user's Prism, OPEN)
+### Update screen bar stops short of full (found 17 Oktober 2026 in the user's Prism, FIXED in code 18 Oktober 2026)
 - The user's real auto update 0.64.7 to 0.64.8 (16:56): "SAFE TO CLOSE GAME!", 239.5mb/239.5mb, Quit game and Later,
   but the green bar about 80 % long. After Quit game and a restart the title read DeciRemnant v0.64.8: the update itself
   worked (first real auto update by a player's game).
@@ -149,6 +149,11 @@ not something we introduced or need to fix) see `documentation.md`.
   it rounds less.
 - Fix idea: UpdateProgress puts percent * (width / 2) / (100 * ((width / 2) / 100)) into downloadPercent, so the
   drawn bar matches the real share; test with the screen width of the user's window.
+- FIXED (18 Oktober 2026, next release): fixes/UpdateBar.field(percent, GUI width) scales the field UpdateProgress
+  writes (bar = width / 4 * 2, step = bar / 100; under 100 px nothing to fix); the percent text stays the real one.
+  JUnit UpdateBarTest RED (2 of 3) then GREEN for GUI widths 427 to 960; dev test `update` new check "ready bar full"
+  at --window=1000x600 (GUI width 500, the user's case): 250 of 250 px, field 125; shot
+  docs/shots/main_menu_v0.64.9/update_ready.png (green bar to the end, flare at the right).
 
 ### In-game update never worked in a shipped game: "does not run from a jar (dev folder)" (found 17 Oktober 2026, FIXED v0.64.7)
 - Seen by the user in Prism on 0.59: Update, then "this game does not run from a jar (dev folder): nothing to replace".

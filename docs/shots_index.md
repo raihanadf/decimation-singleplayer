@@ -1633,3 +1633,6 @@ User screenshots, creative mode, the milbase sky test bases; each finding is fix
   ("NEW: host your world, join others", the Community page with the world Survivors and Join), Updates (release list,
   0.64.8), Website (site top, Download 0.64.8), Coming soon (cards Crate levels, Smarter people). Left: player card,
   Play, Continue, My Community, Server Status, Settings, Exit Game.
+- `update_ready.png` (1000 x 600, dev client, GUI width 500, 18 Oktober 2026): Decimation's update screen after a fake
+  9.9.9 download: "SAFE TO CLOSE GAME!", DeciRemnant logo, "Downloading: Complete!", the green bar reaching the right
+  end with its flare (was about 80 % before fixes/UpdateBar), 40.0mb/40.0mb, Quit game and Later.
