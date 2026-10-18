@@ -62,14 +62,27 @@ public final class RelaySocket
         }
     });
     private static final int FLUSH_MS = 50, MAX_FRAME = 65536, TIMEOUT_S = 10;
+    /**
+     * Keep-alive: a WebSocket ping every 25 s. Cloudflare closes a WebSocket that carries nothing for a while (its docs; the
+     * host's control socket is idle while nobody joins, and its drop kicked every player, docs/player_hosting.md 16); its
+     * runtime answers pings itself without waking the room or counting a message.
+     */
+    static final int PING_MS = 25_000;
+    private static volatile int pingMs = 0;
+
+    /** Tests: the keep-alive period in ms (0: the default). */
+    static void pingMsForTests(int ms)
+    {
+        pingMs = ms;
+    }
 
     private final Channel channel;
     private final ByteBuf pending = Unpooled.buffer();
     private volatile boolean open = true;
 
-    private final java.util.concurrent.ScheduledFuture<?> flusher;
+    private final java.util.concurrent.ScheduledFuture<?> flusher, pinger;
 
-    private RelaySocket(Channel channel)
+    private RelaySocket(final Channel channel)
     {
         this.channel = channel;
         flusher = channel.eventLoop().scheduleAtFixedRate(new Runnable()
@@ -79,6 +92,17 @@ public final class RelaySocket
                 flush();
             }
         }, FLUSH_MS, FLUSH_MS, TimeUnit.MILLISECONDS);
+        int every = pingMs > 0 ? pingMs : PING_MS;
+        pinger = channel.eventLoop().scheduleAtFixedRate(new Runnable()
+        {
+            public void run()
+            {
+                if (open && channel.isActive())
+                {
+                    channel.writeAndFlush(new io.netty.handler.codec.http.websocketx.PingWebSocketFrame());
+                }
+            }
+        }, every, every, TimeUnit.MILLISECONDS);
     }
 
     /** Connects and finishes the WebSocket handshake within 10 s, else IOException (the message carries the HTTP status). */
@@ -194,6 +218,7 @@ public final class RelaySocket
             public void operationComplete(ChannelFuture f)
             {
                 s.flusher.cancel(false); // else every socket ever opened keeps a 50 ms task on the shared threads
+                s.pinger.cancel(false);
                 synchronized (s.pending)
                 {
                     s.pending.clear();

@@ -25,6 +25,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 final class EchoServer
 {
     static final List<Integer> frameSizes = new CopyOnWriteArrayList<Integer>();
+    static final java.util.concurrent.atomic.AtomicInteger pings = new java.util.concurrent.atomic.AtomicInteger();
     private static NioEventLoopGroup group;
     private static Channel server;
 
@@ -67,6 +68,11 @@ final class EchoServer
                             else if (f instanceof TextWebSocketFrame)
                             {
                                 ctx.writeAndFlush(new TextWebSocketFrame("echo " + ((TextWebSocketFrame) f).text()));
+                            }
+                            else if (f instanceof io.netty.handler.codec.http.websocketx.PingWebSocketFrame)
+                            {
+                                pings.incrementAndGet();
+                                ctx.writeAndFlush(new io.netty.handler.codec.http.websocketx.PongWebSocketFrame(Unpooled.copiedBuffer(f.content())));
                             }
                             else if (f instanceof CloseWebSocketFrame)
                             {

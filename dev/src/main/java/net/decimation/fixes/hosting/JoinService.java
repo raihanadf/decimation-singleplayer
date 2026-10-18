@@ -196,6 +196,7 @@ public final class JoinService
             return false;
         }
         routes.put(e.name, "direct");
+        HostService.log("joined " + e.name + " directly");
         toasts.show("Joined " + e.name + " directly (faster)"); // which way it went, for the players (and their tests)
         JoinHook h = hook;
         if (h != null)
@@ -253,6 +254,7 @@ public final class JoinService
             routes.put(e.name, "relay");
             if (LoginName.nextState(first) == 2)
             {
+                HostService.log("joined " + e.name + " through the relay (no direct answer)");
                 toasts.show("Joined " + e.name + " through the relay");
             }
             tell.bytes(first);

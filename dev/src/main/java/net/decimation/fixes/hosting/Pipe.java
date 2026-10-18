@@ -113,6 +113,10 @@ public final class Pipe
 
             public void closed(int code, String reason)
             {
+                if (!p.closed)
+                {
+                    HostService.log("relay socket closed: " + code + " " + reason); // why a player left (docs/player_hosting.md 16)
+                }
                 p.close();
             }
         });

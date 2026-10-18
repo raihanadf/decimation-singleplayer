@@ -242,16 +242,20 @@ public final class HostService
     {
         Settings st = settings;
         RelayClient c = new RelayClient(RelayClient.base());
-        Direct.Gate dg = st.direct ? openGate() : null;
+        Direct.Gate kept = gate; // a re-registration keeps the gate: its direct players play on (docs/player_hosting.md 16)
+        Direct.Gate dg = kept != null ? kept : st.direct ? openGate() : null;
         List<String> direct = null;
         if (dg != null)
         {
             Addresses a = addresses;
             direct = a != null ? a.of(dg.port()) : Direct.addresses(dg.port());
-            if (direct.isEmpty())
+            if (direct.isEmpty() && dg != kept)
             {
                 dg.close(); // no global IPv6 here: relay only
                 dg = null;
+            }
+            if (direct.isEmpty())
+            {
                 direct = null;
             }
         }
@@ -262,13 +266,14 @@ public final class HostService
         }
         catch (RelayClient.RelayFull e)
         {
-            closeGate(dg);
+            closeGate(dg == kept ? null : dg);
             set(g, State.FULL_TODAY, e.getMessage());
             return;
         }
         catch (IOException e)
         {
-            closeGate(dg);
+            closeGate(dg == kept ? null : dg);
+            log("registration failed: " + e.getMessage());
             set(g, State.FAILED, e.getMessage());
             return;
         }
@@ -276,7 +281,10 @@ public final class HostService
         {
             if (g != gen)
             {
-                closeGate(dg);
+                if (dg != gate)
+                {
+                    closeGate(dg);
+                }
                 run(stopCall(rs[0], rs[1])); // stopped while registering: take the new room off again
                 return;
             }
@@ -497,7 +505,7 @@ public final class HostService
                 return;
             }
             ng = ++gen;
-            closeSockets();
+            closeSockets(true);
             room = null;
             secret = null;
             state = State.STARTING;
@@ -505,17 +513,88 @@ public final class HostService
         register(ng);
     }
 
-    /** The control socket closed while online (also called by tests). */
+    /**
+     * The control socket closed while online (also called by tests): back to the SAME room first (the relay keeps the room
+     * and its players for 20 s, relay/src/room.ts GRACE_MS), 5 tries within about 15 s; only then a new room.
+     */
     void controlLost()
     {
         final int g = gen;
+        log("control socket lost");
         run(new Runnable()
         {
             public void run()
             {
-                registerAgain(g);
+                reconnect(g);
             }
         });
+    }
+
+    private void reconnect(int g)
+    {
+        String r, s;
+        synchronized (this)
+        {
+            if (g != gen)
+            {
+                return;
+            }
+            r = room;
+            s = secret;
+        }
+        if (sockets && r != null)
+        {
+            RelayClient c = new RelayClient(RelayClient.base());
+            for (long wait : new long[] {0, 1000, 2000, 4000, 8000})
+            {
+                try
+                {
+                    Thread.sleep(wait);
+                }
+                catch (InterruptedException e)
+                {
+                    return;
+                }
+                if (g != gen)
+                {
+                    return;
+                }
+                try
+                {
+                    RelaySocket ctl = openControl(c, r, s, g);
+                    synchronized (this)
+                    {
+                        if (g != gen)
+                        {
+                            ctl.close("stopped");
+                            return;
+                        }
+                        control = ctl;
+                    }
+                    log("control socket back, same room, players kept");
+                    return;
+                }
+                catch (IOException e)
+                {
+                    log("control socket retry failed: " + e.getMessage());
+                }
+            }
+        }
+        log("control socket not back: registering a new room");
+        registerAgain(g);
+    }
+
+    /** One line in the game log (the next test with a friend reads why a player left). */
+    static void log(String line)
+    {
+        try
+        {
+            cpw.mods.fml.common.FMLLog.info("[deciworldgen hosting] %s", line);
+        }
+        catch (Throwable t)
+        {
+            System.out.println("[deciworldgen hosting] " + line);
+        }
     }
 
     /** Stops hosting: the list entry goes at once, every socket closes. */
@@ -562,13 +641,22 @@ public final class HostService
 
     private void closeSockets()
     {
+        closeSockets(false);
+    }
+
+    /** keepGate: a re-registration (the direct gate and its players stay); else stop / a new start. */
+    private void closeSockets(boolean keepGate)
+    {
         for (Pipe p : pipes.values())
         {
             p.close();
         }
         pipes.clear();
-        closeGate(gate);
-        gate = null;
+        if (!keepGate)
+        {
+            closeGate(gate);
+            gate = null;
+        }
         RelaySocket c = control;
         control = null;
         if (c != null && c.isOpen())
@@ -607,9 +695,9 @@ public final class HostService
             return Pipe.Gate.DENY;
         }
         Settings s = settings;
-        if (s == null || state == State.OFF)
+        if (s == null || state != State.ONLINE)
         {
-            return Pipe.Gate.DENY; // nothing hosted: fail closed
+            return Pipe.Gate.DENY; // nothing hosted, or not listed right now: fail closed
         }
         if (name.equals(LoginName.STATUS) || s.online)
         {

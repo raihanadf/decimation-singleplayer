@@ -84,5 +84,25 @@ class RelaySocketTest
         Thread.sleep(200);
         assertTrue(s.flushStopped(), "the 50 ms flush task is cancelled when the socket closes");
     }
+
+    @Test
+    void anIdleSocketSendsPingsSoCloudflareNeverClosesIt() throws Exception
+    {
+        int port = EchoServer.start();
+        RelaySocket.pingMsForTests(150);
+        try
+        {
+            int before = EchoServer.pings.get();
+            RelaySocket s = RelaySocket.open(java.net.URI.create("ws://127.0.0.1:" + port + "/idle"), null);
+            Thread.sleep(800);
+            assertTrue(EchoServer.pings.get() - before >= 3, "pings while idle: " + (EchoServer.pings.get() - before));
+            assertTrue(s.isOpen(), "a pong is not mistaken for data or a close");
+            s.close("done");
+        }
+        finally
+        {
+            RelaySocket.pingMsForTests(0);
+        }
+    }
 }
 

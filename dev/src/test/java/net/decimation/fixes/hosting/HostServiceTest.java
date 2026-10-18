@@ -294,5 +294,50 @@ class HostServiceTest
     {
         assertTrue(new HostService.Settings().direct, "direct on by default (user, 18 Oktober 2026)");
     }
+
+    // ---- stability (docs/player_hosting.md 16: an idle control socket was cut after 391 s and the re-registration kicked everyone)
+
+    @Test
+    void aDirectPlayerStaysWhenTheHostRegistersAgain() throws Exception
+    {
+        final java.net.ServerSocket lan = new java.net.ServerSocket(0, 4, java.net.InetAddress.getLoopbackAddress());
+        Thread echo = new Thread(() -> {
+            try
+            {
+                java.net.Socket s = lan.accept();
+                java.io.InputStream in = s.getInputStream();
+                java.io.OutputStream out = s.getOutputStream();
+                for (int b; (b = in.read()) >= 0; )
+                {
+                    out.write(b);
+                }
+            }
+            catch (Exception e)
+            {
+                // closed
+            }
+        });
+        echo.setDaemon(true);
+        echo.start();
+        HostService.INSTANCE.addressesForTests(port -> java.util.Collections.singletonList("[::1]:" + port));
+        HostService.Settings s = settings();
+        s.direct = true;
+        s.online = true; // Mojang accounts: the gate lets any name through to the world (the world checks)
+        HostService.INSTANCE.start(s, lan.getLocalPort(), () -> 1);
+        java.util.regex.Matcher m = java.util.regex.Pattern.compile("\\[::1\\]:(\\d+)").matcher(hostBody);
+        assertTrue(m.find());
+        java.net.Socket player = new java.net.Socket(java.net.InetAddress.getByName("::1"), Integer.parseInt(m.group(1)));
+        player.setSoTimeout(3000);
+        byte[] login = LoginNameTest.join(LoginNameTest.handshake(2), LoginNameTest.loginStart("Rizky"));
+        player.getOutputStream().write(login);
+        new java.io.DataInputStream(player.getInputStream()).readFully(new byte[login.length]); // in the world
+        HostService.INSTANCE.controlLost(); // the relay dropped the host: a new room
+        assertEquals(HostService.State.ONLINE, HostService.INSTANCE.state());
+        player.getOutputStream().write(42);
+        assertEquals(42, player.getInputStream().read(), "the direct player is still playing");
+        assertTrue(Direct.probe("[::1]:" + m.group(1), "r" + hosts.get(), 1500), "same gate, the new room");
+        player.close();
+        lan.close();
+    }
 }
 
