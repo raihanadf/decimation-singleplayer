@@ -39,6 +39,9 @@ public class LanHostTest extends DevTestMode
     private String lastReq = "";
     private final java.util.List<Entity> made = new java.util.ArrayList<Entity>();
     private int crateX, crateY, crateZ;
+    private Entity corpse;
+    /** doMobSpawning before the scenes, put back at "end"; null while untouched. */
+    private String spawnRule;
     private EntityLiving target;
     private float sceneMin = 20;
     private boolean watchHealth;
@@ -292,6 +295,11 @@ public class LanHostTest extends DevTestMode
         int x = DevTestArena.X, y = DevTestArena.Y, z = DevTestArena.Z;
         if (verb.equals("arena"))
         {
+            if (spawnRule == null) // natural spawns off for the scenes (user): no stray NPC or infected walks in
+            {
+                spawnRule = w.getGameRules().getGameRuleStringValue(net.decimation.fixes.NaturalSpawns.RULE);
+                w.getGameRules().setOrCreateGameRule(net.decimation.fixes.NaturalSpawns.RULE, "false");
+            }
             w.getWorldInfo().setRaining(false);
             w.getWorldInfo().setThundering(false);
             w.setWorldTime(6000);
@@ -358,6 +366,86 @@ public class LanHostTest extends DevTestMode
             }
             made.clear();
             joiner.playerNetServerHandler.setPlayerLocation(x + 0.5, y, z + 0.5, 180, 0);
+        }
+        else if (verb.equals("corpse") && CorpseClicks.register()) // a player corpse as Decimation leaves it, 2 blocks in front of the joiner
+        {
+            Entity c = Deci.newCorpse(w, x + 0.5, y, z - 1.5, joiner.getUniqueID().toString(),
+                                      new net.minecraft.item.ItemStack(net.minecraft.init.Items.apple, 5));
+            if (!w.spawnEntityInWorld(c))
+            {
+                c = null;
+            }
+            corpse = c;
+            joiner.playerNetServerHandler.setPlayerLocation(x + 0.5, y, z + 0.5, 180, 0);
+            answer = (c == null ? "none" : "ok") + " " + (c == null ? -1 : c.getEntityId());
+        }
+        else if (verb.equals("corpseopen")) // what the joiner has open on the host's side, nothing else
+        {
+            net.minecraft.inventory.Container open = joiner.openContainer;
+            answer = "ok " + (open == null || open == joiner.inventoryContainer ? "none" : open.getClass().getSimpleName());
+            joiner.closeScreen();
+        }
+        else if (verb.equals("corpsestate")) // what the joiner has open on the host's side
+        {
+            net.minecraft.inventory.Container open = joiner.openContainer;
+            answer = "ok " + (open == null || open == joiner.inventoryContainer ? "none" : open.getClass().getSimpleName());
+            if (corpse != null && (open == null || open == joiner.inventoryContainer)) // experiment: the same click, made here
+            {
+                joiner.playerNetServerHandler.processUseEntity(
+                    new net.minecraft.network.play.client.C02PacketUseEntity(corpse, net.minecraft.network.play.client.C02PacketUseEntity.Action.INTERACT));
+                net.minecraft.inventory.Container now = joiner.openContainer;
+                DevTestResults.value(name(), "the same click made on the host", now == joiner.inventoryContainer ? "none" : now.getClass().getSimpleName());
+            }
+            DevTestResults.value(name(), "corpse clicks the host saw", CorpseClicks.seen + " (last: " + CorpseClicks.last + ")");
+            if (corpse != null)
+            {
+                DevTestResults.value(name(), "corpse and joiner on the host", String.format(
+                    "corpse %.2f,%.2f,%.2f dead %s, joiner %.2f,%.2f,%.2f, distance %.2f, seen %s", corpse.posX, corpse.posY, corpse.posZ,
+                    corpse.isDead, joiner.posX, joiner.posY, joiner.posZ, joiner.getDistanceToEntity(corpse), joiner.canEntityBeSeen(corpse)));
+            }
+            joiner.closeScreen();
+            if (corpse != null)
+            {
+                corpse.setDead();
+                corpse = null;
+            }
+        }
+        else if (verb.equals("corpsedeath")) // a real death: the joiner holds an AKM and some apples, then dies
+        {
+            joiner.setGameType(WorldSettings.GameType.SURVIVAL);
+            net.minecraft.item.Item gun = (net.minecraft.item.Item) net.minecraft.item.Item.itemRegistry.getObject("deci:akm");
+            if (gun != null)
+            {
+                joiner.inventory.setInventorySlotContents(joiner.inventory.currentItem, new net.minecraft.item.ItemStack(gun));
+            }
+            joiner.inventory.addItemStackToInventory(new net.minecraft.item.ItemStack(net.minecraft.init.Items.apple, 7));
+            joiner.attackEntityFrom(net.minecraft.util.DamageSource.outOfWorld, 1000);
+            answer = "ok " + joiner.getHealth() + " " + (gun != null);
+        }
+        else if (verb.equals("corpsefind")) // the joiner's own corpse; the joiner (respawned) stands 2 blocks south of it
+        {
+            EntityPlayerMP now = joiner;
+            Entity found = null;
+            for (Object o : w.loadedEntityList)
+            {
+                Entity e = (Entity) o;
+                if (Deci.isCorpse(e) && !e.isDead && (found == null || e.getEntityId() > found.getEntityId()))
+                {
+                    found = e;
+                }
+            }
+            if (found != null && now != null)
+            {
+                net.minecraft.item.Item gun = (net.minecraft.item.Item) net.minecraft.item.Item.itemRegistry.getObject("deci:akm");
+                if (gun != null) // back with a gun in hand: a player who respawned and picked one up clicks the corpse
+                {
+                    now.inventory.setInventorySlotContents(now.inventory.currentItem, new net.minecraft.item.ItemStack(gun));
+                    now.inventoryContainer.detectAndSendChanges();
+                }
+                corpse = found;
+                now.playerNetServerHandler.setPlayerLocation(found.posX, found.posY, found.posZ + 2, 180, 0);
+            }
+            answer = (found == null ? "none -1 none" : "ok " + found.getEntityId() + " " + String.format("%.1f,%.1f,%.1f", found.posX, found.posY, found.posZ));
         }
         else if (verb.equals("trader"))
         {
@@ -474,6 +562,12 @@ public class LanHostTest extends DevTestMode
         else if (verb.equals("end"))
         {
             DevTestResults.value(name(), "scenes done", "joiner respawns " + deaths);
+            DevTestResults.value(name(), "entity clicks the host saw", CorpseClicks.all);
+            if (spawnRule != null)
+            {
+                w.getGameRules().setOrCreateGameRule(net.decimation.fixes.NaturalSpawns.RULE, spawnRule);
+                spawnRule = null;
+            }
             if (real)
             {
                 net.decimation.fixes.hosting.HostService.INSTANCE.stop();
@@ -531,6 +625,41 @@ public class LanHostTest extends DevTestMode
         catch (Exception e)
         {
             DevTestResults.value("lanhost", "port file", e.toString());
+        }
+    }
+
+    /** Every right click on a corpse the host's server receives (EntityInteractEvent), for the corpse scenes. */
+    public static final class CorpseClicks
+    {
+        static volatile int seen;
+        static volatile String last = "none";
+        private static boolean registered;
+
+        static boolean register()
+        {
+            if (!registered)
+            {
+                registered = true;
+                net.minecraftforge.common.MinecraftForge.EVENT_BUS.register(new CorpseClicks());
+            }
+            return true;
+        }
+
+        static volatile String all = "";
+
+        @cpw.mods.fml.common.eventhandler.SubscribeEvent(priority = cpw.mods.fml.common.eventhandler.EventPriority.HIGHEST, receiveCanceled = true)
+        public void onInteract(net.minecraftforge.event.entity.player.EntityInteractEvent e)
+        {
+            if (!e.entityPlayer.worldObj.isRemote)
+            {
+                all += e.target.getClass().getSimpleName() + " ";
+            }
+            if (!e.entityPlayer.worldObj.isRemote && Deci.isCorpse(e.target))
+            {
+                seen++;
+                last = e.entityPlayer.getCommandSenderName() + String.format(" at %.2f", e.entityPlayer.getDistanceToEntity(e.target))
+                       + (e.isCanceled() ? " canceled" : "");
+            }
         }
     }
 }

@@ -275,6 +275,11 @@ review, then the implementation plan). Real case test planned with the user's br
   user: "cloudflare multiplayer is really do well now". Fixed the same day: gvc is optional for joiners
   (fixes/hosting/OptionalMods wraps Forge's checker, ModSet.OPTIONAL; bug.md), two game test PASS (dev host with gvc,
   production joiner without, deployed relay, 4 s join).
+- Corpse scenes (18 Oktober 2026): lanhost / lanjoin `corpse` (a corpse 2 blocks in front of the joiner), `corpsedeath`
+  (the joiner dies holding an AKM), `corpsefind` (back at its own corpse with an AKM), `corpseopen` / `corpsestate` (the
+  host's side). They found the gun bug (bug.md "A joined player could not open a corpse"). The scenes run with natural
+  spawns off (doMobSpawning false from "arena" until "end"). tools: a two game run script in the scratchpad
+  (onejar of the dev build into the production client, both live games, lanhost then lanjoin) [scratchpad only].
 
 ## 13. Community page texts (18 Oktober 2026)
 

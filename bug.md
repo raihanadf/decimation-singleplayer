@@ -1340,3 +1340,31 @@ refuses, relaxed lets in, version still checked; RED then GREEN), ModSetTest; su
 WITH gvc ("gvc is optional for players who join" in its log), production client joiner with only the one jar (built
 from 179e211): lanhost real=true scene=true all PASS, lanjoin viaList=true joined through the deployed relay in 4 s,
 all PASS. Still open: the two minute "Connecting" wait for any OTHER missing mod (the toast shows, the screen stays).
+
+## A joined player could not open a corpse (user report 18 Oktober 2026, FIXED)
+
+User: "the corpse cannot be clicked by joined player". Decimation's player corpse (EntityCorpse, deci.ae.a) opens a
+chest screen on a right click (interact: displayGUIChest), nothing server only. Two game test (lanhost scene=true +
+lanjoin, new scenes corpse, corpsedeath, corpsefind): a corpse opened fine for a joiner with empty hands, also the
+joiner's own corpse after a real death. With an AKM in hand the right click did nothing: no screen, and the host's
+server saw no click (EntityInteractEvent counter 0; the host making the same click packet itself opened the corpse).
+Cause: Decimation's ClientEventHandler.onClientTick unbinds the use key while a gun is held (key code 0, right click
+only aims) and binds it again only over an item frame. It hits every player with a gun, host included; joined players
+noticed it because they come back armed. Fix: fixes/GunUseKey (client tick START, after Decimation's) binds the use key
+again while the crosshair is on a corpse or our loot body. RED: "right click opens the corpse after a real death"
+holding AKM FAIL (no window); GREEN: window 1 after 5 ticks, the 8 items shown, ContainerChest on the host; all lanjoin
+and lanhost checks PASS. Test trap found on the way: the joiner's own game opens an EMPTY chest at once (window 0); the
+real one (the host's window, with the items) comes after the click crosses the relay, so a check must wait for a window
+above 0. Traders and vehicle seats with a gun in hand behave the same in Decimation [not checked]; left as Decimation made
+them.
+
+## Natural spawns off for tests (user request 18 Oktober 2026, DONE)
+
+User: "add some code to remove natural spawn on mobs, so to spawn it only from code or egg side so if in middle test
+there is npc or zombie attacking the user, it doesnt happen anymore". Minecraft's `/gamerule doMobSpawning false`
+already stops the biome spawn lists, which bring all of Decimation's own NPCs and infected. Our automatic spawners did
+not follow it: fixes/NaturalSpawns (the rule) now gates fixes/MilitarySpawner (allowed), garrison posts (Garrisons
+waits until the rule is on again) and garrison spawner cages (their infected are refused). Code, eggs and /summon still
+spawn. Dev test `nospawn` RED 2 FAIL, GREEN 4 PASS (three runs). The two game test (lanhost scene=true) turns the rule
+off for its scenes and back at the end. Safezone residents are friendly and still fill their camps.
+

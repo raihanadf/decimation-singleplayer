@@ -60,6 +60,10 @@ takes 0.5); a miss used a round and hurt nothing; client and server copies agree
 - Every shot walks the whole loaded entity list per pellet on the client [inferred cost, not measured].
 - The picture in picture scope rendered the world twice: replaced by our ScopeZoom (v0.28, PatchScope); the sway
   thread SmoothSwingThread spun a core at 100 %: PatchSwing.
+- With a gun in hand ClientEventHandler.onClientTick (START) unbinds the use key every tick (keyBindUseItem key code 0:
+  right click only aims) and binds it again (-99) only while the crosshair is on an item frame. So a right click with a
+  gun opens no entity: no corpse, no loot body (checked 18 Oktober 2026, dev test lanjoin; bug.md). Our fixes/GunUseKey
+  binds it again for bodies.
 
 ## 5. How our mod uses it
 
@@ -73,6 +77,7 @@ takes 0.5); a miss used a round and hurt nothing; client and server copies agree
 | scopes | fixes/ScopeZoom, tools/patches/PatchScope.java |
 | armor against NPC shots | fixes/ArmorGunfireHandler (NPC shots use the "human" source, not PacketGunHit) |
 | gunshot noise | fixes/GunNoise |
+| open a body with a gun in hand | fixes/GunUseKey (after Decimation's tick: use key bound while the crosshair is on a corpse or loot body) |
 
 ## 6. Checks
 

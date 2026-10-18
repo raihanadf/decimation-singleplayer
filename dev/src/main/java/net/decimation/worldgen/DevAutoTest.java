@@ -149,6 +149,7 @@ public class DevAutoTest
         if (name.equals("mainmenu")) return new net.decimation.worldgen.devtest.MainMenuTest();
         if (name.equals("menupages")) return new net.decimation.worldgen.devtest.MenuPagesTest();
         if (name.equals("doublejoin")) return new net.decimation.worldgen.devtest.DoubleJoinTest();
+        if (name.equals("nospawn")) return new net.decimation.worldgen.devtest.NoSpawnTest();
         if (name.equals("lanhost")) return new net.decimation.worldgen.devtest.LanHostTest();
         if (name.equals("lanjoin")) return new net.decimation.worldgen.devtest.LanJoinTest();
         if (name.equals("hostmenu")) return new net.decimation.worldgen.devtest.HostMenuTest();

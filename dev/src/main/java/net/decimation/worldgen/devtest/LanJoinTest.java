@@ -146,6 +146,100 @@ public class LanJoinTest extends DevTestMode
             case 4:
                 if (answered())
                 {
+                    ask("corpse");
+                    next(40);
+                }
+                break;
+            case 40:
+                if (answered())
+                {
+                    id = intAt(3);
+                    next(41);
+                }
+                break;
+            case 41: // the bug report (18 Oktober 2026): a joined player could not open a corpse
+                if (clickCorpse(mc, ""))
+                {
+                    ask("corpseopen");
+                    next(48);
+                }
+                break;
+            case 48: // the right click's answer on the host, then the same click sent straight as a packet
+                if (answered())
+                {
+                    DevTestResults.check(name(), "corpse open on the host's side (right click)", res.length > 3 ? res[3] : "?",
+                                         res.length > 3 && !"none".equals(res[3]), "a container");
+                    mc.thePlayer.closeScreen();
+                    Entity c = mc.theWorld.getEntityByID(id);
+                    if (c != null)
+                    {
+                        mc.playerController.interactWithEntitySendPacket(mc.thePlayer, c);
+                    }
+                    next(49);
+                }
+                break;
+            case 49:
+                if (wait == 20)
+                {
+                    ask("corpsestate");
+                    next(42);
+                }
+                break;
+            case 42:
+                if (answered())
+                {
+                    DevTestResults.check(name(), "corpse open on the host's side (packet sent straight)", res.length > 3 ? res[3] : "?",
+                                         res.length > 3 && !"none".equals(res[3]), "a container");
+                    mc.thePlayer.closeScreen();
+                    ask("corpsedeath"); // now a real death: the joiner dies holding an AKM and comes back
+                    next(43);
+                }
+                break;
+            case 43:
+                if (answered())
+                {
+                    next(44);
+                }
+                break;
+            case 44:
+                if (mc.thePlayer.getHealth() <= 0 || mc.currentScreen instanceof net.minecraft.client.gui.GuiGameOver)
+                {
+                    DevTestResults.value(name(), "joiner died", screen(mc));
+                    mc.thePlayer.respawnPlayer();
+                    mc.displayGuiScreen(null);
+                    next(45);
+                }
+                else if (wait > 200)
+                {
+                    DevTestResults.check(name(), "joiner died", screen(mc), false, "death screen");
+                    next(5);
+                }
+                break;
+            case 45:
+                if (wait == 60)
+                {
+                    ask("corpsefind");
+                }
+                if (wait > 60 && answered())
+                {
+                    id = intAt(3);
+                    DevTestResults.value(name(), "own corpse after the death", res.length > 4 ? res[4] : "?");
+                    next(46);
+                }
+                break;
+            case 46:
+                if (clickCorpse(mc, " after a real death"))
+                {
+                    ask("corpsestate");
+                    next(47);
+                }
+                break;
+            case 47:
+                if (answered())
+                {
+                    DevTestResults.check(name(), "corpse open on the host's side after a real death", res.length > 3 ? res[3] : "?",
+                                         res.length > 3 && !"none".equals(res[3]), "a container");
+                    mc.thePlayer.closeScreen();
                     next(5);
                 }
                 break;
@@ -417,6 +511,55 @@ public class LanJoinTest extends DevTestMode
     private static String screen(Minecraft mc)
     {
         return screenClass(mc);
+    }
+
+    /** Aims at the corpse `id` like a player, right clicks with the use key, checks a container screen opens; true when done. */
+    private boolean clickCorpse(Minecraft mc, String label)
+    {
+        Entity c = mc.theWorld.getEntityByID(id);
+        if (wait == 40)
+        {
+            DevTestResults.value(name(), "corpse on the client" + label, c == null ? "missing" : c.getClass().getName() + " "
+                                 + String.format("%.2f x %.2f, %.1f away, holding %s", c.width, c.height, mc.thePlayer.getDistanceToEntity(c),
+                                                 mc.thePlayer.getHeldItem() == null ? "nothing" : mc.thePlayer.getHeldItem().getDisplayName()));
+            if (c != null) // aim at its middle the way a player would
+            {
+                double dx = c.posX - mc.thePlayer.posX, dz = c.posZ - mc.thePlayer.posZ;
+                double dy = c.posY + c.height / 2 - (mc.thePlayer.posY + mc.thePlayer.getEyeHeight());
+                mc.thePlayer.rotationYaw = (float) (Math.atan2(dz, dx) * 180 / Math.PI) - 90;
+                mc.thePlayer.rotationPitch = (float) -(Math.atan2(dy, Math.sqrt(dx * dx + dz * dz)) * 180 / Math.PI);
+            }
+        }
+        if (wait == 50)
+        {
+            net.minecraft.util.MovingObjectPosition hit = mc.objectMouseOver;
+            DevTestResults.check(name(), "crosshair on the corpse" + label, hit == null ? "nothing" : hit.typeOfHit + " "
+                                 + (hit.entityHit == null ? "" : hit.entityHit.getClass().getName()),
+                                 hit != null && hit.entityHit != null && Deci.isCorpse(hit.entityHit), "the corpse");
+            net.minecraft.client.settings.KeyBinding.onTick(mc.gameSettings.keyBindUseItem.getKeyCode()); // a right click
+        }
+        // the joiner's own game opens an empty chest at once (window 0); the host's chest (window above 0, with the items)
+        // replaces it once the click has crossed the relay
+        net.minecraft.inventory.Container open = mc.currentScreen instanceof net.minecraft.client.gui.inventory.GuiContainer
+            ? ((net.minecraft.client.gui.inventory.GuiContainer) mc.currentScreen).inventorySlots : null;
+        if (wait > 50 && open != null && open.windowId != 0 || wait > 250)
+        {
+            int items = 0;
+            for (Object s : open == null ? java.util.Collections.emptyList() : open.inventorySlots)
+            {
+                net.minecraft.inventory.Slot slot = (net.minecraft.inventory.Slot) s;
+                if (slot.inventory != mc.thePlayer.inventory && slot.getHasStack())
+                {
+                    items += slot.getStack().stackSize;
+                }
+            }
+            DevTestResults.check(name(), "right click opens the corpse" + label, screen(mc) + " window "
+                                 + (open == null ? "-" : open.windowId) + " after " + (wait - 50) + " ticks",
+                                 open != null && open.windowId != 0, "the host's window");
+            DevTestResults.check(name(), "the corpse's items show" + label, items, items > 0, "more than 0");
+            return true;
+        }
+        return false;
     }
 
     /** The client's vehicle seat (deci.ad.c, VehicleSeatEntity) nearest to the player within 8 blocks of the vehicle. */

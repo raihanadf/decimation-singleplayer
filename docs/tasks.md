@@ -48,6 +48,8 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [~] promotion drafts (docs/promotion.md): Reddit + Discord teaser; user decides on BoehMod permission, posts
 - [x] joiners without the voice chat mod get into a host that has it (OptionalMods, 179e211; two game test PASS)
 - [ ] bug: joining a world with another missing mod sits on Connecting for 2 minutes (bug.md)
+- [x] corpse could not be opened with a gun in hand (joined player report): fixes/GunUseKey, two game test PASS
+- [x] natural spawns off for tests: /gamerule doMobSpawning false also stops our spawners (fixes/NaturalSpawns, dev test nospawn)
 - [~] plan: 1.0.0 beta (docs/release_1.0.md), user to confirm scope and order
 - [~] plan: city content replacement (docs/city_replacement.md): ChaosZPack blocked by its license, McJty Lost Cities (MIT) proposed; user decides
 - [ ] city content replacement with ChaoszPack Lost Cities (copyright; roadmap, after multiplayer)

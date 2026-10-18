@@ -77,9 +77,11 @@ Dev test `shots` (153 s, bandits, soldiers and Soviets in the arena), trace pref
 | infected kinds | `Deci.setInfectedVariant`, `Deci.infectedVariant`, fixes/InfectedVariants, fixes/ZombieEgg |
 | hearing gunshots | fixes/GunNoise |
 | vanilla mobs out | fixes/VanillaMobs (a test needing one sets the KEEP flag) |
+| no spawns on their own (tests) | `/gamerule doMobSpawning false`: vanilla stops the biome lists (all of Decimation's own NPC and infected spawns); fixes/NaturalSpawns makes MilitarySpawner, garrison posts and garrison spawner cages follow it; code, eggs and /summon still spawn |
 
 ## 6. Checks
 
+- `nospawn`: natural spawns off by the game rule (military spawner, spawner cage, code spawn; 4 checks).
 - `python3 tools/devtest.py --live shots` (hits by range, walls, bursts, reloads, rockets), `npc` (tiers, factions),
   `zombies` (variants), `noise`, `npckill`, `tracer`, `firerate`.
 - Test NPCs stand on the arena floor (DevTestArena); a held mob's client copy falls.

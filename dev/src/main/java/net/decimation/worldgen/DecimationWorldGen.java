@@ -178,6 +178,7 @@ public class DecimationWorldGen
             net.minecraftforge.common.MinecraftForge.EVENT_BUS.register(new net.decimation.fixes.MenuContinue());
             // Decimation's HUD needs the menu's player preview (bug.md): made if a world was reached without the menu
             cpw.mods.fml.common.FMLCommonHandler.instance().bus().register(new net.decimation.fixes.HudGuard());
+            cpw.mods.fml.common.FMLCommonHandler.instance().bus().register(new net.decimation.fixes.GunUseKey()); // open corpses with a gun in hand
             // host your world online (docs/superpowers/specs/2026-10-18-player-hosting-part1-design.md): the pause menu's
             // Host Online page, the heartbeat on the client tick, hosting stops when the world closes
             net.decimation.fixes.hosting.HostMenu host = new net.decimation.fixes.hosting.HostMenu();
