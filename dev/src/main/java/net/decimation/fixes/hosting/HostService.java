@@ -35,6 +35,7 @@ public final class HostService
         public String name, player, version;
         public boolean online = true; // "Mojang accounts only" unless the host picks otherwise (user, 18 Oktober 2026)
         public int max = 4;
+        public boolean commands = true; // "Commands: only me" (user, 18 Oktober 2026)
     }
 
     public interface Players

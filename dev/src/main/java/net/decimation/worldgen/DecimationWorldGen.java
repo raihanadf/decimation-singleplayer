@@ -184,6 +184,7 @@ public class DecimationWorldGen
             net.minecraftforge.common.MinecraftForge.EVENT_BUS.register(host);
             cpw.mods.fml.common.FMLCommonHandler.instance().bus().register(host);
             net.minecraftforge.common.MinecraftForge.EVENT_BUS.register(net.decimation.fixes.hosting.HostService.INSTANCE);
+            net.minecraftforge.common.MinecraftForge.EVENT_BUS.register(new net.decimation.fixes.hosting.HostOps());
             // Decimation's Community page filled from our list, joins through the relay
             net.decimation.fixes.hosting.CommunityList community = new net.decimation.fixes.hosting.CommunityList();
             net.minecraftforge.common.MinecraftForge.EVENT_BUS.register(community);

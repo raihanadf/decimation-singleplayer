@@ -19,12 +19,13 @@ import net.minecraft.world.WorldSettings;
  */
 public final class HostScreen extends GuiScreen
 {
-    private static final int START = 1, BACK = 2, OFFLINE = 3, ONLINE = 4, MINUS = 5, PLUS = 6, RESUME = 7;
+    private static final int START = 1, BACK = 2, OFFLINE = 3, ONLINE = 4, MINUS = 5, PLUS = 6, RESUME = 7, COMMANDS = 8;
     private final GuiScreen parent;
     private GuiTextField name;
     private String typed;
     private boolean online = true; // Mojang accounts only by default (user, 18 Oktober 2026)
     private int max = 4;
+    private boolean commands = true; // "Commands: only me" by default (user, 18 Oktober 2026)
     private HostService.State shown;
 
     public HostScreen(GuiScreen parent)
@@ -35,6 +36,7 @@ public final class HostScreen extends GuiScreen
         {
             online = s.online;
             max = s.max;
+            commands = s.commands;
             typed = s.name;
         }
         shown = HostService.INSTANCE.state();
@@ -71,6 +73,9 @@ public final class HostScreen extends GuiScreen
             buttonList.add(Deci.menuButton(ONLINE, x + 6, 114, 234, 12, (online ? "\u00a7a" : "") + I18n.format("deciworldgen.host.online"), ""));
             buttonList.add(Deci.menuButton(MINUS, x + 6, 142, 14, 12, "-", ""));
             buttonList.add(Deci.menuButton(PLUS, x + 40, 142, 14, 12, "+", ""));
+            buttonList.add(Deci.menuButton(COMMANDS, x + 100, 142, 140, 12,
+                                           commands ? "\u00a7a" + I18n.format("deciworldgen.host.commands.me") : I18n.format("deciworldgen.host.commands.off"),
+                                           I18n.format("deciworldgen.host.commands.tip")));
         }
         buttonList.add(Deci.menuButton(START, x + 63, 212, 120, 20,
                                        I18n.format(on ? "deciworldgen.host.stop" : "deciworldgen.host.start"), ""));
@@ -87,6 +92,7 @@ public final class HostScreen extends GuiScreen
             case ONLINE: online = true; break;
             case MINUS: max = Math.max(2, max - 1); break;
             case PLUS: max = Math.min(8, max + 1); break;
+            case COMMANDS: commands = !commands; break;
             case BACK: mc.displayGuiScreen(parent); return;
             case RESUME: mc.displayGuiScreen(null); return;
             case START: startOrStop(); break;
@@ -100,6 +106,7 @@ public final class HostScreen extends GuiScreen
         if (hosting())
         {
             HostService.INSTANCE.stop();
+            HostOps.revoke(mc.getIntegratedServer());
             return;
         }
         IntegratedServer s = mc.getIntegratedServer();
@@ -121,9 +128,14 @@ public final class HostScreen extends GuiScreen
         st.name = clean;
         st.online = online;
         st.max = max;
+        st.commands = commands;
         st.player = mc.getSession().getUsername();
         st.version = ModSet.ourVersion();
         HostLan.limit(s, max); // the status ping shows the host's own limit
+        if (commands)
+        {
+            HostOps.grant(s, st.player); // the world is shared with cheats off: commands for the host only
+        }
         HostService.INSTANCE.start(st, Integer.parseInt(port), new HostService.Players()
         {
             public int count()
@@ -174,8 +186,8 @@ public final class HostScreen extends GuiScreen
             String line = state == HostService.State.ONLINE ? "\u00a7a\u25cf \u00a7f" + I18n.format("deciworldgen.host.listed")
                                                             : "\u00a7e" + I18n.format("deciworldgen.host.starting");
             drawString(fontRendererObj, line + "   " + players.size() + "/" + max, x + 6, 92, 0xFFFFFF);
-            drawString(fontRendererObj, "\u00a77" + I18n.format(online ? "deciworldgen.host.online" : "deciworldgen.host.offline"),
-                       x + 6, 103, 0xFFFFFF);
+            drawString(fontRendererObj, "\u00a77" + I18n.format(online ? "deciworldgen.host.online" : "deciworldgen.host.offline")
+                       + (commands ? ", " + I18n.format("deciworldgen.host.commands.me") : ""), x + 6, 103, 0xFFFFFF);
             int y = 118;
             for (Object o : players) // the players with their ping
             {
@@ -189,6 +201,7 @@ public final class HostScreen extends GuiScreen
             drawString(fontRendererObj, "\u00a77" + I18n.format("deciworldgen.host.who"), x + 6, 90, 0xFFFFFF);
             drawString(fontRendererObj, "\u00a77" + I18n.format("deciworldgen.host.max"), x + 6, 131, 0xFFFFFF);
             drawString(fontRendererObj, String.valueOf(max), x + 26, 144, 0xFFFFFF);
+            drawString(fontRendererObj, "\u00a77" + I18n.format("deciworldgen.host.commands"), x + 100, 131, 0xFFFFFF);
         }
         drawString(fontRendererObj, "\u00a77" + I18n.format("deciworldgen.host.mods"), x + 6, 162, 0xFFFFFF);
         drawString(fontRendererObj, fontRendererObj.trimStringToWidth(mods(), 234), x + 6, 172, 0xFFFFFF);

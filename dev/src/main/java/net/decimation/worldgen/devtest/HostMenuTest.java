@@ -53,6 +53,10 @@ public class HostMenuTest extends DevTestMode
                 String chosen = mojang == null ? "none" : mojang.displayString;
                 DevTestResults.check(name(), "new hosts default to Mojang accounts only", chosen,
                                      chosen.startsWith("\u00a7a") && chosen.contains("Mojang"), "Mojang accounts only, chosen (user, 18 Oktober 2026)");
+                GuiButton cmd = DevTestUtil.byId(mc.currentScreen, 8); // HostScreen COMMANDS
+                String cmdText = cmd == null ? "none" : cmd.displayString;
+                DevTestResults.check(name(), "new hosts default to commands for the host only", cmdText,
+                                     cmdText.contains("only me"), "Commands: only me (user, 18 Oktober 2026)");
                 DevTestUtil.screenshot(mc, name(), "host_page");
                 mc.displayGuiScreen(Deci.homeMenu());
                 step = 3;

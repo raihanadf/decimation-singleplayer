@@ -153,6 +153,7 @@ public class DevAutoTest
         if (name.equals("lanjoin")) return new net.decimation.worldgen.devtest.LanJoinTest();
         if (name.equals("hostmenu")) return new net.decimation.worldgen.devtest.HostMenuTest();
         if (name.equals("hudguard")) return new net.decimation.worldgen.devtest.HudGuardTest();
+        if (name.equals("hostops")) return new net.decimation.worldgen.devtest.HostOpsTest();
         if (name.equals("garrison")) return new net.decimation.worldgen.devtest.GarrisonTest();
         if (name.equals("rail")) return new net.decimation.worldgen.devtest.RailTest();
         if (name.equals("bridge")) return new net.decimation.worldgen.devtest.BridgeTest();

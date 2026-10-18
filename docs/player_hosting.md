@@ -245,7 +245,24 @@ review, then the implementation plan). Real case test planned with the user's br
 - Fixed after (18 Oktober 2026 06:15): the hosted world's player limit follows the host's choice (HostLan.limit; the
   rows said "x/8"; lanhost check "server max players" RED 8 then GREEN 4); Decimation's HUD crash without its menu
   (fixes/HudGuard, bug.md).
-- Still open: the real case on the user's brother's Linux laptop over Tailscale (needs his agreement, Java 8, the test
-  jar on the user's Desktop DeciRemnant-hosting-test/, and how it is driven; the user: hosting goes into a release only
-  after it); the relay's real message count per minute (the Cloudflare dashboard); the website list, kick and ban
-  (part 3).
+- Still open: the relay's real message count per minute (the Cloudflare dashboard); the website list, kick and ban
+  (part 3); hosting goes into the next batched release (user: after the brother test, done in section 12).
+
+## 12. Real test with the user's brother, commands for the host (18 Oktober 2026)
+
+- Setup: the test jar (built at 53be3fb) served over the home Wi-Fi with python http.server; the brother's Linux laptop
+  (offline account "kucing", no Tailscale needed) downloaded it. First the harness host (production client, dev test
+  lanhost online=false scene=true real=true): kucing joined at 07:02 through the deployed relay, the list showed 1
+  player of 4. Then the user hosted by hand from a normal game (Host Online page, Any account): kucing joined again.
+- Result (user): ping 150 to 270 ms on the brother's side, "works smooth". The user found him in the world (07:12 shot:
+  kucing in front of the host, creative, Decimation's HUD).
+- Found: the host could not use any command ("You do not have permission to use this command"): a hosted world is
+  shared with cheats off (shareToLAN(mode, false)), so nobody has commands, the host included.
+- Fix (user: "add commands only me before release"): the Host Online page option "Commands: only me" (default on,
+  "Commands: off" by a click). fixes/hosting/HostOps makes the host an operator of the world (Minecraft's ops list,
+  ops.json in the game folder) when hosting starts, and takes it away on Stop hosting or when the world unloads; the
+  entry it added is written to deciworldgen_hostop.txt so a game that crashed while hosting removes it at the next
+  start or stop; a host who was an operator already stays one. Joiners never get commands (commandsAllowedForAll
+  stays false). Dev test `hostops` (world cheats and the dev client's commands for everyone turned off for the test):
+  RED 2 FAIL (host while hosting, default), GREEN 7 PASS; hostmenu checks the default. In the real game with the
+  brother [not verified yet].

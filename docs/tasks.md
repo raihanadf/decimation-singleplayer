@@ -41,7 +41,7 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [x] page audit of all 26 pages (layout, SEO, links, Lighthouse 95 to 97 / 100 / 100 / 100): fixes in site 4cf80c8, live checked (Lighthouse 98 to 100 / 100 / 100 / 100)
 - [x] "Entity is already tracked": swapped mobs added twice at chunk load, double speed; fixes/JoinOnce (v0.64.2)
 - [ ] survivor partner idea: design talk (docs/ideas.md item 21)
-- [~] player hosting part 1: built, reviewed, relay deployed, two games through it all PASS (docs/player_hosting.md 11); open: brother's laptop real test, push, release (batched)
+- [~] player hosting part 1: built, reviewed, relay deployed, brother test smooth (150 to 270 ms, docs/player_hosting.md 12); "Commands: only me" built, open: real check with the brother, push, release (batched)
 - [ ] city content replacement with ChaoszPack Lost Cities (copyright; roadmap, after multiplayer)
 - [x] HUD crash when a world is joined without Decimation's menu: fixes/HudGuard (in code, next release)
 - [x] place names gone after a rejoin: PlaceNames forgets a player on logout (bug.md, in code, next release)
