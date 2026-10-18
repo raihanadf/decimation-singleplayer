@@ -17,8 +17,8 @@ final class Colos
 
     static
     {
-        Set<String> se = set("SIN", "CGK", "KUL", "JHB", "BKK", "CNX", "MNL", "CEB", "SGN", "HAN", "DAD", "PNH", "RGN", "HKG", "DPS",
-                             "SUB");
+        // not HKG: measured 19 Oktober 2026, a Hong Kong socket for a Singapore room took about 150 ms against 80 ms
+        Set<String> se = set("SIN", "CGK", "KUL", "JHB", "BKK", "CNX", "MNL", "CEB", "SGN", "HAN", "DAD", "PNH", "RGN", "DPS", "SUB");
         Set<String> ne = set("NRT", "KIX", "FUK", "OKA", "ICN", "TPE", "KHH", "HKG", "MFM", "ULN");
         Set<String> all = new HashSet<String>(se);
         all.addAll(ne);

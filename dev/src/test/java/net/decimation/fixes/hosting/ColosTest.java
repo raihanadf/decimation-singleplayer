@@ -31,6 +31,7 @@ class ColosTest
         assertTrue(Colos.near("apac-se", "CGK"));
         assertFalse(Colos.near("apac-se", "FRA"));
         assertFalse(Colos.near("apac-se", "CDG"));
+        assertFalse(Colos.near("apac-se", "HKG")); // measured: a Hong Kong socket for a Singapore room added about 65 ms
         assertTrue(Colos.near("apac-ne", "NRT"));
         assertFalse(Colos.near("apac-ne", "LHR"));
     }
