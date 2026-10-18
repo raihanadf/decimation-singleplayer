@@ -1331,5 +1331,12 @@ voice chat should be left out of the mod check.
 Seen again 18 Oktober 2026 13:38 in a real game: the user hosted from the dev client (runClient always installs gvc into
 run/client/mods, dependencies.gradle installVoiceChat), the brother joined with only Decimation.jar and saw the need
 gvc 0.6.1 message, so our refusal does reach the player. Workaround that day: the original voice chat jar served beside
-Decimation.jar. Real fix still open: let a joiner without gvc in (our ModSet check and FML's own mod list check both
-demand it).
+Decimation.jar.
+FIXED for voice chat (18 Oktober 2026, commit 179e211): Forge's default checker (NetworkModHolder) lets a client in
+without a mod only when the remote is the server (side SERVER), so a host WITH gvc refused every joiner without it;
+the reverse already passed. fixes/hosting/OptionalMods wraps gvc's checker in postInit (a remote without gvc passes,
+one with gvc still needs the same version), ModSet.OPTIONAL skips gvc in our own check. Tests OptionalModsTest (Forge
+refuses, relaxed lets in, version still checked; RED then GREEN), ModSetTest; suite 56 PASS. Real app: dev client host
+WITH gvc ("gvc is optional for players who join" in its log), production client joiner with only the one jar (built
+from 179e211): lanhost real=true scene=true all PASS, lanjoin viaList=true joined through the deployed relay in 4 s,
+all PASS. Still open: the two minute "Connecting" wait for any OTHER missing mod (the toast shows, the screen stays).

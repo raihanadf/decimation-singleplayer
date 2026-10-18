@@ -18,7 +18,7 @@ do so many things like bug fix, perfomance boost and many thing task we still le
 | Area | What | Where it stands |
 | --- | --- | --- |
 | Multiplayer | player hosting part 1 (Host Online, Community list, relay, Commands: only me) | built, real two laptop test smooth; not released |
-| Multiplayer | joining with a missing mod sits on Connecting for 2 minutes; voice chat in the mod check | bug.md, open |
+| Multiplayer | joining with a missing mod sits on Connecting for 2 minutes | bug.md, open (voice chat now optional: fixed 179e211) |
 | Multiplayer | website guide page /docs/multiplayer; site teaser now | teaser local (site 5ca55b6) |
 | Cities | new city content, legal to ship (docs/city_replacement.md: McJty Lost Cities, MIT, plus our layers) | planned, user decision |
 | Performance | a measured pass: fps in a city view, prop draw cost, chunk generation time, server tick time with 2 to 4 players, memory (docs/performance.md methods) | partly done before (props, infected AI, scope) |
