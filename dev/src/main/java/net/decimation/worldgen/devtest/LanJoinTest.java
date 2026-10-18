@@ -134,6 +134,7 @@ public class LanJoinTest extends DevTestMode
                                          mc.theWorld != null, "no crash");
                     if (promo)
                     {
+                        mc.gameSettings.renderDistanceChunks = Math.max(mc.gameSettings.renderDistanceChunks, 8);
                         ask("promo");
                         next(30);
                         break;
@@ -333,7 +334,7 @@ public class LanJoinTest extends DevTestMode
                 }
                 break;
             case 30: // promo: wait for the answer, then for the street's chunks to draw
-                if (answered() && wait > 200)
+                if (answered() && wait > 600) // 30 s: the street generates on the host, then comes over the relay
                 {
                     mc.displayGuiScreen(null);
                     DevTestUtil.screenshot(mc, name(), "promo_joiner");

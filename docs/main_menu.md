@@ -121,6 +121,23 @@ Chernarus pictures ("here the chernarus location"). Shots: docs/shots/main_menu_
   Dev test `update` checks "progress lines" and "ready lines" (Deci.updateLines), RED first. Shots
   docs/shots/update_v0.64.8.
 
+## 2e. 18 Oktober 2026: Multiplayer news first (promote player hosting)
+
+- User: "update home news page with latest ones since its old image, i think we need to put some highlight to
+  multiplayer server on website and main menu". Picked (AskUserQuestion): Multiplayer first, then Updates, Website,
+  Coming soon (the GitHub panel goes; GitHub stays as the top right link); a click on Multiplayer opens the in-game
+  Community list, not a web page.
+- fixes/MenuNews: panel "Multiplayer", line "NEW: host your world, join others", address MenuNews.COMMUNITY
+  ("deciremnant:community"); Deci.addNewsPanel makes ArticlePanel a subclass whose openUrl (deci.d.c.o) opens
+  CommunityList for that address. Deci.openNewsPanel (tests) does what a click does.
+- Pictures retaken 18 Oktober 2026 (news_src): multiplayer.png = the Community page with a hosted world "Survivors"
+  (Join, 1/4, 534 ms; two game harness lanjoin promo=true), update.png = the release list with 0.64.8, website.png =
+  the site's top, coming.png = the coming soon cards; the old four kept only in the scratchpad. Written into the three
+  jars by tools/menu_assets.py (NEWS now news_multiplayer). The website picture goes stale again once the site carries
+  the multiplayer banner: retake it then.
+- Dev test mainmenu: order Multiplayer, Updates, Website, Coming soon and "Multiplayer panel opens the Community list"
+  (RED 2 FAIL, GREEN). Shot docs/shots/main_menu_v0.64.9/mainmenu_home.png.
+
 ## 3. Code map
 
 | Piece | Job |

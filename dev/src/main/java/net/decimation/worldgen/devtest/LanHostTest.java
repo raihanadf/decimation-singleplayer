@@ -56,7 +56,7 @@ public class LanHostTest extends DevTestMode
 
     public boolean client(Minecraft mc)
     {
-        if (shoot == 1 && ++shootAt > 60) // chunks around the street drawn
+        if (shoot == 1 && ++shootAt > 200) // chunks around the street drawn (they generate on the first visit)
         {
             mc.displayGuiScreen(null);
             mc.gameSettings.hideGUI = false;
@@ -71,7 +71,7 @@ public class LanHostTest extends DevTestMode
             mc.displayGuiScreen(null);
             shoot = 3;
         }
-        return !done;
+        return !done || shoot == 1 || shoot == 2; // the host's server may lag: finish the shots after "end"
     }
 
     public void server()

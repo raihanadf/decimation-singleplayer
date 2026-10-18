@@ -7,8 +7,9 @@ scene", "just use component from decimation gui menu its self").
   layer and the cube planet over them) become six real scenes of our world (background0..5), dimmed for the buttons
   in front; fixes/MenuBackground shows them one after another, 7 seconds each.
 - The pictures of our four news panels (textures/gui/menu/news_<id>.png, fixes/MenuNews), each a real picture of its
-  topic (user: "replace the picture of news panel to real topic image"): our GitHub repository page, its newest
-  release, the website's top and the website's coming soon cards, taken with agent-browser at 2.32 : 1 (the panel's
+  topic (user: "replace the picture of news panel to real topic image"): the Community page with a hosted world (since
+  18 Oktober 2026: multiplayer first; from the two game harness, lanjoin promo=true), the newest release, the website's
+  top and the website's coming soon cards, taken with agent-browser at 2.32 : 1 (the panel's
   picture box is 116 x 50) into docs/shots/main_menu_v0.62.9/news_src/ (docs/main_menu.md).
 
 - Decimation's DECIMATION lettering (textures/gui/menu/banner.png and banner_intro.png) becomes our official DeciRemnant
@@ -53,7 +54,7 @@ BACKGROUNDS = {"background0": "site_hero", "background1": "site_refuge", "backgr
                "background3": "site_bridge", "background4": "site_base", "background5": "site_airport"}
 DIM, COLOUR = 0.62, 0.8  # brightness and saturation of the backgrounds: the menu's text stays readable on them
 # news panel -> its topic picture in news_src (taken at 2.32 : 1; cropped around the centre if not)
-NEWS = {"news_github": "github", "news_update": "update", "news_website": "website", "news_coming": "coming"}
+NEWS = {"news_multiplayer": "multiplayer", "news_update": "update", "news_website": "website", "news_coming": "coming"}
 NEWS_SRC = os.path.join(ROOT, "docs", "shots", "main_menu_v0.62.9", "news_src")
 NEWS_SIZE = (464, 200)
 # official server list map -> its eight picture slots, each a picture number in MAP_SRC/<map>_<n>.jpg

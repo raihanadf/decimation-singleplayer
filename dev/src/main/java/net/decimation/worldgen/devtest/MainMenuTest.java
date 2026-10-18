@@ -10,7 +10,7 @@ import net.minecraft.server.integrated.IntegratedServer;
 /**
  * Decimation's main menu as a player sees it after the start (fixes/MenuNews, PatchMenuBackground, docs/main_menu.md):
  * leaves the world, opens the home menu, waits until the welcome box and the loading fade are gone, then checks the
- * four news panels (GitHub, Updates, Website, Coming soon, in that order, each with a line and an address), saves
+ * four news panels (Multiplayer opening the Community list, Updates, Website, Coming soon, in that order, each with a line and an address), saves
  * mainmenu_home, then waits for the background slideshow (fixes/MenuBackground: a new picture every 7 s) to show the next
  * picture and saves mainmenu_next. Ends at the home menu.
  */

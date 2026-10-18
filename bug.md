@@ -1314,3 +1314,12 @@ middle, y 127 + 3 for our 0..255 boxes). Our names travel with "_" (the client s
 that layer printed them raw. Fix: tools/patches/PatchTurfNames.java argument `layer` turns "_"
 into spaces in its 7 text calls (three jars). Check: dev test `places` last shot looks at the
 floating name over the second district.
+
+## Joining a world with a mod you do not have: "Connecting" for two minutes (18 Oktober 2026, OPEN)
+
+Seen in the promo run: the dev host had Gliby's Voice Chat (gvc 0.6.1), the production joiner did not. JoinService
+should refuse at once with the toast "You need gvc 0.6.1 to join ..." (it closes the local socket), but the joiner sat on
+Minecraft's "Connecting" screen for 120 s (first try) and ended on the disconnect screen after 120 s (second try); the
+toast was not seen (screens only) [not verified]. Release players have no voice chat jar while Technic players do, so
+this will happen. To check: whether the toast shows, why the closed socket is not noticed at once, and whether
+voice chat should be left out of the mod check.
