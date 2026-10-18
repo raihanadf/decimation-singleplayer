@@ -306,6 +306,14 @@ public final class HostService
             }
             catch (IOException e)
             {
+                synchronized (this)
+                {
+                    if (g == gen)
+                    {
+                        closeGate(gate); // no control socket: no direct joins either (review)
+                        gate = null;
+                    }
+                }
                 set(g, State.FAILED, e.getMessage());
                 return;
             }

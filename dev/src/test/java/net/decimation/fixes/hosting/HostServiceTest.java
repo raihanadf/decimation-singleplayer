@@ -11,6 +11,11 @@ import org.junit.jupiter.api.Test;
 
 class HostServiceTest
 {
+    static
+    {
+        Direct.loopbackForTests = true; // ::1 stands in for a global address
+    }
+
     HttpServer http;
     final AtomicInteger hosts = new AtomicInteger(), beats = new AtomicInteger(), stops = new AtomicInteger();
     volatile boolean gone, slowHost, beat503, host429;

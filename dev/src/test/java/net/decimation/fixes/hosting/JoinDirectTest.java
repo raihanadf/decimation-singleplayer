@@ -20,6 +20,11 @@ import org.junit.jupiter.api.Test;
 /** The joiner's side of direct joins (docs/player_hosting.md section 15): direct when the host answers, else the relay. */
 class JoinDirectTest
 {
+    static
+    {
+        Direct.loopbackForTests = true; // ::1 stands in for a global address
+    }
+
     static int echo;
     private final List<AutoCloseable> open = new ArrayList<AutoCloseable>();
 

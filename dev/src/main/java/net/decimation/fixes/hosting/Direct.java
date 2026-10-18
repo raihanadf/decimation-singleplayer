@@ -26,7 +26,10 @@ import java.util.concurrent.ConcurrentHashMap;
 public final class Direct
 {
     static final String PROBE = "DRPROBE ", OK = "DROK\n";
-    private static final int MAX = 4, HELD_MAX = 4096, FIRST_BYTES_MS = 10000;
+    private static final int MAX = 4, HELD_MAX = 4096, FIRST_BYTES_MS = 10000, PENDING_MAX = 16;
+
+    /** Unit tests only: also take ::1 (they have no global IPv6 address to play with). */
+    static volatile boolean loopbackForTests;
 
     private Direct()
     {
@@ -80,7 +83,7 @@ public final class Direct
         Socket s = new Socket();
         try
         {
-            s.connect(socketAddress(address), timeoutMs);
+            s.connect(target(address), timeoutMs);
             s.setSoTimeout(timeoutMs);
             s.getOutputStream().write((PROBE + room + "\n").getBytes(StandardCharsets.US_ASCII));
             byte[] want = OK.getBytes(StandardCharsets.US_ASCII), got = new byte[want.length];
@@ -119,14 +122,34 @@ public final class Direct
         return null;
     }
 
-    static InetSocketAddress socketAddress(String address)
+    /**
+     * "[ipv6]:port" as a socket address, only for a numeric global IPv6 address (2000::/3) and a port 1024 .. 65535: the
+     * relay hands out what hosts wrote, so nothing else is ever connected (no name lookup, no local address).
+     */
+    static InetSocketAddress target(String address)
     {
-        int close = address.lastIndexOf(']');
-        if (!address.startsWith("[") || close < 0 || address.length() < close + 3 || address.charAt(close + 1) != ':')
+        int close = address == null ? -1 : address.lastIndexOf(']');
+        if (close < 2 || !address.startsWith("[") || address.length() < close + 3 || address.charAt(close + 1) != ':'
+            || !address.substring(1, close).matches("[0-9a-fA-F:]+") || !address.substring(close + 2).matches("\\d{4,5}"))
         {
-            throw new IllegalArgumentException("not [ipv6]:port: " + address);
+            throw new IllegalArgumentException("not [global ipv6]:port: " + address);
         }
-        return new InetSocketAddress(address.substring(1, close), Integer.parseInt(address.substring(close + 2)));
+        int port = Integer.parseInt(address.substring(close + 2));
+        InetAddress a;
+        try
+        {
+            a = InetAddress.getByName(address.substring(1, close)); // a literal: parsed, never looked up
+        }
+        catch (java.net.UnknownHostException e)
+        {
+            throw new IllegalArgumentException("not an address: " + address);
+        }
+        boolean global = a instanceof Inet6Address && ((a.getAddress()[0] & 0xe0) == 0x20 || loopbackForTests && a.isLoopbackAddress());
+        if (!global || port < 1024 || port > 65535)
+        {
+            throw new IllegalArgumentException("not [global ipv6]:port: " + address);
+        }
+        return new InetSocketAddress(a, port);
     }
 
     /** Copies one way until either side closes, then closes both. */
@@ -185,6 +208,9 @@ public final class Direct
         private final Pipe.Gate gate;
         private final Closed closed;
         private final Set<Socket> live = Collections.newSetFromMap(new ConcurrentHashMap<Socket, Boolean>());
+        /** Joiners still sending their first bytes: at most PENDING_MAX at once, each FIRST_BYTES_MS in all (review). */
+        private final java.util.concurrent.atomic.AtomicInteger pending = new java.util.concurrent.atomic.AtomicInteger();
+        private volatile int deadlineMs = FIRST_BYTES_MS;
 
         private Gate(ServerSocket server, int lanPort, String room, Pipe.Gate gate, Closed closed)
         {
@@ -238,8 +264,19 @@ public final class Direct
             return live.size();
         }
 
+        void deadlineForTests(int ms)
+        {
+            deadlineMs = ms;
+        }
+
         private void serve(final Socket s)
         {
+            if (pending.incrementAndGet() > PENDING_MAX)
+            {
+                pending.decrementAndGet();
+                Direct.close(s);
+                return;
+            }
             Thread t = new Thread(new Runnable()
             {
                 public void run()
@@ -253,10 +290,23 @@ public final class Direct
 
         private void handle(final Socket s)
         {
-            String admitted = null;
             try
             {
-                s.setSoTimeout(FIRST_BYTES_MS);
+                handleFirst(s);
+            }
+            finally
+            {
+                pending.decrementAndGet();
+            }
+        }
+
+        /** The first bytes until the probe is answered or the gate decides; then the joiner plays (own threads). */
+        private void handleFirst(final Socket s)
+        {
+            String admitted = null;
+            long end = System.currentTimeMillis() + deadlineMs;
+            try
+            {
                 InputStream in = s.getInputStream();
                 ByteArrayOutputStream held = new ByteArrayOutputStream();
                 String r = room;
@@ -265,6 +315,13 @@ public final class Direct
                 int verdict = Pipe.Gate.MORE;
                 while (verdict == Pipe.Gate.MORE)
                 {
+                    long left = end - System.currentTimeMillis();
+                    if (left <= 0)
+                    {
+                        Direct.close(s); // the whole first message in time, not just each byte
+                        return;
+                    }
+                    s.setSoTimeout((int) left);
                     int n = in.read(buf);
                     if (n < 0 || held.size() + n > HELD_MAX)
                     {
@@ -279,11 +336,16 @@ public final class Direct
                         {
                             continue; // the rest of the probe line
                         }
-                        if (java.util.Arrays.equals(h, probe))
+                        if (r != null && java.util.Arrays.equals(h, probe))
                         {
                             s.getOutputStream().write(OK.getBytes(StandardCharsets.US_ASCII));
                         }
                         Direct.close(s);
+                        return;
+                    }
+                    if (room == null)
+                    {
+                        Direct.close(s); // not listed yet: nobody plays (review)
                         return;
                     }
                     verdict = gate.decide(h);

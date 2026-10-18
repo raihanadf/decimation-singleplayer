@@ -19,6 +19,11 @@ import org.junit.jupiter.api.Test;
 /** Direct joins over IPv6 (docs/player_hosting.md section 15): the host's addresses, its gate, the joiner's probe. */
 class DirectTest
 {
+    static
+    {
+        Direct.loopbackForTests = true; // ::1 stands in for a global address
+    }
+
     private final List<AutoCloseable> open = new ArrayList<AutoCloseable>();
 
     @AfterEach
@@ -181,4 +186,80 @@ class DirectTest
         assertNull(Direct.pick(Collections.singletonList("[::1]:" + deadPort), "room1", 1500));
         assertNull(Direct.pick(Collections.<String>emptyList(), "room1", 1500));
     }
+
+    // ---- review findings (18 Oktober 2026)
+
+    @Test
+    void onlyNumericGlobalIpv6IsEverConnected()
+    {
+        Direct.loopbackForTests = false;
+        try
+        {
+            strict();
+        }
+        finally
+        {
+            Direct.loopbackForTests = true;
+        }
+    }
+
+    private static void strict()
+    {
+        for (String bad : new String[] {"[example.com]:51234", "[fe80::1]:51234", "[fd00::1]:51234", "[::1]:51234",
+                                         "[::ffff:1.2.3.4]:51234", "[2001:db8::5]:80", "[2001:db8::5]:70000", "1.2.3.4:51234", "x"})
+        {
+            assertThrows(IllegalArgumentException.class, () -> Direct.target(bad), bad);
+        }
+        assertEquals(51234, Direct.target("[2001:db8::5]:51234").getPort());
+    }
+
+    @Test
+    void theGateClosesAJoinerThatDripsBytesPastTheDeadline() throws Exception
+    {
+        Direct.Gate g = Direct.Gate.open(lanEcho(), "room1", gate(Pipe.Gate.ALLOW), null);
+        open.add(g);
+        g.deadlineForTests(400);
+        Socket s = new Socket(InetAddress.getByName("::1"), g.port());
+        s.setSoTimeout(3000);
+        OutputStream out = s.getOutputStream();
+        long t0 = System.currentTimeMillis();
+        try
+        {
+            for (int i = 0; i < 20; i++) // one byte every 100 ms: each read is quick, the whole is not
+            {
+                out.write(0x7f);
+                out.flush();
+                Thread.sleep(100);
+            }
+        }
+        catch (java.io.IOException closedByGate)
+        {
+            // the gate closed us: expected
+        }
+        int r;
+        try
+        {
+            r = s.getInputStream().read();
+        }
+        catch (java.io.IOException e)
+        {
+            r = -1;
+        }
+        assertEquals(-1, r);
+        assertTrue(System.currentTimeMillis() - t0 < 2500, "closed near the deadline");
+        s.close();
+    }
+
+    @Test
+    void theGateRefusesLoginsUntilItHasItsRoom() throws Exception
+    {
+        Direct.Gate g = Direct.Gate.open(lanEcho(), null, gate(Pipe.Gate.ALLOW), null);
+        open.add(g);
+        Socket s = new Socket(InetAddress.getByName("::1"), g.port());
+        s.getOutputStream().write(LoginNameTest.join(LoginNameTest.handshake(2), LoginNameTest.loginStart("Rizky")));
+        s.setSoTimeout(3000);
+        assertEquals(-1, s.getInputStream().read());
+        s.close();
+    }
 }
+

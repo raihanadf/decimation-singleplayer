@@ -186,7 +186,7 @@ public final class JoinService
         Socket d = new Socket();
         try
         {
-            d.connect(Direct.socketAddress(at), PROBE_MS);
+            d.connect(Direct.target(at), PROBE_MS);
             d.getOutputStream().write(first);
         }
         catch (IOException | IllegalArgumentException ex)

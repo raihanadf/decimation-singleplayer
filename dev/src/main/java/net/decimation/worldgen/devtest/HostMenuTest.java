@@ -57,6 +57,22 @@ public class HostMenuTest extends DevTestMode
                 String cmdText = cmd == null ? "none" : cmd.displayString;
                 DevTestResults.check(name(), "new hosts default to commands for the host only", cmdText,
                                      cmdText.contains("only me"), "Commands: only me (user, 18 Oktober 2026)");
+                GuiButton route = DevTestUtil.byId(mc.currentScreen, 9); // HostScreen ROUTE
+                String routeText = route == null ? "none" : route.displayString;
+                DevTestResults.check(name(), "new hosts default to direct + relay", routeText, routeText.contains("Direct"),
+                                     "Direct + relay (user, 18 Oktober 2026)");
+                if (route != null) // the switch flips to relay only and back
+                {
+                    DevTestUtil.click(mc.currentScreen, route);
+                    GuiButton flipped = DevTestUtil.byId(mc.currentScreen, 9);
+                    String flippedText = flipped == null ? "none" : flipped.displayString;
+                    DevTestResults.check(name(), "the connection switch offers relay only", flippedText,
+                                         flippedText.contains("Relay only"), "Relay only");
+                    if (flipped != null)
+                    {
+                        DevTestUtil.click(mc.currentScreen, flipped);
+                    }
+                }
                 DevTestUtil.screenshot(mc, name(), "host_page");
                 mc.displayGuiScreen(Deci.homeMenu());
                 step = 3;
