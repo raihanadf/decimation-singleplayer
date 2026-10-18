@@ -36,6 +36,7 @@ public final class HostService
         public boolean online = true; // "Mojang accounts only" unless the host picks otherwise (user, 18 Oktober 2026)
         public int max = 4;
         public boolean commands = true; // "Commands: only me" (user, 18 Oktober 2026)
+        public boolean direct = true; // direct joins over IPv6, on unless the host picks "Relay only" (user, 18 Oktober 2026)
     }
 
     public interface Players
@@ -71,6 +72,7 @@ public final class HostService
     private volatile int lanPort;
     private volatile String room, secret;
     private volatile RelaySocket control;
+    private volatile Direct.Gate gate;
     private volatile int gen;
     private volatile StateListener listener;
     private final AtomicLong lastBeat = new AtomicLong();
@@ -117,6 +119,19 @@ public final class HostService
         settings = null;
     }
 
+    /** The host's direct addresses for a gate port ("[ipv6]:port"); tests give their own. */
+    interface Addresses
+    {
+        List<String> of(int port);
+    }
+
+    private volatile Addresses addresses;
+
+    void addressesForTests(Addresses a)
+    {
+        addresses = a;
+    }
+
     void playingForTests(Playing p)
     {
         playing = p;
@@ -139,7 +154,14 @@ public final class HostService
 
     public int joiners()
     {
-        return pipes.size();
+        Direct.Gate d = gate;
+        return pipes.size() + (d == null ? 0 : d.connections());
+    }
+
+    /** True while a direct gate is open with at least one address offered. */
+    public boolean direct()
+    {
+        return gate != null;
     }
 
     public Settings settings()
@@ -220,18 +242,33 @@ public final class HostService
     {
         Settings st = settings;
         RelayClient c = new RelayClient(RelayClient.base());
+        Direct.Gate dg = st.direct ? openGate() : null;
+        List<String> direct = null;
+        if (dg != null)
+        {
+            Addresses a = addresses;
+            direct = a != null ? a.of(dg.port()) : Direct.addresses(dg.port());
+            if (direct.isEmpty())
+            {
+                dg.close(); // no global IPv6 here: relay only
+                dg = null;
+                direct = null;
+            }
+        }
         String[] rs;
         try
         {
-            rs = c.host(st.name, st.player, st.online, st.max, ModSet.current0(), st.version);
+            rs = c.host(st.name, st.player, st.online, st.max, ModSet.current0(), st.version, direct);
         }
         catch (RelayClient.RelayFull e)
         {
+            closeGate(dg);
             set(g, State.FULL_TODAY, e.getMessage());
             return;
         }
         catch (IOException e)
         {
+            closeGate(dg);
             set(g, State.FAILED, e.getMessage());
             return;
         }
@@ -239,8 +276,14 @@ public final class HostService
         {
             if (g != gen)
             {
+                closeGate(dg);
                 run(stopCall(rs[0], rs[1])); // stopped while registering: take the new room off again
                 return;
+            }
+            if (dg != null)
+            {
+                dg.room(rs[0]);
+                gate = dg;
             }
             room = rs[0];
             secret = rs[1];
@@ -268,6 +311,39 @@ public final class HostService
             }
         }
         set(g, State.ONLINE, "");
+    }
+
+    /** The direct port: the same login checks as the relay path (admit / release), then the LAN port. */
+    private Direct.Gate openGate()
+    {
+        try
+        {
+            return Direct.Gate.open(lanPort, null, new Pipe.Gate()
+            {
+                public int decide(byte[] soFar)
+                {
+                    return admit(soFar);
+                }
+            }, new Direct.Closed()
+            {
+                public void closed(String name)
+                {
+                    release(name);
+                }
+            });
+        }
+        catch (IOException e)
+        {
+            return null; // no direct port: relay only
+        }
+    }
+
+    private static void closeGate(Direct.Gate g)
+    {
+        if (g != null)
+        {
+            g.close();
+        }
     }
 
     private RelaySocket openControl(final RelayClient c, final String r, final String s, final int g) throws IOException
@@ -483,6 +559,8 @@ public final class HostService
             p.close();
         }
         pipes.clear();
+        closeGate(gate);
+        gate = null;
         RelaySocket c = control;
         control = null;
         if (c != null && c.isOpen())

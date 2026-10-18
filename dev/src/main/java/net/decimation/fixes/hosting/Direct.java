@@ -181,7 +181,7 @@ public final class Direct
     {
         private final ServerSocket server;
         private final int lanPort;
-        private final String room;
+        private volatile String room;
         private final Pipe.Gate gate;
         private final Closed closed;
         private final Set<Socket> live = Collections.newSetFromMap(new ConcurrentHashMap<Socket, Boolean>());
@@ -226,6 +226,12 @@ public final class Direct
             return server.getLocalPort();
         }
 
+        /** The room the relay gave (known only after registering, which needs this port first). */
+        public void room(String r)
+        {
+            room = r;
+        }
+
         /** Joiners connected right now (probes and refused ones are not counted). */
         public int connections()
         {
@@ -253,7 +259,8 @@ public final class Direct
                 s.setSoTimeout(FIRST_BYTES_MS);
                 InputStream in = s.getInputStream();
                 ByteArrayOutputStream held = new ByteArrayOutputStream();
-                byte[] probe = (PROBE + room + "\n").getBytes(StandardCharsets.US_ASCII);
+                String r = room;
+                byte[] probe = (PROBE + (r == null ? "-" : r) + "\n").getBytes(StandardCharsets.US_ASCII);
                 byte[] buf = new byte[1024];
                 int verdict = Pipe.Gate.MORE;
                 while (verdict == Pipe.Gate.MORE)

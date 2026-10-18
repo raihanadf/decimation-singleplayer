@@ -14,6 +14,7 @@ class HostServiceTest
     HttpServer http;
     final AtomicInteger hosts = new AtomicInteger(), beats = new AtomicInteger(), stops = new AtomicInteger();
     volatile boolean gone, slowHost, beat503, host429;
+    volatile String hostBody = "";
 
     @BeforeEach
     void up() throws Exception
@@ -21,7 +22,11 @@ class HostServiceTest
         http = HttpServer.create(new InetSocketAddress("127.0.0.1", 0), 0);
         http.createContext("/", ex -> {
             String p = ex.getRequestURI().getPath();
-            ex.getRequestBody().close();
+            byte[] in = readAll(ex.getRequestBody());
+            if (p.equals("/list/host"))
+            {
+                hostBody = new String(in, java.nio.charset.StandardCharsets.UTF_8);
+            }
             String a = "{}";
             int code = 200;
             if (p.equals("/list/host"))
@@ -62,9 +67,22 @@ class HostServiceTest
         HostService.INSTANCE.socketsForTests(false); // the fake relay has no WebSocket
     }
 
+    static byte[] readAll(java.io.InputStream in) throws java.io.IOException
+    {
+        java.io.ByteArrayOutputStream o = new java.io.ByteArrayOutputStream();
+        byte[] b = new byte[4096];
+        for (int n; (n = in.read(b)) > 0; )
+        {
+            o.write(b, 0, n);
+        }
+        in.close();
+        return o.toByteArray();
+    }
+
     @AfterEach
     void down()
     {
+        HostService.INSTANCE.addressesForTests(null);
         HostService.INSTANCE.stop();
         http.stop(0);
     }
@@ -235,6 +253,41 @@ class HostServiceTest
         HostService.INSTANCE.clearForTests();
         byte[] a = LoginNameTest.join(LoginNameTest.handshake(2), LoginNameTest.loginStart("Rizky"));
         assertEquals(Pipe.Gate.DENY, HostService.INSTANCE.admit(a), "the gate fails closed when nothing is hosted");
+    }
+
+    // ---- direct joins (docs/player_hosting.md section 15)
+
+    @Test
+    void directOnRegistersTheAddressesAndItsGateAnswersForTheRoom() throws Exception
+    {
+        HostService.INSTANCE.addressesForTests(port -> java.util.Collections.singletonList("[::1]:" + port));
+        HostService.Settings s = settings();
+        s.direct = true;
+        HostService.INSTANCE.start(s, 25565, () -> 0);
+        assertEquals(HostService.State.ONLINE, HostService.INSTANCE.state());
+        java.util.regex.Matcher m = java.util.regex.Pattern.compile("\\[::1\\]:(\\d+)").matcher(hostBody);
+        assertTrue(m.find(), "the registration carries the direct address: " + hostBody);
+        String at = "[::1]:" + m.group(1);
+        assertTrue(Direct.probe(at, "r" + hosts.get(), 1500), "the gate answers for the room the relay gave");
+        HostService.INSTANCE.stop();
+        assertFalse(Direct.probe(at, "r" + hosts.get(), 1500), "stop closes the gate");
+    }
+
+    @Test
+    void relayOnlySendsNoAddress() throws Exception
+    {
+        HostService.INSTANCE.addressesForTests(port -> java.util.Collections.singletonList("[::1]:" + port));
+        HostService.Settings s = settings();
+        s.direct = false;
+        HostService.INSTANCE.start(s, 25565, () -> 0);
+        assertEquals(HostService.State.ONLINE, HostService.INSTANCE.state());
+        assertFalse(hostBody.contains("direct"), hostBody);
+    }
+
+    @Test
+    void newHostsOfferDirectJoins()
+    {
+        assertTrue(new HostService.Settings().direct, "direct on by default (user, 18 Oktober 2026)");
     }
 }
 
