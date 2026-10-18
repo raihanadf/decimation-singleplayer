@@ -14,7 +14,7 @@ import net.minecraft.world.storage.WorldInfo;
 /**
  * Host Online "Commands: only me" (docs/player_hosting.md section 12): while hosting, the host is an operator of the
  * world and nobody else is. The world's cheats and the dev client's commands for everyone are turned off for the test
- * (a hosted world shares with cheats off), then put back.
+ * (a hosted world shares with cheats off), then put back. Fields by MCP and SRG name: the test also runs in the release jar.
  */
 public class HostOpsTest extends DevTestMode
 {
@@ -30,14 +30,14 @@ public class HostOpsTest extends DevTestMode
         }
         ServerConfigurationManager scm = s.getConfigurationManager();
         WorldInfo info = s.worldServers[0].getWorldInfo();
-        boolean all = ReflectionHelper.getPrivateValue(ServerConfigurationManager.class, scm, "commandsAllowedForAll");
-        boolean cheats = ReflectionHelper.getPrivateValue(WorldInfo.class, info, "allowCommands");
+        boolean all = ReflectionHelper.getPrivateValue(ServerConfigurationManager.class, scm, "commandsAllowedForAll", "field_72407_n");
+        boolean cheats = ReflectionHelper.getPrivateValue(WorldInfo.class, info, "allowCommands", "field_76110_t");
         GameProfile me = host.getGameProfile();
         GameProfile joiner = new GameProfile(UUID.nameUUIDFromBytes("OfflinePlayer:kucing".getBytes()), "kucing");
         try
         {
-            ReflectionHelper.setPrivateValue(ServerConfigurationManager.class, scm, false, "commandsAllowedForAll");
-            ReflectionHelper.setPrivateValue(WorldInfo.class, info, false, "allowCommands");
+            ReflectionHelper.setPrivateValue(ServerConfigurationManager.class, scm, false, "commandsAllowedForAll", "field_72407_n");
+            ReflectionHelper.setPrivateValue(WorldInfo.class, info, false, "allowCommands", "field_76110_t");
             HostOps.revoke(s); // a leftover of an earlier run
             DevTestResults.check(name(), "commands on by default", new HostService.Settings().commands,
                                  new HostService.Settings().commands, "true");
@@ -61,8 +61,8 @@ public class HostOpsTest extends DevTestMode
         }
         finally
         {
-            ReflectionHelper.setPrivateValue(ServerConfigurationManager.class, scm, all, "commandsAllowedForAll");
-            ReflectionHelper.setPrivateValue(WorldInfo.class, info, cheats, "allowCommands");
+            ReflectionHelper.setPrivateValue(ServerConfigurationManager.class, scm, all, "commandsAllowedForAll", "field_72407_n");
+            ReflectionHelper.setPrivateValue(WorldInfo.class, info, cheats, "allowCommands", "field_76110_t");
         }
         return false;
     }
