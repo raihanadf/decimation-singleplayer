@@ -1375,3 +1375,9 @@ carried there). The test clears rain and thunder at the night step; World.isDayt
 rain strength keeps low for about 100 ticks after the rain stops, and Decimation's own storm weather may set rain again
 [inferred, not checked]. Look at rain strength and Decimation's weather at the check.
 
+## JoinServiceTest "a join is carried to the room" timed out once (18 Oktober 2026, OPEN, flaky)
+
+SocketTimeoutException at JoinServiceTest.java:79 (3 s read of the echo) in one full `./gradlew build`; passed alone 3
+of 3 right after and in the next full build (56 PASS). A build loaded machine [inferred]; raise the timeout if it comes
+back.
+
