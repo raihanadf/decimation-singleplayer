@@ -20,7 +20,7 @@ public class CorpseGunTest extends DevTestMode
 {
     public String name() { return "corpsegun"; }
 
-    private int ticks;
+    private int ticks, waited;
     private volatile int corpseId = -1;
     private volatile boolean placed;
 
@@ -30,7 +30,8 @@ public class CorpseGunTest extends DevTestMode
         net.decimation.worldgen.DevAutoTest.keepScreen = true;
         if (!placed)
         {
-            if (ticks >= 200)
+            ticks = 0; // the steps below count from the placement
+            if (++waited >= 200)
             {
                 DevTestResults.check(name(), "corpse placed", false, false, "true");
                 net.decimation.worldgen.DevAutoTest.keepScreen = false;
