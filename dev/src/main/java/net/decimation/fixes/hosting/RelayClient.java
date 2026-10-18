@@ -48,6 +48,13 @@ public final class RelayClient
 
     public String[] host(String name, String player, boolean online, int max, ModSet mods, String version) throws IOException
     {
+        return host(name, player, online, max, mods, version, null);
+    }
+
+    /** As above, with the host's direct addresses ("[ipv6]:port"); the relay never lists them (docs/player_hosting.md 15). */
+    public String[] host(String name, String player, boolean online, int max, ModSet mods, String version, List<String> direct)
+        throws IOException
+    {
         Map<String, Object> m = new LinkedHashMap<String, Object>();
         m.put("name", name);
         m.put("host", player);
@@ -55,6 +62,10 @@ public final class RelayClient
         m.put("max", max);
         m.put("mods", mods.pairs());
         m.put("version", version);
+        if (direct != null && !direct.isEmpty())
+        {
+            m.put("direct", direct);
+        }
         JsonObject o = new Gson().fromJson(call("POST", "/list/host", new Gson().toJson(m)), JsonObject.class);
         return new String[] {o.get("room").getAsString(), o.get("secret").getAsString()};
     }
@@ -69,6 +80,21 @@ public final class RelayClient
     public void stop(String room, String secret) throws IOException
     {
         call("POST", "/list/stop", "{\"room\":\"" + room + "\",\"secret\":\"" + secret + "\"}");
+    }
+
+    /** A listed world's direct addresses, asked only when a player joins it (empty when it has none). */
+    public List<String> direct(String room) throws IOException
+    {
+        JsonObject o = new Gson().fromJson(call("POST", "/list/direct", "{\"room\":\"" + room + "\"}"), JsonObject.class);
+        List<String> out = new java.util.ArrayList<String>();
+        if (o != null && o.has("direct"))
+        {
+            for (com.google.gson.JsonElement a : o.getAsJsonArray("direct"))
+            {
+                out.add(a.getAsString());
+            }
+        }
+        return out;
     }
 
     public List<ListEntry> list() throws IOException

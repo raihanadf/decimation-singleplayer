@@ -47,6 +47,9 @@ public final class Pipe
     }
 
     private First first;
+    /** Bytes already read from the TCP side before the pipe started (the join side read them to choose a route). */
+    private byte[] initial;
+
 
     public static Pipe start(Socket tcp, URI relayUri, boolean waitReady, Runnable onClose, final Gate gate) throws IOException
     {
@@ -56,8 +59,16 @@ public final class Pipe
     public static Pipe start(Socket tcp, URI relayUri, boolean waitReady, Runnable onClose, final Gate gate, First first)
         throws IOException
     {
+        return start(tcp, relayUri, waitReady, onClose, gate, first, null);
+    }
+
+    /** As above; `initial` (bytes already read from the TCP side, or null) goes to the relay first. */
+    public static Pipe start(Socket tcp, URI relayUri, boolean waitReady, Runnable onClose, final Gate gate, First first,
+                             byte[] initial) throws IOException
+    {
         final Pipe p = new Pipe(tcp, onClose);
         p.first = first;
+        p.initial = initial;
         final OutputStream out = tcp.getOutputStream();
         final java.io.ByteArrayOutputStream held = new java.io.ByteArrayOutputStream();
         final boolean[] open = {gate == null};
@@ -137,6 +148,10 @@ public final class Pipe
                 return;
             }
             InputStream in = tcp.getInputStream();
+            if (initial != null && initial.length > 0)
+            {
+                relay.send(initial, 0, initial.length);
+            }
             byte[] b = new byte[16384];
             for (int n; (n = in.read(b)) > 0; )
             {
