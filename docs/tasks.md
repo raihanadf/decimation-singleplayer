@@ -44,7 +44,7 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [~] player hosting part 1: built, reviewed, relay deployed, brother test smooth (150 to 270 ms, docs/player_hosting.md 12); "Commands: only me" checked in the real game (/tp works), pushed; open: release (batched)
 - [x] Community page: "Players Online: N" only, placeholder for an empty list (CommunityText, dev client)
 - [x] main menu news: Multiplayer first (opens the Community list), fresh pictures (three jars)
-- [~] website multiplayer teaser: hero link + section (site 5ca55b6 local); open: user's look, push, live check
+- [~] website multiplayer teaser: 5ca55b6 live ("Coming next"); c1b615a "Coming in 1.0.0" not pushed yet; then live check
 - [~] promotion drafts (docs/promotion.md): Reddit + Discord teaser; user decides on BoehMod permission, posts
 - [x] joiners without the voice chat mod get into a host that has it (OptionalMods, 179e211; two game test PASS)
 - [ ] bug: joining a world with another missing mod sits on Connecting for 2 minutes (bug.md)
@@ -52,7 +52,7 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [x] natural spawns off for tests: /gamerule doMobSpawning false also stops our spawners (fixes/NaturalSpawns, dev test nospawn)
 - [x] plan: 1.0.0 order decided (user): pre-releases low / medium fixes only, multiplayer + new cities only in 1.0.0 (full release)
 - [x] branch `prerelease` (worktree ../Decimation-prerelease): 0.64.8 + 5 plain fixes, no multiplayer; corpsegun RED then GREEN there
-- [ ] user: push the new branch (`git push -u origin prerelease`)
+- [x] main and prerelease pushed (18 Oktober 2026, origin/prerelease 2fbc2d5, checked)
 - [ ] zombies test "night frenzy off by day" FAILs on main and prerelease (x1.20 at noon; weather or storm suspected)
 - [~] plan: city content replacement (docs/city_replacement.md): ChaosZPack blocked by its license, McJty Lost Cities (MIT) proposed; user decides
 - [ ] city content replacement with ChaoszPack Lost Cities (copyright; roadmap, after multiplayer)
