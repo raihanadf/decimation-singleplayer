@@ -310,4 +310,13 @@ playit.gg address on the Community list, joiners connect straight to it, our rel
 connection (IPv6 or port forward; fails behind CGNAT), or our relay elsewhere (a server in Singapore costs money).
 Sources: playit.gg/support/playit-premium, discuss.playit.gg (regional tunnels), blog.cloudflare.com/indonesia,
 developers.cloudflare.com geographic traffic routing.
+- Second look (21:35): the free Worker's data center changes per new connection. Six tries (IPv4 and IPv6, 3 each):
+  FRA 0.72 s, FRA 0.70 s, SIN 0.25 s, SIN 0.24 s, LHR 0.80 s, FRA 0.83 s (whole HTTPS request). cloudflare.com and
+  workers.cloudflare.com from the same connection: CGK (Jakarta) every time. So free traffic from this ISP is spread over
+  Asia and Europe; Paris in the first look was one of them. A Durable Object (each hosted world's Room) is placed near
+  its first request and stays there [Cloudflare docs; where our Rooms sit is not measured], so a room first touched
+  through Europe keeps the whole game in Europe.
+  Idea (user wants no extra program for hosts): keep Cloudflare, but (1) create each Room with locationHint "apac"
+  (Durable Objects location hints) when the host is in Asia, and (2) let the mod reconnect a data socket that landed far
+  away (the Worker reports request.cf.colo) a few times until it lands in Asia. [Not built, not measured.]
 
