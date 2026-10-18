@@ -1,24 +1,8 @@
 import { Lobby } from './lobby';
 import { Room } from './room';
 export { Lobby, Room };
-
-const SE_ASIA = new Set(['ID', 'SG', 'MY', 'TH', 'VN', 'PH', 'KH', 'LA', 'MM', 'BN', 'TL']);
-const NE_ASIA = new Set(['JP', 'KR', 'KP', 'CN', 'TW', 'HK', 'MO', 'MN']);
-const E_EUROPE = new Set(['PL', 'CZ', 'SK', 'HU', 'RO', 'BG', 'UA', 'BY', 'MD', 'LT', 'LV', 'EE', 'RU', 'RS', 'HR', 'SI', 'BA', 'GR', 'TR']);
-
-/**
- * Where a new room should live: near the host whose control socket creates it (Durable Object location hint, best effort,
- * only on creation). Free Worker traffic from Indonesia was seen in Paris and Frankfurt (docs/player_hosting.md 14).
- */
-export function roomHint(country?: string, continent?: string): DurableObjectLocationHint | undefined {
-  if (continent === 'AS') return country && SE_ASIA.has(country) ? 'apac-se' : country && NE_ASIA.has(country) ? 'apac-ne' : 'apac';
-  if (continent === 'OC') return 'oc';
-  if (continent === 'EU') return country && E_EUROPE.has(country) ? 'eeur' : 'weur';
-  if (continent === 'NA') return 'enam';
-  if (continent === 'SA') return 'sam';
-  if (continent === 'AF') return 'afr';
-  return undefined;
-}
+export { roomHint } from './hint';
+import { roomHint } from './hint';
 
 export default {
   async fetch(req: Request, env: Cloudflare.Env): Promise<Response> {
@@ -36,7 +20,11 @@ export default {
       const cf = (req as any).cf as { country?: string; continent?: string } | undefined;
       const hint = parts[0] === 'host' && parts.length === 2 ? roomHint(cf?.country, cf?.continent) : undefined;
       const id = env.ROOM.idFromName(parts[1]);
-      return (hint ? env.ROOM.get(id, { locationHint: hint }) : env.ROOM.get(id)).fetch(fwd);
+      const r = await (hint ? env.ROOM.get(id, { locationHint: hint }) : env.ROOM.get(id)).fetch(fwd);
+      if (r.status !== 101 || !r.webSocket) return r;
+      // which data center this socket landed in: the game retries one that landed far from the room (docs/player_hosting.md 16)
+      const colo = ((req as any).cf as { colo?: string } | undefined)?.colo;
+      return new Response(null, { status: 101, webSocket: r.webSocket, headers: colo ? { 'x-colo': colo } : {} });
     }
     return new Response('DeciRemnant relay', { status: 200 });
   },

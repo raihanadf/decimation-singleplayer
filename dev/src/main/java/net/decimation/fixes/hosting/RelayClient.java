@@ -67,7 +67,8 @@ public final class RelayClient
             m.put("direct", direct);
         }
         JsonObject o = new Gson().fromJson(call("POST", "/list/host", new Gson().toJson(m)), JsonObject.class);
-        return new String[] {o.get("room").getAsString(), o.get("secret").getAsString()};
+        return new String[] {o.get("room").getAsString(), o.get("secret").getAsString(),
+                             o.has("region") && !o.get("region").isJsonNull() ? o.get("region").getAsString() : null};
     }
 
     /** False when the list forgot the world (missed heartbeats): register again. */

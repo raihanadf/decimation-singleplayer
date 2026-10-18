@@ -115,6 +115,7 @@ public final class RelaySocket
                                                                                               new DefaultHttpHeaders(), 1 << 20);
         final CountDownLatch handshaken = new CountDownLatch(1);
         final Throwable[] failure = new Throwable[1];
+        final String[] colo = new String[1];
         Bootstrap b = new Bootstrap().group(GROUP).channel(NioSocketChannel.class)
             .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, TIMEOUT_S * 1000).option(ChannelOption.TCP_NODELAY, true)
             .handler(new ChannelInitializer<SocketChannel>()
@@ -147,6 +148,7 @@ public final class RelaySocket
                             {
                                 try
                                 {
+                                    colo[0] = ((FullHttpResponse) msg).headers().get("x-colo"); // the relay's data center
                                     hs.finishHandshake(ctx.channel(), (FullHttpResponse) msg);
                                 }
                                 catch (RuntimeException e)
@@ -213,6 +215,7 @@ public final class RelaySocket
             throw new IOException("relay handshake failed: " + (failure[0] == null ? "timeout" : failure[0].getMessage()));
         }
         final RelaySocket s = new RelaySocket(connect.channel());
+        s.colo = colo[0];
         connect.channel().closeFuture().addListener(new ChannelFutureListener()
         {
             public void operationComplete(ChannelFuture f)
@@ -277,6 +280,99 @@ public final class RelaySocket
     {
         flush();
         channel.writeAndFlush(new TextWebSocketFrame(s));
+    }
+
+    private volatile String colo;
+
+    /** The Cloudflare data center this socket landed in (the relay's x-colo), or null. */
+    public String colo()
+    {
+        return colo;
+    }
+
+    /**
+     * Opens and, while the socket landed far from the room's region (free Worker traffic from Indonesia lands in Singapore,
+     * Frankfurt, London or Paris per connection, docs/player_hosting.md 14), closes it and opens again: at most `tries`,
+     * the last one kept. The listener only ever hears the socket that is kept.
+     */
+    public static RelaySocket openNear(URI uri, Listener listener, String region, int tries) throws IOException
+    {
+        for (int i = 1; ; i++)
+        {
+            Forward f = new Forward();
+            RelaySocket s = open(uri, f);
+            if (i >= tries || Colos.near(region, s.colo()))
+            {
+                HostService.log("relay socket landed in " + s.colo() + (i > 1 ? " after " + i + " tries" : ""));
+                f.to(listener); // early messages reach the listener now, in order
+                return s;
+            }
+            s.close("landed far: " + s.colo()); // never handed a listener: what it says is dropped
+        }
+    }
+
+    /** Holds a socket's messages until it is kept (openNear), then passes them on in order. */
+    private static final class Forward implements Listener
+    {
+        private Listener target;
+        private java.util.List<Object[]> held = new java.util.ArrayList<Object[]>();
+
+        synchronized void to(Listener l)
+        {
+            target = l;
+            java.util.List<Object[]> h = held;
+            held = null;
+            if (l != null)
+            {
+                for (Object[] m : h)
+                {
+                    deliver(l, m);
+                }
+            }
+        }
+
+        private static void deliver(Listener l, Object[] m)
+        {
+            if (m[0] == null)
+            {
+                l.binary((byte[]) m[1]);
+            }
+            else if (m[0] instanceof String)
+            {
+                l.text((String) m[0]);
+            }
+            else
+            {
+                l.closed((Integer) m[0], (String) m[1]);
+            }
+        }
+
+        private synchronized void on(Object[] m)
+        {
+            if (held != null)
+            {
+                held.add(m);
+            }
+            else if (target != null)
+            {
+                deliver(target, m);
+            }
+        }
+
+        public void binary(byte[] d)
+        {
+            on(new Object[] {null, d});
+        }
+
+        public void text(String s)
+        {
+            on(new Object[] {s, null});
+        }
+
+        public void closed(int code, String reason)
+        {
+            on(new Object[] {code, reason});
+        }
     }
 
     /** Tests: cuts the connection as a network drop does (no close frame; the listener hears it closed). */

@@ -70,7 +70,7 @@ public final class HostService
     private volatile Settings settings;
     private volatile Players players;
     private volatile int lanPort;
-    private volatile String room, secret;
+    private volatile String room, secret, region;
     private volatile RelaySocket control;
     private volatile Direct.Gate gate;
     private volatile int gen;
@@ -311,6 +311,7 @@ public final class HostService
             }
             room = rs[0];
             secret = rs[1];
+            region = rs.length > 2 ? rs[2] : null;
             lastBeat.set(System.currentTimeMillis());
         }
         if (sockets)
@@ -380,7 +381,7 @@ public final class HostService
 
     private RelaySocket openControl(final RelayClient c, final String r, final String s, final int g) throws IOException
     {
-        return RelaySocket.open(c.hostSocket(r, s), new RelaySocket.Listener()
+        return RelaySocket.openNear(c.hostSocket(r, s), new RelaySocket.Listener()
         {
             public void binary(byte[] d)
             {
@@ -410,7 +411,7 @@ public final class HostService
                     controlLost(); // the relay dropped us (network, sleep, a relay deploy): list the world again
                 }
             }
-        });
+        }, region, 3);
     }
 
     /** One joiner: a data socket to the room piped to the LAN port, on its own thread (opening takes up to 10 s). */
@@ -443,7 +444,7 @@ public final class HostService
                             }
                             return verdict;
                         }
-                    });
+                    }, null, null, region, 3);
                     if (!p.isClosed())
                     {
                         pipes.put(id, p);

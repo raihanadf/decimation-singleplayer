@@ -145,5 +145,16 @@ describe('lobby', () => {
     expect((await ask('10.0.0.71')).status).toBe(429);
     expect((await ask('10.0.0.72')).status).toBe(200); // another address is not held back
   });
+
+  it('a world carries the region of its host (where its room lives), from the host\'s country', async () => {
+    const r = await SELF.fetch('https://relay/list/host', {
+      method: 'POST', headers: { 'CF-Connecting-IP': '10.0.0.80' },
+      body: JSON.stringify({ name: 'Region world', host: 'Ucil', online: false, max: 4, mods: [], version: '1' }),
+      cf: { country: 'ID', continent: 'AS' },
+    } as any);
+    const { room, region } = (await r.json()) as any;
+    expect(region).toBe('apac-se');
+    expect((await list()).find((x) => x.room === room).region).toBe('apac-se');
+  });
 });
 

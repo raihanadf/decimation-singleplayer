@@ -66,13 +66,20 @@ public final class Pipe
     public static Pipe start(Socket tcp, URI relayUri, boolean waitReady, Runnable onClose, final Gate gate, First first,
                              byte[] initial) throws IOException
     {
+        return start(tcp, relayUri, waitReady, onClose, gate, first, initial, null, 1);
+    }
+
+    /** As above, the relay socket opened again (up to `tries`) while it lands far from `region` (RelaySocket.openNear). */
+    public static Pipe start(Socket tcp, URI relayUri, boolean waitReady, Runnable onClose, final Gate gate, First first,
+                             byte[] initial, String region, int tries) throws IOException
+    {
         final Pipe p = new Pipe(tcp, onClose);
         p.first = first;
         p.initial = initial;
         final OutputStream out = tcp.getOutputStream();
         final java.io.ByteArrayOutputStream held = new java.io.ByteArrayOutputStream();
         final boolean[] open = {gate == null};
-        RelaySocket relay = RelaySocket.open(relayUri, new RelaySocket.Listener()
+        RelaySocket relay = RelaySocket.openNear(relayUri, new RelaySocket.Listener()
         {
             public void binary(byte[] d)
             {
@@ -119,7 +126,7 @@ public final class Pipe
                 }
                 p.close();
             }
-        });
+        }, region, tries);
         p.relay = relay;
         if (p.closed && relay.isOpen())
         {

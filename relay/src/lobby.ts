@@ -1,4 +1,5 @@
 import { DurableObject } from 'cloudflare:workers';
+import { roomHint } from './hint';
 
 /** One hosted world on the public list (docs/superpowers/specs/2026-10-18-player-hosting-part1-design.md 3.3). */
 export interface Entry {
@@ -6,6 +7,8 @@ export interface Entry {
   mods: [string, string][]; version: string; since: number; seen: number; ip: string;
   /** The host's own addresses for a direct join ("[global IPv6]:port"); never listed, handed out by /list/direct. */
   direct?: string[];
+  /** The host's region (Durable Object location hint of its room): games prefer relay sockets that land near it. */
+  region?: string;
 }
 
 const STALE_MS = 180_000;
@@ -149,10 +152,11 @@ export class Lobby extends DurableObject {
         room: token(16), secret: token(32), name, host: body.host, online: body.online, players: 0, max: body.max,
         mods: body.mods.map((m: any) => [`${m[0]}`, `${m[1]}`]), version: body.version, since: this.now(), seen: this.now(), ip,
         direct: body.direct ? body.direct.map((a: string) => a) : [],
+        region: roomHint((req as any).cf?.country, (req as any).cf?.continent),
       };
       this.entries.set(e.room, e);
       await this.save();
-      return json({ room: e.room, secret: e.secret });
+      return json({ room: e.room, secret: e.secret, region: e.region });
     }
     const e = this.entries.get(body.room);
     if (path === '/list/direct') { // a game that clicked Join: the host's direct addresses, never on the public list

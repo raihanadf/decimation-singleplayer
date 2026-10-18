@@ -62,7 +62,9 @@ class RelayClientTest
         answer = "{\"room\":\"r0\",\"secret\":\"s0\"}";
         String[] rs = client().host("Ucil world", "Ucil", false, 4,
                                     ModSet.of(Collections.singletonList(new String[] {"deci", "1.21.10f"})), "0.64.9");
-        assertArrayEquals(new String[] {"r0", "s0"}, rs);
+        assertArrayEquals(new String[] {"r0", "s0", null}, rs); // no region from this relay
+        answer = "{\"room\":\"r1\",\"secret\":\"s1\",\"region\":\"apac-se\"}";
+        assertEquals("apac-se", client().host("Ucil world", "Ucil", false, 4, ModSet.of(Collections.<String[]>emptyList()), "0.64.9")[2]);
         assertTrue(lastBody.contains("\"name\":\"Ucil world\""), lastBody);
         assertTrue(lastBody.contains("[\"deci\",\"1.21.10f\"]"), lastBody);
     }

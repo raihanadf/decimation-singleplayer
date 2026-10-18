@@ -8,6 +8,8 @@ import java.util.List;
 public final class ListEntry
 {
     public String room, name, host, version, route;
+    /** The host's region (where its relay room lives; docs/player_hosting.md 16), or null. */
+    public String region;
     public boolean online;
     public int players, max;
     public long since;

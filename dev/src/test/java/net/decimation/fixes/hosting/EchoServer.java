@@ -26,6 +26,8 @@ final class EchoServer
 {
     static final List<Integer> frameSizes = new CopyOnWriteArrayList<Integer>();
     static final java.util.concurrent.atomic.AtomicInteger pings = new java.util.concurrent.atomic.AtomicInteger();
+    /** /hop/A,B,C: the n-th connection on that path is told it landed in data center n (x-colo), as the relay does. */
+    static final java.util.Map<String, java.util.concurrent.atomic.AtomicInteger> hops = new java.util.concurrent.ConcurrentHashMap<String, java.util.concurrent.atomic.AtomicInteger>();
     private static NioEventLoopGroup group;
     private static Channel server;
 
@@ -48,7 +50,14 @@ final class EchoServer
                             {
                                 FullHttpRequest r = (FullHttpRequest) msg;
                                 hs = new WebSocketServerHandshakerFactory("ws://127.0.0.1" + r.getUri(), null, false, 1 << 20).newHandshaker(r);
-                                hs.handshake(ctx.channel(), r);
+                                io.netty.handler.codec.http.HttpHeaders extra = new io.netty.handler.codec.http.DefaultHttpHeaders();
+                                if (r.getUri().startsWith("/hop/"))
+                                {
+                                    String[] colos = r.getUri().substring(5).split(",");
+                                    int n = hops.computeIfAbsent(r.getUri(), k -> new java.util.concurrent.atomic.AtomicInteger()).getAndIncrement();
+                                    extra.add("x-colo", colos[Math.min(n, colos.length - 1)]);
+                                }
+                                hs.handshake(ctx.channel(), r, extra, ctx.channel().newPromise());
                                 if (r.getUri().startsWith("/join/"))
                                 {
                                     ctx.writeAndFlush(new TextWebSocketFrame("{\"ready\":true}")); // as the relay does once the host answers
