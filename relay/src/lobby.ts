@@ -51,17 +51,23 @@ const json = (o: unknown, status = 200) =>
 
 /** The public list: register, beat, stop, list; an entry goes 3 min after its last heartbeat. */
 /** "[ipv6]:port" of a global unicast IPv6 address (2000::/3) and a port above 1023; anything else is refused. */
-export function directOk(a: unknown): boolean {
+export function directOk(a: unknown, loopback = false): boolean {
   if (typeof a !== 'string' || a.length > 48) return false;
+  if (loopback && /^\[::1\]:\d{4,5}$/.test(a)) return true;
   const m = /^\[([0-9a-fA-F:]+)\]:(\d{4,5})$/.exec(a);
   if (!m || Number(m[2]) < 1024 || Number(m[2]) > 65535) return false;
   const first = m[1].split(':')[0];
   return first.length > 0 && (parseInt(first, 16) & 0xe000) === 0x2000;
 }
 
+/** Asks for a host's direct addresses per caller address per minute: a joiner needs one; harvesting the list needs many. */
+const ASK_PER_MINUTE = 10;
+
 export class Lobby extends DurableObject {
   entries = new Map<string, Entry>();
   registered = new Map<string, number>();
+  /** Per caller address: when its asks for direct addresses started this minute, and how many (abuse guard). */
+  asked = new Map<string, { at: number; n: number }>();
   offset = 0; // tests move the clock
   loaded = false;
 
@@ -136,7 +142,7 @@ export class Lobby extends DurableObject {
         && Array.isArray(body.mods) && body.mods.length <= 64
         && body.mods.every((m: any) => Array.isArray(m) && m.length === 2 && `${m[0]}`.length <= 64 && `${m[1]}`.length <= 32)
         && typeof body.version === 'string' && body.version.length <= 32
-        && (body.direct === undefined || (Array.isArray(body.direct) && body.direct.length <= 4 && body.direct.every(directOk)));
+        && (body.direct === undefined || (Array.isArray(body.direct) && body.direct.length <= 4 && body.direct.every((a: unknown) => directOk(a, (this.env as any).DIRECT_LOOPBACK === 'true'))));
       if (!ok) return json({ error: 'invalid' }, 400);
       this.registered.set(ip, this.now());
       const e: Entry = {
@@ -150,6 +156,12 @@ export class Lobby extends DurableObject {
     }
     const e = this.entries.get(body.room);
     if (path === '/list/direct') { // a game that clicked Join: the host's direct addresses, never on the public list
+      const ip = req.headers.get('CF-Connecting-IP') ?? 'unknown';
+      const t = this.now();
+      for (const [k, v] of this.asked) if (t - v.at >= 60_000) this.asked.delete(k); // memory stays small
+      const a = this.asked.get(ip) ?? { at: t, n: 0 };
+      if (++a.n > ASK_PER_MINUTE) return json({ error: 'too often' }, 429);
+      this.asked.set(ip, a);
       if (!e) return json({ error: 'room' }, 404);
       return json({ direct: e.direct ?? [] });
     }

@@ -113,6 +113,7 @@ public class LanHostTest extends DevTestMode
                 st.name = System.getProperty("deciworldgen.autotest.worldname", "Spike world");
                 st.online = online;
                 st.max = 4;
+                st.direct = !"false".equals(System.getProperty("deciworldgen.autotest.direct")); // direct=false: Relay only
                 st.player = host.getCommandSenderName();
                 st.version = net.decimation.fixes.hosting.ModSet.ourVersion();
                 final IntegratedServer srv = s;

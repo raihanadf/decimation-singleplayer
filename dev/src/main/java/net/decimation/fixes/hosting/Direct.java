@@ -28,8 +28,16 @@ public final class Direct
     static final String PROBE = "DRPROBE ", OK = "DROK\n";
     private static final int MAX = 4, HELD_MAX = 4096, FIRST_BYTES_MS = 10000, PENDING_MAX = 16;
 
-    /** Unit tests only: also take ::1 (they have no global IPv6 address to play with). */
+    /**
+     * Tests only: also take ::1 (unit tests; the two game dev test with `directloopback=true`, where host and joiner run on
+     * one machine that may have no global IPv6 address). Never set in a player's game.
+     */
     static volatile boolean loopbackForTests;
+
+    private static boolean loopback()
+    {
+        return loopbackForTests || Boolean.getBoolean("deciworldgen.autotest.directloopback");
+    }
 
     private Direct()
     {
@@ -44,6 +52,10 @@ public final class Direct
     /** This machine's global IPv6 addresses (2000::/3) as "[address]:port", at most 4. */
     public static List<String> addresses(int port)
     {
+        if (loopback())
+        {
+            return Collections.singletonList("[::1]:" + port);
+        }
         List<InetAddress> all = new ArrayList<InetAddress>();
         try
         {
@@ -144,7 +156,7 @@ public final class Direct
         {
             throw new IllegalArgumentException("not an address: " + address);
         }
-        boolean global = a instanceof Inet6Address && ((a.getAddress()[0] & 0xe0) == 0x20 || loopbackForTests && a.isLoopbackAddress());
+        boolean global = a instanceof Inet6Address && ((a.getAddress()[0] & 0xe0) == 0x20 || loopback() && a.isLoopbackAddress());
         if (!global || port < 1024 || port > 65535)
         {
             throw new IllegalArgumentException("not [global ipv6]:port: " + address);

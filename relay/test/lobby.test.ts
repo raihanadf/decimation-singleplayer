@@ -137,5 +137,13 @@ describe('lobby', () => {
     const d = await SELF.fetch('https://relay/list/direct', { method: 'POST', body: JSON.stringify({ room }) });
     expect(((await d.json()) as any).direct).toEqual([]);
   });
+
+  it('asking for direct addresses: at most 10 a minute per address (no harvesting the whole list)', async () => {
+    const { room } = (await (await host('Asked world', { direct: ['[2001:db8::9]:51234'] }, '10.0.0.70')).json()) as any;
+    const ask = (ip: string) => SELF.fetch('https://relay/list/direct', { method: 'POST', headers: { 'CF-Connecting-IP': ip }, body: JSON.stringify({ room }) });
+    for (let i = 0; i < 10; i++) expect((await ask('10.0.0.71')).status).toBe(200);
+    expect((await ask('10.0.0.71')).status).toBe(429);
+    expect((await ask('10.0.0.72')).status).toBe(200); // another address is not held back
+  });
 });
 
