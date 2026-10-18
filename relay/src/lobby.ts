@@ -4,6 +4,8 @@ import { DurableObject } from 'cloudflare:workers';
 export interface Entry {
   room: string; secret: string; name: string; host: string; online: boolean; players: number; max: number;
   mods: [string, string][]; version: string; since: number; seen: number; ip: string;
+  /** The host's own addresses for a direct join ("[global IPv6]:port"); never listed, handed out by /list/direct. */
+  direct?: string[];
 }
 
 const STALE_MS = 180_000;
@@ -48,6 +50,15 @@ const json = (o: unknown, status = 200) =>
   new Response(JSON.stringify(o), { status, headers: { 'content-type': 'application/json' } });
 
 /** The public list: register, beat, stop, list; an entry goes 3 min after its last heartbeat. */
+/** "[ipv6]:port" of a global unicast IPv6 address (2000::/3) and a port above 1023; anything else is refused. */
+export function directOk(a: unknown): boolean {
+  if (typeof a !== 'string' || a.length > 48) return false;
+  const m = /^\[([0-9a-fA-F:]+)\]:(\d{4,5})$/.exec(a);
+  if (!m || Number(m[2]) < 1024 || Number(m[2]) > 65535) return false;
+  const first = m[1].split(':')[0];
+  return first.length > 0 && (parseInt(first, 16) & 0xe000) === 0x2000;
+}
+
 export class Lobby extends DurableObject {
   entries = new Map<string, Entry>();
   registered = new Map<string, number>();
@@ -93,7 +104,9 @@ export class Lobby extends DurableObject {
     this.prune();
     const path = new URL(req.url).pathname;
     if (req.method === 'GET' && path === '/list') {
-      return json([...this.entries.values()].map(({ secret, seen, ip, ...pub }) => ({ ...pub, route: 'relay' })));
+      return json([...this.entries.values()].map(({ secret, seen, ip, direct, ...pub }) => ({
+        ...pub, route: direct && direct.length ? 'direct' : 'relay',
+      })));
     }
     if (req.method !== 'POST') return json({ error: 'method' }, 405);
     // never read more than 8 KB: a list entry is far smaller (abuse guard)
@@ -122,18 +135,24 @@ export class Lobby extends DurableObject {
         && typeof body.online === 'boolean' && Number.isInteger(body.max) && body.max >= 2 && body.max <= 8
         && Array.isArray(body.mods) && body.mods.length <= 64
         && body.mods.every((m: any) => Array.isArray(m) && m.length === 2 && `${m[0]}`.length <= 64 && `${m[1]}`.length <= 32)
-        && typeof body.version === 'string' && body.version.length <= 32;
+        && typeof body.version === 'string' && body.version.length <= 32
+        && (body.direct === undefined || (Array.isArray(body.direct) && body.direct.length <= 4 && body.direct.every(directOk)));
       if (!ok) return json({ error: 'invalid' }, 400);
       this.registered.set(ip, this.now());
       const e: Entry = {
         room: token(16), secret: token(32), name, host: body.host, online: body.online, players: 0, max: body.max,
         mods: body.mods.map((m: any) => [`${m[0]}`, `${m[1]}`]), version: body.version, since: this.now(), seen: this.now(), ip,
+        direct: body.direct ? body.direct.map((a: string) => a) : [],
       };
       this.entries.set(e.room, e);
       await this.save();
       return json({ room: e.room, secret: e.secret });
     }
     const e = this.entries.get(body.room);
+    if (path === '/list/direct') { // a game that clicked Join: the host's direct addresses, never on the public list
+      if (!e) return json({ error: 'room' }, 404);
+      return json({ direct: e.direct ?? [] });
+    }
     if (path === '/list/beat') {
       if (!e) return json({ gone: true });
       if (e.secret !== body.secret) return json({ error: 'secret' }, 403);

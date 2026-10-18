@@ -107,5 +107,35 @@ describe('lobby', () => {
     const r = await SELF.fetch('https://relay/list/host', { method: 'POST', headers: { 'CF-Connecting-IP': '10.0.0.41' }, body, duplex: 'half' } as any);
     expect(r.status).toBe(413);
   });
+
+  it('direct addresses: never on the list, handed out only for a listed world, route says direct', async () => {
+    const r = await host('Direct world', { direct: ['[2001:db8::5]:51234'] }, '10.0.0.31');
+    expect(r.status).toBe(200);
+    const { room } = (await r.json()) as any;
+    const e = (await list()).find((x) => x.room === room);
+    expect(e.route).toBe('direct');
+    expect(e.direct).toBeUndefined();
+    expect(JSON.stringify(await list())).not.toContain('2001:db8');
+    const d = await SELF.fetch('https://relay/list/direct', { method: 'POST', body: JSON.stringify({ room }) });
+    expect(d.status).toBe(200);
+    expect(((await d.json()) as any).direct).toEqual(['[2001:db8::5]:51234']);
+    const gone = await SELF.fetch('https://relay/list/direct', { method: 'POST', body: JSON.stringify({ room: 'nosuchroom000000' }) });
+    expect(gone.status).toBe(404);
+  });
+
+  it('direct addresses: only global IPv6 with a port, at most 4; else refused', async () => {
+    const bad = [['[fe80::1]:51234'], ['[fd00::1]:51234'], ['[::1]:51234'], ['[::ffff:1.2.3.4]:51234'], ['1.2.3.4:51234'],
+      ['[2001:db8::5]'], ['[2001:db8::5]:80'], ['[2001:db8::5]:70000'], ['example.com:25565'], 'x',
+      ['[2001:db8::1]:51234', '[2001:db8::2]:51234', '[2001:db8::3]:51234', '[2001:db8::4]:51234', '[2001:db8::5]:51234']];
+    let n = 40;
+    for (const direct of bad) expect((await host('Bad direct', { direct }, `10.0.0.${n++}`)).status).toBe(400);
+  });
+
+  it('a world without direct addresses stays route relay and hands out none', async () => {
+    const { room } = (await (await host('Relay world', {}, '10.0.0.60')).json()) as any;
+    expect((await list()).find((x) => x.room === room).route).toBe('relay');
+    const d = await SELF.fetch('https://relay/list/direct', { method: 'POST', body: JSON.stringify({ room }) });
+    expect(((await d.json()) as any).direct).toEqual([]);
+  });
 });
 
