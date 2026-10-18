@@ -56,12 +56,12 @@ class JoinServiceTest
     {
         final List<String> toasts = Collections.synchronizedList(new ArrayList<String>());
         JoinService.INSTANCE.setToasts(toasts::add);
-        int port = JoinService.INSTANCE.listen(entry("gvc", "0.6.1"), ModSet.of(Collections.<String[]>emptyList()));
+        int port = JoinService.INSTANCE.listen(entry("ruins", "16.4"), ModSet.of(Collections.<String[]>emptyList()));
         Socket s = new Socket(InetAddress.getLoopbackAddress(), port);
         s.setSoTimeout(2000);
         assertEquals(-1, s.getInputStream().read());
         Thread.sleep(100);
-        assertEquals(Collections.singletonList("You need gvc 0.6.1 to join Ucil world"), toasts);
+        assertEquals(Collections.singletonList("You need ruins 16.4 to join Ucil world"), toasts);
     }
 
     @Test

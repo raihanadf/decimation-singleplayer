@@ -27,7 +27,19 @@ class ModSetTest
     @Test
     void namesTheFirstMissingMod()
     {
-        assertEquals("gvc 0.6.1", set("deci", "1.21.10f").firstMissing(set("deci", "1.21.10f", "gvc", "0.6.1")));
+        assertEquals("ruins 16.4", set("deci", "1.21.10f").firstMissing(set("deci", "1.21.10f", "ruins", "16.4")));
+    }
+
+    @Test
+    void voiceChatIsOptionalForAJoiner()
+    {
+        assertNull(set("deci", "1.21.10f").firstMissing(set("deci", "1.21.10f", "gvc", "0.6.1")));
+    }
+
+    @Test
+    void voiceChatInAnotherVersionStillCounts()
+    {
+        assertEquals("gvc 0.6.1", set("deci", "1.21.10f", "gvc", "0.5.0").firstMissing(set("deci", "1.21.10f", "gvc", "0.6.1")));
     }
 
     @Test

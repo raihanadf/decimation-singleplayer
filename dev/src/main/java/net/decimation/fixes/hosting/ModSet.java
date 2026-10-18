@@ -13,6 +13,8 @@ import java.util.Set;
 public final class ModSet
 {
     private static final Set<String> BUILT_IN = new HashSet<String>(Arrays.asList("mcp", "FML", "Forge", "MinecraftForge"));
+    /** Mods a joiner may lack (Gliby's Voice Chat: Technic players have it, our release does not); OptionalMods. */
+    public static final Set<String> OPTIONAL = new HashSet<String>(Arrays.asList("gvc"));
     private final Map<String, String> mods;
 
     private ModSet(Map<String, String> mods)
@@ -77,12 +79,18 @@ public final class ModSet
         return v == null || v.isEmpty() || v.startsWith("$") ? c.getVersion() : v;
     }
 
-    /** "id version" of the first mod of `need` this set lacks or has in another version; null when none. */
+    /** "id version" of the first mod of `need` this set lacks or has in another version; null when none (an OPTIONAL mod
+     *  may be lacking). */
     public String firstMissing(ModSet need)
     {
         for (Map.Entry<String, String> e : need.mods.entrySet())
         {
-            if (!e.getValue().equals(mods.get(e.getKey())))
+            String mine = mods.get(e.getKey());
+            if (mine == null && OPTIONAL.contains(e.getKey()))
+            {
+                continue;
+            }
+            if (!e.getValue().equals(mine))
             {
                 return e.getKey() + " " + e.getValue();
             }
