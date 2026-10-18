@@ -1,5 +1,7 @@
-import { SELF, env, runInDurableObject } from 'cloudflare:test';
+import { SELF, env, runInDurableObject, runDurableObjectAlarm } from 'cloudflare:test';
 import { describe, it, expect } from 'vitest';
+
+const run = (runInDurableObject as unknown) as (stub: unknown, f: (o: any, s: any) => any) => Promise<void>;
 
 async function register(ip: string, max = 4) {
   const r = await SELF.fetch('https://relay/list/host', {
@@ -58,12 +60,17 @@ describe('room', () => {
     expect((await ws(`/join/${room}`)).status).toBe(409);
   });
 
-  it('closes the joiners with 4410 when the host control socket closes', async () => {
+  it('closes the joiners with 4410 once a closed control socket stays gone past the grace', async () => {
     const { room, secret } = await register('10.1.0.4');
     const control = await ws(`/host/${room}?secret=${secret}`);
     const joiner = await ws(`/join/${room}`);
-    control.socket.close(1000, 'stop');
-    await until(() => joiner.inbox.some((m) => m.closed === 4410));
+    control.socket.close(1000, 'bye');
+    await new Promise((r) => setTimeout(r, 100));
+    expect(joiner.inbox.some((m) => m && m.closed === 4410)).toBe(false); // not at once
+    const stub = env.ROOM.get(env.ROOM.idFromName(room));
+    await run(stub, async (_o: any, state: any) => state.storage.put('lostAt', Date.now() - 60_000));
+    await runDurableObjectAlarm(stub);
+    await until(() => joiner.inbox.some((m) => m && m.closed === 4410));
   });
 
   it('a host socket with a wrong secret never reaches the room', async () => {
@@ -106,14 +113,33 @@ describe('room', () => {
     expect(joiner.inbox.some((m) => m && m.closed === 4410)).toBe(false);
   });
 
-  it('a host that goes away without stop leaves the list at once', async () => {
+  it('a control socket blip keeps the joiners and the listing (grace for the host to come back)', async () => {
     const { room, secret } = await register('10.1.0.9');
     const control = await ws(`/host/${room}?secret=${secret}`);
+    const joiner = await ws(`/join/${room}`);
+    control.socket.close(1000, 'network blip');
+    await new Promise((r) => setTimeout(r, 300));
+    expect(joiner.inbox.some((m) => m && m.closed)).toBe(false);
+    const listed = ((await (await SELF.fetch('https://relay/list')).json()) as any[]).some((e) => e.room === room);
+    expect(listed).toBe(true);
+    await ws(`/host/${room}?secret=${secret}`); // the host is back in time
+    const stub = env.ROOM.get(env.ROOM.idFromName(room));
+    await run(stub, async (_o: any, state: any) => expect(await state.storage.get('lostAt')).toBeUndefined());
+  });
+
+  it('a host gone longer than the grace: joiners closed (4410) and off the list', async () => {
+    const { room, secret } = await register('10.1.0.10');
+    const control = await ws(`/host/${room}?secret=${secret}`);
+    const joiner = await ws(`/join/${room}`);
     control.socket.close(1000, 'quit');
-    const listed = async () => ((await (await SELF.fetch('https://relay/list')).json()) as any[]).some((e) => e.room === room);
-    const t = Date.now();
-    while ((await listed()) && Date.now() - t < 2000) await new Promise((r) => setTimeout(r, 20));
-    expect(await listed()).toBe(false);
+    const stub = env.ROOM.get(env.ROOM.idFromName(room));
+    await until(() => true);
+    await new Promise((r) => setTimeout(r, 100));
+    await run(stub, async (_o: any, state: any) => state.storage.put('lostAt', Date.now() - 60_000)); // the grace ran out
+    await runDurableObjectAlarm(stub);
+    await until(() => joiner.inbox.some((m) => m && m.closed === 4410));
+    const listed = ((await (await SELF.fetch('https://relay/list')).json()) as any[]).some((e) => e.room === room);
+    expect(listed).toBe(false);
   });
 });
 
