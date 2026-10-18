@@ -19,13 +19,15 @@ import net.minecraft.world.WorldSettings;
  */
 public final class HostScreen extends GuiScreen
 {
-    private static final int START = 1, BACK = 2, OFFLINE = 3, ONLINE = 4, MINUS = 5, PLUS = 6, RESUME = 7, COMMANDS = 8;
+    private static final int START = 1, BACK = 2, OFFLINE = 3, ONLINE = 4, MINUS = 5, PLUS = 6, RESUME = 7, COMMANDS = 8,
+                             ROUTE = 9;
     private final GuiScreen parent;
     private GuiTextField name;
     private String typed;
     private boolean online = true; // Mojang accounts only by default (user, 18 Oktober 2026)
     private int max = 4;
     private boolean commands = true; // "Commands: only me" by default (user, 18 Oktober 2026)
+    private boolean direct = true; // "Direct + relay" by default (user, 18 Oktober 2026; docs/player_hosting.md 15)
     private HostService.State shown;
 
     public HostScreen(GuiScreen parent)
@@ -37,6 +39,7 @@ public final class HostScreen extends GuiScreen
             online = s.online;
             max = s.max;
             commands = s.commands;
+            direct = s.direct;
             typed = s.name;
         }
         shown = HostService.INSTANCE.state();
@@ -76,6 +79,9 @@ public final class HostScreen extends GuiScreen
             buttonList.add(Deci.menuButton(COMMANDS, x + 100, 142, 140, 12,
                                            commands ? "\u00a7a" + I18n.format("deciworldgen.host.commands.me") : I18n.format("deciworldgen.host.commands.off"),
                                            I18n.format("deciworldgen.host.commands.tip")));
+            buttonList.add(Deci.menuButton(ROUTE, x + 6, 195, 234, 12,
+                                           direct ? "\u00a7a" + I18n.format("deciworldgen.host.route.direct") : I18n.format("deciworldgen.host.route.relay"),
+                                           I18n.format(direct ? "deciworldgen.host.route.direct.tip" : "deciworldgen.host.route.relay.tip")));
         }
         buttonList.add(Deci.menuButton(START, x + 63, 212, 120, 20,
                                        I18n.format(on ? "deciworldgen.host.stop" : "deciworldgen.host.start"), ""));
@@ -93,6 +99,7 @@ public final class HostScreen extends GuiScreen
             case MINUS: max = Math.max(2, max - 1); break;
             case PLUS: max = Math.min(8, max + 1); break;
             case COMMANDS: commands = !commands; break;
+            case ROUTE: direct = !direct; break;
             case BACK: mc.displayGuiScreen(parent); return;
             case RESUME: mc.displayGuiScreen(null); return;
             case START: startOrStop(); break;
@@ -129,6 +136,7 @@ public final class HostScreen extends GuiScreen
         st.online = online;
         st.max = max;
         st.commands = commands;
+        st.direct = direct;
         st.player = mc.getSession().getUsername();
         st.version = ModSet.ourVersion();
         HostLan.limit(s, max); // the status ping shows the host's own limit
@@ -206,7 +214,12 @@ public final class HostScreen extends GuiScreen
         drawString(fontRendererObj, "\u00a77" + I18n.format("deciworldgen.host.mods"), x + 6, 162, 0xFFFFFF);
         drawString(fontRendererObj, fontRendererObj.trimStringToWidth(mods(), 234), x + 6, 172, 0xFFFFFF);
         drawString(fontRendererObj, "\u00a77" + I18n.format("deciworldgen.host.route"), x + 6, 186, 0xFFFFFF);
-        drawString(fontRendererObj, I18n.format("deciworldgen.host.relay"), x + 6, 196, 0xFFFFFF);
+        if (state == HostService.State.ONLINE || state == HostService.State.STARTING)
+        {
+            String route = !direct ? "deciworldgen.host.route.relay" : HostService.INSTANCE.direct() ? "deciworldgen.host.route.direct"
+                           : "deciworldgen.host.route.nov6";
+            drawString(fontRendererObj, I18n.format(route), x + 6, 196, 0xFFFFFF);
+        }
         super.drawScreen(mx, my, t);
     }
 

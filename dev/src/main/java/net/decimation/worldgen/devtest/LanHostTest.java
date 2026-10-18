@@ -126,6 +126,7 @@ public class LanHostTest extends DevTestMode
         }
         if (real && hostStarted > 0 && t == hostStarted + 100) // the start runs on a background thread
         {
+            DevTestResults.value(name(), "direct gate open", net.decimation.fixes.hosting.HostService.INSTANCE.direct());
             net.decimation.fixes.hosting.HostService.State hs = net.decimation.fixes.hosting.HostService.INSTANCE.state();
             DevTestResults.check(name(), "host state", hs + " " + net.decimation.fixes.hosting.HostService.INSTANCE.error(),
                                  hs == net.decimation.fixes.hosting.HostService.State.ONLINE, "ONLINE");

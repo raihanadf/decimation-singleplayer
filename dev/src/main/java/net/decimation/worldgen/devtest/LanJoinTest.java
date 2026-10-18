@@ -119,6 +119,7 @@ public class LanJoinTest extends DevTestMode
                 if (mc.theWorld != null && mc.thePlayer != null && !mc.isSingleplayer())
                 {
                     DevTestResults.check(name(), "joined the host through the relay", wait / 20 + " s", true, "in the host's world");
+                    DevTestResults.value(name(), "join route", net.decimation.fixes.hosting.JoinService.INSTANCE.routeOf(world));
                     next(3);
                 }
                 else if (wait > 20 * 120)
