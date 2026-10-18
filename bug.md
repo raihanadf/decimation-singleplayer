@@ -1328,3 +1328,8 @@ Minecraft's "Connecting" screen for 120 s (first try) and ended on the disconnec
 toast was not seen (screens only) [not verified]. Release players have no voice chat jar while Technic players do, so
 this will happen. To check: whether the toast shows, why the closed socket is not noticed at once, and whether
 voice chat should be left out of the mod check.
+Seen again 18 Oktober 2026 13:38 in a real game: the user hosted from the dev client (runClient always installs gvc into
+run/client/mods, dependencies.gradle installVoiceChat), the brother joined with only Decimation.jar and saw the need
+gvc 0.6.1 message, so our refusal does reach the player. Workaround that day: the original voice chat jar served beside
+Decimation.jar. Real fix still open: let a joiner without gvc in (our ModSet check and FML's own mod list check both
+demand it).
