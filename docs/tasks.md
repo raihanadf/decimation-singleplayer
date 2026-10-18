@@ -50,7 +50,8 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [ ] bug: joining a world with another missing mod sits on Connecting for 2 minutes (bug.md)
 - [x] corpse could not be opened with a gun in hand (joined player report): fixes/GunUseKey, two game test PASS
 - [x] natural spawns off for tests: /gamerule doMobSpawning false also stops our spawners (fixes/NaturalSpawns, dev test nospawn)
-- [~] plan: 1.0.0 beta (docs/release_1.0.md), user to confirm scope and order
+- [x] plan: 1.0.0 order decided (user): pre-releases low / medium fixes only, multiplayer + new cities only in 1.0.0 (full release)
+- [ ] keep multiplayer out of pre-release jars built from main (way to be decided)
 - [~] plan: city content replacement (docs/city_replacement.md): ChaosZPack blocked by its license, McJty Lost Cities (MIT) proposed; user decides
 - [ ] city content replacement with ChaoszPack Lost Cities (copyright; roadmap, after multiplayer)
 - [x] HUD crash when a world is joined without Decimation's menu: fixes/HudGuard (in code, next release)

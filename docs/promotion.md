@@ -40,7 +40,9 @@ yes before the big push would remove that risk. The user decides.
 3. Reddit, one sub at a time, midweek: r/feedthebeast (check its rules and flair), then r/ModdedMinecraft. A picture
    first: the Community page with a hosted world (website picture) or, better, two players together in a city (a
    shot still to take: pick the spot from a top down map, docs/shots_index.md lesson).
-4. Day one: answer every comment. Follow up post on release day ("Multiplayer is out").
+4. Day one: answer every comment. Follow up post on release day ("Multiplayer is out"): the 1.0.0 day, multiplayer and
+   the new cities ship together in 1.0.0 (user, 18 Oktober 2026; docs/release_1.0.md section 6). Drafts saying "next
+   release" should say "1.0.0".
 
 ## 4. Drafts (no dashes; the user edits and posts)
 
@@ -54,7 +56,7 @@ Decimation's official servers have been dead for years, and most of the mod stop
 fixing it: DeciRemnant is an unofficial fan project that makes the whole mod run in singleplayer again and adds what an
 abandoned world needs: generated cities, military bases and airports, safe zones, smarter soldiers and new guns.
 
-Next release: multiplayer without a server. Press Esc, Host Online, and your world shows up on the Community page in
+In 1.0.0: multiplayer without a server. Press Esc, Host Online, and your world shows up on the Community page in
 the game. Friends click Join. It goes through a free relay, so no port forwarding and no rented server. Tested with a
 second laptop: 150 to 270 ms and smooth. You pick who can join (Mojang accounts only or any account) and only you get
 commands.
@@ -70,7 +72,7 @@ What would you want in a hosted world first?
 Host your Decimation world from your own game: Esc, Host Online, done. Your world appears on the Community page in
 the game and friends join with one click. No server to rent, no port forwarding, free.
 What it does: Mojang accounts only or any account (you pick), 2 to 8 players, commands for the host only.
-Ships with the next release. Play singleplayer now: deciremnant.vercel.app
+Ships in 1.0.0 with the new cities. Play singleplayer now: deciremnant.vercel.app
 
 ### Short version (for a server's promo channel)
 

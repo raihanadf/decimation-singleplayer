@@ -52,10 +52,15 @@ Early access, a forum (Discord first).
 5. No DeceasedCraft or other unlicensed content in the jar (content list checked).
 6. Release notes, site download and changelog, Discord post; GitHub release NOT marked pre-release.
 
-## 6. Order I suggest
+## 6. Order (user decision, 18 Oktober 2026)
 
-1. 0.65 pre-release: multiplayer part 1 + today's fixes (Community texts, news, update bar, HudGuard, place names
-   rejoin, Commands only me) + the missing mod join bug. The teaser goes out before it, a follow up post on its release day (docs/promotion.md).
-2. 0.66: new city content (McJty Lost Cities + our layers), DeceasedCraft packs removed.
-3. 0.67 to 0.9x: performance pass, bug list to zero, picked candidates.
-4. 1.0.0 beta: the gates above.
+User: "as long we dont have pre-release that include multiplayer, its fine. pre-release only do low-medium feat/fix in
+there. for multiplayer + new city gen release, it will be released at 1.0.0 version as release version".
+
+1. Pre-releases 0.65 and up: low to medium features and fixes only (update bar, HudGuard, place names rejoin, corpses
+   with a gun, performance, bug fixes). NO multiplayer in them (Host Online, the Community list, the Multiplayer news
+   panel stay out or say coming in 1.0.0).
+2. 1.0.0, the first full release (not pre-release): multiplayer (hosting part 1, voice chat optional, Commands: only
+   me) together with the new city content (docs/city_replacement.md).
+3. The teaser posts (docs/promotion.md) promote 1.0.0; the follow up post goes out on the 1.0.0 day.
+(My earlier suggestion was 0.65 with multiplayer first; replaced by the user's order.)
