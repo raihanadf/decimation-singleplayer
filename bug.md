@@ -1381,3 +1381,8 @@ SocketTimeoutException at JoinServiceTest.java:79 (3 s read of the echo) in one 
 of 3 right after and in the next full build (56 PASS). A build loaded machine [inferred]; raise the timeout if it comes
 back.
 
+## Two game test: "bandit fire hurts the joiner" sometimes 20 -> 20 (18 Oktober 2026, OPEN, flaky)
+
+Failed twice today (CorpseCheck9, RelayCheck3), passed in the other runs of the same code. The bandit scene spawns its
+bandit from code next to the joiner; why it sometimes does not shoot is not looked at [not checked].
+

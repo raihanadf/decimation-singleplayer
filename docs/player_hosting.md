@@ -320,3 +320,35 @@ developers.cloudflare.com geographic traffic routing.
   (Durable Objects location hints) when the host is in Asia, and (2) let the mod reconnect a data socket that landed far
   away (the Worker reports request.cf.colo) a few times until it lands in Asia. [Not built, not measured.]
 
+## 15. Direct joins over IPv6, relay as the fallback (18 Oktober 2026)
+
+User: "build 1 first, if its good we can pending the playit gg later as optional", and on the host's address: "Host
+chooses, direct on" (the address is never on the public list; the relay hands it only to a game that joins).
+- Host (fixes/hosting/Direct.Gate, HostService.register): with "Direct + relay" (the Host Online page's Connection switch,
+  default) a gate listens on a free port of every address; the host's global IPv6 addresses (2000::/3, at most 4) go
+  with the registration as "[address]:port". The gate answers "DRPROBE <room>" with "DROK" for its own room only,
+  holds a joiner's first bytes until HostService.admit decides (the relay path's login checks: names in use, offline
+  worlds), then carries the connection to the LAN port on 127.0.0.1. No login before the relay gave the room; a total
+  10 s deadline and at most 16 joiners in that phase; closed with the control socket. No global IPv6: relay only
+  ("Relay (no IPv6 address here)" while hosting).
+- Relay (relay/src/lobby.ts): `direct` on /list/host, only numeric global IPv6 with a port 1024 .. 65535, never listed
+  (route "direct" on the list instead); POST /list/direct {room} answers them, at most 10 asks a minute per caller.
+  Local tests only: `wrangler dev --var DIRECT_LOOPBACK:true` takes [::1]. Deployed 18 Oktober 2026 22:3x (version
+  29fbb993); checked live: list, unknown room 404, [::1] refused.
+- Joiner (JoinService.route): Minecraft still connects to the local 127.0.0.1 port; for a route "direct" world the first
+  bytes are read; a LOGIN (never a Community row's ping, so opening the page contacts no listed address) asks
+  /list/direct, probes each address (1.5 s), and pipes straight to the first that answers; otherwise the relay with those
+  bytes first. Only numeric global IPv6 targets are ever connected (Direct.target).
+- Checks: unit tests 73 (DirectTest 10, JoinDirectTest 4, HostServiceTest 3 new; RED first), relay vitest 25 (5 new).
+  hostmenu: Connection switch default "Direct + relay", flips to "Relay only". Two games through a LOCAL relay with
+  `directloopback=true` (both on this Mac, [::1] standing in): "join route direct", "direct gate open true", every
+  scene PASS on both sides (crate, lists, hummer, trader, AKM, bandit fire, corpses). Relay only (`direct=false`): joined
+  through the relay, gate closed; bandit fire FAILed once (20 -> 20; flaky, also seen before, bug.md).
+- NOT verified: a real direct join over the internet. This Mac had a global IPv6 address at 21:20 (playit's page and
+  curl -6 worked) and none at 22:10 (only fd7a / fe80, curl -6 fails): the home connection's IPv6 comes and goes
+  [cause not checked]. A real test needs global IPv6 on host AND joiner at that moment, and routers that let the
+  connection in (many block incoming IPv6 by default) [not verified].
+- Security reviews on the way (fixed): numeric global IPv6 only, deadline and cap, gate closed on a failed control
+  socket, ask limit. Left as the user's choice: anyone who clicks Join (or asks /list/direct for a listed room) can learn
+  a direct host's address; the tooltip says so; "Relay only" hides it.
+

@@ -70,3 +70,5 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [x] 64 district city refuge check: seed 1, 4 refuges, none in wasteland (gatescan lists refuges now)
 - [x] airport garrison manned in game: dev test garrison; far posts and wandering guards fixed (v0.64.3)
 - [ ] airport verdict in game (user, seed 1, `/tp -2470 66 1290`)
+- [~] direct joins over IPv6 (relay deployed 29fbb993, two game test PASS on loopback); open: a real test with the friend, both need public IPv6 (yours came and went tonight)
+- [ ] playit.gg as an optional connection (later, user: only if direct is not good enough)

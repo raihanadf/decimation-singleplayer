@@ -1090,6 +1090,10 @@ of the last session:
   Decimation unbinds the right mouse button while a gun is held (right click only aims): fixes/GunUseKey binds it again
   over a corpse or loot body (bug.md). Tests without stray mobs: `/gamerule doMobSpawning false` (also stops our
   spawners: fixes/NaturalSpawns; dev test `nospawn`).
+  Direct joins over IPv6 (docs/player_hosting.md 15): fixes/hosting/Direct (host gate + joiner probe), relay route
+  "direct" and POST /list/direct; Host Online "Direct + relay" (default) / "Relay only". Two game tests on one Mac need
+  `directloopback=true` and a local relay `wrangler dev --var DIRECT_LOOPBACK:true`; the scratchpad twogame scripts stop
+  both games at the end (a left open game plus a Gradle run broke one run).
   RELEASE 0.64.8 published 17 Oktober 2026 16:53 (pre-release, sha256 73049bc7...; notes dist/onejar/RELEASE_NOTES_0.64.8.md;
   released jars kept in dist/previous/onejar-<version>): the production client with the real 0.64.7 jar updated itself
   to it from GitHub (239 MB in 29 s, checksum, jar swapped); site Download 0.64.8 at 16:54.
