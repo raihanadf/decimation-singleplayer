@@ -27,6 +27,13 @@ class JoinDirectTest
 
     static int echo;
     private final List<AutoCloseable> open = new ArrayList<AutoCloseable>();
+    private final List<String> toasts = Collections.synchronizedList(new ArrayList<String>());
+
+    @org.junit.jupiter.api.BeforeEach
+    void toasts()
+    {
+        JoinService.INSTANCE.setToasts(toasts::add);
+    }
 
     @BeforeAll
     static void up() throws Exception
@@ -120,6 +127,7 @@ class JoinDirectTest
         byte[] back = roundTrip(port, login);
         assertEquals((login[0] + 1) & 0xff, back[0] & 0xff); // the host's world answered, not the echo relay
         assertEquals("direct", JoinService.INSTANCE.routeOf("Ucil world"));
+        assertEquals(Collections.singletonList("Joined Ucil world directly (faster)"), toasts);
     }
 
     @Test
@@ -133,6 +141,7 @@ class JoinDirectTest
         byte[] login = LoginNameTest.join(LoginNameTest.handshake(2), LoginNameTest.loginStart("Rizky"));
         assertArrayEquals(login, roundTrip(port, login)); // the echo relay
         assertEquals("relay", JoinService.INSTANCE.routeOf("Ucil world"));
+        assertEquals(Collections.singletonList("Joined Ucil world through the relay"), toasts);
     }
 
     @Test
