@@ -288,3 +288,26 @@ review, then the implementation plan). Real case test planned with the user's br
   (hosts plus joiners), three placeholder lines centred in Decimation's panel when no world is listed. The tab tooltip
   still says "N worlds". Dev test menupages shoots the opened page (menupages_communitylist; docs/shots_index.md
   community_empty.png).
+
+## 14. Relay lag from Indonesia, playit.gg measured (18 Oktober 2026)
+
+User (after a test with a friend): "for the cloudflare i think its to laggy ... its better to more advance the multiplayer
+use playit gg?". Measured from the user's home connection (Indonesia), 21:20:
+- Our relay (deciremnant-relay ... workers.dev, free plan): /cdn-cgi/trace says colo=CDG (Paris), loc=ID. TCP connect
+  33 to 47 ms (a near edge), TLS 0.44 to 0.56 s, a whole request 0.69 to 0.82 s (5 tries). cloudflare.com from the same
+  connection: colo=CGK (Jakarta). So the free Worker is served from Paris for this ISP, and every packet of a relayed
+  game goes Indonesia, Paris, Indonesia twice (joiner leg and host leg): the 297 / 524 ms rows and the brother's 150
+  to 270 ms fit that. Cloudflare's own Indonesia post names ISPs that refuse to peer locally (traffic pushed abroad);
+  why free Workers land in Paris exactly is [not verified]. A Durable Object location hint would not help: the Worker
+  entry is already Paris.
+- playit.gg free (global anycast): ping.gl.ply.gg answers "tunnel_name: Singapore_1"; ICMP ping 48 to 68 ms (avg 57);
+  traceroute ends in Equinix Singapore. Its free tunnels cannot pick a region (Premium can, 3 USD a month); playit says
+  anycast may route some players far away (their docs) [per player, not measured for the friend].
+- Reference: 1.1.1.1 ping 42 ms, 8.8.8.8 58 ms.
+Conclusion: for players in Indonesia a playit.gg tunnel (Singapore) should cut the relay's round trip several times
+[inferred from the pings, not yet measured in a game]. Options for the user: section 8 option B (the host's own
+playit.gg address on the Community list, joiners connect straight to it, our relay as the fallback), a direct
+connection (IPv6 or port forward; fails behind CGNAT), or our relay elsewhere (a server in Singapore costs money).
+Sources: playit.gg/support/playit-premium, discuss.playit.gg (regional tunnels), blog.cloudflare.com/indonesia,
+developers.cloudflare.com geographic traffic routing.
+
