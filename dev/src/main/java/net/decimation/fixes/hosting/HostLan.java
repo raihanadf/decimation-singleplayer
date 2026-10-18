@@ -9,7 +9,7 @@ public final class HostLan
     {
     }
 
-    static void remember(String p)
+    public static void remember(String p)
     {
         if (p != null)
         {
@@ -17,7 +17,7 @@ public final class HostLan
         }
     }
 
-    static String port()
+    public static String port()
     {
         return port;
     }

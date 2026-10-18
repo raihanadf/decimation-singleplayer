@@ -134,6 +134,8 @@ Knowledge index:
 - `docs/ideas.md`: the user's future feature ideas (12 Oktober 2026), not designed yet.
 - `docs/player_hosting.md`: ANALYSIS of player hosted worlds bridged by our relay and listed on the Community page
   (ideas item 22, 18 Oktober 2026): code facts, ten ways in four layers, phases, the user's open decisions.
+- `docs/promotion.md`: promoting DeciRemnant (multiplayer teaser before its release): research with sources, the
+  reupload risk to raise, plan, Reddit and Discord drafts (the user posts).
 - `docs/website.md`: SPEC of DeciRemnant, the project website, LIVE at https://deciremnant.vercel.app/ (private repo
   github.com/ucilmenangis/deciremnant, local ~/Projects/deciremnant, Next.js on Vercel): page text, look (Minecraft Standard font at the game's sizes, item icons), release data,
   screenshots (dev test `siteshots`: camera rows tools/site/siteshots.tsv, `-Pwindow=1440x810` / `devtest.py --live

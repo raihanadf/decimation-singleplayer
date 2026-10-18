@@ -42,6 +42,12 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [x] "Entity is already tracked": swapped mobs added twice at chunk load, double speed; fixes/JoinOnce (v0.64.2)
 - [ ] survivor partner idea: design talk (docs/ideas.md item 21)
 - [~] player hosting part 1: built, reviewed, relay deployed, brother test smooth (150 to 270 ms, docs/player_hosting.md 12); "Commands: only me" checked in the real game (/tp works), pushed; open: release (batched)
+- [x] Community page: "Players Online: N" only, placeholder for an empty list (CommunityText, dev client)
+- [x] main menu news: Multiplayer first (opens the Community list), fresh pictures (three jars)
+- [~] website multiplayer teaser: hero link + section (site 5ca55b6 local); open: user's look, push, live check
+- [~] promotion drafts (docs/promotion.md): Reddit + Discord teaser; user decides on BoehMod permission, posts
+- [ ] bug: joining a world with a missing mod sits on Connecting for 2 minutes (bug.md)
+- [ ] plan: 1.0.0 beta (multiplayer, new buildings, performance, bug fixes), pre-release until then
 - [ ] city content replacement with ChaoszPack Lost Cities (copyright; roadmap, after multiplayer)
 - [x] HUD crash when a world is joined without Decimation's menu: fixes/HudGuard (in code, next release)
 - [x] place names gone after a rejoin: PlaceNames forgets a player on logout (bug.md, in code, next release)

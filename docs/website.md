@@ -539,3 +539,18 @@ only as the footer credit (17 Oktober 2026; the earlier rule "never the Decimati
   fill Decimation's community server page (GuiMenuCommunityServers) [inferred: not tried]; maybe live status
   (a Vercel function pinging each server). Decimation's own BoehMod connection (kryonet) cannot carry it.
 - A custom domain if wanted.
+
+## Multiplayer teaser (18 Oktober 2026, site 5ca55b6, local until the user pushes)
+
+- User: highlight multiplayer on the website before its release (promotion, docs/promotion.md). Picked: banner +
+  section + guide; the guide page (/docs/multiplayer) waits for the release.
+- Hero: a link under the download, "Coming next: Multiplayer, host your world for your friends >>" to #multiplayer.
+- Section #multiplayer right after About (the new thing leads, as Factorio's front page does; references looked at:
+  factorio.com, projectzomboid.com/blog; minecraft.net did not load): label "Coming in the next release", lead, three
+  steps (Step 2 and 3 with real pictures), a lined fact table (who can join, players, commands, mods, ping, cost), a
+  note with the GitHub releases link. Texts in content/multiplayer.ts; Zoom takes a picture folder and size now.
+- Pictures: dev test `hostshots` (this game hosts through the deployed relay, shoots the Host Online page and its own
+  world on the Community page; `--window=1440x810`, GUI scale 3), exported by `tools/site/export_assets.py SITE
+  --hosting DIR` to public/hosting/<name>-<hash>.png. Tests: 99 (RED first: missing modules).
+- Checked locally: next build, 1300 and 390 wide read, no sideways scroll, no dash characters in the new texts.
+  Not yet: the user's look, push, live check; Lighthouse.

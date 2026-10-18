@@ -3,6 +3,7 @@
     python3 tools/site/export_assets.py SITE_DIR                 # stand in screenshots from docs/shots
     python3 tools/site/export_assets.py SITE_DIR --shots DIR     # siteshots output: DIR/site_<name>.png
     python3 tools/site/export_assets.py SITE_DIR --guide DIR     # ONLY the guide pictures: DIR/guide_<name>.png
+    python3 tools/site/export_assets.py SITE_DIR --hosting DIR   # ONLY the hosting pictures: DIR/hostshots_<name>.png
     python3 tools/site/export_assets.py SITE_DIR --logo FILE     # ONLY the logos: ours from FILE, BoehMod's from the jar
     python3 tools/site/export_assets.py SITE_DIR --icons         # ONLY the tab and touch icons (Decimation's map item)
     python3 tools/site/export_assets.py SITE_DIR --camo          # ONLY the camo panel texture (marines' urban camo)
@@ -65,6 +66,8 @@ STAND_INS = {
 BOEHMOD_LOGO = "assets/deci/textures/gui/menu/boehmod_big.png"  # BoehMod's logo of the main menu: the footer credit
 GUI_BOX = (225, 20, 1215, 800)  # the buttons and fields of a GUI scale 3 screen in a 1440 x 810 window
 GUIDE = {"worldtype": GUI_BOX, "multiplayer": GUI_BOX, "addserver": GUI_BOX}
+# player hosting (website multiplayer section): dev test hostshots at 1440 x 810, GUI scale 3; boxes around the panels
+HOSTING = {"hostpage": (500, 140, 1270, 720), "community": (500, 130, 1260, 580)}
 
 
 def hashed(im, folder, name):
@@ -117,6 +120,27 @@ def guide(site, src_dir):
         with open(os.path.join(folder, manifest[name]), "wb") as f:
             f.write(data)
         print("guide %-11s %4d x %-4d %6d bytes -> %s" % (name, im.width, im.height, len(data), manifest[name]))
+    with open(os.path.join(folder, "manifest.json"), "w") as f:
+        json.dump(manifest, f, indent=2, sort_keys=True)
+        f.write("\n")
+
+
+def hosting(site, src_dir):
+    """The player hosting pictures alone (hostshots dev test): crop, PNG named name-<sha1 8>.png, manifest; old ones go."""
+    folder = os.path.join(site, "public", "hosting")
+    os.makedirs(folder, exist_ok=True)
+    for old in glob.glob(os.path.join(folder, "*.png")):
+        os.remove(old)
+    manifest = {}
+    for name, box in HOSTING.items():
+        im = Image.open(os.path.join(src_dir, "hostshots_%s.png" % name)).convert("RGB").crop(box)
+        buf = io.BytesIO()
+        im.save(buf, "PNG", optimize=True)
+        data = buf.getvalue()
+        manifest[name] = "%s-%s.png" % (name, hashlib.sha1(data).hexdigest()[:8])
+        with open(os.path.join(folder, manifest[name]), "wb") as f:
+            f.write(data)
+        print("hosting %-9s %4d x %-4d %6d bytes -> %s" % (name, im.width, im.height, len(data), manifest[name]))
     with open(os.path.join(folder, "manifest.json"), "w") as f:
         json.dump(manifest, f, indent=2, sort_keys=True)
         f.write("\n")
@@ -203,6 +227,7 @@ def main():
     ap.add_argument("site")
     ap.add_argument("--shots", help="folder with site_<name>.png from the siteshots dev test")
     ap.add_argument("--guide", help="folder with guide_<name>.png from the guideshots dev test (exports only these)")
+    ap.add_argument("--hosting", help="folder with hostshots_<name>.png from the hostshots dev test (exports only these)")
     ap.add_argument("--logo", metavar="FILE", help="export only the logos: our official logo from FILE, BoehMod's from the jar")
     ap.add_argument("--icons", action="store_true", help="export only the site icons (Decimation's map item)")
     ap.add_argument("--camo", action="store_true", help="export only the camo panel texture (marines' urban camo)")
@@ -215,6 +240,9 @@ def main():
         return
     if a.guide:
         guide(os.path.abspath(a.site), a.guide)
+        return
+    if a.hosting:
+        hosting(os.path.abspath(a.site), a.hosting)
         return
     if a.logo:
         logo(os.path.abspath(a.site), a.logo)
