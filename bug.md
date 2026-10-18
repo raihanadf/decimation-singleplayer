@@ -1386,3 +1386,10 @@ back.
 Failed twice today (CorpseCheck9, RelayCheck3), passed in the other runs of the same code. The bandit scene spawns its
 bandit from code next to the joiner; why it sometimes does not shoot is not looked at [not checked].
 
+## A joined player was kicked again and again while the ping looked stable (user report 18 Oktober 2026, FIXED)
+
+The host's control socket to the relay had no keep-alive and was cut when idle (measured 391 s, code 1006); the relay then
+closed every joiner and the host registered a new room. Fixed with keep-alive pings, a 20 s grace in the relay room,
+reconnecting to the same room, and direct players kept (docs/player_hosting.md 16). Checked with a forced control drop in
+the two game test on the deployed relay. A real long session with the friend is still to come.
+

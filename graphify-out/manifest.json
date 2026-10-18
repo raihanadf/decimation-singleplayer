@@ -110,9 +110,9 @@
     "semantic_hash": "de153d1f8408971d6190e16a7d4256f9"
   },
   "CLAUDE.md": {
-    "mtime": 1792337801.3290281,
-    "ast_hash": "e2567bbc31fb3e00c574cd9883202230",
-    "semantic_hash": "e2567bbc31fb3e00c574cd9883202230"
+    "mtime": 1792345684.7586896,
+    "ast_hash": "92accc655e243aaf7bc7b5d3b49d4e80",
+    "semantic_hash": "92accc655e243aaf7bc7b5d3b49d4e80"
   },
   "DECIMATION_MOD_TASK.md": {
     "mtime": 1784958353.0126374,
@@ -120,9 +120,9 @@
     "semantic_hash": "aa4550575e47e7c1d0b020a51afbb501"
   },
   "bug.md": {
-    "mtime": 1792337801.3295856,
-    "ast_hash": "9027edab76e72802c089934979f8f0b8",
-    "semantic_hash": "9027edab76e72802c089934979f8f0b8"
+    "mtime": 1792345684.758158,
+    "ast_hash": "98bc66b6c05ead7f0351af3c093cb176",
+    "semantic_hash": "98bc66b6c05ead7f0351af3c093cb176"
   },
   "create_weapons.md": {
     "mtime": 1791653625.5948887,
@@ -1540,9 +1540,9 @@
     "semantic_hash": "294036847a9caffda351bfa855a78636"
   },
   "docs/tasks.md": {
-    "mtime": 1792337801.329912,
-    "ast_hash": "0b6d9afe60862bb21d8186839b16fb74",
-    "semantic_hash": "0b6d9afe60862bb21d8186839b16fb74"
+    "mtime": 1792345684.7589436,
+    "ast_hash": "7ab1b7edc063b7fcc07cbb68fc73290d",
+    "semantic_hash": "7ab1b7edc063b7fcc07cbb68fc73290d"
   },
   "tools/skillcheck.py": {
     "mtime": 1792098139.5315723,
@@ -1865,14 +1865,14 @@
     "semantic_hash": "1cd7bbab9cf2652e866d63ac067b5dc2"
   },
   "docs/player_hosting.md": {
-    "mtime": 1792337801.3282516,
-    "ast_hash": "d89a114d2ceac343ad0eb5fc684202a5",
-    "semantic_hash": "d89a114d2ceac343ad0eb5fc684202a5"
+    "mtime": 1792345684.7577417,
+    "ast_hash": "387f3dfc9cd46c5680cb5372c5af07ef",
+    "semantic_hash": "387f3dfc9cd46c5680cb5372c5af07ef"
   },
   "dev/src/main/java/net/decimation/worldgen/devtest/LanHostTest.java": {
-    "mtime": 1792336632.9551265,
-    "ast_hash": "861c9e83737e04160ab9257a7ac97a13",
-    "semantic_hash": "861c9e83737e04160ab9257a7ac97a13"
+    "mtime": 1792340304.9292197,
+    "ast_hash": "147365e817f8bbc6bd5ac5d7a5fbcceb",
+    "semantic_hash": "147365e817f8bbc6bd5ac5d7a5fbcceb"
   },
   "tools/hostspike/LineTag.java": {
     "mtime": 1792264203.113125,
@@ -1905,9 +1905,9 @@
     "semantic_hash": "cf6c3d12d674020a343cdeff4aeb8d6c"
   },
   "dev/src/main/java/net/decimation/worldgen/devtest/LanJoinTest.java": {
-    "mtime": 1792335614.857433,
-    "ast_hash": "8258839271915b30380a26fe6aa7f6c7",
-    "semantic_hash": "8258839271915b30380a26fe6aa7f6c7"
+    "mtime": 1792340304.9299836,
+    "ast_hash": "2893998214c0923ea1d3d4754e6d32cd",
+    "semantic_hash": "2893998214c0923ea1d3d4754e6d32cd"
   },
   "docs/superpowers/specs/2026-10-18-player-hosting-part1-design.md": {
     "mtime": 1792268183.1884704,
@@ -1940,19 +1940,19 @@
     "semantic_hash": "5b1f7ccc8c74f69e07f47fe037a1adff"
   },
   "dev/src/main/java/net/decimation/fixes/hosting/HostService.java": {
-    "mtime": 1792335523.305562,
-    "ast_hash": "4a1b46655f94c2436f300c9404dc692d",
-    "semantic_hash": "4a1b46655f94c2436f300c9404dc692d"
+    "mtime": 1792344714.194832,
+    "ast_hash": "809cc98336ca6d0ede262388f70ca7cc",
+    "semantic_hash": "809cc98336ca6d0ede262388f70ca7cc"
   },
   "dev/src/main/java/net/decimation/fixes/hosting/JoinService.java": {
-    "mtime": 1792335523.30452,
-    "ast_hash": "9597de412b3ff0a0fff7b3bc38ee7571",
-    "semantic_hash": "9597de412b3ff0a0fff7b3bc38ee7571"
+    "mtime": 1792344714.1945176,
+    "ast_hash": "a053ec0f5a501e832e80330d3b426347",
+    "semantic_hash": "a053ec0f5a501e832e80330d3b426347"
   },
   "dev/src/main/java/net/decimation/fixes/hosting/ListEntry.java": {
-    "mtime": 1792270497.319234,
-    "ast_hash": "1b8b482a951486b47366c946d501dc5f",
-    "semantic_hash": "1b8b482a951486b47366c946d501dc5f"
+    "mtime": 1792341736.4031374,
+    "ast_hash": "572949f86381c0f775dfcfd9817be5a5",
+    "semantic_hash": "572949f86381c0f775dfcfd9817be5a5"
   },
   "dev/src/main/java/net/decimation/fixes/hosting/LoginName.java": {
     "mtime": 1792275969.873945,
@@ -1965,19 +1965,19 @@
     "semantic_hash": "ad16cc7620241ad319fa10c7e8c1afbd"
   },
   "dev/src/main/java/net/decimation/fixes/hosting/Pipe.java": {
-    "mtime": 1792335266.8010302,
-    "ast_hash": "2d31a59919c6d03133669b82bdfeb17d",
-    "semantic_hash": "2d31a59919c6d03133669b82bdfeb17d"
+    "mtime": 1792344714.1941621,
+    "ast_hash": "4c1ddc5b4746e75fabd39825ead06eb1",
+    "semantic_hash": "4c1ddc5b4746e75fabd39825ead06eb1"
   },
   "dev/src/main/java/net/decimation/fixes/hosting/RelayClient.java": {
-    "mtime": 1792335253.1208298,
-    "ast_hash": "d81d560d1e3ff9bba2d9101d84b05e28",
-    "semantic_hash": "d81d560d1e3ff9bba2d9101d84b05e28"
+    "mtime": 1792341736.4035606,
+    "ast_hash": "b9d5db4f823a73d01340e9bc5eaba3cb",
+    "semantic_hash": "b9d5db4f823a73d01340e9bc5eaba3cb"
   },
   "dev/src/main/java/net/decimation/fixes/hosting/RelaySocket.java": {
-    "mtime": 1792276884.224396,
-    "ast_hash": "fd945e5b50a8f4ad791f7fabf10433bc",
-    "semantic_hash": "fd945e5b50a8f4ad791f7fabf10433bc"
+    "mtime": 1792344966.3297293,
+    "ast_hash": "24d096667f770ed57515eb1de54ce8cb",
+    "semantic_hash": "24d096667f770ed57515eb1de54ce8cb"
   },
   "dev/src/main/java/net/decimation/worldgen/devtest/HostMenuTest.java": {
     "mtime": 1792335382.900306,
@@ -1985,14 +1985,14 @@
     "semantic_hash": "1b1d4f853458651c2c891da1e3f4c0db"
   },
   "dev/src/test/java/net/decimation/fixes/hosting/EchoServer.java": {
-    "mtime": 1792275939.2313962,
-    "ast_hash": "6d07cd93ea9e6acadb498c8223104ae4",
-    "semantic_hash": "6d07cd93ea9e6acadb498c8223104ae4"
+    "mtime": 1792344946.4413693,
+    "ast_hash": "a4caa642a8dfde28e4be4859b1c67ace",
+    "semantic_hash": "a4caa642a8dfde28e4be4859b1c67ace"
   },
   "dev/src/test/java/net/decimation/fixes/hosting/HostServiceTest.java": {
-    "mtime": 1792335557.6130981,
-    "ast_hash": "b2afb869eab93efc05179829c38a4dda",
-    "semantic_hash": "b2afb869eab93efc05179829c38a4dda"
+    "mtime": 1792340175.4264107,
+    "ast_hash": "d03c17c2b69a80b7aad63b85f4e4e6e9",
+    "semantic_hash": "d03c17c2b69a80b7aad63b85f4e4e6e9"
   },
   "dev/src/test/java/net/decimation/fixes/hosting/JoinServiceTest.java": {
     "mtime": 1792312527.488873,
@@ -2020,14 +2020,14 @@
     "semantic_hash": "801730e0ce52314c9f3379065dbd5d11"
   },
   "dev/src/test/java/net/decimation/fixes/hosting/RelayClientTest.java": {
-    "mtime": 1792276605.0696228,
-    "ast_hash": "059feddaca94cc2ece52750eba1dbbb0",
-    "semantic_hash": "059feddaca94cc2ece52750eba1dbbb0"
+    "mtime": 1792341777.7402508,
+    "ast_hash": "3121fa24de3ef0778dc782e58491c80b",
+    "semantic_hash": "3121fa24de3ef0778dc782e58491c80b"
   },
   "dev/src/test/java/net/decimation/fixes/hosting/RelaySocketTest.java": {
-    "mtime": 1792275736.4838734,
-    "ast_hash": "aca8a61166c06cf59c9f3ab4bc6ce2cf",
-    "semantic_hash": "aca8a61166c06cf59c9f3ab4bc6ce2cf"
+    "mtime": 1792341483.2617075,
+    "ast_hash": "6501fa7abf4c9170ac967a059758f0ed",
+    "semantic_hash": "6501fa7abf4c9170ac967a059758f0ed"
   },
   "dev/src/test/java/net/decimation/fixes/hosting/TlsCheck.java": {
     "mtime": 1792270698.876161,
@@ -2035,9 +2035,9 @@
     "semantic_hash": "1d33d9534bba77cc6333a6eda8c0c58a"
   },
   "relay/env.d.ts": {
-    "mtime": 1792336453.8578892,
-    "ast_hash": "3aff5b4eef7ecd1aa477a36edf9ff4bf",
-    "semantic_hash": "3aff5b4eef7ecd1aa477a36edf9ff4bf"
+    "mtime": 1792344400.0986304,
+    "ast_hash": "ad02f4e54b61f646145f2f9f0052ed1d",
+    "semantic_hash": "ad02f4e54b61f646145f2f9f0052ed1d"
   },
   "relay/package.json": {
     "mtime": 1792270257.3336923,
@@ -2045,29 +2045,29 @@
     "semantic_hash": "b16ba7e8d27eb8ccacd0808da76ac729"
   },
   "relay/src/index.ts": {
-    "mtime": 1792270257.3417711,
-    "ast_hash": "dd1ee559d64c53af0e0596d654204402",
-    "semantic_hash": "dd1ee559d64c53af0e0596d654204402"
+    "mtime": 1792344400.0989263,
+    "ast_hash": "78de432900703b3b7a333808f3ee83f7",
+    "semantic_hash": "78de432900703b3b7a333808f3ee83f7"
   },
   "relay/src/lobby.ts": {
-    "mtime": 1792337535.9953244,
-    "ast_hash": "51349fb4f62895bcdc3aa79d886f2814",
-    "semantic_hash": "51349fb4f62895bcdc3aa79d886f2814"
+    "mtime": 1792344400.099238,
+    "ast_hash": "9aecaebe39daf65e2b8ab527f81b1dd8",
+    "semantic_hash": "9aecaebe39daf65e2b8ab527f81b1dd8"
   },
   "relay/src/room.ts": {
-    "mtime": 1792276035.4102368,
-    "ast_hash": "9f1e426860f09b85ae91c75939c236d0",
-    "semantic_hash": "9f1e426860f09b85ae91c75939c236d0"
+    "mtime": 1792344639.827977,
+    "ast_hash": "be112a9b036d21933a3fa9a79488eb23",
+    "semantic_hash": "be112a9b036d21933a3fa9a79488eb23"
   },
   "relay/test/lobby.test.ts": {
-    "mtime": 1792337524.7623734,
-    "ast_hash": "d8e571bd08ff0001054f707a74700a44",
-    "semantic_hash": "d8e571bd08ff0001054f707a74700a44"
+    "mtime": 1792341611.0619674,
+    "ast_hash": "36fd744ed800a6af5c3bf70c50ed28a5",
+    "semantic_hash": "36fd744ed800a6af5c3bf70c50ed28a5"
   },
   "relay/test/room.test.ts": {
-    "mtime": 1792276022.5170298,
-    "ast_hash": "f6aaf549a0f0d32cd2ea527e1084b830",
-    "semantic_hash": "f6aaf549a0f0d32cd2ea527e1084b830"
+    "mtime": 1792344627.5745015,
+    "ast_hash": "c91faa3fffbb03183b42fa0159faf00b",
+    "semantic_hash": "c91faa3fffbb03183b42fa0159faf00b"
   },
   "relay/tsconfig.json": {
     "mtime": 1792270257.296369,
@@ -2185,8 +2185,28 @@
     "semantic_hash": "790d3b57221fb25629ca008cdf16f219"
   },
   "dev/src/test/java/net/decimation/fixes/hosting/JoinDirectTest.java": {
-    "mtime": 1792335557.6126559,
-    "ast_hash": "6adb77e7438b533eebcc3e5a5cdf3432",
-    "semantic_hash": "6adb77e7438b533eebcc3e5a5cdf3432"
+    "mtime": 1792338072.613247,
+    "ast_hash": "13acae733233ddf474055bde63415201",
+    "semantic_hash": "13acae733233ddf474055bde63415201"
+  },
+  "dev/src/main/java/net/decimation/fixes/hosting/Colos.java": {
+    "mtime": 1792343922.9736755,
+    "ast_hash": "ebd911fc40ffc2ff9c73d33cbd5aa0ad",
+    "semantic_hash": "ebd911fc40ffc2ff9c73d33cbd5aa0ad"
+  },
+  "dev/src/test/java/net/decimation/fixes/hosting/ColosTest.java": {
+    "mtime": 1792344946.4416332,
+    "ast_hash": "6cc775a51263f0fad698ce7639e9f3c1",
+    "semantic_hash": "6cc775a51263f0fad698ce7639e9f3c1"
+  },
+  "relay/src/hint.ts": {
+    "mtime": 1792341624.805261,
+    "ast_hash": "45f418e1bb68c020789cad8f55e20b0d",
+    "semantic_hash": "45f418e1bb68c020789cad8f55e20b0d"
+  },
+  "relay/test/hint.test.ts": {
+    "mtime": 1792340034.3059568,
+    "ast_hash": "edb27b441a686ef68cfafc60235daba5",
+    "semantic_hash": "edb27b441a686ef68cfafc60235daba5"
   }
 }

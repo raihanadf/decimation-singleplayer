@@ -352,3 +352,39 @@ chooses, direct on" (the address is never on the public list; the relay hands it
   socket, ask limit. Left as the user's choice: anyone who clicks Join (or asks /list/direct for a listed room) can learn
   a direct host's address; the tooltip says so; "Relay only" hides it.
 
+## 16. Stability and ping (18 to 19 Oktober 2026)
+
+User (after the friend test, direct on): "reduce really well from 1000ms to 400ms ... but the problem is the server really
+often counter auto left from my friend, he often left even the ping stable", then "make it stable as you can ... lower the
+ping more and more".
+- Cause found: the host's control WebSocket to the relay carried nothing while nobody joined (no keep-alive). Measured on
+  the deployed relay: an idle control socket was cut after 391 s with code 1006. A lost control socket made the relay close
+  every joiner at once and the host register a new room (closing every relay pipe and the direct gate): everyone kicked
+  while the ping looked fine. Cloudflare's docs: idle WebSockets are closed after a while (time not documented), and ping
+  frames are answered by the runtime without waking the Durable Object.
+- Fixes (relay version 94b7cb49, game from 5ed53b2):
+  1. RelaySocket sends a WebSocket ping every 25 s (free, never a message).
+  2. Relay room: a dropped control socket gets GRACE_MS = 20 s; joiners stay, the list keeps the world; a host back in
+     time keeps everyone (room.ts lostAt + alarm).
+  3. Host: a lost control socket reconnects to the SAME room (5 tries in about 15 s) before registering a new one; the direct
+     gate and its players survive a re-registration; new logins only while ONLINE.
+  4. Rooms placed near the host (location hint by the host's country: apac-se for Indonesia); each world carries its region.
+  5. Relay sockets report their data center (x-colo); a socket that landed far from an Asian room is opened again (host 3,
+     joiner 2 tries; Hong Kong counts as far for apac-se: measured 150 ms against 80 ms). Host control and data sockets
+     overlap (the next opens before the far one closes, the relay replaces the older data socket without dropping the
+     joiner, and what the far one heard is carried over: without that the joiner's login was lost; found with a local relay
+     that fakes far landings, `--var FAKE_COLOS:FRA,SIN --var FAKE_REGION:apac-se`).
+  6. A write after a quiet tick goes at once (no 50 ms wait for a lone click); busy streams still one frame per tick.
+  7. Log lines `[deciworldgen hosting]`: where each socket landed, control lost / back, joiner knocks / not answered, relay
+     closes with code and reason, joined directly / through the relay.
+- Measured on the deployed relay from this Mac (script scratchpad rtt_probe.mjs: host and joiner, timestamps through a
+  room): before about 300 to 500 ms (Community rows 297 / 524 ms); after, all sockets in Singapore, median 77 to 86 ms
+  (best 74, worst about 200) in 3 of 4 runs; 150 ms when a socket landed in Hong Kong (now retried).
+- Checks: unit 82, relay 29 (RED first each). Two games with a forced control drop (dev test scene `dropcontrol`, an
+  abrupt cut): local relay, relay and direct paths; local relay with every other socket landing far; and the DEPLOYED
+  relay (relay only): joined, still in the world 30 s after the drop, host ONLINE on the same room, every scene PASS
+  (bandit fire flaky once). Test traps: a dev host game rebuilds itself on a commit, so the joiner jar must come from the
+  same commit (the row says "needs DeciRemnant ..."); `pgrep -f zulu-8.jdk` also matches Gradle test workers.
+- NOT verified: a long session with the friend over the internet with this build [user test]; the direct path from the
+  friend's network (his toast says which way).
+

@@ -72,3 +72,5 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [ ] airport verdict in game (user, seed 1, `/tp -2470 66 1290`)
 - [~] direct joins over IPv6 (relay deployed 29fbb993, two game test PASS on loopback); open: a real test with the friend, both need public IPv6 (yours came and went tonight)
 - [ ] playit.gg as an optional connection (later, user: only if direct is not good enough)
+- [x] friend kicked while ping stable: keep-alive, 20 s grace, same room reconnect, near rooms, far socket retry (relay 94b7cb49, game 5ed53b2; two game tests PASS on the deployed relay)
+- [ ] friend test of build 5ed53b2 (jar on the Desktop): stays connected? which path? ping on the host page
