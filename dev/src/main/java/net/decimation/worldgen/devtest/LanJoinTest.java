@@ -27,6 +27,9 @@ public class LanJoinTest extends DevTestMode
     private final int joinPort = Integer.getInteger("deciworldgen.autotest.joinport", 25600);
     /** viaList=true: join from the Community page filled from the relay at relay=ADDRESS (player hosting part 1). */
     private final boolean viaList = "true".equals(System.getProperty("deciworldgen.autotest.viaList"));
+    /** promo=true: after joining only the promo shots (both players in a city street, the host's Host Online page). */
+    private final String world = System.getProperty("deciworldgen.autotest.worldname", "Spike world");
+    private final boolean promo = "true".equals(System.getProperty("deciworldgen.autotest.promo"));
     private int step, wait, req;
     private IntegratedServer stopping;
     private String[] res;
@@ -79,7 +82,7 @@ public class LanJoinTest extends DevTestMode
                 int i = -1;
                 for (int k = 0; k < rows.size(); k++)
                 {
-                    if (rows.get(k).contains("Spike world"))
+                    if (rows.get(k).contains(world))
                     {
                         i = k;
                     }
@@ -106,9 +109,9 @@ public class LanJoinTest extends DevTestMode
                 {
                     return false;
                 }
-                int port = net.decimation.fixes.hosting.JoinService.INSTANCE.portOf("Spike world");
+                int port = net.decimation.fixes.hosting.JoinService.INSTANCE.portOf(world);
                 cpw.mods.fml.client.FMLClientHandler.instance().connectToServer(mc.currentScreen,
-                    new net.minecraft.client.multiplayer.ServerData("Spike world", "127.0.0.1:" + port)); // ListElement's button 123
+                    new net.minecraft.client.multiplayer.ServerData(world, "127.0.0.1:" + port)); // ListElement's button 123
                 next(2);
                 break;
             }
@@ -129,6 +132,12 @@ public class LanJoinTest extends DevTestMode
                 {
                     DevTestResults.check(name(), "HUD with fancy graphics after the menu", "connected " + (mc.theWorld != null),
                                          mc.theWorld != null, "no crash");
+                    if (promo)
+                    {
+                        ask("promo");
+                        next(30);
+                        break;
+                    }
                     ask("arena");
                     next(4);
                 }
@@ -319,6 +328,22 @@ public class LanJoinTest extends DevTestMode
                     float min = parse(res[3]), max = parse(res[4]);
                     DevTestResults.check(name(), "bandit fire hurts the joiner", max + " -> " + min, min < max, "health drops");
                     DevTestResults.check(name(), "bandit tracers drawn on the joiner", maxTracers, maxTracers > 0, "1 or more");
+                    ask("end");
+                    next(16);
+                }
+                break;
+            case 30: // promo: wait for the answer, then for the street's chunks to draw
+                if (answered() && wait > 200)
+                {
+                    mc.displayGuiScreen(null);
+                    DevTestUtil.screenshot(mc, name(), "promo_joiner");
+                    ask("promohost");
+                    next(31);
+                }
+                break;
+            case 31:
+                if (answered() && wait > 140) // the host's two shots
+                {
                     ask("end");
                     next(16);
                 }

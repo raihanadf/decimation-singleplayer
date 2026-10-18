@@ -18,7 +18,7 @@ public class MainMenuTest extends DevTestMode
 {
     public String name() { return "mainmenu"; }
 
-    private static final String[] TITLES = {"GitHub", "Updates", "Website", "Coming soon"};
+    private static final String[] TITLES = {"Multiplayer", "Updates", "Website", "Coming soon"};
     private int step, ticks;
     private int[] first;
     private IntegratedServer stopping;
@@ -59,14 +59,16 @@ public class MainMenuTest extends DevTestMode
                 {
                     String[] parts = panels.get(i).split(" \\| ", -1);
                     titles.append(i == 0 ? "" : ", ").append(parts[0]);
-                    filled &= parts.length == 3 && !parts[1].isEmpty() && parts[2].startsWith("https://");
+                    // Multiplayer opens the in-game Community list (user, 18 Oktober 2026), the others a web page
+                    filled &= parts.length == 3 && !parts[1].isEmpty()
+                              && parts[2].startsWith(i == 0 ? net.decimation.fixes.MenuNews.COMMUNITY : "https://");
                 }
                 boolean order = filled;
                 for (int i = 0; order && i < TITLES.length; i++)
                 {
                     order = panels.get(i).startsWith(TITLES[i] + " | ");
                 }
-                DevTestResults.check(name(), "news panels", titles, order, "GitHub, Updates, Website, Coming soon, each with a line and an https address");
+                DevTestResults.check(name(), "news panels", titles, order, "Multiplayer (in-game list), Updates, Website, Coming soon, each with a line and an address");
                 // user, 17 Oktober 2026: links to our site, our version and name, Continue last world
                 String website = "", github = "", cont = "";
                 for (net.minecraft.client.gui.GuiButton b : DevTestUtil.buttons(mc.currentScreen))
@@ -118,8 +120,21 @@ public class MainMenuTest extends DevTestMode
                     return true; // the fade is over
                 }
                 DevTestUtil.screenshot(mc, name(), "mainmenu_next");
-                DevAutoTest.keepScreen = false;
+                Deci.openNewsPanel(mc.currentScreen, 0); // what a click on the Multiplayer panel does
                 step = 5;
+                ticks = 0;
+                return true;
+            case 5:
+                if (!Deci.isCommunityScreen(mc.currentScreen) && ticks < 20 * 15)
+                {
+                    return true; // the list is fetched on its own thread
+                }
+                DevTestResults.check(name(), "Multiplayer panel opens the Community list",
+                                     mc.currentScreen == null ? "none" : mc.currentScreen.getClass().getName(),
+                                     Deci.isCommunityScreen(mc.currentScreen), "GuiMenuCommunityServers (deci.i.j)");
+                mc.displayGuiScreen(Deci.homeMenu());
+                DevAutoTest.keepScreen = false;
+                step = 6;
                 return false;
             default:
                 return false;

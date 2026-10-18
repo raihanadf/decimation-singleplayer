@@ -726,7 +726,21 @@ public final class Deci
     public static Object addNewsPanel(net.minecraft.client.gui.GuiScreen screen, int x, int y, String title, String line,
                                       String url, String picture)
     {
-        deci.d.c panel = new deci.d.c(1, x, y, (deci.d.i) screen);
+        deci.d.c panel = new deci.d.c(1, x, y, (deci.d.i) screen)
+        {
+            @Override
+            public void o(String address) // ArticlePanel.openUrl: our in-game addresses open a screen, not the browser
+            {
+                if (net.decimation.fixes.MenuNews.COMMUNITY.equals(address))
+                {
+                    net.decimation.fixes.hosting.CommunityList.open(net.minecraft.client.Minecraft.getMinecraft());
+                }
+                else
+                {
+                    super.o(address);
+                }
+            }
+        };
         panel.eu = title;
         panel.ev = line;
         panel.ew = url;
@@ -779,6 +793,30 @@ public final class Deci
     public static String[] menuLinks()
     {
         return new String[] {String.valueOf(deci.b.c.aZ), String.valueOf(deci.b.c.bb)};
+    }
+
+    /** What a click on the index-th news panel does (ArticlePanel.openUrl with its address; tests). */
+    @cpw.mods.fml.relauncher.SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)
+    public static void openNewsPanel(net.minecraft.client.gui.GuiScreen screen, int index)
+    {
+        try
+        {
+            java.lang.reflect.Field f = deci.d.i.class.getDeclaredField("eX"); // protected panel list
+            f.setAccessible(true);
+            int n = 0;
+            for (Object o : (java.util.List<?>) f.get(screen))
+            {
+                if (o instanceof deci.d.c && n++ == index)
+                {
+                    ((deci.d.c) o).o(((deci.d.c) o).ew);
+                    return;
+                }
+            }
+        }
+        catch (ReflectiveOperationException e)
+        {
+            // no panels
+        }
     }
 
     /** Changes the small line under a news panel's title (addNewsPanel). */

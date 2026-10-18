@@ -51,8 +51,26 @@ public class LanHostTest extends DevTestMode
     private int humanityBefore;
     private double travelX;
 
+    /** Promo shots asked by the joiner (promo=true): 1 the world view, 2 the Host Online page; run on the client thread. */
+    private volatile int shoot, shootAt;
+
     public boolean client(Minecraft mc)
     {
+        if (shoot == 1 && ++shootAt > 60) // chunks around the street drawn
+        {
+            mc.displayGuiScreen(null);
+            mc.gameSettings.hideGUI = false;
+            DevTestUtil.screenshot(mc, name(), "promo_host");
+            mc.displayGuiScreen(new net.decimation.fixes.hosting.HostScreen(null));
+            shoot = 2;
+            shootAt = 0;
+        }
+        else if (shoot == 2 && ++shootAt > 20)
+        {
+            DevTestUtil.screenshot(mc, name(), "promo_hostpage");
+            mc.displayGuiScreen(null);
+            shoot = 3;
+        }
         return !done;
     }
 
@@ -89,7 +107,7 @@ public class LanHostTest extends DevTestMode
                     System.setProperty("deciworldgen.relay", relay);
                 }
                 net.decimation.fixes.hosting.HostService.Settings st = new net.decimation.fixes.hosting.HostService.Settings();
-                st.name = "Spike world";
+                st.name = System.getProperty("deciworldgen.autotest.worldname", "Spike world");
                 st.online = online;
                 st.max = 4;
                 st.player = host.getCommandSenderName();
@@ -425,6 +443,33 @@ public class LanHostTest extends DevTestMode
                 e.setDead();
             }
             made.clear();
+        }
+        else if (verb.equals("promo")) // both players with a gun in a city street of seed 1 (tools/site/siteshots.tsv "city")
+        {
+            w.getWorldInfo().setRaining(false);
+            w.getWorldInfo().setThundering(false);
+            w.setWorldTime(Long.getLong("deciworldgen.autotest.promotime", 6000L));
+            int px = Integer.getInteger("deciworldgen.autotest.promox", 1400), pz = Integer.getInteger("deciworldgen.autotest.promoz", 520);
+            int gap = 5;
+            for (EntityPlayerMP p : new EntityPlayerMP[] {host, joiner})
+            {
+                p.setGameType(WorldSettings.GameType.SURVIVAL);
+                p.capabilities.disableDamage = true;
+                net.minecraft.item.ItemStack g = new net.minecraft.item.ItemStack(cpw.mods.fml.common.registry.GameRegistry.findItem("deci", "akm"));
+                g.stackTagCompound = new net.minecraft.nbt.NBTTagCompound();
+                g.stackTagCompound.setInteger("ammo", 30);
+                p.inventory.setInventorySlotContents(p.inventory.currentItem, g);
+                p.inventoryContainer.detectAndSendChanges();
+            }
+            int hy = w.getTopSolidOrLiquidBlock(px, pz), jy = w.getTopSolidOrLiquidBlock(px - gap, pz);
+            host.playerNetServerHandler.setPlayerLocation(px + 0.5, hy, pz + 0.5, 90, 0);       // facing west, toward the joiner
+            joiner.playerNetServerHandler.setPlayerLocation(px - gap + 0.5, jy, pz + 0.5, 270, 0); // facing east, toward the host
+            answer = "ok " + hy + " " + jy;
+        }
+        else if (verb.equals("promohost"))
+        {
+            shoot = 1;
+            shootAt = 0;
         }
         else if (verb.equals("end"))
         {

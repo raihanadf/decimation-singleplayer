@@ -17,7 +17,9 @@ import net.minecraftforge.client.event.GuiScreenEvent;
  * release, 3. our website release, 4. Coming soon feature"; "just use component from decimation gui menu its self, no
  * need to add something new on it"). Decimation's home page keeps a 2 x 2 grid for its own news panels (ArticlePanel),
  * filled only from BoehMod's dead backend; this puts four of those same panels there: our GitHub repository, the release
- * check (fixes/Updater, the line follows its state), our website and the website's coming soon list. Hover, sound and
+ * check (fixes/Updater, the line follows its state), our website and the website's coming soon list. Since 18 Oktober
+ * 2026 (user: promote multiplayer) the first panel is Multiplayer, which opens the in-game Community list; GitHub stays
+ * as the top right link. Hover, sound and
  * the click that opens the page are the panel's own. Pictures: textures/gui/menu/news_<id>.png in Decimation's assets,
  * written into the jars by tools/menu_assets.py (real shots of our world, never committed); without one a panel shows
  * Decimation's own placeholder. Main menu only (in a world the same screen is the pause menu). Client only: register
@@ -28,10 +30,12 @@ public class MenuNews
 {
     public static final String REPO = "https://github.com/ucilmenangis/decimation-singleplayer";
     public static final String SITE = "https://deciremnant.vercel.app/";
+    /** The Multiplayer panel's address: opens the in-game Community list (Deci.addNewsPanel), not a web page. */
+    public static final String COMMUNITY = "deciremnant:community";
 
     /** id, title, line (null: the release check's), address. */
     private static final String[][] PANELS = {
-        {"github", "GitHub", "Source code, issues, all releases", REPO},
+        {"multiplayer", "Multiplayer", "NEW: host your world, join others", COMMUNITY},
         {"update", "Updates", null, Updater.DEFAULT_WEB},
         {"website", "Website", "Download, install and server guides", SITE},
         {"coming", "Coming soon", "What we are building next", SITE + "#coming"},
