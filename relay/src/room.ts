@@ -24,9 +24,15 @@ export class Room extends DurableObject<Cloudflare.Env> {
       const id = parts[3];
       const joiner = this.ctx.getWebSockets('join:' + id)[0];
       if (!joiner) return new Response('no such joiner', { status: 404 });
-      if (this.ctx.getWebSockets('data:' + id)[0]) return new Response('already answered', { status: 409 });
+      // still one data socket per joiner, but a newer one (the host retrying a socket that landed far, docs/player_hosting.md 16)
+      // replaces the old: the old closes without taking the joiner down
+      const old = this.live('data:' + id);
+      for (const o of old) {
+        o.serializeAttachment({ replaced: true });
+        o.close(1000, 'replaced');
+      }
       this.ctx.acceptWebSocket(server, ['data', 'data:' + id]);
-      joiner.send(JSON.stringify({ ready: true }));
+      if (old.length === 0) joiner.send(JSON.stringify({ ready: true }));
     } else if (parts[0] === 'join') {
       const control = this.ctx.getWebSockets('control')[0];
       if (!control) return new Response('host offline', { status: 404 });
@@ -42,10 +48,15 @@ export class Room extends DurableObject<Cloudflare.Env> {
     return new Response(null, { status: 101, webSocket: client });
   }
 
+  /** The sockets with this tag that were not replaced. */
+  private live(tag: string): WebSocket[] {
+    return this.ctx.getWebSockets(tag).filter((s) => !(s.deserializeAttachment() as { replaced?: boolean } | null)?.replaced);
+  }
+
   private partner(ws: WebSocket): WebSocket | undefined {
     for (const t of this.ctx.getTags(ws)) {
-      if (t.startsWith('join:')) return this.ctx.getWebSockets('data:' + t.slice(5))[0];
-      if (t.startsWith('data:')) return this.ctx.getWebSockets('join:' + t.slice(5))[0];
+      if (t.startsWith('join:')) return this.live('data:' + t.slice(5))[0];
+      if (t.startsWith('data:')) return this.live('join:' + t.slice(5))[0];
     }
     return undefined;
   }
@@ -66,6 +77,7 @@ export class Room extends DurableObject<Cloudflare.Env> {
       await this.deadline(at + GRACE_MS);
       return;
     }
+    if ((ws.deserializeAttachment() as { replaced?: boolean } | null)?.replaced) return; // a newer data socket took over
     const other = this.partner(ws);
     if (other) other.close(1000, reason || 'closed');
     const join = tags.find((t) => t.startsWith('join:'));

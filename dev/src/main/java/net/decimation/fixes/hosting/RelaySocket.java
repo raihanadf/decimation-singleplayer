@@ -297,25 +297,93 @@ public final class RelaySocket
      */
     public static RelaySocket openNear(URI uri, Listener listener, String region, int tries) throws IOException
     {
+        return openNear(uri, listener, region, tries, false);
+    }
+
+    /**
+     * As above; overlap: the next try opens BEFORE the far one closes. The relay pairs a host data socket with its joiner
+     * and replaces an older data (or control) socket with a newer one, so closing the far one first would take the joiner
+     * down (seen in the two game test, docs/player_hosting.md 16). Join sockets retry without overlap (a fresh id each).
+     */
+    public static RelaySocket openNear(URI uri, Listener listener, String region, int tries, boolean overlap) throws IOException
+    {
+        RelaySocket far = null;
         for (int i = 1; ; i++)
         {
             Forward f = new Forward();
-            RelaySocket s = open(uri, f);
+            RelaySocket s;
+            try
+            {
+                s = open(uri, f);
+            }
+            catch (IOException e)
+            {
+                if (far != null)
+                {
+                    far.forward.to(listener); // no better one: keep the far socket after all
+                    return far;
+                }
+                throw e;
+            }
+            s.forward = f;
+            if (far != null)
+            {
+                // the relay may already have sent the far socket a joiner's first bytes, "ready" or {"open": id}: the newer
+                // socket replaces it at the relay, so what it heard comes first here (found in the two game test, 16)
+                f.prepend(far.forward.drain());
+                far.close("landed far: " + far.colo());
+                far = null;
+            }
             if (i >= tries || Colos.near(region, s.colo()))
             {
                 HostService.log("relay socket landed in " + s.colo() + (i > 1 ? " after " + i + " tries" : ""));
                 f.to(listener); // early messages reach the listener now, in order
                 return s;
             }
-            s.close("landed far: " + s.colo()); // never handed a listener: what it says is dropped
+            if (overlap)
+            {
+                far = s; // closed once the next one is open
+            }
+            else
+            {
+                s.close("landed far: " + s.colo()); // never handed a listener: what it says is dropped
+            }
         }
     }
+
+    private volatile Forward forward;
 
     /** Holds a socket's messages until it is kept (openNear), then passes them on in order. */
     private static final class Forward implements Listener
     {
         private Listener target;
         private java.util.List<Object[]> held = new java.util.ArrayList<Object[]>();
+
+        /** What this socket heard so far, taken away (it says nothing more to anyone). */
+        synchronized java.util.List<Object[]> drain()
+        {
+            java.util.List<Object[]> h = held == null ? new java.util.ArrayList<Object[]>() : held;
+            held = new java.util.ArrayList<Object[]>(); // later messages are dropped with the socket
+            target = null;
+            java.util.List<Object[]> out = new java.util.ArrayList<Object[]>();
+            for (Object[] m : h)
+            {
+                if (!(m[0] instanceof Integer)) // not its own close
+                {
+                    out.add(m);
+                }
+            }
+            return out;
+        }
+
+        /** Messages that come before everything this socket heard. */
+        synchronized void prepend(java.util.List<Object[]> first)
+        {
+            if (held != null)
+            {
+                held.addAll(0, first);
+            }
+        }
 
         synchronized void to(Listener l)
         {

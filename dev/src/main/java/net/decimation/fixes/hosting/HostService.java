@@ -411,12 +411,13 @@ public final class HostService
                     controlLost(); // the relay dropped us (network, sleep, a relay deploy): list the world again
                 }
             }
-        }, region, 3);
+        }, region, 3, true); // overlap: a newer control socket replaces the old, players stay
     }
 
     /** One joiner: a data socket to the room piped to the LAN port, on its own thread (opening takes up to 10 s). */
     private void openData(final RelayClient c, final String r, final String s, final String id)
     {
+        log("joiner " + id + " knocks: opening its data socket");
         Thread t = new Thread(new Runnable()
         {
             public void run()
@@ -444,15 +445,16 @@ public final class HostService
                             }
                             return verdict;
                         }
-                    }, null, null, region, 3);
+                    }, null, null, region, 3, true); // overlap: the relay replaces a data socket, the joiner stays
                     if (!p.isClosed())
                     {
                         pipes.put(id, p);
                     }
                 }
-                catch (IOException e)
+                catch (IOException | RuntimeException e)
                 {
                     error = "joiner " + id + ": " + e.getMessage();
+                    log("joiner " + id + " not answered: " + e);
                 }
             }
         }, "DeciRemnant host pipe");

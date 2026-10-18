@@ -262,7 +262,7 @@ public final class JoinService
         try
         {
             Pipe.start(s, new RelayClient(RelayClient.base()).joinSocket(e.room), true, null, null, first != null ? null : tell, first,
-                       e.region, 2); // a far join socket is tried once more (each try holds a seat for a moment)
+                       e.region, 2, false); // a far join socket is tried once more (each try holds a seat for a moment)
         }
         catch (IOException ex)
         {

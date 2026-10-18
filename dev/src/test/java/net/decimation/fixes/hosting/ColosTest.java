@@ -61,4 +61,42 @@ class ColosTest
         assertTrue(s.isOpen());
         s.close("done");
     }
+
+    @Test
+    void withOverlapTheNextSocketOpensBeforeTheFarOneCloses() throws Exception
+    {
+        EchoServer.hopEvents.clear();
+        RelaySocket s = RelaySocket.openNear(new URI("ws://127.0.0.1:" + port + "/hop/FRA,SIN"), null, "apac-se", 3, true);
+        assertEquals("SIN", s.colo());
+        Thread.sleep(200);
+        // the relay pairs a host data socket with its joiner: closing the far one first would take the joiner down
+        assertEquals(java.util.Arrays.asList("open 0", "open 1", "close 0"), EchoServer.hopEvents);
+        s.close("done");
+    }
+
+    @Test
+    void whatTheFarSocketHeardIsHandedToTheKeptOne() throws Exception
+    {
+        java.util.concurrent.BlockingQueue<String> heard = new java.util.concurrent.LinkedBlockingQueue<String>();
+        RelaySocket.Listener l = new RelaySocket.Listener()
+        {
+            public void binary(byte[] d)
+            {
+            }
+
+            public void text(String s)
+            {
+                heard.add(s);
+            }
+
+            public void closed(int code, String reason)
+            {
+            }
+        };
+        // the relay already sent "ready" or a joiner's first bytes to the far socket before the host chose the near one
+        RelaySocket s = RelaySocket.openNear(new URI("ws://127.0.0.1:" + port + "/hop/FRA,SIN/greet"), l, "apac-se", 3, true);
+        assertEquals("first", heard.poll(2, java.util.concurrent.TimeUnit.SECONDS));
+        s.close("done");
+    }
 }
+

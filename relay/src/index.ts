@@ -4,6 +4,8 @@ export { Lobby, Room };
 export { roomHint } from './hint';
 import { roomHint } from './hint';
 
+let fakeTurn = 0;
+
 export default {
   async fetch(req: Request, env: Cloudflare.Env): Promise<Response> {
     const url = new URL(req.url);
@@ -23,7 +25,8 @@ export default {
       const r = await (hint ? env.ROOM.get(id, { locationHint: hint }) : env.ROOM.get(id)).fetch(fwd);
       if (r.status !== 101 || !r.webSocket) return r;
       // which data center this socket landed in: the game retries one that landed far from the room (docs/player_hosting.md 16)
-      const colo = ((req as any).cf as { colo?: string } | undefined)?.colo;
+      const fake = env.FAKE_COLOS ? env.FAKE_COLOS.split(',') : null; // local tests only: make sockets land "far"
+      const colo = fake ? fake[fakeTurn++ % fake.length] : ((req as any).cf as { colo?: string } | undefined)?.colo;
       return new Response(null, { status: 101, webSocket: r.webSocket, headers: colo ? { 'x-colo': colo } : {} });
     }
     return new Response('DeciRemnant relay', { status: 200 });

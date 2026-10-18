@@ -152,7 +152,7 @@ export class Lobby extends DurableObject {
         room: token(16), secret: token(32), name, host: body.host, online: body.online, players: 0, max: body.max,
         mods: body.mods.map((m: any) => [`${m[0]}`, `${m[1]}`]), version: body.version, since: this.now(), seen: this.now(), ip,
         direct: body.direct ? body.direct.map((a: string) => a) : [],
-        region: roomHint((req as any).cf?.country, (req as any).cf?.continent),
+        region: (this.env as any).FAKE_REGION || roomHint((req as any).cf?.country, (req as any).cf?.continent),
       };
       this.entries.set(e.room, e);
       await this.save();

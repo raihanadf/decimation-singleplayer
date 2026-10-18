@@ -66,12 +66,15 @@ public final class Pipe
     public static Pipe start(Socket tcp, URI relayUri, boolean waitReady, Runnable onClose, final Gate gate, First first,
                              byte[] initial) throws IOException
     {
-        return start(tcp, relayUri, waitReady, onClose, gate, first, initial, null, 1);
+        return start(tcp, relayUri, waitReady, onClose, gate, first, initial, null, 1, false);
     }
 
-    /** As above, the relay socket opened again (up to `tries`) while it lands far from `region` (RelaySocket.openNear). */
+    /**
+     * As above, the relay socket opened again (up to `tries`) while it lands far from `region` (RelaySocket.openNear;
+     * overlap for the host's data sockets: the next opens before the far one closes).
+     */
     public static Pipe start(Socket tcp, URI relayUri, boolean waitReady, Runnable onClose, final Gate gate, First first,
-                             byte[] initial, String region, int tries) throws IOException
+                             byte[] initial, String region, int tries, boolean overlap) throws IOException
     {
         final Pipe p = new Pipe(tcp, onClose);
         p.first = first;
@@ -126,7 +129,7 @@ public final class Pipe
                 }
                 p.close();
             }
-        }, region, tries);
+        }, region, tries, overlap);
         p.relay = relay;
         if (p.closed && relay.isOpen())
         {

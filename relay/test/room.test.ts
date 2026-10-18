@@ -79,14 +79,21 @@ describe('room', () => {
     expect(r.status).toBe(404);
   });
 
-  it('a second data socket for the same joiner is refused', async () => {
+  it('a second data socket for the same joiner replaces the first, and the joiner stays (a host retrying a far socket)', async () => {
     const { room, secret } = await register('10.1.0.6');
     const control = await ws(`/host/${room}?secret=${secret}`);
-    await ws(`/join/${room}`);
+    const joiner = await ws(`/join/${room}`);
     await until(() => control.inbox.length > 0);
     const id = JSON.parse(control.inbox[0]).open;
-    expect((await ws(`/host/${room}/data/${id}?secret=${secret}`)).status).toBe(101);
-    expect((await ws(`/host/${room}/data/${id}?secret=${secret}`)).status).toBe(409);
+    const first = await ws(`/host/${room}/data/${id}?secret=${secret}`);
+    expect(first.status).toBe(101);
+    const second = await ws(`/host/${room}/data/${id}?secret=${secret}`);
+    expect(second.status).toBe(101);
+    await until(() => first.inbox.some((m) => m && m.closed)); // the old one is closed
+    await new Promise((r) => setTimeout(r, 100));
+    expect(joiner.inbox.some((m) => m && m.closed)).toBe(false); // the joiner is not
+    joiner.socket.send(new Uint8Array([7, 8]).buffer); // and its bytes reach the new data socket
+    await until(() => second.inbox.some((m) => m instanceof ArrayBuffer && new Uint8Array(m)[0] === 7));
   });
 
   it('a later join does not push back the first joiner\'s 10 s deadline', async () => {
