@@ -51,7 +51,9 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [x] corpse could not be opened with a gun in hand (joined player report): fixes/GunUseKey, two game test PASS
 - [x] natural spawns off for tests: /gamerule doMobSpawning false also stops our spawners (fixes/NaturalSpawns, dev test nospawn)
 - [x] plan: 1.0.0 order decided (user): pre-releases low / medium fixes only, multiplayer + new cities only in 1.0.0 (full release)
-- [ ] keep multiplayer out of pre-release jars built from main (way to be decided)
+- [x] branch `prerelease` (worktree ../Decimation-prerelease): 0.64.8 + 5 plain fixes, no multiplayer; corpsegun RED then GREEN there
+- [ ] user: push the new branch (`git push -u origin prerelease`)
+- [ ] zombies test "night frenzy off by day" FAILs on main and prerelease (x1.20 at noon; weather or storm suspected)
 - [~] plan: city content replacement (docs/city_replacement.md): ChaosZPack blocked by its license, McJty Lost Cities (MIT) proposed; user decides
 - [ ] city content replacement with ChaoszPack Lost Cities (copyright; roadmap, after multiplayer)
 - [x] HUD crash when a world is joined without Decimation's menu: fixes/HudGuard (in code, next release)

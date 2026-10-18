@@ -63,4 +63,7 @@ there. for multiplayer + new city gen release, it will be released at 1.0.0 vers
 2. 1.0.0, the first full release (not pre-release): multiplayer (hosting part 1, voice chat optional, Commands: only
    me) together with the new city content (docs/city_replacement.md).
 3. The teaser posts (docs/promotion.md) promote 1.0.0; the follow up post goes out on the 1.0.0 day.
+4. How (user choice, 18 Oktober 2026: "Release branch", then "split 2 branch, so player cant reverse engineer it ... make
+   sure the commit upstream still appear"): branch `prerelease` from tag 0.64.8 with the plain fixes carried from main
+   (CLAUDE.md "Two branches"); main keeps every commit. At 1.0.0 the release is built from main.
 (My earlier suggestion was 0.65 with multiplayer first; replaced by the user's order.)

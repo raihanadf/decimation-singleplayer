@@ -1368,3 +1368,10 @@ waits until the rule is on again) and garrison spawner cages (their infected are
 spawn. Dev test `nospawn` RED 2 FAIL, GREEN 4 PASS (three runs). The two game test (lanhost scene=true) turns the rule
 off for its scenes and back at the end. Safezone residents are friendly and still fill their camps.
 
+## Dev test zombies: "night frenzy off by day" FAILs (18 Oktober 2026, OPEN)
+
+x1.20 at world time 6000 instead of x1.00, three runs on the prerelease branch and one on main (so not from the fixes
+carried there). The test clears rain and thunder at the night step; World.isDaytime() reads the sky darkness, which
+rain strength keeps low for about 100 ticks after the rain stops, and Decimation's own storm weather may set rain again
+[inferred, not checked]. Look at rain strength and Decimation's weather at the check.
+

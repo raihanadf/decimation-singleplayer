@@ -36,6 +36,21 @@ decompiled code (`deobf/src`), no `tools/lib`; `.gitignore` enforces it and
 every commit should be checked (`git ls-files` for *.jar other than the
 Gradle wrapper, nothing over 5 MB). Commit at the root; the user pushes.
 
+Two branches (user, 18 Oktober 2026: pre-releases carry only low to medium fixes; multiplayer and the new cities ship
+together in 1.0.0, so no jar a player downloads before 1.0.0 may hold multiplayer code):
+- `main`: everything, all development, the docs, the graph. Never rewrite its history (the user's GitHub contributions
+  count its commits). Multiplayer source on it is public since 18 Oktober 2026 (accepted by the user: only the jars
+  must not carry it).
+- `prerelease`: started at tag 0.64.8 (no multiplayer), checked out as a git worktree in
+  `/Users/ucilmenangis/Projects/Decimation-prerelease` (dev/libs there is a link to main's). It gets ONLY plain fixes,
+  carried from main by hand, one commit each, message naming the main commit ("from main abc1234"). Pre-release jars are
+  built only from it. Never carry fixes/hosting, relay/, OptionalMods, the Lan* tests, the Community texts or the
+  Multiplayer news panel. `git apply --3way` STAGES what it applies: stage and commit each fix by its file list and
+  check `git show --stat` before the next one. Carried so far: UpdateBar, HudGuard, PlaceNames rejoin, GunUseKey (+
+  corpsegun), NaturalSpawns (+ nospawn). Releasing from it: build its own dist base jar with ITS tools (menu_assets.py
+  of the branch: main's jars carry the Multiplayer news picture), then tools/onejar.py there [not done yet].
+  Only one live dev game at a time (both use port 25599).
+
 ## Knowledge maintenance (mandatory, user rule 2026-10-07)
 
 This session can vanish; the files are the memory. After EVERY analysis or
