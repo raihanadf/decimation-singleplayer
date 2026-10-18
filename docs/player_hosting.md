@@ -269,6 +269,11 @@ review, then the implementation plan). Real case test planned with the user's br
   hosted with the new jar, kucing joined (07:37:12), "/tp kucing" worked (log: "Teleported DeciHost to kucing"). The
   brother's own /tp attempt was not tried [not verified]; the joiner side is covered by the hostops check.
 
+- Second session (18 Oktober 2026 afternoon): jar built from fa0c60b (sha256 4e759116...), served the same way. The user
+  hosted from the dev client, which always has Gliby's Voice Chat (gvc 0.6.1, installVoiceChat); the brother had only
+  Decimation.jar and got our "need gvc 0.6.1" refusal. With the original voice chat jar served beside it he joined;
+  user: "cloudflare multiplayer is really do well now". Open: joiners without gvc (bug.md).
+
 ## 13. Community page texts (18 Oktober 2026)
 
 - User: the page says only how many players are online, not "in N worlds"; an empty list shows a placeholder.
