@@ -36,6 +36,7 @@ public class MenuPagesTest extends DevTestMode
             "Download | DeciRemnant download server | Offline"};
     private static final int MY_COMMUNITY = 27, PLAY = 9, COMMUNITY_TAB = 13, SERVER_STATUS = 11;
 
+    private int shown;
     private boolean clicked;
     private int step, ticks;
     private IntegratedServer stopping;
@@ -150,9 +151,14 @@ public class MenuPagesTest extends DevTestMode
                 {
                     return true; // the list is fetched on its own thread
                 }
+                if (Deci.isCommunityScreen(mc.currentScreen) && shown++ < 20)
+                {
+                    return true; // a second to draw the page before the shot
+                }
                 DevTestResults.check(name(), "community tab opens the Community page",
                                      mc.currentScreen == null ? "none" : mc.currentScreen.getClass().getName(),
                                      Deci.isCommunityScreen(mc.currentScreen), "GuiMenuCommunityServers (deci.i.j)");
+                DevTestUtil.screenshot(mc, name(), "menupages_communitylist"); // player count, rows or the empty placeholder
                 DevTestUtil.press(mc.currentScreen, DevTestUtil.byId(mc.currentScreen, SERVER_STATUS));
                 next();
                 return true;

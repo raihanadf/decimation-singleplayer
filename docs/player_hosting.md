@@ -268,3 +268,11 @@ review, then the implementation plan). Real case test planned with the user's br
   hostmenu PASS (07:31; the first run showed the test's reflection needs SRG field names too). Real game 07:38: the user
   hosted with the new jar, kucing joined (07:37:12), "/tp kucing" worked (log: "Teleported DeciHost to kucing"). The
   brother's own /tp attempt was not tried [not verified]; the joiner side is covered by the hostops check.
+
+## 13. Community page texts (18 Oktober 2026)
+
+- User: the page says only how many players are online, not "in N worlds"; an empty list shows a placeholder.
+- fixes/hosting/CommunityText (plain Java, JUnit CommunityTextTest RED 2 FAIL then GREEN): headline "Players Online: N"
+  (hosts plus joiners), three placeholder lines centred in Decimation's panel when no world is listed. The tab tooltip
+  still says "N worlds". Dev test menupages shoots the opened page (menupages_communitylist; docs/shots_index.md
+  community_empty.png).

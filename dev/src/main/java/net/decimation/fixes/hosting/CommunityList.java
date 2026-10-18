@@ -196,13 +196,13 @@ public final class CommunityList
             return;
         }
         FontRenderer f = Minecraft.getMinecraft().fontRenderer;
-        int players = 0;
-        for (ListEntry w : shown)
+        f.drawStringWithShadow(CommunityText.headline(shown), e.gui.width / 2 - 173 + 119, 63, 0xFFFFFF);
+        String[] none = CommunityText.empty(shown);
+        for (int k = 0; k < none.length; k++) // where the first rows would be (Decimation's panel, mockup section 4)
         {
-            players += w.players + 1; // the host plays too
+            f.drawStringWithShadow(none[k], e.gui.width / 2 - 173 + 105 + (246 - f.getStringWidth(none[k])) / 2, 110 + k * 12,
+                                   0xFFFFFF);
         }
-        f.drawStringWithShadow("§a● §fPlayers Online: §a" + players + " §fin " + shown.size() + " worlds",
-                               e.gui.width / 2 - 173 + 119, 63, 0xFFFFFF);
         int i = Deci.hoveredCommunityRow(e.gui);
         if (i < 0 || i >= shown.size())
         {

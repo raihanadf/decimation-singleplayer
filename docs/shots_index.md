@@ -1616,3 +1616,7 @@ User screenshots, creative mode, the milbase sky test bases; each finding is fix
   Decimation's Community Server List filled from the DEPLOYED relay: "Players Online: 1 in 1 worlds", one row "Spike
   world" with the caption "host Developer · via relay - 297ms", Decimation's green Join button and "1/8"; Joiner's card
   on the left (0 kills, "No early access").
+- `community_empty.png` (854 x 480, dev client, menupages run 18 Oktober 2026 08:10): the Community Server List with no
+  hosted world: "Players Online: 0" (no world count since the user's request), and centred in the empty panel "No worlds
+  online right now", "Host yours: pause menu, Host Online", "and it shows up here for everyone" (fixes/hosting/
+  CommunityText). The first wording ran past the panel's left edge.
