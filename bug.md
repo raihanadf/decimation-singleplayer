@@ -1393,3 +1393,28 @@ closed every joiner and the host registered a new room. Fixed with keep-alive pi
 reconnecting to the same room, and direct players kept (docs/player_hosting.md 16). Checked with a forced control drop in
 the two game test on the deployed relay. A real long session with the friend is still to come.
 
+
+## OpenGL "Stack overflow" 1964 times on the host, from Market District (user test 19 Oktober 2026, OPEN)
+
+Brother's laptop (wyvern: RTX 2060, NVIDIA 610.57, Linux, OptiFine E7) hosting, the user joining from the Mac. Its
+latest.log: "GL ERROR @ Post render 1283: Stack overflow" 1959 times and "1284: Stack underflow" 5 times, from 02:38:53
+(entering Springfield City: Market District - 1) to 02:51, up to 398 a minute; OptiFine also put "OpenGL Error" in chat.
+Some renderer pushes the matrix or attribute stack without popping it, only while something there is drawn [inferred:
+which renderer is not found]. The Mac log has none (Apple's GL on Metal may not report it) [not checked]. Next: a dev test
+that reads GL_MODELVIEW_STACK_DEPTH and GL_ATTRIB_STACK_DEPTH around each entity and tile entity renderer in a Market
+District and names the one that leaves them changed.
+
+## FPS falls minute by minute (120 to 60 and lower), the Mac froze after about 20 minutes (user 19 Oktober 2026, OPEN)
+
+Same session. Seen on both machines. The host world saved at quit holds 191 entities (42 Boar, 34 InfectedDog, 28 Item, 18
+Infected, 4 Corpse) and 7119 tile entities (5404 PropTile): no entity pile up at quit time (tools/perfcheck.py world on a
+copy). The Mac log ends at 02:52:45 with nothing unusual (one "Clientside chunk ticking took 129 ms"); the freeze left no
+line. Both games had 4 GB. Cause unknown; the GL stack overflow above is the first lead. Needed next time: F3 screen when
+the FPS is low (E: count, memory %), and whether the Mac game came back or had to be force quit.
+
+## Direct join never used on the brother's NixOS laptop: its firewall blocks the gate port (19 Oktober 2026, OPEN)
+
+Joiner went through the relay (Singapore) although both were on the same wifi. wyvern's NixOS firewall is active and lets
+in only listed ports; Direct.Gate listens on a random free port (ServerSocket(0)), so no rule can name it. Windows asks
+"allow Java" once instead [inferred]. Options: a fixed default gate port the host can open, shown on the host page.
+Also seen: two "registration failed: 429 too often" at 02:34:15 after a quick restart of hosting; the next try worked.

@@ -50,7 +50,7 @@
     "semantic_hash": "40a108bc09ab115aa0d69f0465c51079"
   },
   "dev/src/main/java/net/decimation/worldgen/DecimationWorldGen.java": {
-    "mtime": 1792315441.9229574,
+    "mtime": 1792387817.9598901,
     "ast_hash": "f27f1156270bc4f4641b92ce04951f0d",
     "semantic_hash": "f27f1156270bc4f4641b92ce04951f0d"
   },
@@ -120,9 +120,9 @@
     "semantic_hash": "aa4550575e47e7c1d0b020a51afbb501"
   },
   "bug.md": {
-    "mtime": 1792345684.758158,
-    "ast_hash": "98bc66b6c05ead7f0351af3c093cb176",
-    "semantic_hash": "98bc66b6c05ead7f0351af3c093cb176"
+    "mtime": 1792387954.420849,
+    "ast_hash": "766e9b9152088ed2b3c3d3a2c986d367",
+    "semantic_hash": "766e9b9152088ed2b3c3d3a2c986d367"
   },
   "create_weapons.md": {
     "mtime": 1791653625.5948887,
@@ -1540,9 +1540,9 @@
     "semantic_hash": "294036847a9caffda351bfa855a78636"
   },
   "docs/tasks.md": {
-    "mtime": 1792345684.7589436,
-    "ast_hash": "7ab1b7edc063b7fcc07cbb68fc73290d",
-    "semantic_hash": "7ab1b7edc063b7fcc07cbb68fc73290d"
+    "mtime": 1792387966.1626372,
+    "ast_hash": "80ab1a479e9e660ff2487dc0a70a1303",
+    "semantic_hash": "80ab1a479e9e660ff2487dc0a70a1303"
   },
   "tools/skillcheck.py": {
     "mtime": 1792098139.5315723,
