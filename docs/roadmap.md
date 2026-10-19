@@ -29,9 +29,10 @@ or `[not decided]`.
    user's brother's laptop, parked by the user): entity lighting in the graphics driver suspected
    [not verified]. Waiting for that laptop's logs, GPU name, a screenshot, and whether the hand and
    items are black too. bug.md "Every Decimation mob drawn solid black".
-4. **Drawing armed NPCs costs about 420 us each on the M4** (dev test npcdraw, 19 Oktober 2026): the looks are one
-   picture now (fixes/HumanLayers); about 360 us of it is the gun and gear drawn part by part (BModelPart). Next: one
-   display list per gun and attachment state for third person. bug.md "Drawing many human NPCs is heavy on the client".
+4. **Drawing armed NPCs** (dev test npcdraw, 19 Oktober 2026): looks in one picture (fixes/HumanLayers) and .bmodel parts
+   in one draw each (fixes/ModelBatch): about half the old time. Left: a military NPC with full kit still about 480 us
+   (one list call per part, armour models); a whole gun in one list when its parts do not move would be next.
+   bug.md "Drawing many human NPCs is heavy on the client".
 
 ## Master plan (13 Oktober 2026)
 

@@ -54,6 +54,9 @@ GunAnimation.get 99 (a lookup each frame while the gun is held).
 - With OptiFine, RenderHandEvent is posted inside renderHand (Forge posts it before): our ScopeZoom, which cancels it and
   draws the hand itself, recursed until the stack ran out (gun gone while aiming, "Stack overflow" every frame); it now
   ignores its own re-entry (bug.md "Aiming with OptiFine").
+- Every quad of a .bmodel part was its own draw call inside the part's two display lists (BModelQuad: startDrawingQuads,
+  four vertices, draw): a few hundred draws per gun. fixes/ModelBatch with PatchModelBatch draws each part in one draw
+  (gunbatch: the same pixels; npcdraw: armed NPCs about half the time).
 
 ## 5. How our mod uses it
 
@@ -64,9 +67,10 @@ GunAnimation.get 99 (a lookup each frame while the gun is held).
 | prop render distance and culling | tools/patches/PatchPropCulling.java, config deciworldgen_props.cfg |
 | NPC tracers | fixes/NpcShots, PatchTracer |
 | NPC looks in one picture | fixes/HumanLayers (`Deci.humanLook`, `Deci.humanGear`), tools/patches/PatchHumanLayers.java |
+| .bmodel parts in one draw each | fixes/ModelBatch, tools/patches/PatchModelBatch.java |
 
 ## 6. Checks
 
 - `gunview` (guns in hand, aimed, on an NPC), `scope`, `props` (prop fps), `cityfps` / `cityview` (fps: never with the
   call logger), `views` (street shots), `npclook` (NPC looks drawn both ways in one frame, pixels compared), `npcdraw`
-  (time drawing NPCs a frame, both ways), `lightleak` (lighting as each mob starts drawing, after flashes and goggles).
+  (time drawing NPCs a frame, both ways), `lightleak` (lighting as each mob starts drawing, after flashes and goggles), `gunbatch` (parts drawn both ways, pixels compared).

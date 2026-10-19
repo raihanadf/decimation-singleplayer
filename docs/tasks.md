@@ -85,5 +85,5 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [~] scope drops: no glass measurement at the hip; stutter not reproduced on the M4; CPU glass math if drops stay
 - [x] NPC looks in one picture: fixes/HumanLayers, PatchHumanLayers (npclook, npcdraw: infected 28 % cheaper to draw)
 - [x] muzzle flash lit every mob drawn after the shooter: fixes/EntityLighting, PatchLightLeaks (lightleak)
-- [ ] NPC guns and gear drawn in one go (about 360 us of an armed NPC's 423; next)
+- [x] NPC guns and gear drawn in one go: fixes/ModelBatch, PatchModelBatch (gunbatch 0 px differ; npcdraw armed NPCs about half the time)
 - [ ] repeated deaths to NPC gunfire at Market District in the user's session (not looked at)

@@ -217,5 +217,15 @@ exactly), so load changes hit both alike. Looks in one picture (fixes/HumanLayer
 | horde, 80 infected | 6.55 ms (82 us each) | 4.72 ms (59 us each) |
 | camp, 70 civilians and guards with guns and gear | 31.2 ms (446 us each) | 29.6 ms (423 us each) |
 
-An armed NPC spends about 360 us in its gun and gear (BModelPart display lists part by part): the next step. The bench
-gains `layers=off` (the old drawing) for whole scene comparisons on a quiet Mac.
+An armed NPC spent about 360 us in its gun and gear (BModelPart display lists part by part, every quad its own draw).
+Model parts in one draw each (fixes/ModelBatch, PatchModelBatch), old way now Decimation's whole drawing (layers off,
+sight checks on, ModelBatch off), same alternation, Mac load about 5:
+
+| scene, NPCs drawn a frame | old way | new way | frame median old / new |
+|---|---|---|---|
+| camp, 46 armed civilians and guards | 12.3 ms (274 us each) | 6.0 ms (130 us each) | 28.3 / 16.9 ms |
+| horde, 82 infected | 8.4 ms (102 us each) | 4.7 ms (56 us each) | 16.5 / 12.9 ms |
+| fight, 40 soldiers and bandits shooting (healed each tick) | 35.9 ms (897 us each) | 19.3 ms (483 us each) | 50.0 / 32.4 ms |
+
+`-Pscenes=fight` also splits draws by the gun's muzzle flash: 735 us flashing vs 686 us not (new way), on 8 % of the
+draws: the flash is about 1 % of NPC drawing. The bench's `layers=off` switches all three back for whole scene runs.

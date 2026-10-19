@@ -396,6 +396,9 @@ SRG→MCP from the old root `src/` via `mcp_stable/12` CSVs; the root `src/` +
   `PatchLightLeaks.java` (same day, bug.md "Muzzle flash lit every mob"): on top of PatchHumanLayers (re-run it after
   that one), an NPC's night vision goggles leave the lights as they found them (fixes/EntityLighting.save / restore;
   fourth argument: lwjgl 2.9.4 from the gradle cache); fixes/EntityLighting puts lighting back around every entity;
+  `PatchModelBatch.java` (same day): BModelPart deci/n/b and BModelQuad deci/n/c: each part's quads captured once at
+  compile into one more display list (fixes/ModelBatch), drawn instead of Decimation's two lists of one draw per quad;
+  ModelBatch.enabled switches back at run time (dev tests gunbatch, npcdraw);
   `PatchVehicleArrows.java` (2026-10-11, bug.md vehicle entry): indirect player hits
   (arrows, thrown, TNT) on deci/ad/e take the health path, not pickup;
   `PatchInfectedAI.java` (2026-10-10, docs/performance.md): infected
@@ -1141,6 +1144,10 @@ of the last session:
   the hand event and calls renderHand itself must ignore its own re-entry (ScopeZoom.drawingHand). Test hand and scope
   changes in the production client with OptiFine too (docs/production_test.md); scopeperf checks GL errors per frame and
   the glass after aiming (no frozen picture: ScopeZoom wipes it to LENS).
+  Model parts in one draw (19 Oktober 2026, bug.md "Drawing many human NPCs", docs/performance.md 8): fixes/ModelBatch +
+  PatchModelBatch; dev tests gunbatch (npclook's comparison for parts), npcdraw `scenes=camp,horde,fight` (old way =
+  Decimation's whole drawing). Trap: BModelPart.render's children list is compiled once (frozen poses); a capture runs at
+  that same moment, so both ways hold the same geometry.
   RELEASE 0.64.8 published 17 Oktober 2026 16:53 (pre-release, sha256 73049bc7...; notes dist/onejar/RELEASE_NOTES_0.64.8.md;
   released jars kept in dist/previous/onejar-<version>): the production client with the real 0.64.7 jar updated itself
   to it from GitHub (239 MB in 29 s, checksum, jar swapped); site Download 0.64.8 at 16:54.

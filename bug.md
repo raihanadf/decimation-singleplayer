@@ -1558,7 +1558,7 @@ Each burst (once per 10 ticks per shooter) searched a 128 x 64 x 128 box and wro
 or hostile NPC in range: 4.5 to 6 % of the server in the bench fights. A mob still walking to a shot within 8 blocks of
 the new one, with more than half of its search time left, is now skipped. Dev test noise passes.
 
-## Drawing many human NPCs is heavy on the client (19 Oktober 2026, looks FIXED in dev; guns and gear OPEN)
+## Drawing many human NPCs is heavy on the client (19 Oktober 2026, looks and model parts FIXED in dev)
 
 bench "standby" (40 idle NPCs near the player): client about 25 to 30 ms a frame on the M4. Each human NPC is drawn in
 layers (ModelHuman deci.q.h: body, eyes, hair, beard, shirt, pants, shoes, each a full body pass with its own texture
@@ -1582,8 +1582,20 @@ Visible changes, both from bugs of the old drawing: the layer copies sat 0.05 / 
 showed through a cap or a mask (a mustache line on a balaclava, hair along a cap's edge); and the copies were posed
 without the held item (RenderBiped sets heldItemRight on the main model only), so an NPC holding a frying pan had a bare
 arm with its sleeve hanging beside it. Now gear covers hair and beard, and sleeves stay on the arm.
-Open, step 2: an armed NPC costs about 360 us of its 423 in the gun and gear, drawn part by part (BModelPart): one display
-list per gun and attachment state for third person.
+Step 2, guns and gear (user: "the gun model and gun fighting when npc shoots is the most hurt of the fps"): every .bmodel
+part (guns, attachments, armour, masks, vests, backpacks: BModelPart deci.n.b) compiled two display lists in which every
+quad was a draw call of its own (BModelQuad: startDrawingQuads, four vertices, draw): a few hundred tiny draws per armed
+NPC and frame. fixes/ModelBatch and tools/patches/PatchModelBatch.java (three jars): when a part compiles its lists it runs
+once more with BModelQuad's Tessellator calls captured, each quad moved into the part's space by the GL matrix its children
+set (read back), all in one more list with one draw per brightness run; the part draws that list instead of its two (its
+own transform still applies every frame). Decimation's lists stay: ModelBatch.enabled switches back at once. Dev test
+gunbatch (armed kinds drawn both ways in one frame, bare and dressed): 0 pixels differ. npcdraw (old way = Decimation's
+whole drawing: seven layers, sight checks, tiny draws; turns of 30 frames): camp 46 armed NPCs 12.3 to 6.0 ms a frame
+(frame median 28.3 to 16.9), horde 82 infected 8.4 to 4.7 ms (16.5 to 12.9), fight 40 soldiers and bandits shooting 35.9
+to 19.3 ms (50.0 to 32.4).
+The muzzle flash itself is not the cost (user's guess): in the fight an NPC drawn while its gun flashes took 939 us, not
+flashing 840 us (old way), 9 % of the draws flash: about 1 % of the NPC drawing. A military NPC with full kit simply costs
+about 840 us old, 480 us now, fighting or not; 40 of them in view are most of a fight's frame.
 
 ## Aiming with OptiFine made the gun vanish, "Stack overflow" every frame, FPS sinking (19 Oktober 2026, FIXED in dev)
 
