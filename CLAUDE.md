@@ -393,6 +393,9 @@ SRG→MCP from the old root `src/` via `mcp_stable/12` CSVs; the root `src/` +
   `PatchHumanLayers.java` (same day, bug.md "Drawing many human NPCs"): ModelHuman.renderHuman (deci/q/h) draws each look
   from one picture (fixes/HumanLayers; our classes on the Javassist path, third argument; patch from a copy of the
   ORIGINAL jar: build/patch_layers/original.jar) and answers its three dead line of sight checks true;
+  `PatchLightLeaks.java` (same day, bug.md "Muzzle flash lit every mob"): on top of PatchHumanLayers (re-run it after
+  that one), an NPC's night vision goggles leave the lights as they found them (fixes/EntityLighting.save / restore;
+  fourth argument: lwjgl 2.9.4 from the gradle cache); fixes/EntityLighting puts lighting back around every entity;
   `PatchVehicleArrows.java` (2026-10-11, bug.md vehicle entry): indirect player hits
   (arrows, thrown, TNT) on deci/ad/e take the health path, not pickup;
   `PatchInfectedAI.java` (2026-10-10, docs/performance.md): infected
@@ -1131,6 +1134,9 @@ of the last session:
   + PatchHumanLayers; dev tests npclook (both ways in one frame, pixels compared; `kinds=`), npcdraw (NPC draw time a frame,
   both ways in turns); bench `layers=off` draws Decimation's way. Gear now covers hair and beard, sleeves stay on an arm
   holding an item (both were bugs of the old layer copies). Next: guns and gear, about 360 us of an armed NPC's 423.
+  Muzzle flash lighting (19 Oktober 2026, bug.md): fixes/EntityLighting (lighting back on around each living entity),
+  PatchLightLeaks (NPC goggles); dev test lightleak. Trap: Decimation's disableItemLighting is never paired with an
+  enable; anything that draws after a Decimation glow must not trust the lighting state.
   RELEASE 0.64.8 published 17 Oktober 2026 16:53 (pre-release, sha256 73049bc7...; notes dist/onejar/RELEASE_NOTES_0.64.8.md;
   released jars kept in dist/previous/onejar-<version>): the production client with the real 0.64.7 jar updated itself
   to it from GitHub (239 MB in 29 s, checksum, jar swapped); site Download 0.64.8 at 16:54.

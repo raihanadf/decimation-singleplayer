@@ -1650,3 +1650,6 @@ yellow where the same way differed from itself (random effects), grey the NPC.
   cap); new way: the cap whole. The red band at the top of the head is the only difference.
 - `npcdraw_camp.png` (854 x 480, dev client, night, creative): dev test npcdraw's camp, 50 civilians and 30 guards in a
   block 8 to 22 blocks west of the player, seen from where the player stands (old chat lines of earlier tests at the bottom).
+- `lightleak_fixed.png` (854 x 480, dev client, night, third person): dev test lightleak after fixes/EntityLighting: the
+  player from behind firing an AKM (muzzle flash at the gun), infected and a soldier ahead with their normal night
+  shading. The same shot before the fix (not kept, same file name) showed an infected behind the shooter flat bright.

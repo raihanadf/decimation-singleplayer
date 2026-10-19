@@ -1585,6 +1585,28 @@ arm with its sleeve hanging beside it. Now gear covers hair and beard, and sleev
 Open, step 2: an armed NPC costs about 360 us of its 423 in the gun and gear, drawn part by part (BModelPart): one display
 list per gun and attachment state for third person.
 
+## Muzzle flash lit every mob drawn after the shooter (19 Oktober 2026, FIXED in dev)
+
+User: "when npc shot a gun, some 'flash' rendered on their npc or mobs body ... the flash appear on all npc or mobs
+body". Cause: Decimation turns item lighting off (ClientEmptyB.disableItemLighting = RenderHelper.
+disableStandardItemLighting: lighting, both lights, colour material) to draw something glowing and never turns it back
+on: the gun while its flash time is above 0 (GunItemRenderer.renderItem, renderEquippedThirdPerson, MuzzleFlashModel),
+the whole body of a firing player (ModelDeciPlayer.renderPlayer glDisable(LIGHTING)), a mech's lamps (ModelMech), the
+Gawker (GawkerRenderer.getEntityTexture). Entities are drawn in list order, so every one after a shooter lost its
+shading for that frame (flat, bright). An NPC's night vision goggles turned both lights off and only lighting back on:
+its own vest, backpack and gun after the goggles were lit by ambient light alone.
+Fix: fixes/EntityLighting puts the standard entity lighting back (the four switches only, light directions untouched)
+before and after each living entity is drawn, so glows inside one entity stay as Decimation drew them;
+tools/patches/PatchLightLeaks.java (three jars, on top of PatchHumanLayers) saves the switches before an NPC's goggles
+and puts them back exactly after. Dev test lightleak (player in third person firing, a soldier whose gun keeps flashing,
+a civilian with goggles, infected after them): before 1108 of 1203 mob drawings started unlit and the goggles NPC ended
+dark 95 of 95; after 0 of 1309 and 0 of 119.
+Left as Decimation drew them [not fixed]: a player wearing night vision goggles draws the rest of its own body unlit and
+without alpha test (ModelDeciPlayer), a mech's parts after its lamps get ambient light only (ModelMech), a turret's
+muzzle flash (TurretRenderer, MuzzleFlashModel.renderAt) leaves lighting off for tile entities drawn after it.
+The parked "Every Decimation mob drawn solid black" (brother's laptop) may be this leak on another driver: after the
+goggles, lighting was on with no light, which is near black where a driver resets the material [not verified].
+
 ## The user died again and again to NPC gunfire at Market District (19 Oktober 2026, OPEN, not looked at)
 
 The Mac's log of the session: "was shot by a survivor" 15 times (Decimation's message for ANY NPC gunfire, damage

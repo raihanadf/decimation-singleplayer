@@ -47,6 +47,10 @@ GunAnimation.get 99 (a lookup each frame while the gun is held).
   (`isRecentlyVisible` has no caller); RenderBiped poses only the main model for a held item, so the copies drew sleeves
   in the empty hand pose. Fixed by fixes/HumanLayers and PatchHumanLayers (bug.md "Drawing many human NPCs"). Still
   costly: an armed NPC's gun and gear, part by part (about 360 us of 423 an NPC, dev test npcdraw).
+- Glows turn item lighting off and never back on (ClientEmptyB.disableItemLighting: a flashing gun, a firing player's
+  body, mech lamps, the Gawker, an NPC's night vision goggles): every entity drawn after them lost its shading (the
+  "flash on every body"). fixes/EntityLighting puts it back around each living entity, PatchLightLeaks fixes the
+  goggles (bug.md "Muzzle flash lit every mob").
 
 ## 5. How our mod uses it
 
@@ -62,4 +66,4 @@ GunAnimation.get 99 (a lookup each frame while the gun is held).
 
 - `gunview` (guns in hand, aimed, on an NPC), `scope`, `props` (prop fps), `cityfps` / `cityview` (fps: never with the
   call logger), `views` (street shots), `npclook` (NPC looks drawn both ways in one frame, pixels compared), `npcdraw`
-  (time drawing NPCs a frame, both ways).
+  (time drawing NPCs a frame, both ways), `lightleak` (lighting as each mob starts drawing, after flashes and goggles).
