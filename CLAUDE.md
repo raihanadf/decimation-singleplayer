@@ -1150,6 +1150,17 @@ of the last session:
   PatchModelBatch; dev tests gunbatch (npclook's comparison for parts), npcdraw `scenes=camp,horde,fight` (old way =
   Decimation's whole drawing). Trap: BModelPart.render's children list is compiled once (frozen poses); a capture runs at
   that same moment, so both ways hold the same geometry.
+  World generation stalls (20 Oktober 2026, bug.md "Server stalls while new city areas generate", docs/performance.md 9):
+  terrain/DeciBiome.decorate runs vanilla decoration's block updates at once (its gravel and sand queued 188,721 ticks
+  that every chunk save walked); worldgen/BlockBatch writes Slices' blocks without per block light and lights the
+  written columns once (World.setBlock in a loop re-lit half built rooms with every column: 93 % of a structure write);
+  worldgen/Keys.pair for HashMap keys of two ints; Highways.sides asks the highway flags once a chunk, not once a column.
+  Tools: servertest `pregen=` PREGEN lines (population, writes wall and CPU, saving, queued ticks, slowest chunks, light
+  check), `walk=x,z,steps,view` (stall per chunk crossed), `bulklight=false` (old way), `jfr`; tools/genprof.py; dev
+  test genwalk (flight over new city land in a fresh seed 1 world, same path every run; `-Pbulklight=false` for the old
+  way); worlddiff `--at X,Z`. Traps: bulk block writes go through BlockBatch (set, then light()), never World.setBlock in a
+  loop; a Long key packed as (a << 32) ^ b hashes to a ^ b (bins turn into trees): Keys.pair; `jfr print` keeps 5 frames
+  a stack unless --stack-depth; AnvilChunkLoader.chunkExists CREATES a missing region file (check the file first).
   RELEASE 0.64.8 published 17 Oktober 2026 16:53 (pre-release, sha256 73049bc7...; notes dist/onejar/RELEASE_NOTES_0.64.8.md;
   released jars kept in dist/previous/onejar-<version>): the production client with the real 0.64.7 jar updated itself
   to it from GitHub (239 MB in 29 s, checksum, jar swapped); site Download 0.64.8 at 16:54.

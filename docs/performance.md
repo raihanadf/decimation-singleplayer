@@ -13,7 +13,11 @@ guessed; every number below comes from the tools in section 1.
 | `python3 tools/perfcheck.py world WORLD` | offline scan of the save: entities by id, most crowded chunks, chunks in the wrong region slot, entities stored outside their chunk, tile entities by id |
 | `python3 tools/perfcheck.py log LOG` | most repeated log lines (a stack trace printed every tick is a frame killer) |
 | `python3 tools/perfcheck.py fixchunk WORLD CX CZ` | clears one chunk's region slot (regenerated from the seed); copy the world first |
-| JFR on the live game | `~/.jdks/zulu-8.jdk/Contents/Home/bin/jcmd <pid> JFR.start name=x settings=profile duration=30s filename=F.jfr`, then `~/.jdks/zulu-25.jdk/Contents/Home/bin/jfr print --events jdk.ExecutionSample --json F.jfr` and count top frames / callers per thread ("Client thread", "Server thread"). Default stack depth 64: deep recursion (pathfinding) cuts the bottom of the stacks |
+| JFR on the live game | `~/.jdks/zulu-8.jdk/Contents/Home/bin/jcmd <pid> JFR.start name=x settings=profile duration=30s filename=F.jfr`, then `~/.jdks/zulu-25.jdk/Contents/Home/bin/jfr print --events jdk.ExecutionSample --stack-depth 200 --json F.jfr` and count top frames / callers per thread ("Client thread", "Server thread"). JFR records 64 frames: deep recursion (pathfinding) cuts the bottom of the stacks. `jfr print` itself keeps only 5 frames unless given --stack-depth (a 20 Oktober analysis missed its callers that way) |
+| `python3 tools/servertest.py 1 type=decimation pregen=x,z,r [jfr] [bulklight=false]` | world generation on the dev server, fresh world: PREGEN lines with our population and structure write time (wall and CPU), saving time, queued block ticks by block, chunk median / slowest 1 % / ten slowest with their sector, and the light check (cells breaking vanilla's light rule); `jfr` records dev/run/server/profile.jfr |
+| `python3 tools/servertest.py 1 type=decimation walk=x,z,steps,view [bulklight=false]` | chunks loaded as a player walking east loads them (a new row of 2 view + 1 chunks a step): the stall per chunk crossed (WALK line: median, 90 %, worst, steps over 250 ms, each step with C for a city row) |
+| `python3 tools/genprof.py profile.jfr [FROM TO]` | the server thread's generation time by part (light, saving, vanilla terrain, decoration, our classes) and light by who set the block |
+| `python3 tools/devtest.py genwalk [-Pbulklight=false]` | the player flies 30 chunks east over never generated city land in a fresh seed 1 world (two runs fly the same path): integrated server tick times (median, slowest 1 %, worst, over 100 / 250 ms, the slow ticks with their place), client frame times, noon and midnight shots of the new land. Live: `--live genwalk light=old|new` (new land each flight, so flights do not compare) |
 
 ## 2. What it was (dev world, deciworldgen_autotest)
 
@@ -229,3 +233,69 @@ sight checks on, ModelBatch off), same alternation, Mac load about 5:
 
 `-Pscenes=fight` also splits draws by the gun's muzzle flash: 735 us flashing vs 686 us not (new way), on 8 % of the
 draws: the flash is about 1 % of NPC drawing. The bench's `layers=off` switches all three back for whole scene runs.
+
+## 9. World generation stalls (20 Oktober 2026)
+
+User: "when new generated building or chunk its bit laggy, idk its from the city it self or from safezone (i encounter 1
+safezone city) or from world generated it self"; the host of the three player session logged "Can't keep up" 2.5 to
+2.8 s behind while new city areas generated (bug.md "Server stalls while new city areas generate").
+
+Where the time went (pregen of 225 chunks of a seed 1 city, JFR, tools/genprof.py): light 39 % (82 % of it from our
+structure writes), saving 24 %, vanilla terrain 22 %, Highways' link cache 5 to 8 %, vanilla decoration 4 %.
+- Structure writes: World.setBlock lights every block (a light check at the block, and a relight of the column and its
+  neighbours when the column's height changes). Slices writes column by column and bottom up, so each new column moved
+  the open side of the half built rooms one column on: their light was taken away and put back with every column (93 %
+  of a structure write was light). worldgen/BlockBatch writes a window without per block light and lights it once,
+  on the final blocks, with vanilla's own World.updateLightByType (ring first, so outside cells lit through what became
+  a wall go dark before the rooms take light from them). Next to chunks that do not exist yet vanilla's update does
+  nothing, as it did block by block.
+- Saving: vanilla decoration queued a block tick for every gravel and sand block it placed (gravel veins, discs at
+  water): 188,721 after 225 chunks, and WorldServer.getPendingBlockUpdates walks the whole queue for every saved chunk.
+  DeciBiome.decorate runs the updates at once (scheduledUpdatesAreImmediate, as vanilla places springs).
+- Highways: the link cache's Long keys hashed to rx ^ rz (bins turned into trees). worldgen/Keys.pair spreads them.
+  Other caches with that key shape (CityLayout, LcCity cells, CityRivers, Wasteland, CityNames, BiomeMap) did not show
+  in the profile; switch them to Keys.pair when one does. With the keys fixed the cache still cost 5 to 8 % in the live
+  flights: Highways.sides asked xHighway / zHighway (25 cached links each) for every block column of the window and its
+  four neighbours, though the answer depends on the chunk only; it now asks once a chunk (same answers, 0 blocks
+  differ).
+- BlockBatch itself in the live flights: the ring took the whole window's height range for every ring column, and every
+  written cell whose opacity changed got a vanilla block light check though almost none has block light near it. Now
+  a ring column takes the heights of the written columns beside it, and a cell is checked only if it or a neighbour
+  holds block light from before the batch (cells whose own light changed, lamps, are always checked).
+
+Light check (DevPregen.lightCheck, the gate for BlockBatch): every cell from y 30 to 160 of the asked chunks against
+vanilla's own rule (World.computeLightValue: sky 15 at or above the height map, an opaque block 0, else the brightest
+neighbour minus the cell's opacity, at least 1; block light the same from the block's own light). Vanilla block by block
+already leaves some cells wrong; the batch must never leave more.
+
+| measure (back to back runs, Mac load about 3.4) | original | after |
+|---|---|---|
+| pregen 225 chunks: loading (server thread CPU) | 3.9 s (3.7 s) | 2.0 s (1.9 s) |
+| structure writes, CPU | 2.47 s | 0.83 s |
+| saving | 1.64 s (188,721 queued ticks) | 0.11 s (3,556) |
+| chunk median / slowest 1 % / slowest | 6.7 / 114 / 300 ms | 5.5 / 40 / 107 ms |
+| light wrong, sky / block (5.67 M cells) | 6,714 / 15,423 | 2,197 / 8,620 |
+| walk 40 steps, view 10, per step median / 90 % / worst | 222 / 435 / 466 ms | 99 to 107 / 160 to 168 / 209 ms |
+| walk steps over 250 ms | 15 | 0 |
+| refuge area 656,-880,5: structure writes CPU (batch off / on) | 0.46 s | 0.27 s |
+| dev client, genwalk same path (fresh seed 1 world, view 12; batch off / on): slowest 1 % / worst tick | 304 / 690 ms | 188 / 403 ms |
+| dev client, genwalk: ticks over 250 ms / over 100 ms | 14 / 26 | 4 / 22 |
+
+Light of the same spot both ways (genwalk shots at noon and midnight, docs/shots/worldgen_stalls_v0.64.8): no visible
+difference. The client's frames did not change (median 18.9 / 18.5 ms, slowest 1 % 34 / 35 ms).
+
+The walk's "original" is the code before these fixes (fix 1 and the Highways changes stashed, batch off); with only
+the batch off (fix 1 and Highways in) the same walk gave 184 to 188 / 404 to 407 / 438 to 541 ms and 11 to 12 steps over
+250 ms (two back to back pairs, Mac load about 3.5): the batch alone halves the stall per city row.
+Blocks are the same (worlddiff over the area: 0 differences, except 4 daylight sensors whose power is read from light).
+
+In the dev client (genwalk, view 12, 25 chunks a row): a slow server tick each time the player crosses into a new chunk
+(x steps of 16), when vanilla's PlayerManager loads the whole new row in that one tick. JFR of two live flights: chunk
+loading 66 % of the server thread, vanilla's chunk ticks 25 %: 80 % of those are Chunk.func_150809_p retried EVERY tick
+for chunks at the edge of the loaded square (a new chunk's light is filled once every chunk within 17 blocks exists;
+until then each tick tries again, column by column), about 20 % of the server's time while flying. That retry and the
+whole row at once are vanilla's; changing either needs a patch of Minecraft's own classes (no coremod here).
+The refuge area is no slower to generate than other city land; its 22 residents are runtime work (their AI was
+measured and cut on 19 Oktober, section 8), not generation. Left per sample after the fixes: vanilla terrain 36 %, light 29 % (our batch relight about 13 %, vanilla's
+own light of each new chunk about 10 %), vanilla decoration 14 %.
+

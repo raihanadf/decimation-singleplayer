@@ -1643,13 +1643,69 @@ muzzle flash (TurretRenderer, MuzzleFlashModel.renderAt) leaves lighting off for
 The parked "Every Decimation mob drawn solid black" (brother's laptop) may be this leak on another driver: after the
 goggles, lighting was on with no light, which is near black where a driver resets the material [not verified].
 
-## Server stalls while new city areas generate (20 Oktober 2026, OPEN)
+## Server stalls while new city areas generate (20 Oktober 2026, FIXED in dev)
 
 First three player session (docs/player_hosting.md 17): the host logged "Can't keep up" three times, 2.5 to 2.8 s behind
 (01:24:19, 01:30:53, 01:31:08), each while our worldgen built new city areas (dress totals, a watchtower, a rail station
 in the same seconds) as players explored in different directions of a new world. Players feel it as rubber banding.
-Not looked at yet: which part of the generation takes the time (profile the server thread with JFR during a fresh
-city walk; servertest pregen can reproduce it without players) [not verified].
+The user after the next session: "when new generated building or chunk its bit laggy, idk its from the city it self or
+from safezone (i encounter 1 safezone city) or from world generated it self".
+
+Measured on the dev server (`tools/servertest.py 1 type=decimation pregen=512,-1024,6`: 225 chunks of a seed 1 city,
+fresh world each run; JFR of the server thread, split by tools/genprof.py; docs/performance.md 9):
+- Light was 39 % of generation, 82 % of it from our structure writes (Slices.write): 93 % of a structure write was light.
+  World.setBlock lights every block it sets, a light check at the block (60 % of that) and a relight of the column and
+  its four neighbours when the column's height changes (31 %). Written column by column, every new column moved the open
+  side of the half built rooms one column on, and their light was taken away and put back again.
+- Saving chunks 24 %: 188,721 queued block ticks after 225 chunks (gravel 173,480 and sand 14,747 from vanilla
+  decoration: gravel veins in stone, sand and gravel discs at water), and vanilla walks the whole queue for every chunk
+  it saves.
+- Highways' link cache 8 %: its keys (rx << 32 ^ rz) hash to rx ^ rz, so the HashMap put many regions in one bucket and
+  searched trees.
+
+Fixed:
+1. terrain/DeciBiome.decorate: vanilla decoration with block updates run at once (World.scheduledUpdatesAreImmediate,
+   as vanilla places its springs). A resting gravel or sand block's tick does nothing; one over a cave falls straight
+   away (population drops falling blocks instantly). Queued ticks 188,721 to 3,556 (left: our own falling blocks,
+   liquids); saving 1.22 s to 0.05 s. Decimation world type only (our biomes).
+2. worldgen/BlockBatch: Slices writes a window's blocks without per block light (the same hooks as World.setBlock with
+   flag 2: onBlockPreDestroy, breakBlock, tile entities, onBlockAdded, height map, client update), then lights the
+   written columns once on the final blocks with vanilla's own light update (column sky light as Chunk.relightBlock
+   sets it, then World.updateLightByType over the ring around and the written columns, block light at every written
+   cell whose opacity or light changed). Off switch: -Ddeciworldgen.bulklight=false (servertest `bulklight=false`).
+3. worldgen/Keys.pair (spread keys, unit test KeysTest RED with the old key shape: 16 of 256 buckets); Highways' cache
+   uses it, and Highways.sides asks for the highway flags once a chunk instead of once a block column (25 cached links
+   per ask; 5 to 8 % of generation in the live flights).
+4. BlockBatch refined after a live profile: ring columns take the heights of the written columns beside them (not the
+   whole window's), and block light is checked only where block light already was or a block's own light changed.
+
+Results (back to back runs; pregen of 225 chunks, server thread):
+| | original | now |
+|---|---|---|
+| loading the 225 chunks | 3.9 s | 2.0 s |
+| structure writes (CPU) | 2.47 s | 0.83 s |
+| saving | 1.64 s | 0.11 s |
+| chunk median / slowest 1 % / slowest | 6.7 / 114 / 300 ms | 5.5 / 40 / 107 ms |
+
+Walk (servertest `walk=256,-1024,40,10`: chunks loaded as a player flying east loads them, view 10, a new row of 21
+chunks per chunk crossed, 37 of the 40 rows in the city): original code per step median 222 ms, 90 % 435 ms, worst
+466 ms, 15 steps over 250 ms; now 99 to 107 / 160 to 168 / 209 ms, 0 over 250 ms (two runs). Batch off alone (the other
+fixes in): 184 to 188 / 404 to 407 / 438 to 541 ms, 11 to 12 over 250 ms.
+Light (DevPregen's check: cells y 30 to 160 whose stored light breaks vanilla's own rule, 5.67 M cells): sky 6,714 to
+2,197, block 15,423 to 8,620.
+Dev client, dev test genwalk (the same 30 chunk flight over new city land in a fresh seed 1 world, view 12; only the
+batch off / on): slowest 1 % of server ticks 304 to 188 ms, worst 690 to 403 ms, ticks over 250 ms 14 to 4; client frames
+unchanged; noon and midnight shots of the same spot look the same both ways (docs/shots/worldgen_stalls_v0.64.8). Blocks: 0 differences over the area (worlddiff), except 4 daylight sensors whose power is
+read from the light (a sensor recomputes it every second).
+Safezone city: the refuge area (pregen 656,-880,5) is not slower to generate than other city land (its chunks 12 to 27 ms;
+structure writes 0.46 to 0.27 s CPU there). Its 22 residents spawning is NPC work, not generation ("Safezones lag").
+
+Left (each sample of the new profile): vanilla terrain 36 %, light 29 % (our batch relight about 13 %, vanilla's own
+light of a new chunk about 10 %), vanilla decoration 14 %. Highways.place, Rails.write and other writers outside Slices
+still light block by block (under 2 % of light). In the dev client (dev test genwalk, view 12): a slow tick at each chunk
+crossed (vanilla loads the whole new row of 25 chunks in that tick), and vanilla retries the light of edge chunks every
+tick until their neighbours exist (about 20 % of the server's time while flying); both are vanilla's (docs/performance.md
+9).
 
 ## The user died again and again to NPC gunfire at Market District (19 Oktober 2026, OPEN, not looked at)
 

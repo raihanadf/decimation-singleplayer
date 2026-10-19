@@ -1666,3 +1666,14 @@ Production client with OptiFine HD U E7 (the brother's laptop setup), AKM with t
 - `glass_hip_before.png` (1281 x 264, noon): hip before any aim (black glass), aiming (see-through glass, reticle), hip
   after aiming: the glass shows a frozen grey and blue picture of the aimed view (the "new camera").
 - `glass_hip_after.png` (854 x 240, noon, dev client): aiming (see-through), hip after aiming: plain dark lens, red dot.
+
+## worldgen_stalls_v0.64.8 (20 Oktober 2026, dev test genwalk, bug.md "Server stalls while new city areas generate")
+
+- `genwalk_same_path_lit_block_by_block.png`: contact sheet of the flight's end with the structure writes lit block by
+  block (BlockBatch off): left, noon from 80 high looking back west over Wolffield City, Market District 2 (glass
+  roofed stepped building in front, towers left, low blocks behind); right, the same view at midnight, moonlit blue
+  grey, roofs, glass and streets evenly lit, no black or bright patches.
+- `genwalk_same_path_lit_once.png`: the same path with the batch on. The noon frame stands on the roof edge (closer
+  view of the white and grey roof, a dark clad NPC at left); the midnight frame matches the other sheet's midnight
+  frame in framing and tones: no visible light difference between the two ways.
+
