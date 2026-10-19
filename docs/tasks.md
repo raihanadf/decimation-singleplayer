@@ -74,7 +74,9 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [~] direct joins over IPv6 (relay deployed 29fbb993, two game test PASS on loopback); open: a real test with the friend, both need public IPv6 (yours came and went tonight)
 - [ ] playit.gg as an optional connection (later, user: only if direct is not good enough)
 - [x] friend kicked while ping stable: keep-alive, 20 s grace, same room reconnect, near rooms, far socket retry (relay 94b7cb49, game 5ed53b2; two game tests PASS on the deployed relay)
-- [ ] friend test of build 5ed53b2 (jar on the Desktop): stays connected? which path? ping on the host page
+- [x] three player session 20 Oktober (jar feeb69f0): user 74 min via relay, no drop; 0 GL errors (docs/player_hosting.md 17)
+- [ ] friend dropped once after 39 min (relay closed from his side): needs his log to know why
+- [ ] server stalls 2.5 to 2.8 s while new city areas generate (bug.md)
 - [x] GL "Stack overflow" on the host: Decimation renderers left matrices pushed, fixed in dev (fixes/GlStackGuard)
 - [~] FPS falls over a session: busy intro thread, prop sound loops, dead update fetch fixed in dev; recheck in a real session
 - [x] last grenade never runs out (0 stacks): fixes/EmptyStacks, dev test throwables

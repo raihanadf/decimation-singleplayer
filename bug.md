@@ -1643,6 +1643,14 @@ muzzle flash (TurretRenderer, MuzzleFlashModel.renderAt) leaves lighting off for
 The parked "Every Decimation mob drawn solid black" (brother's laptop) may be this leak on another driver: after the
 goggles, lighting was on with no light, which is near black where a driver resets the material [not verified].
 
+## Server stalls while new city areas generate (20 Oktober 2026, OPEN)
+
+First three player session (docs/player_hosting.md 17): the host logged "Can't keep up" three times, 2.5 to 2.8 s behind
+(01:24:19, 01:30:53, 01:31:08), each while our worldgen built new city areas (dress totals, a watchtower, a rail station
+in the same seconds) as players explored in different directions of a new world. Players feel it as rubber banding.
+Not looked at yet: which part of the generation takes the time (profile the server thread with JFR during a fresh
+city walk; servertest pregen can reproduce it without players) [not verified].
+
 ## The user died again and again to NPC gunfire at Market District (19 Oktober 2026, OPEN, not looked at)
 
 The Mac's log of the session: "was shot by a survivor" 15 times (Decimation's message for ANY NPC gunfire, damage

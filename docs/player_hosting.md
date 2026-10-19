@@ -388,3 +388,18 @@ ping more and more".
 - NOT verified: a long session with the friend over the internet with this build [user test]; the direct path from the
   friend's network (his toast says which way).
 
+## 17. First real session with three players (20 Oktober 2026, jar feeb69f0 = main 5a45989)
+
+Read from both logs afterwards (host: the brother's laptop wyvern, NVIDIA RTX 2060 with OptiFine HD U E7; joiners: the
+user's Mac, Prism, and the friend "patrick" from another place). The friend's own log was not seen [not verified].
+- Host 00:10 to 01:37; the user in 00:23:36 to 01:37:37 (74 minutes) "through the relay (no direct answer)": wyvern's NixOS
+  firewall still blocks the direct gate (open item: a fixed gate port). Every relay socket landed in Singapore.
+- The friend joined 00:54:27 and dropped once at 01:33:45 (39 minutes): the server logged "lost connection: Disconnected" in
+  the same second as "relay socket closed: 1000 pipe closed", so his relay link ended normally from his side; no kick, and
+  the server was not stalling then (last stall 01:31:08). He was back at 01:34:04 (a first knock closed at once, the second
+  joined). Cause on his side unknown without his log (his internet [inferred]).
+- Each Community page ping opens a relay data socket, so several "joiner ... knocks" come before a join.
+- Server stalls of 2.5 to 2.8 s at 01:24:19, 01:30:53, 01:31:08, while new city areas were generated as players explored
+  apart (bug.md "Server stalls while new city areas generate").
+- 0 GL errors, 0 stack overflows, 0 scope failures, no crash, on host and joiner; a 50 NPC bandit and juggernaut war
+  ran without a single "Can't keep up". FPS is not in the logs: the user's verdict is the measure.
