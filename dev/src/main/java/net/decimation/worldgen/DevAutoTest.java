@@ -160,6 +160,13 @@ public class DevAutoTest
         if (name.equals("soak")) return new net.decimation.worldgen.devtest.SoakTest();
         if (name.equals("radios")) return new net.decimation.worldgen.devtest.RadiosTest();
         if (name.equals("threads")) return new net.decimation.worldgen.devtest.ThreadsTest();
+        if (name.equals("scopeperf")) return new net.decimation.worldgen.devtest.ScopePerfTest();
+        if (name.equals("armskin")) return new net.decimation.worldgen.devtest.ArmSkinTest();
+        if (name.equals("zoneperf")) return new net.decimation.worldgen.devtest.ZonePerfTest();
+        if (name.equals("traderperf")) return new net.decimation.worldgen.devtest.TraderPerfTest();
+        if (name.equals("scopediag")) return new net.decimation.worldgen.devtest.ScopeDiagTest();
+        if (name.equals("bench")) return new net.decimation.worldgen.devtest.BenchTest();
+        if (name.equals("targetpace")) return new net.decimation.worldgen.devtest.TargetPaceTest();
         if (name.equals("hostops")) return new net.decimation.worldgen.devtest.HostOpsTest();
         if (name.equals("hostshots")) return new net.decimation.worldgen.devtest.HostShotsTest();
         if (name.equals("garrison")) return new net.decimation.worldgen.devtest.GarrisonTest();

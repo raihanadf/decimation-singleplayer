@@ -181,6 +181,8 @@ public class DecimationWorldGen
             cpw.mods.fml.common.FMLCommonHandler.instance().bus().register(new net.decimation.fixes.GunUseKey()); // open corpses with a gun in hand
             // prop loops (radios, vending machines, electric boxes) stop out of hearing, 6 at most (bug.md "FPS falls")
             cpw.mods.fml.common.FMLCommonHandler.instance().bus().register(new net.decimation.fixes.PropSounds());
+            // the hand holding a gun shows the player's own skin, not Steve (bug.md "Steve hand")
+            cpw.mods.fml.common.FMLCommonHandler.instance().bus().register(new net.decimation.fixes.GunArmSkin());
             // host your world online (docs/superpowers/specs/2026-10-18-player-hosting-part1-design.md): the pause menu's
             // Host Online page, the heartbeat on the client tick, hosting stops when the world closes
             net.decimation.fixes.hosting.HostMenu host = new net.decimation.fixes.hosting.HostMenu();
@@ -198,6 +200,8 @@ public class DecimationWorldGen
         cpw.mods.fml.common.FMLCommonHandler.instance().bus().register(new net.decimation.fixes.EmptyStacks());
         // an entity joins a world once: Decimation's mob swaps during a chunk load added the new mob twice (bug.md)
         net.minecraftforge.common.MinecraftForge.EVENT_BUS.register(new net.decimation.fixes.JoinOnce());
+        // Decimation's mobs searched for targets every tick: paced like vanilla's (bench "crowd", bug.md "Safezones lag")
+        net.minecraftforge.common.MinecraftForge.EVENT_BUS.register(new net.decimation.fixes.TargetPacing());
         net.minecraftforge.common.MinecraftForge.EVENT_BUS.register(new Areas());
         // loot of our own on Decimation's loot screen (docs/loot_levels.md): opener and the body entity
         cpw.mods.fml.common.FMLCommonHandler.instance().bus().register(new net.decimation.fixes.Loot());

@@ -32,7 +32,7 @@ dev test the files name).
 - Loot: the loot hint reads the client's cooldown registry, never marked [inferred].
 - Weapons: the hit handler's infected branch never runs (weapons.md section 4); the server trusts the client's
   damage value.
-- NPCs: findTarget rays every living entity before asking isHostileTo, FactionHumanEntity walks every loaded entity
+- NPCs: findTarget rays every living entity before asking isHostileTo, FactionHumanEntity walks every loaded entity (patched 19 Oktober 2026: docs/performance.md 8)
   each tick (npcs.md section 4) [inferred cost, not profiled]; InfectedEntity's client only canEntityBeSeen.
 - Sides: PlayerLoginHandler is registered twice, so it would run twice per login on a dedicated server [inferred];
   a destroyed vehicle drops its items in singleplayer (NoDropsHandler is server only) [inferred].

@@ -165,3 +165,43 @@ Found and fixed (all in the dev workspace, three jars for the patches):
 Traps: a server player's PlayerTickEvent runs only when that client's movement packet is processed (do per player
 server work on the server tick); the dev world's frame rate swings 58 to 74 for the same empty scene (mob farm under the
 arena, section 2 item 2): compare counts (loops, threads, stack depth), not single fps readings.
+
+## 8. NPCs and zombies under load: the bench (19 Oktober 2026)
+
+User: "do benchmark ... when they standby, shooting, wars and test out on zombie too. make it really really stable even
+there so many entities". Dev test `bench` (scenarios on the arena at night, each run twice with mob spawning off and
+everything else cleared within 96 blocks, 3 s to settle, 8 s measured): standby (40 idle armed NPCs), shooting (20
+soldiers, infected keep coming), war (20 soldiers against 20 bandits), zombies (80 infected around a survival player who
+takes no damage), crowd (all of it, about 290 entities on the server). Per scenario: server mean and worst ms a tick,
+client median and slowest 1 % frame, entity counts, wall clock window (`-Ponly=war,zombies`, `-Prepeat`, `-Pmeasure`).
+Cut a JFR recording of the run into scenarios with the windows (scratchpad scripts of this session: benchjfr.py,
+benchcall.py: top methods, and per sample the mod frame that called the costly vanilla method).
+
+Found and fixed (bug.md "Safezones lag", "Infected searched a wander path no one walked", "Blood splats on the ground
+moved for 40 seconds", "GunNoise ..."): target searches every tick with ray traces before the hostility check (traders,
+guards, bandits, soldiers, mech), vanilla target tasks at targetChance 0, the unused infected wander path search, blood
+splats moving while lying on the ground, GunNoise writing to every mob per burst. Related dev tests: traderperf
+(`npc=TraderGuard|Bandit`: cost of 20 near, and they still shoot an infected), targetpace, zoneperf (inside a test
+safezone vs away; run refuge or camp first).
+
+Results on the M4 (controlled bench, two runs each; server mean ms a tick, worst ms, client slowest 1 % ms):
+
+| scenario | before (patches of this day up to the trader and bandit fixes) | after (all) |
+|---|---|---|
+| standby | 1.9 / 2.5, worst 14 / 9, slowest frames 81 / 52 | 2.8 / 2.1, worst 37 / 27, 71 / 108 |
+| shooting | 3.3 / 3.9, worst 10 / 95, 42 / 34 | 4.2 / 2.7, worst 35 / 19, 67 / 36 |
+| war | 4.1 / 3.0, worst 68 / 92, 36 / 32 | 3.8 / 2.4, worst 25 / 11, 103 / 35 |
+| zombies | 2.4 / 2.6, worst 10 / 10, 35 / 43 | 3.3 / 2.1, worst 34 / 6, 53 / 32 |
+| crowd | 8.9 / 19.4, worst 118 / 259, 408 / 678 | 7.4 / 6.8, worst 85 / 186, 101 / 98 |
+
+Before the trader and bandit fixes (first, uncontrolled bench): standby client median 45 ms, shooting server 11.6 ms.
+The server keeps 20 ticks a second in every scenario. A later run while the Mac was busy (load 7.8: IntelliJ, browser)
+gave client medians 22 to 68 ms with the same code: compare client numbers only on a quiet machine.
+
+Scenario `loaded` (30 civilians, about 1250 entities, items 40 to 90 blocks away): every human NPC walked the whole loaded
+entity list each tick (PatchHumanScare): server 11.1 / 8.5 ms a tick with the original class, 7.4 / 8.0 patched; the
+rest there is vanilla item and chunk work.
+
+Still costly (bug.md "Drawing many human NPCs is heavy on the client", open): each human NPC drawn in seven texture
+layers plus armour, vest, mask, backpack and the gun part by part; terrain display lists dominate the client's native
+time on the sky arena. Vanilla random block ticks and entity collisions in a dense crowd are vanilla's.

@@ -1495,3 +1495,88 @@ deci.ag.d, same spot, height 1.95, did not move), the passing ones at 20 or 30. 
 4 runs), so not from the GL / sound / stack fixes. Why a 12 health infected takes no hit is not found (Decimation's
 spawn handling of some infected [not checked]); the test now writes a "target" line (class, name, place, height) with
 each run.
+
+## Safezones lag: traders, guards, bandits and mechs searched for targets every tick (user's friend 19 Oktober 2026, FIXED in dev)
+
+"when in safezone its really laggy, i think its caused by traders or npc". Measured (dev tests traderperf, zoneperf,
+bench; docs/performance.md section 8): every armed trader and trader guard (ArmedTraderEntity deci.ai.v), every
+bandit and soldier (BanditEntity deci.ag.a, also our survivor / military tiers, garrisons, base guards) and the mech
+(MechEntity deci.ag.k) called findTarget EVERY tick while it had no target, on the server and on every client's copy;
+findTarget ray traced (canEntityBeSeen) to every living entity within 32 blocks before asking whether it is hostile,
+and the mech's walked the whole world's loaded entity list. On top, Decimation's mobs carried vanilla "nearest target"
+tasks with targetChance 0 (the infected four: players, animals, human NPCs, mechs), searching at every evaluation.
+- 20 trader guards around the player: server +0.87 ms a tick, client +4.25 ms a frame (82 -> 61 fps) before; -0.18 ms
+  and +0.47 ms after. 20 bandits: +0.58 ms / +5.27 ms before, +0.31 ms / +0.52 ms after. Both still shoot an infected
+  that comes near (6 and 16 ticks). One mech took 10 to 13 % of the server with 40 NPCs standing by.
+- Fix: tools/patches/PatchTraderTarget.java (server only), PatchBanditTarget.java and PatchMechTarget.java (client copy
+  keeps searching, throttled: bandits switch stance only while they have a target, and stance is not synced): every 10
+  ticks staggered by entity id, the cheap checks first, the ray trace last; three jars. fixes/TargetPacing: the
+  "nearest target" tasks of Decimation's mobs get targetChance 5 (a search every 15 ticks on average, 0.75 s; 10 made
+  infected take 1.5 s to notice someone). Dev test targetpace: [0, 0, 0, 0] / [0] before, [5, 5, 5, 5] / [5] after, an
+  infected still takes a civilian 6 blocks away as its target (2 to 11 ticks).
+Not yet seen in the friend's game [not verified].
+
+## Infected searched a wander path no one walked (19 Oktober 2026, FIXED in dev)
+
+InfectedEntity.onLivingUpdate (deci.ag.d) called EntityCreature.updateWanderPath, a full path search (PatchInfectedAI v1
+cut it to once a second per infected); its result fills pathToEntity, which only the old AI branch follows, and infected
+run the new AI (isAIEnabled true: EntityAIWander makes them wander, getNavigator() leads the hordes). bench "zombies"
+(80 infected): 37 % of the server thread in that search. PatchInfectedAI v2 removes the call (built from the original
+class, as v1); bench zombies 37 % -> 0 %, shooting 23 % -> 0 %. Dev tests zombies and noise pass.
+
+## Blood splats on the ground moved for 40 seconds (19 Oktober 2026, FIXED in dev)
+
+GroundBloodParticle (deci.B.k) lives 800 ticks with fancy graphics and called moveEntity every tick, also lying on the
+ground: block collision plus a scan of the entities around (splats x entities in a fight; bench "crowd": 14 % of the
+client thread). tools/patches/PatchBloodParticle.java: it moves only until it lands (onGround). 14 % -> 4 % (what is left
+is splats still falling). Each splat still draws on its own (its own texture bind and draw, a new ResourceLocation each
+frame) [not changed].
+
+## The hand holding a gun showed Steve (user 19 Oktober 2026, FIXED in dev)
+
+"when holding a guns, the hand still using steve skins instead of custom skins player (even its real minecraft account
+player)". Decimation's gun renderer draws the first person arms with GunItemRenderer.TJ (deci.K.b), "skins/<session
+name>", which only vanilla's old skins.minecraft.net download filled (shut down; Steve as its fallback); a real skin
+comes from Minecraft's skin manager under "skins/<hash>". fixes/GunArmSkin sets TJ to the player's getLocationSkin()
+each client tick. Dev test armskin: arms skins/Developer before, the player's skin location after. Seen with a real
+account [not verified]: the dev account has no skin.
+
+## Scope: the glass was measured at the hip for nothing; no stutter found on the M4 (user 19 Oktober 2026, partly FIXED)
+
+"our new scope methods realy buggy and often drop fps". Measured (dev tests scopeperf, scopediag): with a 4x / 2x / EOTech
+sight held at the hip PatchScope's GL feedback measurement ran every 8th frame, although the glass copy runs only while
+aiming (v0.58). ScopeZoom now measures only while aiming: 0 at the hip (30 before). On the M4 the frame times while
+aiming through the scope matched aiming over iron sights (slowest 1 % 27 to 35 ms both), and spikes did not fall on
+measuring frames. On NVIDIA / Intel laptops the feedback pass forces the CPU to wait for the GPU, a possible stutter every
+8th frame while aiming [inferred, not measured there]; replacing it with CPU math from the matrices is the next step if
+the drops stay. What "buggy" looks like for the user is not known yet. Trap found: live key=value settings stay set for
+later modes (an aimdrift run used a red dot from an earlier scopeperf run).
+
+## GunNoise wrote a noise to every mob for every burst in a fight (19 Oktober 2026, FIXED in dev)
+
+Each burst (once per 10 ticks per shooter) searched a 128 x 64 x 128 box and wrote a new noise compound to every infected
+or hostile NPC in range: 4.5 to 6 % of the server in the bench fights. A mob still walking to a shot within 8 blocks of
+the new one, with more than half of its search time left, is now skipped. Dev test noise passes.
+
+## Drawing many human NPCs is heavy on the client (19 Oktober 2026, OPEN, proposal)
+
+bench "standby" (40 idle NPCs near the player): client about 25 to 30 ms a frame on the M4. Each human NPC is drawn in
+layers (ModelHuman deci.q.h: body, eyes, hair, beard, shirt, pants, shoes, each a full body pass with its own texture
+and a new ResourceLocation), then up to four armour models, mask, vest, backpack and the gun part by part (one display
+list call per BModelPart: 25 to 30 % of the client's native time). Ideas: bake each NPC's look into one texture (one
+pass instead of seven), one display list per gun for third person, fewer details at a distance. Needs the user's go.
+
+## The user died again and again to NPC gunfire at Market District (19 Oktober 2026, OPEN, not looked at)
+
+The Mac's log of the session: "was shot by a survivor" 15 times (Decimation's message for ANY NPC gunfire, damage
+source "human": bandits, soldiers, guards), often 5 to 7 s apart, entering and leaving Market District. Who shot and
+why the respawn was so close is not examined [not checked].
+
+## Every human NPC walked all loaded entities every tick (19 Oktober 2026, FIXED in dev)
+
+FactionHumanEntity.onUpdate (deci.ah.d: every civilian, bandit, soldier, trader, guard) walked the world's whole loaded
+entity list every tick on both sides to know whether someone within 32 blocks holds a gun (then the NPC looks scared,
+setGesture), and used the answer only when Math.random() < 0.1. tools/patches/PatchHumanScare.java: the scan only in that
+branch, over a 64 block box, first gun ends it; same answer and same random calls. bench "loaded" (30 civilians, about
+1250 entities): server 11.1 / 8.5 ms a tick with the original class, 7.4 / 8.0 with the patch (the rest is vanilla item
+and chunk work); the scan's share 1 to 3 % before, 0 to 1 % after.

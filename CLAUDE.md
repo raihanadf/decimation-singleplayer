@@ -382,6 +382,11 @@ SRG→MCP from the old root `src/` via `mcp_stable/12` CSVs; the root `src/` +
   (deci/i/d.aS) busy waited at 99% of a core all session; it sleeps and ends when the intro is finished (on top of the
   intro skip); `PatchNoVersionFetch.java` (same day): UpdateChecker.tickVersionCheck (h.gH) no longer fetches BoehMod's
   dead latestversion.txt every 60 s (on top of PatchNoUpdate);
+  `PatchTraderTarget.java`, `PatchBanditTarget.java`, `PatchMechTarget.java` (19 Oktober 2026, bug.md "Safezones lag"):
+  findTarget (eA) of ArmedTraderEntity deci/ai/v (server only), BanditEntity deci/ag/a and MechEntity deci/ag/k every 10
+  ticks, hostility before the ray trace (on top of PatchTracer / PatchFactions for v and a); `PatchBloodParticle.java`
+  (same day): ground blood splats deci/B/k move only until they land; `PatchInfectedAI.java` v2: no unused wander search;
+  `PatchHumanScare.java` (same day): FactionHumanEntity deci/ah/d no longer walks every loaded entity each tick;
   `PatchVehicleArrows.java` (2026-10-11, bug.md vehicle entry): indirect player hits
   (arrows, thrown, TNT) on deci/ad/e take the health path, not pickup;
   `PatchInfectedAI.java` (2026-10-10, docs/performance.md): infected
@@ -1110,6 +1115,12 @@ of the last session:
   Dev tests glstack, throwables, radios, threads, soak; tools/glstackcheck.py (GL push / pop paths from the bytecode).
   Trap: a server player's PlayerTickEvent runs only when that client's movement packet is processed: per player server
   work goes on the server tick.
+  NPCs under load (19 Oktober 2026, docs/performance.md 8): dev test bench (standby, shooting, war, zombies, crowd; mob
+  spawning off, two runs), traderperf, targetpace, zoneperf, scopeperf, scopediag, armskin; fixes/TargetPacing (vanilla
+  target tasks of Decimation's mobs at targetChance 5), fixes/GunArmSkin (the gun hand shows the player's skin), GunNoise
+  skips mobs already following a nearby shot, ScopeZoom measures the glass only while aiming. Traps: live key=value
+  settings stay set for later modes (clear them with key=); vanilla never targets a player with disableDamage; the AI
+  evaluates target tasks every 3rd tick (targetChance N: a search every 3N ticks); compare client fps only on a quiet Mac.
   RELEASE 0.64.8 published 17 Oktober 2026 16:53 (pre-release, sha256 73049bc7...; notes dist/onejar/RELEASE_NOTES_0.64.8.md;
   released jars kept in dist/previous/onejar-<version>): the production client with the real 0.64.7 jar updated itself
   to it from GitHub (239 MB in 29 s, checksum, jar swapped); site Download 0.64.8 at 16:54.

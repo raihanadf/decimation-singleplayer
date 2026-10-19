@@ -16,8 +16,8 @@ included depending on the player's humanity.
 | Class (obf) | Job |
 |---|---|
 | HumanEntity (deci/af/d) | base of every human AND of InfectedEntity: random name and looks (`randomizeIdentity`), stance and gesture with their animations, backpack / vest / mask slots, `getHumanityOnKill` |
-| FactionHumanEntity (deci/ah/d) | adds `faction` (NpcFaction deci/ae/b: BANDIT, MILITARY, CIVILIAN, SOVIET; CIVILIAN default) and `hasNoFear`; is the civilian "Human" and the base of BanditEntity and every TraderEntity. Its `onUpdate` walks the WHOLE loaded entity list every tick to look scared near a gun |
-| BanditEntity (deci/ag/a) | every armed human. Constructor rolls a gun (INSAS, AK-12, MP5, M14, Colt, Makarov) and gear: on each side separately, never synced. `onUpdate`: no AI target -> `findTarget` (eA, 32 blocks, 15 up and down); a target it can see -> 1 % `throwMolotovAt` (d), else `shootAt` (e). `isHostileTo` (c): military and civilian humans (never traders), infected, players at humanity 50 or more. Drops: 1 % suicide vest or detonator, 10 % its gun, 10 % ammo, else a bottlecap |
+| FactionHumanEntity (deci/ah/d) | adds `faction` (NpcFaction deci/ae/b: BANDIT, MILITARY, CIVILIAN, SOVIET; CIVILIAN default) and `hasNoFear`; is the civilian "Human" and the base of BanditEntity and every TraderEntity. Its `onUpdate` walked the WHOLE loaded entity list every tick to look scared near a gun (PatchHumanScare since 19 Oktober 2026: a 64 block box, only when the gesture roll uses it) |
+| BanditEntity (deci/ag/a) | every armed human. Constructor rolls a gun (INSAS, AK-12, MP5, M14, Colt, Makarov) and gear: on each side separately, never synced. `onUpdate`: no AI target -> `findTarget` (eA, 32 blocks, 15 up and down; PatchBanditTarget since 19 Oktober 2026: every 10 ticks, hostility before the ray trace); a target it can see -> 1 % `throwMolotovAt` (d), else `shootAt` (e). `isHostileTo` (c): military and civilian humans (never traders), infected, players at humanity 50 or more. Drops: 1 % suicide vest or detonator, 10 % its gun, 10 % ammo, else a bottlecap |
 | SoldierEntity (deci/ag/l) | MILITARY, M4A4, shots every 2 to 5 ticks; 10 % medics (`healPlayer`: heal 1, mend a broken leg, 25 % cure infection); hostile to bandits, infected, players under humanity 50; killing one costs 2 humanity |
 | SovietEntity (deci/ag/m) | SOVIET; Decimation's `isHostileTo` targets SOVIET humans (Soviets killed each other) and every player: PatchFactions |
 | HazmatSoldierEntity (deci/ag/c) | soldier in a hazmat suit, green gun skin |
@@ -61,9 +61,11 @@ Dev test `shots` (153 s, bandits, soldiers and Soviets in the arena), trace pref
   `doublejoin`). The swaps also roll again for every infected saved in a chunk, at each load.
 - InfectedEntity overrides `canEntityBeSeen` but marks it client only (@SideOnly(CLIENT)): a dedicated server uses
   vanilla's check, singleplayer Decimation's (ClientProxy.LineOfSight) even on the server thread [inferred].
-- Cost [inferred, not profiled]: findTarget rays every living entity in range before asking isHostileTo, every tick
-  per idle armed NPC; FactionHumanEntity walks the whole loaded entity list every tick per human; the infected path
-  search and horde scan every tick were cut by PatchInfectedAI (docs/performance.md).
+- Cost (profiled 19 Oktober 2026, dev test bench, docs/performance.md 8): findTarget rayed every living entity in range
+  before asking isHostileTo, every tick per idle armed NPC (traders, bandits, soldiers, mechs; the mech walked the whole
+  loaded list); FactionHumanEntity walked the whole loaded entity list every tick per human; the infected's wander path
+  search was never walked (new AI); vanilla target tasks at targetChance 0. Fixed by PatchTraderTarget,
+  PatchBanditTarget, PatchMechTarget, PatchHumanScare, PatchInfectedAI v2 and fixes/TargetPacing (bug.md).
 
 ## 5. How our mod uses it
 

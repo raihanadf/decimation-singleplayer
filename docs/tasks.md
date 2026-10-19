@@ -78,3 +78,8 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [~] FPS falls over a session: busy intro thread, prop sound loops, dead update fetch fixed in dev; recheck in a real session
 - [x] last grenade never runs out (0 stacks): fixes/EmptyStacks, dev test throwables
 - [ ] direct join blocked by a host firewall: fixed gate port (bug.md)
+- [x] safezone lag: trader / bandit / mech target searches and vanilla target tasks paced (bench, traderperf, targetpace)
+- [x] gun hand showed Steve: fixes/GunArmSkin (armskin)
+- [~] scope drops: no glass measurement at the hip; stutter not reproduced on the M4; CPU glass math if drops stay
+- [ ] NPC drawing: bake each NPC look into one texture, one display list per gun (proposal, user)
+- [ ] repeated deaths to NPC gunfire at Market District in the user's session (not looked at)
