@@ -51,7 +51,8 @@ picked: Play straight to the worlds, hiding the dead pages.
   (Decimation's lang file plus the version call), the window title **DeciRemnant v0.63.0 (Minecraft 1.7.10)**. Our
   texts carry no dash (user rule; Decimation's "Decimation - " and "Minecraft - Decimation v1.21.10f" had one).
   Decimation's own mod version stays 1.21.10f (servers and the handshake use it).
-- **Continue** under Play (Decimation's own black menu button, tooltip "Open <world>"): opens the world played last; the
+- **Continue** under Play (Decimation's own black menu button, tooltip "Last played: <world>" since 0.65.0; it said "Open
+  <world>", which read like an order for a world named "world"): opens the world played last; the
   buttons under it move down one row; main menu only, only when a world exists (fixes/MenuContinue). Dev tests never
   click it (it would open the newest world of the dev run folder, maybe the user's).
 - The FURY store advert's corner shows ours: Decimation's torn black panel with **DeciRemnant**, "Download and guides"
