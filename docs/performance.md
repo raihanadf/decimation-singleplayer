@@ -205,3 +205,17 @@ rest there is vanilla item and chunk work.
 Still costly (bug.md "Drawing many human NPCs is heavy on the client", open): each human NPC drawn in seven texture
 layers plus armour, vest, mask, backpack and the gun part by part; terrain display lists dominate the client's native
 time on the sky arena. Vanilla random block ticks and entity collisions in a dense crowd are vanilla's.
+
+NPC drawing measured on its own (dev test `npcdraw`, 19 Oktober 2026): the bench's client frame times cannot show a
+change in how NPCs are drawn (Mac load 4 to 14 during the runs, frames capped near 60 fps in some scenes). npcdraw turns
+the frame cap and vsync off and sums, per frame, the time from RenderLivingEvent.Pre to Post of every human NPC, drawn
+the new way and the old way in turns of 30 frames (HumanLayers.enabled off and sightChecks on is Decimation's drawing
+exactly), so load changes hit both alike. Looks in one picture (fixes/HumanLayers):
+
+| scene, NPCs drawn a frame | old way | new way |
+|---|---|---|
+| horde, 80 infected | 6.55 ms (82 us each) | 4.72 ms (59 us each) |
+| camp, 70 civilians and guards with guns and gear | 31.2 ms (446 us each) | 29.6 ms (423 us each) |
+
+An armed NPC spends about 360 us in its gun and gear (BModelPart display lists part by part): the next step. The bench
+gains `layers=off` (the old drawing) for whole scene comparisons on a quiet Mac.

@@ -1636,3 +1636,17 @@ User screenshots, creative mode, the milbase sky test bases; each finding is fix
 - `update_ready.png` (1000 x 600, dev client, GUI width 500, 18 Oktober 2026): Decimation's update screen after a fake
   9.9.9 download: "SAFE TO CLOSE GAME!", DeciRemnant logo, "Downloading: Complete!", the green bar reaching the right
   end with its flare (was about 80 % before fixes/UpdateBar), 40.0mb/40.0mb, Quit game and Later.
+
+## npc_looks_v0.64.8
+
+NPC looks drawn from one picture (fixes/HumanLayers, PatchHumanLayers; 19 Oktober 2026). Comparison pictures of dev test
+npclook: three panels, the NPC drawn with its picture | the old way (Decimation's seven layers) | red where they differ,
+yellow where the same way differed from itself (random effects), grey the NPC.
+- `npclook_traderfood_sleeve.png` (600 x 260, dev client): a food trader holding a frying pan, 4.24 % differ. Old way: the
+  right upper arm bare skin, the shirt sleeve drawn beside it in the empty hand pose (RenderBiped poses only the main
+  model for a held item); new way: the sleeve on the arm. A bug of the old drawing.
+- `npclook_bandit_cap_prod.png` (600 x 260, production client, release style jar): a bandit with a tan cap, 2.23 %
+  differ. Old way: a dark row of hair across the top of the cap (the hair copy sat 0.05 / 16 of a block out, over the
+  cap); new way: the cap whole. The red band at the top of the head is the only difference.
+- `npcdraw_camp.png` (854 x 480, dev client, night, creative): dev test npcdraw's camp, 50 civilians and 30 guards in a
+  block 8 to 22 blocks west of the player, seen from where the player stands (old chat lines of earlier tests at the bottom).

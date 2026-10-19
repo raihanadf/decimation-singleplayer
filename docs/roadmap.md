@@ -29,6 +29,9 @@ or `[not decided]`.
    user's brother's laptop, parked by the user): entity lighting in the graphics driver suspected
    [not verified]. Waiting for that laptop's logs, GPU name, a screenshot, and whether the hand and
    items are black too. bug.md "Every Decimation mob drawn solid black".
+4. **Drawing armed NPCs costs about 420 us each on the M4** (dev test npcdraw, 19 Oktober 2026): the looks are one
+   picture now (fixes/HumanLayers); about 360 us of it is the gun and gear drawn part by part (BModelPart). Next: one
+   display list per gun and attachment state for third person. bug.md "Drawing many human NPCs is heavy on the client".
 
 ## Master plan (13 Oktober 2026)
 
@@ -240,6 +243,8 @@ menu, a survivor partner who follows the player and carries the gear the player 
 
 ## Recently done (details in bug.md / new_feature.md)
 
+- 19 Oktober 2026: NPC looks drawn from one picture instead of seven layers, and no dead line of sight checks in the NPC
+  model (fixes/HumanLayers, PatchHumanLayers; dev tests npclook, npcdraw: 80 infected 28 % cheaper to draw).
 - v0.28.0..0.28.4 cheap scope (zoom, see-through glass, sniper overlay
   from 4x); v0.28.5 NPC tracers aimed at the target; v0.28.6 / 0.28.7 prop
   and entity line of sight cache, prop render distance option; v0.28.8

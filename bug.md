@@ -1558,13 +1558,32 @@ Each burst (once per 10 ticks per shooter) searched a 128 x 64 x 128 box and wro
 or hostile NPC in range: 4.5 to 6 % of the server in the bench fights. A mob still walking to a shot within 8 blocks of
 the new one, with more than half of its search time left, is now skipped. Dev test noise passes.
 
-## Drawing many human NPCs is heavy on the client (19 Oktober 2026, OPEN, proposal)
+## Drawing many human NPCs is heavy on the client (19 Oktober 2026, looks FIXED in dev; guns and gear OPEN)
 
 bench "standby" (40 idle NPCs near the player): client about 25 to 30 ms a frame on the M4. Each human NPC is drawn in
 layers (ModelHuman deci.q.h: body, eyes, hair, beard, shirt, pants, shoes, each a full body pass with its own texture
 and a new ResourceLocation), then up to four armour models, mask, vest, backpack and the gun part by part (one display
-list call per BModelPart: 25 to 30 % of the client's native time). Ideas: bake each NPC's look into one texture (one
-pass instead of seven), one display list per gun for third person, fewer details at a distance. Needs the user's go.
+list call per BModelPart: 25 to 30 % of the client's native time).
+
+Step 1, the looks (user: "from 7 to 1"): fixes/HumanLayers and tools/patches/PatchHumanLayers.java (three jars). Each
+look (skin folder, tone, hair, beard, eyes, shirt, pants, shoes; blinking, infected, frail) is one 64 x 32 picture made
+from the same files in the same order, each layer only on the boxes its pass draws (the files hold pixels elsewhere too:
+hair 663, shirt 105, beard 72), a layer pixel where its alpha is above 0.1 (all 91 files are 0 or 255); at most 256
+pictures on the card and 4 new ones a frame, anything odd drawn the old way. renderHuman binds the picture once and skips
+the six layer binds, their passes and the posing of its two layer copies. Its three line of sight checks a frame (the
+model and both copies, up to nine ray traces each) fed only HumanEntity.visibleTicks, which nothing reads
+(isRecentlyVisible has no caller in the jar): they answer true now. Hidden NPCs are still not drawn (ClientEventHandler
+cancels RenderLivingEvent.Pre with the same check).
+Checked: dev test npclook (each kind alone, drawn both ways in one frame, pixels compared without gear: at most 0.6 %
+differ, texel edges; dev and production client), npcdraw (time drawing NPCs a frame, both ways in turns of 30 frames):
+80 infected 6.55 to 4.72 ms (28 % less, 82 to 59 us each); 70 armed civilians and guards 31.2 to 29.6 ms (5 % less, 423
+us each). The bench's frame times could not show it (Mac load 4 to 14, the 60 fps cap).
+Visible changes, both from bugs of the old drawing: the layer copies sat 0.05 / 16 of a block out, so hair and beard
+showed through a cap or a mask (a mustache line on a balaclava, hair along a cap's edge); and the copies were posed
+without the held item (RenderBiped sets heldItemRight on the main model only), so an NPC holding a frying pan had a bare
+arm with its sleeve hanging beside it. Now gear covers hair and beard, and sleeves stay on the arm.
+Open, step 2: an armed NPC costs about 360 us of its 423 in the gun and gear, drawn part by part (BModelPart): one display
+list per gun and attachment state for third person.
 
 ## The user died again and again to NPC gunfire at Market District (19 Oktober 2026, OPEN, not looked at)
 

@@ -156,7 +156,7 @@ def finish():
     com = cluster(G)
     coh = score_all(G, com)
     labels = relabel(G, com)
-    det = rj(".graphify_detect.json", {})
+    det = dict({"total_files": 0, "total_words": 0}, **rj(".graphify_detect.json", {})) # empty after a relabel only carry
     q = suggest_questions(G, com, labels)
     # --force: a legitimate shrink (code removed); check the lost node count first
     if not to_json(G, com, str(OUT / "graph.json"), community_labels=labels, force="--force" in sys.argv):

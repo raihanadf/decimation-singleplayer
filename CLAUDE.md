@@ -390,6 +390,9 @@ SRG→MCP from the old root `src/` via `mcp_stable/12` CSVs; the root `src/` +
   ticks, hostility before the ray trace (on top of PatchTracer / PatchFactions for v and a); `PatchBloodParticle.java`
   (same day): ground blood splats deci/B/k move only until they land; `PatchInfectedAI.java` v2: no unused wander search;
   `PatchHumanScare.java` (same day): FactionHumanEntity deci/ah/d no longer walks every loaded entity each tick;
+  `PatchHumanLayers.java` (same day, bug.md "Drawing many human NPCs"): ModelHuman.renderHuman (deci/q/h) draws each look
+  from one picture (fixes/HumanLayers; our classes on the Javassist path, third argument; patch from a copy of the
+  ORIGINAL jar: build/patch_layers/original.jar) and answers its three dead line of sight checks true;
   `PatchVehicleArrows.java` (2026-10-11, bug.md vehicle entry): indirect player hits
   (arrows, thrown, TNT) on deci/ad/e take the health path, not pickup;
   `PatchInfectedAI.java` (2026-10-10, docs/performance.md): infected
@@ -1124,6 +1127,10 @@ of the last session:
   skips mobs already following a nearby shot, ScopeZoom measures the glass only while aiming. Traps: live key=value
   settings stay set for later modes (clear them with key=); vanilla never targets a player with disableDamage; the AI
   evaluates target tasks every 3rd tick (targetChance N: a search every 3N ticks); compare client fps only on a quiet Mac.
+  NPC looks in one picture (19 Oktober 2026, bug.md "Drawing many human NPCs", docs/performance.md 8): fixes/HumanLayers
+  + PatchHumanLayers; dev tests npclook (both ways in one frame, pixels compared; `kinds=`), npcdraw (NPC draw time a frame,
+  both ways in turns); bench `layers=off` draws Decimation's way. Gear now covers hair and beard, sleeves stay on an arm
+  holding an item (both were bugs of the old layer copies). Next: guns and gear, about 360 us of an armed NPC's 423.
   RELEASE 0.64.8 published 17 Oktober 2026 16:53 (pre-release, sha256 73049bc7...; notes dist/onejar/RELEASE_NOTES_0.64.8.md;
   released jars kept in dist/previous/onejar-<version>): the production client with the real 0.64.7 jar updated itself
   to it from GitHub (239 MB in 29 s, checksum, jar swapped); site Download 0.64.8 at 16:54.

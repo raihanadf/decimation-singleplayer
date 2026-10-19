@@ -81,5 +81,6 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [x] safezone lag: trader / bandit / mech target searches and vanilla target tasks paced (bench, traderperf, targetpace)
 - [x] gun hand showed Steve: fixes/GunArmSkin (armskin)
 - [~] scope drops: no glass measurement at the hip; stutter not reproduced on the M4; CPU glass math if drops stay
-- [ ] NPC drawing: bake each NPC look into one texture, one display list per gun (proposal, user)
+- [x] NPC looks in one picture: fixes/HumanLayers, PatchHumanLayers (npclook, npcdraw: infected 28 % cheaper to draw)
+- [ ] NPC guns and gear drawn in one go (about 360 us of an armed NPC's 423; next)
 - [ ] repeated deaths to NPC gunfire at Market District in the user's session (not looked at)

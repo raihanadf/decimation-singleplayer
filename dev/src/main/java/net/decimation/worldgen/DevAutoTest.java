@@ -167,6 +167,8 @@ public class DevAutoTest
         if (name.equals("scopediag")) return new net.decimation.worldgen.devtest.ScopeDiagTest();
         if (name.equals("bench")) return new net.decimation.worldgen.devtest.BenchTest();
         if (name.equals("targetpace")) return new net.decimation.worldgen.devtest.TargetPaceTest();
+        if (name.equals("npclook")) return new net.decimation.worldgen.devtest.NpcLookTest();
+        if (name.equals("npcdraw")) return new net.decimation.worldgen.devtest.NpcDrawTest();
         if (name.equals("hostops")) return new net.decimation.worldgen.devtest.HostOpsTest();
         if (name.equals("hostshots")) return new net.decimation.worldgen.devtest.HostShotsTest();
         if (name.equals("garrison")) return new net.decimation.worldgen.devtest.GarrisonTest();

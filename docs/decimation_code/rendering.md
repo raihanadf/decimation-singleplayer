@@ -24,6 +24,7 @@ layers (tracers, laser dots, loot hints, turf names, icons, debug boxes).
 | layers (deci/M/c to o) | GrenadeTimerLayer, LaserDotLayer, BlockTipLayer, BulletTracerLayer, NpcIconLayer, ClanTurfLayer, WorldIconLayer, VehicleSpawnLayer, and the debug or empty ones (VehiclePartDebugLayer, VehicleDebugLayer, ZoneDebugLayer, EmptyRenderLayer, UnusedModelLayer) |
 | prop renderers (deci/I), models (deci/p, q, r, s, t, u, w) | one TESR per prop tile entity with a Techne model; mobs, vehicles, items |
 | DeciParticleSpawner (deci/B/d) | custom particles by name (blood, smoke, embers, flashes), also sent from the server |
+| ModelHuman (deci/q/h), HumanRenderer (deci/J/k, a RenderBiped) | every human NPC and infected: `renderHuman` draws the body picture with `renderHead`, `renderBodyAndArms`, `renderLegs`, then eyes, hair, beard on copy Fa and shirt, pants, shoes on copy Fb (both 0.05 larger, posed again by their own `renderHuman`), then armour, mask, vest, backpack |
 
 ## 3. As it runs (dev test `gunview` with an AKM, call logger, 16 Oktober 2026)
 
@@ -41,6 +42,11 @@ GunAnimation.get 99 (a lookup each frame while the gun is held).
   thread spun a core (PatchSwing), props drew at any distance and without line of sight caching (PatchPropCulling),
   the scope glass measured NPC guns (ScopeZoom, v0.43.1). Details: docs/performance.md.
 - Never run fps tests in a game started with the call logger (docs/call_trace.md).
+- ModelHuman drew each NPC in seven texture layers (19 part draws, 7 binds) and called ClientProxy$LineOfSight
+  `canSeeEntity` (up to nine ray traces) three times a frame for `markVisible`, whose timer nothing reads
+  (`isRecentlyVisible` has no caller); RenderBiped poses only the main model for a held item, so the copies drew sleeves
+  in the empty hand pose. Fixed by fixes/HumanLayers and PatchHumanLayers (bug.md "Drawing many human NPCs"). Still
+  costly: an armed NPC's gun and gear, part by part (about 360 us of 423 an NPC, dev test npcdraw).
 
 ## 5. How our mod uses it
 
@@ -50,8 +56,10 @@ GunAnimation.get 99 (a lookup each frame while the gun is held).
 | scopes | fixes/ScopeZoom |
 | prop render distance and culling | tools/patches/PatchPropCulling.java, config deciworldgen_props.cfg |
 | NPC tracers | fixes/NpcShots, PatchTracer |
+| NPC looks in one picture | fixes/HumanLayers (`Deci.humanLook`, `Deci.humanGear`), tools/patches/PatchHumanLayers.java |
 
 ## 6. Checks
 
 - `gunview` (guns in hand, aimed, on an NPC), `scope`, `props` (prop fps), `cityfps` / `cityview` (fps: never with the
-  call logger), `views` (street shots).
+  call logger), `views` (street shots), `npclook` (NPC looks drawn both ways in one frame, pixels compared), `npcdraw`
+  (time drawing NPCs a frame, both ways).

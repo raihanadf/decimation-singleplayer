@@ -16,6 +16,7 @@ docs/performance.md.
 | player model | PlayerModelSwapper (deci/J/e), StanceEntityRenderer (deci/E/a) |
 | per frame world layers | WorldRenderLayerDispatcher (deci/c/d), layers in deci/M |
 | props | the TESRs in deci/I, PatchPropCulling |
+| human NPCs and infected | ModelHuman (deci/q/h): looks from one picture by fixes/HumanLayers, PatchHumanLayers |
 
 ## Rules
 
@@ -23,6 +24,8 @@ docs/performance.md.
 2. Never judge fps in a game started with the call logger; trace render code only for call counts and order.
 3. Anything added to a layer's `renderEntity` runs per entity per frame: return at once when there is nothing to do.
 4. Test visually with the dev tests that take screenshots (`gunview`, `views`, `scope`) and read the sheet.
+5. A drawing change must look the same: draw both ways in one frame and compare pixels (`npclook` does it for NPCs),
+   and measure the drawing itself, both ways in turns (`npcdraw`): whole frame times hide it on a busy Mac.
 
 ## Common mistakes
 
