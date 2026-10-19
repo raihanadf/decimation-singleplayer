@@ -51,7 +51,7 @@ together in 1.0.0, so no jar a player downloads before 1.0.0 may hold multiplaye
   soak), the PatchIntroThread / PatchNoVersionFetch sources (+ threads) (19 Oktober 2026, prerelease df023cc), the NPC
   patch sources (Trader / Bandit / Mech target, BloodParticle, HumanScare, InfectedAI v2), TargetPacing (+ targetpace),
   GunArmSkin (+ armskin), GunNoise skip, ScopeZoom hip (+ scopeperf, scopediag), bench / traderperf / zoneperf
-  (prerelease 0a2f601). Releasing from it: build its own dist base jar with ITS tools (menu_assets.py
+  (prerelease 0a2f601), HumanLayers + PatchHumanLayers source (+ npclook, npcdraw, bench layers=off; prerelease e53bad7). Releasing from it: build its own dist base jar with ITS tools (menu_assets.py
   of the branch: main's jars carry the Multiplayer news picture), then tools/onejar.py there [not done yet].
   Only one live dev game at a time (both use port 25599).
 
