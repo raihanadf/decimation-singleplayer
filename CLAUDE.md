@@ -377,6 +377,10 @@ SRG→MCP from the old root `src/` via `mcp_stable/12` CSVs; the root `src/` +
   `PatchMenuBackground.java` (2026-10-17, docs/main_menu.md): RenderUtil.drawMenuBackground (deci/j/a.b) without its
   black layer, cube planet and glow sprites, its picture drawn by fixes/MenuBackground (slideshow; our classes on the
   Javassist path, third argument);
+  `PatchIntroThread.java` (19 Oktober 2026, bug.md "FPS falls minute by minute"): the boot intro's frame thread
+  (deci/i/d.aS) busy waited at 99% of a core all session; it sleeps and ends when the intro is finished (on top of the
+  intro skip); `PatchNoVersionFetch.java` (same day): UpdateChecker.tickVersionCheck (h.gH) no longer fetches BoehMod's
+  dead latestversion.txt every 60 s (on top of PatchNoUpdate);
   `PatchVehicleArrows.java` (2026-10-11, bug.md vehicle entry): indirect player hits
   (arrows, thrown, TNT) on deci/ad/e take the health path, not pickup;
   `PatchInfectedAI.java` (2026-10-10, docs/performance.md): infected
@@ -1098,6 +1102,13 @@ of the last session:
   the host reconnects to the same room, rooms placed near the host, far sockets retried (host overlap: the relay replaces a
   data socket and the far one's messages carry over). A local relay can fake far landings: `wrangler dev --var
   FAKE_COLOS:FRA,SIN --var FAKE_REGION:apac-se`. The dev host game rebuilds on a commit: build the joiner jar after it.
+  Stability and FPS (19 Oktober 2026, bug.md, docs/performance.md 7; first brother laptop session): fixes/GlStackGuard
+  (Decimation's melee / throwable item renderers and its name tag handler left GL matrices pushed: wrapped / popped, and
+  each frame ends with the stacks as deep as it began), fixes/PropSounds (radio and other prop loops stop out of hearing,
+  6 at most), fixes/EmptyStacks (throwables left a stack of 0 that threw forever), PatchIntroThread, PatchNoVersionFetch.
+  Dev tests glstack, throwables, radios, threads, soak; tools/glstackcheck.py (GL push / pop paths from the bytecode).
+  Trap: a server player's PlayerTickEvent runs only when that client's movement packet is processed: per player server
+  work goes on the server tick.
   RELEASE 0.64.8 published 17 Oktober 2026 16:53 (pre-release, sha256 73049bc7...; notes dist/onejar/RELEASE_NOTES_0.64.8.md;
   released jars kept in dist/previous/onejar-<version>): the production client with the real 0.64.7 jar updated itself
   to it from GitHub (239 MB in 29 s, checksum, jar swapped); site Download 0.64.8 at 16:54.

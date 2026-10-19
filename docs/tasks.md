@@ -74,6 +74,7 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [ ] playit.gg as an optional connection (later, user: only if direct is not good enough)
 - [x] friend kicked while ping stable: keep-alive, 20 s grace, same room reconnect, near rooms, far socket retry (relay 94b7cb49, game 5ed53b2; two game tests PASS on the deployed relay)
 - [ ] friend test of build 5ed53b2 (jar on the Desktop): stays connected? which path? ping on the host page
-- [ ] GL "Stack overflow" on the host in Market District: find the renderer (bug.md, 19 Oktober 2026)
-- [ ] FPS falls minute by minute, Mac froze after about 20 min: needs F3 data (bug.md)
+- [x] GL "Stack overflow" on the host: Decimation renderers left matrices pushed, fixed in dev (fixes/GlStackGuard)
+- [~] FPS falls over a session: busy intro thread, prop sound loops, dead update fetch fixed in dev; recheck in a real session
+- [x] last grenade never runs out (0 stacks): fixes/EmptyStacks, dev test throwables
 - [ ] direct join blocked by a host firewall: fixed gate port (bug.md)

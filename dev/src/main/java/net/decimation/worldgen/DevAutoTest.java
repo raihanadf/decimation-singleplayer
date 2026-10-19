@@ -155,6 +155,11 @@ public class DevAutoTest
         if (name.equals("lanjoin")) return new net.decimation.worldgen.devtest.LanJoinTest();
         if (name.equals("hostmenu")) return new net.decimation.worldgen.devtest.HostMenuTest();
         if (name.equals("hudguard")) return new net.decimation.worldgen.devtest.HudGuardTest();
+        if (name.equals("glstack")) return new net.decimation.worldgen.devtest.GlStackTest();
+        if (name.equals("throwables")) return new net.decimation.worldgen.devtest.ThrowablesTest();
+        if (name.equals("soak")) return new net.decimation.worldgen.devtest.SoakTest();
+        if (name.equals("radios")) return new net.decimation.worldgen.devtest.RadiosTest();
+        if (name.equals("threads")) return new net.decimation.worldgen.devtest.ThreadsTest();
         if (name.equals("hostops")) return new net.decimation.worldgen.devtest.HostOpsTest();
         if (name.equals("hostshots")) return new net.decimation.worldgen.devtest.HostShotsTest();
         if (name.equals("garrison")) return new net.decimation.worldgen.devtest.GarrisonTest();

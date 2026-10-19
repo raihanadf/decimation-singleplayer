@@ -144,6 +144,10 @@ public class PlayerFireTest extends DevTestMode
         if (shot1 && !check1Done && t - shotAt >= 10)
         {
             float lost = baseline - (target.isDead ? 0 : target.getHealth());
+            DevTestResults.value(name(), "target", target.getClass().getSimpleName() + " " + target.getCommandSenderName()
+                                 + String.format(" at %.1f %.1f %.1f, height %.2f, from spawn %.1f", target.posX, target.posY,
+                                                 target.posZ, target.height, target.getDistance(DevTestArena.X + 0.5,
+                                                 DevTestArena.Y, DevTestArena.Z - 4.5)));
             ItemStack g = p.getHeldItem();
             DevTestResults.check(name(), "the shot hits the infected", String.format("%.2f of %.2f lost", lost, baseline), lost > 0,
                                  "health lost");

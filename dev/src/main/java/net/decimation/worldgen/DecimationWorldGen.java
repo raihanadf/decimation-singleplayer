@@ -179,6 +179,8 @@ public class DecimationWorldGen
             // Decimation's HUD needs the menu's player preview (bug.md): made if a world was reached without the menu
             cpw.mods.fml.common.FMLCommonHandler.instance().bus().register(new net.decimation.fixes.HudGuard());
             cpw.mods.fml.common.FMLCommonHandler.instance().bus().register(new net.decimation.fixes.GunUseKey()); // open corpses with a gun in hand
+            // prop loops (radios, vending machines, electric boxes) stop out of hearing, 6 at most (bug.md "FPS falls")
+            cpw.mods.fml.common.FMLCommonHandler.instance().bus().register(new net.decimation.fixes.PropSounds());
             // host your world online (docs/superpowers/specs/2026-10-18-player-hosting-part1-design.md): the pause menu's
             // Host Online page, the heartbeat on the client tick, hosting stops when the world closes
             net.decimation.fixes.hosting.HostMenu host = new net.decimation.fixes.hosting.HostMenu();
@@ -192,6 +194,8 @@ public class DecimationWorldGen
             cpw.mods.fml.common.FMLCommonHandler.instance().bus().register(community); // disconnects
         }
         cpw.mods.fml.common.FMLCommonHandler.instance().bus().register(new net.decimation.fixes.WorldClock());
+        // throwables left a stack of 0 in the hand that threw forever (bug.md "The last grenade never runs out")
+        cpw.mods.fml.common.FMLCommonHandler.instance().bus().register(new net.decimation.fixes.EmptyStacks());
         // an entity joins a world once: Decimation's mob swaps during a chunk load added the new mob twice (bug.md)
         net.minecraftforge.common.MinecraftForge.EVENT_BUS.register(new net.decimation.fixes.JoinOnce());
         net.minecraftforge.common.MinecraftForge.EVENT_BUS.register(new Areas());
@@ -298,6 +302,7 @@ public class DecimationWorldGen
         if (cpw.mods.fml.common.FMLCommonHandler.instance().getSide().isClient())
         {
             net.decimation.fixes.Updater.check();     // the menu shows "Update" once a newer release is known
+            net.decimation.fixes.GlStackGuard.install(); // Decimation's renderers left GL matrices pushed (bug.md)
         }
         net.decimation.worldgen.terrain.DecimationBiomes.copySpawns();
         if (vanillaMobs != null && vanillaMobs.enabled())

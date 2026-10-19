@@ -131,3 +131,37 @@ FOB). Replaced by deciworldgen:hesco, a plain full block in the chunk mesh: tile
 base 1020 / 2007 / 2902 -> 129 / 381 / 571 (counted by tools/props/propclash.py on the dumps).
 The frame rate itself was not measured [not verified]. Rule: anything placed by the hundreds is
 a plain block, never a prop (docs/prop_placement.md).
+
+## 7. FPS falling over a session, a frozen Mac (19 Oktober 2026)
+
+User after a 20 minute two player session (brother's laptop hosting, the Mac joining): "decimation really often dropping
+fps from example 120 fps on fresh spawn and minute by minute its drop hard to 60 or even worse", the Mac froze. Full
+story with numbers: bug.md "FPS falls minute by minute" and "OpenGL Stack overflow".
+
+New tools:
+
+| Tool | What it tells |
+|---|---|
+| `python3 tools/devtest.py --live threads` | CPU of every thread over 5 s (ThreadMXBean); FAIL when a helper thread (not the client or server thread) uses half a core or more. A thread that never sleeps heats a laptop, which then slows down after minutes |
+| `python3 tools/devtest.py --live soak [minutes=10] [speed=6] [still=true]` | every 10 s: fps, heap after the last collection, threads, client / server entities, tile entities, particles, loaded chunks, while the player flies on into new land (or stays); take `jcmd <pid> GC.class_histogram` at the start and the end and diff them for a leak |
+| `python3 tools/devtest.py --live radios` | 30 radio props: playing prop loops near, 80 blocks away, back again; fps each time |
+| `python3 tools/devtest.py --live glstack [glonly=a,b] [glall=true] [glprobe=true]` | GL stack depths after each frame while every item with its own renderer is held (first / third person), guns with each sight hip / aimed, another player with fancy nameplates off, a frame that leaks on purpose; glprobe wraps every item renderer and names calls that change the modelview depth |
+| `python3 tools/glstackcheck.py JAR:PREFIX ...` | from the bytecode, every method whose return paths leave a GL matrix / attribute push open (branches, switches, exceptions; helpers like pushScissor followed); path blind, confirm in the game |
+
+Found and fixed (all in the dev workspace, three jars for the patches):
+1. Decimation's boot intro thread (GuiIntroJumpscare, deci.i.d.aS) busy waited at 99% of a core for the whole session
+   (`threads`). tools/patches/PatchIntroThread.java. PatchSwing's own note ("idle main menu 200% CPU -> 105%") had the
+   100% of this thread left in it.
+2. Prop sound loops (radios streamed) ran until their chunk unloaded: 26 of 30 radios still playing 80 blocks away,
+   fps 74 -> 57 with them (`radios`). fixes/PropSounds: out of hearing (20 blocks) stopped, 6 at most.
+3. Decimation's melee / throwable item renderers leaked a matrix level per first person call (after every switch away
+   from one) and its name tag handler one per other player a frame with fancy nameplates off; the 32 level stack filled,
+   then every push failed. fixes/GlStackGuard (wrappers, a pop after the name tag, and a per frame guard).
+4. A dead BoehMod version fetch every 60 s (thread, TLS, stack trace). tools/patches/PatchNoVersionFetch.java.
+5. Not a leak: 10 minutes of `soak` kept the heap after collection at 230 -> 256 MB and threads at 27 to 29; the class
+   histogram grew 16 MB (vanilla structure data). JFR while flying: client thread mostly vanilla chunk meshing (about 70%),
+   server thread world generation; the frame rate falls by place there, not by time.
+
+Traps: a server player's PlayerTickEvent runs only when that client's movement packet is processed (do per player
+server work on the server tick); the dev world's frame rate swings 58 to 74 for the same empty scene (mob farm under the
+arena, section 2 item 2): compare counts (loops, threads, stack depth), not single fps readings.

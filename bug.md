@@ -1394,23 +1394,71 @@ reconnecting to the same room, and direct players kept (docs/player_hosting.md 1
 the two game test on the deployed relay. A real long session with the friend is still to come.
 
 
-## OpenGL "Stack overflow" 1964 times on the host, from Market District (user test 19 Oktober 2026, OPEN)
+## OpenGL "Stack overflow" 1964 times on the host, from Market District (user test 19 Oktober 2026, FIXED in dev)
 
 Brother's laptop (wyvern: RTX 2060, NVIDIA 610.57, Linux, OptiFine E7) hosting, the user joining from the Mac. Its
 latest.log: "GL ERROR @ Post render 1283: Stack overflow" 1959 times and "1284: Stack underflow" 5 times, from 02:38:53
-(entering Springfield City: Market District - 1) to 02:51, up to 398 a minute; OptiFine also put "OpenGL Error" in chat.
-Some renderer pushes the matrix or attribute stack without popping it, only while something there is drawn [inferred:
-which renderer is not found]. The Mac log has none (Apple's GL on Metal may not report it) [not checked]. Next: a dev test
-that reads GL_MODELVIEW_STACK_DEPTH and GL_ATTRIB_STACK_DEPTH around each entity and tile entity renderer in a Market
-District and names the one that leaves them changed.
+to 02:51, up to 398 a minute; OptiFine also put "OpenGL Error" in chat. The Mac log has none (Apple's GL on Metal may not
+report it) [not checked].
 
-## FPS falls minute by minute (120 to 60 and lower), the Mac froze after about 20 minutes (user 19 Oktober 2026, OPEN)
+Cause (found 19 Oktober 2026, dev test `glstack` plus a bytecode path check of every Decimation method):
+1. Decimation's ModelItemRenderer (deci.K.c) and BModelItemRenderer (deci.K.d) push a matrix and return without its pop
+   when called in first person. Holding the item does not call them that way (Decimation draws it itself), but after a
+   switch AWAY from one Minecraft keeps drawing the old item in first person for a few frames: 2 to 5 matrix levels lost
+   per switch. 24 items use them: every melee weapon, every grenade, the molotov, riot shield, chainsaw, guitar, range
+   finder, suicide vest, party horn. A few switches fill the 32 level stack; from then on every push fails and models
+   are drawn with the wrong matrix. Measured: machete then a gun, +2 to +6 levels; a renderer probe counted the leaking
+   calls (ItemMachete / ItemPartyHorn EQUIPPED_FIRST_PERSON, one level each).
+2. Decimation's name tag handler (ClientRenderHandler.onRenderNameTag, deci.c.b) returns without its pop for another
+   PLAYER while "enableFancyNameplate" is off (decimation_client.properties; on by default, so not this session): one
+   level per player in view each frame, multiplayer only. Measured +12 in about 7 frames.
+3. Checked clean: every other Decimation method on normal and exception paths (tools: scratchpad glinter.py, javap based;
+   one latent case left: BModelPart.render returns without its pop for a hidden part, and nothing hides BModelParts
+   today [checked by search]).
 
-Same session. Seen on both machines. The host world saved at quit holds 191 entities (42 Boar, 34 InfectedDog, 28 Item, 18
-Infected, 4 Corpse) and 7119 tile entities (5404 PropTile): no entity pile up at quit time (tools/perfcheck.py world on a
-copy). The Mac log ends at 02:52:45 with nothing unusual (one "Clientside chunk ticking took 129 ms"); the freeze left no
-line. Both games had 4 GB. Cause unknown; the GL stack overflow above is the first lead. Needed next time: F3 screen when
-the FPS is low (E: count, memory %), and whether the Mac game came back or had to be force quit.
+Fix (fixes/GlStackGuard, client): the 24 renderers are wrapped and pop after a first person call; a name tag handler
+after Decimation's pops on that one path; and a guard for anything else: each frame ends with the modelview, attribute and
+projection stacks as deep as it began (anything left is set back, logged at most once a minute as "[deciworldgen] GL
+stack guard: ..."). Plain GL 1.1, the same on every OS. Dev test `glstack`: 131 items in first and third person, 48 gun +
+sight cases (hip, aimed), the other player case and a frame that leaks 3 on purpose: FAIL before (4 leaking), PASS after.
+Not yet seen on the NVIDIA laptop with the new jar [not verified].
+
+## FPS falls minute by minute (120 to 60 and lower), the Mac froze after about 20 minutes (user 19 Oktober 2026, FIXED in dev: causes found)
+
+Same session (brother's laptop hosting, the user's Mac joining, Prism, release jar 5077445e on both). Checked first: no
+entity pile up (the host world saved at quit: 191 entities, 7119 tile entities of which 5404 PropTile; tools/perfcheck.py
+world on a copy), the Mac log ends at 02:52:45 with nothing unusual and the process was ended at 02:54:38 (Prism: "Game
+crashed", no hs_err file, no crash report, no macOS hang report: most likely force quit while frozen [inferred]); both
+games had 4 GB.
+
+Measured in the dev game (19 Oktober 2026; docs/performance.md section 7):
+1. **A thread that never sleeps** (the big one for laptops): Decimation's boot intro (GuiIntroJumpscare, deci.i.d) starts
+   a thread in its static initializer that counts intro frames at 30 Hz by busy waiting and never ends. Our jars skip the
+   intro, so it does nothing, at 99% of a CPU core for the whole session (dev test `threads`; JFR: 100% of Thread-13 in
+   deci.i.d.aS). Laptops heat up and throttle after minutes: that fits "fresh 120, minute by minute 60 and worse" on both
+   machines [throttling itself not measured]. PatchSwing (v0.7) fixed a twin of it: "idle main menu 200% CPU -> 105%";
+   the 105% left was this thread. Fix: tools/patches/PatchIntroThread.java (three jars): it sleeps between frames and
+   ends when the intro is finished (at once in our jars). `threads`: FAIL (99%) before, PASS after.
+2. **Prop sound loops that never stop**: every radio, vending machine, electric box, generator, hazard light and military
+   radio starts a looping sound when the player comes within 16 blocks (BlockProp.randomDisplayTick) and Decimation stops
+   it only when the prop's chunk unloads, so a walk through a city leaves dozens running; the radio's is streamed
+   (decoded in Java on paulscode's stream thread, which holds the sound lock the game needs 4 times per loop and tick).
+   The brother's small world has 56 radios. Dev test `radios` (30 radios): 26 loops played on 80 blocks away, frame rate
+   74 without radios, 57 with them, 45 away from them (still playing). Also a bug: a radio stayed silent for good after
+   its chunk reloaded (its map entry was never removed). Fix: fixes/PropSounds (client, once a second): loops beyond 20
+   blocks stopped and forgotten (they start again when near), at most 6 play (the nearest), never two of one prop.
+   `radios`: FAIL before, PASS after (6 near, 0 away, playing again on return); unit tests PropSoundsTest (5).
+3. **The GL stack overflow** (entry above, fixed by fixes/GlStackGuard): broken matrices after the stack fills.
+4. **A dead update check every minute**: UpdateChecker.tickVersionCheck (gH) fetched BoehMod's dead latestversion.txt
+   (404 and a 20 line stack trace) every 60 s on clients and servers; its answer is unused since PatchNoUpdate v2. Fix:
+   tools/patches/PatchNoVersionFetch.java (three jars): it does nothing.
+5. Checked, not a leak: a 10 minute soak (dev test `soak`, flying into new land at 6 blocks a second): heap after
+   collection 230 -> 256 MB, threads 27 to 29, entities and chunks steady; heap class histogram start vs end grew 16 MB,
+   all vanilla structure data (mineshaft maps) and items. The frame rate there falls by place (generating and meshing
+   new city chunks: JFR client thread 70% vanilla chunk mesh building, server thread world generation), not by time.
+
+Still to see: the same session again with the new jar on both machines (FPS after 20 minutes, no GL errors in the host
+log, no freeze) [not verified].
 
 ## Direct join never used on the brother's NixOS laptop: its firewall blocks the gate port (19 Oktober 2026, OPEN)
 
@@ -1418,3 +1466,32 @@ Joiner went through the relay (Singapore) although both were on the same wifi. w
 in only listed ports; Direct.Gate listens on a random free port (ServerSocket(0)), so no rule can name it. Windows asks
 "allow Java" once instead [inferred]. Options: a fixed default gate port the host can open, shown on the host page.
 Also seen: two "registration failed: 429 too often" at 02:34:15 after a quick restart of hosting; the next try worked.
+
+## The last grenade never runs out (user 19 Oktober 2026, FIXED in dev)
+
+"if its more than one its will defrade 1 by 1 normally but when it hit quantity 1 it will be act like unlimited
+throwable". Decimation's throw (GrenadeItem.throwGrenade, deci.aA.a, and its five copies for the molotov, smoke, signal,
+stun and tear gas grenades) takes one off the held stack on the server and never removes a stack of 0. A stack of 0 looks
+like one (counts under 2 are not drawn) and its next throw only checks the item type: another grenade, and so on. Fix:
+fixes/EmptyStacks removes stacks of 0 or less from every player's inventory after each server tick (vanilla does the
+same after placing the last block). Not on the player tick: a server player's tick runs only when that client's movement
+packet arrives (NetHandlerPlayServer.processPlayer -> onUpdateEntity), and the first version failed the test after a
+teleport that way. Dev test `throwables`: FAIL before ("0 held", a second throw spawned a grenade), PASS after (alone,
+after `glstack`, and twice more), also for the molotov and the smoke grenade. Left open: two throw packets inside one 50 ms tick could
+still both throw from the last one (needs a patch of the six throw methods in the three jars) [not done].
+
+## Unit test ColosTest "with overlap the next socket opens before the far one closes" failed once (19 Oktober 2026, OPEN, flaky)
+
+Saw "close 2" from the previous test at the start of its event list (expected [open 0, open 1, close 0]); passed in the
+next two full runs (87 of 87). The shared EchoServer's hop events are not cleared between tests, and a socket closed by
+the previous test reports late [inferred]. Clear the events and wait for the previous test's closes before the overlap
+test if it comes back.
+
+
+## Dev test playerfire: "the shot hits the infected" fails every other run (19 Oktober 2026, OPEN, flaky, older than today)
+
+In one live session the runs go FAIL, PASS, FAIL, PASS; every failing run's target starts at 12 health (plain Infected,
+deci.ag.d, same spot, height 1.95, did not move), the passing ones at 20 or 30. Same on the code before today (46db3dc,
+4 runs), so not from the GL / sound / stack fixes. Why a 12 health infected takes no hit is not found (Decimation's
+spawn handling of some infected [not checked]); the test now writes a "target" line (class, name, place, height) with
+each run.

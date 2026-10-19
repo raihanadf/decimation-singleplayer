@@ -439,6 +439,27 @@ public final class Deci
         return e instanceof deci.ak.b || e instanceof deci.ak.f || e instanceof deci.ak.c || e instanceof deci.ak.e;
     }
 
+    /** A frag grenade in flight (GrenadeEntity deci.ak.c). */
+    public static boolean isGrenade(net.minecraft.entity.Entity e)
+    {
+        return e instanceof deci.ak.c;
+    }
+
+    /**
+     * Throws the held throwable as Decimation's throw packet does on the server (PacketThrowItem's handler,
+     * deci.aE.a$y$a: GrenadeItem.throwGrenade, deci.aA.a.a, on the held stack); false when nothing throwable is held.
+     */
+    public static boolean throwHeld(EntityPlayer player, double strength)
+    {
+        ItemStack held = player.getHeldItem();
+        if (held == null || !(held.getItem() instanceof deci.aA.a))
+        {
+            return false;
+        }
+        ((deci.aA.a) held.getItem()).a(held, player.worldObj, player, Math.min(Math.max(strength, 0.0), 10.0));
+        return true;
+    }
+
     /** A mech (MechEntity deci.ag.k). */
     public static boolean isMech(net.minecraft.entity.Entity e)
     {
@@ -1891,5 +1912,59 @@ public final class Deci
         return new org.lwjgl.util.vector.Vector3f[] {
             (org.lwjgl.util.vector.Vector3f) cpw.mods.fml.relauncher.ReflectionHelper.getPrivateValue(deci.n.d.a.class, t, "kf"),
             (org.lwjgl.util.vector.Vector3f) cpw.mods.fml.relauncher.ReflectionHelper.getPrivateValue(deci.n.d.a.class, t, "kg")};
+    }
+
+    /**
+     * Decimation's ModelItemRenderer (deci.K.c) and BModelItemRenderer (deci.K.d): called in first person they push a
+     * matrix and return without its pop (bug.md "GL stack overflow"). Melee weapons, grenades, the molotov, riot shield,
+     * chainsaw, guitar and a few tools use them.
+     */
+    @cpw.mods.fml.relauncher.SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)
+    public static boolean leavesFirstPersonPush(net.minecraftforge.client.IItemRenderer r)
+    {
+        return r != null && (r.getClass() == deci.K.c.class || r.getClass() == deci.K.d.class);
+    }
+
+    /** ClientState.enableFancyNameplate (deci.b.i.bx, decimation_client.properties; on by default). */
+    @cpw.mods.fml.relauncher.SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)
+    public static boolean fancyNameplates()
+    {
+        return deci.b.i.bx;
+    }
+
+    /** Tests only: the fancy nameplate setting for this session. */
+    @cpw.mods.fml.relauncher.SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)
+    public static void setFancyNameplates(boolean on)
+    {
+        deci.b.i.bx = on;
+    }
+
+    /** Radio / ambient prop loops Decimation started (BlockProp.mapSoundPositions, one per prop position). */
+    @cpw.mods.fml.relauncher.SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)
+    public static java.util.Map<net.minecraft.util.ChunkCoordinates, net.minecraft.client.audio.ISound> propSounds()
+    {
+        return net.decimation.mod.common.block.props.BlockProp.mapSoundPositions;
+    }
+
+    /** Tests: entries in propSounds(). */
+    @cpw.mods.fml.relauncher.SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)
+    public static int propSoundEntries()
+    {
+        return propSounds().size();
+    }
+
+    /** Tests: prop loops that are playing right now. */
+    @cpw.mods.fml.relauncher.SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)
+    public static int playingPropSounds()
+    {
+        int n = 0;
+        for (net.minecraft.client.audio.ISound s : propSounds().values())
+        {
+            if (s != null && net.minecraft.client.Minecraft.getMinecraft().getSoundHandler().isSoundPlaying(s))
+            {
+                n++;
+            }
+        }
+        return n;
     }
 }

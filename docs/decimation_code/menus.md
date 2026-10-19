@@ -16,7 +16,7 @@ own HUD (conditions, zone and turf banners, ammo, compass, gas mask view) with t
 | GuiMenuHome (deci/i/e) | home page: news from the backend (dead), welcome notification, combat timer, loading fade, the player preview (deci/e MenuFakeWorld), "Play" or "Update" |
 | GuiMenuOptions, GuiMenuProfile, GuiMenuServerStatus, GuiMenuOfficialServers, GuiMenuCommunityServers, GuiMenuSupporterLounge, GuiMenuUpdates, GuiUpdateProgress (deci/i/f to m) | the other pages; server pages ping BoehMod's dead servers; updates read a GitHub updates.json |
 | GuiEulaAgreement, GuiIntroBoehModLogo, GuiIntroJumpscare (deci/i/b, c, d) | first start EULA, boot intros |
-| UpdateChecker (net/decimation/mod/common/utils/h) | `isUpdateRequired` (gI): "Play" or "Update"; `tickVersionCheck`; our PatchNoUpdate answers through fixes/Updater |
+| UpdateChecker (net/decimation/mod/common/utils/h) | `isUpdateRequired` (gI): "Play" or "Update"; `tickVersionCheck` (gH, empty since PatchNoVersionFetch: it fetched a dead file every 60 s); our PatchNoUpdate answers through fixes/Updater |
 | DeciScreen (deci/d/i), MenuPanel, ScrollPanel (deci/d/l), PanelElement, DeciButton | the menu toolkit (all methods named in m_methods_rest.tsv) |
 | PlayerInventoryScreen (deci/g/g) | the inventory with gear slots and the loot area (GUI_LOOT) |
 | TraderScreen (deci/g/q), BankerScreen (deci/g/c), AttachmentScreen (deci/g/a), LockpickingScreen (deci/g/k) | trader, banker, gun attachments (writes the attachment NBT), lockpicking minigame |
@@ -41,7 +41,8 @@ Traced `deci.i,net.decimation.mod.common.utils.h,deci.g.j,net.decimation.fixes.L
 - Without mods/DecimationVoiceChat.jar Decimation's menu demanded an update: PatchNoUpdate; our own update check
   (fixes/Updater) replaces it; since v0.64.7 the download runs on Decimation's own progress screen (GuiUpdateProgress
   deci/i/m, fixes/UpdateProgress fills its UpdateChecker fields), our UpdateScreen only for a failure.
-- The boot jumpscare intro played its frames from a busy wait thread (the one off intro skip patch).
+- The boot jumpscare intro played its frames from a busy wait thread (the one off intro skip patch). The skip left the
+  thread running: it spun at 99% of a CPU core all session until PatchIntroThread (19 Oktober 2026; dev test `threads`).
 - MenuFakeWorld's overrides of Forge world methods were renamed by the obfuscator and never run (the `...Lost`
   methods, architecture.md "Method naming pass").
 
