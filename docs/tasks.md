@@ -13,7 +13,8 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [ ] DeciRemnant: GITHUB_TOKEN in Vercel (recommended; user). Verdict given 17 Oktober: kept, study famous sites next time
 - [x] DeciRemnant SEO (decimation + minecraft): live, Lighthouse 100 on mobile and desktop
 - [x] Google Search Console: verified, sitemap.xml submitted, indexing requested (user, 17 Oktober 2026)
-- [ ] 20 Oktober 2026: tell the user to check Google indexing of deciremnant.vercel.app (docs/website.md 9b)
+- [x] Google indexing checked 20 Oktober 2026: home page "URL is on Google", indexed (docs/website.md 9b)
+- [ ] Search Console: inspect /docs/server too; look at Performance for decimation / minecraft impressions (later)
 - [x] DeciRemnant: install for new players (lined table, game screens) + server guide /docs/server: live checked
 - [x] Decimation main menu: news panels (GitHub, Updates, Website, Coming soon) + real scene background every 7 s (v0.63.0, dev client)
 - [ ] main menu: the user's look in game (needs a release with v0.63.0)

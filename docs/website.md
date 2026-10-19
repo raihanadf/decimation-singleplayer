@@ -478,6 +478,9 @@ only as the footer credit (17 Oktober 2026; the earlier rule "never the Decimati
   Success, 1 discovered page), Performance (first impressions for decimation / minecraft searches). From here: a
   Google search for site:deciremnant.vercel.app in agent-browser (stop at any CAPTCHA). Still not indexed then is
   normal for a new site: look again a week later [inferred].
+  Result (user, 20 Oktober 2026 00:08 WIB, shot docs/shots/website_live_v0.62.9/search_console_indexed_20oct.png): URL
+  Inspection of https://deciremnant.vercel.app/ says "URL is on Google", Page indexing "Page is indexed", HTTPS "Page is
+  served over HTTPS". Not looked at yet [not verified]: /docs/server, Pages, Sitemaps, Performance (impressions).
 
 ## 10. Design talk record (user revisions)
 

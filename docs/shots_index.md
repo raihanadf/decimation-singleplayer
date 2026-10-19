@@ -53,6 +53,9 @@ chunks at the camera and 48 ahead, up to 120 s).
   URL Inspection of https://deciremnant.vercel.app/ says "URL is not on Google"; green box "Indexing requested", URL
   added to a priority crawl queue; Crawl rows (last crawl, crawled as, crawl allowed, page fetch, indexing allowed)
   all N/A. The baseline for the indexing check on 20 Oktober 2026.
+- `search_console_indexed_20oct.png` (2000 x 1301, the user's Firefox, 20 Oktober 2026 00:08 WIB): Google Search Console,
+  URL Inspection of https://deciremnant.vercel.app/: "URL is on Google", Page indexing "Page is indexed", HTTPS "Page
+  is served over HTTPS".
 
 ## website_logo_v0.63.0/ (the Decimation logo in the site's top bar, local build, 17 Oktober 2026; skill case 7)
 - `top_1300.png`, `top_1000.png`: the red DECIMATION banner with barbed wire top left (40 px high), "DeciRemnant" beside

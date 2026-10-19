@@ -125,7 +125,8 @@ Facts, decisions and the page text: docs/website.md (the spec). Site code: the P
   it; never through the chat.
 - 17 Oktober 2026: the user verified the property, submitted sitemap.xml and requested indexing of the home page
   ("URL is not on Google", priority crawl queue). Whether Google crawls and ranks the page shows only in the user's
-  Search Console: ask, never claim it. Indexing check on 20 Oktober 2026 (the user asked to be told then).
+  Search Console: ask, never claim it. Indexing check on 20 Oktober 2026 (the user asked to be told then): the user's
+  URL Inspection showed the home page "URL is on Google", page indexed (shot search_console_indexed_20oct.png).
 
 ### Case 6: install for new players, server guide page (17 Oktober 2026)
 - User (shots of the live tabs and requirements box): "for the installation, just for new player, no need already have
