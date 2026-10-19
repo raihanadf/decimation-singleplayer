@@ -33,6 +33,10 @@ Checked with it: bundled content unpacked, cities generated, no errors (bug.md v
   2. No -XstartOnFirstThread on macOS with LWJGL 2: Decimation's preInit hung in Display.setTitle.
   3. The Gradle cache holds a -javadoc jar next to LWJGL: pick the plain one.
   4. The first test in a new world runs while the player still falls: run it twice.
+- With OptiFine (the brother's laptop plays with OptiFine HD U E7): put OptiFine_1.7.10_HD_U_E7.jar next to the release
+  jar in mods/ (the copy in the scratchpad came from wyvern's mods folder); Forge loads its tweaker. OptiFine moves
+  RenderHandEvent into renderHand: test anything that touches the hand or the scope there too (bug.md "Aiming with
+  OptiFine"). Run `devtest.py --live --port=25598 --results=DIR/game/devtest/results.txt scopeperf sight=eotech558`.
 - GitHub's release API answered 403 (unauthenticated rate limit, 60 requests an hour per address)
   after many checks in one afternoon [inferred]; the updater then showed Play (no update). Since v0.59.1
   it falls back to the release feed and plain download links (new_feature.md "rate limit fallback").

@@ -1585,6 +1585,30 @@ arm with its sleeve hanging beside it. Now gear covers hair and beard, and sleev
 Open, step 2: an armed NPC costs about 360 us of its 423 in the gun and gear, drawn part by part (BModelPart): one display
 list per gun and attachment state for third person.
 
+## Aiming with OptiFine made the gun vanish, "Stack overflow" every frame, FPS sinking (19 Oktober 2026, FIXED in dev)
+
+User (brother's laptop, NVIDIA RTX 2060, OptiFine HD U E7, jar 9e89d0d3): with the EOTech 558 "the aiming model is doesnt
+show up, so the guns actually invicble ... minute by minute the perfomance getting wrose". Its log: from 22:50:56 to
+23:06:47 "@ Post render 1283: Stack overflow" 4747 times and "[deciworldgen] scope: renderHand failed:
+InvocationTargetException" 4779 times, one per frame while aiming; GlStackGuard never had to repair a frame.
+Cause: Forge posts RenderHandEvent before EntityRenderer.renderHand; OptiFine posts it inside renderHand. While a sight
+zooms, fixes/ScopeZoom cancels the event and calls renderHand itself, so under OptiFine its own call came back into its
+handler, again and again until Java's stack ran out: every level pushed a GL matrix (over 32: overflow), the gun was never
+drawn, and the warning was logged each frame. Without OptiFine (every dev and Mac test) the event comes before
+renderHand, so it never showed.
+Fix: ScopeZoom ignores the event while it draws the hand itself (OptiFine's inner event then draws normally); the warning
+at most once a minute. Checked in the production client with OptiFine (wyvern's own jar in the scratchpad mods): dev test
+scopeperf with sight=eotech558 now checks GL errors at five points of every frame: before the fix aiming 117719 errors in 5
+s (modelview at 32 before the hand, gun gone on the shot), after 0 in every phase, gun and see-through glass drawn.
+
+## A sight's glass showed a frozen picture at the hip after aiming (19 Oktober 2026, FIXED in dev)
+
+Same report: "on idle aiming, the 558 scope render a 'new camera' in there". Since v0.58.0 ScopeZoom copies the screen
+under the glass into the scope texture only while aiming or zooming; back at the hip the glass kept the last aimed view,
+a frozen picture of another place. Now the texture is filled with a plain dark lens colour (ScopeZoom.LENS) once when the
+copying stops (in strips of 32 rows). Dev test scopeperf phase "scoped gun at the hip after aiming" reads the texture back:
+before 0 % lens, after 100 % (dev client and production client with OptiFine).
+
 ## Muzzle flash lit every mob drawn after the shooter (19 Oktober 2026, FIXED in dev)
 
 User: "when npc shot a gun, some 'flash' rendered on their npc or mobs body ... the flash appear on all npc or mobs

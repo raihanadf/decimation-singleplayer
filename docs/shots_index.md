@@ -1653,3 +1653,13 @@ yellow where the same way differed from itself (random effects), grey the NPC.
 - `lightleak_fixed.png` (854 x 480, dev client, night, third person): dev test lightleak after fixes/EntityLighting: the
   player from behind firing an AKM (muzzle flash at the gun), infected and a soldier ahead with their normal night
   shading. The same shot before the fix (not kept, same file name) showed an infected behind the shooter flat bright.
+
+## scope_optifine_v0.64.8
+
+Production client with OptiFine HD U E7 (the brother's laptop setup), AKM with the EOTech 558, dev test scopeperf crops.
+- `optifine_aim_before.png` (1281 x 240, night): before the ScopeZoom fix: hip (gun and sight), aiming (NO gun: the
+  hand draw recursed until the stack ran out), aiming over iron sights (gun drawn).
+- `optifine_aim_after.png` (1707 x 320, night): after: hip, aiming (gun, EOTech with the red reticle), hip after aiming.
+- `glass_hip_before.png` (1281 x 264, noon): hip before any aim (black glass), aiming (see-through glass, reticle), hip
+  after aiming: the glass shows a frozen grey and blue picture of the aimed view (the "new camera").
+- `glass_hip_after.png` (854 x 240, noon, dev client): aiming (see-through), hip after aiming: plain dark lens, red dot.

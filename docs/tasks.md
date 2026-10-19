@@ -80,6 +80,8 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [ ] direct join blocked by a host firewall: fixed gate port (bug.md)
 - [x] safezone lag: trader / bandit / mech target searches and vanilla target tasks paced (bench, traderperf, targetpace)
 - [x] gun hand showed Steve: fixes/GunArmSkin (armskin)
+- [x] scope with OptiFine: gun gone while aiming, "Stack overflow" every frame (ScopeZoom recursion; scopeperf in the OptiFine client)
+- [x] sight glass froze the last aimed view at the hip ("new camera"): wiped to a dark lens when copying stops
 - [~] scope drops: no glass measurement at the hip; stutter not reproduced on the M4; CPU glass math if drops stay
 - [x] NPC looks in one picture: fixes/HumanLayers, PatchHumanLayers (npclook, npcdraw: infected 28 % cheaper to draw)
 - [x] muzzle flash lit every mob drawn after the shooter: fixes/EntityLighting, PatchLightLeaks (lightleak)

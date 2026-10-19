@@ -51,6 +51,9 @@ GunAnimation.get 99 (a lookup each frame while the gun is held).
   body, mech lamps, the Gawker, an NPC's night vision goggles): every entity drawn after them lost its shading (the
   "flash on every body"). fixes/EntityLighting puts it back around each living entity, PatchLightLeaks fixes the
   goggles (bug.md "Muzzle flash lit every mob").
+- With OptiFine, RenderHandEvent is posted inside renderHand (Forge posts it before): our ScopeZoom, which cancels it and
+  draws the hand itself, recursed until the stack ran out (gun gone while aiming, "Stack overflow" every frame); it now
+  ignores its own re-entry (bug.md "Aiming with OptiFine").
 
 ## 5. How our mod uses it
 
