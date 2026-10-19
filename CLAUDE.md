@@ -53,7 +53,8 @@ together in 1.0.0, so no jar a player downloads before 1.0.0 may hold multiplaye
   GunArmSkin (+ armskin), GunNoise skip, ScopeZoom hip (+ scopeperf, scopediag), bench / traderperf / zoneperf
   (prerelease 0a2f601), HumanLayers + PatchHumanLayers source (+ npclook, npcdraw, bench layers=off; prerelease e53bad7), EntityLighting + PatchLightLeaks
   source (+ lightleak; 972c833), ScopeZoom OptiFine guard and glass wipe (+ scopeperf checks; 0af0eee), ModelBatch +
-  PatchModelBatch source (+ gunbatch, npcdraw fight; e250f0e). Releasing from it: build its own dist base jar with ITS tools (menu_assets.py
+  PatchModelBatch source (+ gunbatch, npcdraw fight; e250f0e), city stall fixes: DeciBiome.decorate, BlockBatch, Keys,
+  Highways lookups (+ genwalk, pregen walk and light check, tools/genprof.py; 9861d61). Releasing from it: build its own dist base jar with ITS tools (menu_assets.py
   of the branch: main's jars carry the Multiplayer news picture), then tools/onejar.py there [not done yet].
   Only one live dev game at a time (both use port 25599).
 

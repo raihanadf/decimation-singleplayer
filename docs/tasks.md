@@ -76,7 +76,7 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [x] friend kicked while ping stable: keep-alive, 20 s grace, same room reconnect, near rooms, far socket retry (relay 94b7cb49, game 5ed53b2; two game tests PASS on the deployed relay)
 - [x] three player session 20 Oktober (jar feeb69f0): user 74 min via relay, no drop; 0 GL errors (docs/player_hosting.md 17)
 - [ ] friend dropped once after 39 min (relay closed from his side): needs his log to know why
-- [~] server stalls while new city areas generate: decoration ticks at once, structure writes lit once, highway lookups (dev; walk per city row 222 to about 103 ms, worst 466 to 209; dev client worst tick 690 to 403 ms); open: the user's own walk, prerelease carry, release
+- [~] server stalls while new city areas generate: decoration ticks at once, structure writes lit once, highway lookups (dev; walk per city row 222 to about 103 ms, worst 466 to 209; dev client worst tick 690 to 403 ms); carried to prerelease 9861d61; open: the user's own walk in a new world, release
 - [x] GL "Stack overflow" on the host: Decimation renderers left matrices pushed, fixed in dev (fixes/GlStackGuard)
 - [~] FPS falls over a session: busy intro thread, prop sound loops, dead update fetch fixed in dev; recheck in a real session
 - [x] last grenade never runs out (0 stacks): fixes/EmptyStacks, dev test throwables
