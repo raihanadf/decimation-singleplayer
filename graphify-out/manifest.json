@@ -110,9 +110,9 @@
     "semantic_hash": "de153d1f8408971d6190e16a7d4256f9"
   },
   "CLAUDE.md": {
-    "mtime": 1792440471.3584077,
-    "ast_hash": "3a97fa679f2b2546c2a8a86a9787a98d",
-    "semantic_hash": "3a97fa679f2b2546c2a8a86a9787a98d"
+    "mtime": 1792444302.7505279,
+    "ast_hash": "cac6d87395a40611d66483f512cbd5d4",
+    "semantic_hash": "cac6d87395a40611d66483f512cbd5d4"
   },
   "DECIMATION_MOD_TASK.md": {
     "mtime": 1784958353.0126374,
@@ -1420,9 +1420,9 @@
     "semantic_hash": "73f69b4e72c5a4fd2f65de09a9e00c1e"
   },
   "tools/fake_release_server.py": {
-    "mtime": 1791898618.1441169,
-    "ast_hash": "ea93c6599e4dfe317802b838122ad6ce",
-    "semantic_hash": "ea93c6599e4dfe317802b838122ad6ce"
+    "mtime": 1792443982.960033,
+    "ast_hash": "6ab61acbed59b303bd61cc3fa922bb69",
+    "semantic_hash": "6ab61acbed59b303bd61cc3fa922bb69"
   },
   "tools/prodclient/classpath.py": {
     "mtime": 1791884978.3965542,
@@ -1430,9 +1430,9 @@
     "semantic_hash": "c65a27842aee5ff4b471f84a704c2267"
   },
   "docs/production_test.md": {
-    "mtime": 1792440762.285607,
-    "ast_hash": "2c6bdba6d71c05906f64c013a492ff6e",
-    "semantic_hash": "2c6bdba6d71c05906f64c013a492ff6e"
+    "mtime": 1792444317.9316542,
+    "ast_hash": "870effc20736eeda73712d6bf928e40c",
+    "semantic_hash": "870effc20736eeda73712d6bf928e40c"
   },
   "dev/src/main/java/net/decimation/worldgen/CityLayout.java": {
     "mtime": 1791899693.3849845,
@@ -1540,9 +1540,9 @@
     "semantic_hash": "294036847a9caffda351bfa855a78636"
   },
   "docs/tasks.md": {
-    "mtime": 1792442925.0366552,
-    "ast_hash": "ced4b75097853a18842db824fa346b47",
-    "semantic_hash": "ced4b75097853a18842db824fa346b47"
+    "mtime": 1792444287.1098058,
+    "ast_hash": "cd74c0a0806438b0d0d8a050ba830eac",
+    "semantic_hash": "cd74c0a0806438b0d0d8a050ba830eac"
   },
   "tools/skillcheck.py": {
     "mtime": 1792098139.5315723,
@@ -2428,5 +2428,10 @@
     "mtime": 1792439043.732338,
     "ast_hash": "973da8c4c6ce2e1fd2582699b8a643c1",
     "semantic_hash": "973da8c4c6ce2e1fd2582699b8a643c1"
+  },
+  "tools/prodsrv_run.py": {
+    "mtime": 1792444302.7033706,
+    "ast_hash": "2ca61838c78348d1296e644a4c83acd5",
+    "semantic_hash": "2ca61838c78348d1296e644a4c83acd5"
   }
 }

@@ -3,7 +3,8 @@
 The dev client runs Minecraft with readable names, our classes from Gradle and Decimation from
 dev/libs. Bugs that only players see (user: "maybe there is issue with local and production") need the
 RELEASE jar in a plain Forge game. Never Prism (off limits): we build our own production client and
-server in the scratchpad. Nothing here is committed except this doc and tools/prodclient/classpath.py.
+server in the scratchpad. Nothing here is committed except this doc, tools/prodclient/classpath.py and
+tools/prodsrv_run.py (drives a server folder: fresh world, DevPregen flags, stop, our lines and errors).
 
 ## Production server (dedicated)
 1. Forge installer 1.7.10-10.13.4.1614 from maven.minecraftforge.net, `java -jar installer.jar
@@ -97,4 +98,25 @@ Checked with it: bundled content unpacked, cities generated, no errors (bug.md v
   roof, a lamp lit window (block light works in the release jar), no dark or bright patches. Log errors: only Forge's
   version check. The jar is also on the Desktop (DeciRemnant-multiplayer, feeb69f0 kept beside it); the Mac Prism and
   wyvern still hold feeb69f0.
+
+## Results (20 Oktober 2026, release candidate 0.65.0 from the prerelease branch, sha256 1c604032)
+- First release built from the prerelease branch (CLAUDE.md "RELEASING FROM IT"): base jar = main's minus the Multiplayer
+  news picture; the 26 calls of patched Decimation classes into our code all exist in the prerelease build; the 28
+  generated gun files copied in (the worktree lacked them: without them UMP9, HK416 and Mk18 would have shipped without
+  models); content equal to 0.64.8's. Against 0.64.8: nothing removed, 54 new entries (our classes, dev tests), 10
+  patched Decimation classes, 3 news pictures changed.
+- Server (prodsrv, fresh seed 1 world, `python3 tools/prodsrv_run.py DIR JAR NAME -Ddeciworldgen.pregen=512,-1024,6`): pregen light check sky 2,197, block 8,620, the same as the dev build to the
+  cell; 225 chunks in 1.5 s; walk 40 steps median 101 ms, worst 275 ms. Log: only Forge's version check, FML's
+  signature notice, BoehMod's dead host and the vanilla whitelist file. (The folder had lost its eula.txt: restored with
+  eula=true as in the earlier release checks.)
+- Client (prodclient): genwalk same path worst tick 301 ms, slowest 1 % 119 ms; glstack, throwables, armskin,
+  corpsegun, nospawn, npclook, gunbatch, threads, radios all PASS; lightleak PASS on its second run (the first came
+  right after a 24,000 block jump: the arena's chunks had not reached the client yet); menu, stats, mainmenu,
+  menupages all PASS (GitHub news panel, not Multiplayer; window title v0.65.0; "Last played: ..."; Community "coming
+  soon"); with OptiFine scopeperf all PASS, 0 GL errors. Decimation's riot shield (ShieldItem) throws a caught
+  NullPointerException when glstack holds it in third person (test only; Decimation's own model).
+- Real update: the 0.64.8 release jar in mods/, the fake release server serving the candidate (FILE=), `update jar=true
+  expect=0.65.0`: found 0.65.0 through the API, Update button, Decimation's progress screen, 239.6 MB in 8 s, checked,
+  Quit game / Later, jar swapped (sha256 of mods/Decimation.jar = 1c604032); restarted as 0.65.0 (content unpacked 486
+  files, "up to date (0.65.0)").
 

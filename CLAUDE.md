@@ -54,8 +54,26 @@ together in 1.0.0, so no jar a player downloads before 1.0.0 may hold multiplaye
   (prerelease 0a2f601), HumanLayers + PatchHumanLayers source (+ npclook, npcdraw, bench layers=off; prerelease e53bad7), EntityLighting + PatchLightLeaks
   source (+ lightleak; 972c833), ScopeZoom OptiFine guard and glass wipe (+ scopeperf checks; 0af0eee), ModelBatch +
   PatchModelBatch source (+ gunbatch, npcdraw fight; e250f0e), city stall fixes: DeciBiome.decorate, BlockBatch, Keys,
-  Highways lookups (+ genwalk, pregen walk and light check, tools/genprof.py; 9861d61). Releasing from it: build its own dist base jar with ITS tools (menu_assets.py
-  of the branch: main's jars carry the Multiplayer news picture), then tools/onejar.py there [not done yet].
+  Highways lookups (+ genwalk, pregen walk and light check, tools/genprof.py; 9861d61), Continue tooltip (14830b9).
+  RELEASING FROM IT (first done 20 Oktober 2026 for 0.65.0, docs/production_test.md):
+  1. Base jar: worktree dist/Decimation.jar = main's dist/Decimation.jar minus
+     assets/deci/textures/gui/menu/news_multiplayer.png (zip -d). Check first that every call the base jar's patched
+     classes make into net/decimation/fixes|worldgen exists in the prerelease build with the same descriptor (javap on
+     both; 26 member refs for 0.65.0), and that the prerelease's menu_assets.py pictures equal main's (run a copy of it
+     inside main's tools/ with --only-dir: it reads git ignored sources under docs/shots; never run it in the worktree,
+     whose dev/libs is main's).
+  2. Git ignored generated files the worktree lacks: the 28 gun files of UMP9 / HK416 / HK416 Tan / Mk18 under
+     dev/src/main/resources (generated from Decimation's art by tools/guns): copy them from main's tree (same
+     generators; byte equal to what 0.64.8 shipped). Compare the two resources trees every release. And
+     dist/config/decimation_worldgen (the content; same hash as 0.64.8: 3d2721f3ce41).
+  3. `git tag VERSION` on prerelease HEAD (lightweight, local), `./gradlew build` in the worktree's dev/ (version from
+     the tag), `python3 tools/onejar.py VERSION` in the worktree (dist/onejar/Decimation.jar + .sha256).
+  4. Production server (`python3 tools/prodsrv_run.py SERVER_DIR JAR NAME -D...`): pregen light check equal to the dev
+     numbers, walk; production
+     client: genwalk, fix checks, menus, scopeperf with OptiFine, and the REAL update: the last release's jar in mods/,
+     `tools/fake_release_server.py 8765 VERSION 40 50 FILE=<candidate>`, `devtest.py --live update jar=true
+     expect=VERSION` (its "NEWJAR" head check FAILs by design with a real jar: compare the swapped jar's sha256).
+  The prerelease build's live port is always 25599 (the joiner port setting is main only).
   Only one live dev game at a time (both use port 25599).
 
 ## Knowledge maintenance (mandatory, user rule 2026-10-07)
@@ -1162,6 +1180,12 @@ of the last session:
   way); worlddiff `--at X,Z`. Traps: bulk block writes go through BlockBatch (set, then light()), never World.setBlock in a
   loop; a Long key packed as (a << 32) ^ b hashes to a ^ b (bins turn into trees): Keys.pair; `jfr print` keeps 5 frames
   a stack unless --stack-depth; AnvilChunkLoader.chunkExists CREATES a missing region file (check the file first).
+  RELEASE 0.65.0 PREPARED 20 Oktober 2026 (NOT published: waits for the user's go): candidate
+  Decimation-prerelease/dist/onejar/Decimation.jar sha256 1c604032..., notes RELEASE_NOTES_0.65.0.md there and in
+  dist/onejar; local tag 0.65.0 on prerelease 14830b9; copy on ~/Desktop/DeciRemnant-0.65.0-candidate. Publish after
+  the user pushed main + prerelease: `gh release create 0.65.0 --target <prerelease sha> --prerelease --title 0.65.0
+  --notes-file RELEASE_NOTES_0.65.0.md Decimation.jar Decimation.jar.sha256`, then check GitHub's digest, the site's
+  Download and a 0.64.8 game's Update; keep the jar in dist/previous/onejar-0.65.0.
   RELEASE 0.64.8 published 17 Oktober 2026 16:53 (pre-release, sha256 73049bc7...; notes dist/onejar/RELEASE_NOTES_0.64.8.md;
   released jars kept in dist/previous/onejar-<version>): the production client with the real 0.64.7 jar updated itself
   to it from GitHub (239 MB in 29 s, checksum, jar swapped); site Download 0.64.8 at 16:54.

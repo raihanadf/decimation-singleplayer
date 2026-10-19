@@ -36,6 +36,7 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [x] user: real auto update in Prism 0.64.7 to 0.64.8 worked (16:57, title v0.64.8, Updates "Up to date: 0.64.8")
 - [x] update screen bar stops at about 80 %: fixes/UpdateBar (in code, next release; GUI width 500: 250 of 250 px)
 - [x] Continue tooltip "Last played: <name>" (was "Open world"; dev test mainmenu RED then GREEN, for 0.65.0)
+- [~] release 0.65.0 (pre-release, performance and stability): candidate built from prerelease and checked (sha256 1c604032, production server, client, real update from 0.64.8); waiting for the user: push both branches, try the candidate, say go to publish
 - [x] website: coral on charcoal + camo, title screen hero, small logo on scroll: live 17:30, checked (mobile 93 / 96, desktop 100)
 - [x] website sections: About, showcase rows, And more, closing band, map tab icon, GitHub logo, no dirt: live, checked
 - [x] website intro (signal then title screen) and project docs (/docs, 24 pages): live, checked

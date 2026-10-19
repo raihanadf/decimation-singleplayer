@@ -5,8 +5,10 @@ If-None-Match), /dl/Decimation.jar (MB megabytes starting with b"NEWJAR", sent a
 progress bar moves), and the non API pages the fallback uses: /web/releases.atom (TAG and an older
 0.0.1), /web/releases/download/TAG/Decimation.jar (GET, HEAD) and its .sha256.
 LIMITED: the API answers 403 like GitHub's rate limit. BADDIGEST: wrong sha256 everywhere.
+FILE=path: serve that file as the release jar instead of the made up bytes (a real update before a release: a game
+running the last release updates itself to the candidate jar; docs/production_test.md).
 Prints one line per request.
-usage: python3 tools/fake_release_server.py [PORT=8765] [TAG=9.9.9] [MB=40] [RATE=8] [BADDIGEST] [LIMITED]"""
+usage: python3 tools/fake_release_server.py [PORT=8765] [TAG=9.9.9] [MB=40] [RATE=8] [BADDIGEST] [LIMITED] [FILE=path]"""
 import hashlib, http.server, json, os, sys, time
 
 PORT = int(sys.argv[1]) if len(sys.argv) > 1 else 8765
@@ -16,7 +18,8 @@ RATE = float(sys.argv[4]) if len(sys.argv) > 4 else 8
 BAD = "BADDIGEST" in sys.argv
 LIMITED = "LIMITED" in sys.argv
 ETAG = 'W/"fake-%s"' % TAG
-PAYLOAD = b"NEWJAR" + os.urandom(MB * 1024 * 1024 - 6)
+FILE = next((a.split("=", 1)[1] for a in sys.argv[1:] if a.startswith("FILE=")), None)
+PAYLOAD = open(FILE, "rb").read() if FILE else b"NEWJAR" + os.urandom(MB * 1024 * 1024 - 6)
 HEX = "0" * 64 if BAD else hashlib.sha256(PAYLOAD).hexdigest()
 DIGEST = "sha256:" + HEX
 JAR = "/web/releases/download/%s/Decimation.jar" % TAG
