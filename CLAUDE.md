@@ -47,7 +47,8 @@ together in 1.0.0, so no jar a player downloads before 1.0.0 may hold multiplaye
   built only from it. Never carry fixes/hosting, relay/, OptionalMods, the Lan* tests, the Community texts or the
   Multiplayer news panel. `git apply --3way` STAGES what it applies: stage and commit each fix by its file list and
   check `git show --stat` before the next one. Carried so far: UpdateBar, HudGuard, PlaceNames rejoin, GunUseKey (+
-  corpsegun), NaturalSpawns (+ nospawn). Releasing from it: build its own dist base jar with ITS tools (menu_assets.py
+  corpsegun), NaturalSpawns (+ nospawn), GlStackGuard (+ glstack), EmptyStacks (+ throwables), PropSounds (+ radios,
+  soak), the PatchIntroThread / PatchNoVersionFetch sources (+ threads) (19 Oktober 2026, prerelease df023cc). Releasing from it: build its own dist base jar with ITS tools (menu_assets.py
   of the branch: main's jars carry the Multiplayer news picture), then tools/onejar.py there [not done yet].
   Only one live dev game at a time (both use port 25599).
 
