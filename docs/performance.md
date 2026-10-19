@@ -280,6 +280,7 @@ already leaves some cells wrong; the batch must never leave more.
 | refuge area 656,-880,5: structure writes CPU (batch off / on) | 0.46 s | 0.27 s |
 | dev client, genwalk same path (fresh seed 1 world, view 12; batch off / on): slowest 1 % / worst tick | 304 / 690 ms | 188 / 403 ms |
 | dev client, genwalk: ticks over 250 ms / over 100 ms | 14 / 26 | 4 / 22 |
+| production client, release jar d6aea397, same path (batch on only): slowest 1 % / worst / over 250 ms | | 149 / 289 ms / 3 |
 
 Light of the same spot both ways (genwalk shots at noon and midnight, docs/shots/worldgen_stalls_v0.64.8): no visible
 difference. The client's frames did not change (median 18.9 / 18.5 ms, slowest 1 % 34 / 35 ms).

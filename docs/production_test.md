@@ -88,3 +88,13 @@ Checked with it: bundled content unpacked, cities generated, no errors (bug.md v
 - Joiner checks (section 9 of docs/player_hosting.md): the production client gets a one jar of the CURRENT code
   (`tools/onejar.py dev/build/libs/deciworldgen-<ver>.jar SCRATCH/Decimation.jar`, never dist/onejar) and its own live
   port (tools/hostspike/run_join_live.sh.example); put the release jar back after.
+
+## Results (20 Oktober 2026, city stall fixes, test jar d6aea397 from main 461ed9d)
+- Client (prodclient, one launch `-Ddeciworldgen.autotest.test=genwalk`, script run_genwalk.sh in the scratchpad: a copy of
+  run_garrison.sh with the mode changed): the 30 chunk flight over new city land in a fresh seed 1 world (row -523, view
+  12), structure writes lit once: server ticks median 6.3 ms, slowest 1 % 149 ms, worst 289 ms, 17 over 100 ms, 3 over
+  250 ms; client frames median 19.5 ms, slowest 1 % 35 ms; flight check PASS. Midnight shot on the roof: dark moonlit
+  roof, a lamp lit window (block light works in the release jar), no dark or bright patches. Log errors: only Forge's
+  version check. The jar is also on the Desktop (DeciRemnant-multiplayer, feeb69f0 kept beside it); the Mac Prism and
+  wyvern still hold feeb69f0.
+
