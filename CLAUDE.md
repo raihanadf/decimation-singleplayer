@@ -1184,6 +1184,17 @@ of the last session:
   way); worlddiff `--at X,Z`. Traps: bulk block writes go through BlockBatch (set, then light()), never World.setBlock in a
   loop; a Long key packed as (a << 32) ^ b hashes to a ^ b (bins turn into trees): Keys.pair; `jfr print` keeps 5 frames
   a stack unless --stack-depth; AnvilChunkLoader.chunkExists CREATES a missing region file (check the file first).
+  First sight of NPCs (20 Oktober 2026, bug.md "First sight of armed NPCs stalls a frame", docs/performance.md 10): a
+  city refuge's 22 residents spawn in 3 to 10 ms on the server, but the client's first frame with them took up to 941 ms
+  in the production client (textures read at their first bind, gear models Decimation loads only at a first draw, part
+  compiles). fixes/ModelWarmup loads the gear models (Deci.loadGearModel) and the model textures ahead, a slice per frame
+  (8 ms in the menus, 2 ms in a world; done in about 1.6 s): 80 ms there now. Dev test refugevisit (one launch: fresh seed
+  1 world, two refuges, SafezoneSites.hold while the land is made, per frame probe, check "no Decimation texture loaded at
+  arrival"); dev switches -Pwarmup=false, -Pmodelbatch=false, -Phumanlayers=false. Traps: never compile all models ahead
+  (Decimation's display lists cost about 9 KB of driver memory a quad: 1.2 to 2.6 GB of graphics memory, vmmap -summary
+  shows it as IOAccelerator); JFR barely samples the client thread inside a GL heavy frame (6 samples in 200 ms), count
+  what each frame loads instead; a model's display list bakes the scale and the scaleO / scaleN / jE flags of its first
+  draw (sight glass parts get theirs just before drawing).
   RELEASE 0.65.0 published 20 Oktober 2026 10:55 (pre-release, the first from the prerelease branch: tag 0.65.0 on
   14830b9; sha256 1c604032..., GitHub's asset digest equal; notes RELEASE_NOTES_0.65.0.md; jar kept in
   dist/previous/onejar-0.65.0). Checked after: public download 251,272,285 bytes, site Download 0.65.0 at 11:11 (ISR

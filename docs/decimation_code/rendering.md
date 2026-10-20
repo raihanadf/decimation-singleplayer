@@ -57,6 +57,16 @@ GunAnimation.get 99 (a lookup each frame while the gun is held).
 - Every quad of a .bmodel part was its own draw call inside the part's two display lists (BModelQuad: startDrawingQuads,
   four vertices, draw): a few hundred draws per gun. fixes/ModelBatch with PatchModelBatch draws each part in one draw
   (gunbatch: the same pixels; npcdraw: armed NPCs about half the time).
+- Everything is made at its first draw (bug.md "First sight of armed NPCs stalls a frame", 20 Oktober 2026): a part's
+  display lists (BModelPart.compileDisplayList, at the scale BModel passes, 1/16), every texture (TextureManager at its
+  first bind), and gear models: ModelHuman.renderHuman loads a mask's, vest's or backpack's model into the item
+  (BModelLoader.load of models/armor/mask|vest/<modelName>.bmodel, models/backpacks/<modelName>.bmodel) only when an NPC
+  wearing it is first drawn, and a full armour piece's into a DeciPlayerModel (models/armor/full/<modelName>.bmodel), whose
+  first draw on a human hangs the armour parts on its limb parts (addChildPart) and compiles those. A refuge's residents
+  coming into view at once: 941 ms in the production client. fixes/ModelWarmup now loads the gear models and the model
+  textures ahead (`Deci.loadGearModel`, `Deci.humanModel`, `Deci.decimationJar`).
+- The display lists are heavy: about 9 KB of driver memory a quad on the M4 [inferred: compiling all 25,628 parts of all
+  models raised the graphics memory from 1.2 to 2.6 GB]. ModelBatch keeps Decimation's two lists beside its own.
 
 ## 5. How our mod uses it
 
@@ -68,6 +78,7 @@ GunAnimation.get 99 (a lookup each frame while the gun is held).
 | NPC tracers | fixes/NpcShots, PatchTracer |
 | NPC looks in one picture | fixes/HumanLayers (`Deci.humanLook`, `Deci.humanGear`), tools/patches/PatchHumanLayers.java |
 | .bmodel parts in one draw each | fixes/ModelBatch, tools/patches/PatchModelBatch.java |
+| textures and gear models before their first draw | fixes/ModelWarmup (`Deci.loadGearModel`) |
 
 ## 6. Checks
 

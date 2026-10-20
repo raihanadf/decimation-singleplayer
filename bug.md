@@ -1723,3 +1723,33 @@ setGesture), and used the answer only when Math.random() < 0.1. tools/patches/Pa
 branch, over a 64 block box, first gun ends it; same answer and same random calls. bench "loaded" (30 civilians, about
 1250 entities): server 11.1 / 8.5 ms a tick with the original class, 7.4 / 8.0 with the patch (the rest is vanilla item
 and chunk work); the scan's share 1 to 3 % before, 0 to 1 % after.
+
+## First sight of armed NPCs stalls a frame: a city refuge's residents (20 Oktober 2026, FIXED in dev)
+
+The user's lag near a safezone city (with the city stalls, released in 0.65.0): its 22 residents had never been measured.
+Dev test `refugevisit` (devtest/RefugeVisitTest, docs/performance.md 10): a fresh seed 1 world, a refuge on land never
+generated, the keeper held (SafezoneSites.hold) while the land around a player 40 blocks south of it is made and drawn,
+5 s of baseline, then the keeper fills it; two refuges in one game (a cold and a warm visit); a per frame probe counts
+what each frame after the arrival loaded for the first time.
+- Server: the fill of 22 residents takes 3 to 10 ms (guard 0.2 to 0.9 ms each, traders 0.1 to 0.9, civilians about 0,
+  survivors 0.1 to 0.2); its tick 54 to 73 ms against 50. Not a stall. The 150 ms server ticks around it are vanilla's
+  chunk light population (Chunk.func_150809_p), present with and without residents (JFR).
+- Client, the cause: the first frame with the residents took 150 to 630 ms in the dev client and 941 ms in the
+  production client (one jar), the second refuge of the same game 120 to 635 ms (new traders, guns and gear). That frame
+  loaded 38 to 49 textures for the first time (armour skins, masks, backpacks, guns, bullets, the human layer files of
+  NPCs drawn the old way), and Decimation compiled 750 to 1200 model parts and loaded the gear models it loads only at a
+  first draw (ModelHuman: masks, vests, backpacks, full armour).
+- Fixed: fixes/ModelWarmup loads those ahead, a slice at the end of each frame (8 ms in the menus, 2 ms in a world):
+  every gear model as Decimation's first draw sets it (Deci.loadGearModel), the textures under textures/model/{armor,
+  backpacks,bullets,guns,masks,entities} of Decimation's jar and HumanLayers' layer files. All done in 1.5 to 1.8 s of
+  frame time, mostly at the main menu (140 gear models, 444 textures; 451 in the one jar). The first frame with the
+  residents: dev 36 to 114 ms (was 190 to 635), production 80 / 48 ms (was 941 / 122). Check "no Decimation texture
+  loaded at arrival": 40 and 28 without the warm up (FAIL), 0 with it (PASS). Process footprint and graphics memory the
+  same within the noise (4.1 to 4.6 GB, 1.1 to 1.5 GB). `-Pwarmup=false` (dev) / `-Ddeciworldgen.warmup=false` turns it off.
+- Not done: compiling all model parts ahead. Tried: 25,628 parts in about 1.5 s and the arrival at 38 to 46 ms, but the
+  graphics memory went from 1.2 to 2.6 GB (Decimation's display lists, one draw per quad, cost about 9 KB of driver memory
+  a quad on this Mac [inferred: 1.4 GB / 160k quads]). Left: about 1,100 part compiles at the first sight of a whole
+  refuge, the rest of an 80 to 114 ms frame in the worst case of everyone appearing at once. A per frame budget for first
+  compiles would need a patch of BModelPart (PatchModelBatch) [idea, not built].
+- In real play residents come into the client's view one by one as the player walks in (vanilla sends global entities
+  within 80 blocks), not all in one frame as in the test [inferred].

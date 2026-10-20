@@ -27,8 +27,12 @@ docs/performance.md.
 4. Test visually with the dev tests that take screenshots (`gunview`, `views`, `scope`) and read the sheet.
 5. A drawing change must look the same: draw both ways in one frame and compare pixels (`npclook` does it for NPCs),
    and measure the drawing itself, both ways in turns (`npcdraw`): whole frame times hide it on a busy Mac.
+6. A hitch when something first appears is first use, not drawing: count what each frame loads (textures, gear models,
+   compiled parts; dev test `refugevisit`'s probe); JFR misses it (the client thread is in GL native code). Load ahead
+   only what is cheap to keep (fixes/ModelWarmup: textures, gear models); compiled display lists cost about 9 KB a quad.
 
 ## Common mistakes
 
 - Reading the decompiled scope code as current: our ScopeZoom and PatchScope replaced its picture in picture view.
 - Trusting the notes' class names over names.tsv: some were renamed since (tools/skillcheck.py checks the docs).
+- Compiling every model ahead to remove first draw hitches: it moved the graphics memory from 1.2 to 2.6 GB.

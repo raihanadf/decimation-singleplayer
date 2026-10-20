@@ -1677,3 +1677,11 @@ Production client with OptiFine HD U E7 (the brother's laptop setup), AKM with t
   view of the white and grey roof, a dark clad NPC at left); the midnight frame matches the other sheet's midnight
   frame in framing and tones: no visible light difference between the two ways.
 
+
+## refuge_visit_v0.65.0 (20 Oktober 2026, dev test refugevisit, bug.md "First sight of armed NPCs stalls a frame")
+
+- `refugevisit_south.png`: the second refuge of a run (lcz_69_-27 at 4456,-1688, turns 0) 3 s after its 22 residents
+  came, seen from 40 blocks south at y 100 looking north and down: the three storey concrete building with a flag over
+  the entrance, the walled asphalt yard with cream and green tents at left, small figures of residents in the yard and at
+  the gate, parked vehicles at right; suburban houses with pools to the left, a tower at right, city streets around. The
+  camera the test measures from: every resident is inside the view (those in the building are drawn too).

@@ -78,6 +78,10 @@ No loot: Decimation gives no loot from containers inside or within 10 blocks of 
   more than a step above its post (wall, roof, tower) or outside the inner area (log line
   "safezone resident ... put back from x,y,z"). In the 30 s camp test nobody had to be put back
   and nobody left their post.
+- Cost of the fill (20 Oktober 2026, dev test refugevisit, docs/performance.md 10): a refuge's 22 residents spawn in 3
+  to 10 ms in one keeper tick (log line "safezone site ... filled: 22 residents spawned in X ms"); the hitch players saw
+  at a first visit was the client drawing their gear and textures for the first time (fixes/ModelWarmup since then).
+  SafezoneSites.hold stops the keeper for tests (refugevisit holds it while the land around a refuge is made).
 
 ## 4. Placement (LargeSites)
 

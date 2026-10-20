@@ -18,6 +18,7 @@ guessed; every number below comes from the tools in section 1.
 | `python3 tools/servertest.py 1 type=decimation walk=x,z,steps,view [bulklight=false]` | chunks loaded as a player walking east loads them (a new row of 2 view + 1 chunks a step): the stall per chunk crossed (WALK line: median, 90 %, worst, steps over 250 ms, each step with C for a city row) |
 | `python3 tools/genprof.py profile.jfr [FROM TO]` | the server thread's generation time by part (light, saving, vanilla terrain, decoration, our classes) and light by who set the block |
 | `python3 tools/devtest.py genwalk [-Pbulklight=false]` | the player flies 30 chunks east over never generated city land in a fresh seed 1 world (two runs fly the same path): integrated server tick times (median, slowest 1 %, worst, over 100 / 250 ms, the slow ticks with their place), client frame times, noon and midnight shots of the new land. Live: `--live genwalk light=old|new` (new land each flight, so flights do not compare) |
+| `python3 tools/devtest.py refugevisit [-Pwarmup=false]` | first sight of a city refuge's 22 residents in a fresh seed 1 world, two refuges a game (section 10): the keeper's fill per resident kind, server tick to tick times, client frames, per frame what the first frames after the arrival loaded (textures, looks, model parts, layer files), process and graphics memory; check no Decimation texture loaded at arrival |
 
 ## 2. What it was (dev world, deciworldgen_autotest)
 
@@ -300,3 +301,40 @@ The refuge area is no slower to generate than other city land; its 22 residents 
 measured and cut on 19 Oktober, section 8), not generation. Left per sample after the fixes: vanilla terrain 36 %, light 29 % (our batch relight about 13 %, vanilla's
 own light of each new chunk about 10 %), vanilla decoration 14 %.
 
+
+## 10. First sight of NPCs: a city refuge's residents (20 Oktober 2026)
+
+The refuge's first visit (bug.md "First sight of armed NPCs stalls a frame"). Dev test `refugevisit` (one launch, fresh
+seed 1 world, two refuges in one game): finds a refuge the generator plans on land never made (LcCity.refuge, east from
+x 4096), holds the keeper (SafezoneSites.hold) while the land around a player 40 blocks south of its middle (y 100) is
+made and drawn, 5 s of baseline, then lets the keeper fill it. Reports: the fill per resident kind (SafezoneSites
+lastFill*, also in the log line "filled: N residents spawned in X ms"), server tick to tick times, client frames, the
+first 12 frames after the arrival with what each loaded for the first time (TextureManager textures, HumanLayers looks,
+old way draws and layer files, ModelBatch parts and capture time) and the textures' names, who compiled parts
+(ModelBatch.callers), the warm up's state, and the process and graphics memory (`vmmap -summary`: Physical footprint,
+IOAccelerator). Check "no Decimation texture loaded at arrival". Switches for comparisons (dev client): `-Pwarmup=false`,
+`-Pmodelbatch=false`, `-Phumanlayers=false`.
+
+| first frame with the 22 residents | dev client | production client (one jar) |
+|---|---|---|
+| no warm up, first refuge of the game | 150 to 630 ms (11 runs) | 941 ms |
+| no warm up, second refuge | 120 to 635 ms | 122 ms |
+| fixes/ModelWarmup, first refuge | 77 to 114 ms | 80 ms |
+| fixes/ModelWarmup, second refuge | 36 to 96 ms | 48 ms |
+
+- Server: the fill is 3 to 10 ms. The 150 ms server ticks near it are vanilla's chunk light population, about 80 % of the
+  server thread's samples the whole time while standing at the edge of new land (section 9).
+- What the first frame did without the warm up: 38 to 49 textures loaded (armour skins, masks, backpacks, guns, bullets,
+  human layer files for NPCs drawn the old way), 750 to 1200 model parts compiled, gear models loaded by ModelHuman, 4
+  HumanLayers pictures (5 to 20 ms with their 15 to 20 layer files). JFR is no help inside such a frame: the client
+  thread is mostly in GL native code and got 6 samples in 200 ms; per frame counters found it.
+- Not a cause: ModelBatch. Its capture of 900 parts took 2 to 3 ms, and the arrival with ModelBatch off was no better
+  (279 ms).
+- Compiling every model ahead (tried, dropped): 140 gear models and 25,628 parts in 1.5 to 2.9 s brought the first frame
+  to 38 to 46 ms, but the graphics memory went from 1.2 to 2.6 GB and the footprint from 4.0 to 5.8 GB: Decimation's
+  display lists (one draw per quad) cost about 9 KB of driver memory a quad on the M4 [inferred: 1.4 GB / 160k quads],
+  and ModelBatch keeps them beside its own list. Every model a session draws costs that, warm up or not; freeing
+  Decimation's lists after ModelBatch's capture would save memory, but BModelPart.renderWithRotation still calls them
+  [idea, not built].
+- Left: about 1,100 part compiles in the first frame when a whole refuge appears at once (the test's worst case); in play
+  residents come within the client's 80 block entity range one by one [inferred].

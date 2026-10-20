@@ -134,3 +134,10 @@ Checked with it: bundled content unpacked, cities generated, no errors (bug.md v
   frame: about 140 frames once per game session). The rerun in the same game passed. Run `menu` before `update` in a
   fresh game.
 
+## Results (20 Oktober 2026, first sight warm up, test one jar of main c82538a plus the uncommitted fixes/ModelWarmup)
+- Client (prodclient, one launch `-Ddeciworldgen.autotest.test=refugevisit`, scratchpad run_refugevisit.sh = run_genwalk.sh
+  with the mode changed; `-Ddeciworldgen.warmup=false` for the run without): the warm up found Decimation's classes in
+  mods/Decimation.jar and loaded 140 gear models and 451 textures in 1.5 s, mostly at the main menu. First frame with a
+  refuge's 22 residents: 941 ms without it (41 textures, 1,034 parts), 80 ms with it; the second refuge 122 / 48 ms.
+  "no Decimation texture loaded at arrival": 38 / 28 FAIL without, 0 / 0 PASS with. Afterwards the 0.65.0 release jar
+  went back into mods/ (sha256 1c604032).
