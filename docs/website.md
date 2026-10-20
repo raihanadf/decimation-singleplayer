@@ -557,3 +557,12 @@ only as the footer credit (17 Oktober 2026; the earlier rule "never the Decimati
   --hosting DIR` to public/hosting/<name>-<hash>.png. Tests: 99 (RED first: missing modules).
 - Checked locally: next build, 1300 and 390 wide read, no sideways scroll, no dash characters in the new texts.
   Not yet: the user's look, push, live check; Lighthouse.
+
+## 21 Oktober 2026: asked of the website session (from the mod session, the user's words)
+- Discord invite https://discord.com/invite/ZJ47zfXn8H for the site's Discord links (the game's menu uses it).
+- Coming soon down to two items, multiplayer and new cities (both 1.0.0): "dont need to show bunch of feat we dont make so
+  we dont make big promise to end user". The card "Official servers: Bukovka and Chernarus, our own servers" is wrong:
+  official servers mean community run dedicated servers.
+- BoehMod stays credited on the website; the game's footer no longer names BoehMod.
+- Domain: the user plans deciremnant.my.id; deciremnant.vercel.app must keep working (released jars link to it).
+  [not verified: whether the website session picked these up]

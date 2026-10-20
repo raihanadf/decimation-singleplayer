@@ -60,6 +60,7 @@ Traced `deci.i,net.decimation.mod.common.utils.h,deci.g.j,net.decimation.fixes.L
 | Continue (the last world) under Play | fixes/MenuContinue, `Deci.menuButton` |
 | updates the player's choice: Play never replaced, a question box Update / Later on the title or Esc menu, the release page where the jar cannot be swapped, Quit game safe from a world | fixes/Updater.required (false), fixes/UpdatePrompt with ConfirmScreen (deci/d/s, `Deci.confirm`), fixes/UpdateScreen, fixes/SafeQuit |
 | Server Status rows from real sources (official list, relay, GitHub) | fixes/MenuStatus, `Deci.setStatus`, PatchMenuTexts (Unknown reads Coming soon) |
+| detail popups of the news panels, our corner art and its Discord click, our footer | fixes/MenuDetail, fixes/MenuDetails, fixes/MenuCorner, `Deci.isMenuPage`, tools/menu_assets.py |
 
 ## 6. Checks
 

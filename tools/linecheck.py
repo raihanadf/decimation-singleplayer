@@ -20,6 +20,7 @@ import zipfile
 
 OURS = ("net/decimation/fixes/", "net/decimation/worldgen/")
 STRIP = ["assets/deci/textures/gui/menu/news_multiplayer.png"]  # the Multiplayer news panel (main only)
+STRIP += ["assets/deci/textures/gui/menu/detail_multiplayer%d.png" % i for i in range(3)]  # its popup's pictures
 
 
 def pool(data):

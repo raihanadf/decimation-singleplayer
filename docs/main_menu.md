@@ -193,7 +193,7 @@ community dedicated server, and later i want to make rating upvote system in the
 - Next (not designed): the official list as community run dedicated servers with an upvote rating (roadmap UI 4;
   docs/ideas.md 24), and a supporter tier for donors through the website (docs/ideas.md 23).
 
-## 2h. 21 Oktober 2026: detail popups, Discord, our footer, a corner of our own (asked, mockups shown, not built)
+## 2h. 21 Oktober 2026: detail popups, Discord, our footer, a corner of our own (BUILT the same night)
 
 The user's words: "for home page or new page, can you add popup page to show detail of the content? like for
 multiplayer, it show several image with carousel design and below that show title and description about the feat, for
@@ -216,8 +216,29 @@ that we remove before (fury) and learn that design and after that we make our ve
 - Decimation has its own updates page (GuiMenuUpdates deci/i/l: the Server Status layout with a scrolling release list,
   ReleaseEntry rows, Refresh Releases in Play's place) that UpdateProgress swaps out today; the user asked for the
   Updates popup to look like the Multiplayer one with the release list.
-- Open with the user: the Discord invite address, which two or three Coming soon features stay (on the menu and the
-  website), the footer credit line, the corner direction.
+- The user's answers: Discord https://discord.com/invite/ZJ47zfXn8H; Coming soon keeps two (multiplayer and new cities,
+  both 1.0.0; the website session was told, docs/website.md); the footer drops BoehMod (credited on the website only:
+  "we can put it to website only and credit it anyway"); the corner: Discord now, a supporter version later.
+- BUILT (main 897183a, e666300, f133a2a; prerelease bd9fab9, 3de0c39, 5246e4b):
+  - Links (PatchMenuTexts): top right Website and Discord (the Twitter slot, ClientResources bb); My Community reads
+    My Supporter, Website, GitHub (the Forums slot, bc), Discord (the Twitter slot). Footer: "Copyright <year>
+    DeciRemnant (deciremnant.vercel.app)", BoehMod's small address gone, our logo in boehmod.png (menu_assets.py).
+  - Popups (fixes/MenuDetail draws, fixes/MenuDetails holds the content): news panel addresses deciremnant:detail/<id>
+    (MenuNews.open). Multiplayer (main only): 3 slides (Host Online page, a hosted world listed, a world of ours),
+    "Open Community"; Updates: the release list of the last check (Updater.releases, version, date, first line of the
+    notes), "Update to X" or "All releases"; Coming soon: 2 slides (Multiplayer in 1.0.0, New cities in 1.0.0); Website
+    still opens the site. Slides change every 6 s; arrows, dots, Close, Esc or a click outside. Pictures
+    detail_<id><n>.png by menu_assets.py (a picture wider than 16:9 kept whole on a dark band).
+  - Corner (menu_assets.py corner(), fixes/MenuCorner): dev test `cornerart` draws an elite_military soldier (helmet,
+    night vision, rifle) on magenta with the inventory preview and saves him cut out (run/client/devtest/corner_*.png,
+    kept in docs/shots/main_menu_v0.65.0/corner_src); the art: red ink splash, the soldier with a red rim glow, our
+    logo, "JOIN THE" "REMNANT", "News, help and players on our Discord", discord.gg/ZJ47zfXn8H; the words pulse
+    (donor_rank_1). A click on the words opens the Discord (a button that draws nothing, 79 x 47 at the corner). At
+    854 x 480 the soldier reaches into the Coming soon panel (Decimation's FURY did too); wider windows keep clear.
+  - Tests: unit MenuDetailsTest (RED without the class, then 5 / 5); mainmenu: panel addresses, each popup's title and
+    slides, arrow, Close, Multiplayer's Open Community, the corner opens Discord; menupages: popup lines, footer texts.
+    All PASS on main and prerelease (prerelease: Updates and Coming soon only). The corner check never ran RED.
+  - Pre-release jars drop the Multiplayer popup's pictures with news_multiplayer.png (tools/linecheck.py STRIP).
 
 ## 3. Code map
 
@@ -340,8 +361,9 @@ also becomes GuiMenuHome: ONE screen is the title menu and the pause menu; `mc.t
 |---|---|---|---|
 | background scenes, slideshow every 7 s | RenderUtil.drawMenuBackground (deci/j/a), only without a world | fixes/MenuBackground, tools/patches/PatchMenuBackground.java, pictures by tools/menu_assets.py | mainmenu |
 | logo and "v<version>" under it | GuiMenuBase.drawScreen, textures/gui/menu/banner.png | logo: menu_assets.py logos(); version: fixes/MenuTexts (PatchMenuTexts) | menu, mainmenu |
+| footer bottom left: logo (15 %) and copyright line | GuiMenuBase.drawScreen, boehmod.png | menu_assets.py footer(), PatchMenuTexts (our name and site) | menupages |
 | title line "DeciRemnant: Zombie Apocalypse", page title | GuiMenuBase.drawScreen, setTitle | PatchMenuTexts | mainmenu |
-| Website / GitHub links top right | buttons 12, 15 (were Discord, Twitter), ClientResources addresses | PatchMenuTexts | mainmenu |
+| Website / Discord links top right | buttons 12, 15 (were Discord, Twitter), ClientResources addresses aZ, bb | PatchMenuTexts | mainmenu |
 | profile card: name, Human Kills, Deaths, Zombie Kills, supporter line, player model | GuiMenuBase.drawScreen, BackendProfileCache, MenuPreviewWorld | fixes/LocalStats (numbers), PatchMenuStats (labels); the supporter line is Decimation's again (2g) | stats, menupages |
 | home icon + Play (green) / Update / Resume Game / Play Offline | GuiMenuBase.addMenuButtons: Update (id 8) replaces Play (9) AND Resume (23) while UpdateChecker.isUpdateRequired | PatchNoUpdate: isUpdateRequired answers fixes/Updater.required(), false since 2g: never forced | menu, update |
 | the update question (Update / Later, Download where it cannot swap) | ConfirmScreen (deci/d/s) | fixes/UpdatePrompt (title menu, or the Esc menu in a world; once a launch); Quit game through fixes/SafeQuit | update |
@@ -352,7 +374,8 @@ also becomes GuiMenuHome: ONE screen is the title menu and the pause menu; `mc.t
 | Settings >> page, its Updates button | id 5: GuiMenuOptions (deci/i/f); button 1000 opens GuiMenuUpdates | UpdateProgress swaps GuiMenuUpdates (deci/i/l) for Decimation's progress screen and starts our download | update |
 | Exit Game (Disconnect in a world) and its confirm box | id 0: ConfirmScreen (deci/d/s, buttons 10 left red and 11 right, ids gm = shutdown) | (unchanged) | |
 | news panels: Multiplayer (main only), Updates, Website, Coming soon | ArticlePanel (deci/d/c) | fixes/MenuNews (Deci.addNewsPanel, Deci.newsLine), pictures by menu_assets.py | mainmenu |
-| corner bottom right (was the FURY store advert) | donor_rank_0 / 1.png drawn by GuiMenuBase.drawScreen | menu_assets.py | |
+| a news panel's detail popup (carousel or release list) | (none: ours, in Decimation's look) | fixes/MenuDetail, fixes/MenuDetails, MenuNews.open, pictures by menu_assets.py | mainmenu |
+| corner bottom right (was the FURY store advert) | donor_rank_0 / 1.png drawn by GuiMenuBase.drawScreen | menu_assets.py corner() (our soldier: dev test cornerart), fixes/MenuCorner (click: Discord) | mainmenu |
 | totals line bottom centre | GuiMenuBase.drawScreen | PatchMenuStats labels, LocalStats numbers | stats |
 | update notice bottom left ("New update available!") | GuiMenuBase.drawScreen while isUpdateRequired | (follows Updater.required()) | |
 | welcome box and loading fade (clicks ignored until ClientState.cg <= 0.1) | GuiMenuHome.drawWelcomeNotification, drawLoadingFade; welcome text from the lang file | menu_assets.py (welcome line) | mainmenu ("menu shown") |

@@ -32,6 +32,8 @@ history of what the user asked: docs/main_menu.md sections 1 to 2f.
 | new button on the home menu | fixes/MenuContinue as the pattern: InitGuiEvent.Post + Deci.menuButton, ActionPerformedEvent.Pre |
 | a Decimation text, link, version, toast title | tools/patches/PatchMenuTexts.java, fixes/MenuTexts |
 | news panels | fixes/MenuNews, Deci.addNewsPanel, Deci.newsLine; pictures tools/menu_assets.py |
+| a news panel's popup (carousel, release list) | fixes/MenuDetail, fixes/MenuDetails, MenuNews.open; slide pictures menu_assets.py DETAILS |
+| corner art bottom right, its click | menu_assets.py corner() from `python3 tools/devtest.py --live --window=1440x810 cornerart`; fixes/MenuCorner |
 | background slideshow | fixes/MenuBackground, tools/patches/PatchMenuBackground.java |
 | profile numbers, totals line | fixes/LocalStats, tools/patches/PatchMenuStats.java |
 | official server list rows | fixes/MenuServers, tools/patches/PatchOfficialServers.java, Deci.officialServer |
@@ -59,6 +61,11 @@ history of what the user asked: docs/main_menu.md sections 1 to 2f.
    2026: "yes"), once a launch. Anything that closes the game from a world goes through fixes/SafeQuit (leave, save,
    then close): mc.shutdown inside a world once broke a level.dat.
 9. Supporter tier: for the user's donors, through the website (login, donation; docs/ideas.md 23), not designed yet.
+10. Promise little: Coming soon shows only what is being built (two items, user 21 Oktober 2026), on the menu and the
+    website alike.
+11. Our name and links everywhere in the menu; BoehMod is credited on the website only (user, 21 Oktober 2026).
+12. Art of our own comes from the game itself: the corner's soldier is a real NPC drawn by dev test cornerart, the
+    layout learned from Decimation's FURY art; mock up on the user's own screenshot first.
 
 ## Common mistakes
 - Testing after `mainmenu` or `menupages` in the same live game: they leave the world, the next mode waits for a
@@ -101,3 +108,11 @@ history of what the user asked: docs/main_menu.md sections 1 to 2f.
   docs/shots/main_menu_v0.65.0/.
 - User checked it in game ("nice") and pushed; then "yes" to the question on the Esc menu too: built with SafeQuit
   for Quit game from a world (update inworld=true RED then PASS on both lines).
+
+### Case 4: popups, Discord, our footer, the corner (21 Oktober 2026)
+- User's screenshots of the menu: popups with a carousel for the news panels, Discord instead of GitHub and Forums,
+  our footer, "learn FURY and make our version". Mockups on the user's own screenshot first (PIL, the game's font and
+  Decimation's torn button textures tinted as its code tints them), then built: docs/main_menu.md 2h.
+- Found on the way: a resource lookup opens a stream (cache it, never per frame); Decimation tints buttonbg_red in
+  code (the file is white); a 2.32 : 1 picture loses its edges when cut to 16:9 (letterbox it); Decimation draws the
+  corner 150 x 150 GUI units, which reaches into the news panels at 854 x 480.

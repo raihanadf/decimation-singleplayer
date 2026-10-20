@@ -59,7 +59,8 @@ together in 1.0.0, so no jar a player downloads before 1.0.0 may hold multiplaye
   release builds only look for updates and each line's live test ports (tools/lineports.py; 23605eb), Supporter texts
   (b90b4af), the update question UpdatePrompt (41a00d8), MenuStatus rows and DevTestUtil.click (193e50b; Community
   Server stays Coming soon there: the relay check is main's hosting code), the question on the Esc menu and SafeQuit
-  (5e000e1).
+  (5e000e1), Discord links and our footer (bd9fab9), the Updates and Coming soon popups (3de0c39; no Multiplayer popup),
+  the corner art and MenuCorner (5246e4b).
   A NEW CHECKOUT'S RUN FOLDER needs the content: `cp dist/config/decimation_worldgen/*.schematic
   dev/run/client/config/decimation_worldgen/` (lc and large too when missing). StructureGenerator.generate returns at
   once while no small schematic is loaded ("0 schematic(s) ready" in the log), and that also stops cities, refuges, camps
@@ -72,7 +73,8 @@ together in 1.0.0, so no jar a player downloads before 1.0.0 may hold multiplaye
      assets/deci/textures/gui/menu/news_multiplayer.png (zip -d). Check first with `python3 tools/linecheck.py
      dist/Decimation.jar <worktree>/dev/build/libs/deciworldgen-VERSION.jar --last dist/previous/onejar-LAST/Decimation.jar`
      (from main): every call the base jar's patched classes make into net/decimation/fixes|worldgen exists in the
-     prerelease build with the same descriptor (26 for 0.65.0; exit 1 and MISSING lines otherwise), the entries to strip,
+     prerelease build with the same descriptor (26 for 0.65.0; exit 1 and MISSING lines otherwise), the entries to strip
+     (news_multiplayer.png and the Multiplayer popup's detail_multiplayer0..2.png),
      and every Decimation entry changed since the last release (read each: it must be a plain fix). Both lines share ONE
      base jar: main only behaviour lives in our classes, never in a jar patch (a patch both lines carry calls a hook both
      lines have). Also check that the prerelease's menu_assets.py pictures equal main's (run a copy of it
@@ -1240,6 +1242,10 @@ of the last session:
   now: run it after modes that need a player. Trap: the user's own dev client may be open in main: check pgrep BEFORE
   any Gradle there; test meanwhile in another checkout (`git worktree add ../Decimation-scratch --detach HEAD`, dev/libs
   linked to main's, files copied over), which has its own build folder and run folder.
+  Main menu 2h (21 Oktober 2026, docs/main_menu.md 2h): news panel popups (fixes/MenuDetail, MenuDetails), Discord in
+  the links (the user's invite), our footer (BoehMod credited on the website only), corner art of our own from a real
+  NPC render (dev test cornerart, menu_assets.py corner(), fixes/MenuCorner). menu_assets.py now also writes the footer
+  logo, the popup pictures and the corner from docs/shots sources: run it after changing any of them.
   RELEASE 0.65.0 published 20 Oktober 2026 10:55 (pre-release, the first from the prerelease branch: tag 0.65.0 on
   14830b9; sha256 1c604032..., GitHub's asset digest equal; notes RELEASE_NOTES_0.65.0.md; jar kept in
   dist/previous/onejar-0.65.0). Checked after: public download 251,272,285 bytes, site Download 0.65.0 at 11:11 (ISR

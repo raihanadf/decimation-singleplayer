@@ -1709,3 +1709,17 @@ Production client with OptiFine HD U E7 (the brother's laptop setup), AKM with t
   "(c) 2026 DeciRemnant (deciremnant.vercel.app). Unofficial: Decimation by BoehMod", the totals in the middle, and in
   the bottom right a FURY style tile: red ink splash, a blocky dark survivor placeholder with red goggles and a rifle,
   our logo, "JOIN THE" white, "REMNANT" red, "News, help and players on our Discord", "discord.gg/deciremnant".
+- `corner_src/soldier.png` (455 x 736) and `soldier_left.png` (580 x 736) (21 Oktober 2026, dev test cornerart, 1440 x 810
+  window): an elite_military NPC cut out of a magenta background: black helmet with night vision goggles (two green and
+  two white lights), black vest and clothes with a blue shoulder patch, a tan rifle with a long rail held low across
+  the body, the other arm pointing forward; soldier.png turned to the right (used by the corner art), the other to
+  the left.
+- `mainmenu_home.png` (21 Oktober 2026, 854 x 480): the home menu with the new corner bottom right (the soldier with a
+  red glow on a red ink splash, our logo, "JOIN THE" white, "REMNANT" red, "News, help and players on our Discord",
+  "discord.gg/ZJ47zfXn8H"), top right Website and Discord, the footer "Copyright 2026 DeciRemnant
+  (deciremnant.vercel.app)" with our logo faint bottom left; at this size the soldier's head reaches into the Coming
+  soon panel.
+- `mainmenu_popup_multiplayer.png`, `mainmenu_popup_updates.png`, `mainmenu_popup_coming.png` (21 Oktober 2026, 854 x
+  480): the popups in game: Multiplayer with the Host Online page, arrows, three dots, "Host your world", red "Open
+  Community" and Close; Updates in a dev build ("Updates off: dev build (main)", "This build does not check for
+  updates", red "All releases"); Coming soon with the Community row on a dark band, two dots, "Multiplayer in 1.0.0".
