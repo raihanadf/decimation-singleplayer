@@ -1,0 +1,83 @@
+---
+name: decimation-main-menu
+description: Use when adding, fixing, removing or updating anything in Decimation's main menu as our mod shows it, on the title screen or in game (the Esc pause menu): buttons, texts, version, links, news panels, background, profile card, supporter line, My Community popup, Server Status rows, official and Community server lists, the update check, prompt and progress screens, toasts and dialogs.
+---
+
+# The main menu (home and in game)
+
+Every piece, its Decimation code and ours: docs/main_menu.md section 8 (map), 9 (how to change it), 10 (two lines).
+Decimation's own internals: docs/decimation_code/menus.md sections 7 and 7b (skill decimation-code-menus). The
+history of what the user asked: docs/main_menu.md sections 1 to 2f.
+
+## Workflow
+1. Read docs/main_menu.md section 8 for the piece; find its row (Decimation class, our class or patch, test).
+2. New screen, page or look: study 3 to 5 famous examples first and say which patterns you take (user rule); show the
+   user before building anything they will look at.
+3. Write the dev test check first (menu, mainmenu, menupages, update, stats; `python3 tools/devtest.py --live MODE`),
+   watch it FAIL, build, watch it PASS. Unit tests for anything that is plain Java (dev/src/test).
+4. Build with Decimation's own parts (Deci.menuButton, ConfirmScreen deci/d/s, Deci.toast, ArticlePanel news panels,
+   its progress screen) through Forge events; a jar patch only when a drawn element or a constant must change.
+5. Jar patch: PatchMenuTexts (texts), PatchMenuBackground (drawing), PatchOfficialServers, PatchNoUpdate; rebuild from
+   the right base (docs/main_menu.md 4b) into the THREE jars, then `python3 tools/linecheck.py` (two lines).
+6. Docs: docs/main_menu.md (a dated section with the user's words, the map row), bug.md for a bug, docs/tasks.md; shot
+   into a docs/shots folder named main_menu_v plus the version, described in docs/shots_index.md; graph; this skill's lessons and casebook.
+7. Main only (multiplayer) or plain? Plain fixes are carried to prerelease ("from main abc1234"); main only pieces
+   (Community page, Host Online, the Multiplayer news panel, the relay) never go there.
+
+## Quick reference
+
+| Task | Where |
+|---|---|
+| Play / Update / Resume Game button, update notice | GuiMenuBase.addMenuButtons, UpdateChecker.isUpdateRequired (PatchNoUpdate: fixes/Updater.required) |
+| new button on the home menu | fixes/MenuContinue as the pattern: InitGuiEvent.Post + Deci.menuButton, ActionPerformedEvent.Pre |
+| a Decimation text, link, version, toast title | tools/patches/PatchMenuTexts.java, fixes/MenuTexts |
+| news panels | fixes/MenuNews, Deci.addNewsPanel, Deci.newsLine; pictures tools/menu_assets.py |
+| background slideshow | fixes/MenuBackground, tools/patches/PatchMenuBackground.java |
+| profile numbers, totals line | fixes/LocalStats, tools/patches/PatchMenuStats.java |
+| official server list rows | fixes/MenuServers, tools/patches/PatchOfficialServers.java, Deci.officialServer |
+| Server Status rows | GuiMenuServerStatus (deci/i/h) rows ServerPinger (deci/l/a); Deci.statusRows |
+| updates: check, prompt, progress, failure | fixes/Updater, fixes/UpdateProgress, fixes/UpdateScreen, fixes/UpdateBar, fixes/UpdateSwap |
+| a question to the player | ConfirmScreen (deci/d/s): setDescription, setLabels, buttons 10 (left) and 11 (right) |
+| in game pause menu, hosting (main only) | GuiMenuHome with a world; fixes/hosting/HostMenu, fixes/hosting/CommunityList |
+| tests | `python3 tools/devtest.py --live menu update mainmenu`, `menupages`, `stats`, `hostmenu` |
+
+## Lessons (from the user's revisions)
+1. Use Decimation's own components, never a look of our own beside them (17 Oktober 2026: "just use component from
+   decimation gui menu its self").
+2. Our name is DeciRemnant, our version and our links replace Decimation's; Decimation's own mod version stays.
+3. What does not exist yet says "Coming soon"; status rows of things not running say Offline (v0.64.1).
+4. The update runs on Decimation's own progress screen (v0.64.7). Updates are the player's choice, never forced, and a
+   client the updater cannot replace gets a link to download the new jar (20 Oktober 2026). Dev and test builds never
+   offer an update (20 Oktober 2026).
+5. "Supporter" stays Decimation's word: it is for people who donate to the user (20 Oktober 2026: "rewind it to
+   supporter"); Early access is gone.
+6. Server Status rows come from real sources: Download from the GitHub release link, Community Server from the
+   Cloudflare relay, Global Server from the official server list (community run dedicated servers, not the user's own);
+   later an upvote rating ranks popular servers on top (20 Oktober 2026).
+7. No dash characters in any text the player reads (user rule); check every new string.
+
+## Common mistakes
+- Testing after `mainmenu` or `menupages` in the same live game: they leave the world, the next mode waits for a
+  player forever and `--stop` times out. Run them last.
+- Clicking the home menu in its first 140 frames of a launch: GuiMenuHome ignores clicks until ClientState.cg <= 0.1.
+- Forgetting that the title menu and the pause menu are ONE screen (GuiMenuHome): a change shows in both unless it
+  checks `mc.theWorld`.
+- Reading deobf/src for current texts: it is Decimation's original code, our patches are not in it.
+- Patching PatchMenuTexts from a jar it already ran on (its texts are gone there), or matching a text that is also a
+  field name ("Supporter" matched isSupporter): check exact old strings.
+- A Server Status row on a host that resolves but never answers: ServerPinger has no timeout (75 s of "Pinging...").
+- A news picture key missing from the picture map: Decimation downloads the key as a URL every frame.
+- Work that runs every frame doing more than reading state: menu and HUD code runs each frame.
+
+## Casebook (never delete a case)
+
+### Case 1: our main menu, v0.63.0 to v0.64.8 (17 Oktober 2026)
+- News panels from Decimation's ArticlePanel, the scene slideshow, links, name and version, Continue, our corner,
+  server pages "Coming soon", Early access, toasts titled DeciRemnant, the update on Decimation's progress screen, our
+  logo. docs/main_menu.md sections 2 to 2d; dev tests mainmenu and menupages.
+
+### Case 2: two lines, update offers, this skill (20 Oktober 2026)
+- User: "why the it show update?" in the dev client: main builds (version 0.64.8-main.N) took the 0.65.0 pre-release
+  for an update. Only release builds look now ("Updates off: dev build (main)", version "0.64.8 dev"); bug.md.
+- User asked for this skill ("just like other skills we have") and, next: updates the player can decline with a
+  download link fallback, Supporter back instead of Early access, Server Status rows from real sources.

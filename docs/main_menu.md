@@ -252,3 +252,74 @@ review: a total per class could hide a missing text behind a doubled one; the st
 - Launcher news: a picture plus a small info box per item; players found oversized news areas cluttered.
 - Taken: real scenes, slow motion, dark behind the buttons, small picture news panels. The panorama was not built:
   the user asked to use Decimation's own menu parts; a camera turning over a city stays an option.
+
+## 8. Full map: every piece of the main menu, home and in game (20 Oktober 2026)
+
+Studied for the main menu skill (.claude/skills/decimation-main-menu, user: "hint agent to make feat/fix/delete/update
+in there while mention all code that related with main menu, from in-game and home main menu"). Decimation's side in
+detail: docs/decimation_code/menus.md sections 7 and 7b (deobf/src/decimation/gui is its ORIGINAL code: our jar patches
+are not in it).
+
+How a menu opens: Decimation's ClientEventHandler.onGuiOpen turns Minecraft's title screen into GuiIntroJumpscare,
+GuiIntroBoehModLogo (once each), GuiEulaAgreement (until accepted), GuiUpdateProgress (while a download runs:
+UpdateChecker.downloading, which fixes/UpdateProgress sets) or GuiMenuHome (deci/i/e). Esc in a world (GuiIngameMenu)
+also becomes GuiMenuHome: ONE screen is the title menu and the pause menu; `mc.theWorld != null` tells them apart.
+
+| Piece (home menu unless said) | Decimation code | Ours | Test |
+|---|---|---|---|
+| background scenes, slideshow every 7 s | RenderUtil.drawMenuBackground (deci/j/a), only without a world | fixes/MenuBackground, tools/patches/PatchMenuBackground.java, pictures by tools/menu_assets.py | mainmenu |
+| logo and "v<version>" under it | GuiMenuBase.drawScreen, textures/gui/menu/banner.png | logo: menu_assets.py logos(); version: fixes/MenuTexts (PatchMenuTexts) | menu, mainmenu |
+| title line "DeciRemnant: Zombie Apocalypse", page title | GuiMenuBase.drawScreen, setTitle | PatchMenuTexts | mainmenu |
+| Website / GitHub links top right | buttons 12, 15 (were Discord, Twitter), ClientResources addresses | PatchMenuTexts | mainmenu |
+| profile card: name, Human Kills, Deaths, Zombie Kills, supporter line, player model | GuiMenuBase.drawScreen, BackendProfileCache, MenuPreviewWorld | fixes/LocalStats (numbers), PatchMenuStats (labels), PatchMenuTexts (supporter line) | stats, menupages |
+| home icon + Play (green) / Update / Resume Game / Play Offline | GuiMenuBase.addMenuButtons: Update (id 8) replaces Play (9) AND Resume (23) while UpdateChecker.isUpdateRequired | PatchNoUpdate: isUpdateRequired answers fixes/Updater.required() | menu, update |
+| Play's click | GuiMenuBase.handleMenuButton case 9: the update page while an update is required, else the official server list | official list: fixes/MenuServers, PatchOfficialServers | menupages |
+| Continue (last world) and its tooltip | (none: ours) | fixes/MenuContinue (InitGuiEvent.Post, ActionPerformedEvent.Pre, Deci.menuButton; buttons under it move down 21) | mainmenu |
+| My Community >> popup: supporter line, Website, Forums, GitHub | id 27: SupporterOnlyScreen (deci/d/k, a DeciSubScreen) | PatchMenuTexts (lines and toast) | menupages |
+| Server Status >> page: four rows | id 11: GuiMenuServerStatus (deci/i/h), rows ServerPinger (deci/l/a, a plain socket each, PingStatus deci/l/a$a) | PatchMenuTexts (names, .invalid hosts, the Website row) | menupages |
+| Settings >> page, its Updates button | id 5: GuiMenuOptions (deci/i/f); button 1000 opens GuiMenuUpdates | UpdateProgress swaps GuiMenuUpdates (deci/i/l) for Decimation's progress screen and starts our download | update |
+| Exit Game (Disconnect in a world) and its confirm box | id 0: ConfirmScreen (deci/d/s, buttons 10 left red and 11 right, ids gm = shutdown) | (unchanged) | |
+| news panels: Multiplayer (main only), Updates, Website, Coming soon | ArticlePanel (deci/d/c) | fixes/MenuNews (Deci.addNewsPanel, Deci.newsLine), pictures by menu_assets.py | mainmenu |
+| corner bottom right (was the FURY store advert) | donor_rank_0 / 1.png drawn by GuiMenuBase.drawScreen | menu_assets.py | |
+| totals line bottom centre | GuiMenuBase.drawScreen | PatchMenuStats labels, LocalStats numbers | stats |
+| update notice bottom left ("New update available!") | GuiMenuBase.drawScreen while isUpdateRequired | (follows Updater.required()) | |
+| welcome box and loading fade (clicks ignored until ClientState.cg <= 0.1) | GuiMenuHome.drawWelcomeNotification, drawLoadingFade; welcome text from the lang file | menu_assets.py (welcome line) | mainmenu ("menu shown") |
+| toasts (sliding notices, title DeciRemnant) | ToastNotification (deci/b/b) | Deci.toast, PatchMenuTexts (title) | menupages |
+| update progress screen, Quit game / Later | GuiUpdateProgress (deci/i/m) | fixes/UpdateProgress, fixes/UpdateBar; failures: fixes/UpdateScreen | update |
+| window title | WindowSetup (deci/m/b) | MenuTexts.windowTitle (PatchMenuTexts) | mainmenu |
+| official server list page (Play) | GuiMenuOfficialServers (deci/i/i), rows ListElement (deci/d/p) on ServerListEntry (deci/k/a), ServerListPinger.officialServers (deci/k/b) | MenuServers, PatchOfficialServers, PatchMenuTexts ("Coming soon"), Chernarus pictures by menu_assets.py | menupages |
+| Community page (tab on the official list) | GuiMenuCommunityServers (deci/i/j) | main only: fixes/hosting/CommunityList, CommunityText | mainmenu, hostmenu |
+| IN GAME (Esc): Resume Game (23), Disconnect (24), LAN globe (25, singleplayer), achievements (26); no background, a dark layer | GuiMenuBase.addMenuButtons with a world | main only: fixes/hosting/HostMenu puts Host Online (9300) in Server Status' place and sends the LAN globe to HostScreen | hostmenu |
+
+## 9. How to change it (feat, fix, delete, update)
+
+- New button: Forge InitGuiEvent.Post on the screen (Deci.isHomeMenu), add `Deci.menuButton(id, x, y, w, h, label,
+  tooltip)` (Decimation's own button look), handle it in ActionPerformedEvent.Pre (cancel the event); move the buttons
+  below by 21 like MenuContinue. Pick an id no Decimation page uses (ours: 9101, 9102, 9300...).
+- Change a Decimation text: add the exact OLD string to tools/patches/PatchMenuTexts.java (a text must be found at least
+  once per class or the patch stops), rebuild it from build/menutexts_rebuild/base.jar (section 4b) and zip the classes
+  into the three jars (Decimation.jar.patched, dist/Decimation.jar, dev/libs/Decimation-base.jar). Never edit a string
+  in deobf/src: that tree is for reading.
+- Dynamic text Decimation draws: send the constant to a static method of ours (MenuTexts pattern: PatchMenuTexts
+  replaces the constant with a call).
+- Remove or hide an element: a button by removing it in InitGuiEvent.Post; something drawn in drawScreen needs a jar
+  patch of that draw (PatchMenuBackground removed the cube planet that way), or paint over it in DrawScreenEvent.Post.
+- A question to the player: Decimation's ConfirmScreen (deci/d/s) over the screen (setDescription lines, setLabels
+  left / right; it returns to the screen under it), clicks caught in ActionPerformedEvent.Pre.
+- A notice: Deci.toast(line). A picture: tools/menu_assets.py writes Decimation's menu textures into the three jars
+  (Decimation art: never committed).
+- News panel: fixes/MenuNews (title, line, address; Deci.addNewsPanel), its picture via menu_assets.py news_<id>.
+- Server Status rows: their names and hosts are texts of class deci/i/h in PatchMenuTexts; a row's state is
+  ServerPinger.status (Deci.statusRows reads them).
+- Official list rows: fixes/MenuServers (Deci.officialServer); the list page itself through PatchOfficialServers.
+- Updates: fixes/Updater (check, required, download), UpdateProgress, UpdateScreen; what Decimation calls "update
+  required" is Updater.required() (PatchNoUpdate).
+- Every change: a dev test check that fails first (menu, mainmenu, menupages, update, stats), then passes; `mainmenu`
+  and `menupages` leave the world: run them LAST in a live game.
+
+## 10. Two lines
+
+The base jar (Decimation with our jar patches) is shared by main and prerelease: a jar patch must be fine for both
+(texts, drawing, hooks both lines have); main only behaviour (Community page, Host Online, the Multiplayer news panel,
+anything of the relay) lives in our classes on main only (CLAUDE.md "TWO LINES SIDE BY SIDE"). Carry plain menu fixes
+to prerelease ("from main abc1234") and check the base jar with tools/linecheck.py before a release.

@@ -218,7 +218,9 @@ Knowledge index:
 - `docs/main_menu.md`: OUR main menu changes (v0.63.0 .. v0.64.1): Decimation's news panels with our four items, the
   real scene background slideshow, links / name / version / Continue, the server pages "coming soon", Early access,
   PatchMenuBackground / PatchMenuTexts / PatchOfficialServers, tools/menu_assets.py, dev tests mainmenu and menupages;
-  how Decimation's menu works element by element: docs/decimation_code/menus.md section 7 (server pages 7b).
+  how Decimation's menu works element by element: docs/decimation_code/menus.md section 7 (server pages 7b). Since
+  20 Oktober 2026 section 8 maps every piece of the home and in game menu to its code, section 9 says how to change
+  it; project skill decimation-main-menu (load it before any main menu work).
 - `docs/systems_plan.md`: PLAN of every open feature together (loot, human NPCs, zombies, world and
   zones) with the shared core (world clock, pools, body entity, tier table, areas, protection
   table, group spawner) and the build order; user choices of 13 Oktober 2026.

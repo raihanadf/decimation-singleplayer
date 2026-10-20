@@ -5,7 +5,8 @@ description: Use when changing or debugging Decimation's main menu (Play or Upda
 
 # Decimation menus, screens and HUD code
 
-Facts and the traced menu and HUD: docs/decimation_code/menus.md.
+Facts and the traced menu and HUD: docs/decimation_code/menus.md. Changing the main menu as our mod shows it (home
+and in game): skill decimation-main-menu.
 
 ## Quick reference
 
