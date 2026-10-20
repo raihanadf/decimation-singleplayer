@@ -1700,3 +1700,12 @@ Production client with OptiFine HD U E7 (the brother's laptop setup), AKM with t
 - `menupages_status.png` (21 Oktober 2026, dev test menupages, main): the Server/Network Status page: Global Server
   "Coming soon" in gold, Community Server, Download and Website "Online" in green; Play green on the left, "v0.64.8 dev"
   under the logo, "Not Supporter :(" on the profile card. (The pre-release shows Community Server "Coming soon" too.)
+- mockups/ (21 Oktober 2026, PIL composites on the user's 2000 x 1301 menu shot, docs/main_menu.md 2h; layout only, the
+  pictures are placeholders): `popup_multiplayer.png` the menu darkened, a black panel with a red top line, "Multiplayer"
+  and "NEW: host your world, join others", a 16:9 picture (the Community list zoomed) with torn "<" and ">" buttons,
+  four dots (first red), "Join a friend from the Community page" and two grey lines, a red torn "Open Community" button
+  left and a black torn "Close" right; `popup_coming.png` the same with "Coming soon", a city scene and "New cities in
+  1.0.0", two dots, Close only; `footer_corner.png` the bottom 470 px: our DeciRemnant logo faint bottom left with
+  "(c) 2026 DeciRemnant (deciremnant.vercel.app). Unofficial: Decimation by BoehMod", the totals in the middle, and in
+  the bottom right a FURY style tile: red ink splash, a blocky dark survivor placeholder with red goggles and a rifle,
+  our logo, "JOIN THE" white, "REMNANT" red, "News, help and players on our Discord", "discord.gg/deciremnant".

@@ -193,6 +193,32 @@ community dedicated server, and later i want to make rating upvote system in the
 - Next (not designed): the official list as community run dedicated servers with an upvote rating (roadmap UI 4;
   docs/ideas.md 24), and a supporter tier for donors through the website (docs/ideas.md 23).
 
+## 2h. 21 Oktober 2026: detail popups, Discord, our footer, a corner of our own (asked, mockups shown, not built)
+
+The user's words: "for home page or new page, can you add popup page to show detail of the content? like for
+multiplayer, it show several image with carousel design and below that show title and description about the feat, for
+updates same like multiplayer it show updates list, website stay intact, coming soon show information about what feat
+we gonna add in future (i wanted on the website and news page to show less feat we have, i think dont need to show bunch
+of feat we dont make so we dont make big promise to end user). just like that. for the github, replace with discord
+instead. same like my community, forum replace with discord"; footer: "replace boehmod logo and web link in the bottom
+with ours, and for on the right side maybe you have better design suggestion? maybe we can design using legacy image
+that we remove before (fury) and learn that design and after that we make our version with it??".
+- Mockups (docs/shots/main_menu_v0.65.0/mockups/, shots_index.md): popup_multiplayer.png and popup_coming.png (a popup
+  over the darkened menu in Decimation's look: black panel, red top line, title and line, a 16:9 picture with torn arrow
+  buttons and dots, a heading and two lines, a red torn action button and Close); footer_corner.png (our logo where
+  BoehMod's sat, the copyright line keeping the credit "Unofficial: Decimation by BoehMod", a FURY style tile).
+- FURY studied (Decimation's donor_rank_0.png and donor_rank_1.png, 800 x 800, drawn 150 x 150 GUI px in the bottom right
+  corner, the second layer pulsing): a soldier in red and black camouflage with glowing red goggles and a rifle, a red ink
+  splash fading toward the top left, a big red horror brush title "FURY" with a white glow, "JOIN THE FURY", "NOW
+  AVAILABLE ON THE DECI WEBSTORE!", the store address; the pulse layer holds only the texts. It advertised a paid donor
+  rank. Our version proposed: "JOIN THE REMNANT" for our Discord now (title from our own logo, no new font), a supporter
+  tier version once that exists (docs/ideas.md 23); the character a real render of a survivor in our gear.
+- Decimation has its own updates page (GuiMenuUpdates deci/i/l: the Server Status layout with a scrolling release list,
+  ReleaseEntry rows, Refresh Releases in Play's place) that UpdateProgress swaps out today; the user asked for the
+  Updates popup to look like the Multiplayer one with the release list.
+- Open with the user: the Discord invite address, which two or three Coming soon features stay (on the menu and the
+  website), the footer credit line, the corner direction.
+
 ## 3. Code map
 
 | Piece | Job |
