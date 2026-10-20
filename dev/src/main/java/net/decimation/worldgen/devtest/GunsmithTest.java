@@ -54,6 +54,7 @@ public class GunsmithTest extends DevTestMode
     private double before;
     private final boolean PERF = Boolean.getBoolean("deciworldgen.autotest.perf"); // read per run: live settings stay set
     private double closedMs, fullMs, emptyMs;
+    private int pressedAt;
     private int textures0;
     private volatile int updates0, updates1;
     private static final Clock clock = new Clock();
@@ -364,10 +365,16 @@ public class GunsmithTest extends DevTestMode
                     return false;
                 }
                 break;
-            case 1: // no gun in hand: nothing opens, a short message
+            case 1: // no gun in hand: nothing opens, a short message (pressed once the player stands: a fresh game's
+                    // first run used to press while the player still fell after setup's teleport, docs/production_test.md)
                 if (ticks == 1) mc.thePlayer.inventory.currentItem = 1;
-                if (ticks == 6) pressAttach(mc);
-                if (ticks == 40)
+                if (pressedAt == 0 && ticks >= 30 && mc.thePlayer.onGround)
+                {
+                    pressAttach(mc);
+                    pressedAt = ticks;
+                }
+                if (pressedAt > 0 && (said("Hold a gun to modify it") > 0 && ticks - pressedAt >= 20 || ticks - pressedAt >= 60)
+                    || ticks > 400)
                 {
                     check("no gun: nothing opens", screenName(mc), mc.currentScreen == null, "no screen");
                     check("no gun: message", String.join(" | ", chat), said("Hold a gun to modify it") > 0, "Hold a gun to modify it");
