@@ -268,6 +268,20 @@ Knowledge index:
 - `deobf/names.tsv`: every class, obfuscated -> readable name + purpose.
 - `bug.md`, `new_feature.md`, `documentation.md`, `create_weapons.md`.
 
+## Every feature: optimized before done (user rule, 21 Oktober 2026)
+
+User: "dont forget to optimize yet. you always forget this. noted that for future development". Performance and bugs are
+part of every feature, never a later pass:
+1. The spec has a performance section: what runs per frame, per tick and per packet, and a budget for each (frame time
+   with the feature in use against without it, server tick cost, packets, memory).
+2. The plan has an optimize task before its docs task: measure the budgets with a dev test probe (frame time, tick
+   time), check nothing is searched, loaded, compiled or allocated in bulk per frame or tick (compute on open or on
+   change and cache), GL stacks and errors clean (glstack), no growth over a soak, packets only on change (main).
+3. Done means the numbers are measured and written into the feature's doc: dev client, and for anything drawn also the
+   production client with OptiFine (docs/production_test.md). Profile before optimising (docs/performance.md).
+4. Bugs: a review pass for item loss or duplication, edge cases (death, disconnect, full inventory) and both lines.
+   A project skill that audits each feature for bugs and performance is planned (user, later; docs/tasks.md).
+
 ## Critical gotcha: case-sensitive extraction required
 
 The jar's obfuscator produced packages that differ only by case

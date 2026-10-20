@@ -79,7 +79,26 @@ flashlights may not show on the 3D gun; this screen shows whatever the renderer 
 - It is a plain feature with no multiplayer code, so it is carried to the prerelease line like other plain fixes
   (pre-releases take low to medium features, user 18 Oktober 2026). [my call]
 
-## 5. Tests and checks
+## 5. Performance (user, 21 Oktober 2026: "dont forget to optimize yet. you always forget this")
+
+Optimizing is part of this feature, measured before it is called done (CLAUDE.md "Every feature: optimized before done").
+
+- Per frame while open, only drawing: one gun through Decimation's renderer (fixes/ModelBatch keeps each part in one
+  display list), the slot boxes, lines, labels and the hotbar row.
+- Computed once on open and again only when the inventory or the gun changes, never per frame: the line ends (attach
+  points projected to the screen), the lists of matching parts, labels, the gun's name.
+- Budget: the frame time with the screen open at most 1 ms above the same view with it closed (median over 200 frames),
+  in the dev client and in the production client with OptiFine. [my call: 1 ms]
+- No texture load and no display list compile after the first frame open; no per frame allocation of lists or strings.
+- The scope glass work (fixes/ScopeZoom: frame copy, glass measuring) must not run for the screen's gun [inferred risk:
+  renderAttachments calls the scope model's renderGun].
+- GL left clean: matrix stacks as deep after the screen as before, no GL errors, lighting state restored
+  (fixes/GlStackGuard, fixes/EntityLighting lessons).
+- Server: no per tick work for an open screen beyond the container sync; packets only when a slot changes (counted).
+- Measured by the `gunsmith` dev test: frame time probe open vs closed, GL error count, texture loads per frame after
+  open (0), packets per fit; numbers written into docs/decimation_code/weapons.md when built.
+
+## 6. Tests and checks
 
 - New dev test `gunsmith` (live), written first and seen to FAIL: hold an M4A4 and send ATTACH as the key does; the
   screen opens with the held gun; click a slot the way a mouse does (DevTestUtil.clickAt), pick a part from the list;
@@ -90,12 +109,12 @@ flashlights may not show on the 3D gun; this screen shows whatever the renderer 
 - The server side proven once off the integrated server (the dev dedicated server or a hosted world with a joiner).
 - Unit tests for the plain layout math (slots and list inside the screen at every GUI size).
 
-## 6. Left to the builder
+## 7. Left to the builder
 
 How the container binds the held gun, the GL set up for the large model, how line ends come from each model, the list
 panel's details, sounds (Decimation's own UI sounds), names of new classes.
 
-## 7. When built
+## 8. When built
 
 docs/decimation_code/weapons.md and menus.md rows, docs/ideas.md 25 marked built, docs/roadmap.md, docs/tasks.md,
 shots in docs/shots/gunsmith_v<version>/ with shots_index.md, bug.md for any bug found, the graph, the prerelease carry.

@@ -108,4 +108,5 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [ ] website session: Discord links, Coming soon down to two, BoehMod credit kept (sent to its session 21 Oktober)
 - [~] Gunsmith screen (Tarkov style, layout A): design written, waiting for the user's approval (docs/superpowers/specs/2026-10-21-gunsmith-screen-design.md)
 - [ ] later: full attachment update, grip and laser models on guns (docs/ideas.md 26)
+- [ ] later: optimize and bug audit skill (user, 21 Oktober 2026): audits each feature for bugs and performance before it ships (rule now in CLAUDE.md "Every feature: optimized before done")
 - [x] project skill decimation-main-menu with the full menu map (docs/main_menu.md 8 to 10)

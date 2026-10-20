@@ -110,9 +110,9 @@
     "semantic_hash": "de153d1f8408971d6190e16a7d4256f9"
   },
   "CLAUDE.md": {
-    "mtime": 1792525381.3344326,
-    "ast_hash": "307d2564f0c31895691203b834bda6d8",
-    "semantic_hash": "307d2564f0c31895691203b834bda6d8"
+    "mtime": 1792528653.6866906,
+    "ast_hash": "bd70912878aafa54cb7e9d5dd2102ca7",
+    "semantic_hash": "bd70912878aafa54cb7e9d5dd2102ca7"
   },
   "DECIMATION_MOD_TASK.md": {
     "mtime": 1784958353.0126374,
@@ -1540,9 +1540,9 @@
     "semantic_hash": "294036847a9caffda351bfa855a78636"
   },
   "docs/tasks.md": {
-    "mtime": 1792528435.744759,
-    "ast_hash": "a977162030168783d409d4032cdc50de",
-    "semantic_hash": "a977162030168783d409d4032cdc50de"
+    "mtime": 1792528672.4637313,
+    "ast_hash": "65997c22ee91bc1c2849ca864891dea5",
+    "semantic_hash": "65997c22ee91bc1c2849ca864891dea5"
   },
   "tools/skillcheck.py": {
     "mtime": 1792098139.5315723,
@@ -2525,8 +2525,8 @@
     "semantic_hash": "566c7ccd01490963c41b8d4a3e62cd4b"
   },
   "docs/superpowers/specs/2026-10-21-gunsmith-screen-design.md": {
-    "mtime": 1792528418.4092448,
-    "ast_hash": "8398ce375d1c42ba38a6f0bd575133c9",
-    "semantic_hash": "8398ce375d1c42ba38a6f0bd575133c9"
+    "mtime": 1792528640.5935812,
+    "ast_hash": "6fcd43a5969eec8c8513c4ddfaf664f2",
+    "semantic_hash": "6fcd43a5969eec8c8513c4ddfaf664f2"
   }
 }
