@@ -1751,3 +1751,14 @@ Production client with OptiFine HD U E7 (the brother's laptop setup), AKM with t
   "Grips you carry": Foregrip, Flashlight, Laser), B the same lines from two columns of slots left and right, C six
   slots in a row under the gun with the scope area outlined; each with "M4A4", "the gun in your hand", Esc Close and
   the hotbar row (M4A4 icon marked red). The user picked A.
+- `game/` (21 Oktober 2026, the built screen, dev test gunsmith in the scratch checkout, Task 5 of the plan): 17 shots and
+  `sheet_gunsmith.png`. `gunsmith_m4a4_suppressor.png` (854 x 480): the world dimmed to near black with a soft horizontal
+  light band behind the gun, the HUD and the hand hidden; "M4A4" at the top, "Esc  Close" top right; Decimation's M4A4 side on
+  (muzzle right, magazine down, stock left, carry handle, front sight) with the AR suppressor drawn at the muzzle; six
+  boxes with a thin white line each to a red dot: Stock at the stock, Sight on the rail by the green iron sight dots,
+  Paint on the receiver, Tracer on the magazine, Grip under the handguard, Barrel (filled, the suppressor icon, label
+  "Rifle Suppressor") at the suppressor's tip; the hotbar row at the bottom, the gun's slot outlined red, the 4x stack of 2.
+  `gunsmith_<gun>_854.png` and `_1440.png` for m4a4, glock17 (the pistol large, Stock's line on the grip), svd (its PSO-1
+  scope fitted, wood stock), r870, uzi, minigun (the long barrels fill the width), deagle, rpg7 (wood, grips): every gun
+  side on with the muzzle right, every line ending on the gun, boxes on screen and apart at both sizes (all checked).
+

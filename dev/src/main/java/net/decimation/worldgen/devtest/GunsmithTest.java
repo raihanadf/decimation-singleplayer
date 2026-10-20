@@ -48,6 +48,10 @@ public class GunsmithTest extends DevTestMode
     private volatile int count4x, countReddot, countM4Paint, countAkPaint, countTracer, heldId, heldIndex, loose, dropped,
                          carried, found = -1;
     private int openHeldId, windowId;
+    private static final String[] GUNS = {"m4a4", "glock17", "svd", "r870", "uzi", "minigun", "deagle", "rpg7"};
+    private static final int[][] SIZES = {{854, 480}, {1440, 810}};
+    private int gun, size, startW, startH;
+    private double before;
 
     /** Catches the corpse a death makes (any inventory entity but a minecart joining on the server). */
     public static final class Joins
@@ -109,6 +113,8 @@ public class GunsmithTest extends DevTestMode
         switch (step)
         {
             case 0: // the arena and the inventory
+                startW = mc.displayWidth;
+                startH = mc.displayHeight;
                 server(this::setup);
                 next();
                 break;
@@ -287,10 +293,152 @@ public class GunsmithTest extends DevTestMode
                 }
                 if (ticks == 120)
                 {
-                    net.decimation.worldgen.DevAutoTest.keepScreen = false;
-                    listener.test = null;
-                    joins.test = null;
-                    return false;
+                    next();
+                }
+                break;
+            case 14: // the screen (Task 5): a bare M4A4, no grip carried
+                if (ticks == 1) server(() -> setup(false, 0));
+                if (ticks == 3) mc.thePlayer.inventory.currentItem = 0;
+                if (ticks == 8) pressAttach(mc);
+                if (ticks == 50)
+                {
+                    check("screen: measured", hook(mc, "measures"), Integer.valueOf(1).equals(hook(mc, "measures")), "1");
+                    before = relMag(mc);
+                    server(() -> found = find(Item.itemRegistry.getObject("deci:arSuppressor")));
+                }
+                if (ticks == 52) act(mc, GunsmithAction.fit(GunSlot.BARREL, found));
+                if (ticks == 75)
+                {
+                    double after = relMag(mc);
+                    check("screen: muzzle to the right", String.format("magazine at %.2f then %.2f of the length", before, after),
+                          after < before - 0.02, "the suppressor lengthens the right side");
+                    check("screen: measured again on a change", hook(mc, "measures"), Integer.valueOf(2).equals(hook(mc, "measures")), "2");
+                    shot(mc, "gunsmith_m4a4_suppressor");
+                    next();
+                }
+                break;
+            case 15: // a click like a mouse opens the Sight list; its 4x row fits the 4x
+                if (ticks == 1) clickBox(mc, GunSlot.SIGHT);
+                if (ticks == 5)
+                {
+                    List<String> lines = lines(mc);
+                    String fourX = name("deci:4x"), red = name("deci:reddot");
+                    check("list: opens on its slot", hook(mc, "openList"), GunSlot.SIGHT.equals(hook(mc, "openList")), "SIGHT");
+                    check("list: title", lines.isEmpty() ? "none" : lines.get(0), !lines.isEmpty() && "Sights you carry".equals(lines.get(0)), "Sights you carry");
+                    check("list: what fits", String.join(" | ", lines), lines.contains(fourX) && lines.contains(red), fourX + " and " + red);
+                    clickRow(mc, lines.indexOf(fourX) - 1);
+                }
+                if (ticks == 20) server(this::read);
+                if (ticks == 22)
+                {
+                    check("list: the row fits it", sight, "4x".equals(sight), "sightAttach 4x");
+                    check("list: closes after a pick", hook(mc, "openList"), hook(mc, "openList") == null, "closed");
+                    next();
+                }
+                break;
+            case 16: // Take off, none carried, built in
+                if (ticks == 1) clickBox(mc, GunSlot.SIGHT);
+                if (ticks == 5)
+                {
+                    List<String> lines = lines(mc);
+                    check("list: Take off first", String.join(" | ", lines), lines.size() > 1 && "Take off".equals(lines.get(1)), "Take off");
+                    clickRow(mc, 0);
+                }
+                if (ticks == 18) server(this::read);
+                if (ticks == 20)
+                {
+                    check("list: Take off works", sight, "".equals(sight), "sightAttach empty");
+                    clickBox(mc, GunSlot.GRIP);
+                }
+                if (ticks == 24)
+                {
+                    check("list: nothing carried", String.join(" | ", lines(mc)), lines(mc).contains("None in your inventory"), "None in your inventory");
+                    clickAt(mc, 2, 2); // outside: closes the list
+                }
+                if (ticks == 28)
+                {
+                    check("list: a click outside closes it", hook(mc, "openList"), hook(mc, "openList") == null, "closed");
+                    mc.thePlayer.closeScreen();
+                    server(() -> put(1, "deci:aug1"));
+                }
+                if (ticks == 32) mc.thePlayer.inventory.currentItem = 1;
+                if (ticks == 36) pressAttach(mc);
+                if (ticks == 75)
+                {
+                    check("built in: the AUG's sight", hook(mc, "boxLabel", GunSlot.SIGHT), "Built in".equals(hook(mc, "boxLabel", GunSlot.SIGHT)), "Built in");
+                    clickBox(mc, GunSlot.SIGHT);
+                }
+                if (ticks == 79)
+                {
+                    check("built in: no list", hook(mc, "openList"), hook(mc, "openList") == null, "no list");
+                    mc.thePlayer.closeScreen();
+                    mc.thePlayer.inventory.currentItem = 0;
+                }
+                if (ticks == 84) pressAttach(mc);
+                if (ticks == 120) next();
+                break;
+            case 17: // drag from the hotbar row onto the Barrel box: take the suppressor off, then drag it back
+                if (ticks == 1) act(mc, GunsmithAction.takeOff(GunSlot.BARREL));
+                if (ticks == 12) server(() -> found = find(Item.itemRegistry.getObject("deci:arSuppressor")));
+                if (ticks == 14)
+                {
+                    int[] slot = hotbarSlot(mc, found);
+                    if (slot != null) clickAt(mc, slot[0] + 8, slot[1] + 8);
+                }
+                if (ticks == 17)
+                {
+                    int[] b = (int[]) hook(mc, "box", GunSlot.BARREL);
+                    if (b != null) clickAt(mc, b[0] + 12, b[1] + 12);
+                }
+                if (ticks == 30) server(this::read);
+                if (ticks == 32)
+                {
+                    check("drag: hotbar row to the Barrel box", barrel, "arSuppressor".equals(barrel), "barrelAttach arSuppressor");
+                    mc.thePlayer.closeScreen();
+                    gun = 0;
+                    size = 0;
+                    next();
+                }
+                break;
+            case 18: // every kind of gun at two window sizes: on the gun, on screen, apart
+                if (ticks == 1)
+                {
+                    if (gun == 0) resize(mc, SIZES[size]);
+                    final String g = GUNS[gun];
+                    server(() -> put(0, "deci:" + g));
+                }
+                if (ticks == 5) mc.thePlayer.inventory.currentItem = 0;
+                if (ticks == 10) pressAttach(mc);
+                if (ticks == 55)
+                {
+                    layoutChecks(mc, GUNS[gun] + " " + SIZES[size][0]);
+                    shot(mc, "gunsmith_" + GUNS[gun] + "_" + SIZES[size][0]);
+                    if ("rpg7".equals(GUNS[gun]))
+                    {
+                        clickBox(mc, GunSlot.BARREL); // sights of Decimation's category "all" fit a launcher too
+                    }
+                }
+                if (ticks == 59 && "rpg7".equals(GUNS[gun]))
+                {
+                    check("rpg7 " + SIZES[size][0] + ": no barrel part fits", String.join(" | ", lines(mc)), lines(mc).contains("None in your inventory"), "None in your inventory");
+                }
+                if (ticks == 62)
+                {
+                    mc.thePlayer.closeScreen();
+                    if (++gun == GUNS.length)
+                    {
+                        gun = 0;
+                        size++;
+                    }
+                    ticks = 0;
+                    if (size == SIZES.length)
+                    {
+                        resize(mc, new int[] {startW, startH});
+                        net.decimation.worldgen.DevAutoTest.keepScreen = false;
+                        listener.test = null;
+                        joins.test = null;
+                        return false;
+                    }
                 }
                 break;
             default:
@@ -434,6 +582,192 @@ public class GunsmithTest extends DevTestMode
         return null;
     }
 
+    /** A layout hook of the open Gunsmith screen (reflection: the test also runs against older screens), or null. */
+    private static Object hook(Minecraft mc, String name, Object... args)
+    {
+        GuiScreen s = mc.currentScreen;
+        if (s == null)
+        {
+            return null;
+        }
+        try
+        {
+            if (args.length == 0)
+            {
+                try
+                {
+                    return s.getClass().getField(name).get(s);
+                }
+                catch (NoSuchFieldException e)
+                {
+                    return s.getClass().getMethod(name).invoke(s);
+                }
+            }
+            Class<?> type = args[0] instanceof Integer ? int.class : args[0].getClass();
+            return s.getClass().getMethod(name, type).invoke(s, args[0]);
+        }
+        catch (ReflectiveOperationException e)
+        {
+            return null;
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private static List<String> lines(Minecraft mc)
+    {
+        Object o = hook(mc, "listLines");
+        return o instanceof List ? (List<String>) o : Collections.<String>emptyList();
+    }
+
+    /** Where the magazine sits along the gun, 0 at the left end, 1 at the right. */
+    private static double relMag(Minecraft mc)
+    {
+        int[] b = (int[]) hook(mc, "gunBounds"), p = (int[]) hook(mc, "point", GunSlot.TRACER);
+        return b == null || p == null || b[2] == 0 ? -1 : (p[0] - b[0]) / (double) b[2];
+    }
+
+    /**
+     * A click the way a mouse makes it: the screen drawn with the mouse over the spot, the press, then the release
+     * (GuiContainer places an item from the cursor on the release: a press alone starts a drag).
+     */
+    private static void clickAt(Minecraft mc, int x, int y)
+    {
+        GuiScreen s = mc.currentScreen;
+        if (s != null)
+        {
+            s.drawScreen(x, y, 0);
+            DevTestUtil.clickAt(s, x, y);
+            release(s, x, y);
+        }
+    }
+
+    private static void release(GuiScreen s, int x, int y)
+    {
+        for (Class<?> c = s.getClass(); c != null; c = c.getSuperclass())
+        {
+            for (String n : new String[] {"mouseMovedOrUp", "func_146286_b"})
+            {
+                try
+                {
+                    java.lang.reflect.Method m = c.getDeclaredMethod(n, int.class, int.class, int.class);
+                    m.setAccessible(true);
+                    m.invoke(s, x, y, 0);
+                    return;
+                }
+                catch (NoSuchMethodException e)
+                {
+                    // the other name, then the parent class
+                }
+                catch (ReflectiveOperationException e)
+                {
+                    throw new IllegalStateException(e);
+                }
+            }
+        }
+    }
+
+    private static void clickBox(Minecraft mc, GunSlot slot)
+    {
+        int[] b = (int[]) hook(mc, "box", slot);
+        if (b != null)
+        {
+            clickAt(mc, b[0] + 12, b[1] + 12);
+        }
+    }
+
+    private static void clickRow(Minecraft mc, int row)
+    {
+        int[] r = (int[]) hook(mc, "listRow", row);
+        if (r != null && row >= 0)
+        {
+            clickAt(mc, r[0] + 30, r[1] + 8);
+        }
+    }
+
+    /** The screen position of the hotbar slot holding inventory index i (container slot 6 + i), or null. */
+    private static int[] hotbarSlot(Minecraft mc, int i)
+    {
+        if (i < 0 || i > 8 || mc.thePlayer.openContainer.inventorySlots.size() <= 6 + i)
+        {
+            return null;
+        }
+        net.minecraft.inventory.Slot s = (net.minecraft.inventory.Slot) mc.thePlayer.openContainer.inventorySlots.get(6 + i);
+        return new int[] {s.xDisplayPosition, s.yDisplayPosition};
+    }
+
+    private static String name(String item)
+    {
+        Object i = Item.itemRegistry.getObject(item);
+        return i == null ? "?" : new ItemStack((Item) i).getDisplayName();
+    }
+
+    private void shot(Minecraft mc, String file)
+    {
+        DevTestUtil.screenshot(mc, name(), file + ".png");
+    }
+
+    private void resize(Minecraft mc, int[] wh)
+    {
+        try
+        {
+            org.lwjgl.opengl.Display.setDisplayMode(new org.lwjgl.opengl.DisplayMode(wh[0], wh[1]));
+            java.lang.reflect.Method r = cpw.mods.fml.relauncher.ReflectionHelper.findMethod(
+                Minecraft.class, mc, new String[] {"resize", "func_71370_a"}, int.class, int.class);
+            r.invoke(mc, wh[0], wh[1]);
+        }
+        catch (Exception e)
+        {
+            DevTestResults.value(name(), "resize failed", e.toString());
+        }
+    }
+
+    /** Every point on the gun, every box on screen and apart (GunsmithLayout's rules). */
+    private void layoutChecks(Minecraft mc, String what)
+    {
+        GuiScreen s = mc.currentScreen;
+        int[] b = (int[]) hook(mc, "gunBounds");
+        if (s == null || b == null)
+        {
+            check(what + ": screen", screenName(mc), false, "the Gunsmith screen");
+            return;
+        }
+        StringBuilder off = new StringBuilder();
+        for (GunSlot k : GunSlot.values())
+        {
+            int[] p = (int[]) hook(mc, "point", k);
+            if (p == null || p[0] < b[0] - 1 || p[0] > b[0] + b[2] + 1 || p[1] < b[1] - 1 || p[1] > b[1] + b[3] + 1)
+            {
+                off.append(k).append(' ');
+            }
+        }
+        check(what + ": every line ends on the gun", off.length() == 0 ? "all" : off.toString().trim(), off.length() == 0, "all six");
+        int B = net.decimation.fixes.gunsmith.GunsmithLayout.BOX;
+        StringBuilder bad = new StringBuilder();
+        int[][] boxes = new int[GunSlot.values().length][];
+        for (GunSlot k : GunSlot.values())
+        {
+            int[] x = (int[]) hook(mc, "box", k);
+            boxes[k.ordinal()] = x;
+            if (x == null || x[0] < 4 || x[0] + B > s.width - 4 || x[1] < net.decimation.fixes.gunsmith.GunsmithLayout.TOP
+                || x[1] + B + 10 > s.height - net.decimation.fixes.gunsmith.GunsmithLayout.BOTTOM)
+            {
+                bad.append(k).append(" off screen; ");
+            }
+        }
+        for (int i = 0; i < boxes.length; i++)
+        {
+            for (int j = i + 1; j < boxes.length; j++)
+            {
+                if (boxes[i] != null && boxes[j] != null && Math.abs(boxes[i][0] - boxes[j][0]) < B + 4
+                    && Math.abs(boxes[i][1] - boxes[j][1]) < B + 14)
+                {
+                    bad.append(GunSlot.values()[i]).append('/').append(GunSlot.values()[j]).append(" overlap; ");
+                }
+            }
+        }
+        check(what + ": boxes on screen and apart", bad.length() == 0 ? "ok" : bad.toString(), bad.length() == 0, "ok");
+    }
+
     // ---- server side (run on the server thread through server(Runnable))
 
     private static EntityPlayerMP player()
@@ -465,6 +799,12 @@ public class GunsmithTest extends DevTestMode
 
     private void setup()
     {
+        setup(true, 1);
+    }
+
+    /** The arena and the inventory; held is the hotbar index the client holds (it only reports a change). */
+    private void setup(boolean grip, int held)
+    {
         EntityPlayerMP p = player();
         WorldServer w = (WorldServer) p.worldObj;
         w.getGameRules().setOrCreateGameRule("doMobSpawning", "false");
@@ -481,13 +821,13 @@ public class GunsmithTest extends DevTestMode
         p.inventory.mainInventory[2] = stack("deci:4x", 2);
         p.inventory.mainInventory[3] = stack("deci:reddot", 1);
         p.inventory.mainInventory[4] = stack("deci:arSuppressor", 1);
-        p.inventory.mainInventory[5] = stack("deci:foregrip", 1);
+        p.inventory.mainInventory[5] = grip ? stack("deci:foregrip", 1) : null;
         p.inventory.mainInventory[6] = m4Paint == null ? null : new ItemStack(m4Paint);
         p.inventory.mainInventory[7] = akPaint == null ? null : new ItemStack(akPaint);
         p.inventory.mainInventory[8] = tracer == null ? null : new ItemStack(tracer);
         p.inventory.mainInventory[9] = stack("deci:asval", 1);
         p.inventory.mainInventory[10] = stack("deci:aug1", 1);
-        p.inventory.currentItem = 1;
+        p.inventory.currentItem = held;
         p.inventoryContainer.detectAndSendChanges();
         DevTestResults.value(name(), "paints and tracer", m4Paint + ", " + akPaint + ", " + tracer + ", skin " + wantSkin);
     }
