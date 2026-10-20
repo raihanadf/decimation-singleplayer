@@ -13,6 +13,17 @@ class MenuDetailsTest
         assertEquals(3, MenuDetails.get(MenuDetails.MULTIPLAYER).slides.length);
         assertEquals("detail_multiplayer2", MenuDetails.get(MenuDetails.MULTIPLAYER).slides[2].picture);
         assertEquals("Open Community", MenuDetails.get(MenuDetails.MULTIPLAYER).action);
+        for (MenuDetails.Slide s : MenuDetails.get(MenuDetails.MULTIPLAYER).slides)
+        {
+            assertEquals(3, s.lines.length, s.heading);                         // what it is, what you do, how it works
+            for (String l : s.lines)
+            {
+                for (String word : new String[] {"relay", "port", "server", "LAN", "mod", "IPv6"})
+                {
+                    assertFalse(l.toLowerCase().contains(word.toLowerCase()), "no developer words: " + l);
+                }
+            }
+        }
         assertEquals(2, MenuDetails.get(MenuDetails.COMING).slides.length);         // fewer promises: what is being built
         assertEquals(0, MenuDetails.get(MenuDetails.UPDATES).slides.length);        // the release list instead
         assertNull(MenuDetails.get("website"));                                     // the website panel opens the site

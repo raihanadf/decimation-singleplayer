@@ -37,7 +37,7 @@ public class MenuNews
 
     /** id, title, line (null: the release check's), address. */
     private static final String[][] PANELS = {
-        {"multiplayer", "Multiplayer", "NEW: host your world, join others", MenuDetails.ADDRESS + MenuDetails.MULTIPLAYER},
+        {"multiplayer", "Multiplayer", "NEW: play your world with friends", MenuDetails.ADDRESS + MenuDetails.MULTIPLAYER},
         {"update", "Updates", null, MenuDetails.ADDRESS + MenuDetails.UPDATES},
         {"website", "Website", "Download, install and server guides", SITE},
         {"coming", "Coming soon", "What we are building next", MenuDetails.ADDRESS + MenuDetails.COMING},

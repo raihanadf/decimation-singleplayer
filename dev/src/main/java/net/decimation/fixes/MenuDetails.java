@@ -55,13 +55,15 @@ public final class MenuDetails
     {
         if (MULTIPLAYER.equals(id))
         {
-            return new Detail(MULTIPLAYER, "Multiplayer", "NEW: host your world, join others", "Open Community",
-                new Slide("detail_multiplayer0", "Host your world", "Esc menu, Host Online: friends join through",
-                          "our relay, no port forwarding."),
-                new Slide("detail_multiplayer1", "Join from the Community page", "Worlds hosted by players, with their mods",
-                          "and ping. Join with one click."),
-                new Slide("detail_multiplayer2", "Your world stays yours", "It runs on your computer and closes when",
-                          "you quit. Up to 8 players."));
+            // for players, not developers (user, 21 Oktober 2026: "what the feat, what they do, how it work but dont use
+            // technical like dev we use"); the pictures show the game, not the new screens ("dont expose the new feat")
+            return new Detail(MULTIPLAYER, "Multiplayer", "NEW: play your world with friends", "Open Community",
+                new Slide("detail_multiplayer0", "Play together", "Bring up to 7 friends into your own world.",
+                          "Explore the cities, find loot and fight the", "infected side by side."),
+                new Slide("detail_multiplayer1", "Open your world to friends", "Press Esc and choose Host Online. Your world",
+                          "shows up on the Community page, where your", "friends can find it and join with one click."),
+                new Slide("detail_multiplayer2", "Your world stays yours", "The world stays on your computer and is saved",
+                          "as usual. When you leave, your friends leave", "with you. Nothing to set up."));
         }
         if (COMING.equals(id))
         {
@@ -120,7 +122,7 @@ public final class MenuDetails
      */
     static int[] layout(int width, int height, boolean pictures)
     {
-        int other = 108;                                       // title, line, dots, heading, two lines, buttons, margins
+        int other = 114;                                       // title, line, dots, heading, three lines, buttons, margins
         int pw = Math.max(220, Math.min(340, width - 60));
         int picW = pictures ? pw - 20 : 0, picH = picW * 9 / 16;
         if (pictures && other + picH > height - 16)
