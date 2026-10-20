@@ -326,6 +326,7 @@ public class DecimationWorldGen
         net.decimation.fixes.LootPools.load(configDir);
         net.decimation.fixes.Protection.load(configDir);
         net.decimation.fixes.hosting.OptionalMods.install(); // joiners without the voice chat jar (bug.md)
+        net.decimation.fixes.gunsmith.GunsmithGuiHandler.install(); // the attach key opens the Gunsmith screen
         if (cpw.mods.fml.common.FMLCommonHandler.instance().getSide().isClient())
         {
             net.decimation.fixes.Updater.check();     // the menu asks once a newer release is known (UpdatePrompt)
