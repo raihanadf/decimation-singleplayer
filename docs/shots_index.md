@@ -1727,8 +1727,8 @@ Production client with OptiFine HD U E7 (the brother's laptop setup), AKM with t
   `mainmenu_home.png` (854 x 480) and `mainmenu_home_1440.png` (1440 x 810): the corner redone to FURY's banner: a dark
   banner over the bottom half of the corner square fading out at its top and left, the soldier waist up with a red glow
   and red light, his rifle low, red smoke and black splatter behind, our logo, "JOIN THE REMNANT", a tiny line and the
-  address on the right; at 1440 x 810 it sits clear of the news panels, at 854 x 480 its top touches the bottom of the
-  Coming soon panel. The Multiplayer panel shows three survivors in a street (mp_src/together). `mainmenu_popup_
+  address on the right; at 1440 x 810 it sits clear of the news panels, at 854 x 480 the soldier's helmet and our logo
+  sit over the lower right of the Coming soon panel's picture (seen again in the prerelease sheet, 21 Oktober 2026). The Multiplayer panel shows three survivors in a street (mp_src/together). `mainmenu_popup_
   multiplayer.png` (1440 x 810): the popup's first slide: two survivors, backs to the camera, one with a backpack,
   facing three infected down a city street; "Play together", "Bring up to 7 friends into your own world. Explore the
   cities, find loot and fight the infected side by side."; red "Open Community", Close.

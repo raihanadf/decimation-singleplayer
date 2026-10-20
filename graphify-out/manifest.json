@@ -325,9 +325,9 @@
     "semantic_hash": "0145e0863788d451e8ae4273d3c2abdd"
   },
   "docs/shots_index.md": {
-    "mtime": 1792525420.4661467,
-    "ast_hash": "a759a7f16fcef61887940b73db8a13d9",
-    "semantic_hash": "a759a7f16fcef61887940b73db8a13d9"
+    "mtime": 1792525543.4241912,
+    "ast_hash": "aab4a8fcefda6110d1526b3c423a4102",
+    "semantic_hash": "aab4a8fcefda6110d1526b3c423a4102"
   },
   "docs/interior_spec.md": {
     "mtime": 1791385593.9436893,
@@ -1790,9 +1790,9 @@
     "semantic_hash": "6171606ef61617ea7f40a4377dc577f9"
   },
   "docs/main_menu.md": {
-    "mtime": 1792524158.3348374,
-    "ast_hash": "73ec26eaeaf2869d0d7f75211e7a4f68",
-    "semantic_hash": "73ec26eaeaf2869d0d7f75211e7a4f68"
+    "mtime": 1792525543.4250393,
+    "ast_hash": "fab87d51d86eb0a74cd9b34cb8a820bd",
+    "semantic_hash": "fab87d51d86eb0a74cd9b34cb8a820bd"
   },
   "dev/src/main/java/net/decimation/fixes/MenuContinue.java": {
     "mtime": 1792442925.0351672,

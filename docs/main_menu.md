@@ -260,6 +260,10 @@ that we remove before (fury) and learn that design and after that we make our ve
     words: MenuDetailsTest guards it); pictures of the game with two or three people (tools/site/mpshots.tsv: survivors
     against infected, three friends in a city street, two heading out on the highway), also for the Multiplayer panel
     and Coming soon's first slide; no picture of the new screens.
+  - Small windows: at 854 x 480 the banner still covers the lower right of the Coming soon panel (the soldier's helmet
+    and our logo over its picture). Decimation draws the corner 150 x 150 GUI units at every window size, so FURY did
+    the same there; keeping it clear needs a smaller corner on short screens (a change to the corner drawing). Open:
+    the user's choice.
 
 ## 3. Code map
 
