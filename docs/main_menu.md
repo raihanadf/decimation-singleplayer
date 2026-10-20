@@ -262,8 +262,9 @@ that we remove before (fury) and learn that design and after that we make our ve
     and Coming soon's first slide; no picture of the new screens.
   - Small windows: at 854 x 480 the banner still covers the lower right of the Coming soon panel (the soldier's helmet
     and our logo over its picture). Decimation draws the corner 150 x 150 GUI units at every window size, so FURY did
-    the same there; keeping it clear needs a smaller corner on short screens (a change to the corner drawing). Open:
-    the user's choice.
+    the same there; keeping it clear needs a smaller corner on short screens (a change to the corner drawing). User,
+    21 Oktober 2026: keep it as it is ("i see its better now"; no shrinking, no hiding). FURY's own pictures stay in
+    the untouched original jar and its backup (donor_rank_0.png, donor_rank_1.png) if they are ever wanted back.
 
 ## 3. Code map
 
