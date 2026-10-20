@@ -815,11 +815,7 @@ public final class Deci
             @Override
             public void o(String address) // ArticlePanel.openUrl: our in-game addresses open a screen, not the browser
             {
-                if (net.decimation.fixes.MenuNews.COMMUNITY.equals(address))
-                {
-                    net.decimation.fixes.hosting.CommunityList.open(net.minecraft.client.Minecraft.getMinecraft());
-                }
-                else
+                if (!net.decimation.fixes.MenuNews.open(address))
                 {
                     super.o(address);
                 }
@@ -870,6 +866,14 @@ public final class Deci
     public static net.minecraft.client.gui.GuiButton menuButton(int id, int x, int y, int w, int h, String label, String tooltip)
     {
         return new deci.d.f(id, x, y, w, h, label, tooltip, java.awt.Color.black);
+    }
+
+    /** The same in a colour (DeciMenuButton.setColor, deci.d.f.d: -44976 is the red of Decimation's question box). */
+    @cpw.mods.fml.relauncher.SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)
+    public static net.minecraft.client.gui.GuiButton menuButton(int id, int x, int y, int w, int h, String label, String tooltip,
+                                                                int colour)
+    {
+        return new deci.d.f(id, x, y, w, h, label, tooltip, java.awt.Color.black).d(colour);
     }
 
     /** The addresses of the menu's two red text links top right (ClientResources deci.b.c.aZ and bb, once Discord and Twitter). */

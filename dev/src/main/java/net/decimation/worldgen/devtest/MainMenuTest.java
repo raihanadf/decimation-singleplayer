@@ -22,6 +22,12 @@ public class MainMenuTest extends DevTestMode
     private int step, ticks;
     private int[] first;
     private IntegratedServer stopping;
+    /** The news panels with a popup (Multiplayer, Updates, Coming soon) and what each must show. */
+    private static final int[] POPUPS = {0, 1, 3};
+    private static final String[][] POPUP_WANT = {{"Multiplayer", "3", "multiplayer"}, {"Updates", "0", "updates"},
+                                                  {"Coming soon", "2", "coming"}};
+    private net.minecraft.client.gui.GuiScreen home;
+    private int popup;
 
     public boolean client(Minecraft mc)
     {
@@ -59,16 +65,16 @@ public class MainMenuTest extends DevTestMode
                 {
                     String[] parts = panels.get(i).split(" \\| ", -1);
                     titles.append(i == 0 ? "" : ", ").append(parts[0]);
-                    // Multiplayer opens the in-game Community list (user, 18 Oktober 2026), the others a web page
+                    // Multiplayer, Updates and Coming soon open their detail popup (user, 21 Oktober 2026), Website its page
                     filled &= parts.length == 3 && !parts[1].isEmpty()
-                              && parts[2].startsWith(i == 0 ? net.decimation.fixes.MenuNews.COMMUNITY : "https://");
+                              && parts[2].startsWith(i == 2 ? "https://" : net.decimation.fixes.MenuDetails.ADDRESS);
                 }
                 boolean order = filled;
                 for (int i = 0; order && i < TITLES.length; i++)
                 {
                     order = panels.get(i).startsWith(TITLES[i] + " | ");
                 }
-                DevTestResults.check(name(), "news panels", titles, order, "Multiplayer (in-game list), Updates, Website, Coming soon, each with a line and an address");
+                DevTestResults.check(name(), "news panels", titles, order, "Multiplayer, Updates, Website, Coming soon, each with a line and an address (popups but Website)");
                 // the Updates panel says what the release check did; a dev or test build never looks (fixes/Updater.offersUpdates)
                 String updates = "";
                 for (String p : panels)
@@ -139,24 +145,83 @@ public class MainMenuTest extends DevTestMode
                     return true; // the fade is over
                 }
                 DevTestUtil.screenshot(mc, name(), "mainmenu_next");
-                Deci.openNewsPanel(mc.currentScreen, 0); // what a click on the Multiplayer panel does
-                step = 5;
+                home = mc.currentScreen;
+                popup = 0;
+                step = 7;
                 ticks = 0;
                 return true;
-            case 5:
+            case 7:
+                // each detail popup (docs/main_menu.md 2h): what a click on its panel does, its slides, arrows and Close
+                if (ticks == 1)
+                {
+                    Deci.openNewsPanel(home, POPUPS[popup]);
+                    return true;
+                }
+                if (ticks < 30)
+                {
+                    return true;                           // the picture loads, the popup settles
+                }
+                String[] want = POPUP_WANT[popup];
+                net.minecraft.client.gui.GuiScreen open = mc.currentScreen;
+                boolean isPopup = open instanceof net.decimation.fixes.MenuDetail;
+                net.decimation.fixes.MenuDetails.Detail d = isPopup ? ((net.decimation.fixes.MenuDetail) open).detail() : null;
+                String seen = d == null ? (open == null ? "none" : open.getClass().getName()) : d.title + ", " + d.slides.length + " slides";
+                DevTestResults.check(name(), want[0] + " panel opens its popup", seen, (want[0] + ", " + want[1] + " slides").equals(seen),
+                                     want[0] + ", " + want[1] + " slides");
+                DevTestUtil.screenshot(mc, name(), "mainmenu_popup_" + want[2]);
+                if (isPopup && d.slides.length > 1)
+                {
+                    net.decimation.fixes.MenuDetail m = (net.decimation.fixes.MenuDetail) open;
+                    DevTestUtil.click(open, DevTestUtil.byId(open, 9502));             // the right arrow
+                    DevTestResults.check(name(), want[0] + " arrow", "slide " + m.slide(), m.slide() == 1, "slide 1");
+                }
+                if (isPopup && "Multiplayer".equals(want[0]))
+                {
+                    DevTestUtil.click(open, DevTestUtil.byId(open, 9503));             // Open Community
+                    step = 8;
+                    ticks = 0;
+                    return true;
+                }
+                if (isPopup)
+                {
+                    DevTestUtil.click(open, DevTestUtil.byId(open, 9504));             // Close
+                    DevTestResults.check(name(), want[0] + " Close", mc.currentScreen == home ? "the menu" : String.valueOf(mc.currentScreen),
+                                         mc.currentScreen == home, "back on the menu");
+                }
+                next();
+                return true;
+            case 8:
                 if (!Deci.isCommunityScreen(mc.currentScreen) && ticks < 20 * 15)
                 {
                     return true; // the list is fetched on its own thread
                 }
-                DevTestResults.check(name(), "Multiplayer panel opens the Community list",
+                DevTestResults.check(name(), "Multiplayer popup opens the Community list",
                                      mc.currentScreen == null ? "none" : mc.currentScreen.getClass().getName(),
                                      Deci.isCommunityScreen(mc.currentScreen), "GuiMenuCommunityServers (deci.i.j)");
-                mc.displayGuiScreen(Deci.homeMenu());
-                DevAutoTest.keepScreen = false;
-                step = 6;
-                return false;
+                mc.displayGuiScreen(home);
+                next();
+                return true;
             default:
                 return false;
         }
+    }
+
+    /** The next popup, or the end: back on a fresh menu. */
+    private void next()
+    {
+        ticks = 0;
+        if (++popup < POPUPS.length)
+        {
+            step = 7;
+            return;
+        }
+        mc().displayGuiScreen(Deci.homeMenu());
+        DevAutoTest.keepScreen = false;
+        step = 9;
+    }
+
+    private static Minecraft mc()
+    {
+        return Minecraft.getMinecraft();
     }
 }
