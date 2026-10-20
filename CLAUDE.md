@@ -1245,7 +1245,9 @@ of the last session:
   Main menu 2h (21 Oktober 2026, docs/main_menu.md 2h): news panel popups (fixes/MenuDetail, MenuDetails), Discord in
   the links (the user's invite), our footer (BoehMod credited on the website only), corner art of our own from a real
   NPC render (dev test cornerart, menu_assets.py corner(), fixes/MenuCorner). menu_assets.py now also writes the footer
-  logo, the popup pictures and the corner from docs/shots sources: run it after changing any of them.
+  logo, the popup pictures and the corner from docs/shots sources: run it after changing any of them. Trap (the user's
+  crash, bug.md): a click on Decimation's panels runs inside DeciScreen.mouseClicked's loop over them: never change
+  screens or re-init the menu there (next tick), and test clicks the way a mouse makes them (DevTestUtil.clickAt).
   RELEASE 0.65.0 published 20 Oktober 2026 10:55 (pre-release, the first from the prerelease branch: tag 0.65.0 on
   14830b9; sha256 1c604032..., GitHub's asset digest equal; notes RELEASE_NOTES_0.65.0.md; jar kept in
   dist/previous/onejar-0.65.0). Checked after: public download 251,272,285 bytes, site Download 0.65.0 at 11:11 (ISR

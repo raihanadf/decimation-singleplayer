@@ -81,6 +81,10 @@ history of what the user asked: docs/main_menu.md sections 1 to 2f.
 - Work that runs every frame doing more than reading state: menu and HUD code runs each frame.
 - Pressing a button with DevTestUtil.press: it calls actionPerformed directly and skips Forge's ActionPerformedEvent,
   so our handlers never see it; DevTestUtil.click clicks like a player.
+- Testing a news panel (or any of Decimation's panels) through a shortcut: a real click arrives inside
+  DeciScreen.mouseClicked's loop over the panels, and only on a panel hovered in the last frame. Draw the screen with
+  the mouse over it, then DevTestUtil.clickAt. Never change screens or re-init a DeciScreen inside that loop: switch on
+  the next tick (Minecraft.func_152344_a). bug.md "Clicking a news popup crashed the game" (the user found it).
 - Calling a static method of a GuiScreen subclass from a unit test: GuiScreen's static init needs LWJGL (not on the
   test classpath); keep testable logic in a plain class (UpdatePrompt.screenLabels for UpdateScreen).
 

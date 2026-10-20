@@ -10,6 +10,22 @@ not something we introduced or need to fix) see `documentation.md`.
 
 ## Open
 
+### Clicking a news popup crashed the game (found by the user 21 Oktober 2026 01:40, FIXED main 089edfd, prerelease)
+- User: "when i click the pop up, its crashed". Crash reports 01:40:26 and 01:40:52: ConcurrentModificationException in
+  DeciScreen.mouseClicked (deci.d.i), screen MenuDetail.
+- Cause: a news panel's click arrives inside DeciScreen.mouseClicked's loop over the menu's panels (eX); ArticlePanel
+  calls openUrl, our MenuNews.open opened MenuDetail at once, and MenuDetail.initGui re-initialised the menu behind it
+  (setWorldAndResolution: DeciScreen.initGui clears eX, MenuNews adds the four panels again) while that loop was still
+  running. The last panel (Coming soon) happened not to throw: the loop ended.
+- Why the tests missed it: mainmenu opened the popups with Deci.openNewsPanel, which calls openUrl directly, outside
+  that loop. ArticlePanel takes a click only when it was hovered in the last drawn frame (field es).
+- Fix: MenuDetail.open switches screens on the next tick (Minecraft.func_152344_a), after Decimation's loop; initGui
+  re-inits the menu behind only when the window size changed. mainmenu now draws the menu with the mouse over the panel
+  and clicks it through GuiScreen.mouseClicked (DevTestUtil.clickAt): RED first ("Multiplayer panel click:
+  java.util.ConcurrentModificationException", the same for Updates), then all PASS on main and prerelease.
+- Lesson (skill decimation-main-menu): test a click the way a mouse makes it; shortcuts past Decimation's loops hide
+  crashes.
+
 ### Dev client and main's test jars offered the 0.65.0 pre-release as an update (found 20 Oktober 2026, FIXED main 68ecf7a, prerelease 23605eb)
 - User (dev client after 0.65.0 was published, screenshot): the home menu showed Update instead of Play, the Updates
   panel "Release check failed, see GitHub" and Decimation's corner "New update available! Update from the Options menu!".

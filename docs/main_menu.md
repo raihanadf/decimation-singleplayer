@@ -239,6 +239,8 @@ that we remove before (fury) and learn that design and after that we make our ve
     slides, arrow, Close, Multiplayer's Open Community, the corner opens Discord; menupages: popup lines, footer texts.
     All PASS on main and prerelease (prerelease: Updates and Coming soon only). The corner check never ran RED.
   - Pre-release jars drop the Multiplayer popup's pictures with news_multiplayer.png (tools/linecheck.py STRIP).
+  - The user's first click crashed the game (bug.md "Clicking a news popup crashed the game"): fixed in main 089edfd;
+    mainmenu now clicks the panels like a mouse.
 
 ## 3. Code map
 
