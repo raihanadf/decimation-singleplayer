@@ -1723,3 +1723,17 @@ Production client with OptiFine HD U E7 (the brother's laptop setup), AKM with t
   480): the popups in game: Multiplayer with the Host Online page, arrows, three dots, "Host your world", red "Open
   Community" and Close; Updates in a dev build ("Updates off: dev build (main)", "This build does not check for
   updates", red "All releases"); Coming soon with the Community row on a dark band, two dots, "Multiplayer in 1.0.0".
+- Second round (21 Oktober 2026 02:40, after the user's "learn again from old design detail by detail"):
+  `mainmenu_home.png` (854 x 480) and `mainmenu_home_1440.png` (1440 x 810): the corner redone to FURY's banner: a dark
+  banner over the bottom half of the corner square fading out at its top and left, the soldier waist up with a red glow
+  and red light, his rifle low, red smoke and black splatter behind, our logo, "JOIN THE REMNANT", a tiny line and the
+  address on the right; at 1440 x 810 it sits clear of the news panels, at 854 x 480 its top touches the bottom of the
+  Coming soon panel. The Multiplayer panel shows three survivors in a street (mp_src/together). `mainmenu_popup_
+  multiplayer.png` (1440 x 810): the popup's first slide: two survivors, backs to the camera, one with a backpack,
+  facing three infected down a city street; "Play together", "Bring up to 7 friends into your own world. Explore the
+  cities, find loot and fight the infected side by side."; red "Open Community", Close.
+- `mp_src/together.png`, `mp_src/fight.png`, `mp_src/explore.png` (1280 x 720, cut from 1440 x 810 shots of the dev test
+  siteshots with tools/site/mpshots.tsv in a seed 1 world; the top 90 rows left out: Decimation's tip "Press 'E' to open
+  your inventory" showed there): three armed survivors in different gear standing together on the asphalt of a city
+  street, low buildings, street lights and towers behind; two survivors seen from behind facing three infected down the
+  same street; two survivors with backpacks walking away up the highway between hedges toward a pylon.

@@ -241,6 +241,25 @@ that we remove before (fury) and learn that design and after that we make our ve
   - Pre-release jars drop the Multiplayer popup's pictures with news_multiplayer.png (tools/linecheck.py STRIP).
   - The user's first click crashed the game (bug.md "Clicking a news popup crashed the game"): fixed in main 089edfd;
     mainmenu now clicks the panels like a mouse.
+- Second round (user, 21 Oktober 2026 02:04, shots of the corner at a big and a small window: "it still not similar
+  like previous ones, not well detail. please learn again from old design detail by detail deeply"; Multiplayer: "more
+  descriptive ... what the feat, what they do, how it work but dont use technical like dev we use ... show 2-3 mob
+  in-game as preview so you dont expose the new feat at all"):
+  - FURY measured (donor_rank_0 alpha): a landscape banner over the BOTTOM HALF of the square only (alpha from row 397,
+    solid from x 232 to the right edge, soft top and left fades), opaque dark with a red smoke band, black splatter and
+    drips at the right edge, thin diagonal streaks; the soldier a close up from the waist up, cut by the bottom edge,
+    red light and a red rim glow, rifle across his body toward the words; the words one tight centred stack in x 441 ..
+    724, y 486 .. 706 (the pulse layer's box): a huge brush title, "JOIN THE FURY" white and nearly as wide, a tiny line,
+    the address in red and white. Drawn 150 x 150 GUI units, so the banner is about 136 x 75 units in the corner.
+  - My first corner had none of that: a full body soldier, loose blobs over most of the square, oversized words stacked
+    by font size (MinecraftStandard's letters are about 1.4 times the size given: "REMNANT" ran into the small lines);
+    in small windows it covered the Coming soon panel. Redone to FURY's layout (menu_assets.py corner()): the banner,
+    our soldier waist up in the solid part with red light and glow, our logo as the title, "JOIN THE REMNANT", "NEWS,
+    HELP AND PLAYERS ON OUR DISCORD", "discord.gg/" red and the code white; every line placed by its measured box.
+  - Multiplayer popup: three lines a slide for players (what it is, what you do, how it works; no relay, port, server
+    words: MenuDetailsTest guards it); pictures of the game with two or three people (tools/site/mpshots.tsv: survivors
+    against infected, three friends in a city street, two heading out on the highway), also for the Multiplayer panel
+    and Coming soon's first slide; no picture of the new screens.
 
 ## 3. Code map
 

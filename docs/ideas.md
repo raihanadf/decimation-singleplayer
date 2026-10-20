@@ -124,3 +124,11 @@ every item below that is not DONE.
 24. **Official server list of community run dedicated servers, ranked by upvotes** (user, 20 Oktober 2026; 21 Oktober:
     "yeah maybe"): Global Server on the status page follows that list (fixes/MenuStatus already does once real rows
     exist). Not designed yet (roadmap UI 4, C).
+25. **Gun customization screen, Tarkov style** (user, 21 Oktober 2026: "later i want to add new feat again for gun
+    arsenal, we have gun customization UI instead using 'craft' UI like we have now when click I button, so its look like
+    tarkov style customization UI"; reference picture in the chat, a modern shooter's gunsmith screen): the gun large in
+    the middle on a dark background, a label at each slot pointing at its place on the gun (Optics, Stocks, Foregrips,
+    Magazines, Rear Grips, Forend Device), tabs Attachments and Appearance top left, Quit top right, Clear Attachments and
+    Randomize Attachments bottom right. It would replace Decimation's crafting style attachment screen (AttachmentScreen
+    deci/g/a, docs/decimation_code/weapons.md) [not verified: which key opens it today and what that screen shows; read
+    before designing]. Later, not designed.

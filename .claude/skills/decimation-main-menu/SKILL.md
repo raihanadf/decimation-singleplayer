@@ -66,6 +66,11 @@ history of what the user asked: docs/main_menu.md sections 1 to 2f.
 11. Our name and links everywhere in the menu; BoehMod is credited on the website only (user, 21 Oktober 2026).
 12. Art of our own comes from the game itself: the corner's soldier is a real NPC drawn by dev test cornerart, the
     layout learned from Decimation's FURY art; mock up on the user's own screenshot first.
+13. Learning from a reference means measuring it: where its content sits (alpha boxes), what is solid and what fades,
+    the size of each element against the whole, then copying the layout; a look by eye missed that FURY is a banner
+    over the bottom half only (user: "learn again from old design detail by detail deeply").
+14. Player facing words: what it is, what you do, how it works, in players' words (no relay, port, server); previews
+    show the game, never a feature's new screens before it ships (user, 21 Oktober 2026).
 
 ## Common mistakes
 - Testing after `mainmenu` or `menupages` in the same live game: they leave the world, the next mode waits for a
