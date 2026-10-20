@@ -176,6 +176,10 @@ public class DecimationWorldGen
             cpw.mods.fml.common.FMLCommonHandler.instance().bus().register(news);
             // "Continue" under Play: the last played world in one click
             net.minecraftforge.common.MinecraftForge.EVENT_BUS.register(new net.decimation.fixes.MenuContinue());
+            // Server Status rows from real sources: Global Server, Community Server, Download (fixes/MenuStatus)
+            net.decimation.fixes.MenuStatus status = new net.decimation.fixes.MenuStatus();
+            net.minecraftforge.common.MinecraftForge.EVENT_BUS.register(status);
+            cpw.mods.fml.common.FMLCommonHandler.instance().bus().register(status);
             // a newer release: the menu asks Update or Later (never forced; the release page where it cannot swap)
             net.decimation.fixes.UpdatePrompt prompt = new net.decimation.fixes.UpdatePrompt();
             net.minecraftforge.common.MinecraftForge.EVENT_BUS.register(prompt);
@@ -200,6 +204,15 @@ public class DecimationWorldGen
             net.decimation.fixes.hosting.CommunityList community = new net.decimation.fixes.hosting.CommunityList();
             net.minecraftforge.common.MinecraftForge.EVENT_BUS.register(community);
             cpw.mods.fml.common.FMLCommonHandler.instance().bus().register(community); // disconnects
+            // Server Status: Community Server is up when our relay answers its list (fixes/MenuStatus; main only)
+            net.decimation.fixes.MenuStatus.community = new java.util.concurrent.Callable<Boolean>()
+            {
+                public Boolean call() throws Exception
+                {
+                    new net.decimation.fixes.hosting.RelayClient(net.decimation.fixes.hosting.RelayClient.base()).list();
+                    return true;
+                }
+            };
         }
         cpw.mods.fml.common.FMLCommonHandler.instance().bus().register(new net.decimation.fixes.WorldClock());
         // throwables left a stack of 0 in the hand that threw forever (bug.md "The last grenade never runs out")
