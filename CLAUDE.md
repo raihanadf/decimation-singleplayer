@@ -54,7 +54,12 @@ together in 1.0.0, so no jar a player downloads before 1.0.0 may hold multiplaye
   (prerelease 0a2f601), HumanLayers + PatchHumanLayers source (+ npclook, npcdraw, bench layers=off; prerelease e53bad7), EntityLighting + PatchLightLeaks
   source (+ lightleak; 972c833), ScopeZoom OptiFine guard and glass wipe (+ scopeperf checks; 0af0eee), ModelBatch +
   PatchModelBatch source (+ gunbatch, npcdraw fight; e250f0e), city stall fixes: DeciBiome.decorate, BlockBatch, Keys,
-  Highways lookups (+ genwalk, pregen walk and light check, tools/genprof.py; 9861d61), Continue tooltip (14830b9).
+  Highways lookups (+ genwalk, pregen walk and light check, tools/genprof.py; 9861d61), Continue tooltip (14830b9),
+  first sight warm up: ModelWarmup, Deci gear model accessors, SafezoneSites fill timing (+ refugevisit; 91ef15a). The
+  worktree's own dev client generated no structures at all on 20 Oktober 2026 (no "planned at" lines even with main's
+  city pack copied into its run folder; cause not found): check prerelease code with a one jar of the worktree's build in
+  the production client (`python3 tools/onejar.py dev/build/libs/<exact jar> OUT` from the worktree; pick the jar by
+  name, the folder holds older builds).
   RELEASING FROM IT (first done 20 Oktober 2026 for 0.65.0, docs/production_test.md):
   1. Base jar: worktree dist/Decimation.jar = main's dist/Decimation.jar minus
      assets/deci/textures/gui/menu/news_multiplayer.png (zip -d). Check first that every call the base jar's patched

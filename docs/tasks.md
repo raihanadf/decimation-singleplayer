@@ -79,7 +79,7 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [ ] friend dropped once after 39 min (relay closed from his side): needs his log to know why
 - [~] server stalls while new city areas generate: decoration ticks at once, structure writes lit once, highway lookups (dev; walk per city row 222 to about 103 ms, worst 466 to 209; dev client worst tick 690 to 403 ms); carried to prerelease 9861d61, released in 0.65.0; open: the user's own walk in a new world
 - [x] GL "Stack overflow" on the host: Decimation renderers left matrices pushed, fixed (fixes/GlStackGuard), released in 0.65.0
-- [x] refuge first visit spike: server fill 3 to 10 ms (not a stall); client first frame up to 941 ms (production) from first use of textures and gear models, now 80 ms with fixes/ModelWarmup (dev test refugevisit, bug.md "First sight of armed NPCs stalls a frame")
+- [x] refuge first visit spike: server fill 3 to 10 ms (not a stall); client first frame up to 941 ms (production) from first use of textures and gear models, now 80 ms with fixes/ModelWarmup (dev test refugevisit, bug.md "First sight of armed NPCs stalls a frame"); carried to prerelease 91ef15a (one jar checked: 81 / 42 ms)
 - [ ] user: walk into a refuge and a fight with the warm up build (it runs at the main menu for about 2 s)
 - [x] FPS falls over a session: busy intro thread, prop sound loops, dead update fetch fixed, released in 0.65.0; user after a real session: "fps felt stable" (20 Oktober 2026)
 - [x] last grenade never runs out (0 stacks): fixes/EmptyStacks, dev test throwables

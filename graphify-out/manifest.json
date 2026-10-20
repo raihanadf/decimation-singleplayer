@@ -110,9 +110,9 @@
     "semantic_hash": "de153d1f8408971d6190e16a7d4256f9"
   },
   "CLAUDE.md": {
-    "mtime": 1792483070.1944187,
-    "ast_hash": "ce677becb5796b95872d9d4b730959da",
-    "semantic_hash": "ce677becb5796b95872d9d4b730959da"
+    "mtime": 1792484021.7018619,
+    "ast_hash": "ce79f87da16f914d28d648e7405b10cb",
+    "semantic_hash": "ce79f87da16f914d28d648e7405b10cb"
   },
   "DECIMATION_MOD_TASK.md": {
     "mtime": 1784958353.0126374,
@@ -120,9 +120,9 @@
     "semantic_hash": "aa4550575e47e7c1d0b020a51afbb501"
   },
   "bug.md": {
-    "mtime": 1792482999.1564457,
-    "ast_hash": "5e264ec1bc83536e8023e1a2ec06c1f5",
-    "semantic_hash": "5e264ec1bc83536e8023e1a2ec06c1f5"
+    "mtime": 1792484034.1722217,
+    "ast_hash": "4919f83869234e741d638664f554c4e8",
+    "semantic_hash": "4919f83869234e741d638664f554c4e8"
   },
   "create_weapons.md": {
     "mtime": 1791653625.5948887,
@@ -1430,9 +1430,9 @@
     "semantic_hash": "c65a27842aee5ff4b471f84a704c2267"
   },
   "docs/production_test.md": {
-    "mtime": 1792483103.7859368,
-    "ast_hash": "6b34577a711b78250cb12cde03f905ad",
-    "semantic_hash": "6b34577a711b78250cb12cde03f905ad"
+    "mtime": 1792484034.1728992,
+    "ast_hash": "20eedb2408ea1acbf149f2d1527f6839",
+    "semantic_hash": "20eedb2408ea1acbf149f2d1527f6839"
   },
   "dev/src/main/java/net/decimation/worldgen/CityLayout.java": {
     "mtime": 1791899693.3849845,
@@ -1540,9 +1540,9 @@
     "semantic_hash": "294036847a9caffda351bfa855a78636"
   },
   "docs/tasks.md": {
-    "mtime": 1792483070.1947875,
-    "ast_hash": "d72df7b03152e4cc3d35819cd7a5e32d",
-    "semantic_hash": "d72df7b03152e4cc3d35819cd7a5e32d"
+    "mtime": 1792484034.172663,
+    "ast_hash": "053ffc4479dd56b536460df329a77ade",
+    "semantic_hash": "053ffc4479dd56b536460df329a77ade"
   },
   "tools/skillcheck.py": {
     "mtime": 1792098139.5315723,

@@ -1746,6 +1746,8 @@ what each frame after the arrival loaded for the first time.
   residents: dev 36 to 114 ms (was 190 to 635), production 80 / 48 ms (was 941 / 122). Check "no Decimation texture
   loaded at arrival": 40 and 28 without the warm up (FAIL), 0 with it (PASS). Process footprint and graphics memory the
   same within the noise (4.1 to 4.6 GB, 1.1 to 1.5 GB). `-Pwarmup=false` (dev) / `-Ddeciworldgen.warmup=false` turns it off.
+  Carried to prerelease 91ef15a; its one jar in the production client: 140 gear models and 451 textures in 1.1 s, the
+  first frames 81 / 42 ms, all checks PASS.
 - Not done: compiling all model parts ahead. Tried: 25,628 parts in about 1.5 s and the arrival at 38 to 46 ms, but the
   graphics memory went from 1.2 to 2.6 GB (Decimation's display lists, one draw per quad, cost about 9 KB of driver memory
   a quad on this Mac [inferred: 1.4 GB / 160k quads]). Left: about 1,100 part compiles at the first sight of a whole

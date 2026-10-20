@@ -141,3 +141,5 @@ Checked with it: bundled content unpacked, cities generated, no errors (bug.md v
   refuge's 22 residents: 941 ms without it (41 textures, 1,034 parts), 80 ms with it; the second refuge 122 / 48 ms.
   "no Decimation texture loaded at arrival": 38 / 28 FAIL without, 0 / 0 PASS with. Afterwards the 0.65.0 release jar
   went back into mods/ (sha256 1c604032).
+- The same with a one jar of the prerelease build after the carry (91ef15a, base jar without the Multiplayer picture, no
+  hosting classes): 140 gear models and 451 textures in 1.1 s, first frames 81 / 42 ms, every check PASS.
