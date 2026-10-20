@@ -876,7 +876,7 @@ public final class Deci
     @cpw.mods.fml.relauncher.SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)
     public static String[] menuLinks()
     {
-        return new String[] {String.valueOf(deci.b.c.aZ), String.valueOf(deci.b.c.bb)};
+        return new String[] {String.valueOf(deci.b.c.aZ), String.valueOf(deci.b.c.bb), String.valueOf(deci.b.c.bc)};
     }
 
     /** What a click on the index-th news panel does (ArticlePanel.openUrl with its address; tests). */

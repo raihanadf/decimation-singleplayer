@@ -30,6 +30,8 @@ public class MenuNews
 {
     public static final String REPO = "https://github.com/ucilmenangis/decimation-singleplayer";
     public static final String SITE = "https://deciremnant.vercel.app/";
+    /** Our Discord (user, 21 Oktober 2026); the menu's top right link and the My Community popup (PatchMenuTexts). */
+    public static final String DISCORD = "https://discord.com/invite/ZJ47zfXn8H";
     /** The Multiplayer panel's address: opens the in-game Community list (Deci.addNewsPanel), not a web page. */
     public static final String COMMUNITY = "deciremnant:community";
 
