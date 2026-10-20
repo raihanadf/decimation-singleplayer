@@ -146,3 +146,23 @@ InitGuiEvent (no jar patch), its background drawing patched (`RenderUtil.drawMen
   false for everyone now.
 - Since v0.64.1 these say coming soon / Early access (docs/main_menu.md 2c: PatchMenuTexts, PatchOfficialServers,
   fixes/MenuServers; dev test `menupages`).
+
+## 8. Menu music and menu sounds (read 21 Oktober 2026, sounds.json and the code)
+
+- ONE menu song: sound event `gui.menu.music` = the file sounds/gui/menu/music0.ogg of Decimation's assets (57.8 s, 48 kHz,
+  streamed, category music, so the Music slider sets its volume). ClientEventHandler (deci/c/c) holds it as a repeating
+  PositionedSoundRecord (field dI, ClientResources.ai) and ClientEventHandler.onClientTick starts it again whenever no
+  world is loaded and it is not playing, except on the intro screens (GuiIntroJumpscare (deci/i/d), GuiIntroBoehModLogo
+  (deci/i/c)) and while Decimation's own updater downloads. So it loops on every title menu page and stops in a world.
+- Short stings: `gui.menu.intro` (intro.ogg, 7.9 s) and `gui.menu.outro` (outro.ogg, 4.4 s), both played by
+  GuiIntroBoehModLogo; the boot jingle `gui.intro.decimation` (gui/intro/decimation.ogg, 13.1 s) by GuiIntroJumpscare.
+- Hidden leftover of a "Battlegrounds" edition: sounds.json still lists `gui.menu.music_battlegrounds`
+  (gui/menu/music_battlegrounds.ogg) and ClientResources (deci/b/c) keeps it as field aj, but the file is NOT in the jar
+  and nothing plays it. ClientConfigLoader (deci/b/f) writes `isBattlegrounds=false` into decimation_client.properties
+  and never reads it back. The jar still holds the edition's art, unused by any code: textures/gui/menu/
+  banner_battlegrounds.png (ClientResources field ao), banner_intro_battlegrounds.png, background_fade_battlegrounds.png,
+  textures/gui/icon_16x16_battlegrounds.png and icon_32x32_battlegrounds.png; capes and emblems named Battlegrounds.
+- Other music in the jar: the stereo (radio) prop's four songs `block.stereo.music.1` .. `4` (blocks/stereo/music1..4,
+  161, 87, 133 and 88 s; 1 to 3 in category block, 4 in music) and its tuning noises, chosen by the ToggleStereo
+  message in NetworkMessages (deci/aE/a). None of them plays on the menu.
+- Our mod changes none of these sounds.

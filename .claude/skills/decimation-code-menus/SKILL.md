@@ -18,6 +18,7 @@ and in game): skill decimation-main-menu.
 | HUD | IngameHud (deci/g/j), once a frame |
 | loot and gear screen | PlayerInventoryScreen (deci/g/g), GUI id GUI_LOOT |
 | stats shown | fixes/LocalStats, PatchMenuStats |
+| menu music (one song, looped with no world loaded; a Battlegrounds track listed but missing) | ClientEventHandler.onClientTick, ClientResources (deci/b/c); docs/decimation_code/menus.md section 8 |
 | our main menu news and background slideshow | fixes/MenuNews, fixes/MenuBackground, PatchMenuBackground, tools/menu_assets.py (docs/main_menu.md) |
 | our links, name, version, Continue | PatchMenuTexts, fixes/MenuTexts, fixes/MenuContinue (docs/main_menu.md 2b) |
 | official server list rows, map pictures | ServerListPinger.officialServers (deci/k/b.bg) -> fixes/MenuServers (PatchOfficialServers); rows ListElement (deci/d/p); pictures serverbackgrounds/<map>0..7 (menus.md 7b) |
