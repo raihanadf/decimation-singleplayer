@@ -1737,3 +1737,5 @@ Production client with OptiFine HD U E7 (the brother's laptop setup), AKM with t
   your inventory" showed there): three armed survivors in different gear standing together on the asphalt of a city
   street, low buildings, street lights and towers behind; two survivors seen from behind facing three infected down the
   same street; two survivors with backpacks walking away up the highway between hedges toward a pylon.
+- `mp_src/raw/site_mp_together.png`, `site_mp_fight.png`, `site_mp_explore.png` (1440 x 810): the same three shots
+  uncut, as siteshots wrote them, with Decimation's inventory tip in the top left. Cut again from these, never reshoot.
