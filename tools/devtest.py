@@ -24,7 +24,8 @@ LIVE (no game launch per run, docs/roadmap.md "Live dev test mode"):
     python3 tools/devtest.py --live --port=25598 --results=FILE MODE  # a second game on its own live port
 
 --live sends the modes to a game started with `gradlew runClient -Plive`
-(devtest/DevTestLive, 127.0.0.1:25599); if none answers it starts one in the
+(devtest/DevTestLive, 127.0.0.1:25599; the prerelease worktree's own game
+25597, tools/lineports.py); if none answers it starts one in the
 background (log build/live.log) and waits until it is ready. Runs happen
 in the world that is open; -Pkey=value becomes a system property for that
 run. Method body changes reach the open game with --swap; new classes,
@@ -78,7 +79,11 @@ def sheets(shots):
         print("sheet %-8s %s (%d shots)" % (mode, os.path.relpath(out, ROOT), len(ims)))
 
 
-PORT = 25599
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import lineports  # noqa: E402  (each line's checkout has its own live and debug port)
+
+PORT, DEBUG = lineports.ports()
+EXPLICIT = False  # --port=: a game started elsewhere (the production client), never started from here
 LIVE_LOG = os.path.join(ROOT, "build", "live.log")
 
 
@@ -117,13 +122,15 @@ def live_ready(wait):
 
 def run_live(modes, extra, swap, angelica=False, task="runClient", dress=False):
     trace = any(e.startswith("-Ptrace=") for e in extra)
-    if live_send("ping", 5) is None and PORT != 25599:
-        print("no live game on port %d (only the dev client on 25599 is started from here)" % PORT)
+    if live_send("ping", 5) is None and EXPLICIT:
+        print("no live game on port %d (only this checkout's dev client is started from here)" % PORT)
         return False
     if live_send("ping", 5) is None:
         print("no live game: starting one (log %s)..." % os.path.relpath(LIVE_LOG, ROOT))
         os.makedirs(os.path.dirname(LIVE_LOG), exist_ok=True)
         start = ["./gradlew", task, "-q", "-Plive"]
+        if (PORT, DEBUG) != lineports.DEFAULT:  # this line's own ports (tools/lineports.py)
+            start += ["-Pliveport=%d" % PORT, "-Pdebugport=%d" % DEBUG]
         if dress:  # city dressing on (docs/city_dressing.md)
             start += ["-Pdress"]
         windows = [a[len("--window="):] for a in sys.argv if a.startswith("--window=")]
@@ -144,7 +151,8 @@ def run_live(modes, extra, swap, angelica=False, task="runClient", dress=False):
             return False
         print("live game ready after %.0f s" % (time.time() - t0))
     if swap:
-        r = subprocess.run([sys.executable, os.path.join(ROOT, "tools", "hotswap.py")], capture_output=True, text=True)
+        r = subprocess.run([sys.executable, os.path.join(ROOT, "tools", "hotswap.py"), "--port=%d" % DEBUG],
+                           capture_output=True, text=True)
         print("hotswap:", (r.stdout + r.stderr).strip().splitlines()[-1:] or ["?"])
     if not live_ready(1800):
         print("the live game stays busy")
@@ -168,11 +176,12 @@ def run_live(modes, extra, swap, angelica=False, task="runClient", dress=False):
 
 
 def main():
-    global PORT, RESULTS
+    global PORT, RESULTS, EXPLICIT
     args = sys.argv[1:]
     for a in args:  # a second game (the production client as a joiner, docs/player_hosting.md) on its own port
         if a.startswith("--port="):
             PORT = int(a[len("--port="):])
+            EXPLICIT = True
         if a.startswith("--results="):
             RESULTS = a[len("--results="):]
     modes = [a for a in args if not a.startswith("-")]
