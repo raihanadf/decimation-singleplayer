@@ -1692,3 +1692,11 @@ Production client with OptiFine HD U E7 (the brother's laptop setup), AKM with t
   the green Play button (not Update), "v0.64.8 dev" under the DeciRemnant logo, the Updates panel's line "Updates off:
   dev build (main)", Multiplayer, Website and Coming soon panels, the DeciRemnant corner bottom right; no "New update
   available!" text anywhere. The profile card reads Developer, No early access.
+- `update_prompt.png` (21 Oktober 2026, dev test update against the fake release server, docs/main_menu.md 2g): the
+  home menu with Play still green and Decimation's dark question box in the middle: "DeciRemnant 9.9.9 is out" in
+  green, "40 MB. Update now?" and "Later: Settings, View Updates" below, a red torn Later button left and an Update
+  button right; under the logo "v0.58.0" (the test pretends that release), the profile card "Not Supporter :(", the
+  Updates panel "New version 9.9.9 is out".
+- `menupages_status.png` (21 Oktober 2026, dev test menupages, main): the Server/Network Status page: Global Server
+  "Coming soon" in gold, Community Server, Download and Website "Online" in green; Play green on the left, "v0.64.8 dev"
+  under the logo, "Not Supporter :(" on the profile card. (The pre-release shows Community Server "Coming soon" too.)

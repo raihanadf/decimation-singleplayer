@@ -96,7 +96,9 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [x] two lines apart: only release builds look for updates (main 68ecf7a, prerelease 23605eb), own live ports per line (tools/lineports.py), tools/linecheck.py, worktree schematics
 - [ ] user: push main and prerelease (two lines work)
 - [ ] old multiplayer test jars (Mac Prism, wyvern feeb69f0, Desktop d6aea397) offer 0.65.0 as an update: never click it, rebuild from main
-- [ ] main menu B: Server Status rows from real sources (Download from GitHub, Community from the relay, Global from the official list): talk first
+- [x] main menu B: Server Status rows from real sources (MenuStatus; main d5866a3, prerelease 193e50b)
 - [ ] main menu C: official list of community dedicated servers, upvote rating later: design
-- [ ] user: the other main menu fixes and additions
-- [ ] project skill for all main menu work, home menu and in game (user, after B)
+- [x] updates the player's choice: question box Update / Later, release page where the jar cannot be swapped (UpdatePrompt)
+- [x] Supporter back instead of Early access (PatchMenuTexts, three jars)
+- [ ] supporter benefits for donors: who is a supporter, where that list lives (design with the user)
+- [x] project skill decimation-main-menu with the full menu map (docs/main_menu.md 8 to 10)

@@ -149,6 +149,44 @@ Chernarus pictures ("here the chernarus location"). Shots: docs/shots/main_menu_
   welcome box and the window title ("DeciRemnant v0.64.8 dev (Minecraft 1.7.10)"). A release jar is unchanged.
 - Shot docs/shots/main_menu_v0.65.0/mainmenu_home_dev.png (shots_index.md).
 
+## 2g. 20 and 21 Oktober 2026: updates are the player's choice, Supporter back, status rows from real sources
+
+The user's words: "make option when there is update so user can do update or not at that time so they dont force user
+to update their version, if (worse case) the updater is doesnt support on some client, there is link to download new
+jar. for ealry access, rewind it to supporter, it will use for people who donate to me so they got supporter benefit";
+earlier the same day: "download server its take from gituhb release link, and for community server it take status from
+cloudflare, for the offical it take from server list, official mean not from my server, its combined with other
+community dedicated server, and later i want to make rating upvote system in there".
+- **Never forced**: fixes/Updater.required() (what Decimation calls isUpdateRequired, PatchNoUpdate) answers false.
+  Before, a known release put Update in Play's place AND in Resume Game's place in the pause menu, and Play opened the
+  update (GuiMenuBase.addMenuButtons, handleMenuButton case 9); the "New update available!" corner notice went with it.
+- **The question** (fixes/UpdatePrompt): once a launch, on the title menu only (never over a game), after the welcome
+  fade, Decimation's own question box (ConfirmScreen deci/d/s) asks "DeciRemnant X is out / N MB. Update now? / Later:
+  Settings, View Updates" with Later (left, red) and Update. Update opens Decimation's progress screen (the download
+  runs as before); Later leaves the menu as it was, nothing asks again until the next launch. Afterwards the update is
+  one click away: Settings, View Updates (Decimation's button 1000, which UpdateProgress already turned into ours) and
+  the Updates news panel (its click opens the release page).
+- **Where the updater cannot swap the jar** (Updater.canSwap: the game's jar not found): the box says "Download it from
+  GitHub and put it in your mods folder" with Later / Download; Download opens the release's GitHub page (the jar is
+  there). A failed update (fixes/UpdateScreen) shows Try again / Download page / Back. Shot
+  docs/shots/main_menu_v0.65.0/update_prompt.png.
+- **Supporter back**: PatchMenuTexts no longer swaps the supporter texts (My Community popup "★ My Supporter /
+  Personalize your Supporter settings!", its toast "You must be a ★ Supporter to access this!", profile cards "Not
+  Supporter :(", the lounge "Supporters Lounge"). Supporter benefits for the user's donors (who counts as a supporter,
+  where that list lives) are not designed yet: nobody is a supporter while BoehMod's backend is gone.
+- **Server Status rows from real sources** (fixes/MenuStatus): Global Server from the official server list (Coming soon
+  while the list holds only rows that never resolve, else Online when one of its servers answers), Community Server
+  from the relay (main: its /list answers; the pre-release has no relay and says Coming soon), Download from the GitHub
+  release link (HEAD of releases/latest), Website still Decimation's own ping. ServerPinger's Unknown state reads
+  "Coming soon" (PatchMenuTexts, deci/l/a). Checks run on a thread when the page opens, at most once in 30 s. Shot
+  docs/shots/main_menu_v0.65.0/menupages_status.png.
+- Tests: unit UpdaterTest, UpdatePromptTest (lines fit the 200 pixel box, no dashes, the failure screen's buttons),
+  MenuStatusTest; dev tests `update` (now leaves the world like mainmenu: run it after modes that need a player;
+  `choice=later` answers Later then updates from Settings, `noswap=true` plays a game that cannot swap), `menupages`
+  (supporter texts, status rows), `menu`, `mainmenu`. All PASS on main and in the prerelease worktree (Community
+  Server Coming soon there).
+- Next (not designed): the official list as community run dedicated servers with an upvote rating (roadmap UI 4).
+
 ## 3. Code map
 
 | Piece | Job |
@@ -186,9 +224,10 @@ Chernarus pictures ("here the chernarus location"). Shots: docs/shots/main_menu_
 ```bash
 ASM=$(ls ~/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm-debug-all/5.0.3/*/asm-debug-all-5.0.3.jar | head -1)
 javac -cp $ASM -source 8 -target 8 -d build/menutexts_rebuild/cls tools/patches/PatchMenuTexts.java
-java -cp $ASM:build/menutexts_rebuild/cls PatchMenuTexts build/menutexts_rebuild/base.jar build/menutexts_rebuild/texts_out   # 47 texts in 12 classes
+java -cp $ASM:build/menutexts_rebuild/cls PatchMenuTexts build/menutexts_rebuild/base.jar build/menutexts_rebuild/texts_out   # 43 texts in 14 classes (21 Oktober 2026)
 (cd build/menutexts_rebuild/texts_out && zip <jar> deci/i/a.class deci/i/e.class deci/i/g.class deci/i/i.class deci/i/j.class \
-     deci/i/k.class deci/i/l.class deci/d/k.class deci/b/c.class deci/m/b.class deci/i/h.class deci/d/p.class)   # the three jars
+     deci/i/k.class deci/i/l.class deci/d/k.class deci/b/c.class deci/m/b.class deci/i/h.class deci/d/p.class \
+     deci/b/b.class deci/l/a.class)   # the three jars; compare with the last output first: only the classes you meant change
 # the official list's rows (v0.64.1): deci/k/b is the original class in every jar; Javassist reads only names ending in .jar
 javac -cp tools/lib/javassist.jar --release 8 -d build/patch_servers tools/patches/PatchOfficialServers.java
 java -cp tools/lib/javassist.jar:build/patch_servers PatchOfficialServers dist/Decimation.jar build/patch_servers/out dev/build/classes/java/main
@@ -271,12 +310,13 @@ also becomes GuiMenuHome: ONE screen is the title menu and the pause menu; `mc.t
 | logo and "v<version>" under it | GuiMenuBase.drawScreen, textures/gui/menu/banner.png | logo: menu_assets.py logos(); version: fixes/MenuTexts (PatchMenuTexts) | menu, mainmenu |
 | title line "DeciRemnant: Zombie Apocalypse", page title | GuiMenuBase.drawScreen, setTitle | PatchMenuTexts | mainmenu |
 | Website / GitHub links top right | buttons 12, 15 (were Discord, Twitter), ClientResources addresses | PatchMenuTexts | mainmenu |
-| profile card: name, Human Kills, Deaths, Zombie Kills, supporter line, player model | GuiMenuBase.drawScreen, BackendProfileCache, MenuPreviewWorld | fixes/LocalStats (numbers), PatchMenuStats (labels), PatchMenuTexts (supporter line) | stats, menupages |
-| home icon + Play (green) / Update / Resume Game / Play Offline | GuiMenuBase.addMenuButtons: Update (id 8) replaces Play (9) AND Resume (23) while UpdateChecker.isUpdateRequired | PatchNoUpdate: isUpdateRequired answers fixes/Updater.required() | menu, update |
+| profile card: name, Human Kills, Deaths, Zombie Kills, supporter line, player model | GuiMenuBase.drawScreen, BackendProfileCache, MenuPreviewWorld | fixes/LocalStats (numbers), PatchMenuStats (labels); the supporter line is Decimation's again (2g) | stats, menupages |
+| home icon + Play (green) / Update / Resume Game / Play Offline | GuiMenuBase.addMenuButtons: Update (id 8) replaces Play (9) AND Resume (23) while UpdateChecker.isUpdateRequired | PatchNoUpdate: isUpdateRequired answers fixes/Updater.required(), false since 2g: never forced | menu, update |
+| the update question (Update / Later, Download where it cannot swap) | ConfirmScreen (deci/d/s) | fixes/UpdatePrompt (title menu, once a launch) | update |
 | Play's click | GuiMenuBase.handleMenuButton case 9: the update page while an update is required, else the official server list | official list: fixes/MenuServers, PatchOfficialServers | menupages |
 | Continue (last world) and its tooltip | (none: ours) | fixes/MenuContinue (InitGuiEvent.Post, ActionPerformedEvent.Pre, Deci.menuButton; buttons under it move down 21) | mainmenu |
-| My Community >> popup: supporter line, Website, Forums, GitHub | id 27: SupporterOnlyScreen (deci/d/k, a DeciSubScreen) | PatchMenuTexts (lines and toast) | menupages |
-| Server Status >> page: four rows | id 11: GuiMenuServerStatus (deci/i/h), rows ServerPinger (deci/l/a, a plain socket each, PingStatus deci/l/a$a) | PatchMenuTexts (names, .invalid hosts, the Website row) | menupages |
+| My Community >> popup: My Supporter, Website, Forums, GitHub | id 27: SupporterOnlyScreen (deci/d/k, a DeciSubScreen) | PatchMenuTexts (Website and GitHub lines; the supporter line and toast are Decimation's) | menupages |
+| Server Status >> page: four rows | id 11: GuiMenuServerStatus (deci/i/h), rows ServerPinger (deci/l/a, a plain socket each, PingStatus deci/l/a$a) | PatchMenuTexts (names, .invalid hosts, the Website row, Unknown reads Coming soon); fixes/MenuStatus sets the first three rows (Deci.setStatus) | menupages |
 | Settings >> page, its Updates button | id 5: GuiMenuOptions (deci/i/f); button 1000 opens GuiMenuUpdates | UpdateProgress swaps GuiMenuUpdates (deci/i/l) for Decimation's progress screen and starts our download | update |
 | Exit Game (Disconnect in a world) and its confirm box | id 0: ConfirmScreen (deci/d/s, buttons 10 left red and 11 right, ids gm = shutdown) | (unchanged) | |
 | news panels: Multiplayer (main only), Updates, Website, Coming soon | ArticlePanel (deci/d/c) | fixes/MenuNews (Deci.addNewsPanel, Deci.newsLine), pictures by menu_assets.py | mainmenu |
@@ -285,7 +325,7 @@ also becomes GuiMenuHome: ONE screen is the title menu and the pause menu; `mc.t
 | update notice bottom left ("New update available!") | GuiMenuBase.drawScreen while isUpdateRequired | (follows Updater.required()) | |
 | welcome box and loading fade (clicks ignored until ClientState.cg <= 0.1) | GuiMenuHome.drawWelcomeNotification, drawLoadingFade; welcome text from the lang file | menu_assets.py (welcome line) | mainmenu ("menu shown") |
 | toasts (sliding notices, title DeciRemnant) | ToastNotification (deci/b/b) | Deci.toast, PatchMenuTexts (title) | menupages |
-| update progress screen, Quit game / Later | GuiUpdateProgress (deci/i/m) | fixes/UpdateProgress, fixes/UpdateBar; failures: fixes/UpdateScreen | update |
+| update progress screen, Quit game / Later | GuiUpdateProgress (deci/i/m) | fixes/UpdateProgress, fixes/UpdateBar; failures: fixes/UpdateScreen (Try again / Download page / Back) | update |
 | window title | WindowSetup (deci/m/b) | MenuTexts.windowTitle (PatchMenuTexts) | mainmenu |
 | official server list page (Play) | GuiMenuOfficialServers (deci/i/i), rows ListElement (deci/d/p) on ServerListEntry (deci/k/a), ServerListPinger.officialServers (deci/k/b) | MenuServers, PatchOfficialServers, PatchMenuTexts ("Coming soon"), Chernarus pictures by menu_assets.py | menupages |
 | Community page (tab on the official list) | GuiMenuCommunityServers (deci/i/j) | main only: fixes/hosting/CommunityList, CommunityText | mainmenu, hostmenu |

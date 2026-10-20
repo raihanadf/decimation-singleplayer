@@ -185,6 +185,9 @@ docs/gun_model_spec.md); every user review goes into its lessons and casebook.
    community run dedicated servers, not the user's own; later an upvote rating so popular servers rank on top. Order
    agreed: two lines apart first (done 20 Oktober 2026, CLAUDE.md "TWO LINES SIDE BY SIDE"), then the status rows (B),
    then the official list and votes (C, own design). A project skill for all main menu work comes after B (user).
+   21 Oktober 2026: B DONE (fixes/MenuStatus; docs/main_menu.md 2g), with the user's other menu items: updates are the
+   player's choice (UpdatePrompt), Supporter back (for the user's donors; supporter benefits not designed yet), skill
+   decimation-main-menu. C (community dedicated server list, upvotes) needs its own design.
    Player hosted worlds through a relay of ours, listed on the Community page: docs/ideas.md item 22 (user, 18 Oktober
    2026); analysis and spike docs/player_hosting.md; part 1 of 4 specified (docs/superpowers/specs/
    2026-10-18-player-hosting-part1-design.md).

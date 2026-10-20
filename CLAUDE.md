@@ -56,7 +56,9 @@ together in 1.0.0, so no jar a player downloads before 1.0.0 may hold multiplaye
   PatchModelBatch source (+ gunbatch, npcdraw fight; e250f0e), city stall fixes: DeciBiome.decorate, BlockBatch, Keys,
   Highways lookups (+ genwalk, pregen walk and light check, tools/genprof.py; 9861d61), Continue tooltip (14830b9),
   first sight warm up: ModelWarmup, Deci gear model accessors, SafezoneSites fill timing (+ refugevisit; 91ef15a),
-  release builds only look for updates and each line's live test ports (tools/lineports.py; 23605eb).
+  release builds only look for updates and each line's live test ports (tools/lineports.py; 23605eb), Supporter texts
+  (b90b4af), the update question UpdatePrompt (41a00d8), MenuStatus rows and DevTestUtil.click (193e50b; Community
+  Server stays Coming soon there: the relay check is main's hosting code).
   A NEW CHECKOUT'S RUN FOLDER needs the content: `cp dist/config/decimation_worldgen/*.schematic
   dev/run/client/config/decimation_worldgen/` (lc and large too when missing). StructureGenerator.generate returns at
   once while no small schematic is loaded ("0 schematic(s) ready" in the log), and that also stops cities, refuges, camps
@@ -1228,6 +1230,14 @@ of the last session:
   (tools/lineports.py); tools/linecheck.py for release step 1; the worktree's missing schematics. Traps: a live game that
   ran mainmenu has left its world, so a later mode waits for a player forever and --stop then times out with a
   traceback (end that game at the menu: its world is saved); macOS has no `timeout` command.
+  Main menu (20 and 21 Oktober 2026, docs/main_menu.md 2g, project skill decimation-main-menu, map in section 8):
+  updates are the player's choice (Updater.required false: Play and Resume Game are never replaced; fixes/UpdatePrompt
+  asks with Decimation's ConfirmScreen on the title menu once a launch; Download page where the jar cannot be swapped;
+  UpdateScreen Download page on a failure), Supporter back (PatchMenuTexts), Server Status rows from real sources
+  (fixes/MenuStatus: official list, relay on main only, GitHub release link). The dev test `update` leaves the world
+  now: run it after modes that need a player. Trap: the user's own dev client may be open in main: check pgrep BEFORE
+  any Gradle there; test meanwhile in another checkout (`git worktree add ../Decimation-scratch --detach HEAD`, dev/libs
+  linked to main's, files copied over), which has its own build folder and run folder.
   RELEASE 0.65.0 published 20 Oktober 2026 10:55 (pre-release, the first from the prerelease branch: tag 0.65.0 on
   14830b9; sha256 1c604032..., GitHub's asset digest equal; notes RELEASE_NOTES_0.65.0.md; jar kept in
   dist/previous/onejar-0.65.0). Checked after: public download 251,272,285 bytes, site Download 0.65.0 at 11:11 (ISR

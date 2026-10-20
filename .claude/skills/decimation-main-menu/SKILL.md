@@ -35,9 +35,9 @@ history of what the user asked: docs/main_menu.md sections 1 to 2f.
 | background slideshow | fixes/MenuBackground, tools/patches/PatchMenuBackground.java |
 | profile numbers, totals line | fixes/LocalStats, tools/patches/PatchMenuStats.java |
 | official server list rows | fixes/MenuServers, tools/patches/PatchOfficialServers.java, Deci.officialServer |
-| Server Status rows | GuiMenuServerStatus (deci/i/h) rows ServerPinger (deci/l/a); Deci.statusRows |
-| updates: check, prompt, progress, failure | fixes/Updater, fixes/UpdateProgress, fixes/UpdateScreen, fixes/UpdateBar, fixes/UpdateSwap |
-| a question to the player | ConfirmScreen (deci/d/s): setDescription, setLabels, buttons 10 (left) and 11 (right) |
+| Server Status rows | GuiMenuServerStatus (deci/i/h) rows ServerPinger (deci/l/a); fixes/MenuStatus, Deci.setStatus, Deci.statusRows |
+| updates: check, question, progress, failure | fixes/Updater, fixes/UpdatePrompt, fixes/UpdateProgress, fixes/UpdateScreen, fixes/UpdateBar, fixes/UpdateSwap |
+| a question to the player | ConfirmScreen (deci/d/s) via Deci.confirm: lines, left (red, id 10) and right (id 11) labels; clicks in ActionPerformedEvent.Pre |
 | in game pause menu, hosting (main only) | GuiMenuHome with a world; fixes/hosting/HostMenu, fixes/hosting/CommunityList |
 | tests | `python3 tools/devtest.py --live menu update mainmenu`, `menupages`, `stats`, `hostmenu` |
 
@@ -55,6 +55,8 @@ history of what the user asked: docs/main_menu.md sections 1 to 2f.
    Cloudflare relay, Global Server from the official server list (community run dedicated servers, not the user's own);
    later an upvote rating ranks popular servers on top (20 Oktober 2026).
 7. No dash characters in any text the player reads (user rule); check every new string.
+8. A question never interrupts a game: the update question comes on the title menu only (my call, 21 Oktober 2026,
+   not objected to yet).
 
 ## Common mistakes
 - Testing after `mainmenu` or `menupages` in the same live game: they leave the world, the next mode waits for a
@@ -68,6 +70,10 @@ history of what the user asked: docs/main_menu.md sections 1 to 2f.
 - A Server Status row on a host that resolves but never answers: ServerPinger has no timeout (75 s of "Pinging...").
 - A news picture key missing from the picture map: Decimation downloads the key as a URL every frame.
 - Work that runs every frame doing more than reading state: menu and HUD code runs each frame.
+- Pressing a button with DevTestUtil.press: it calls actionPerformed directly and skips Forge's ActionPerformedEvent,
+  so our handlers never see it; DevTestUtil.click clicks like a player.
+- Calling a static method of a GuiScreen subclass from a unit test: GuiScreen's static init needs LWJGL (not on the
+  test classpath); keep testable logic in a plain class (UpdatePrompt.screenLabels for UpdateScreen).
 
 ## Casebook (never delete a case)
 
@@ -81,3 +87,13 @@ history of what the user asked: docs/main_menu.md sections 1 to 2f.
   for an update. Only release builds look now ("Updates off: dev build (main)", version "0.64.8 dev"); bug.md.
 - User asked for this skill ("just like other skills we have") and, next: updates the player can decline with a
   download link fallback, Supporter back instead of Early access, Server Status rows from real sources.
+
+### Case 3: the update question, Supporter, real status rows (21 Oktober 2026)
+- Built with Decimation's own parts: ConfirmScreen for the question, its Settings / View Updates button for later, its
+  ServerPinger states for the rows (Unknown drawn "Coming soon"); one PatchMenuTexts rebuild per change, compared class
+  by class with the last output (only the meant classes changed), then tools/linecheck.py (26 hooks, PASS).
+- The user's own dev client was running in main: tests ran in a temporary third checkout and in the prerelease
+  worktree (own build folders and ports); never Gradle in the checkout whose game is open.
+- Main and prerelease differ only where multiplayer is: Community Server is the relay on main, Coming soon on
+  prerelease (MenuStatus.community is set by main's hosting code). docs/main_menu.md 2g; shots
+  docs/shots/main_menu_v0.65.0/.

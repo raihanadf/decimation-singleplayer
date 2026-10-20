@@ -50,9 +50,9 @@
     "semantic_hash": "40a108bc09ab115aa0d69f0465c51079"
   },
   "dev/src/main/java/net/decimation/worldgen/DecimationWorldGen.java": {
-    "mtime": 1792483150.0979497,
-    "ast_hash": "6ff44ba42ea74a8c1e267221fde8f8b7",
-    "semantic_hash": "6ff44ba42ea74a8c1e267221fde8f8b7"
+    "mtime": 1792516477.56008,
+    "ast_hash": "1375844d7e73fb88b0a69bfba90b5c59",
+    "semantic_hash": "1375844d7e73fb88b0a69bfba90b5c59"
   },
   "dev/src/main/java/net/decimation/worldgen/DevAutoTest.java": {
     "mtime": 1792478461.7519112,
@@ -110,9 +110,9 @@
     "semantic_hash": "de153d1f8408971d6190e16a7d4256f9"
   },
   "CLAUDE.md": {
-    "mtime": 1792514375.1523502,
-    "ast_hash": "ae305d3372adc03e2765b701715bdc4b",
-    "semantic_hash": "ae305d3372adc03e2765b701715bdc4b"
+    "mtime": 1792516874.8165257,
+    "ast_hash": "43dc8ba48f5fcea5760b41f2656d7c8b",
+    "semantic_hash": "43dc8ba48f5fcea5760b41f2656d7c8b"
   },
   "DECIMATION_MOD_TASK.md": {
     "mtime": 1784958353.0126374,
@@ -325,9 +325,9 @@
     "semantic_hash": "0145e0863788d451e8ae4273d3c2abdd"
   },
   "docs/shots_index.md": {
-    "mtime": 1792514427.0953524,
-    "ast_hash": "d0d46735f43b50dbdc9b362083e9445e",
-    "semantic_hash": "d0d46735f43b50dbdc9b362083e9445e"
+    "mtime": 1792516855.6256287,
+    "ast_hash": "3c02eb1dc38d30c6b4baecf31dd01fc4",
+    "semantic_hash": "3c02eb1dc38d30c6b4baecf31dd01fc4"
   },
   "docs/interior_spec.md": {
     "mtime": 1791385593.9436893,
@@ -575,9 +575,9 @@
     "semantic_hash": "e46c40888199b9029bb359b53d218012"
   },
   "dev/src/main/java/net/decimation/fixes/Deci.java": {
-    "mtime": 1792483150.0973988,
-    "ast_hash": "1d9fcb51fd166c8959cf1f5b9fc00f09",
-    "semantic_hash": "1d9fcb51fd166c8959cf1f5b9fc00f09"
+    "mtime": 1792516470.4404027,
+    "ast_hash": "8579016e18f0550b67b0737c8368087c",
+    "semantic_hash": "8579016e18f0550b67b0737c8368087c"
   },
   "dev/src/main/java/net/decimation/fixes/ScopeZoom.java": {
     "mtime": 1792428139.1361754,
@@ -655,9 +655,9 @@
     "semantic_hash": "1c39f26030dd9a038debdd20adca663f"
   },
   "docs/roadmap.md": {
-    "mtime": 1792514439.3753562,
-    "ast_hash": "c8fec6f82fed76e9c0dbd1b3ba57959a",
-    "semantic_hash": "c8fec6f82fed76e9c0dbd1b3ba57959a"
+    "mtime": 1792516874.817445,
+    "ast_hash": "a853a54722e42c1a3165010af7c647ea",
+    "semantic_hash": "a853a54722e42c1a3165010af7c647ea"
   },
   "dev/src/main/java/net/decimation/worldgen/LegacyStreets.java": {
     "mtime": 1791487239.5087948,
@@ -1400,9 +1400,9 @@
     "semantic_hash": "4f4bec4c3aa7f92e18ee4236a3554bd3"
   },
   "dev/src/main/java/net/decimation/fixes/UpdateScreen.java": {
-    "mtime": 1792221251.1034267,
-    "ast_hash": "45ec38dcb5e3bde1b603cbab70987862",
-    "semantic_hash": "45ec38dcb5e3bde1b603cbab70987862"
+    "mtime": 1792515944.1989222,
+    "ast_hash": "60fe10e669f8b824e2ac8f7939df8172",
+    "semantic_hash": "60fe10e669f8b824e2ac8f7939df8172"
   },
   "dev/src/main/java/net/decimation/fixes/UpdateSwap.java": {
     "mtime": 1791881418.4575193,
@@ -1410,14 +1410,14 @@
     "semantic_hash": "0096f8dec0ced80f21b5db419a28aea8"
   },
   "dev/src/main/java/net/decimation/fixes/Updater.java": {
-    "mtime": 1792512865.1622634,
-    "ast_hash": "7c512cd1ed9e6b9e9297b8887c4b70f8",
-    "semantic_hash": "7c512cd1ed9e6b9e9297b8887c4b70f8"
+    "mtime": 1792515805.9332848,
+    "ast_hash": "f5191af91619f1c3571c58dcb0daccb2",
+    "semantic_hash": "f5191af91619f1c3571c58dcb0daccb2"
   },
   "dev/src/main/java/net/decimation/worldgen/devtest/UpdateTest.java": {
-    "mtime": 1792513134.8700256,
-    "ast_hash": "aac2fa4dfb0117c326ec91508859d457",
-    "semantic_hash": "aac2fa4dfb0117c326ec91508859d457"
+    "mtime": 1792516109.388799,
+    "ast_hash": "35db10d021340c4b897fe6667904fc00",
+    "semantic_hash": "35db10d021340c4b897fe6667904fc00"
   },
   "tools/fake_release_server.py": {
     "mtime": 1792443982.960033,
@@ -1540,9 +1540,9 @@
     "semantic_hash": "294036847a9caffda351bfa855a78636"
   },
   "docs/tasks.md": {
-    "mtime": 1792514439.374255,
-    "ast_hash": "f91c7b1d549b97c0b2a9c68085bd97b0",
-    "semantic_hash": "f91c7b1d549b97c0b2a9c68085bd97b0"
+    "mtime": 1792516874.816961,
+    "ast_hash": "d951e6644a2803de742131e8f6f6c9b5",
+    "semantic_hash": "d951e6644a2803de742131e8f6f6c9b5"
   },
   "tools/skillcheck.py": {
     "mtime": 1792098139.5315723,
@@ -1690,14 +1690,14 @@
     "semantic_hash": "f940d8a8513334bca6b22a62a3a67b43"
   },
   ".claude/skills/decimation-code-menus/SKILL.md": {
-    "mtime": 1792222546.4516375,
-    "ast_hash": "3c8b78777d0f4d210e3cf8b318b3704c",
-    "semantic_hash": "3c8b78777d0f4d210e3cf8b318b3704c"
+    "mtime": 1792515446.5225835,
+    "ast_hash": "f0296eacb892c81f08698d03f8a77c8e",
+    "semantic_hash": "f0296eacb892c81f08698d03f8a77c8e"
   },
   "docs/decimation_code/menus.md": {
-    "mtime": 1792470145.204411,
-    "ast_hash": "5e38583fb67d1c943c1b311f376074cd",
-    "semantic_hash": "5e38583fb67d1c943c1b311f376074cd"
+    "mtime": 1792516855.626243,
+    "ast_hash": "0b6e992ec76e87c204de2d321c282966",
+    "semantic_hash": "0b6e992ec76e87c204de2d321c282966"
   },
   ".claude/skills/decimation-code-rendering/SKILL.md": {
     "mtime": 1792483059.0214899,
@@ -1790,9 +1790,9 @@
     "semantic_hash": "6171606ef61617ea7f40a4377dc577f9"
   },
   "docs/main_menu.md": {
-    "mtime": 1792514411.3339813,
-    "ast_hash": "6200cb2cf76f649d58f2f8b7a148a367",
-    "semantic_hash": "6200cb2cf76f649d58f2f8b7a148a367"
+    "mtime": 1792516835.4168403,
+    "ast_hash": "d22725556cc7c6cb75ded2b7504227fb",
+    "semantic_hash": "d22725556cc7c6cb75ded2b7504227fb"
   },
   "dev/src/main/java/net/decimation/fixes/MenuContinue.java": {
     "mtime": 1792442925.0351672,
@@ -1805,19 +1805,19 @@
     "semantic_hash": "739d2197ada9d0a18b2fc2b9e979fe2d"
   },
   "tools/patches/PatchMenuTexts.java": {
-    "mtime": 1792219637.161528,
-    "ast_hash": "89a64e22cd576fd795d361dcf43a3daf",
-    "semantic_hash": "89a64e22cd576fd795d361dcf43a3daf"
+    "mtime": 1792516470.4407194,
+    "ast_hash": "f3fd50ba14511b86f355777527479d89",
+    "semantic_hash": "f3fd50ba14511b86f355777527479d89"
   },
   "dev/src/main/java/net/decimation/fixes/MenuServers.java": {
-    "mtime": 1792190124.9769318,
-    "ast_hash": "7473f6d2594ce1f0b3f786b86a6062fd",
-    "semantic_hash": "7473f6d2594ce1f0b3f786b86a6062fd"
+    "mtime": 1792516470.4399276,
+    "ast_hash": "ac5f7a5a65a2b5e45d765701b9ac68a7",
+    "semantic_hash": "ac5f7a5a65a2b5e45d765701b9ac68a7"
   },
   "dev/src/main/java/net/decimation/worldgen/devtest/MenuPagesTest.java": {
-    "mtime": 1792284883.534465,
-    "ast_hash": "343a2cf3d7d073a097d11641cd98aded",
-    "semantic_hash": "343a2cf3d7d073a097d11641cd98aded"
+    "mtime": 1792516528.452025,
+    "ast_hash": "657a9ab507ad0137ed5e4ea1a57c746f",
+    "semantic_hash": "657a9ab507ad0137ed5e4ea1a57c746f"
   },
   "tools/patches/PatchOfficialServers.java": {
     "mtime": 1792190137.449793,
@@ -2468,5 +2468,30 @@
     "mtime": 1792512994.9294393,
     "ast_hash": "38ce0cce312485eb07d3268ea796ba95",
     "semantic_hash": "38ce0cce312485eb07d3268ea796ba95"
+  },
+  "dev/src/main/java/net/decimation/fixes/MenuStatus.java": {
+    "mtime": 1792516446.4461763,
+    "ast_hash": "6f977d880d9e147e35559394fcb4ff77",
+    "semantic_hash": "6f977d880d9e147e35559394fcb4ff77"
+  },
+  "dev/src/main/java/net/decimation/fixes/UpdatePrompt.java": {
+    "mtime": 1792515944.1991339,
+    "ast_hash": "583c02d742849bde1e71b0a94df9a05a",
+    "semantic_hash": "583c02d742849bde1e71b0a94df9a05a"
+  },
+  "dev/src/test/java/net/decimation/fixes/MenuStatusTest.java": {
+    "mtime": 1792516413.3387704,
+    "ast_hash": "a8495f36387c3cf3072a76b857a28276",
+    "semantic_hash": "a8495f36387c3cf3072a76b857a28276"
+  },
+  "dev/src/test/java/net/decimation/fixes/UpdatePromptTest.java": {
+    "mtime": 1792515944.1993632,
+    "ast_hash": "db5f955a8f2ba658551b54028a01dbfd",
+    "semantic_hash": "db5f955a8f2ba658551b54028a01dbfd"
+  },
+  ".claude/skills/decimation-main-menu/SKILL.md": {
+    "mtime": 1792516855.6267097,
+    "ast_hash": "3501642752baebaa79135bbab21c18c9",
+    "semantic_hash": "3501642752baebaa79135bbab21c18c9"
   }
 }
