@@ -185,7 +185,13 @@ community dedicated server, and later i want to make rating upvote system in the
   `choice=later` answers Later then updates from Settings, `noswap=true` plays a game that cannot swap), `menupages`
   (supporter texts, status rows), `menu`, `mainmenu`. All PASS on main and in the prerelease worktree (Community
   Server Coming soon there).
-- Next (not designed): the official list as community run dedicated servers with an upvote rating (roadmap UI 4).
+- 21 Oktober 2026 (user, asked whether the Esc menu should ask too: "yes"): the question also comes on the Esc menu
+  when the player is in a world (still once a launch). Quit game on the update screens now leaves the world and waits
+  until it is saved before closing (fixes/SafeQuit, as DevAutoTest.quitSafely: mc.shutdown inside a world once broke a
+  level.dat). Dev test `update inworld=true`: Resume Game stays, the box asks, the update runs, Quit game "world left,
+  saved, would close" (it stops before closing). RED first (no question in the world), then PASS, main and prerelease.
+- Next (not designed): the official list as community run dedicated servers with an upvote rating (roadmap UI 4;
+  docs/ideas.md 24), and a supporter tier for donors through the website (docs/ideas.md 23).
 
 ## 3. Code map
 
@@ -312,7 +318,7 @@ also becomes GuiMenuHome: ONE screen is the title menu and the pause menu; `mc.t
 | Website / GitHub links top right | buttons 12, 15 (were Discord, Twitter), ClientResources addresses | PatchMenuTexts | mainmenu |
 | profile card: name, Human Kills, Deaths, Zombie Kills, supporter line, player model | GuiMenuBase.drawScreen, BackendProfileCache, MenuPreviewWorld | fixes/LocalStats (numbers), PatchMenuStats (labels); the supporter line is Decimation's again (2g) | stats, menupages |
 | home icon + Play (green) / Update / Resume Game / Play Offline | GuiMenuBase.addMenuButtons: Update (id 8) replaces Play (9) AND Resume (23) while UpdateChecker.isUpdateRequired | PatchNoUpdate: isUpdateRequired answers fixes/Updater.required(), false since 2g: never forced | menu, update |
-| the update question (Update / Later, Download where it cannot swap) | ConfirmScreen (deci/d/s) | fixes/UpdatePrompt (title menu, once a launch) | update |
+| the update question (Update / Later, Download where it cannot swap) | ConfirmScreen (deci/d/s) | fixes/UpdatePrompt (title menu, or the Esc menu in a world; once a launch); Quit game through fixes/SafeQuit | update |
 | Play's click | GuiMenuBase.handleMenuButton case 9: the update page while an update is required, else the official server list | official list: fixes/MenuServers, PatchOfficialServers | menupages |
 | Continue (last world) and its tooltip | (none: ours) | fixes/MenuContinue (InitGuiEvent.Post, ActionPerformedEvent.Pre, Deci.menuButton; buttons under it move down 21) | mainmenu |
 | My Community >> popup: My Supporter, Website, Forums, GitHub | id 27: SupporterOnlyScreen (deci/d/k, a DeciSubScreen) | PatchMenuTexts (Website and GitHub lines; the supporter line and toast are Decimation's) | menupages |

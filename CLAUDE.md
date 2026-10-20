@@ -58,7 +58,8 @@ together in 1.0.0, so no jar a player downloads before 1.0.0 may hold multiplaye
   first sight warm up: ModelWarmup, Deci gear model accessors, SafezoneSites fill timing (+ refugevisit; 91ef15a),
   release builds only look for updates and each line's live test ports (tools/lineports.py; 23605eb), Supporter texts
   (b90b4af), the update question UpdatePrompt (41a00d8), MenuStatus rows and DevTestUtil.click (193e50b; Community
-  Server stays Coming soon there: the relay check is main's hosting code).
+  Server stays Coming soon there: the relay check is main's hosting code), the question on the Esc menu and SafeQuit
+  (5e000e1).
   A NEW CHECKOUT'S RUN FOLDER needs the content: `cp dist/config/decimation_worldgen/*.schematic
   dev/run/client/config/decimation_worldgen/` (lc and large too when missing). StructureGenerator.generate returns at
   once while no small schematic is loaded ("0 schematic(s) ready" in the log), and that also stops cities, refuges, camps
@@ -1232,7 +1233,8 @@ of the last session:
   traceback (end that game at the menu: its world is saved); macOS has no `timeout` command.
   Main menu (20 and 21 Oktober 2026, docs/main_menu.md 2g, project skill decimation-main-menu, map in section 8):
   updates are the player's choice (Updater.required false: Play and Resume Game are never replaced; fixes/UpdatePrompt
-  asks with Decimation's ConfirmScreen on the title menu once a launch; Download page where the jar cannot be swapped;
+  asks with Decimation's ConfirmScreen on the title menu, or the Esc menu in a world, once a launch; Quit game leaves a
+  world and lets it save first (fixes/SafeQuit); Download page where the jar cannot be swapped;
   UpdateScreen Download page on a failure), Supporter back (PatchMenuTexts), Server Status rows from real sources
   (fixes/MenuStatus: official list, relay on main only, GitHub release link). The dev test `update` leaves the world
   now: run it after modes that need a player. Trap: the user's own dev client may be open in main: check pgrep BEFORE

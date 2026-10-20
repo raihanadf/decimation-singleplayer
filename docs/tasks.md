@@ -97,8 +97,9 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [ ] user: push main and prerelease (two lines work)
 - [ ] old multiplayer test jars (Mac Prism, wyvern feeb69f0, Desktop d6aea397) offer 0.65.0 as an update: never click it, rebuild from main
 - [x] main menu B: Server Status rows from real sources (MenuStatus; main d5866a3, prerelease 193e50b)
-- [ ] main menu C: official list of community dedicated servers, upvote rating later: design
+- [ ] main menu C: official list of community dedicated servers, upvote rating (user: "yeah maybe"; docs/ideas.md 24)
 - [x] updates the player's choice: question box Update / Later, release page where the jar cannot be swapped (UpdatePrompt)
 - [x] Supporter back instead of Early access (PatchMenuTexts, three jars)
-- [ ] supporter benefits for donors: who is a supporter, where that list lives (design with the user)
+- [x] the update question on the Esc menu too (user: yes); Quit game from a world leaves and saves first (SafeQuit)
+- [ ] supporter tier for donors through the website: login, donation, the game reads the list (docs/ideas.md 23; design talk)
 - [x] project skill decimation-main-menu with the full menu map (docs/main_menu.md 8 to 10)

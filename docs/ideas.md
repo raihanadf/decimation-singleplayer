@@ -112,3 +112,15 @@ every item below that is not DONE.
     punched connection is host only); the relay needs an always on machine with a public address (Vercel cannot hold
     game connections); the relay carries every byte (bandwidth cost); the world is offline when the host quits.
     Not designed yet. Deeper analysis: docs/player_hosting.md.
+
+23. **Supporter tier for donors, through our website** (user, 21 Oktober 2026: "website maybe, so user login with username
+    or something and they can donater their money so they get supporter tier"; the day before: Supporter "will use for
+    people who donate to me so they got supporter benefit"). The menu says Supporter again (docs/main_menu.md 2g); nobody
+    is one yet: Decimation took isSupporter from BoehMod's backend. Questions for the design talk [not designed]: how a
+    player proves a Minecraft name is theirs (offline mode names can be typed by anyone: a Mojang or Microsoft sign in,
+    or a code shown in game), which donation service takes the money (never card data on our own site), where the
+    supporter list lives and how the game reads it (like the relay's list), what a supporter gets (Decimation's lounge:
+    capes), and money rules (refunds, taxes).
+24. **Official server list of community run dedicated servers, ranked by upvotes** (user, 20 Oktober 2026; 21 Oktober:
+    "yeah maybe"): Global Server on the status page follows that list (fixes/MenuStatus already does once real rows
+    exist). Not designed yet (roadmap UI 4, C).

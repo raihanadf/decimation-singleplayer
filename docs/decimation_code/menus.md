@@ -58,7 +58,7 @@ Traced `deci.i,net.decimation.mod.common.utils.h,deci.g.j,net.decimation.fixes.L
 | real scenes as the menu background, a new one every 7 s | fixes/MenuBackground, tools/patches/PatchMenuBackground.java, tools/menu_assets.py |
 | our links, name and version in the menu, the window title | tools/patches/PatchMenuTexts.java, fixes/MenuTexts |
 | Continue (the last world) under Play | fixes/MenuContinue, `Deci.menuButton` |
-| updates the player's choice: Play never replaced, a question box Update / Later, the release page where the jar cannot be swapped | fixes/Updater.required (false), fixes/UpdatePrompt with ConfirmScreen (deci/d/s, `Deci.confirm`), fixes/UpdateScreen |
+| updates the player's choice: Play never replaced, a question box Update / Later on the title or Esc menu, the release page where the jar cannot be swapped, Quit game safe from a world | fixes/Updater.required (false), fixes/UpdatePrompt with ConfirmScreen (deci/d/s, `Deci.confirm`), fixes/UpdateScreen, fixes/SafeQuit |
 | Server Status rows from real sources (official list, relay, GitHub) | fixes/MenuStatus, `Deci.setStatus`, PatchMenuTexts (Unknown reads Coming soon) |
 
 ## 6. Checks

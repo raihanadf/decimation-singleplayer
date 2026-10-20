@@ -36,7 +36,7 @@ history of what the user asked: docs/main_menu.md sections 1 to 2f.
 | profile numbers, totals line | fixes/LocalStats, tools/patches/PatchMenuStats.java |
 | official server list rows | fixes/MenuServers, tools/patches/PatchOfficialServers.java, Deci.officialServer |
 | Server Status rows | GuiMenuServerStatus (deci/i/h) rows ServerPinger (deci/l/a); fixes/MenuStatus, Deci.setStatus, Deci.statusRows |
-| updates: check, question, progress, failure | fixes/Updater, fixes/UpdatePrompt, fixes/UpdateProgress, fixes/UpdateScreen, fixes/UpdateBar, fixes/UpdateSwap |
+| updates: check, question, progress, failure, quitting | fixes/Updater, fixes/UpdatePrompt, fixes/UpdateProgress, fixes/UpdateScreen, fixes/UpdateBar, fixes/UpdateSwap, fixes/SafeQuit |
 | a question to the player | ConfirmScreen (deci/d/s) via Deci.confirm: lines, left (red, id 10) and right (id 11) labels; clicks in ActionPerformedEvent.Pre |
 | in game pause menu, hosting (main only) | GuiMenuHome with a world; fixes/hosting/HostMenu, fixes/hosting/CommunityList |
 | tests | `python3 tools/devtest.py --live menu update mainmenu`, `menupages`, `stats`, `hostmenu` |
@@ -55,8 +55,10 @@ history of what the user asked: docs/main_menu.md sections 1 to 2f.
    Cloudflare relay, Global Server from the official server list (community run dedicated servers, not the user's own);
    later an upvote rating ranks popular servers on top (20 Oktober 2026).
 7. No dash characters in any text the player reads (user rule); check every new string.
-8. A question never interrupts a game: the update question comes on the title menu only (my call, 21 Oktober 2026,
-   not objected to yet).
+8. The update question comes on the title menu, or on the Esc menu when the player is in a world (user, 21 Oktober
+   2026: "yes"), once a launch. Anything that closes the game from a world goes through fixes/SafeQuit (leave, save,
+   then close): mc.shutdown inside a world once broke a level.dat.
+9. Supporter tier: for the user's donors, through the website (login, donation; docs/ideas.md 23), not designed yet.
 
 ## Common mistakes
 - Testing after `mainmenu` or `menupages` in the same live game: they leave the world, the next mode waits for a
@@ -97,3 +99,5 @@ history of what the user asked: docs/main_menu.md sections 1 to 2f.
 - Main and prerelease differ only where multiplayer is: Community Server is the relay on main, Coming soon on
   prerelease (MenuStatus.community is set by main's hosting code). docs/main_menu.md 2g; shots
   docs/shots/main_menu_v0.65.0/.
+- User checked it in game ("nice") and pushed; then "yes" to the question on the Esc menu too: built with SafeQuit
+  for Quit game from a world (update inworld=true RED then PASS on both lines).

@@ -187,7 +187,9 @@ docs/gun_model_spec.md); every user review goes into its lessons and casebook.
    then the official list and votes (C, own design). A project skill for all main menu work comes after B (user).
    21 Oktober 2026: B DONE (fixes/MenuStatus; docs/main_menu.md 2g), with the user's other menu items: updates are the
    player's choice (UpdatePrompt), Supporter back (for the user's donors; supporter benefits not designed yet), skill
-   decimation-main-menu. C (community dedicated server list, upvotes) needs its own design.
+   decimation-main-menu. C (community dedicated server list, upvotes) needs its own design (user: "yeah maybe";
+   docs/ideas.md 24). The update question also on the Esc menu (user: yes), SafeQuit. Supporter tier for donors through
+   the website (user: login with a username, donate, get the supporter tier; docs/ideas.md 23): design talk first.
    Player hosted worlds through a relay of ours, listed on the Community page: docs/ideas.md item 22 (user, 18 Oktober
    2026); analysis and spike docs/player_hosting.md; part 1 of 4 specified (docs/superpowers/specs/
    2026-10-18-player-hosting-part1-design.md).
