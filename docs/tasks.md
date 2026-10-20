@@ -103,6 +103,8 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [x] the update question on the Esc menu too (user: yes); Quit game from a world leaves and saves first (SafeQuit)
 - [ ] supporter tier for donors through the website: login, donation, the game reads the list (docs/ideas.md 23; design talk)
 - [x] menu 2h: news panel popups, Discord links, our footer, corner art of our own (main f133a2a, prerelease 5246e4b)
+- [x] popup crash fixed: no screen change inside Decimation's panel loop (main 089edfd, prerelease e541d84)
+- [x] menu round 2: corner redone to FURY's measured layout, Multiplayer popup in players' words with game scenes (main 4674cfe, prerelease 3aa1cdd without the Multiplayer texts)
 - [ ] website session: Discord links, Coming soon down to two, BoehMod credit kept (sent to its session 21 Oktober)
 - [ ] later: gun customization screen, Tarkov style, instead of the crafting style attachment screen (docs/ideas.md 25)
 - [x] project skill decimation-main-menu with the full menu map (docs/main_menu.md 8 to 10)
