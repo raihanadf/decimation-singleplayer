@@ -119,4 +119,18 @@ Checked with it: bundled content unpacked, cities generated, no errors (bug.md v
   expect=0.65.0`: found 0.65.0 through the API, Update button, Decimation's progress screen, 239.6 MB in 8 s, checked,
   Quit game / Later, jar swapped (sha256 of mods/Decimation.jar = 1c604032); restarted as 0.65.0 (content unpacked 486
   files, "up to date (0.65.0)").
+- Published 20 Oktober 2026 10:55 (draft first, CLAUDE.md "RELEASE 0.65.0"): GitHub's digest = local sha256, public
+  download 302 then 200 with 251,272,285 bytes, the published .sha256 reads 1c604032. Site: Download 0.65.0 at 11:11
+  (the first request was STALE, the next one HIT with 0.65.0).
+- Real update from GitHub: the 0.64.8 release jar in mods/ (its live port is 25599: the port setting came after
+  0.64.8), the game's own start check "update 0.65.0 available (239 MB) from the api, running 0.64.8, sha256 known";
+  `devtest.py --live update real=true jar=true from=0.64.8 expect=0.65.0`: Decimation's progress screen, "Downloading:
+  33%", 239 MB in 28 s, checked, Quit game / Later, swap exit 0 (mods/Decimation.jar sha256 1c604032); restarted:
+  content 0.65.0-3d2721f3ce41 unpacked (486 files, 0 failed), "up to date (0.65.0)"; `menu mainmenu` all PASS (window
+  title DeciRemnant v0.65.0, Updates "Up to date: 0.65.0", "Last played: deciworldgen_devtest").
+- Trap: the first run FAILed "Update opens Decimation's progress screen" (still deci.i.e) and then waited 20 minutes:
+  the game had gone straight into the world, and Decimation's home menu ignores clicks during its welcome fade
+  (GuiMenuHome.actionPerformed passes a click only when ClientState.cg <= 0.1; cg starts at 1.5 and drops 0.01 a menu
+  frame: about 140 frames once per game session). The rerun in the same game passed. Run `menu` before `update` in a
+  fresh game.
 

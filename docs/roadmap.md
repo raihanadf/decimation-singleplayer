@@ -9,9 +9,9 @@ or `[not decided]`.
 
 ## Open bugs
 
-0. **Server stalls while new city areas generate** (20 Oktober 2026): FIXED in dev (DeciBiome.decorate ticks at once,
+0. **Server stalls while new city areas generate** (20 Oktober 2026): FIXED, released in 0.65.0 (DeciBiome.decorate ticks at once,
    BlockBatch lights structure writes once, Keys.pair and per chunk flags for the highways; walk per city row 222 to
-   about 103 ms, worst 466 to 209 ms; bug.md, docs/performance.md 9). Open: the user's own walk in a new world, release.
+   about 103 ms, worst 466 to 209 ms; bug.md, docs/performance.md 9). Open: the user's own walk in a new world.
 0. **WorldClock day never advances**: FIXED v0.62.9 (saved day counter fixes/WorldClock.Data; bug.md).
 0. **Backend reconnect leaks a thread every 15 seconds**: FIXED v0.62.8 (PatchBackend v2, no BoehMod connection;
    bug.md).

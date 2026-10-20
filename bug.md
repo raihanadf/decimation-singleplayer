@@ -116,7 +116,7 @@ not something we introduced or need to fix) see `documentation.md`.
   8u504, Minecraft's netty 4.0.10); joiners got "Connection reset by peer". A TLS test echo server (TLS 1.2) had worked.
 - Fix: RelaySocket offers TLS 1.2 only; probe RED then GREEN, the two game test through the deployed relay all PASS.
 
-### Place names gone after a rejoin (found 18 Oktober 2026, player hosting spike, FIXED in code, next release)
+### Place names gone after a rejoin (found 18 Oktober 2026, player hosting spike, FIXED, released in 0.65.0)
 - Seen: a second player who left and joined the host's world again had an EMPTY turf list (0 entries) while the server
   had sent 5 to that player before (dev test `lanjoin`, docs/player_hosting.md section 9). The same happens in
   singleplayer after leaving a world and entering it again in one game session [inferred: same handler, not tried].
@@ -125,7 +125,7 @@ not something we introduced or need to fix) see `documentation.md`.
 - Fix: PlaceNames.onLogout forgets the player (PlayerLoggedOutEvent). RED then GREEN in the rejoin run; `places` and
   `zones` all PASS.
 
-### HUD crash after joining a world without Decimation's menu (found 18 Oktober 2026, player hosting spike, FIXED in code)
+### HUD crash after joining a world without Decimation's menu (found 18 Oktober 2026, player hosting spike, FIXED, released in 0.65.0)
 - Seen: the production client (release 0.64.8) started with `--server HOST --port P` joined a LAN world and crashed 4 to
   5 s later, 3 of 3 times with fancy graphics on, 0 of 2 with it off: NullPointerException in IngameHud.render
   (deci/g/j.b) from ClientEventHandler.onRenderOverlayPost (deci/c/c.a).
@@ -140,7 +140,7 @@ not something we introduced or need to fix) see `documentation.md`.
   stubbed, then GREEN). Not fixed yet: a guard (create the profile on world join, or a
   null check by patch) belongs to the player hosting work.
 
-### Update screen bar stops short of full (found 17 Oktober 2026 in the user's Prism, FIXED in code 18 Oktober 2026)
+### Update screen bar stops short of full (found 17 Oktober 2026 in the user's Prism, FIXED 18 Oktober 2026, released in 0.65.0)
 - The user's real auto update 0.64.7 to 0.64.8 (16:56): "SAFE TO CLOSE GAME!", 239.5mb/239.5mb, Quit game and Later,
   but the green bar about 80 % long. After Quit game and a restart the title read DeciRemnant v0.64.8: the update itself
   worked (first real auto update by a player's game).
@@ -1341,7 +1341,7 @@ WITH gvc ("gvc is optional for players who join" in its log), production client 
 from 179e211): lanhost real=true scene=true all PASS, lanjoin viaList=true joined through the deployed relay in 4 s,
 all PASS. Still open: the two minute "Connecting" wait for any OTHER missing mod (the toast shows, the screen stays).
 
-## A joined player could not open a corpse (user report 18 Oktober 2026, FIXED)
+## A joined player could not open a corpse (user report 18 Oktober 2026, FIXED, released in 0.65.0)
 
 User: "the corpse cannot be clicked by joined player". Decimation's player corpse (EntityCorpse, deci.ae.a) opens a
 chest screen on a right click (interact: displayGUIChest), nothing server only. Two game test (lanhost scene=true +
@@ -1358,7 +1358,7 @@ real one (the host's window, with the items) comes after the click crosses the r
 above 0. Traders and vehicle seats with a gun in hand behave the same in Decimation [not checked]; left as Decimation made
 them.
 
-## Natural spawns off for tests (user request 18 Oktober 2026, DONE)
+## Natural spawns off for tests (user request 18 Oktober 2026, DONE, released in 0.65.0)
 
 User: "add some code to remove natural spawn on mobs, so to spawn it only from code or egg side so if in middle test
 there is npc or zombie attacking the user, it doesnt happen anymore". Minecraft's `/gamerule doMobSpawning false`
@@ -1394,7 +1394,7 @@ reconnecting to the same room, and direct players kept (docs/player_hosting.md 1
 the two game test on the deployed relay. A real long session with the friend is still to come.
 
 
-## OpenGL "Stack overflow" 1964 times on the host, from Market District (user test 19 Oktober 2026, FIXED in dev)
+## OpenGL "Stack overflow" 1964 times on the host, from Market District (user test 19 Oktober 2026, FIXED, released in 0.65.0)
 
 Brother's laptop (wyvern: RTX 2060, NVIDIA 610.57, Linux, OptiFine E7) hosting, the user joining from the Mac. Its
 latest.log: "GL ERROR @ Post render 1283: Stack overflow" 1959 times and "1284: Stack underflow" 5 times, from 02:38:53
@@ -1423,7 +1423,7 @@ stack guard: ..."). Plain GL 1.1, the same on every OS. Dev test `glstack`: 131 
 sight cases (hip, aimed), the other player case and a frame that leaks 3 on purpose: FAIL before (4 leaking), PASS after.
 Not yet seen on the NVIDIA laptop with the new jar [not verified].
 
-## FPS falls minute by minute (120 to 60 and lower), the Mac froze after about 20 minutes (user 19 Oktober 2026, FIXED in dev: causes found)
+## FPS falls minute by minute (120 to 60 and lower), the Mac froze after about 20 minutes (user 19 Oktober 2026, FIXED, released in 0.65.0: causes found)
 
 Same session (brother's laptop hosting, the user's Mac joining, Prism, release jar 5077445e on both). Checked first: no
 entity pile up (the host world saved at quit: 191 entities, 7119 tile entities of which 5404 PropTile; tools/perfcheck.py
@@ -1458,7 +1458,9 @@ Measured in the dev game (19 Oktober 2026; docs/performance.md section 7):
    new city chunks: JFR client thread 70% vanilla chunk mesh building, server thread world generation), not by time.
 
 Still to see: the same session again with the new jar on both machines (FPS after 20 minutes, no GL errors in the host
-log, no freeze) [not verified].
+log, no freeze) [not verified]. The user after their next session (20 Oktober 2026): "fps felt stable"; what they still
+felt was a short lag while new land generated ("Server stalls while new city areas generate", released in 0.65.0); the
+host log and the second machine were not reported [not verified].
 
 ## Direct join never used on the brother's NixOS laptop: its firewall blocks the gate port (19 Oktober 2026, OPEN)
 
@@ -1467,7 +1469,7 @@ in only listed ports; Direct.Gate listens on a random free port (ServerSocket(0)
 "allow Java" once instead [inferred]. Options: a fixed default gate port the host can open, shown on the host page.
 Also seen: two "registration failed: 429 too often" at 02:34:15 after a quick restart of hosting; the next try worked.
 
-## The last grenade never runs out (user 19 Oktober 2026, FIXED in dev)
+## The last grenade never runs out (user 19 Oktober 2026, FIXED, released in 0.65.0)
 
 "if its more than one its will defrade 1 by 1 normally but when it hit quantity 1 it will be act like unlimited
 throwable". Decimation's throw (GrenadeItem.throwGrenade, deci.aA.a, and its five copies for the molotov, smoke, signal,
@@ -1496,7 +1498,7 @@ deci.ag.d, same spot, height 1.95, did not move), the passing ones at 20 or 30. 
 spawn handling of some infected [not checked]); the test now writes a "target" line (class, name, place, height) with
 each run.
 
-## Safezones lag: traders, guards, bandits and mechs searched for targets every tick (user's friend 19 Oktober 2026, FIXED in dev)
+## Safezones lag: traders, guards, bandits and mechs searched for targets every tick (user's friend 19 Oktober 2026, FIXED, released in 0.65.0)
 
 "when in safezone its really laggy, i think its caused by traders or npc". Measured (dev tests traderperf, zoneperf,
 bench; docs/performance.md section 8): every armed trader and trader guard (ArmedTraderEntity deci.ai.v), every
@@ -1516,7 +1518,7 @@ tasks with targetChance 0 (the infected four: players, animals, human NPCs, mech
   infected still takes a civilian 6 blocks away as its target (2 to 11 ticks).
 Not yet seen in the friend's game [not verified].
 
-## Infected searched a wander path no one walked (19 Oktober 2026, FIXED in dev)
+## Infected searched a wander path no one walked (19 Oktober 2026, FIXED, released in 0.65.0)
 
 InfectedEntity.onLivingUpdate (deci.ag.d) called EntityCreature.updateWanderPath, a full path search (PatchInfectedAI v1
 cut it to once a second per infected); its result fills pathToEntity, which only the old AI branch follows, and infected
@@ -1524,7 +1526,7 @@ run the new AI (isAIEnabled true: EntityAIWander makes them wander, getNavigator
 (80 infected): 37 % of the server thread in that search. PatchInfectedAI v2 removes the call (built from the original
 class, as v1); bench zombies 37 % -> 0 %, shooting 23 % -> 0 %. Dev tests zombies and noise pass.
 
-## Blood splats on the ground moved for 40 seconds (19 Oktober 2026, FIXED in dev)
+## Blood splats on the ground moved for 40 seconds (19 Oktober 2026, FIXED, released in 0.65.0)
 
 GroundBloodParticle (deci.B.k) lives 800 ticks with fancy graphics and called moveEntity every tick, also lying on the
 ground: block collision plus a scan of the entities around (splats x entities in a fight; bench "crowd": 14 % of the
@@ -1532,7 +1534,7 @@ client thread). tools/patches/PatchBloodParticle.java: it moves only until it la
 is splats still falling). Each splat still draws on its own (its own texture bind and draw, a new ResourceLocation each
 frame) [not changed].
 
-## The hand holding a gun showed Steve (user 19 Oktober 2026, FIXED in dev)
+## The hand holding a gun showed Steve (user 19 Oktober 2026, FIXED, released in 0.65.0)
 
 "when holding a guns, the hand still using steve skins instead of custom skins player (even its real minecraft account
 player)". Decimation's gun renderer draws the first person arms with GunItemRenderer.TJ (deci.K.b), "skins/<session
@@ -1552,13 +1554,13 @@ measuring frames. On NVIDIA / Intel laptops the feedback pass forces the CPU to 
 the drops stay. What "buggy" looks like for the user is not known yet. Trap found: live key=value settings stay set for
 later modes (an aimdrift run used a red dot from an earlier scopeperf run).
 
-## GunNoise wrote a noise to every mob for every burst in a fight (19 Oktober 2026, FIXED in dev)
+## GunNoise wrote a noise to every mob for every burst in a fight (19 Oktober 2026, FIXED, released in 0.65.0)
 
 Each burst (once per 10 ticks per shooter) searched a 128 x 64 x 128 box and wrote a new noise compound to every infected
 or hostile NPC in range: 4.5 to 6 % of the server in the bench fights. A mob still walking to a shot within 8 blocks of
 the new one, with more than half of its search time left, is now skipped. Dev test noise passes.
 
-## Drawing many human NPCs is heavy on the client (19 Oktober 2026, looks and model parts FIXED in dev)
+## Drawing many human NPCs is heavy on the client (19 Oktober 2026, looks and model parts FIXED, released in 0.65.0)
 
 bench "standby" (40 idle NPCs near the player): client about 25 to 30 ms a frame on the M4. Each human NPC is drawn in
 layers (ModelHuman deci.q.h: body, eyes, hair, beard, shirt, pants, shoes, each a full body pass with its own texture
@@ -1597,7 +1599,7 @@ The muzzle flash itself is not the cost (user's guess): in the fight an NPC draw
 flashing 840 us (old way), 9 % of the draws flash: about 1 % of the NPC drawing. A military NPC with full kit simply costs
 about 840 us old, 480 us now, fighting or not; 40 of them in view are most of a fight's frame.
 
-## Aiming with OptiFine made the gun vanish, "Stack overflow" every frame, FPS sinking (19 Oktober 2026, FIXED in dev)
+## Aiming with OptiFine made the gun vanish, "Stack overflow" every frame, FPS sinking (19 Oktober 2026, FIXED, released in 0.65.0)
 
 User (brother's laptop, NVIDIA RTX 2060, OptiFine HD U E7, jar 9e89d0d3): with the EOTech 558 "the aiming model is doesnt
 show up, so the guns actually invicble ... minute by minute the perfomance getting wrose". Its log: from 22:50:56 to
@@ -1613,7 +1615,7 @@ at most once a minute. Checked in the production client with OptiFine (wyvern's 
 scopeperf with sight=eotech558 now checks GL errors at five points of every frame: before the fix aiming 117719 errors in 5
 s (modelview at 32 before the hand, gun gone on the shot), after 0 in every phase, gun and see-through glass drawn.
 
-## A sight's glass showed a frozen picture at the hip after aiming (19 Oktober 2026, FIXED in dev)
+## A sight's glass showed a frozen picture at the hip after aiming (19 Oktober 2026, FIXED, released in 0.65.0)
 
 Same report: "on idle aiming, the 558 scope render a 'new camera' in there". Since v0.58.0 ScopeZoom copies the screen
 under the glass into the scope texture only while aiming or zooming; back at the hip the glass kept the last aimed view,
@@ -1621,7 +1623,7 @@ a frozen picture of another place. Now the texture is filled with a plain dark l
 copying stops (in strips of 32 rows). Dev test scopeperf phase "scoped gun at the hip after aiming" reads the texture back:
 before 0 % lens, after 100 % (dev client and production client with OptiFine).
 
-## Muzzle flash lit every mob drawn after the shooter (19 Oktober 2026, FIXED in dev)
+## Muzzle flash lit every mob drawn after the shooter (19 Oktober 2026, FIXED, released in 0.65.0)
 
 User: "when npc shot a gun, some 'flash' rendered on their npc or mobs body ... the flash appear on all npc or mobs
 body". Cause: Decimation turns item lighting off (ClientEmptyB.disableItemLighting = RenderHelper.
@@ -1643,7 +1645,7 @@ muzzle flash (TurretRenderer, MuzzleFlashModel.renderAt) leaves lighting off for
 The parked "Every Decimation mob drawn solid black" (brother's laptop) may be this leak on another driver: after the
 goggles, lighting was on with no light, which is near black where a driver resets the material [not verified].
 
-## Server stalls while new city areas generate (20 Oktober 2026, FIXED in dev)
+## Server stalls while new city areas generate (20 Oktober 2026, FIXED, released in 0.65.0)
 
 First three player session (docs/player_hosting.md 17): the host logged "Can't keep up" three times, 2.5 to 2.8 s behind
 (01:24:19, 01:30:53, 01:31:08), each while our worldgen built new city areas (dress totals, a watchtower, a rail station
@@ -1713,7 +1715,7 @@ The Mac's log of the session: "was shot by a survivor" 15 times (Decimation's me
 source "human": bandits, soldiers, guards), often 5 to 7 s apart, entering and leaving Market District. Who shot and
 why the respawn was so close is not examined [not checked].
 
-## Every human NPC walked all loaded entities every tick (19 Oktober 2026, FIXED in dev)
+## Every human NPC walked all loaded entities every tick (19 Oktober 2026, FIXED, released in 0.65.0)
 
 FactionHumanEntity.onUpdate (deci.ah.d: every civilian, bandit, soldier, trader, guard) walked the world's whole loaded
 entity list every tick on both sides to know whether someone within 32 blocks holds a gun (then the NPC looks scared,

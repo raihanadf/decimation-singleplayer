@@ -23,7 +23,7 @@ do so many things like bug fix, perfomance boost and many thing task we still le
 | Cities | new city content, legal to ship (docs/city_replacement.md: McJty Lost Cities, MIT, plus our layers) | planned, user decision |
 | Performance | a measured pass: fps in a city view, prop draw cost, chunk generation time, server tick time with 2 to 4 players, memory (docs/performance.md methods) | partly done before (props, infected AI, scope) |
 | Bugs | every open bug in bug.md and roadmap "Open bugs" fixed or consciously parked with a reason | see section 3 |
-| Updates | in-game update from any 0.6x to 1.0.0 proven in the production client | proven 0.64.7 to 0.64.8 |
+| Updates | in-game update from any 0.6x to 1.0.0 proven in the production client | proven 0.64.7 to 0.64.8 and 0.64.8 to 0.65.0 (from GitHub) |
 | Release | production server + client checks (docs/production_test.md), release notes, site download, Discord | per release |
 
 ## 3. Known open bugs today (18 Oktober 2026)

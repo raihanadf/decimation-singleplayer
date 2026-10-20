@@ -73,7 +73,11 @@ together in 1.0.0, so no jar a player downloads before 1.0.0 may hold multiplaye
      client: genwalk, fix checks, menus, scopeperf with OptiFine, and the REAL update: the last release's jar in mods/,
      `tools/fake_release_server.py 8765 VERSION 40 50 FILE=<candidate>`, `devtest.py --live update jar=true
      expect=VERSION` (its "NEWJAR" head check FAILs by design with a real jar: compare the swapped jar's sha256).
-  The prerelease build's live port is always 25599 (the joiner port setting is main only).
+  5. After the user pushed main and prerelease and said go: publish as a draft first, then make it public (RELEASE
+     0.65.0 below); check the asset digest, the site's Download, and the real update from GitHub with the last release's
+     jar: `devtest.py --live menu`, then `update real=true jar=true from=LAST expect=VERSION` (menu first: the welcome
+     fade trap below), restart and read "up to date (VERSION)"; archive in dist/previous/onejar-VERSION.
+  The prerelease build's live port is always 25599 (the joiner port setting is main only; so do releases up to 0.64.8).
   Only one live dev game at a time (both use port 25599).
 
 ## Knowledge maintenance (mandatory, user rule 2026-10-07)
@@ -1180,12 +1184,21 @@ of the last session:
   way); worlddiff `--at X,Z`. Traps: bulk block writes go through BlockBatch (set, then light()), never World.setBlock in a
   loop; a Long key packed as (a << 32) ^ b hashes to a ^ b (bins turn into trees): Keys.pair; `jfr print` keeps 5 frames
   a stack unless --stack-depth; AnvilChunkLoader.chunkExists CREATES a missing region file (check the file first).
-  RELEASE 0.65.0 PREPARED 20 Oktober 2026 (NOT published: waits for the user's go): candidate
-  Decimation-prerelease/dist/onejar/Decimation.jar sha256 1c604032..., notes RELEASE_NOTES_0.65.0.md there and in
-  dist/onejar; local tag 0.65.0 on prerelease 14830b9; copy on ~/Desktop/DeciRemnant-0.65.0-candidate. Publish after
-  the user pushed main + prerelease: `gh release create 0.65.0 --target <prerelease sha> --prerelease --title 0.65.0
-  --notes-file RELEASE_NOTES_0.65.0.md Decimation.jar Decimation.jar.sha256`, then check GitHub's digest, the site's
-  Download and a 0.64.8 game's Update; keep the jar in dist/previous/onejar-0.65.0.
+  RELEASE 0.65.0 published 20 Oktober 2026 10:55 (pre-release, the first from the prerelease branch: tag 0.65.0 on
+  14830b9; sha256 1c604032..., GitHub's asset digest equal; notes RELEASE_NOTES_0.65.0.md; jar kept in
+  dist/previous/onejar-0.65.0). Checked after: public download 251,272,285 bytes, site Download 0.65.0 at 11:11 (ISR
+  600 s); the production client with the real 0.64.8 jar updated itself from GitHub (239 MB in 28 s, checked, Quit game
+  / Later, jar swapped, sha256 1c604032) and restarted as 0.65.0 ("up to date (0.65.0)", menu and mainmenu all PASS).
+  PUBLISH A BIG JAR AS A DRAFT FIRST: `gh release create VERSION --draft --target SHA --prerelease --title VERSION
+  --notes-file NOTES` (no files), `gh release upload VERSION Decimation.jar.sha256`, `caffeinate -i -s gh release
+  upload VERSION Decimation.jar --clobber` again until it lands, compare the asset digest with the local sha256, then
+  `gh api -X PATCH repos/ucilmenangis/decimation-singleplayer/releases/ID -F draft=false`. A draft is invisible to
+  players and the updater. 0.65.0's upload broke twice (broken pipe after 21 minutes at about 217 KB/s; then the Mac
+  slept on battery); on another network it took 23 s. gh deletes its own draft when `gh release create` with files fails.
+  Trap: the update test clicks Update 40 frames after opening Decimation's home menu, but that menu ignores clicks until
+  its welcome fade ends (ClientState.cg starts at 1.5, minus 0.01 a frame, clicks pass at 0.1: about 140 frames of the
+  menu per game session). A game that went straight into a world FAILs "Update opens Decimation's progress screen" and
+  waits 20 minutes; run `menu` (or any mode showing the menu) before `update` in a fresh game.
   RELEASE 0.64.8 published 17 Oktober 2026 16:53 (pre-release, sha256 73049bc7...; notes dist/onejar/RELEASE_NOTES_0.64.8.md;
   released jars kept in dist/previous/onejar-<version>): the production client with the real 0.64.7 jar updated itself
   to it from GitHub (239 MB in 29 s, checksum, jar swapped); site Download 0.64.8 at 16:54.

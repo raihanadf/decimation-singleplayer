@@ -34,9 +34,9 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [x] site coming soon cards (forum, official servers): live 17 Oktober 2026
 - [x] release 0.64.8 published 16:53 (digest = local sha256 73049bc7); real update 0.64.7 to 0.64.8 checked in the production client
 - [x] user: real auto update in Prism 0.64.7 to 0.64.8 worked (16:57, title v0.64.8, Updates "Up to date: 0.64.8")
-- [x] update screen bar stops at about 80 %: fixes/UpdateBar (in code, next release; GUI width 500: 250 of 250 px)
-- [x] Continue tooltip "Last played: <name>" (was "Open world"; dev test mainmenu RED then GREEN, for 0.65.0)
-- [~] release 0.65.0 (pre-release, performance and stability): candidate built from prerelease and checked (sha256 1c604032, production server, client, real update from 0.64.8); waiting for the user: push both branches, try the candidate, say go to publish
+- [x] update screen bar stops at about 80 %: fixes/UpdateBar (released in 0.65.0; GUI width 500: 250 of 250 px)
+- [x] Continue tooltip "Last played: <name>" (was "Open world"; dev test mainmenu RED then GREEN, released in 0.65.0)
+- [x] release 0.65.0 published 20 Oktober 2026 10:55 (pre-release from the prerelease branch, digest = local sha256 1c604032); site Download 0.65.0; real update 0.64.8 to 0.65.0 from GitHub checked in the production client (28 s, jar swapped, restart up to date)
 - [x] website: coral on charcoal + camo, title screen hero, small logo on scroll: live 17:30, checked (mobile 93 / 96, desktop 100)
 - [x] website sections: About, showcase rows, And more, closing band, map tab icon, GitHub logo, no dirt: live, checked
 - [x] website intro (signal then title screen) and project docs (/docs, 24 pages): live, checked
@@ -58,8 +58,8 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [ ] zombies test "night frenzy off by day" FAILs on main and prerelease (x1.20 at noon; weather or storm suspected)
 - [~] plan: city content replacement (docs/city_replacement.md): ChaosZPack blocked by its license, McJty Lost Cities (MIT) proposed; user decides
 - [ ] city content replacement with ChaoszPack Lost Cities (copyright; roadmap, after multiplayer)
-- [x] HUD crash when a world is joined without Decimation's menu: fixes/HudGuard (in code, next release)
-- [x] place names gone after a rejoin: PlaceNames forgets a player on logout (bug.md, in code, next release)
+- [x] HUD crash when a world is joined without Decimation's menu: fixes/HudGuard (released in 0.65.0)
+- [x] place names gone after a rejoin: PlaceNames forgets a player on logout (bug.md, released in 0.65.0)
 - [x] hosting spike joiner side: crate, hummer, trader, AKM, bandit fire and tracers, lists all PASS (docs/player_hosting.md 9)
 - [x] backend thread leak: PatchBackend v2, no BoehMod connection (v0.62.8)
 - [x] one skill per Decimation feature (.claude/skills/decimation-code*)
@@ -77,9 +77,9 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [x] friend kicked while ping stable: keep-alive, 20 s grace, same room reconnect, near rooms, far socket retry (relay 94b7cb49, game 5ed53b2; two game tests PASS on the deployed relay)
 - [x] three player session 20 Oktober (jar feeb69f0): user 74 min via relay, no drop; 0 GL errors (docs/player_hosting.md 17)
 - [ ] friend dropped once after 39 min (relay closed from his side): needs his log to know why
-- [~] server stalls while new city areas generate: decoration ticks at once, structure writes lit once, highway lookups (dev; walk per city row 222 to about 103 ms, worst 466 to 209; dev client worst tick 690 to 403 ms); carried to prerelease 9861d61; open: the user's own walk in a new world, release
-- [x] GL "Stack overflow" on the host: Decimation renderers left matrices pushed, fixed in dev (fixes/GlStackGuard)
-- [~] FPS falls over a session: busy intro thread, prop sound loops, dead update fetch fixed in dev; recheck in a real session
+- [~] server stalls while new city areas generate: decoration ticks at once, structure writes lit once, highway lookups (dev; walk per city row 222 to about 103 ms, worst 466 to 209; dev client worst tick 690 to 403 ms); carried to prerelease 9861d61, released in 0.65.0; open: the user's own walk in a new world
+- [x] GL "Stack overflow" on the host: Decimation renderers left matrices pushed, fixed (fixes/GlStackGuard), released in 0.65.0
+- [x] FPS falls over a session: busy intro thread, prop sound loops, dead update fetch fixed, released in 0.65.0; user after a real session: "fps felt stable" (20 Oktober 2026)
 - [x] last grenade never runs out (0 stacks): fixes/EmptyStacks, dev test throwables
 - [ ] direct join blocked by a host firewall: fixed gate port (bug.md)
 - [x] safezone lag: trader / bandit / mech target searches and vanilla target tasks paced (bench, traderperf, targetpace)

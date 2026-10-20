@@ -101,7 +101,11 @@ white diamond on the right the sun cube.
 
 First open in a launch: a welcome box ("Ohey! You there!", "Welcome to Decimation v1.21.10f! Have fun!", Esc or 10 s)
 over a loading fade with banner_intro.png ("A BoehMod Original") (`GuiMenuHome.drawWelcomeNotification`,
-`GuiMenuHome.drawLoadingFade`).
+`GuiMenuHome.drawLoadingFade`). Until that fade ends the home menu ignores clicks: `GuiMenuHome.actionPerformed` passes a
+click on only when ClientState.cg is 0.1 or less; cg starts at 1.5 and `GuiMenuHome.drawScreen` takes 0.01 off each frame
+(about 140 frames of the menu once per launch), then sets ClientState.bD and holds cg at 0. A test that opens the menu
+in a game that went straight into a world must wait for it (20 Oktober 2026: the update test clicked Update at frame 40
+and nothing happened; docs/production_test.md).
 
 Other art in the jar for menus: serverbackgrounds/newyork0..7 and bukovka0..7 (1920 x 1017 shots of the official maps,
 shown behind hovered servers), banner_battlegrounds, background_fade, buttonbg / buttonbg_red (the torn buttons the
