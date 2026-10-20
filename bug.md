@@ -10,6 +10,17 @@ not something we introduced or need to fix) see `documentation.md`.
 
 ## Open
 
+### Gunsmith list clicks lost on a server (found by the dev test gunsmithmp 21 Oktober 2026, FIXED before shipping)
+- The Gunsmith screen's list sends each click as a container button id (Container.enchantItem). On a dedicated server
+  the 4x never fitted, while every singleplayer check passed.
+- Cause: C11PacketEnchantItem writes the id with writeByte and reads it as a signed byte. The ids were 1000 and up, so a
+  server got only their last byte; decode found no action and the click did nothing. A singleplayer world hands the
+  packet to its integrated server as an object, never written, so the int arrived whole.
+- Fix: GunsmithAction packs slot and inventory index into one byte (0 .. 221, sent as (byte) code, read with & 0xFF).
+  Unit test everyIdSurvivesTheNetwork (RED with the old ids, then GREEN); gunsmithmp on the production server then
+  fitted and took off the 4x as the server sent it back.
+- Lesson (CLAUDE.md traps): anything sent through a vanilla packet is checked off the integrated server once.
+
 ### Clicking a news popup crashed the game (found by the user 21 Oktober 2026 01:40, FIXED main 089edfd, prerelease)
 - User: "when i click the pop up, its crashed". Crash reports 01:40:26 and 01:40:52: ConcurrentModificationException in
   DeciScreen.mouseClicked (deci.d.i), screen MenuDetail.

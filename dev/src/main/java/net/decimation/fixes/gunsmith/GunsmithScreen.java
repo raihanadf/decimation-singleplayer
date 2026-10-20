@@ -41,8 +41,8 @@ public class GunsmithScreen extends GuiContainer
      */
     private static final float TURN_Z = 0, TURN_X = -90, TURN_Y = 0;
     final GunsmithContainer container;
-    /** How often the silhouette was measured (dev test gunsmith: once per open and per change). */
-    public int measures;
+    /** How often the silhouette was measured and a list built (dev test gunsmith: once per open and per change). */
+    public int measures, listBuilds;
     private int attachKey = -1;
     private int[] area;
     private boolean remeasure = true;
@@ -519,6 +519,7 @@ public class GunsmithScreen extends GuiContainer
     /** The parts in the whole inventory that fit slot s, by Decimation's rules (on opening and on a change). */
     private void fill(GunSlot s)
     {
+        listBuilds++;
         entries.clear();
         ItemStack gun = container.gun();
         for (int i = 0; i < 36; i++)

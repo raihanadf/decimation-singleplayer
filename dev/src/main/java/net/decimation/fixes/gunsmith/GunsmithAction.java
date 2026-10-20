@@ -2,12 +2,15 @@ package net.decimation.fixes.gunsmith;
 
 /**
  * A click in the Gunsmith screen's list, sent to the server as a container button id (Container.enchantItem, the way
- * vanilla's enchanting table sends its buttons), so no network channel of our own is needed. Fit: 1000 + slot * 100 +
- * inventory index (0 .. 35); take off: 2000 + slot. The server decodes and checks every id. Plain Java.
+ * vanilla's enchanting table sends its buttons), so no network channel of our own is needed. The id travels as ONE
+ * signed byte (C11PacketEnchantItem writes it with writeByte): code = slot * 36 + inventory index for a fit (0 .. 215),
+ * 216 + slot for a take off, sent as (byte) code. A singleplayer world hands the packet over without writing it, so only
+ * a dedicated or hosted server showed the old ids (1000 and up) arriving cut to their last byte. The server decodes and
+ * checks every id. Plain Java.
  */
 public final class GunsmithAction
 {
-    private static final int FIT = 1000, TAKE_OFF = 2000, SLOTS = 100, INVENTORY = 36;
+    private static final int INVENTORY = 36, TAKE_OFF = GunSlot.values().length * INVENTORY;
 
     public final boolean takeOff;
     public final GunSlot slot;
@@ -23,27 +26,27 @@ public final class GunsmithAction
     /** Fit one item from player inventory index invIndex (0 .. 35) into slot s. */
     public static int fit(GunSlot s, int invIndex)
     {
-        return FIT + s.ordinal() * SLOTS + invIndex;
+        return (byte) (s.ordinal() * INVENTORY + invIndex);
     }
 
     /** Take the part off slot s, back into the inventory. */
     public static int takeOff(GunSlot s)
     {
-        return TAKE_OFF + s.ordinal();
+        return (byte) (TAKE_OFF + s.ordinal());
     }
 
-    /** The action behind a button id, or null for anything that is not one (or takes off a used up part). */
+    /** The action behind a button id as the server reads it (a signed byte), or null (no such action, or a used up part). */
     public static GunsmithAction decode(int id)
     {
+        int code = id & 0xFF;
         GunSlot[] slots = GunSlot.values();
-        if (id >= FIT && id < FIT + slots.length * SLOTS)
+        if (code < TAKE_OFF)
         {
-            int slot = (id - FIT) / SLOTS, inv = (id - FIT) % SLOTS;
-            return inv < INVENTORY ? new GunsmithAction(false, slots[slot], inv) : null;
+            return new GunsmithAction(false, slots[code / INVENTORY], code % INVENTORY);
         }
-        if (id >= TAKE_OFF && id < TAKE_OFF + slots.length && !slots[id - TAKE_OFF].usedUp())
+        if (code < TAKE_OFF + slots.length && !slots[code - TAKE_OFF].usedUp())
         {
-            return new GunsmithAction(true, slots[id - TAKE_OFF], -1);
+            return new GunsmithAction(true, slots[code - TAKE_OFF], -1);
         }
         return null;
     }

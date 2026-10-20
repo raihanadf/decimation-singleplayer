@@ -78,9 +78,37 @@ takes 0.5); a miss used a round and hurt nothing; client and server copies agree
 | armor against NPC shots | fixes/ArmorGunfireHandler (NPC shots use the "human" source, not PacketGunHit) |
 | gunshot noise | fixes/GunNoise |
 | open a body with a gun in hand | fixes/GunUseKey (after Decimation's tick: use key bound while the crosshair is on a corpse or loot body) |
+| fit attachments (the I key) | the Gunsmith screen: fixes/gunsmith/GunsmithGuiHandler.java (Decimation's attachments GUI id, `Deci.attachmentsGuiId`, opens our container and screen), GunsmithContainer, GunsmithScreen, GunParts (`Deci.fitsSlot`: Decimation's own FilteredSlot rules); section 7 |
 
 ## 6. Checks
 
 - `python3 tools/devtest.py --live playerfire`: the player's shot end to end (9 checks).
 - `gun` (reload loads a magazine, NPC fires), `gunview` (hip, aim, NPC view per gun), `gunperf`, `firerate`,
   `checks` (armor against NPC fire, 60 round mags).
+- `python3 tools/devtest.py --live gunsmith` (80 checks: the screen, fits, rules, no loss, 8 guns at two sizes),
+  `gunsmith perf=true` (8 checks, section 7), `gunsmithmp server=HOST:PORT` (a joined client on a dedicated server; run
+  it last, it leaves for the menu).
+
+## 7. The Gunsmith screen (21 Oktober 2026, plan docs/superpowers/plans/2026-10-21-gunsmith-screen.md)
+
+- The I key stays Decimation's (KeyBindingHandler, the ATTACH action); fixes/gunsmith/GunsmithGuiHandler.java wraps
+  Decimation's IGuiHandler (FML keeps one per mod) so its attachments id opens GunsmithContainer and GunsmithScreen.
+  No gun in hand: nothing opens, a gray chat line "Hold a gun to modify it".
+- The gun stays in its hotbar slot. Part slots are a view of the gun's NBT (the keys Decimation's AttachmentInventory
+  uses): every change is written at once, so closing, death or a disconnect lose nothing. Paint and tracer are used up.
+  List clicks are container button ids (Container.enchantItem): ONE signed byte on the wire (C11PacketEnchantItem), so
+  GunsmithAction packs slot and inventory index into 0 .. 221 (bug.md "Gunsmith list clicks lost on a server").
+- The screen draws the held gun with Decimation's renderer (its dropped item draw, stood up side on), measures its outline
+  from the depth buffer once per open and per change (Silhouette), places boxes and lines (GunsmithLayout), hides the HUD
+  and the hand while open (GunsmithClient).
+- Measured (production client with OptiFine HD U E7, one jar of main, singleplayer; dev client numbers in brackets, the
+  user's own game ran beside it): frame median closed 4.75 ms, open 4.26 ms (13.57, 12.10): the hidden HUD and hand cost
+  more than the screen; the screen's own draw 0.97 ms with a full bag, 0.99 ms empty, GPU included (1.29, 1.56); 0
+  textures loaded while open; 0 GL errors and no stack change in 100 draws; 0 slot updates in 100 idle ticks; the outline
+  measured once per open plus once per fitted part, a list built once per open. Before the fix of the hidden bag slots
+  (GunsmithContainer.BagSlot: GuiContainer drew the 27 main inventory items each frame, off screen) a full bag added 0.39
+  ms (1.52 against 1.13). Four earlier runs gave open minus closed +1.35 (the first run after the functional test), +0.13,
+  -2.72, -0.58 ms.
+- On a dedicated production server (gunsmithmp): joined, the key opens it, the 4x fitted and taken off as the server sent
+  them back, closing drops nothing; frame 4.46 ms closed, 4.21 ms open.
+

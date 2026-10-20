@@ -52,6 +52,159 @@ public class GunsmithTest extends DevTestMode
     private static final int[][] SIZES = {{854, 480}, {1440, 810}};
     private int gun, size, startW, startH;
     private double before;
+    private final boolean PERF = Boolean.getBoolean("deciworldgen.autotest.perf"); // read per run: live settings stay set
+    private double closedMs, fullMs, emptyMs;
+    private int textures0;
+    private volatile int updates0, updates1;
+    private static final Clock clock = new Clock();
+    private static final GlProbe gl = new GlProbe();
+    private static boolean probesOn;
+
+    /** Frame to frame times (RenderTickEvent START), the frame cap off: the frame's whole cost. */
+    public static final class Clock
+    {
+        private final List<Long> frames = new ArrayList<Long>();
+        private volatile boolean on;
+        private long last;
+        private int skip;
+
+        void start()
+        {
+            synchronized (frames)
+            {
+                frames.clear();
+            }
+            skip = 20;
+            last = 0;
+            on = true;
+        }
+
+        boolean idle()
+        {
+            return !on;
+        }
+
+        int frames()
+        {
+            synchronized (frames)
+            {
+                return on ? frames.size() : 0;
+            }
+        }
+
+        /** Stops and returns the median frame in ms. */
+        double stop()
+        {
+            on = false;
+            synchronized (frames)
+            {
+                List<Long> f = new ArrayList<Long>(frames);
+                Collections.sort(f);
+                return f.isEmpty() ? -1 : f.get(f.size() / 2) / 1e6;
+            }
+        }
+
+        @SubscribeEvent
+        public void tick(cpw.mods.fml.common.gameevent.TickEvent.RenderTickEvent e)
+        {
+            if (e.phase != cpw.mods.fml.common.gameevent.TickEvent.Phase.START || !on)
+            {
+                return;
+            }
+            long now = System.nanoTime();
+            if (last != 0 && skip-- <= 0)
+            {
+                synchronized (frames)
+                {
+                    frames.add(now - last);
+                }
+            }
+            last = now;
+        }
+    }
+
+    /** The screen's own draw once more after each frame: GL errors and stack depths before and after it. */
+    public static final class GlProbe
+    {
+        volatile GuiScreen screen;
+        int draws, errors, depthChanged;
+        String first = "";
+        /** The screen's own draw, GPU included (glFinish before and after), per draw. */
+        final long[] drawNs = new long[100];
+
+        @SubscribeEvent
+        public void tick(cpw.mods.fml.common.gameevent.TickEvent.RenderTickEvent e)
+        {
+            GuiScreen s = screen;
+            if (e.phase != cpw.mods.fml.common.gameevent.TickEvent.Phase.END || s == null || draws >= 100)
+            {
+                return;
+            }
+            while (org.lwjgl.opengl.GL11.glGetError() != 0)
+            {
+                // errors of the frame before: not the screen's
+            }
+            int[] d0 = depths();
+            org.lwjgl.opengl.GL11.glFinish();
+            long t0 = System.nanoTime();
+            s.drawScreen(s.width / 2, s.height / 2, 0);
+            org.lwjgl.opengl.GL11.glFinish();
+            drawNs[draws] = System.nanoTime() - t0;
+            int[] d1 = depths();
+            int err = org.lwjgl.opengl.GL11.glGetError();
+            draws++;
+            if (err != 0)
+            {
+                errors++;
+                first = first.isEmpty() ? "error " + err : first;
+            }
+            if (!java.util.Arrays.equals(d0, d1))
+            {
+                depthChanged++;
+                first = first.isEmpty() ? java.util.Arrays.toString(d0) + " -> " + java.util.Arrays.toString(d1) : first;
+            }
+        }
+
+        static int[] depths()
+        {
+            return new int[] {org.lwjgl.opengl.GL11.glGetInteger(org.lwjgl.opengl.GL11.GL_MODELVIEW_STACK_DEPTH),
+                              org.lwjgl.opengl.GL11.glGetInteger(org.lwjgl.opengl.GL11.GL_PROJECTION_STACK_DEPTH),
+                              org.lwjgl.opengl.GL11.glGetInteger(org.lwjgl.opengl.GL11.GL_ATTRIB_STACK_DEPTH)};
+        }
+
+        String report()
+        {
+            return draws + " draws, " + errors + " with GL errors, " + depthChanged + " changed a stack" + (first.isEmpty() ? "" : " (" + first + ")");
+        }
+
+        /** Median of the screen's own draws in ms. */
+        double drawMs()
+        {
+            long[] d = java.util.Arrays.copyOf(drawNs, Math.max(1, Math.min(draws, drawNs.length)));
+            java.util.Arrays.sort(d);
+            return d[d.length / 2] / 1e6;
+        }
+    }
+
+    private static int textures()
+    {
+        java.util.Map<?, ?> m = cpw.mods.fml.relauncher.ReflectionHelper.getPrivateValue(
+            net.minecraft.client.renderer.texture.TextureManager.class, Minecraft.getMinecraft().getTextureManager(),
+            "mapTextureObjects", "field_110585_a");
+        return m.size();
+    }
+
+    private void next100()
+    {
+        step++;
+        ticks = 0;
+    }
+
+    private int slotUpdates()
+    {
+        net.minecraft.inventory.Container c = player().openContainer;
+        return c instanceof net.decimation.fixes.gunsmith.GunsmithContainer ? ((net.decimation.fixes.gunsmith.GunsmithContainer) c).slotUpdates : -1;
+    }
 
     /** Catches the corpse a death makes (any inventory entity but a minecart joining on the server). */
     public static final class Joins
@@ -98,6 +251,12 @@ public class GunsmithTest extends DevTestMode
             MinecraftForge.EVENT_BUS.register(listener);
         }
         listener.test = this;
+        if (!probesOn)
+        {
+            probesOn = true;
+            cpw.mods.fml.common.FMLCommonHandler.instance().bus().register(clock);
+            cpw.mods.fml.common.FMLCommonHandler.instance().bus().register(gl);
+        }
         if (joins == null)
         {
             joins = new Joins();
@@ -115,8 +274,95 @@ public class GunsmithTest extends DevTestMode
             case 0: // the arena and the inventory
                 startW = mc.displayWidth;
                 startH = mc.displayHeight;
+                if (PERF)
+                {
+                    server(() -> { setup(false, 0); fullBag(); });
+                    step = 99;
+                    ticks = 0;
+                    break;
+                }
                 server(this::setup);
                 next();
+                break;
+            case 99: // perf (Task 6): the same view closed, then open
+                if (ticks == 1)
+                {
+                    mc.thePlayer.inventory.currentItem = 0;
+                    DevTestUtil.unlimitedFps(mc);
+                    mc.thePlayer.rotationYaw = 0;
+                    mc.thePlayer.rotationPitch = 10;
+                }
+                if (ticks == 40) clock.start();
+                if (clock.frames() >= 220)
+                {
+                    closedMs = clock.stop();
+                    pressAttach(mc);
+                    next100();
+                }
+                break;
+            case 100:
+                if (mc.currentScreen != null && SCREEN.equals(screenName(mc)) && Integer.valueOf(1).equals(hook(mc, "measures"))
+                    && clock.idle())
+                {
+                    textures0 = textures();
+                    clock.start();
+                }
+                if (clock.frames() >= 220)
+                {
+                    double openMs = clock.stop();
+                    int tex = textures();
+                    check("perf: frame cost open", String.format("closed %.2f ms, open %.2f ms (median of 200)", closedMs, openMs),
+                          openMs - closedMs <= 1.0, "at most 1 ms more");
+                    check("perf: no texture loaded while open", (tex - textures0) + " loaded", tex == textures0, "0");
+                    check("perf: measured once while idle", hook(mc, "measures"), Integer.valueOf(1).equals(hook(mc, "measures")), "1");
+                    gl.draws = gl.errors = gl.depthChanged = 0;
+                    gl.first = "";
+                    gl.screen = mc.currentScreen;
+                    server(() -> updates0 = slotUpdates());
+                    next100();
+                }
+                break;
+            case 101: // GL around the screen's own draw, and the server while idle
+                if (gl.screen != null && gl.draws >= 100 && fullMs == 0)
+                {
+                    gl.screen = null;
+                    check("perf: GL clean", gl.report(), gl.errors == 0 && gl.depthChanged == 0, "no errors, stacks as deep as before");
+                    fullMs = gl.drawMs();
+                    server(() -> { updates1 = slotUpdates(); emptyBag(); });
+                }
+                if (fullMs > 0 && emptyMs == 0 && gl.screen == null && ticks > 40)
+                {
+                    gl.draws = gl.errors = gl.depthChanged = 0;
+                    gl.screen = mc.currentScreen; // the same screen with the bag emptied
+                    emptyMs = -1;
+                }
+                if (emptyMs < 0 && gl.screen != null && gl.draws >= 100)
+                {
+                    gl.screen = null;
+                    emptyMs = gl.drawMs();
+                    check("perf: a full bag costs the screen nothing", String.format("own draw %.2f ms with a full bag, %.2f ms empty (GPU included)",
+                          fullMs, emptyMs), fullMs - emptyMs <= 0.1, "at most 0.1 ms more");
+                }
+                if (ticks == 120)
+                {
+                    check("perf: no slot updates while idle", (updates1 - updates0) + " in 100+ ticks", updates1 == updates0, "0");
+                    server(() -> found = find(Item.itemRegistry.getObject("deci:4x")));
+                }
+                if (ticks == 122) act(mc, GunsmithAction.fit(GunSlot.SIGHT, found));
+                if (ticks == 140)
+                {
+                    check("perf: measured again only on a change", hook(mc, "measures"), Integer.valueOf(2).equals(hook(mc, "measures")), "2");
+                    clickBox(mc, GunSlot.SIGHT);
+                }
+                if (ticks == 240)
+                {
+                    check("perf: a list built once while open", hook(mc, "listBuilds"), Integer.valueOf(1).equals(hook(mc, "listBuilds")), "1");
+                    mc.thePlayer.closeScreen();
+                    net.decimation.worldgen.DevAutoTest.keepScreen = false;
+                    listener.test = null;
+                    joins.test = null;
+                    return false;
+                }
                 break;
             case 1: // no gun in hand: nothing opens, a short message
                 if (ticks == 1) mc.thePlayer.inventory.currentItem = 1;
@@ -497,12 +743,12 @@ public class GunsmithTest extends DevTestMode
         return n;
     }
 
-    private static String screenName(Minecraft mc)
+    static String screenName(Minecraft mc)
     {
         return mc.currentScreen == null ? "none" : mc.currentScreen.getClass().getSimpleName();
     }
 
-    private static KeyBinding attachKey(Minecraft mc)
+    static KeyBinding attachKey(Minecraft mc)
     {
         for (KeyBinding k : mc.gameSettings.keyBindings)
         {
@@ -515,13 +761,13 @@ public class GunsmithTest extends DevTestMode
     }
 
     /** A press of Decimation's attach key the way its client tick reads it (KeyBinding.isPressed). */
-    private static void pressAttach(Minecraft mc)
+    static void pressAttach(Minecraft mc)
     {
         KeyBinding.onTick(attachKey(mc).getKeyCode());
     }
 
     /** The attach key typed into the open screen, the way a key reaches a GUI (GuiScreen.keyTyped). */
-    private static void typeAttach(Minecraft mc)
+    static void typeAttach(Minecraft mc)
     {
         GuiScreen s = mc.currentScreen;
         int code = attachKey(mc).getKeyCode();
@@ -583,7 +829,7 @@ public class GunsmithTest extends DevTestMode
     }
 
     /** A layout hook of the open Gunsmith screen (reflection: the test also runs against older screens), or null. */
-    private static Object hook(Minecraft mc, String name, Object... args)
+    static Object hook(Minecraft mc, String name, Object... args)
     {
         GuiScreen s = mc.currentScreen;
         if (s == null)
@@ -613,7 +859,7 @@ public class GunsmithTest extends DevTestMode
     }
 
     @SuppressWarnings("unchecked")
-    private static List<String> lines(Minecraft mc)
+    static List<String> lines(Minecraft mc)
     {
         Object o = hook(mc, "listLines");
         return o instanceof List ? (List<String>) o : Collections.<String>emptyList();
@@ -630,7 +876,7 @@ public class GunsmithTest extends DevTestMode
      * A click the way a mouse makes it: the screen drawn with the mouse over the spot, the press, then the release
      * (GuiContainer places an item from the cursor on the release: a press alone starts a drag).
      */
-    private static void clickAt(Minecraft mc, int x, int y)
+    static void clickAt(Minecraft mc, int x, int y)
     {
         GuiScreen s = mc.currentScreen;
         if (s != null)
@@ -666,7 +912,7 @@ public class GunsmithTest extends DevTestMode
         }
     }
 
-    private static void clickBox(Minecraft mc, GunSlot slot)
+    static void clickBox(Minecraft mc, GunSlot slot)
     {
         int[] b = (int[]) hook(mc, "box", slot);
         if (b != null)
@@ -675,7 +921,7 @@ public class GunsmithTest extends DevTestMode
         }
     }
 
-    private static void clickRow(Minecraft mc, int row)
+    static void clickRow(Minecraft mc, int row)
     {
         int[] r = (int[]) hook(mc, "listRow", row);
         if (r != null && row >= 0)
@@ -695,7 +941,7 @@ public class GunsmithTest extends DevTestMode
         return new int[] {s.xDisplayPosition, s.yDisplayPosition};
     }
 
-    private static String name(String item)
+    static String name(String item)
     {
         Object i = Item.itemRegistry.getObject(item);
         return i == null ? "?" : new ItemStack((Item) i).getDisplayName();
@@ -878,6 +1124,30 @@ public class GunsmithTest extends DevTestMode
         countAkPaint = countOf(p, byName("item.spraycan.ak74."));
         countTracer = countOf(p, byName("item.ItemPyroPowder"));
         loose = p.worldObj.getEntitiesWithinAABB(EntityItem.class, p.boundingBox.expand(4, 4, 4)).size();
+    }
+
+    /** A full bag, as a player carries one: every free main inventory slot holds something (blocks and items). */
+    private void fullBag()
+    {
+        EntityPlayerMP p = player();
+        for (int i = 9; i < p.inventory.mainInventory.length; i++)
+        {
+            if (p.inventory.mainInventory[i] == null)
+            {
+                p.inventory.mainInventory[i] = i % 2 == 0 ? new ItemStack(Blocks.dirt, 16) : new ItemStack(net.minecraft.init.Items.apple, 8);
+            }
+        }
+        p.inventoryContainer.detectAndSendChanges();
+    }
+
+    private void emptyBag()
+    {
+        EntityPlayerMP p = player();
+        for (int i = 11; i < p.inventory.mainInventory.length; i++)
+        {
+            p.inventory.mainInventory[i] = null;
+        }
+        p.openContainer.detectAndSendChanges();
     }
 
     /** Exactly one stack of two 4x, at index 2 (attachments do not stack on their own). */
