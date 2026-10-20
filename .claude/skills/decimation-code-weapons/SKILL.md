@@ -17,6 +17,7 @@ Facts and the verified shot order: docs/decimation_code/weapons.md. Making a gun
 | fire in a test | `Deci.fireHeldGun(player)` on the client thread (the mouse is read from LWJGL: a test cannot press it) |
 | hit handling on the server | PacketGunHit handler (deci/aE/a$z) |
 | NPC gunfire (not PacketGunHit) | fixes/NpcShots, fixes/ArmorGunfireHandler, the NPC feature |
+| fit attachments (the I key): the Gunsmith screen | fixes/gunsmith/GunsmithGuiHandler.java, `Deci.fitsSlot` (Decimation's rules), doc section 7; tests `gunsmith`, `gunsmith perf=true`, `gunsmithmp` |
 
 ## Rules
 
@@ -29,6 +30,9 @@ Facts and the verified shot order: docs/decimation_code/weapons.md. Making a gun
 4. Test gun behaviour live: `python3 tools/devtest.py --live playerfire` (player shot), `gun` (reload, NPC fire),
    `firerate`, `gunview`. Trace with `'-Ptrace=deci.ay.i.a,deci.aE.a$z,deci.aE.a$A'`.
 5. Shoot infected at night in tests: by day they burn and their health drops by itself.
+6. Anything a screen sends through a vanilla packet is checked off the integrated server once: a container button id
+   (Container.enchantItem) travels as ONE signed byte (C11PacketEnchantItem), singleplayer passes the int whole (bug.md
+   "Gunsmith list clicks lost on a server"; dev test `gunsmithmp` on the production server).
 
 ## Common mistakes
 

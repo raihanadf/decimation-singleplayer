@@ -125,6 +125,8 @@ docs/gun_model_spec.md); every user review goes into its lessons and casebook.
 3. **More guns of our own** or variants of Decimation's (UMP9 / HK416 / Mk18 route, lesson 13),
    on request with the user's photos.
 4. **NPC loot system**: under "NPCs and combat" (the sniper nerf is done, v0.42.5).
+5. **Gunsmith screen** (docs/ideas.md 25): BUILT 21 Oktober 2026, waiting for the user's look in game (press I with a
+   gun). Next on it: idea 26, the full attachment update (grip, laser and flashlight models on every gun, new attachments).
 
 ## UI
 
@@ -259,6 +261,11 @@ menu, a survivor partner who follows the player and carries the gear the player 
    ElevenLabs or Freesound MCP for sounds (API keys).
 
 ## Recently done (details in bug.md / new_feature.md)
+
+- 21 Oktober 2026: the Gunsmith screen (Tarkov style, mockup A) replaces Decimation's crafting style attachment screen:
+  the held gun in 3D, six slots joined to their parts, click to fit from the whole inventory, Decimation's own rules;
+  measured (open costs less than closed with the HUD hidden; 0.97 ms own draw with OptiFine) and checked on a dedicated
+  server (dev tests gunsmith, gunsmith perf=true, gunsmithmp; docs/decimation_code/weapons.md section 7).
 
 - 19 Oktober 2026: NPC looks drawn from one picture instead of seven layers, and no dead line of sight checks in the NPC
   model (fixes/HumanLayers, PatchHumanLayers; dev tests npclook, npcdraw: 80 infected 28 % cheaper to draw).

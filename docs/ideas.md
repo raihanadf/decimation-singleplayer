@@ -133,7 +133,8 @@ every item below that is not DONE.
     deci/g/a, docs/decimation_code/weapons.md). DESIGNED 21 Oktober 2026 (user: "its actually still using six slot but
     showing real 3d of the gun, just that simple ... just click I and it show the guns model on it"; Tarkov weapon
     modding as the reference; layout A "Tarkov lines" picked from three mockups): docs/superpowers/specs/
-    2026-10-21-gunsmith-screen-design.md. The I key is Decimation's key.decimation.gui.attach (ATTACH action).
+    2026-10-21-gunsmith-screen-design.md. The I key is Decimation's key.decimation.gui.attach (ATTACH action). BUILT
+    21 Oktober 2026 (plan docs/superpowers/plans/2026-10-21-gunsmith-screen.md; docs/decimation_code/weapons.md section 7).
 26. **Full attachment update** (user, 21 Oktober 2026: "in future we may fix grip and laser model since they dont have
     model on it, and at the same time we build full new attachment update later"): grips, lasers and flashlights
     showing on every gun (GunItemRenderer deci/K/b draws a grip part at one fixed offset for all guns), and new

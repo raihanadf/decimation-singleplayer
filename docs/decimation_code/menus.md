@@ -61,6 +61,7 @@ Traced `deci.i,net.decimation.mod.common.utils.h,deci.g.j,net.decimation.fixes.L
 | updates the player's choice: Play never replaced, a question box Update / Later on the title or Esc menu, the release page where the jar cannot be swapped, Quit game safe from a world | fixes/Updater.required (false), fixes/UpdatePrompt with ConfirmScreen (deci/d/s, `Deci.confirm`), fixes/UpdateScreen, fixes/SafeQuit |
 | Server Status rows from real sources (official list, relay, GitHub) | fixes/MenuStatus, `Deci.setStatus`, PatchMenuTexts (Unknown reads Coming soon) |
 | detail popups of the news panels, our corner art and its Discord click, our footer | fixes/MenuDetail, fixes/MenuDetails, fixes/MenuCorner, `Deci.isMenuPage`, tools/menu_assets.py |
+| the attachment screen (I key) replaced by the Gunsmith screen: the held gun in 3D, six slots with lines, click to fit | fixes/gunsmith/GunsmithGuiHandler.java, GunsmithScreen, GunsmithContainer (AttachmentScreen deci/g/a and WeaponModifyContainer deci/f/a no longer open); docs/decimation_code/weapons.md section 7 |
 
 ## 6. Checks
 
