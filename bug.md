@@ -10,6 +10,17 @@ not something we introduced or need to fix) see `documentation.md`.
 
 ## Open
 
+### Gunsmith screen drew the gun inside out (seen by the user 21 Oktober 2026 05:45, FIXED before shipping)
+- User: "i see the guns part model well not aligned ... example magazine it show up full, actually when insert in gun,
+  some of them is not visible". Beside study.py's side render the Uzi's whole magazine showed through its grip.
+- Cause: Minecraft's GUI view (glOrtho with top 0) flips y, a mirror: Decimation's renderer culls faces by winding, so
+  every face turned inside out, the faces toward the camera were dropped and the far ones drawn, hidden parts showing.
+  det(projection x model view, 3 x 3) was +0.0098 where the world view's is negative.
+- Fix: GunsmithScreen.drawGun mirrors depth (glScalef 1, 1, -1) after the lights are set; nothing moves on screen (the
+  view is orthographic). Vanilla's player preview in the inventory mirrors x for the same reason. Check "screen: the gun
+  not drawn inside out" (GunsmithScreen.viewDeterminant read on a measuring draw): RED +0.0098, GREEN -0.0098; shots
+  docs/shots/gunsmith_v0.65.0/uzi_inside_out_before.png and _after.png.
+
 ### Gunsmith list clicks lost on a server (found by the dev test gunsmithmp 21 Oktober 2026, FIXED before shipping)
 - The Gunsmith screen's list sends each click as a container button id (Container.enchantItem). On a dedicated server
   the 4x never fitted, while every singleplayer check passed.

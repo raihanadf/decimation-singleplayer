@@ -100,7 +100,8 @@ takes 0.5); a miss used a round and hurt nothing; client and server copies agree
   GunsmithAction packs slot and inventory index into 0 .. 221 (bug.md "Gunsmith list clicks lost on a server").
 - The screen draws the held gun with Decimation's renderer (its dropped item draw, stood up side on), measures its outline
   from the depth buffer once per open and per change (Silhouette), places boxes and lines (GunsmithLayout), hides the HUD
-  and the hand while open (GunsmithClient).
+  and the hand while open (GunsmithClient). A model drawn into the GUI's view needs one mirror (the view flips y), else
+  it draws inside out (bug.md "Gunsmith screen drew the gun inside out").
 - Measured (production client with OptiFine HD U E7, one jar of main, singleplayer; dev client numbers in brackets, the
   user's own game ran beside it): frame median closed 4.75 ms, open 4.26 ms (13.57, 12.10): the hidden HUD and hand cost
   more than the screen; the screen's own draw 0.97 ms with a full bag, 0.99 ms empty, GPU included (1.29, 1.56); 0

@@ -1273,6 +1273,8 @@ of the last session:
   GuiContainer draws every slot's item each frame even off screen (hide unseen slots on the client); cancelling
   RenderGameOverlayEvent ALL also skips the world GUI view set up (call setupOverlayRendering first); live key=value
   settings such as perf=true stay set (clear with perf=); the Minecraft alpha test drops anything under 10 % opacity.
+  A 3D model drawn in a GUI needs ONE mirror (the GUI's glOrtho flips y): without it Decimation's renderer draws it
+  inside out, hidden parts showing (the user saw it; check the sign of det(projection x model view), negative is right).
   RELEASE 0.65.0 published 20 Oktober 2026 10:55 (pre-release, the first from the prerelease branch: tag 0.65.0 on
   14830b9; sha256 1c604032..., GitHub's asset digest equal; notes RELEASE_NOTES_0.65.0.md; jar kept in
   dist/previous/onejar-0.65.0). Checked after: public download 251,272,285 bytes, site Download 0.65.0 at 11:11 (ISR

@@ -1751,6 +1751,10 @@ Production client with OptiFine HD U E7 (the brother's laptop setup), AKM with t
   "Grips you carry": Foregrip, Flashlight, Laser), B the same lines from two columns of slots left and right, C six
   slots in a row under the gun with the scope area outlined; each with "M4A4", "the gun in your hand", Esc Close and
   the hotbar row (M4A4 icon marked red). The user picked A.
+- `uzi_inside_out_before.png` / `_after.png` (21 Oktober 2026 05:50): left the screen's Uzi, right study.py's side render
+  (faces sorted, hiding right). Before: the whole light gray magazine shows through the grip and the gun looks flat (drawn
+  inside out); after (below it the M4A4): the grip covers the magazine's top, only its bottom sticks out as in the render;
+  the M4A4's magazine goes into its well. The `game/` shots below were taken again after the fix.
 - `game/` (21 Oktober 2026, the built screen, dev test gunsmith in the scratch checkout, Task 5 of the plan): 17 shots and
   `sheet_gunsmith.png`. `gunsmith_m4a4_suppressor.png` (854 x 480): the world dimmed to near black with a soft horizontal
   light band behind the gun, the HUD and the hand hidden; "M4A4" at the top, "Esc  Close" top right; Decimation's M4A4 side on
