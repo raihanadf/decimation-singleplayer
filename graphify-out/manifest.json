@@ -325,9 +325,9 @@
     "semantic_hash": "0145e0863788d451e8ae4273d3c2abdd"
   },
   "docs/shots_index.md": {
-    "mtime": 1792525543.4241912,
-    "ast_hash": "aab4a8fcefda6110d1526b3c423a4102",
-    "semantic_hash": "aab4a8fcefda6110d1526b3c423a4102"
+    "mtime": 1792528435.745349,
+    "ast_hash": "a2a4fcba55167feb780fad62c042c4f6",
+    "semantic_hash": "a2a4fcba55167feb780fad62c042c4f6"
   },
   "docs/interior_spec.md": {
     "mtime": 1791385593.9436893,
@@ -1230,9 +1230,9 @@
     "semantic_hash": "8a3ad8dda4604fb188e87f47efc3db90"
   },
   "docs/ideas.md": {
-    "mtime": 1792524117.247724,
-    "ast_hash": "5f0742b82215458dbcf32a1783b2374a",
-    "semantic_hash": "5f0742b82215458dbcf32a1783b2374a"
+    "mtime": 1792528435.7438033,
+    "ast_hash": "aae3be7fd40c6e24ccbefbfb88f23075",
+    "semantic_hash": "aae3be7fd40c6e24ccbefbfb88f23075"
   },
   "dev/src/main/java/net/decimation/worldgen/NamedPlace.java": {
     "mtime": 1791753400.7417421,
@@ -1540,9 +1540,9 @@
     "semantic_hash": "294036847a9caffda351bfa855a78636"
   },
   "docs/tasks.md": {
-    "mtime": 1792525442.4623718,
-    "ast_hash": "a9fe2bf9a5ddda1c80baa384ee57fdf0",
-    "semantic_hash": "a9fe2bf9a5ddda1c80baa384ee57fdf0"
+    "mtime": 1792528435.744759,
+    "ast_hash": "a977162030168783d409d4032cdc50de",
+    "semantic_hash": "a977162030168783d409d4032cdc50de"
   },
   "tools/skillcheck.py": {
     "mtime": 1792098139.5315723,
@@ -2523,5 +2523,10 @@
     "mtime": 1792524100.8150651,
     "ast_hash": "566c7ccd01490963c41b8d4a3e62cd4b",
     "semantic_hash": "566c7ccd01490963c41b8d4a3e62cd4b"
+  },
+  "docs/superpowers/specs/2026-10-21-gunsmith-screen-design.md": {
+    "mtime": 1792528418.4092448,
+    "ast_hash": "8398ce375d1c42ba38a6f0bd575133c9",
+    "semantic_hash": "8398ce375d1c42ba38a6f0bd575133c9"
   }
 }

@@ -130,5 +130,11 @@ every item below that is not DONE.
     the middle on a dark background, a label at each slot pointing at its place on the gun (Optics, Stocks, Foregrips,
     Magazines, Rear Grips, Forend Device), tabs Attachments and Appearance top left, Quit top right, Clear Attachments and
     Randomize Attachments bottom right. It would replace Decimation's crafting style attachment screen (AttachmentScreen
-    deci/g/a, docs/decimation_code/weapons.md) [not verified: which key opens it today and what that screen shows; read
-    before designing]. Later, not designed.
+    deci/g/a, docs/decimation_code/weapons.md). DESIGNED 21 Oktober 2026 (user: "its actually still using six slot but
+    showing real 3d of the gun, just that simple ... just click I and it show the guns model on it"; Tarkov weapon
+    modding as the reference; layout A "Tarkov lines" picked from three mockups): docs/superpowers/specs/
+    2026-10-21-gunsmith-screen-design.md. The I key is Decimation's key.decimation.gui.attach (ATTACH action).
+26. **Full attachment update** (user, 21 Oktober 2026: "in future we may fix grip and laser model since they dont have
+    model on it, and at the same time we build full new attachment update later"): grips, lasers and flashlights
+    showing on every gun (GunItemRenderer deci/K/b draws a grip part at one fixed offset for all guns), and new
+    attachments. After the Gunsmith screen (item 25). Not designed.

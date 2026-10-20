@@ -1739,3 +1739,15 @@ Production client with OptiFine HD U E7 (the brother's laptop setup), AKM with t
   same street; two survivors with backpacks walking away up the highway between hedges toward a pylon.
 - `mp_src/raw/site_mp_together.png`, `site_mp_fight.png`, `site_mp_explore.png` (1440 x 810): the same three shots
   uncut, as siteshots wrote them, with Decimation's inventory tip in the top left. Cut again from these, never reshoot.
+
+## gunsmith_v0.65.0 (21 Oktober 2026, Gunsmith screen design, docs/superpowers/specs/2026-10-21-gunsmith-screen-design.md)
+
+- `m4a4_side_cut.png` (1200 x 460): Decimation's M4A4 from the side, muzzle right, with its 4x scope and AR suppressor
+  fitted, rendered by tools/guns/study.py attach (no game) and cut out of the light background. The foregrip asked for
+  did not show (Decimation draws grips at one fixed offset). A stray curved magazine part at the bottom left was erased
+  for the mockups only.
+- `mockup_layouts.png` (1000 x 2000, page shot): the three layouts shown to the user over a blurred city street: A Tarkov
+  lines (slot boxes near their parts joined by white lines to red dots, the Grip slot open with a red bordered list
+  "Grips you carry": Foregrip, Flashlight, Laser), B the same lines from two columns of slots left and right, C six
+  slots in a row under the gun with the scope area outlined; each with "M4A4", "the gun in your hand", Esc Close and
+  the hotbar row (M4A4 icon marked red). The user picked A.
