@@ -1685,3 +1685,10 @@ Production client with OptiFine HD U E7 (the brother's laptop setup), AKM with t
   the entrance, the walled asphalt yard with cream and green tents at left, small figures of residents in the yard and at
   the gate, parked vehicles at right; suburban houses with pools to the left, a tower at right, city streets around. The
   camera the test measures from: every resident is inside the view (those in the building are drawn too).
+
+## main_menu_v0.65.0 (20 Oktober 2026, dev test mainmenu, docs/main_menu.md 2f)
+
+- `mainmenu_home_dev.png`: the home menu of the main line's dev client after "only release builds look for updates":
+  the green Play button (not Update), "v0.64.8 dev" under the DeciRemnant logo, the Updates panel's line "Updates off:
+  dev build (main)", Multiplayer, Website and Coming soon panels, the DeciRemnant corner bottom right; no "New update
+  available!" text anywhere. The profile card reads Developer, No early access.

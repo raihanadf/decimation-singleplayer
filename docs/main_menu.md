@@ -139,6 +139,16 @@ Chernarus pictures ("here the chernarus location"). Shots: docs/shots/main_menu_
 - Dev test mainmenu: order Multiplayer, Updates, Website, Coming soon and "Multiplayer panel opens the Community list"
   (RED 2 FAIL, GREEN). Shot docs/shots/main_menu_v0.64.9/mainmenu_home.png.
 
+## 2f. 20 Oktober 2026: dev and test builds never offer an update
+
+- User (dev client after 0.65.0 was out): "why it show update?" Main builds read version 0.64.8-main.N (0.65.0 is tagged
+  on the prerelease branch), so the check took 0.65.0 for an update; the dev folder cannot install it (bug.md "Dev
+  client and main's test jars offered the 0.65.0 pre-release as an update").
+- Only release builds look now (fixes/Updater.offersUpdates). A dev or test build: Play, the Updates panel says
+  "Updates off: dev build (main)" (or "(prerelease)"), and our version reads "0.64.8 dev" under the logo, in the
+  welcome box and the window title ("DeciRemnant v0.64.8 dev (Minecraft 1.7.10)"). A release jar is unchanged.
+- Shot docs/shots/main_menu_v0.65.0/mainmenu_home_dev.png (shots_index.md).
+
 ## 3. Code map
 
 | Piece | Job |
@@ -148,7 +158,7 @@ Chernarus pictures ("here the chernarus location"). Shots: docs/shots/main_menu_
 | Deci | isHomeMenu, addNewsPanel (ArticlePanel deci.d.c, DeciScreen.addPanel deci.d.i.a), newsLine, newsPicture (deci.d.c.et), newsPanels (tests), menuShown (ClientState.bO and isMenuFadedOut), menuBackground (ClientState.bC), drawCentered (RenderUtil deci.j.a.a, two forms) |
 | tools/patches/PatchMenuBackground.java | Javassist on RenderUtil.drawMenuBackground (deci.j.a.b(GuiScreen)): removes the black layer, the two cube draws and the six glow sprites, sends the picture draw to MenuBackground.draw. Three jars. |
 | tools/menu_assets.py | writes background0..5.png (from docs/shots/site_v0.62.9), news_github / update / website / coming.png (from news_src), the corner donor_rank_0 / 1.png (Decimation's buttonbg plus tools/menu/MinecraftStandard.otf, public domain) and the welcome line of Decimation's lang file into the three jars; Decimation art, never committed |
-| fixes/MenuTexts | our version (Updater.current without a dev suffix) and the window title, called from Decimation's code by PatchMenuTexts |
+| fixes/MenuTexts | our version (a release's tag; a dev or test build's as "<tag> dev", MenuTexts.shown) and the window title, called from Decimation's code by PatchMenuTexts |
 | fixes/MenuContinue | the Continue button: Forge InitGuiEvent.Post (Deci.menuButton, buttons 27, 11, 5, 0 moved down 21) and ActionPerformedEvent.Pre (launches the newest save) |
 | tools/patches/PatchMenuTexts.java | ASM on the ORIGINAL classes plus PatchMenuStats (base.jar, section 4b): 47 texts in 12 classes since v0.64.1 (labels, title, version calls, link addresses, window title; status rows and hosts in deci/i/h; row state, "?/?" and " - 0ms" in ListElement deci/d/p; official line and Community tooltip in deci/i/i; popup, toast and profile texts in deci/d/k, i/a, i/e, i/k). Three jars. |
 | fixes/MenuServers | the official list's rows (Bukovka, Chernarus on *.deciremnant.invalid, pictures by map key) through Deci.officialServer (ServerListEntry deci.k.a, setBackground y) |
@@ -202,6 +212,8 @@ review: a total per class could hide a missing text behind a doubled one; the st
   PASS): the links say Website and GitHub and their addresses are ours, the window title is "DeciRemnant v0.63.0
   (Minecraft 1.7.10)", a Continue button is there.
 - With it, `menu` (no forced update) and `stats` (menu counters) still PASS.
+- Since 20 Oktober 2026 (section 2f): `menu` checks "update check" (OFF in a dev or test build, asking GitHub in a
+  release build) and `mainmenu` "updates panel line" ("Updates off: dev build (<branch>)" in a dev or test build).
 - `menupages` (v0.64.1, run it last like mainmenu: it leaves the world): My Community popup lines, the Early access
   click's toast, the official rows (Bukovka and Chernarus, both not reachable), "Coming soon" as the player count, all
   16 map pictures load as textures (not the missing texture), the Community tab's tooltip and toast, the status rows
@@ -221,6 +233,11 @@ review: a total per class could hide a missing text behind a doubled one; the st
   official server list first (menus.md section 7). Since v0.64.1 those pages say coming soon (section 2c).
 - Later (user): a forum on our website for the My Community popup's Forums line (roadmap UI 3); Global Server,
   Community Server, Download and the Bukovka / Chernarus rows wait for real servers (MenuServers holds the rows).
+- Next, from the user (20 Oktober 2026, not designed yet; roadmap UI 4): the Server Status rows from real sources.
+  Download from the GitHub release link, Community Server from the Cloudflare relay, Global Server from the official
+  server list. "Official" means community run dedicated servers, not the user's own. Later an upvote rating so popular
+  servers rank on top. The user has more main menu fixes and additions to name. A project skill for all main menu work
+  (home menu and in game) is asked for after that ("just like other skills we have").
 - Answered by the user (17 Oktober 2026): toasts say DeciRemnant and the Website row pings our site (both v0.64.7);
   the red X icon of an unreachable row stays ("no problem"); the Chernarus pictures are not the user's, their creator
   allowed their use; credited in the 0.64.7 release notes (creator's name not known here).

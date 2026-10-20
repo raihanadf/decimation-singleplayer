@@ -10,6 +10,30 @@ not something we introduced or need to fix) see `documentation.md`.
 
 ## Open
 
+### Dev client and main's test jars offered the 0.65.0 pre-release as an update (found 20 Oktober 2026, FIXED main 68ecf7a, prerelease 23605eb)
+- User (dev client after 0.65.0 was published, screenshot): the home menu showed Update instead of Play, the Updates
+  panel "Release check failed, see GitHub" and Decimation's corner "New update available! Update from the Options menu!".
+- Cause: our version comes from the newest git tag a build reaches. 0.65.0 is tagged on the prerelease branch, so main
+  builds still read 0.64.8 (log: "update 0.65.0 available (239 MB) from the api (not modified), running
+  0.64.8-main.115+baf1c806dd") and every main build took the pre-release for an update. The dev client cannot replace
+  its build output (Updater.download sets FAILED, "this game does not run from a jar"); FAILED with a known release
+  keeps required() true, hence Update with "Release check failed". Worse in a test jar built from main (multiplayer
+  tests: Mac Prism and wyvern feeb69f0, Desktop d6aea397): Update works there and would swap the test jar for 0.65.0,
+  which has no multiplayer.
+- Fix: only release builds look for updates. Updater.release(version): a clean tag, no "+" (Gradle writes
+  "+<commit>" into every other build: 0.64.8-main.115+baf1c806dd, 0.65.0-prerelease+14830b9e37-dirty);
+  offersUpdates(): a release build and not the dev client unless a dev test stands a jar in; check() otherwise sets the
+  new State OFF with "dev build (<branch>)" (or "set in config" when turned off there, which used to leave the panel on
+  "Checking GitHub releases"). MenuNews shows "Updates off: dev build (main)"; MenuTexts shows a dev build's version as
+  "0.64.8 dev" (title, under the logo, welcome box). The dev test `update` pretends a release version (`from`, default
+  0.58.0) in both its ways now and puts the updater back to OFF at its end.
+- Checked: UpdaterTest and MenuTextsTest failed first (methods missing), then pass; suites main 103 / 0, prerelease
+  24 / 0. Live in both lines' dev clients (main 25599, prerelease 25597 at the same time): menu "update check OFF (dev
+  build (main))" / "(prerelease)", update (fake release server) all PASS, mainmenu "updates panel line: Updates off: dev
+  build (main)", window title "DeciRemnant v0.64.8 dev" / "v0.65.0 dev"; the home menu shot shows Play and no corner
+  text. Players' release jars are unchanged by this (their versions have no "+") [not verified in a release jar: none
+  was built with this code yet]. Test jars built before 68ecf7a still offer the update: do not click it there.
+
 ### WorldClock day never advances (found 16 Oktober 2026, FIXED v0.62.9)
 - Found in the Decimation code study (docs/decimation_code/world.md). Decimation's DayLengthHandler (deci/an/p,
   common, every world tick) sets world time back to 0 once it passes 24000. Our fixes/WorldClock (v0.57.0) takes

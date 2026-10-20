@@ -55,16 +55,24 @@ together in 1.0.0, so no jar a player downloads before 1.0.0 may hold multiplaye
   source (+ lightleak; 972c833), ScopeZoom OptiFine guard and glass wipe (+ scopeperf checks; 0af0eee), ModelBatch +
   PatchModelBatch source (+ gunbatch, npcdraw fight; e250f0e), city stall fixes: DeciBiome.decorate, BlockBatch, Keys,
   Highways lookups (+ genwalk, pregen walk and light check, tools/genprof.py; 9861d61), Continue tooltip (14830b9),
-  first sight warm up: ModelWarmup, Deci gear model accessors, SafezoneSites fill timing (+ refugevisit; 91ef15a). The
-  worktree's own dev client generated no structures at all on 20 Oktober 2026 (no "planned at" lines even with main's
-  city pack copied into its run folder; cause not found): check prerelease code with a one jar of the worktree's build in
-  the production client (`python3 tools/onejar.py dev/build/libs/<exact jar> OUT` from the worktree; pick the jar by
-  name, the folder holds older builds).
+  first sight warm up: ModelWarmup, Deci gear model accessors, SafezoneSites fill timing (+ refugevisit; 91ef15a),
+  release builds only look for updates and each line's live test ports (tools/lineports.py; 23605eb).
+  A NEW CHECKOUT'S RUN FOLDER needs the content: `cp dist/config/decimation_worldgen/*.schematic
+  dev/run/client/config/decimation_worldgen/` (lc and large too when missing). StructureGenerator.generate returns at
+  once while no small schematic is loaded ("0 schematic(s) ready" in the log), and that also stops cities, refuges, camps
+  and bases: the worktree's dev client generated no structures until 20 Oktober 2026 for this reason (11 copied, then
+  refugevisit all PASS there). A one jar of the worktree's build in the production client still checks what ships
+  (`python3 tools/onejar.py dev/build/libs/<exact jar> OUT` from the worktree; pick the jar by name, the folder holds
+  older builds).
   RELEASING FROM IT (first done 20 Oktober 2026 for 0.65.0, docs/production_test.md):
   1. Base jar: worktree dist/Decimation.jar = main's dist/Decimation.jar minus
-     assets/deci/textures/gui/menu/news_multiplayer.png (zip -d). Check first that every call the base jar's patched
-     classes make into net/decimation/fixes|worldgen exists in the prerelease build with the same descriptor (javap on
-     both; 26 member refs for 0.65.0), and that the prerelease's menu_assets.py pictures equal main's (run a copy of it
+     assets/deci/textures/gui/menu/news_multiplayer.png (zip -d). Check first with `python3 tools/linecheck.py
+     dist/Decimation.jar <worktree>/dev/build/libs/deciworldgen-VERSION.jar --last dist/previous/onejar-LAST/Decimation.jar`
+     (from main): every call the base jar's patched classes make into net/decimation/fixes|worldgen exists in the
+     prerelease build with the same descriptor (26 for 0.65.0; exit 1 and MISSING lines otherwise), the entries to strip,
+     and every Decimation entry changed since the last release (read each: it must be a plain fix). Both lines share ONE
+     base jar: main only behaviour lives in our classes, never in a jar patch (a patch both lines carry calls a hook both
+     lines have). Also check that the prerelease's menu_assets.py pictures equal main's (run a copy of it
      inside main's tools/ with --only-dir: it reads git ignored sources under docs/shots; never run it in the worktree,
      whose dev/libs is main's).
   2. Git ignored generated files the worktree lacks: the 28 gun files of UMP9 / HK416 / HK416 Tan / Mk18 under
@@ -82,8 +90,20 @@ together in 1.0.0, so no jar a player downloads before 1.0.0 may hold multiplaye
      0.65.0 below); check the asset digest, the site's Download, and the real update from GitHub with the last release's
      jar: `devtest.py --live menu`, then `update real=true jar=true from=LAST expect=VERSION` (menu first: the welcome
      fade trap below), restart and read "up to date (VERSION)"; archive in dist/previous/onejar-VERSION.
-  The prerelease build's live port is always 25599 (the joiner port setting is main only; so do releases up to 0.64.8).
-  Only one live dev game at a time (both use port 25599).
+  TWO LINES SIDE BY SIDE (20 Oktober 2026, user: "figure out how development goes on without interrupting others"):
+  - Each checkout runs its own live test game: main 25599 with debug port 5005, the prerelease worktree 25597 with
+    5007 (tools/lineports.py by branch; devtest.py starts its game with -Pliveport / -Pdebugport and hotswap.py attaches
+    to its own port). Both ran at once on 20 Oktober 2026 (menu, update, mainmenu PASS in each). main's second game, the
+    production client as a joiner, keeps 25598 / 5006. Releases up to 0.65.0 listen on 25599.
+  - Gradle in one checkout while the OTHER checkout's live game runs is fine (worktree test and build with main's live
+    game open: its runs still PASS). In the same checkout the old rule stands: no Gradle while its game runs.
+  - Only release builds look for updates (fixes/Updater.offersUpdates: no "+" in the version, not the dev client):
+    the dev client and every test jar of main or prerelease say "Updates off: dev build (<branch>)", show their version
+    as "<tag> dev" and offer Play. Until then main builds (version 0.64.8-main.N, the newest tag main reaches) took the
+    0.65.0 pre-release for an update. Test jars built before main 68ecf7a (Mac Prism and wyvern feeb69f0, Desktop
+    d6aea397) still offer 0.65.0 and would swap themselves for it, without multiplayer: never click Update there,
+    rebuild them from main.
+  - `pgrep -fl "zulu-8.jdk.*GradleStart"` lists both lines' games; `lsof -a -p PID -d cwd` names the checkout.
 
 ## Knowledge maintenance (mandatory, user rule 2026-10-07)
 
@@ -1200,6 +1220,12 @@ of the last session:
   shows it as IOAccelerator); JFR barely samples the client thread inside a GL heavy frame (6 samples in 200 ms), count
   what each frame loads instead; a model's display list bakes the scale and the scaleO / scaleN / jE flags of its first
   draw (sight glass parts get theirs just before drawing).
+  Two lines apart (20 Oktober 2026, "TWO LINES SIDE BY SIDE" above): only release builds look for updates (fixes/Updater
+  release / offersUpdates, State OFF; MenuNews "Updates off: dev build (main)"; MenuTexts "<tag> dev"; unit tests
+  UpdaterTest, MenuTextsTest; checks menu "update check", mainmenu "updates panel line"); each line's live ports
+  (tools/lineports.py); tools/linecheck.py for release step 1; the worktree's missing schematics. Traps: a live game that
+  ran mainmenu has left its world, so a later mode waits for a player forever and --stop then times out with a
+  traceback (end that game at the menu: its world is saved); macOS has no `timeout` command.
   RELEASE 0.65.0 published 20 Oktober 2026 10:55 (pre-release, the first from the prerelease branch: tag 0.65.0 on
   14830b9; sha256 1c604032..., GitHub's asset digest equal; notes RELEASE_NOTES_0.65.0.md; jar kept in
   dist/previous/onejar-0.65.0). Checked after: public download 251,272,285 bytes, site Download 0.65.0 at 11:11 (ISR

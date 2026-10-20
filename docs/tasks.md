@@ -93,3 +93,10 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [x] muzzle flash lit every mob drawn after the shooter: fixes/EntityLighting, PatchLightLeaks (lightleak)
 - [x] NPC guns and gear drawn in one go: fixes/ModelBatch, PatchModelBatch (gunbatch 0 px differ; npcdraw armed NPCs about half the time)
 - [ ] repeated deaths to NPC gunfire at Market District in the user's session (not looked at)
+- [x] two lines apart: only release builds look for updates (main 68ecf7a, prerelease 23605eb), own live ports per line (tools/lineports.py), tools/linecheck.py, worktree schematics
+- [ ] user: push main and prerelease (two lines work)
+- [ ] old multiplayer test jars (Mac Prism, wyvern feeb69f0, Desktop d6aea397) offer 0.65.0 as an update: never click it, rebuild from main
+- [ ] main menu B: Server Status rows from real sources (Download from GitHub, Community from the relay, Global from the official list): talk first
+- [ ] main menu C: official list of community dedicated servers, upvote rating later: design
+- [ ] user: the other main menu fixes and additions
+- [ ] project skill for all main menu work, home menu and in game (user, after B)

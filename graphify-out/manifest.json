@@ -20,9 +20,9 @@
     "semantic_hash": "9ad8994d74b3e8f0a54dbf3f9ebdee8e"
   },
   "dev/dependencies.gradle": {
-    "mtime": 1792483150.0984187,
-    "ast_hash": "269d399de23615b7c7db19b932a311c3",
-    "semantic_hash": "269d399de23615b7c7db19b932a311c3"
+    "mtime": 1792513020.3542905,
+    "ast_hash": "95a6734599686953a8c38af909d0f814",
+    "semantic_hash": "95a6734599686953a8c38af909d0f814"
   },
   "dev/repositories.gradle": {
     "mtime": 1791314872.0,
@@ -110,9 +110,9 @@
     "semantic_hash": "de153d1f8408971d6190e16a7d4256f9"
   },
   "CLAUDE.md": {
-    "mtime": 1792484021.7018619,
-    "ast_hash": "ce79f87da16f914d28d648e7405b10cb",
-    "semantic_hash": "ce79f87da16f914d28d648e7405b10cb"
+    "mtime": 1792514375.1523502,
+    "ast_hash": "ae305d3372adc03e2765b701715bdc4b",
+    "semantic_hash": "ae305d3372adc03e2765b701715bdc4b"
   },
   "DECIMATION_MOD_TASK.md": {
     "mtime": 1784958353.0126374,
@@ -120,9 +120,9 @@
     "semantic_hash": "aa4550575e47e7c1d0b020a51afbb501"
   },
   "bug.md": {
-    "mtime": 1792484034.1722217,
-    "ast_hash": "4919f83869234e741d638664f554c4e8",
-    "semantic_hash": "4919f83869234e741d638664f554c4e8"
+    "mtime": 1792514392.0870898,
+    "ast_hash": "64cfd6c17759bb965bce7faaae13a460",
+    "semantic_hash": "64cfd6c17759bb965bce7faaae13a460"
   },
   "create_weapons.md": {
     "mtime": 1791653625.5948887,
@@ -325,9 +325,9 @@
     "semantic_hash": "0145e0863788d451e8ae4273d3c2abdd"
   },
   "docs/shots_index.md": {
-    "mtime": 1792483090.1001177,
-    "ast_hash": "408c9fb16c142c2cf4d6126d24a644ba",
-    "semantic_hash": "408c9fb16c142c2cf4d6126d24a644ba"
+    "mtime": 1792514427.0953524,
+    "ast_hash": "d0d46735f43b50dbdc9b362083e9445e",
+    "semantic_hash": "d0d46735f43b50dbdc9b362083e9445e"
   },
   "docs/interior_spec.md": {
     "mtime": 1791385593.9436893,
@@ -355,9 +355,9 @@
     "semantic_hash": "592ff50c6e4ca1de5733ac7374e51ea7"
   },
   "tools/hotswap.py": {
-    "mtime": 1791385651.0708683,
-    "ast_hash": "ddc856a527654c00da45dc82887d74e8",
-    "semantic_hash": "ddc856a527654c00da45dc82887d74e8"
+    "mtime": 1792513020.3540952,
+    "ast_hash": "3ff23b840dbc50cde1d37650a6d5eb1f",
+    "semantic_hash": "3ff23b840dbc50cde1d37650a6d5eb1f"
   },
   "docs/furniture_sets.md": {
     "mtime": 1791397145.3199964,
@@ -650,14 +650,14 @@
     "semantic_hash": "c4ad60409db118797f2b8107bfa16497"
   },
   "tools/devtest.py": {
-    "mtime": 1792264946.7807148,
-    "ast_hash": "1f50b118f74d69684fab74bda8f9beff",
-    "semantic_hash": "1f50b118f74d69684fab74bda8f9beff"
+    "mtime": 1792513020.3537238,
+    "ast_hash": "1c39f26030dd9a038debdd20adca663f",
+    "semantic_hash": "1c39f26030dd9a038debdd20adca663f"
   },
   "docs/roadmap.md": {
-    "mtime": 1792483081.804623,
-    "ast_hash": "38147b0fe81cfeb9d08a92f66a00197a",
-    "semantic_hash": "38147b0fe81cfeb9d08a92f66a00197a"
+    "mtime": 1792514439.3753562,
+    "ast_hash": "c8fec6f82fed76e9c0dbd1b3ba57959a",
+    "semantic_hash": "c8fec6f82fed76e9c0dbd1b3ba57959a"
   },
   "dev/src/main/java/net/decimation/worldgen/LegacyStreets.java": {
     "mtime": 1791487239.5087948,
@@ -1370,9 +1370,9 @@
     "semantic_hash": "1cb25888864bfc03311146d7a2ca7845"
   },
   "dev/src/main/java/net/decimation/worldgen/devtest/MenuTest.java": {
-    "mtime": 1792221836.569498,
-    "ast_hash": "a2906c238157269e13687259fe108d5d",
-    "semantic_hash": "a2906c238157269e13687259fe108d5d"
+    "mtime": 1792512945.7561524,
+    "ast_hash": "088458de5c704d4a1a5b94b7559ad028",
+    "semantic_hash": "088458de5c704d4a1a5b94b7559ad028"
   },
   "tools/patches/PatchNoUpdate.java": {
     "mtime": 1792222533.732111,
@@ -1410,14 +1410,14 @@
     "semantic_hash": "0096f8dec0ced80f21b5db419a28aea8"
   },
   "dev/src/main/java/net/decimation/fixes/Updater.java": {
-    "mtime": 1792222533.7315905,
-    "ast_hash": "259a4098a98d01f95d1148530cd265ce",
-    "semantic_hash": "259a4098a98d01f95d1148530cd265ce"
+    "mtime": 1792512865.1622634,
+    "ast_hash": "7c512cd1ed9e6b9e9297b8887c4b70f8",
+    "semantic_hash": "7c512cd1ed9e6b9e9297b8887c4b70f8"
   },
   "dev/src/main/java/net/decimation/worldgen/devtest/UpdateTest.java": {
-    "mtime": 1792288665.618884,
-    "ast_hash": "73f69b4e72c5a4fd2f65de09a9e00c1e",
-    "semantic_hash": "73f69b4e72c5a4fd2f65de09a9e00c1e"
+    "mtime": 1792513134.8700256,
+    "ast_hash": "aac2fa4dfb0117c326ec91508859d457",
+    "semantic_hash": "aac2fa4dfb0117c326ec91508859d457"
   },
   "tools/fake_release_server.py": {
     "mtime": 1792443982.960033,
@@ -1540,9 +1540,9 @@
     "semantic_hash": "294036847a9caffda351bfa855a78636"
   },
   "docs/tasks.md": {
-    "mtime": 1792484034.172663,
-    "ast_hash": "053ffc4479dd56b536460df329a77ade",
-    "semantic_hash": "053ffc4479dd56b536460df329a77ade"
+    "mtime": 1792514439.374255,
+    "ast_hash": "f91c7b1d549b97c0b2a9c68085bd97b0",
+    "semantic_hash": "f91c7b1d549b97c0b2a9c68085bd97b0"
   },
   "tools/skillcheck.py": {
     "mtime": 1792098139.5315723,
@@ -1770,14 +1770,14 @@
     "semantic_hash": "1c1bf1168db4cca07c3dfaf330ea84a5"
   },
   "dev/src/main/java/net/decimation/fixes/MenuNews.java": {
-    "mtime": 1792286133.443207,
-    "ast_hash": "d033aa7f3517ee175de74dfcd82f6f56",
-    "semantic_hash": "d033aa7f3517ee175de74dfcd82f6f56"
+    "mtime": 1792512868.334555,
+    "ast_hash": "af8d98da6f69e2e882c26894b3989362",
+    "semantic_hash": "af8d98da6f69e2e882c26894b3989362"
   },
   "dev/src/main/java/net/decimation/worldgen/devtest/MainMenuTest.java": {
-    "mtime": 1792442818.507098,
-    "ast_hash": "b2c54e405dfd507f31c70c5758d8d773",
-    "semantic_hash": "b2c54e405dfd507f31c70c5758d8d773"
+    "mtime": 1792513134.8696728,
+    "ast_hash": "06021e146acd120b0c90c413dfb345a7",
+    "semantic_hash": "06021e146acd120b0c90c413dfb345a7"
   },
   "tools/menu_assets.py": {
     "mtime": 1792287198.6723108,
@@ -1790,9 +1790,9 @@
     "semantic_hash": "6171606ef61617ea7f40a4377dc577f9"
   },
   "docs/main_menu.md": {
-    "mtime": 1792442925.0357444,
-    "ast_hash": "8c0f6f99620e8add21589c740e98422e",
-    "semantic_hash": "8c0f6f99620e8add21589c740e98422e"
+    "mtime": 1792514411.3339813,
+    "ast_hash": "6200cb2cf76f649d58f2f8b7a148a367",
+    "semantic_hash": "6200cb2cf76f649d58f2f8b7a148a367"
   },
   "dev/src/main/java/net/decimation/fixes/MenuContinue.java": {
     "mtime": 1792442925.0351672,
@@ -1800,9 +1800,9 @@
     "semantic_hash": "8dd60805179cc36e3cf2eeb84a5e4d9d"
   },
   "dev/src/main/java/net/decimation/fixes/MenuTexts.java": {
-    "mtime": 1792186927.9805636,
-    "ast_hash": "2a27cbf9b0e117cab8e37087cfdfd63a",
-    "semantic_hash": "2a27cbf9b0e117cab8e37087cfdfd63a"
+    "mtime": 1792512945.7557697,
+    "ast_hash": "739d2197ada9d0a18b2fc2b9e979fe2d",
+    "semantic_hash": "739d2197ada9d0a18b2fc2b9e979fe2d"
   },
   "tools/patches/PatchMenuTexts.java": {
     "mtime": 1792219637.161528,
@@ -2448,5 +2448,25 @@
     "mtime": 1792482075.9940784,
     "ast_hash": "13573ad37ec17c676cd9a2215992c163",
     "semantic_hash": "13573ad37ec17c676cd9a2215992c163"
+  },
+  "dev/src/test/java/net/decimation/fixes/MenuTextsTest.java": {
+    "mtime": 1792512926.0505857,
+    "ast_hash": "b1be87507cda48d37e7c27a9c014df0b",
+    "semantic_hash": "b1be87507cda48d37e7c27a9c014df0b"
+  },
+  "dev/src/test/java/net/decimation/fixes/UpdaterTest.java": {
+    "mtime": 1792512824.2593613,
+    "ast_hash": "f0a211ae3dca1547c38e2b7009b2f1d9",
+    "semantic_hash": "f0a211ae3dca1547c38e2b7009b2f1d9"
+  },
+  "tools/linecheck.py": {
+    "mtime": 1792514309.1591473,
+    "ast_hash": "5c3e201720720f59d009da777e925d80",
+    "semantic_hash": "5c3e201720720f59d009da777e925d80"
+  },
+  "tools/lineports.py": {
+    "mtime": 1792512994.9294393,
+    "ast_hash": "38ce0cce312485eb07d3268ea796ba95",
+    "semantic_hash": "38ce0cce312485eb07d3268ea796ba95"
   }
 }
