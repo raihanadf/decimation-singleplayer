@@ -4,19 +4,23 @@
 The user builds a gun in the builder and downloads its preset (JSON). This loads that preset into the builder's 3D view
 with agent-browser, hides the slot points, turns the view to fixed angles by mouse drags and takes each view twice, on
 the dark and on the light backdrop: the pixels equal in both are the gun (no backdrop pixel matched in the runs
-checked), so each
-view is cut out cleanly. Written to OUTDIR: one cut out PNG per view, views.json (each silhouette's box in pixels; all
+checked), so each view is cut out cleanly. Written to OUTDIR: one cut out PNG per view, views.json (each silhouette's box in pixels; all
 views share one camera distance, so their sizes compare), parts.txt (the part names on the builder's slot boxes) and
 sheet.png. Nothing is downloaded from the site. The pictures show Battlestate Games' models: they stay local
 (docs/shots, git ignored) and never go into the repo, a jar or the website.
 
     python3 tools/guns/refcapture.py PRESET.json OUTDIR [--views side,end_a,...] [--keep-raw]
+    python3 tools/guns/refcapture.py PRESET.json OUTDIR --fill=0.92 [--size=2560x1600]   # close ups: the gun large
     python3 tools/guns/refcapture.py --selftest
 
 Turning: the builder's view behaves like three.js OrbitControls (a drag across the canvas height turns 360 degrees,
 checked with the end on views being narrow); a drag down far enough looks from straight above. Its reset view is close
 (strong perspective, ends cut by the frame): every view is zoomed out first by the same number of wheel steps, worked
-out once so the side view fills about a third of the frame's width (less perspective).
+out once so the side view fills about a third of the frame's width (less perspective). The view has no pan (right
+drag, Shift drag and arrow keys do not move it; the arrows even drop the gun) and its wheel zooms to the middle, not
+to the cursor (checked 21 Oktober 2026), so close ups of a part are the whole gun filling the frame: --fill=0.92 zooms
+until the side view takes 92 % of the width (more perspective, every part in view at about 2.6 times the pixels),
+--size a bigger frame for more pixels still.
 """
 
 import json
@@ -88,15 +92,26 @@ def settle(tmp, tries=15):
     print("view never settled; going on")
 
 
-def drag(dx, dy):
-    """A mouse drag across the canvas from its middle, in steps."""
-    x0, y0 = W // 2, H // 2
+def drag(dx, dy, button="left", start=None):
+    """A mouse drag across the canvas (from its middle unless `start`), in steps; the left button turns, the right
+    pans."""
+    x0, y0 = start or (W // 2, H // 2)
     ab("mouse", "move", x0, y0)
-    ab("mouse", "down", "left")
+    ab("mouse", "down", button)
     steps = max(1, int(max(abs(dx), abs(dy)) / 20))
     for i in range(1, steps + 1):
         ab("mouse", "move", int(x0 + dx * i / steps), int(y0 + dy * i / steps))
-    ab("mouse", "up", "left")
+    ab("mouse", "up", button)
+
+
+def steps_for(w0, w5, target):
+    """Wheel steps from the reset view to a side view `target` pixels wide, from its width at the reset (w0) and after
+    5 steps out (w5): the apparent size goes with the inverse of the camera's distance, which every step multiplies
+    by the same factor."""
+    if w0 <= target or w5 >= w0:
+        return 0
+    step = (w0 / float(w5)) ** (1 / 5.0)
+    return max(0, min(60, int(math.ceil(math.log(w0 / float(target)) / math.log(step)))))
 
 
 def dark_bg(on):
@@ -130,7 +145,7 @@ def setup(preset, tmp):
     hidden, every page element but the 3D view hidden, the dark backdrop on."""
     ab("open", URL)
     ab("set", "viewport", W, H)
-    before = wait_for(lambda: state() if state()[0] else None, 30)
+    before = wait_for(lambda: (lambda st: st if st[0] else None)(state()), 60)  # a cold load took over 30 s once
     if before is None:
         raise SystemExit("the builder did not come up")
     loaded = None
@@ -176,28 +191,24 @@ def pair(tmp, name):
 
 
 def zoom_steps(tmp, target=0.35):
-    """Wheel steps that bring the side view to `target` of the frame's width: two measurements, apparent size taken as
-    the inverse of the camera's distance, which each wheel step multiplies by the same factor."""
+    """Wheel steps that bring the side view to `target` of the frame's width (two measurements, steps_for)."""
     reset()
-    w0 = (pair(tmp, "zoom0")[1].getbbox() or (0, 0, W, 0))
-    w0 = w0[2] - w0[0]
+    box = pair(tmp, "zoom0")[1].getbbox()
+    w0 = box[2] - box[0] if box else W
     reset(5)
-    w5 = pair(tmp, "zoom5")[1].getbbox()
-    w5 = w5[2] - w5[0] if w5 else w0
-    if w5 >= w0 or w0 <= target * W:
-        return 5 if w5 < w0 else 0
-    step = (w0 / float(w5)) ** (1 / 5.0)
-    n = int(math.ceil(math.log(w0 / (target * W)) / math.log(step)))
+    box = pair(tmp, "zoom5")[1].getbbox()
+    w5 = box[2] - box[0] if box else w0
+    n = steps_for(w0, w5, target * W)
     print("zoom: side %d px at the reset, %d after 5 steps: %d steps for %.0f%%" % (w0, w5, n, target * 100))
-    return max(0, min(60, n))
+    return n
 
 
-def capture(preset, out, names):
+def capture(preset, out, names, fill=0.35):
     tmp = os.path.join(out, "raw")
     os.makedirs(tmp, exist_ok=True)
     title, parts = setup(preset, tmp)
     quarter = H / 4  # OrbitControls: a drag across the canvas height turns 360 degrees
-    steps = zoom_steps(tmp)
+    steps = zoom_steps(tmp, fill)
     views = {}
     for name in names:
         turns, tilt = VIEWS[name]
@@ -220,8 +231,8 @@ def capture(preset, out, names):
             print("warning: %s is %d wide against the side's %d: the turn is not a quarter (calibration?)"
                   % (e, views[e]["width"], side["width"]))
     with open(os.path.join(out, "views.json"), "w") as f:
-        json.dump({"preset": os.path.basename(preset), "title": title, "frame": [W, H], "zoom_steps": steps, "views": views}, f,
-                  indent=1)
+        json.dump({"preset": os.path.basename(preset), "title": title, "frame": [W, H], "zoom_steps": steps,
+                   "fill": fill, "views": views}, f, indent=1)
     with open(os.path.join(out, "parts.txt"), "w") as f:
         f.write(title + "\n" + "\n".join(parts) + "\n")
     sheet(out, [n for n in names if n in views])
@@ -251,6 +262,10 @@ def selftest():
     assert mask.getbbox() == (5, 6, 25, 16), mask.getbbox()
     assert mask.histogram()[255] == 20 * 10, mask.histogram()[255]
     assert cut.getpixel((10, 10)) == (60, 60, 60, 255) and cut.getpixel((0, 0))[3] == 0
+    # 2440 px at the reset, 1900 after 5 steps: 21 steps to a third of 2560 (as measured), 1 step to 0.92
+    assert steps_for(2440, 1900, 0.35 * 2560) == 21, steps_for(2440, 1900, 0.35 * 2560)
+    assert steps_for(2440, 1900, 0.92 * 2560) == 1, steps_for(2440, 1900, 0.92 * 2560)
+    assert steps_for(2000, 1900, 0.95 * 2560) == 0  # already inside the target
     print("selftest ok")
 
 
@@ -260,12 +275,17 @@ def main(argv):
         return
     if len(argv) < 2:
         raise SystemExit(__doc__)
-    names = list(VIEWS)
+    global W, H
+    names, fill = list(VIEWS), 0.35
     for a in argv[2:]:
         if a.startswith("--views="):
             names = a[len("--views="):].split(",")
+        elif a.startswith("--fill="):
+            fill = float(a[len("--fill="):])
+        elif a.startswith("--size="):
+            W, H = (int(v) for v in a[len("--size="):].split("x"))
     os.makedirs(argv[1], exist_ok=True)
-    capture(argv[0], argv[1], names)
+    capture(argv[0], argv[1], names, fill)
     ab("close", check=False)
     if "--keep-raw" not in argv:
         import shutil
