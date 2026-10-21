@@ -1170,3 +1170,17 @@ lineup photo zombies_v0.34.0. Not seen by the user in game yet
   70" FAILs with or without this change (old, docs/tasks.md). Cost: none per frame (the same tracers, another colour).
   Production client not run [colour drawing is Decimation's own; not verified with OptiFine]. Decimation's own armed
   traders and guards that our loadouts do not arm keep its white [not changed].
+
+## Looted magazines hold random rounds (22 Oktober 2026, feature 3 of docs/roadmap.md "Feature order")
+- User: "now all mag loot have variaty capacity ammo inside it"; chosen: 1 round to full, weighted toward half full,
+  rarely full, never empty.
+- Found: Decimation's loot lists hold magazines without NBT, and AmmoItem.onUpdate fills such a magazine to capacity
+  on its first tick in an inventory: every looted magazine was full (dev test lootmags: 38 of 38).
+- fixes/LootMagazines: remembers the player's loot inventory before Decimation's LootInteractHandler runs (HIGHEST) and
+  gives the magazines (belts, clips: Deci.magazineCapacity, AmmoItem feedType not bullet) of a new one their rounds
+  after it (LOWEST, receiveCanceled): two dice around half, rounded, at least 1. The screen opens 2 ticks later and its
+  container sends the server's stacks. Covers crates, wrecks, cabinets, supply drops (all through that handler).
+- Checks: unit LootMagazinesTest RED then GREEN (it caught a bias of small magazines: 5 rounders averaged 60 %); dev test
+  lootmags (40 opens of Decimation's weapon cabinet through real clicks) RED (38 of 38 full) then GREEN (0 full of 39,
+  mean 47 %), loot PASS; suite 154. Server side, once per loot click. Client display after the container sync [not
+  looked at on screen].

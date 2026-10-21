@@ -166,6 +166,7 @@ public class DevAutoTest
         if (name.equals("traderperf")) return new net.decimation.worldgen.devtest.TraderPerfTest();
         if (name.equals("scopediag")) return new net.decimation.worldgen.devtest.ScopeDiagTest();
         if (name.equals("aimdelay")) return new net.decimation.worldgen.devtest.AimDelayTest();
+        if (name.equals("lootmags")) return new net.decimation.worldgen.devtest.LootMagsTest();
         if (name.equals("bench")) return new net.decimation.worldgen.devtest.BenchTest();
         if (name.equals("targetpace")) return new net.decimation.worldgen.devtest.TargetPaceTest();
         if (name.equals("npclook")) return new net.decimation.worldgen.devtest.NpcLookTest();

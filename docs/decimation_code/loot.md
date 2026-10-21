@@ -51,6 +51,9 @@ Dev test `loot` step 3 right clicks a placed `deci:BlockMilitaryCrate` through t
 7. Two ticks later the queue runs the task and the screen opens (checked: screen `deci.g.g`, rolled stacks shown,
    the spot not ready, a second click opens nothing).
 
+- Magazines in the lists carry no NBT and fill themselves to capacity on their first tick in an inventory
+  (AmmoItem.onUpdate); fixes/LootMagazines gives looted ones random rounds right after the roll (22 Oktober 2026).
+
 ## 4. Singleplayer state
 
 - The handler is registered on both sides (an early one off patch of ours, no saved source; architecture.md
