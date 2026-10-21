@@ -1906,3 +1906,11 @@ The EOTech 558 and the ACOG TA11 (fixes/NewSights, v0.41.0) had no lang lines: t
 and "item.ta11acog.name" (seen in the attachments test's RED run). Named in assets/deciworldgen/lang/en_US.lang with the
 RK-1 and the SpecterDR ("EOTech 558", "ACOG TA11 3.5x", "RK-1 Foregrip", "ELCAN SpecterDR 1x/4x"); dev test attachments
 "items" checks every name.
+
+## aimdrift never learns the sight when it runs right after scopediag in one game (21 Oktober 2026, OPEN, low)
+
+`devtest.py --live scopediag sight=specterdr extra=1` then `aimdrift` in the same game: the AK-74 + ACOG's shift stays
+0.0000, 0.0000 for all 15 s (the sight never learned or never zoomed), with the ScopeZoom of ffdbd0a and of 37ddb28
+alike, on main and on prerelease; aimdrift alone in a fresh game gives 0.0048 .. 0.0050, -0.2190 steady. scopediag ends
+by emptying the hand on the client only and switching the aim off [the cause not investigated: a screen left open, or
+the client's empty slot]. Run aimdrift in a game of its own (or before scopediag) until this is understood.
