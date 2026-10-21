@@ -203,6 +203,8 @@ public class DecimationWorldGen
             cpw.mods.fml.common.FMLCommonHandler.instance().bus().register(new net.decimation.fixes.GunArmSkin());
             // a cape showed in front of the camera: Decimation's first person body drew it (bug.md "Cape in first person")
             net.minecraftforge.common.MinecraftForge.EVENT_BUS.register(new net.decimation.fixes.FirstPersonCape());
+            // shift click in Decimation's inventory screen: its client container swapped for ours (bug.md)
+            net.minecraftforge.common.MinecraftForge.EVENT_BUS.register(new net.decimation.fixes.InventoryShift.Client());
             // the muzzle flash lit every mob drawn after a shooter: lighting put back around each living entity (bug.md)
             net.minecraftforge.common.MinecraftForge.EVENT_BUS.register(new net.decimation.fixes.EntityLighting());
             // host your world online (docs/superpowers/specs/2026-10-18-player-hosting-part1-design.md): the pause menu's
@@ -335,6 +337,7 @@ public class DecimationWorldGen
         net.decimation.fixes.Protection.load(configDir);
         net.decimation.fixes.hosting.OptionalMods.install(); // joiners without the voice chat jar (bug.md)
         net.decimation.fixes.gunsmith.GunsmithGuiHandler.install(); // the attach key opens the Gunsmith screen
+        net.decimation.fixes.InventoryShift.install(); // shift click in the inventory screen (bug.md), after the Gunsmith's
         if (cpw.mods.fml.common.FMLCommonHandler.instance().getSide().isClient())
         {
             net.decimation.fixes.Updater.check();     // the menu asks once a newer release is known (UpdatePrompt)

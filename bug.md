@@ -10,15 +10,33 @@ not something we introduced or need to fix) see `documentation.md`.
 
 ## Open
 
-### Inventory: no shift click (reported 22 Oktober 2026 by the user, OPEN, not analysed)
+### Inventory: no shift click (reported 22 Oktober 2026 by the user, FIXED on branch bugfix)
 - User: "fix where inventory cannot shift + click for fast item organize since decimation use custom design instead using
   vanilla, shift click to armor is same so user need to take one by one on inv slot not like vanilla where you can fast
   put armor with shortcut shift click".
-- Where to look [not analysed]: Decimation's inventory and loot screen (PlayerInventoryScreen deci/g/g, its container's
-  transferStackInSlot; docs/decimation_code/menus.md and items.md for the gear slots). Vanilla's shift click is
-  Container.transferStackInSlot; a container that returns null there makes shift click do nothing. Armor and
-  Decimation's gear slots (vest, backpack, mask) need their own rules. Check item loss and duplication (full inventory,
-  both sides, a dedicated server).
+- Cause (decompiled PlayerGearContainer deci/f/d): transferStackInSlot returns null, so vanilla's shift click moves
+  nothing, in every part of the screen (armor, mask / vest / backpack, worn backpack, loot area).
+- Fix, no jar patch: Deci.GearContainer (PlayerGearContainer with transferStackInSlot sent to fixes/InventoryShift).
+  The server gets it from InventoryShift.Handler, a wrapper of Decimation's GUI handler installed after the Gunsmith's
+  (GUI_LOOT only); the client screen builds its own container in initGui, InventoryShift.Client swaps it on
+  InitGuiEvent.Post (same slots from Decimation's setupSlots, same window id), so the client predicts the move too.
+  Rules: from the inventory first onto the body (armor slot, then Decimation's mask, vest, backpack slots; only empty
+  slots, each slot's own isItemValid: Decimation's armor slots refuse vests and masks), then into a worn backpack, then
+  the other row (main to hotbar, hotbar to main); from armor, gear, backpack or loot into the inventory, main rows first.
+  Equal stacks merge first, slot limits kept, nothing moves when nothing fits. Off switch InventoryShift.enabled
+  (-Ddeciworldgen.invshift=false).
+- Checks: dev test `invshift` (11 cases through PlayerControllerMP.windowClick mode 1, items counted before and after,
+  client slots equal to the server's, client prediction): `fix=off` (Decimation's containers) 21 FAIL, then 46 PASS (helmet
+  on and off, hotbar helmet, vest, gas mask, backpack, 20 into a worn backpack, 10 onto a hotbar 60 = 64 + 6, 40 out of
+  the loot area, a full inventory leaves the helmet on, a full backpack taken off keeps its 20). Dedicated dev server
+  (`invshiftmp`, client joins localhost:25576): 17 PASS (the inventory key opens the screen with shift click, helmet,
+  vest, mask, backpack, stack into the backpack, helmet back off; 24 items in every step, none on the ground). Unit test
+  InventoryShiftTest.
+- Not verified: the production client with OptiFine and a release jar on the production server (only the dev
+  dedicated server); a window resize while the screen is open (Decimation's initGui then makes a container with window
+  id 0, an old Decimation behaviour we copy, not fixed) [not verified]. Open question for the user: with a backpack worn,
+  a shift click from the inventory goes into the backpack before the other row (like a chest); say if the row swap
+  should come first.
 
 ### Foregrip invisible on some guns, the grip looks like it floats (reported 22 Oktober 2026 by the user, OPEN)
 - User: "foregrip on some gun is invicble so its looks flying below". Which guns: not given yet (ask, or shoot every

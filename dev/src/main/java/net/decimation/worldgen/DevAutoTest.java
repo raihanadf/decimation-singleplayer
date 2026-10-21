@@ -135,6 +135,8 @@ public class DevAutoTest
         if (name.equals("keycard")) return new net.decimation.worldgen.devtest.KeycardTest();
         if (name.equals("items")) return new net.decimation.worldgen.devtest.ItemsTest();
         if (name.equals("hardness")) return new net.decimation.worldgen.devtest.HardnessTest();
+        if (name.equals("invshift")) return new net.decimation.worldgen.devtest.InvShiftTest();
+        if (name.equals("invshiftmp")) return new net.decimation.worldgen.devtest.InvShiftRemoteTest();
         if (name.equals("core")) return new net.decimation.worldgen.devtest.CoreTest();
         if (name.equals("menu")) return new net.decimation.worldgen.devtest.MenuTest();
         if (name.equals("click")) return new net.decimation.worldgen.devtest.ClickTest();
