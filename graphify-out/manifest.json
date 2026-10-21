@@ -1540,9 +1540,9 @@
     "semantic_hash": "294036847a9caffda351bfa855a78636"
   },
   "docs/tasks.md": {
-    "mtime": 1792553628.996208,
-    "ast_hash": "a537ea664ff1de6884bf11af4ddedd8a",
-    "semantic_hash": "a537ea664ff1de6884bf11af4ddedd8a"
+    "mtime": 1792560756.5568495,
+    "ast_hash": "a3b41110631a71fee8d642c3b9ebd8e1",
+    "semantic_hash": "a3b41110631a71fee8d642c3b9ebd8e1"
   },
   "tools/skillcheck.py": {
     "mtime": 1792098139.5315723,
@@ -2608,5 +2608,10 @@
     "mtime": 1792553657.5722487,
     "ast_hash": "c145cdb37e6965dd8bf0128120d0452c",
     "semantic_hash": "c145cdb37e6965dd8bf0128120d0452c"
+  },
+  "docs/superpowers/specs/2026-10-21-new-attachments-design.md": {
+    "mtime": 1792560756.5316496,
+    "ast_hash": "8f069cc70db66beb2a52cb681ced7c51",
+    "semantic_hash": "8f069cc70db66beb2a52cb681ced7c51"
   }
 }
