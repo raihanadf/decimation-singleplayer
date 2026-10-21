@@ -1975,3 +1975,18 @@ the client's empty slot]. Run aimdrift in a game of its own (or before scopediag
 - scopeperf "glass after aiming holds no picture" read 77 % plain lens once in the long production run (after npclook,
   gunbatch, threads, radios, lightleak); the same order twice more and four other runs read 100 %. Flaky once, not
   reproduced [cause not found].
+
+## Update downloads fail with 406 (22 Oktober 2026, FIXED on main, OPEN for shipped versions)
+- Found by the real update test after publishing 0.66.0: the 0.65.0 jar found 0.66.0 through the API, then "download
+  failed: java.io.IOException: Server returned HTTP response code: 406 for URL:
+  https://github.com/ucilmenangis/deciremnant/releases/download/0.66.0/Decimation.jar".
+- Cause: GitHub answers 406 to Java's default Accept header ("text/html, image/gif, image/jpeg, *; q=.2, ..."; its
+  "*; q=.2" is not a media range) on release downloads of most repositories (ours, leibnitz27/cfr; cli/cli still 302).
+  Not the repository rename (decimation-singleplayer is now deciremnant: the old name redirects, then the same 406).
+  The 0.64.8 to 0.65.0 update from GitHub worked on 20 Oktober 2026: GitHub changed since. curl and browsers are fine.
+- Fix: fixes/Updater.open names "Accept: application/octet-stream, */*" (API calls set their own). Unit
+  UpdaterTest.downloadsSendAnAcceptHeaderGitHubTakes (a local server answering 406 like GitHub) RED then GREEN; a Java 8
+  client against the real 0.66.0 asset: 200 with the header, 406 without.
+- Still open: every shipped updater (0.64.7 to 0.66.0) sends Java's default and cannot download from GitHub now; their
+  players install the next release by hand once (0.66.0 shows a Download page button on a failed download, 0.65.0 only
+  Try again / Back). The 0.66.0 release notes' "click Update" line is wrong until this is fixed or GitHub changes back.
