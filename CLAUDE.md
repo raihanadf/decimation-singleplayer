@@ -1334,6 +1334,14 @@ of the last session:
   ScopeZoom to learn the sight (ACOG 431 ms against 187). fixes/SightMemory keeps learned positions between launches
   (config/deciworldgen_sights.txt, per build). scopediag's default sight is the ACOG (Decimation's red dot has no
   measured glass draws).
+  RELEASE 0.66.0 published 22 Oktober 2026 02:03 WIB (pre-release from prerelease 99813b0, tag 0.66.0; sha256 e24df810...,
+  GitHub's digest equal; notes RELEASE_NOTES_0.66.0.md; jar kept in dist/previous/onejar-0.66.0): Gunsmith, new
+  attachments, mount rules, menu changes. Public download and the site's Download (0.66.0 at 02:27) checked. The real
+  update from GitHub FAILED: GitHub now answers Java's default Accept header with 406 on release downloads (bug.md
+  "Update downloads fail with 406"), so no shipped updater (0.64.7 to 0.66.0) can download; fixed in Updater on main and
+  prerelease (e4fc4ca), not released. The mod repository is now named deciremnant on GitHub (the old name redirects).
+  Trap: the production client's test world saved by a newer jar makes an older jar stop on Forge's "missing
+  blocks/items" screen (deci:rk1, deci:specterdr): move saves/deciworldgen_devtest aside before an update test.
   RELEASE 0.65.0 published 20 Oktober 2026 10:55 (pre-release, the first from the prerelease branch: tag 0.65.0 on
   14830b9; sha256 1c604032..., GitHub's asset digest equal; notes RELEASE_NOTES_0.65.0.md; jar kept in
   dist/previous/onejar-0.65.0). Checked after: public download 251,272,285 bytes, site Download 0.65.0 at 11:11 (ISR

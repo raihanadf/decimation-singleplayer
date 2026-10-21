@@ -118,6 +118,8 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [x] scope aim delay ("sometime it has delay ... loading the scope render"): learned sight positions kept between launches (fixes/SightMemory; dev test aimdelay)
 - [x] sights need a mount: red dot pistols with a mount only, other sights rail or side mount (sight_mounts.txt)
 - [x] user tried RK-1 v2, mounts and the aim fix in runClient (22 Oktober 2026: "nice it work")
+- [x] release 0.66.0 published (pre-release, 22 Oktober 2026 02:03 WIB)
+- [ ] user: decide 0.66.1 hotfix (Updater Accept header: GitHub 406) and fixing the 0.66.0 notes' "click Update" line
 - [x] bug: see-through scope glass not updated in the production client with OptiFine: ScopeZoom counts its own frames (bug.md; dev, production with OptiFine checked)
 - [ ] later: full attachment update, grip and laser models on guns (docs/ideas.md 26)
 - [ ] later: optimize and bug audit skill (user, 21 Oktober 2026): audits each feature for bugs and performance before it ships (rule now in CLAUDE.md "Every feature: optimized before done")

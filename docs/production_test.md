@@ -159,3 +159,7 @@ Checked with it: bundled content unpacked, cities generated, no errors (bug.md v
   through the API, Update, Decimation's progress screen, 240 MB in 8 s, checked, Quit game / Later, jar swapped (sha256
   e24df810; the "NEWJAR" head check FAILs by design with a real jar); restarted: "Up to date: 0.66.0", menu and
   mainmenu PASS.
+- Published 22 Oktober 2026 02:03 WIB (draft first): GitHub's digest = local sha256 e24df810; public download 301
+  (renamed repository) then 302 then 200 with 252,093,001 bytes; the .sha256 reads e24df810. Site: Download 0.66.0 at
+  02:27. Real update from GitHub with the 0.65.0 jar: found 0.66.0 through the API, then the download FAILED with 406
+  (bug.md "Update downloads fail with 406"); jar not swapped. Fixed in Updater (e4fc4ca on prerelease), not released.
