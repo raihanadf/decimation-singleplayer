@@ -243,3 +243,9 @@ User: "for the feat i have more". Notes on what we already have are mine [not an
     civilian ("Cabinet", no "weapon" in the name), police and military. Today the metal shelf uses list 1 (general) and
     the weapon cabinet list 10 (guns and magazines). Goes with crate levels (item 17, docs/loot_levels.md).
 51. **More new blocks** later (user, no list yet).
+52. **DayZ dark nights** ("the night become so dark so its like dayz they almost black 95% in night time"): at night the
+    world goes almost black, about 95 %, so light matters (the Flashlight attachment, night vision goggles, torches,
+    street lights of our cities). Vanilla never goes that dark (a minimum light level plus the brightness / gamma
+    setting); it needs our own light map at night, and a fix so the player's brightness setting cannot undo it
+    [not analysed; Decimation's weather and fog: docs/decimation_code/world.md]. My reading: a feature, not a report
+    that nights are too dark now.

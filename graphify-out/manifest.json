@@ -655,9 +655,9 @@
     "semantic_hash": "1c39f26030dd9a038debdd20adca663f"
   },
   "docs/roadmap.md": {
-    "mtime": 1792617390.5779529,
-    "ast_hash": "c3ce302ecdf97e0f5cbf463f974f7347",
-    "semantic_hash": "c3ce302ecdf97e0f5cbf463f974f7347"
+    "mtime": 1792617452.8395977,
+    "ast_hash": "e3962a8262ec9af6d1ed15b9fabd8fec",
+    "semantic_hash": "e3962a8262ec9af6d1ed15b9fabd8fec"
   },
   "dev/src/main/java/net/decimation/worldgen/LegacyStreets.java": {
     "mtime": 1791487239.5087948,
@@ -1230,9 +1230,9 @@
     "semantic_hash": "8a3ad8dda4604fb188e87f47efc3db90"
   },
   "docs/ideas.md": {
-    "mtime": 1792617390.5527167,
-    "ast_hash": "45e93dca8a2a230c5e775cee216d3eb3",
-    "semantic_hash": "45e93dca8a2a230c5e775cee216d3eb3"
+    "mtime": 1792617452.7942553,
+    "ast_hash": "6870ae4f2f4c1b845657ad3fab73ca6d",
+    "semantic_hash": "6870ae4f2f4c1b845657ad3fab73ca6d"
   },
   "dev/src/main/java/net/decimation/worldgen/NamedPlace.java": {
     "mtime": 1791753400.7417421,
@@ -1540,9 +1540,9 @@
     "semantic_hash": "294036847a9caffda351bfa855a78636"
   },
   "docs/tasks.md": {
-    "mtime": 1792617390.578256,
-    "ast_hash": "80c599084c8f5ebb9ae53826ff786303",
-    "semantic_hash": "80c599084c8f5ebb9ae53826ff786303"
+    "mtime": 1792617452.8398166,
+    "ast_hash": "578702467dd8fe7a5fbf5653711f2839",
+    "semantic_hash": "578702467dd8fe7a5fbf5653711f2839"
   },
   "tools/skillcheck.py": {
     "mtime": 1792098139.5315723,
