@@ -227,6 +227,24 @@ docs/gun_model_spec.md); every user review goes into its lessons and casebook.
    playerfire, drive, trade, useitems, keycard, loot crate click; tools/skillcheck.py, tools/props/keycardcheck.py.
    Findings to act on: Open bugs 0 (WorldClock day, backend thread leak) and the README's findings list.
 
+## Feature order (user 22 Oktober 2026: "from easiest ones to hardest"; bugs go to the bugfix agent)
+Built in this order, ideas numbers from docs/ideas.md; 1 to 5 decided together (user choices 22 Oktober 2026), from 6 on
+a short design talk each first:
+1. Armor against NPC fire 20 % weaker (46): each piece's protection x 0.8 (a piece blocking 50 % blocks 40 %), helmets
+   too; player shots unchanged.
+2. NPC tracers (34): each armed NPC one random tracer colour for life (Decimation's tracer colours), every NPC shot a
+   tracer; player guns unchanged.
+3. Looted magazines (45): 1 round to full, weighted toward half full, rarely full, never empty.
+4. Unload a magazine (44): shift + right click, about a second like a reload, the rounds as Decimation's loose rounds of
+   that calibre into the inventory (dropped if full), the empty magazine stays.
+5. Radiation status in the HUD (30).
+6. DayZ dark nights (52). 7. Radiation set (41 to 43). 8. Specific mobs at specific places (35). 9. Attachment
+   benefits (40). 10. Armor, vest and gun durability with repair parts (47, 48). 11. Trader market by day (39).
+12. Loot rules, lootable props, loot kinds, Tarkov search (36, 49, 50, 29). 13. Zombie variants and mutants (37).
+14. Achievements and story mode UI (38, 31). 15. Survivor events, friendly NPC and trader quests (28, 32, 33).
+The bugfix agent works in ../Decimation-bugfix (branch bugfix, ports 25596 / 5008): inventory shift click, invisible
+foregrips, props broken by one punch (bug.md Open); its work is reviewed and merged into main, then carried.
+
 ## Ideas (later, user 12 Oktober 2026)
 - The user's list of 22 Oktober 2026 (docs/ideas.md 28 to 38): random survivor events with timed quests, Tarkov style
   loot search, radiation in the HUD, story mode with achievement UI, friendly NPCs with quests or gifts (never despawn,
