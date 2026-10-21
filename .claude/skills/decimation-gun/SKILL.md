@@ -840,6 +840,9 @@ revision (same commit), never remove old ones.
   Gunsmith is open: a mutation run without that guard copied the grip, the check caught it).
 - Check: unit GripRailsTest (RED on the old table, GREEN), dev attachments rails checks (RED 4, GREEN 5), gunsmith,
   glstack; attachmentsmp on the dedicated server.
+- Follow up the same night: sights need a mount too (red dot only on pistols with an optic cut or rail; sight_mounts.txt,
+  fixes/SightMounts, MountStrip), and the scope aim delay (learning hold every launch: fixes/SightMemory).
+- Verdict (user, 22 Oktober 2026, after trying it in runClient): "nice it work".
 
 ### Case 8: test traps met on the way (dev test gunview)
 - No gun in the shots: F1 (hideGUI) hides the held item too; first
