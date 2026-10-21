@@ -85,9 +85,9 @@ takes 0.5); a miss used a round and hurt nothing; client and server copies agree
 - `python3 tools/devtest.py --live playerfire`: the player's shot end to end (9 checks).
 - `gun` (reload loads a magazine, NPC fires), `gunview` (hip, aim, NPC view per gun), `gunperf`, `firerate`,
   `checks` (armor against NPC fire, 60 round mags).
-- `python3 tools/devtest.py --live gunsmith` (92 checks: the screen, fits, rules, no loss, the cursor on close and on
-  logout, 8 guns at two sizes, every registered gun's layout),
-  `gunsmith perf=true` (8 checks, section 7), `gunsmithmp server=HOST:PORT` (a joined client on a dedicated server; run
+- `python3 tools/devtest.py --live gunsmith` (110 checks: the screen, fits, rules, no loss, the cursor on close and on
+  logout, 8 guns at two sizes, every registered gun's layout, turning and zoom),
+  `gunsmith perf=true` (10 checks, section 7), `gunsmithmp server=HOST:PORT` (a joined client on a dedicated server; run
   it last, it leaves for the menu).
 
 ## 7. The Gunsmith screen (21 Oktober 2026, plan docs/superpowers/plans/2026-10-21-gunsmith-screen.md)
@@ -131,6 +131,20 @@ takes 0.5); a miss used a round and hurt nothing; client and server copies agree
   Production client with OptiFine HD U E7 (one jar of main's tree, sha256 76b71b05): 92 checks and perf 8 PASS, frame
   median closed 4.39 ms, open 4.08 ms, own draw 0.90 ms full bag, 0.88 ms empty; joined to the dedicated production
   server (gunsmithmp, 8 PASS): frame 5.54 ms closed, 5.68 ms open.
+- Turning (21 Oktober 2026, spec section 9, user: "its possible to make it more like tarkov where it can be viewed 360
+  by mouse?"): a left press on empty space and a move of 2 GUI pixels turns the gun (GunsmithScreen.mouseClickMove,
+  1 degree a GUI pixel, the tilt stops at 85), it stays turned, a double click on empty space resets, the wheel zooms 1
+  to 2.5 (GunsmithScreen.wheel; a list open scrolls instead). The gun turns about its 3D middle: x and y from the side
+  view's outline, depth from one more probe from above (half scale, half the area read). Each line end is its part's
+  side view point on the middle plane, turned and projected in Java on a view change only (updateEnds); the boxes stay.
+  Checked against real renders of four views (6 of 6 line ends on the gun, the middle 0.25 GUI pixels off at 90 degrees);
+  measuring now reads 2.5 times the gun area, 5.26 ms once per open or change; turning every frame (dev client): 10.25
+  ms against 12.58 closed, GL clean while turned. Production client with OptiFine (one jar sha256 ca773d60): 110 checks
+  and perf 10 PASS, measuring 4.42 ms, turning every frame 6.75 ms against 9.06 closed. At large turns the lines cross
+  the gun (the boxes stay, as chosen). Shots docs/shots/gunsmith_v0.65.0/turning/.
+- The user saw it in runClient (21 Oktober 2026): "i like it how the HUD looks" (the dimming, the light band and the
+  hidden HUD stay), then asked for Tarkov style turning: "its possible to make it more like tarkov where it can be
+  viewed 360 by mouse?" ("cursor i mean").
 - Open, the final review's minor findings (deferred, 21 Oktober 2026): M1 the Barrel box says "Built in" on integrally
   suppressed guns, which also blocks Decimation's bayonet there and hides one already fitted; M2 putting on the same
   paint or tracer again uses an item for no change; M3 the open list's frame is drawn with item lighting still on; M4

@@ -135,7 +135,21 @@ every item below that is not DONE.
     modding as the reference; layout A "Tarkov lines" picked from three mockups): docs/superpowers/specs/
     2026-10-21-gunsmith-screen-design.md. The I key is Decimation's key.decimation.gui.attach (ATTACH action). BUILT
     21 Oktober 2026 (plan docs/superpowers/plans/2026-10-21-gunsmith-screen.md; docs/decimation_code/weapons.md section 7).
+    Turning the gun with the mouse added the same day (spec section 9).
 26. **Full attachment update** (user, 21 Oktober 2026: "in future we may fix grip and laser model since they dont have
     model on it, and at the same time we build full new attachment update later"): grips, lasers and flashlights
     showing on every gun (GunItemRenderer deci/K/b draws a grip part at one fixed offset for all guns), and new
     attachments. After the Gunsmith screen (item 25). Not designed.
+    Reference source the user uses (21 Oktober 2026): tarkovbot.eu/weapon-builder, whose "download" gives a preset JSON
+    (checked on the user's my_preset.json, 384 KB): presetName, selectedWeaponId (a Tarkov item id, 24 hex), attachments
+    (a tree of {slotId, itemId, attachments}, 13 parts in 4 levels there), stats (Ergonomics, Accuracy, SightingRange,
+    VerticalRecoil, HorizontalRecoil, MuzzleVelocity, FireRate, Weight) and icon (a data URL PNG, 1600 x 900, the build
+    side on, muzzle to the LEFT). No 3D model, no geometry, no part positions. Item names come from tarkov.dev's public
+    GraphQL API by id (it answered "GraphQL server unavailable" that day) [not verified]. The picture and Tarkov's
+    models are Battlestate Games' art: reference only, never in the repo, a jar or the website.
+    Its 3D view (checked with agent-browser, 21 Oktober 2026, the default Makarov): a left drag on the view turns the
+    gun, the slot boxes stay and their lines follow the parts (the same as the Gunsmith turning the user chose); buttons
+    for fit, a picture (a download: not used), reset view, "Dark BG"; "Load Downloaded" imports a preset JSON. So views
+    from every side (both sides, top, bottom, front, back, three quarter) can be captured by script with agent-browser
+    screenshots for modelling references (user: "you use that as reference as you know the model 3D so you make new one
+    with decimation styled"; single pictures left parts at wrong positions).

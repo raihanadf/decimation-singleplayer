@@ -118,3 +118,31 @@ panel's details, sounds (Decimation's own UI sounds), names of new classes.
 
 docs/decimation_code/weapons.md and menus.md rows, docs/ideas.md 25 marked built, docs/roadmap.md, docs/tasks.md,
 shots in docs/shots/gunsmith_v<version>/ with shots_index.md, bug.md for any bug found, the graph, the prerelease carry.
+
+## 9. Turning the gun (user, 21 Oktober 2026)
+
+User, after seeing the screen in runClient: "i like it how the HUD looks", then "its possible to make it more like tarkov
+where it can be viewed 360 by mouse?" ("cursor i mean"). Choices (all four recommended options, AskUserQuestion): a left
+drag on empty space turns the gun, it stays turned when let go, the line ends follow the parts, the wheel zooms.
+tarkovbot.eu's weapon builder (checked with agent-browser) behaves the same: its slot boxes stay, its lines follow.
+
+- Controls: a left press on empty space (no box, no list, no visible slot) followed by a move of 2 GUI pixels or more
+  turns the gun, 1 degree per GUI pixel: left and right without limit (360), up and down a tilt stopping at 85 degrees
+  either way. Dragging right brings the near side to the right (grab and spin). A press and release without moving
+  stays a plain click; two such clicks within 300 ms reset the view (side on, zoom 1). The wheel zooms 1x to 2.5x (10 %
+  a notch) when no list is open; in an open list it scrolls the list. Opening the screen again starts side on.
+- Lines: the boxes stay where the side view put them. Each line's end is its part's point from the side view outline,
+  set on the gun's middle plane in depth, turned with the gun and projected each frame: it stays on its part. A part
+  turned to the far side keeps its line.
+- The middle: the outline measuring adds one view from above (half scale, a quarter of the area read) for the gun's
+  thickness, so the gun turns about its true middle. Measuring stays side on whatever the player's view; a fit keeps
+  the view.
+- Performance: while turning a frame is the same one gun draw plus six points turned in Java; no depth read, no text,
+  no packet. Budget: frame time while turning at most 1 ms over the closed screen; the measuring on open grows by the
+  top view (depth pixels at most 2.5 times the gun area).
+- Checks (dev test gunsmith, written first, seen to FAIL): a drag turns the gun and it stays turned; at several angles
+  and zooms every line ends on the gun and the gun turns about its middle, both checked against a real render of that
+  view; a click on a box still opens its list and does not turn; a plain click on empty space does not turn; a double
+  click resets; the tilt stops at 85; the wheel zooms within 1 and 2.5 and leaves the zoom alone with a list open;
+  turning reads no depth and builds no text; a fit keeps the view; perf: frame time while turning each frame, GL clean
+  while turned. Dev client, then the production client with OptiFine; carried to prerelease (a plain feature).

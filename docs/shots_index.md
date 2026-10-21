@@ -1766,3 +1766,11 @@ Production client with OptiFine HD U E7 (the brother's laptop setup), AKM with t
   scope fitted, wood stock), r870, uzi, minigun (the long barrels fill the width), deagle, rpg7 (wood, grips): every gun
   side on with the muzzle right, every line ending on the gun, boxes on screen and apart at both sizes (all checked).
 
+- `turning/` (21 Oktober 2026, the gun turned with the mouse, spec section 9; dev test gunsmith, the M4A4 with a 4x
+  Scope, 854 x 480): `gunsmith_turned_30_0.png` three quarter view, muzzle right and a little away, every line's red dot
+  on its part (stock, 4x Scope on the receiver, paint mid receiver, magazine bottom for Tracer, handguard for Grip,
+  muzzle for Barrel); `gunsmith_turned_90.png` end on from the muzzle, the gun a narrow upright profile in the middle,
+  all six lines meeting on it; `gunsmith_turned_150_20.png` the far side seen from a little above at zoom 1.5, muzzle to
+  the left: the boxes stay where they were, so the Barrel and Stock lines cross the whole gun (a look note for the
+  user); `gunsmith_turned_-60_-30.png` zoom 2.5 seen from below and behind, the gun past the screen's edges, two line
+  ends off screen, the magazine large and light. Each view's line ends were checked against a render of that view.

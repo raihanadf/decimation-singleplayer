@@ -1268,7 +1268,8 @@ of the last session:
   (Decimation's ATTACH) opens fixes/gunsmith instead of its crafting style AttachmentScreen (GunsmithGuiHandler wraps
   Decimation's IGuiHandler; no jar patch): the held gun in 3D (its own renderer, outline from the depth buffer once per
   change), six slots joined to their parts, click to fit from the whole inventory by Decimation's FilteredSlot rules,
-  the gun never leaves the hand. Dev tests gunsmith (92 checks), gunsmith perf=true, gunsmithmp (a joined client on the
+  the gun never leaves the hand; a left drag on empty space turns it, the wheel zooms (spec section 9). Dev tests
+  gunsmith (110 checks), gunsmith perf=true, gunsmithmp (a joined client on the
   production server: /give in creative, a dedicated server's Decimation lets only creative players pick items up).
   Traps: a container button id (enchantItem) is ONE signed byte on the wire, singleplayer passes the int whole (bug.md);
   GuiContainer draws every slot's item each frame even off screen (hide unseen slots on the client); cancelling

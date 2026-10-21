@@ -109,7 +109,10 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [x] Gunsmith screen (Tarkov style, layout A): built on main (dev 80 checks, perf 8, production with OptiFine and a dedicated server), docs/decimation_code/weapons.md section 7
 - [x] Gunsmith final review fixes: part copy guard, cursor back on close and logout, drag, Inventory full in the screen, area only measuring, no per frame texts, no scope glass while open, list width (main 71bda92, prerelease 5cef9db; dev 92 checks, perf 8; production client with OptiFine 92 + 8, dedicated server 8; prerelease 92, unit 52)
 - [ ] later: Gunsmith minors M1 to M13 (docs/decimation_code/weapons.md section 7, "Open")
-- [ ] user: look at the Gunsmith screen in runClient (press I with a gun in hand)
+- [x] user: look at the Gunsmith screen in runClient: "i like it how the HUD looks" (21 Oktober 2026: dimming, light band, hidden HUD stay)
+- [x] Gunsmith: turn the gun 360 degrees with the mouse cursor, like Tarkov (spec section 9; dev 110 checks, perf 10, production client with OptiFine 110 + 10)
+- [ ] user: try the turning in runClient (left drag on empty space, double click resets, wheel zooms)
+- [ ] next: reference capture tool tools/guns/refcapture.py (tarkovbot.eu 3D views by agent-browser, docs/ideas.md 26; user OK to load my_preset.json there)
 - [ ] later: full attachment update, grip and laser models on guns (docs/ideas.md 26)
 - [ ] later: optimize and bug audit skill (user, 21 Oktober 2026): audits each feature for bugs and performance before it ships (rule now in CLAUDE.md "Every feature: optimized before done")
 - [x] project skill decimation-main-menu with the full menu map (docs/main_menu.md 8 to 10)
