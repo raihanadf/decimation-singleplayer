@@ -1,5 +1,15 @@
 // Add any additional repositories for your dependencies here.
 
 repositories {
-
+    // forge 1.7.10's scala libs: their usual host (gregtech.overminddl1.com) is down and a timeout there fails the build,
+    // forge's maven still has the jars (no poms, so the jar alone is the metadata)
+    exclusiveContent {
+        forRepository {
+            maven {
+                url = "https://maven.minecraftforge.net"
+                metadataSources { artifact() }
+            }
+        }
+        filter { includeGroup("org.scala-lang") }
+    }
 }

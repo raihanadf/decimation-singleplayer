@@ -10,6 +10,18 @@ not something we introduced or need to fix) see `documentation.md`.
 
 ## Open
 
+### Cape in first person: drawn in front of the camera (reported 22 Oktober 2026 by the user, FIXED, user checked in game)
+- A player with a cape (Mojang account cape; OptiFine capes go the same way) saw it in front of himself in first
+  person, in Prism with the 0.65.0 release jar.
+- Cause (read from the bytecode of the 0.65.0 jar): PlayerModelSwapper (deci/J/e) draws your own body in first person
+  on RenderWorldLastEvent with its own RenderPlayer, deci/J/e$a. Its renderEquippedItems (func_77029_c) calls vanilla's
+  whenever no gun is held, and vanilla's draws the cape. The body there is turned by the head yaw while the cape swing
+  is worked out from the body yaw and the cape chase position, so the cape lands in view [inferred: not traced frame
+  by frame]. Decimation's own supporter
+  cape (net/decimation/mod/client/cape/b) already skips first person and needs the dead backend anyway.
+- Fix: fixes/FirstPersonCape sets RenderPlayerEvent.Specials.Pre.renderCape false when the renderer is deci/J/e$a
+  (Deci.isFirstPersonBodyRenderer). Third person, the inventory preview and other players keep their capes.
+
 ### Gunsmith screen drew the gun inside out (seen by the user 21 Oktober 2026 05:45, FIXED before shipping)
 - User: "i see the guns part model well not aligned ... example magazine it show up full, actually when insert in gun,
   some of them is not visible". Beside study.py's side render the Uzi's whole magazine showed through its grip.

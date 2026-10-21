@@ -201,6 +201,8 @@ public class DecimationWorldGen
             cpw.mods.fml.common.FMLCommonHandler.instance().bus().register(new net.decimation.fixes.PropSounds());
             // the hand holding a gun shows the player's own skin, not Steve (bug.md "Steve hand")
             cpw.mods.fml.common.FMLCommonHandler.instance().bus().register(new net.decimation.fixes.GunArmSkin());
+            // a cape showed in front of the camera: Decimation's first person body drew it (bug.md "Cape in first person")
+            net.minecraftforge.common.MinecraftForge.EVENT_BUS.register(new net.decimation.fixes.FirstPersonCape());
             // the muzzle flash lit every mob drawn after a shooter: lighting put back around each living entity (bug.md)
             net.minecraftforge.common.MinecraftForge.EVENT_BUS.register(new net.decimation.fixes.EntityLighting());
             // host your world online (docs/superpowers/specs/2026-10-18-player-hosting-part1-design.md): the pause menu's
