@@ -110,9 +110,9 @@
     "semantic_hash": "de153d1f8408971d6190e16a7d4256f9"
   },
   "CLAUDE.md": {
-    "mtime": 1792549058.4132292,
-    "ast_hash": "c5b28453aedc1fc6d524859689a18f34",
-    "semantic_hash": "c5b28453aedc1fc6d524859689a18f34"
+    "mtime": 1792549682.0970263,
+    "ast_hash": "7e34dcfad062bc62dcdd228c2ec01b8a",
+    "semantic_hash": "7e34dcfad062bc62dcdd228c2ec01b8a"
   },
   "DECIMATION_MOD_TASK.md": {
     "mtime": 1784958353.0126374,
@@ -1230,9 +1230,9 @@
     "semantic_hash": "8a3ad8dda4604fb188e87f47efc3db90"
   },
   "docs/ideas.md": {
-    "mtime": 1792549058.413908,
-    "ast_hash": "2d3c73e2647f65436c9199fc7fe8ce65",
-    "semantic_hash": "2d3c73e2647f65436c9199fc7fe8ce65"
+    "mtime": 1792549531.5587726,
+    "ast_hash": "a569d1fb9ab5fcfb77c4d9d1026602b0",
+    "semantic_hash": "a569d1fb9ab5fcfb77c4d9d1026602b0"
   },
   "dev/src/main/java/net/decimation/worldgen/NamedPlace.java": {
     "mtime": 1791753400.7417421,
@@ -1540,9 +1540,9 @@
     "semantic_hash": "294036847a9caffda351bfa855a78636"
   },
   "docs/tasks.md": {
-    "mtime": 1792549339.2803354,
-    "ast_hash": "0833a561a5663e42e7db4b120ab2b55a",
-    "semantic_hash": "0833a561a5663e42e7db4b120ab2b55a"
+    "mtime": 1792549682.09744,
+    "ast_hash": "07720061f72eb4c696e2246acdacf649",
+    "semantic_hash": "07720061f72eb4c696e2246acdacf649"
   },
   "tools/skillcheck.py": {
     "mtime": 1792098139.5315723,

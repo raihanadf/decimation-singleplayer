@@ -152,4 +152,11 @@ every item below that is not DONE.
     for fit, a picture (a download: not used), reset view, "Dark BG"; "Load Downloaded" imports a preset JSON. So views
     from every side (both sides, top, bottom, front, back, three quarter) can be captured by script with agent-browser
     screenshots for modelling references (user: "you use that as reference as you know the model 3D so you make new one
-    with decimation styled"; single pictures left parts at wrong positions).
+    with decimation styled"; single pictures left parts at wrong positions). Checked further the same day with the user's
+    preset (loaded through #loadPreset, the file input "Load Downloaded" uses): the CMMG Mk47 Mutant build appears with
+    every part's slot box (item short names such as 409mm, Mk47 Resolute, ATP, MOE FS, B-25U RK-1); buttons by id
+    togglePoints (the slot points and lines, drawn in the canvas), screenshot, resetView; "Dark BG" off swaps the dark
+    backdrop for a bright game scene (both busy: a picture of the gun alone needs a cut out, for example two backdrops
+    differenced); an "Export GLB" button exports the build as a 3D model file. A GLB would give exact geometry (and maybe
+    part names) for exact views and sizes; I may not download files from that site myself, so the user would export it
+    and hand over the file, kept outside the repo [decision open].
