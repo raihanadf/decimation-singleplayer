@@ -1896,7 +1896,7 @@ public final class Deci
         {
             java.lang.reflect.Field boxes = deci.n.b.class.getDeclaredField("jQ");
             boxes.setAccessible(true);
-            for (Object p : model.kC)
+            for (Object p : topParts(model))
             {
                 Object own = boxes.get(p);
                 out.put(((net.minecraft.client.model.ModelRenderer) p).boxName, own instanceof java.util.List ? ((java.util.List<?>) own).size() : 0);
@@ -1939,6 +1939,135 @@ public final class Deci
             cpw.mods.fml.common.FMLLog.info("[deciworldgen] attachment part %s of %s not cleared: %s", part, attachment, e);
         }
         return false;
+    }
+
+    /** A model's top level parts, the ones inside a BatchedPart in its place included. */
+    private static java.util.List<Object> topParts(deci.n.f model)
+    {
+        java.util.List<Object> out = new java.util.ArrayList<Object>();
+        for (Object p : model.kC)
+        {
+            if (p instanceof BatchedPart)
+            {
+                out.addAll(((BatchedPart) p).parts);
+            }
+            else
+            {
+                out.add(p);
+            }
+        }
+        return out;
+    }
+
+    /**
+     * The attachment's model copy for one gun draws its top level parts from one display list (BatchedPart): true when
+     * done. Before the copy is first drawn.
+     */
+    public static boolean batchAttachmentParts(Item gun, String attachment)
+    {
+        deci.n.f model = attachmentModel(gun, attachment);
+        if (model == null || model.kC.isEmpty() || model.kC.get(0) instanceof BatchedPart)
+        {
+            return false;
+        }
+        java.util.List<deci.n.b> parts = new java.util.ArrayList<deci.n.b>();
+        for (Object p : model.kC)
+        {
+            parts.add((deci.n.b) p);
+        }
+        BatchedPart batch = new BatchedPart(model, parts);
+        model.kC.clear();
+        model.kC.add(batch);
+        return true;
+    }
+
+    /** How many parts the attachment's copy for this gun draws from one list, or -1 when it draws them one by one. */
+    public static int attachmentBatch(Item gun, String attachment)
+    {
+        deci.n.f model = attachmentModel(gun, attachment);
+        return model != null && model.kC.size() == 1 && model.kC.get(0) instanceof BatchedPart
+            ? ((BatchedPart) model.kC.get(0)).parts.size() : -1;
+    }
+
+    /**
+     * Top level parts of a model copy drawn from one display list (GripPlacement's grip copies, docs/decimation_code/
+     * weapons.md section 8). BModelPart (deci.n.b) draws each part with about seven GL calls (matrix push, move, scale,
+     * its lists, pop): the RK-1's 56 parts cost 0.13 ms a draw in the production client, most of it handing calls to the
+     * driver. The first draw lets every part compile its own lists (a list must never be compiled inside another), the
+     * second compiles one list that calls them all, then a draw is one call. Parts draw one by one while {@link #enabled}
+     * is off (dev test A / B), and for good when one of them was still not compiled after the first draw. Client only:
+     * only GripPlacement makes them.
+     */
+    public static final class BatchedPart extends deci.n.b
+    {
+        public static boolean enabled = true;
+        private static java.lang.reflect.Field compiled;
+        final java.util.List<deci.n.b> parts;
+        private int list;
+        private boolean warm;
+
+        BatchedPart(deci.n.f model, java.util.List<deci.n.b> parts)
+        {
+            super(model, "batch");
+            this.parts = parts;
+        }
+
+        /** BModelPart.render(scale, useLists): BModel.renderParts calls it with lists on. */
+        @Override
+        public void a(float f, boolean lists)
+        {
+            if (!enabled || !lists || list < 0 || !warm)
+            {
+                for (deci.n.b p : parts)
+                {
+                    p.a(f, lists);
+                }
+                warm |= lists;
+                return;
+            }
+            if (list == 0)
+            {
+                if (!allCompiled())
+                {
+                    list = -1;
+                    a(f, lists);
+                    return;
+                }
+                list = net.minecraft.client.renderer.GLAllocation.generateDisplayLists(1);
+                org.lwjgl.opengl.GL11.glNewList(list, org.lwjgl.opengl.GL11.GL_COMPILE);
+                for (deci.n.b p : parts)
+                {
+                    p.a(f, true);
+                }
+                org.lwjgl.opengl.GL11.glEndList();
+            }
+            org.lwjgl.opengl.GL11.glCallList(list);
+        }
+
+        /** Every part has compiled its own lists (BModelPart's private flag jX). */
+        private boolean allCompiled()
+        {
+            try
+            {
+                if (compiled == null)
+                {
+                    compiled = deci.n.b.class.getDeclaredField("jX");
+                    compiled.setAccessible(true);
+                }
+                for (deci.n.b p : parts)
+                {
+                    if (!compiled.getBoolean(p))
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
     }
 
     private static deci.n.f attachmentModel(Item gun, String attachment)

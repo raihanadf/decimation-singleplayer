@@ -13,8 +13,13 @@ import net.minecraft.item.ItemStack;
  */
 public final class SpecterMode
 {
-    /** Guns switched to 1x (keys from key()); every other gun's SpecterDR is at 4x. */
-    private static final Set<String> ONE = new HashSet<String>();
+    /**
+     * Guns switched to 1x, by id or (without one) by slot; every other gun's SpecterDR is at 4x. Asked every frame a gun
+     * is held (ScopeZoom): no key is built per call (a string key cost 80 bytes a call, dev test attachments perf=true),
+     * and a slot's Integer comes from Integer's own cache.
+     */
+    private static final Set<String> ONE_IDS = new HashSet<String>();
+    private static final Set<Integer> ONE_SLOTS = new HashSet<Integer>();
 
     private SpecterMode()
     {
@@ -34,28 +39,31 @@ public final class SpecterMode
 
     static boolean isFourById(String id, int slot)
     {
-        return !ONE.contains(key(id, slot));
+        return id != null && !id.isEmpty() ? !ONE_IDS.contains(id) : !ONE_SLOTS.contains(slot);
     }
 
     static boolean toggleById(String id, int slot)
     {
-        String k = key(id, slot);
-        if (ONE.remove(k))
+        boolean byId = id != null && !id.isEmpty();
+        if (byId ? ONE_IDS.remove(id) : ONE_SLOTS.remove(slot))
         {
             return true;
         }
-        ONE.add(k);
+        if (byId)
+        {
+            ONE_IDS.add(id);
+        }
+        else
+        {
+            ONE_SLOTS.add(slot);
+        }
         return false;
     }
 
     static void reset()
     {
-        ONE.clear();
-    }
-
-    private static String key(String id, int slot)
-    {
-        return id != null && !id.isEmpty() ? "id " + id : "slot " + slot;
+        ONE_IDS.clear();
+        ONE_SLOTS.clear();
     }
 
     private static String id(ItemStack gun)

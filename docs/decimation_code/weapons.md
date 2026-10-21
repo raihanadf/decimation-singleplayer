@@ -157,3 +157,74 @@ takes 0.5); a miss used a round and hurt nothing; client and server copies agree
   screen, the crossbow, display list compiles not counted); M13 Deci.tracerItem's lazy cache is unsynchronized
   (harmless).
 
+
+## 8. New attachments: RK-1 Foregrip and ELCAN SpecterDR 1x/4x (21 Oktober 2026, plan docs/superpowers/plans/2026-10-21-new-attachments.md)
+
+- User (21 Oktober 2026): "we have 2 new attachment: new grip, and 4x scope", chosen: the SpecterDR with a 1x/4x switch
+  on a key (default G), the grip with its own numbers (recoil up to 1/2, sideways to 1/4), every grip placed per gun,
+  loot like Decimation's 4x and Foregrip. Spec docs/superpowers/specs/2026-10-21-new-attachments-design.md. Models from
+  the user's tarkovbot build (tools/guns/refcapture.py views, reference only), built in Decimation's style:
+  tools/guns/grips.py (rk1, 56 parts), tools/guns/sights.py (specterdr, 95 parts, reticle drawn in the glass).
+- Items: AttachmentItems of ours registered as deci:rk1 (Deci.newGripAttachment, category rifle like the Foregrip:
+  fixes/NewGrips) and deci:specterdr (Deci.newSightAttachment, category all: fixes/NewSights), named in our lang file,
+  in every Decimation crate list holding the Foregrip / the 4x (Deci.addLootLike) and in LootPools (VERSION 2).
+- Recoil per grip: GunItem.clientHeldTick (deci/ay/i.d) turned the view by the player's recoil, divided by 3 only for
+  Decimation's Foregrip; tools/patches/PatchGripRecoil.java (three jars, both lines) asks fixes/GripRecoil instead:
+  Foregrip 1/3 and 1/3 (unchanged), RK-1 1/2 up and 1/4 sideways, 1 otherwise; GunItemRenderer's view kick calms for
+  both (GripRecoil.calmsView). Measured with a known recoil through Decimation's own tick (dev test attachments):
+  no grip 40 degrees up and sideways, Foregrip 0.333 / 0.333, RK-1 0.500 / 0.250 of that.
+- Grips placed per gun: Decimation drew every grip at one spot for all guns (renderAttachments' grip translate): the
+  Foregrip sat on the M4A4's magazine, the Laser and Flashlight inside its handguard. tools/guns/gripfit.py measures each
+  gun's underside 40 % of the way from its magazine to its muzzle (pistols 62 %; stepped forward past a magazine that
+  reaches there, the G36C) and writes dev/src/main/resources/assets/deciworldgen/grip_offsets.txt (318 rows: every gun
+  of the jar and our five, each grip it takes); `gripfit.py --check` (0 pairs not right) checks each placed grip touches
+  the underside and is clear of the magazine. fixes/GripPlacement gives each gun its moved copy at startup
+  (Deci.offsetAttachment; 318 copies, 0 not found). The Foregrip hangs its 8 parts from a parent "grip" whose own plate
+  sits 7.5 behind them: the copies draw that parent without its boxes (Deci.clearAttachmentPartBoxes). The magazine in
+  foregrip.bmodel (ammoModel1..4) is never drawn: they are children of an ammoModel0 the file never declares and
+  Decimation's BModelLoader drops such parts (study.py now does the same).
+- The SpecterDR's switch: fixes/SpecterKey ("DeciRemnant: SpecterDR 1x/4x" among Decimation's keys, default G, free in
+  vanilla, Decimation and the voice chat) flips the held gun's mode with a click (fixes/SpecterMode: per gun by
+  Decimation's "uniqueID", else by slot, for the session; 4x by default). ScopeZoom: 4x = magnification 4.0, 1x = 1.25
+  (config entries specterdr and specterdr1x); our sights never get the black sniper overlay, so the SpecterDR keeps the
+  gun and its see through glass at 4x, its reticle drawn in the glass (SightReticle) in both modes.
+- Checks: `python3 tools/devtest.py --live attachments` (21 checks: items, loot, recoil, placement, the switch; shots of
+  four grips in the Gunsmith screen and the SpecterDR aimed at 1x and 4x), `attachments perf=true` (budgets, below),
+  `glstack` (the SpecterDR and the four grips on two guns, hip and aimed, first and third person), `attachmentsmp
+  server=HOST:PORT` (a joined client on a dedicated server; run it last, it leaves for the menu),
+  `python3 tools/guns/gripfit.py --check`, unit tests GripRecoilTest, GripPlacementTest, SpecterModeTest.
+- Grip copies draw from one display list (Deci.BatchedPart, made by GripPlacement for all 318 copies): BModelPart draws
+  each part with about seven GL calls (push, move, scale, its lists, pop); the first draw lets each part compile its own
+  lists (a list never compiles inside another), the second compiles one list calling them all. Dev test checks: the
+  RK-1's copy holds its 56 parts in one list; drawn both ways into a cleared middle of the screen, 0 of 4,637 gun pixels
+  differ; GL clean.
+- Measured, dev client (scratch checkout; other sessions kept the Mac's load at 5 to 6), `attachments perf=true`. The gun
+  drawn once more each frame as Decimation draws it, timed with glFinish around (median of 200), and the part handed to
+  the driver (CPU): none 0.723 ms (CPU 0.306), Decimation's Foregrip 0.741 (0.319), RK-1 from one list 0.773 (0.346) =
+  +0.050 (budget 0.1; one by one +0.079), Decimation's 4x 0.803, ACOG 0.898, SpecterDR 0.863 (-0.035 against the ACOG,
+  +0.003 against the EOTech 0.860). What the RK-1 still costs is mostly its texture switch (the Foregrip pays +0.018 for
+  its own). 0 GL errors and no stack change in 1,618 timed draws. Aimed frames, six rounds of 100 frames each in turn,
+  looking at the sky (no chunks in view): ACOG 3.35 ms, SpecterDR 4x 3.57, EOTech 3.33, SpecterDR 1x 3.00; the median of
+  each round's difference of neighbours: SpecterDR 4x against the ACOG +0.29 ms, 1x against the EOTech +0.11 (budget
+  0.5; single rounds swing by up to 2 ms on this loaded Mac). Glass box copied each aimed frame (854 x 480): ACOG 133 x
+  133, SpecterDR 4x 225 x 225, EOTech 62 x 48, SpecterDR 1x 70 x 70. SpecterMode.isFour: 0 to 3,224 bytes in 100,000
+  calls (a one time cost; it built a string key, 80 bytes a call, before). glstack: 88 gun cases (the SpecterDR and four
+  grips on the AKM and M4A4, hip and aimed, first and third person), 0 leaking.
+- Production client with OptiFine HD U E7 (one jar of main's tree, sha256 f0afd86c), same Mac: attachments 22 PASS, perf
+  7 PASS: gun draw none 0.540 ms (CPU 0.146), Foregrip 0.550, RK-1 from one list 0.622 = +0.083 (one by one +0.104; the
+  first production run, before the one list, read +0.127 and failed the budget), 4x 0.573, ACOG 0.658, SpecterDR 0.617
+  (-0.041 against the ACOG, -0.001 against the EOTech 0.618); 0 of 1,450 pixels differ between the two ways; 0 GL errors
+  in 1,617 draws; aimed at the sky: ACOG 3.76 ms, SpecterDR 4x 3.61, EOTech 3.66, SpecterDR 1x 4.14, paired medians
+  -0.07 and +0.21 ms; glstack 88 gun cases, 0 leaking. Dedicated production server, a joined client (attachmentsmp, 12
+  PASS): the RK-1 and the SpecterDR fitted by clicks as the server sent them back, recoil 0.333 / 0.333 and 0.500 / 0.250,
+  G switches 4x to 1.25 with one click, one real shot 30 to 29 rounds with both fitted.
+- Found in the production client (not caused by these parts): the glass box reads 0 x 0 for every see-through sight
+  there (the ACOG and the EOTech too), so ScopeZoom never copies the world under the glass: in the SpecterDR's 4x shot
+  the glass shows sky and a horizon while the zoomed view around it is stone floor, a picture not taken in that frame
+  [inferred: the full frame copied once when the scope texture was made]. Dev reads real boxes on the same Mac. bug.md
+  "See-through glass not updated with OptiFine" [cause not found yet].
+- How the budgets were measured (lessons): at the horizon a 1.25x view draws about 4.5 ms more world than a 3.5x one
+  (the SpecterDR at 1x read +3.19 ms against the ACOG: the EOTech at 1.25x costs the same), so each mode is compared
+  with our sight of its own zoom; looking down from the arena (150 high) a 1.25x view took in the land below (24 ms
+  frames); at the sky the world is out of the way. One reading per configuration was noise (the same path read -0.61
+  ms in production): rounds in turn and the median of their paired differences.

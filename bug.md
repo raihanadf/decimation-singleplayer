@@ -1838,3 +1838,17 @@ what each frame after the arrival loaded for the first time.
   compiles would need a patch of BModelPart (PatchModelBatch) [idea, not built].
 - In real play residents come into the client's view one by one as the player walks in (vanilla sends global entities
   within 80 blocks), not all in one frame as in the test [inferred].
+
+## See-through glass not updated with OptiFine (21 Oktober 2026, OPEN)
+
+Found by the attachments perf test in the production client with OptiFine HD U E7 (one jar of main, sha256 f0afd86c, this
+Mac): Deci.scopeGlassBox() read 0 x 0 for every see-through sight aimed (ACOG, EOTech, SpecterDR at 4x and 1x), so the
+box PatchScope's GL feedback pass measures (renderScopeGlass, deci.n.f.b) was never set in that session and
+ScopeZoom.onRenderWorldLast never copied the world under the glass ("no glass measured yet"). The dev client on the same
+Mac reads 133 x 133 (ACOG), 225 x 225 (SpecterDR 4x), 62 x 48 (EOTech), 70 x 70 (SpecterDR 1x). Seen: the production 4x
+shot (docs/shots/attachments_v0.65.0/prod_specter_4x.png) shows sky and a horizon in the glass while the zoomed view
+around it is stone floor; the dev shot shows the floor through the glass as around it. Likely since the glass is
+measured only while aiming (19 Oktober 2026) or longer [not verified]; also no centring of the sight there
+(centreSight learns from the same measurement) [inferred]. Players with OptiFine (the brother's laptop) would see a
+picture of the first aimed frame, later the dark lens [inferred]. Next: count feedback values (n) and polygon tokens of
+the measuring pass in the production client, and compare where OptiFine draws the hand.

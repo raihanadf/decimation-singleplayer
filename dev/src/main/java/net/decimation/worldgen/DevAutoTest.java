@@ -176,6 +176,7 @@ public class DevAutoTest
         if (name.equals("gunsmith")) return new net.decimation.worldgen.devtest.GunsmithTest();
         if (name.equals("attachments")) return new net.decimation.worldgen.devtest.AttachmentsTest();
         if (name.equals("gunsmithmp")) return new net.decimation.worldgen.devtest.GunsmithRemoteTest();
+        if (name.equals("attachmentsmp")) return new net.decimation.worldgen.devtest.AttachmentsRemoteTest();
         if (name.equals("gunbatch")) return new net.decimation.worldgen.devtest.NpcLookTest(true);
         if (name.equals("hostops")) return new net.decimation.worldgen.devtest.HostOpsTest();
         if (name.equals("hostshots")) return new net.decimation.worldgen.devtest.HostShotsTest();
