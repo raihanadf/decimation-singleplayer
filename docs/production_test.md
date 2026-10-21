@@ -143,3 +143,19 @@ Checked with it: bundled content unpacked, cities generated, no errors (bug.md v
   went back into mods/ (sha256 1c604032).
 - The same with a one jar of the prerelease build after the carry (91ef15a, base jar without the Multiplayer picture, no
   hosting classes): 140 gear models and 451 textures in 1.1 s, first frames 81 / 42 ms, every check PASS.
+
+## Results (22 Oktober 2026, release candidate 0.66.0 from the prerelease branch, sha256 e24df810)
+- Base jar = main's dist/Decimation.jar minus the four Multiplayer pictures; linecheck PASS (30 references into our
+  code from 12 Decimation classes, all present); since 0.65.0: 15 changed and 2 added Decimation entries, all read
+  (grip recoil in deci/ay/i and deci/K/b; Supporter, Discord, footer and status texts; footer logo, corner art, Coming
+  soon popups), no multiplayer. Resources equal to main's but the Host Online texts; content 3d2721f3ce41 (same as
+  0.65.0); the candidate holds no hosting class. Tag 0.66.0 on prerelease 99813b0.
+- Server: pregen light check sky 2,197, block 8,620 (the same as 0.65.0), 225 chunks in 2.6 s; walk 40 steps median 87
+  ms, max 457 ms; log only the known harmless lines.
+- Client with OptiFine: menu, stats, genwalk (959 ticks, worst 362 ms), glstack, throwables, armskin, corpsegun, nospawn,
+  npclook, gunbatch, threads, radios, lightleak, scopeperf, attachments, gunsmith, aimdelay, mainmenu, menupages: 226
+  PASS, 2 FAIL that were the tests (bug.md "Release checks of 0.66.0"); scopeperf then PASS in 6 more runs.
+- Real update: the 0.65.0 release jar in mods/ (live port 25599), fake release server with FILE=candidate: found 0.66.0
+  through the API, Update, Decimation's progress screen, 240 MB in 8 s, checked, Quit game / Later, jar swapped (sha256
+  e24df810; the "NEWJAR" head check FAILs by design with a real jar); restarted: "Up to date: 0.66.0", menu and
+  mainmenu PASS.
