@@ -7,8 +7,10 @@ progress bar moves), and the non API pages the fallback uses: /web/releases.atom
 LIMITED: the API answers 403 like GitHub's rate limit. BADDIGEST: wrong sha256 everywhere.
 FILE=path: serve that file as the release jar instead of the made up bytes (a real update before a release: a game
 running the last release updates itself to the candidate jar; docs/production_test.md).
+REMOTE=url: the release list points its download at that real URL (with FILE= the same file, for size and digest):
+the game's own updater downloads from GitHub itself (the 406 check of 22 Oktober 2026, bug.md).
 Prints one line per request.
-usage: python3 tools/fake_release_server.py [PORT=8765] [TAG=9.9.9] [MB=40] [RATE=8] [BADDIGEST] [LIMITED] [FILE=path]"""
+usage: python3 tools/fake_release_server.py [PORT=8765] [TAG=9.9.9] [MB=40] [RATE=8] [BADDIGEST] [LIMITED] [FILE=path] [REMOTE=url]"""
 import hashlib, http.server, json, os, sys, time
 
 PORT = int(sys.argv[1]) if len(sys.argv) > 1 else 8765
@@ -19,6 +21,7 @@ BAD = "BADDIGEST" in sys.argv
 LIMITED = "LIMITED" in sys.argv
 ETAG = 'W/"fake-%s"' % TAG
 FILE = next((a.split("=", 1)[1] for a in sys.argv[1:] if a.startswith("FILE=")), None)
+REMOTE = next((a.split("=", 1)[1] for a in sys.argv[1:] if a.startswith("REMOTE=")), None)
 PAYLOAD = open(FILE, "rb").read() if FILE else b"NEWJAR" + os.urandom(MB * 1024 * 1024 - 6)
 HEX = "0" * 64 if BAD else hashlib.sha256(PAYLOAD).hexdigest()
 DIGEST = "sha256:" + HEX
@@ -69,7 +72,7 @@ class H(http.server.BaseHTTPRequestHandler):
         elif self.path.startswith("/api/releases"):
             body = json.dumps([{"tag_name": TAG, "draft": False, "prerelease": True, "assets": [
                 {"name": "Decimation.jar", "size": len(PAYLOAD), "digest": DIGEST,
-                 "browser_download_url": "http://127.0.0.1:%d/dl/Decimation.jar" % PORT}]}]).encode()
+                 "browser_download_url": REMOTE or "http://127.0.0.1:%d/dl/Decimation.jar" % PORT}]}]).encode()
             self.send_response(200)
             self.send(200, body, "application/json", extra=(("ETag", ETAG),))
         elif self.path.startswith("/dl/") or self.path == JAR:
