@@ -380,6 +380,18 @@ SRG→MCP from the old root `src/` via `mcp_stable/12` CSVs; the root `src/` +
 `tools/build.py` copy is now stale unless the user decides otherwise.
 - JDKs: Azul 25 (runs Gradle 9.7.1) + Azul 8 arm64 (runs the game) in `~/.jdks`,
   registered in `~/.gradle/gradle.properties`. foojay auto-download returns 400.
+  Azul 21 too (RFG's applyJST asks for a Java 21 toolchain). Get them from
+  api.azul.com/metadata/v1/zulu/packages (macos, aarch64, tar.gz) into `~/.jdks/zulu-N.jdk`.
+  FRESH MACHINE (22 Oktober 2026, the user's Mac at /Users/raihan, no jars, no tags): base jar and
+  content can come from the latest GitHub release: `dev/libs/Decimation-base.jar` = release
+  Decimation.jar minus net/decimation/{fixes,worldgen}/ and assets/deciworldgen/, mcmod.info = the
+  deci entry only; `dist/config/decimation_worldgen` = its assets/deciworldgen/content/ (minus
+  manifest.txt, version.txt); for onejar, `dist/Decimation.jar` = that base minus every name the
+  new deciworldgen jar holds (16 gun / sight files and LICENSE otherwise clash). The Scala libs'
+  usual host gregtech.overminddl1.com is down: dev/repositories.gradle takes org.scala-lang from
+  maven.minecraftforge.net (exclusiveContent, jar only). Without local tags the build version is
+  the commit (deciworldgen-c82538a-main+...jar): give onejar a copy named deciworldgen-VERSION.jar.
+  The user's Prism instance `Decimation` (Forge 10.13.4.1614) was made for testing on this Mac.
 - `dev/libs/` (git-ignored): `Decimation-base.jar` = `Decimation.jar.patched`
   minus `net/decimation/{worldgen,fixes}` (else our mod loads twice), pulled in
   via `devOnlyNonPublishable(rfg.deobf(...))`; `DecimationVoiceChat.jar` (Gliby's

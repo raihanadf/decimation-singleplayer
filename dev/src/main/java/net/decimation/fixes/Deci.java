@@ -2459,6 +2459,16 @@ public final class Deci
     }
 
     /**
+     * True for the RenderPlayer that PlayerModelSwapper (deci.J.e) uses to draw your own body in first person
+     * (deci.J.e$a, on RenderWorldLastEvent); the world's normal player renderer is a different instance.
+     */
+    @cpw.mods.fml.relauncher.SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)
+    public static boolean isFirstPersonBodyRenderer(Object renderer)
+    {
+        return renderer instanceof deci.J.e.a;
+    }
+
+    /**
      * A human NPC's look as ModelHuman (deci.q.h) draws it, from HumanEntity (deci.af.d): fills look with {skin tone (el),
      * hair (em), beard (ep), eyes (en), shirt (eq), pants (er), shoes (es), flags: 1 blinking (eu), 2 infected
      * (InfectedEntity deci.ag.d: no hair or beard), 4 frail (FrailEntity deci.ag.h: no clothes)} and returns the skin
