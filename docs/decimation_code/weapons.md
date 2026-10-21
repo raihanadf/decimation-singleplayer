@@ -84,6 +84,10 @@ takes 0.5); a miss used a round and hurt nothing; client and server copies agree
 | the SpecterDR's 1x / 4x | fixes/SpecterMode (per gun for the session), fixes/SpecterKey (G), `ScopeZoom.magnificationFor`, `ScopeZoom.overlays` |
 | fit attachments (the I key) | the Gunsmith screen: fixes/gunsmith/GunsmithGuiHandler.java (Decimation's attachments GUI id, `Deci.attachmentsGuiId`, opens our container and screen), GunsmithContainer, GunsmithScreen, GunParts (`Deci.fitsSlot`: Decimation's own FilteredSlot rules); section 7 |
 
+- NPC tracer colour: Decimation's PacketGunFireEffects handler picks GENERIC (40 %) or INVIS, unless the held gun has a
+  tracer colour (NBT tracerColorID, GunItem.getTracerColor; its setTracerColor writes "tracerColor", a key nothing reads).
+  Our NPCs carry one each (NpcLoadouts.withTracer, 22 Oktober 2026).
+
 ## 6. Checks
 
 - `python3 tools/devtest.py --live playerfire`: the player's shot end to end (9 checks).

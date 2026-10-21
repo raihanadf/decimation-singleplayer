@@ -1155,3 +1155,18 @@ lineup photo zombies_v0.34.0. Not seen by the user in game yet
 - Checks: unit ArmorGunfireHandlerTest RED then GREEN, suite 150; dev test checks "armor vs NPC gunfire" now checks the
   exact ratio (x0.642 for the chest tested), helmet and cooldown checks PASS. Server side only (LivingHurtEvent), no
   per frame cost. Dedicated server not run [the same handler; not verified there].
+
+## NPC tracers in colours, every shot (22 Oktober 2026, feature 2 of docs/roadmap.md "Feature order")
+- User: "npc who shot gun can randomly use other tracer instead white only, all guns now shot full tracer instead divided
+  by 3-6 bullet"; chosen: each armed NPC one random colour for life, every NPC shot a tracer, player guns unchanged.
+- Found: Decimation's client draws an NPC shot GENERIC (near white) on 40 % of shots and INVIS on the rest; PatchTracer v2
+  already made NPC tracers always visible, so players saw white on every shot (dev test tracer: GENERIC 79 of 79). A gun
+  carrying a tracer colour (NBT tracerColorID, GunItem.getTracerColor) draws it on every shot.
+- fixes/NpcLoadouts: the NPC's gun spec gets ";tracer=N" (Decimation's WHITE 1 .. YELLOW 7) when armed or loaded
+  (withTracer; NPCs saved before get one on load, saved back to GUN_TAG); gunStack writes it as tracerColorID; the client
+  re-applies the gun when only the tracer differs (tracerOf: no allocation, asked every tick per NPC).
+- Checks: unit NpcTracerTest RED then GREEN (suite 152); dev test tracer "every shot a tracer in the NPC's colour" RED
+  (GENERIC 79) then GREEN (GREEN 89 of 89); npc PASS after its client check learned the int tracer. shots "spotting at
+  70" FAILs with or without this change (old, docs/tasks.md). Cost: none per frame (the same tracers, another colour).
+  Production client not run [colour drawing is Decimation's own; not verified with OptiFine]. Decimation's own armed
+  traders and guards that our loadouts do not arm keep its white [not changed].

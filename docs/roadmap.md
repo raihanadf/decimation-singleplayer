@@ -232,7 +232,7 @@ Built in this order, ideas numbers from docs/ideas.md; 1 to 5 decided together (
 a short design talk each first:
 1. DONE 22 Oktober 2026 (new_feature.md): Armor against NPC fire 20 % weaker (46): each piece's protection x 0.8 (a piece blocking 50 % blocks 40 %), helmets
    too; player shots unchanged.
-2. NPC tracers (34): each armed NPC one random tracer colour for life (Decimation's tracer colours), every NPC shot a
+2. DONE 22 Oktober 2026 (new_feature.md): NPC tracers (34): each armed NPC one random tracer colour for life (Decimation's tracer colours), every NPC shot a
    tracer; player guns unchanged.
 3. Looted magazines (45): 1 round to full, weighted toward half full, rarely full, never empty.
 4. Unload a magazine (44): shift + right click, about a second like a reload, the rounds as Decimation's loose rounds of
