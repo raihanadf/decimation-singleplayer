@@ -187,7 +187,7 @@ def load(name):
 
 
 ATTACH_SLOT = {"reddot": "sight", "2x": "sight", "4x": "sight", "8x": "sight", "dragunovScope": "sight",
-               "eotech558": "sight", "ta11acog": "sight",
+               "eotech558": "sight", "ta11acog": "sight", "specterdr": "sight", "rk1": "grip",
                "foregrip": "grip", "flashlight": "grip", "laser": "grip", "bayonet": "barrel",
                "pistolSuppressor": "barrel", "smgSuppressor": "barrel", "arSuppressor": "barrel",
                "shotgunSuppressor": "barrel", "mgSuppressor": "barrel"}
