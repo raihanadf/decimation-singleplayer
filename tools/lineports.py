@@ -5,7 +5,8 @@
 
 main (multiplayer) and prerelease (plain fixes) are two checkouts of one repo (CLAUDE.md "Repository"). Each line's
 live test game (tools/devtest.py --live, devtest/DevTestLive) and debug port (-Photswap / -Plive, tools/hotswap.py)
-gets its own number, so a live game of one line never answers the other line's runs. main's second game on this Mac
+gets its own number, so a live game of one line never answers the other line's runs. The bugfix worktree
+(../Decimation-bugfix, branch bugfix, 22 Oktober 2026: a second agent fixes bugs there) has its own pair. main's second game on this Mac
 (the production client as a joiner, docs/player_hosting.md) keeps 25598 / 5006.
 """
 import os
@@ -13,7 +14,7 @@ import subprocess
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DEFAULT = (25599, 5005)
-PORTS = {"prerelease": (25597, 5007)}
+PORTS = {"prerelease": (25597, 5007), "bugfix": (25596, 5008)}
 
 
 def branch():
