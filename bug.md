@@ -1850,5 +1850,12 @@ shot (docs/shots/attachments_v0.65.0/prod_specter_4x.png) shows sky and a horizo
 around it is stone floor; the dev shot shows the floor through the glass as around it. Likely since the glass is
 measured only while aiming (19 Oktober 2026) or longer [not verified]; also no centring of the sight there
 (centreSight learns from the same measurement) [inferred]. Players with OptiFine (the brother's laptop) would see a
-picture of the first aimed frame, later the dark lens [inferred]. Next: count feedback values (n) and polygon tokens of
-the measuring pass in the production client, and compare where OptiFine draws the hand.
+picture of the first aimed frame, later the dark lens [inferred].
+Dev test scopediag (now reports the box after each measurement) in the same OptiFine client: the glass is drawn every
+aimed frame (glassFrame moves) but measured only for some sights: AKM + ACOG 63 measurements in 475 frames (box 133 x
+133, as in dev), AKM + SpecterDR 0 in 225 (dev: 27 of 27, box 225 x 225); on the M4A4 (attachments perf) every sight
+read 0. Two RenderHandEvents a frame there (OptiFine posts one inside renderHand, ScopeZoom cancels the outer one after
+drawing the hand itself); the three glass parts are alike (0.02 thick boxes). Not found yet: whether the measuring pass
+runs with the mask off there, or GL feedback returns no polygon (counters inside PatchScope's pass needed: a jar patch).
+Next: those counters, then either the fix of the pass or the box from the matrices in Java (no GL feedback; bug.md
+"Scope: the glass was measured at the hip" already named that as the next step).
