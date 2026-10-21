@@ -16,8 +16,8 @@ import net.minecraft.server.MinecraftServer;
 /**
  * The new attachments (docs/superpowers/specs/2026-10-21-new-attachments-design.md): the RK-1 Foregrip and the ELCAN
  * SpecterDR 1x/4x are registered with their names, fit what the spec says (the Gunsmith's own rule, GunParts.fits) and
- * lie in Decimation's loot wherever the Foregrip / the 4x lie. Later steps of the plan add recoil, placement and the
- * SpecterDR's switch to this mode.
+ * lie in Decimation's loot wherever the Foregrip / the 4x lie; recoil per grip; grips placed per gun; the SpecterDR's
+ * 1x / 4x switch.
  */
 public class AttachmentsTest extends DevTestMode
 {
@@ -50,7 +50,14 @@ public class AttachmentsTest extends DevTestMode
                 }
                 return true;
             case 2:
-                return placement(mc);
+                if (!placement(mc))
+                {
+                    step++;
+                    ticks = 0;
+                }
+                return true;
+            case 3:
+                return specter(mc);
             default:
                 return false;
         }
@@ -181,6 +188,150 @@ public class AttachmentsTest extends DevTestMode
             return false;
         }
         return true;
+    }
+
+    /** The three guns of the SpecterDR step (slots 0 .. 2): two with the SpecterDR, one with the ACOG. */
+    private static final String[] SPECTER_SIGHTS = {"specterdr", "specterdr", "ta11acog"};
+    private String runId;
+    private int clicks0;
+
+    /**
+     * The SpecterDR's switch (spec section 2): 4x by default (magnification 4, the gun and its glass kept, no black
+     * overlay); the key (SpecterKey, default G) flips the held gun's SpecterDR to 1x (1.25) and back; another gun keeps
+     * its own mode; with the ACOG the key changes nothing and plays no click; aimed shots at 1x and 4x. Each run gives
+     * its guns new ids: the modes live for the session (a live game keeps them between runs).
+     */
+    private boolean specter(Minecraft mc)
+    {
+        ItemStack held = mc.thePlayer.getHeldItem();
+        if (ticks == 1)
+        {
+            runId = Long.toString(System.nanoTime(), 36);
+            onServer = () -> {
+                EntityPlayerMP p = player();
+                for (int i = 0; i < SPECTER_SIGHTS.length; i++)
+                {
+                    ItemStack gun = new ItemStack((Item) Item.itemRegistry.getObject("deci:m4a4"));
+                    gun.stackTagCompound = new NBTTagCompound();
+                    gun.stackTagCompound.setInteger("ammo", 30);
+                    gun.stackTagCompound.setString("sightAttach", SPECTER_SIGHTS[i]);
+                    gun.stackTagCompound.setString("uniqueID", "specter" + i + "_" + runId);
+                    p.inventory.setInventorySlotContents(i, gun);
+                }
+                p.inventory.currentItem = 0;
+            };
+            mc.thePlayer.inventory.currentItem = 0;
+        }
+        if (ticks == 20)
+        {
+            check("specter: 4x by default", held, 4.0f, false);
+            clicks0 = net.decimation.fixes.SpecterKey.clicks();
+            press();
+        }
+        if (ticks == 24)
+        {
+            check("specter: the key switches to 1x", held, 1.25f, net.decimation.fixes.SpecterKey.clicks() != clicks0 + 1);
+            press();
+        }
+        if (ticks == 28)
+        {
+            check("specter: the key again: 4x", held, 4.0f, net.decimation.fixes.SpecterKey.clicks() != clicks0 + 2);
+            press();                                   // the first gun to 1x, then the second gun in hand
+        }
+        if (ticks == 32)
+        {
+            mc.thePlayer.inventory.currentItem = 1;
+        }
+        if (ticks == 36)
+        {
+            ItemStack first = mc.thePlayer.inventory.getStackInSlot(0);
+            float other = net.decimation.fixes.ScopeZoom.magnificationFor(held);
+            boolean firstFour = net.decimation.fixes.SpecterMode.isFour(first, 0);
+            DevTestResults.check(name(), "specter: another gun keeps its own mode", String.format("second %.2f, first %s", other,
+                                 firstFour ? "4x" : "1x"), Math.abs(other - 4f) < 0.01f && !firstFour, "second 4.00, first 1x");
+            mc.thePlayer.inventory.currentItem = 2;
+        }
+        if (ticks == 41)
+        {
+            clicks0 = net.decimation.fixes.SpecterKey.clicks();
+            press();
+        }
+        if (ticks == 45)
+        {
+            float acog = net.decimation.fixes.ScopeZoom.magnificationFor(held);
+            int clicks = net.decimation.fixes.SpecterKey.clicks() - clicks0;
+            DevTestResults.check(name(), "specter: the key with the ACOG", String.format("%.2f, %d clicks", acog, clicks),
+                                 Math.abs(acog - 3.5f) < 0.01f && clicks == 0, "3.50, 0 clicks (nothing changes)");
+            mc.thePlayer.inventory.currentItem = 0;    // the first gun, at 1x: aim through it
+            aim(mc, 1);
+        }
+        if (ticks == 46)
+        {
+            onServer = () -> {                          // shots at noon, clear, full health (no damage tint)
+                EntityPlayerMP p = player();
+                if (p != null)
+                {
+                    p.worldObj.setWorldTime(6000);
+                    p.worldObj.getWorldInfo().setRaining(false);
+                    p.worldObj.getWorldInfo().setThundering(false);
+                    p.setHealth(p.getMaxHealth());
+                }
+            };
+        }
+        if (ticks == 85)
+        {
+            double z = net.decimation.fixes.ScopeZoom.currentZoom();
+            DevTestResults.check(name(), "specter: aimed at 1x", String.format("zoom %.2f", z), Math.abs(z - 1.25) < 0.05, "zoom 1.25");
+            DevTestUtil.screenshot(mc, name(), "specter_1x.png");
+            press();
+        }
+        if (ticks == 115)
+        {
+            double z = net.decimation.fixes.ScopeZoom.currentZoom();
+            boolean overlay = net.decimation.fixes.ScopeZoom.overlayShown();
+            DevTestResults.check(name(), "specter: aimed at 4x, gun and glass kept", String.format("zoom %.2f, overlay %s", z, overlay),
+                                 Math.abs(z - 4.0) < 0.1 && !overlay, "zoom 4.00, overlay false");
+            DevTestUtil.screenshot(mc, name(), "specter_4x.png");
+        }
+        if (ticks == 116)
+        {
+            aim(mc, 0);
+        }
+        return ticks < 120;                            // the server takes the aim off before the mode ends
+    }
+
+    /** The held gun's magnification and overlay; `clickWrong` adds a failure when the click count is not as expected. */
+    private void check(String key, ItemStack held, float mag, boolean clickWrong)
+    {
+        float m = net.decimation.fixes.ScopeZoom.magnificationFor(held);
+        boolean overlay = net.decimation.fixes.ScopeZoom.overlays(held);
+        DevTestResults.check(name(), key, String.format("%.2f, overlay %s%s", m, overlay, clickWrong ? ", click count wrong" : ""),
+                             Math.abs(m - mag) < 0.01f && !overlay && !clickWrong, String.format("%.2f, overlay false, one click a press", mag));
+    }
+
+    /** A press of the SpecterDR key as the keyboard makes it (KeyBinding state down, a tick, up). */
+    private static void press()
+    {
+        net.minecraft.client.settings.KeyBinding k = net.decimation.fixes.SpecterKey.binding();
+        if (k != null)
+        {
+            net.minecraft.client.settings.KeyBinding.setKeyBindState(k.getKeyCode(), true);
+            net.minecraft.client.settings.KeyBinding.onTick(k.getKeyCode());
+            net.minecraft.client.settings.KeyBinding.setKeyBindState(k.getKeyCode(), false);
+        }
+    }
+
+    /** Aim mode on both sides (Decimation's player data). */
+    private void aim(Minecraft mc, int mode)
+    {
+        Deci.setAimMode(mc.thePlayer, mode);
+        onServer = () -> {
+            EntityPlayerMP p = player();
+            if (p != null)
+            {
+                Deci.setAimMode(p, mode);
+            }
+        };
     }
 
     private void ratio(String key, double[] s, double up0, double side0, double up, double side)

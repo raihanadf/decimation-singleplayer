@@ -105,6 +105,7 @@ public class DecimationWorldGen
                 net.minecraftforge.common.MinecraftForge.EVENT_BUS.register(zoom);
                 cpw.mods.fml.common.FMLCommonHandler.instance().bus().register(zoom);
             }
+            net.decimation.fixes.SpecterKey.register(); // the SpecterDR's 1x / 4x switch (default G)
             // prop render distance by size (tools/patches/PatchPropCulling.java step 4)
             net.minecraftforge.common.config.Configuration props = new net.minecraftforge.common.config.Configuration(
                 new File(event.getModConfigurationDirectory(), "deciworldgen_props.cfg"));
