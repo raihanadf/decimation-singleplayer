@@ -1832,3 +1832,11 @@ Production client with OptiFine HD U E7 (the brother's laptop setup), AKM with t
   touching the gun (the P90 and RPG-7 rows rest on the check alone).
 - The four `grip_*.png` Gunsmith shots were taken again with the rewritten table (same views; the RK-1 now flush with
   the M4A4's rail, 0.16 higher than before).
+
+## grip_rails_v0.65.0 (21 Oktober 2026, which rifles have a rail for a grip: docs/references/grip_rails.md)
+- rifles_a.png .. rifles_d.png: every rifle that takes a Foregrip today (56: Decimation's 53 plus our hk416, mk18;
+  hk416tan is the same model), study.py side view above a three quarter view from below, four a row, name top left.
+  Wooden or plain handguards (AK family, RPK, FAL, G3, M16A1/A2, M14, SKS, bolt rifles) show no rail; railed ones
+  (M4A4, SCARs, MPT-76, M110, ACR, Honey Badger and AR-15 with M-LOK slots, AUG A3 with a rail under the front) do.
+- unsure_low.png, under_unsure.png: closer views of the unclear ones (acr, ak12, aug3, aug3para, g36c, famasi,
+  jng90, barrett, fnscar, ...). The pitch in under_unsure.png ended up from above, not below: no help for bottom rails.
