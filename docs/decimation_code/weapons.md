@@ -284,6 +284,11 @@ takes 0.5); a miss used a round and hurt nothing; client and server copies agree
   kits through NpcLoadouts.fitKit: an MG3 elite carries no 4x now, AKM NPCs never a red dot); fixes/MountStrip (was
   GripStrip) takes a sight off its gun like a grip. Dev test attachments "mounts:" (3 checks, RED 4 then GREEN); the
   Gunsmith tests fit the EOTech where they fitted the red dot on the M4A4.
+- Foregrip seat (22 Oktober 2026, bug.md "Foregrip looked like it floated"): seated by its two tiny clamp tabs, the
+  Foregrip's body hung 0.35 to 0.4 under all 19 rails; gripfit.py CLAMP / bearing() seats it by its body (tabs in the
+  rail). Dev test `gripsweep` (`grips=`, `pairs=gun:grip,...`, `batch=off`, `modelbatch=off`) shoots every pair in the
+  Gunsmith screen. Lesson: a seat must be a part that can be seen to bear; a check that judges by the same seat passes a
+  grip held up by invisible tabs, so look at the pairs in game.
 - How the budgets were measured (lessons): at the horizon a 1.25x view draws about 4.5 ms more world than a 3.5x one
   (the SpecterDR at 1x read +3.19 ms against the ACOG: the EOTech at 1.25x costs the same), so each mode is compared
   with our sight of its own zoom; looking down from the arena (150 high) a 1.25x view took in the land below (24 ms

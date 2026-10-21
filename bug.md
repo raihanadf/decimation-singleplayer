@@ -38,12 +38,22 @@ not something we introduced or need to fix) see `documentation.md`.
   a shift click from the inventory goes into the backpack before the other row (like a chest); say if the row swap
   should come first.
 
-### Foregrip invisible on some guns, the grip looks like it floats (reported 22 Oktober 2026 by the user, OPEN)
-- User: "foregrip on some gun is invicble so its looks flying below". Which guns: not given yet (ask, or shoot every
-  railed rifle with each grip: dev test attachments placement shots, gunview attach=foregrip).
-- Suspects [not analysed]: Decimation's Foregrip hangs its 8 parts from a parent "grip" whose plate the copies draw
-  without boxes (GripPlacement.STRAY); a gun whose rail lies above the grip's seat leaves a gap; the batched copy
-  (Deci.BatchedPart) on a gun where a part's first draw state differs.
+### Foregrip looked like it floated under the gun (reported 22 Oktober 2026 by the user, FIXED on branch bugfix)
+- User: "foregrip on some gun is invicble so its looks flying below". Swept in game (dev test `gripsweep`: every gun and
+  grip pair of grip_offsets.txt in the Gunsmith screen): every one of the 19 Foregrip pairs, not some; the RK-1 sat
+  right on all 19. Shots docs/shots/grip_float_v0.65.0/.
+- Cause: Decimation's foregrip.bmodel has two clamp tabs (grip_1, grip_2: 0.2 long, 0.1 tall) 0.3 above the grip's
+  body. gripfit.py's seat() took the widest part at the grip's top, the tabs, so the tabs touched the rail and the body
+  hung 0.35 to 0.4 below it; the tabs are too small to see, so the grip looked like it floated. study.py draws the same
+  (study_m110_foregrip_before.png): not a drawing fault. Ruled out in game: BatchedPart off and ModelBatch off draw the
+  same; Decimation's own copy at its one spot (AKM, no row) has the same gap.
+- Fix: gripfit.py CLAMP / bearing(): the Foregrip is seated by its body (the tabs sink into the rail); fit and check both
+  use it; grip_offsets.txt rewritten (19 Foregrip rows 0.4 higher, nothing else changed).
+- Checks: `gripfit.py --check` with the new seat on the old table: 19 pairs not right ("floats: 0 of 7 places touch,
+  gaps 0.35 ..") (RED), on the new table 0 (GREEN); gripsweep after: each Foregrip touches its handguard
+  (foregrip_after.png, m110_before_after.png); `attachments` 30 PASS; unit suite 155 PASS.
+- Not verified: lights (laser, flashlight) on all 103 guns were not shot in game (their models have no such tabs and the
+  check passes them); the production client [not verified]; NPC held views [not verified].
 
 ### Some props still broke with one punch (reported 22 Oktober 2026 by the user, FIXED on branch bugfix)
 - User: "fix some props that still can be easly destroyed by one click hand".

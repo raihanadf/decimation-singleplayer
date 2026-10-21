@@ -128,6 +128,6 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [x] cape drawn in front of the camera in first person: fixes/FirstPersonCape (user checked in Prism, 22 Oktober 2026)
 - [ ] toggleable Minecraft style HUD (user, next after the cape fix)
 - [x] bug: inventory shift click (and into armor / gear slots): fixes/InventoryShift (branch bugfix, bug.md)
-- [ ] bug: foregrip invisible on some guns, looks like it floats (bug.md Open; which guns?)
+- [x] bug: foregrip floated on all 19 railed rifles: seated by its body, not its clamp tabs (branch bugfix, bug.md)
 - [x] bug: 6 props broke with one punch: fixes/PropHardness (branch bugfix, bug.md; ropes left as they are)
 - [ ] ideas 28 to 52 (docs/ideas.md, user 22 Oktober 2026): design talk first

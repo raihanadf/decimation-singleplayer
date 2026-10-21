@@ -1846,3 +1846,16 @@ Production client with OptiFine HD U E7 (the brother's laptop setup), AKM with t
 - reddot_guns.png: Decimation's red dot on the Glock 17, Desert Eagle, M4A4, AKM and MP5A3 (three quarter): a tiny
   block on the rifles. reddot_pistols.png: the red dot on the Glock 17, Desert Eagle and Beretta M9, side and three
   quarter: it sits on the slide's rear (x 2.41 to 2.81) and reads as part of the dark slide.
+
+## grip_float_v0.65.0 (22 Oktober 2026, bug.md "Foregrip looked like it floated", branch bugfix)
+- sweep_before.png: the front halves of 38 Gunsmith shots (dev test gripsweep), every Foregrip and RK-1 pair. Each
+  Foregrip is a thin dark bar with a clear gap under the handguard (all 19 guns); each RK-1 touches its rail. One cell
+  (foregrip_m4a4) caught the world instead of the screen (a timing miss, not a finding).
+- study_m110_foregrip_before.png: study.py's side render of the M110 with the old table: the same gap, so the model and
+  its placement, not the game's drawing.
+- switches_akm_laser.png: the M110 Foregrip with BatchedPart off, with ModelBatch off too (same gap), Decimation's own
+  Foregrip copy on the AKM (its one spot, same gap), the Laser on the M110 (seated).
+- m110_before_after.png: zoom, left before (gap), right after the fix (the bar meets the handguard).
+- foregrip_after.png: the 19 Foregrips after the fix, each touching its handguard (the AK-12 cell is a stale shot of a
+  missed frame; the AKM cell is the rail-less one-spot copy, unchanged).
+
