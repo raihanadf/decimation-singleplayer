@@ -111,7 +111,7 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [ ] later: Gunsmith minors M1 to M13 (docs/decimation_code/weapons.md section 7, "Open")
 - [x] user: look at the Gunsmith screen in runClient: "i like it how the HUD looks" (21 Oktober 2026: dimming, light band, hidden HUD stay)
 - [x] Gunsmith: turn the gun 360 degrees with the mouse cursor, like Tarkov (spec section 9; dev 110 checks, perf 10, production client with OptiFine 110 + 10)
-- [ ] user: try the turning in runClient (left drag on empty space, double click resets, wheel zooms)
+- [x] user tried the turning in runClient: "nice, work really well" (21 Oktober 2026)
 - [ ] next: reference capture tool tools/guns/refcapture.py (tarkovbot.eu 3D views by agent-browser, docs/ideas.md 26; user OK to load my_preset.json there); open: the user exports the build as GLB for exact geometry?
 - [ ] later: full attachment update, grip and laser models on guns (docs/ideas.md 26)
 - [ ] later: optimize and bug audit skill (user, 21 Oktober 2026): audits each feature for bugs and performance before it ships (rule now in CLAUDE.md "Every feature: optimized before done")

@@ -142,6 +142,7 @@ takes 0.5); a miss used a round and hurt nothing; client and server copies agree
   ms against 12.58 closed, GL clean while turned. Production client with OptiFine (one jar sha256 ca773d60): 110 checks
   and perf 10 PASS, measuring 4.42 ms, turning every frame 6.75 ms against 9.06 closed. At large turns the lines cross
   the gun (the boxes stay, as chosen). Shots docs/shots/gunsmith_v0.65.0/turning/.
+  The user tried it in runClient the same day: "nice, work really well".
 - The user saw it in runClient (21 Oktober 2026): "i like it how the HUD looks" (the dimming, the light band and the
   hidden HUD stay), then asked for Tarkov style turning: "its possible to make it more like tarkov where it can be
   viewed 360 by mouse?" ("cursor i mean").
