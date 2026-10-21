@@ -1987,6 +1987,12 @@ the client's empty slot]. Run aimdrift in a game of its own (or before scopediag
 - Fix: fixes/Updater.open names "Accept: application/octet-stream, */*" (API calls set their own). Unit
   UpdaterTest.downloadsSendAnAcceptHeaderGitHubTakes (a local server answering 406 like GitHub) RED then GREEN; a Java 8
   client against the real 0.66.0 asset: 200 with the header, 406 without.
+- It was a TEMPORARY GitHub incident, not the rename: at 03:01 WIB the same Java request got 302 / 200 from our repository
+  (both names), cfr and cli/cli, and the real 0.65.0 jar updated itself from GitHub to 0.66.1 (240 MB in 31 s,
+  checksum, swapped, "Up to date: 0.66.1"). 406 seen from about 02:25 (first real update test) to 02:51 (the user's
+  Prism game); cfr (never renamed) answered 406 at about 02:30 too. The repository rename happened before 02:03 (gh
+  printed the new name when 0.66.0 was created) while the 0.65.0 fake server update worked, so the rename was not it.
+  0.66.1's named Accept header stays: the updater no longer depends on how GitHub treats Java's default.
 - Released as 0.66.1 (22 Oktober 2026 02:46 WIB): the running 0.66.1 downloaded from GitHub with its own updater.
   Every older updater (0.64.7 to 0.66.0) still fails: their players install 0.66.1 by hand once (0.66.0 shows a
   Download page button on a failed download, 0.65.0 only Try again / Back). The 0.66.0 release notes and the site's
