@@ -1953,3 +1953,13 @@ the client's empty slot]. Run aimdrift in a game of its own (or before scopediag
 - Checks: unit SightMountsTest (3), dev attachments "mounts:" RED 4 then GREEN (fit table of 10 pairs, NPC kits, pop off
   with the right ones kept), gunsmith (now the EOTech), aimdelay (the Glock with the red dot), glstack; production client
   with OptiFine 145 PASS (attachments, gunsmith, aimdelay), glstack; dedicated server attachmentsmp + gunsmithmp 21 PASS.
+
+## Release checks of 0.66.0: two test FAILs that were the tests (22 Oktober 2026)
+- attachments "full inventory drops it" FAILed in the production client right after genwalk: genwalk leaves the player
+  creative and high over a city. In creative, vanilla's addItemStackToInventory takes anything into a full inventory
+  and deletes it (creative items are free), so nothing dropped; in survival up there the player fell to death. The rails
+  steps now stand on the test arena in survival with the fall reset (reproduced in dev as `genwalk attachments`, then
+  PASS). Product note: a creative player with a full inventory loses a popped grip or sight (vanilla's creative rule).
+- scopeperf "glass after aiming holds no picture" read 77 % plain lens once in the long production run (after npclook,
+  gunbatch, threads, radios, lightleak); the same order twice more and four other runs read 100 %. Flaky once, not
+  reproduced [cause not found].
