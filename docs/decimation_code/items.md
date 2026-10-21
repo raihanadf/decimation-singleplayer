@@ -43,6 +43,10 @@ built while `itemSplint` was still null. SplintItem's use time is static too (th
 - Bandages never give a dirty bandage back, splints and the morphine syringe never give anything back [run time: none
   handed back; cause inferred].
 - PacketThrowItem only blocks throwing near safezones on a dedicated server (architecture.md deci/aE).
+- Against NPC fire ("human", "turret") each piece protects 20 % less than its multiplier says (user, 22 Oktober 2026:
+  "nerf all armor buff by -20% that affected to player when they shooted by npc"): ArmorGunfireHandler.againstNpc =
+  1 - 0.8 x (1 - multiplier), helmets too; player shots keep the full multiplier. Dev test checks "armor vs NPC
+  gunfire": a chest of x0.552 gives x0.642.
 - Helmets: ItemArmorDeci multipliers skip the helmet on player gunshots; our fixes/ArmorGunfireHandler counts helmets
   on headshots for NPC fire (CLAUDE.md v0.9.1).
 

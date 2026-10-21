@@ -230,7 +230,7 @@ docs/gun_model_spec.md); every user review goes into its lessons and casebook.
 ## Feature order (user 22 Oktober 2026: "from easiest ones to hardest"; bugs go to the bugfix agent)
 Built in this order, ideas numbers from docs/ideas.md; 1 to 5 decided together (user choices 22 Oktober 2026), from 6 on
 a short design talk each first:
-1. Armor against NPC fire 20 % weaker (46): each piece's protection x 0.8 (a piece blocking 50 % blocks 40 %), helmets
+1. DONE 22 Oktober 2026 (new_feature.md): Armor against NPC fire 20 % weaker (46): each piece's protection x 0.8 (a piece blocking 50 % blocks 40 %), helmets
    too; player shots unchanged.
 2. NPC tracers (34): each armed NPC one random tracer colour for life (Decimation's tracer colours), every NPC shot a
    tracer; player guns unchanged.

@@ -1147,3 +1147,11 @@ lineup photo zombies_v0.34.0. Not seen by the user in game yet
 - **Next step** (not started, user said "later if I have long time"): pick a
   base weapon to clone for a first reskin test, or start modeling in Techne
   for a new shape.
+
+## Armor 20 % weaker against NPC fire (22 Oktober 2026, feature 1 of docs/roadmap.md "Feature order")
+- User: "nerf all armor buff by -20% that affected to player when they shooted by npc. now the damage dealt more since the
+  armor got nerf"; chosen: each piece's protection x 0.8, helmets too, player shots unchanged.
+- fixes/ArmorGunfireHandler.againstNpc (NPC_PROTECTION 0.8) on the body pieces and the headshot helmet of NPC hits.
+- Checks: unit ArmorGunfireHandlerTest RED then GREEN, suite 150; dev test checks "armor vs NPC gunfire" now checks the
+  exact ratio (x0.642 for the chest tested), helmet and cooldown checks PASS. Server side only (LivingHurtEvent), no
+  per frame cost. Dedicated server not run [the same handler; not verified there].
