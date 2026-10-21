@@ -1268,7 +1268,7 @@ of the last session:
   (Decimation's ATTACH) opens fixes/gunsmith instead of its crafting style AttachmentScreen (GunsmithGuiHandler wraps
   Decimation's IGuiHandler; no jar patch): the held gun in 3D (its own renderer, outline from the depth buffer once per
   change), six slots joined to their parts, click to fit from the whole inventory by Decimation's FilteredSlot rules,
-  the gun never leaves the hand. Dev tests gunsmith (80 checks), gunsmith perf=true, gunsmithmp (a joined client on the
+  the gun never leaves the hand. Dev tests gunsmith (92 checks), gunsmith perf=true, gunsmithmp (a joined client on the
   production server: /give in creative, a dedicated server's Decimation lets only creative players pick items up).
   Traps: a container button id (enchantItem) is ONE signed byte on the wire, singleplayer passes the int whole (bug.md);
   GuiContainer draws every slot's item each frame even off screen (hide unseen slots on the client); cancelling
@@ -1276,6 +1276,10 @@ of the last session:
   settings such as perf=true stay set (clear with perf=); the Minecraft alpha test drops anything under 10 % opacity.
   A 3D model drawn in a GUI needs ONE mirror (the GUI's glOrtho flips y): without it Decimation's renderer draws it
   inside out, hidden parts showing (the user saw it; check the sign of det(projection x model view), negative is right).
+  A container's canInteractWith runs once a tick in the player's update, AFTER that tick's packets: guard slotClick
+  yourself when a slot is a view of the held stack (a swap and a click in one tick copied parts); vanilla's
+  onContainerClosed drops the cursor and a logout saves the player with the screen open and the cursor unsaved
+  (GunsmithContainer.Logout returns it on PlayerLoggedOutEvent, which FML posts before the save).
   RELEASE 0.65.0 published 20 Oktober 2026 10:55 (pre-release, the first from the prerelease branch: tag 0.65.0 on
   14830b9; sha256 1c604032..., GitHub's asset digest equal; notes RELEASE_NOTES_0.65.0.md; jar kept in
   dist/previous/onejar-0.65.0). Checked after: public download 251,272,285 bytes, site Download 0.65.0 at 11:11 (ISR

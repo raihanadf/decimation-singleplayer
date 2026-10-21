@@ -32,6 +32,27 @@ not something we introduced or need to fix) see `documentation.md`.
   fitted and took off the 4x as the server sent it back.
 - Lesson (CLAUDE.md traps): anything sent through a vanilla packet is checked off the integrated server once.
 
+### Gunsmith: a part copied by a swap in the same tick (final review C1, 21 Oktober 2026, FIXED before shipping)
+- A client that puts a copy of its gun in the hand (a use packet can replace the held stack) and clicks a part slot in
+  the same tick got the part onto its cursor while both guns kept it in their tag: one copied part per click on any
+  server, for a modified client.
+- Cause: a container's canInteractWith runs once a tick (the player's update), slotClick runs before it, and the part
+  slots are a view of the tag of the stack the screen opened on, so taking the part wrote nothing to the gun in hand.
+- Fix: GunsmithContainer.slotClick refuses unless the hand still holds that very stack, and the part slots write the
+  tag only then. Check "replaced: a part slot click in that tick takes nothing": RED took "Rifle Suppressor" onto the
+  cursor, GREEN nothing.
+
+### Gunsmith: a part on the cursor dropped when the screen closed (final review I3, 21 Oktober 2026, FIXED before shipping)
+- Closing the screen with a part picked up (Esc, I, the gun leaving the hand) threw it on the ground, vanilla's
+  Container.onContainerClosed; leaving the game with it lost it (the cursor is not saved).
+- Fix: GunsmithContainer.onContainerClosed puts the cursor's part back in the bag first (dropped only when the bag is
+  full), and GunsmithContainer.Logout does the same on PlayerLoggedOutEvent, which FML fires before the player is saved.
+  Check "closing with a part on the cursor puts it back": RED 1 on the ground and 0 in the bag.
+- Same pass (final review I1, I2): a part put down with the mouse moving while pressed failed (GuiContainer turned it
+  into drag painting, which a part slot refuses; GunsmithContainer.canDragIntoSlot leaves part slots and the gun's own
+  slot out of a drag, so the release there is a plain click), and "Inventory full" went to the hidden chat (now said
+  in the screen, and the list shows "Inventory full" in Take off's place).
+
 ### Clicking a news popup crashed the game (found by the user 21 Oktober 2026 01:40, FIXED main 089edfd, prerelease)
 - User: "when i click the pop up, its crashed". Crash reports 01:40:26 and 01:40:52: ConcurrentModificationException in
   DeciScreen.mouseClicked (deci.d.i), screen MenuDetail.

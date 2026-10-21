@@ -85,7 +85,8 @@ takes 0.5); a miss used a round and hurt nothing; client and server copies agree
 - `python3 tools/devtest.py --live playerfire`: the player's shot end to end (9 checks).
 - `gun` (reload loads a magazine, NPC fires), `gunview` (hip, aim, NPC view per gun), `gunperf`, `firerate`,
   `checks` (armor against NPC fire, 60 round mags).
-- `python3 tools/devtest.py --live gunsmith` (80 checks: the screen, fits, rules, no loss, 8 guns at two sizes),
+- `python3 tools/devtest.py --live gunsmith` (92 checks: the screen, fits, rules, no loss, the cursor on close and on
+  logout, 8 guns at two sizes, every registered gun's layout),
   `gunsmith perf=true` (8 checks, section 7), `gunsmithmp server=HOST:PORT` (a joined client on a dedicated server; run
   it last, it leaves for the menu).
 
@@ -112,4 +113,22 @@ takes 0.5); a miss used a round and hurt nothing; client and server copies agree
   -2.72, -0.58 ms.
 - On a dedicated production server (gunsmithmp): joined, the key opens it, the 4x fitted and taken off as the server sent
   them back, closing drops nothing; frame 4.46 ms closed, 4.21 ms open.
+- Final review fixes (21 Oktober 2026, bug.md "a part copied by a swap", "a part on the cursor dropped"):
+  GunsmithContainer.slotClick refuses unless the hand still holds the very stack the screen opened on (a container's
+  canInteractWith runs once a tick, after that tick's packets); a part on the cursor goes back to the bag on closing and
+  on PlayerLoggedOutEvent (GunsmithContainer.Logout; dropped beside the player only when the bag is full); part slots and
+  the gun's slot never join a drag (canDragIntoSlot); "Inventory full" is said in the screen for 3 s
+  (GunsmithClient.chat, GunsmithScreen.notice) and replaces Take off in a list when the bag is full.
+- Optimized in the same pass: the depth is read from the gun area only (GunsmithScreen.probe), into buffers kept
+  between openings, one probe plus one finer probe at the drawn size (halved while the area's edge cuts the gun): 3.08 ms
+  and 323,568 depth pixels at 854 x 480 (twice the 161,784 pixel area), before one probe of the whole window read 409,920
+  pixels and a small gun up to five; list rows, their widths, the panel and the box labels are built on a change only (0
+  text built per frame with a list open, was 727 then 2701 over 56 ticks); ScopeZoom does no glass work while the screen
+  is open over an aimed gun (GunsmithClient.isOpen). The list is as wide as its longest row (LIST_W 120 up to 200,
+  GunsmithLayout.list with a width): "None in your inventory" was cut to "None in your inve.." at 120.
+- Measured after the fixes (dev client in the scratch checkout, nothing else running): frame median closed 12.17 ms, open
+  9.34 ms; the screen's own draw 1.02 ms with a full bag, 0.94 ms empty; every registered gun (103) lays out at 854 x 480.
+  Production client with OptiFine HD U E7 (one jar of main's tree, sha256 76b71b05): 92 checks and perf 8 PASS, frame
+  median closed 4.39 ms, open 4.08 ms, own draw 0.90 ms full bag, 0.88 ms empty; joined to the dedicated production
+  server (gunsmithmp, 8 PASS): frame 5.54 ms closed, 5.68 ms open.
 
