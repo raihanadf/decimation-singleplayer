@@ -52,6 +52,7 @@ Traced `deci.i,net.decimation.mod.common.utils.h,deci.g.j,net.decimation.fixes.L
 |---|---|
 | "Play" without the voice chat jar, our updates | tools/patches/PatchNoUpdate.java, fixes/Updater, fixes/UpdateProgress (Decimation's progress screen), fixes/UpdateScreen (failures), fixes/UpdateSwap |
 | stats on menu and HUD | fixes/LocalStats, tools/patches/PatchMenuStats.java |
+| a Minecraft style HUD with the player in the corner, switchable (J, Settings page), Decimation's HUD kept as the default | fixes/HudStyle (IngameHud's switches ClientState cf / cl held while inline), fixes/InlineHud, fixes/HudDoll; dev test `hud` |
 | our loot inventory on Decimation's loot screen | fixes/Loot (loot.md) |
 | turf banners for our places | worldgen/PlaceNames, PatchTurfNames (clans.md) |
 | our news in the main menu's news panels (GitHub, Updates, Website, Coming soon) | fixes/MenuNews, `Deci.addNewsPanel` (docs/main_menu.md) |

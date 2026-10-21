@@ -78,6 +78,7 @@ GunAnimation.get 99 (a lookup each frame while the gun is held).
 | NPC tracers | fixes/NpcShots, PatchTracer |
 | NPC looks in one picture | fixes/HumanLayers (`Deci.humanLook`, `Deci.humanGear`), tools/patches/PatchHumanLayers.java |
 | .bmodel parts in one draw each | fixes/ModelBatch, tools/patches/PatchModelBatch.java |
+| blood that stays on hit infected (splats painted into the NPC's own look picture) | fixes/Wounds (via fixes/HumanLayers.begin / bind); dev test `wounds` |
 | textures and gear models before their first draw | fixes/ModelWarmup (`Deci.loadGearModel`) |
 
 ## 6. Checks

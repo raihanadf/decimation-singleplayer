@@ -1859,3 +1859,28 @@ Production client with OptiFine HD U E7 (the brother's laptop setup), AKM with t
 - foregrip_after.png: the 19 Foregrips after the fix, each touching its handguard (the AK-12 cell is a stale shot of a
   missed frame; the AKM cell is the rail-less one-spot copy, unchanged).
 
+## hud_v0.65.0 (22 Oktober 2026, dev test hud, fixes/HudStyle, InlineHud, HudDoll; new_feature.md "HUD styles")
+- hud_decimation.png: Decimation's own HUD in the arena (survival, bleeding, infected, broken leg, health 13): its stats
+  list top right with the player figure behind it (under vanilla's "Press E" tutorial toast), the column of big food /
+  water / blood / health icons with percentages.
+- hud_inline.png (redesign in Decimation's art): over the hotbar two brush stroke panels, left blood (top) and health
+  (bottom, under the chat line), right water and food, each Decimation's icon and a bar of ten segments; a thin red /
+  green humanity line with its star at 72 under them, "HERO II" in bold outlined green over the rows; the hotbar on a
+  brush strip, Decimation's slots, bread selected in a red frame; shield "7" left, bottlecap "1,250" right. Top right:
+  the player three quarter on a brush panel, "DAY 1" under it; BLEEDING / INFECTED / BROKEN LEG red edged plates
+  beside the panel.
+- hud_inline_tab.png: the same with the player list key held: the panel lists Health 65 %, Food 75 %, Water 65 %,
+  Blood 100 %, kills, deaths, humanity (an infected walked into the arena on the left).
+- hud_inline_creative.png: the same HUD in creative ("Creative Mode" from Decimation at the top).
+- hud_inline_third.png: third person from behind with the sneak key held: the world figure and the corner figure in the
+  same gear (iron chestplate, boots, cape) and pose.
+- hud_options.png: Decimation's Settings page in game: "HUD: Inline" right of View Updates.
+- hud_decimation_after.png: after switching back with that button: Decimation's HUD as before.
+
+## wounds_v0.65.0 (22 Oktober 2026, dev test wounds, fixes/Wounds; bug.md "Hits on infected leave nothing")
+- wounds_a_before.png: infected A (uniform, blue jacket) from 4 blocks at field of view 30, untouched.
+- wounds_a.png: A after five hits aimed at the head, chest, legs and both arms: dark red splats with a bright red rim,
+  spray specks and drips on the face, the shirt, both forearms and the legs, all on the model (the raised arm carries
+  its splat). Earlier colours (dark red only) did not show on black uniforms.
+- wounds_b.png: infected B after four hits while the player looked over its head (random spots): a big splat across
+  the chest and one on a sleeve.

@@ -126,7 +126,6 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [ ] later: optimize and bug audit skill (user, 21 Oktober 2026): audits each feature for bugs and performance before it ships (rule now in CLAUDE.md "Every feature: optimized before done")
 - [x] project skill decimation-main-menu with the full menu map (docs/main_menu.md 8 to 10)
 - [x] cape drawn in front of the camera in first person: fixes/FirstPersonCape (user checked in Prism, 22 Oktober 2026)
-- [ ] toggleable Minecraft style HUD (user, next after the cape fix)
 - [x] bug: inventory shift click (and into armor / gear slots): fixes/InventoryShift (branch bugfix, bug.md)
 - [x] bug: foregrip floated on all 19 railed rifles: seated by its body, not its clamp tabs (branch bugfix, bug.md)
 - [x] bug: 6 props broke with one punch: fixes/PropHardness (branch bugfix, bug.md; ropes left as they are)
@@ -135,3 +134,6 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [x] looted guns hold rounds (1 in 2, like loot magazines; idea 53) on main and prerelease
 - [ ] production client and dedicated server check of the magazine unload channel before the next release
 - [ ] user: ropes stay one click? shift click into a worn backpack before the row swap? (bug agent's questions)
+- [x] HUD styles Decimation / Inline: Minecraft style bars, humanity bar, the player in the top right corner (fixes/HudStyle, InlineHud, HudDoll; key J, Settings button; dev test hud)
+- [x] blood splats that stay on hit infected (fixes/Wounds; dev test wounds)
+- [ ] user: look at the inline HUD and the splats in game; HUD with OptiFine (production client) not checked yet

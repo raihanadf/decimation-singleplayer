@@ -68,6 +68,25 @@ not something we introduced or need to fix) see `documentation.md`.
   BlockMetalShelf_Empty BlockBarrierTall", GREEN 0; the dev dedicated server logs the same 6 set to 10; unit test
   PropHardnessTest. Open question for the user: should ropes stay one click (now) or get a ladder's 0.4?
 
+### Hits on infected leave nothing on the body (reported 22 Oktober 2026 by the user, FIXED in code)
+- User: "when they got hit it looks like yellowish tint splatter, but nothing gets stick onto their character so the
+  feedback of its getting hit is none".
+- Cause: Decimation's only hit feedback on infected is its green-yellow BloodInfected particles and ground splats
+  (ClientEventHandler.onLivingHurt, damage over 3); the model never changes.
+- Fix: fixes/Wounds paints blood splats into each hit infected's own copy of its look picture (fixes/HumanLayers binds
+  it instead), so the blood follows every limb. A hit is the hurt flash starting on the client (works on servers and for
+  any attacker); the spot is where the local player's view ray crosses the box (head / body / arm / leg, front / back /
+  side, place on that face), else random. Up to 10 a body, 64 wounded pictures at once, 4 made a frame. Infected, Frail,
+  Hulk and Bloater (ModelHuman); crawlers and infected dogs have their own models: no splats.
+- Trap found: the local player's posY is already eye level (EntityClientPlayerMP); a ray from posY + getEyeHeight() -
+  yOffset started 1.5 blocks low (head shots read as legs). Use getPosition(1.0f).
+- Checked: dev test `wounds` 4 PASS (A: head, body, legs front, both arms as aimed; B 4 random; 9 hits seen, 9 pictures
+  made), shots in docs/shots/wounds_v0.65.0. Cost: 0.0017 ms a frame with 3 infected in view, 2 wounded (dev client,
+  unlimited fps, about 600 frames); no allocation per lookup (WeakHashMap by entity); a picture is painted only when a
+  splat is added (64 x 32: a few thousand pixel steps and one 8 KB upload). Known: a wounded infected that blinks changes
+  its look number, so its picture is made again on each blink [inferred from HumanLayers' key, not measured]. Not seen
+  by the user yet [not verified in a real fight].
+
 ### Cape in first person: drawn in front of the camera (reported 22 Oktober 2026 by the user, FIXED, user checked in game)
 - A player with a cape (Mojang account cape; OptiFine capes go the same way) saw it in front of himself in first
   person, in Prism with the 0.65.0 release jar.

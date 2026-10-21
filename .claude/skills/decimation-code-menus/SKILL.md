@@ -16,6 +16,7 @@ and in game): skill decimation-main-menu.
 | Play or Update | UpdateChecker.isUpdateRequired (net/decimation/mod/common/utils/h) -> our fixes/Updater (PatchNoUpdate) |
 | update progress | Decimation's GuiUpdateProgress (deci/i/m) fed by fixes/UpdateProgress (UpdateChecker fields) |
 | HUD | IngameHud (deci/g/j), once a frame |
+| HUD style Decimation / Inline (Minecraft style bars, the player in the top right corner) | fixes/HudStyle (key J, Settings page button, holds ClientState cf / cl while inline), fixes/InlineHud, fixes/HudDoll; dev test `hud` |
 | loot and gear screen | PlayerInventoryScreen (deci/g/g), GUI id GUI_LOOT |
 | stats shown | fixes/LocalStats, PatchMenuStats |
 | menu music (one song, looped with no world loaded; a Battlegrounds track listed but missing) | ClientEventHandler.onClientTick, ClientResources (deci/b/c); docs/decimation_code/menus.md section 8 |

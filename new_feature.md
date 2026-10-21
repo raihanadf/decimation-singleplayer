@@ -7,6 +7,36 @@ Status values: `Done` / `Decided` (direction agreed, not built yet) /
 
 ## Done
 
+### HUD styles: Decimation or Inline (22 Oktober 2026, main)
+- User: "an option to switch to inline mode, which is like minecraft default one ... reimagine it ... for the corner
+  view of character make it like xbox version in top corner, so only character 3rd person view overall".
+- fixes/HudStyle: style DECIMATION (default, Decimation's HUD unchanged) or INLINE; key "DeciRemnant: HUD style" (J)
+  and a "HUD: Decimation / Inline" button on Decimation's Settings page (right of View Updates); kept in
+  config/deciworldgen_hud.cfg. While inline it holds Decimation's own switches (ClientState cf: stats list hidden, cl:
+  its old GUI, so vanilla's bars are not hidden) and gives the player's values back on the switch.
+- fixes/InlineHud, redesigned after the user's first look (22 Oktober 2026: "looking vanilla ... reimagine it ... look
+  like the mod theme, also make it available too to see in creative mode ... NO VANILLA THEME"): only Decimation's art.
+  Its brush stroke panel (statsbg) behind every group; health and blood left, food and water right (oxygen over them
+  under water), each its own HUD icon (the infected cross while infected) and a bar of ten segments in the icon's
+  colour, pulsing below a fifth, the blood icon shaking while bleeding; humanity as a thin banner line (its location
+  banner's look) red toward bandit, green toward hero, its humanity star as the marker, the rank in its bold outlined
+  type for 3 s after a change; the hotbar on a brush strip with its slot squares and the selected slot framed in its
+  red; armor with its shield left of the hotbar, bottlecaps with its cap icons right. Drawn in the hotbar's place, so
+  survival and creative alike; vanilla's health, armor, food, air and experience are cancelled.
+- fixes/HudDoll: the player in the top right (Decimation's toasts and tips own the top left) on a brush panel, three
+  quarter view toward the screen's middle, live (walk, crouch, gear, gun, cape), its head below vanilla's 32 px toast
+  strip; "DAY N" under it; the conditions as red edged plates (its notification look) beside the panel; with the player
+  list key the vitals in numbers and the stats Decimation's own list showed; the range finder distance / target range
+  run when they apply.
+- Checked: dev test `hud` 7 PASS (switches held and given back, the Settings button and its label, 0 GL errors after
+  our drawing, 0 frames where the corner changed the matrix stack, creative), shots in docs/shots/hud_v0.65.0
+  (docs/shots_index.md). Cost (dev client, unlimited fps, all conditions on, 100 ticks each way, 22 Oktober 2026):
+  frame 8.541 ms with Decimation's HUD, 8.399 ms inline (its stats panel, menu figure and big icons are not drawn);
+  our inline drawing 0.664 ms a frame (hotbar, rows, line, sides and the corner figure); texts built when their number
+  changes, the corner box once a tick (the range finder's 1000 block ray once a tick, Decimation's ran every frame).
+  The user's first look was the vanilla styled version; this one not seen yet; not tried with OptiFine (no production
+  client on this Mac) or on a server [not verified].
+
 ### New attachments: RK-1 Foregrip, ELCAN SpecterDR 1x/4x, grips on every gun (21 Oktober 2026, main)
 - User: "we have 2 new attachment: new grip, and 4x scope"; chosen: the SpecterDR with a 1x/4x switch on a key (G),
   the grip with its own recoil (1/2 up, 1/4 sideways), every grip placed per gun, loot like the 4x and the Foregrip.
