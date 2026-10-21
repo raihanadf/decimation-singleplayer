@@ -1195,5 +1195,7 @@ lineup photo zombies_v0.34.0. Not seen by the user in game yet
   dropping it or dying stops it. Sounds: Decimation's bullet.in, low at the start, high at the end.
 - Checks: unit MagUnloadTest RED then GREEN (suite 155); dev test magunload (sneak held, a right click as the mouse makes
   it: DevTestUtil.rightClick) RED (Decimation loaded a round: 21) then GREEN 6 of 6: unload 20 out (25 loose with the 5
-  held), switching away keeps 20, a full inventory drops 20. Server work only while a request runs. A dedicated server
+  held), switching away keeps 20, a full inventory drops 20. Server work only while a request runs. The server repeats
+  the client's check (a loaded magazine with a known round) and keeps any failure inside the tick (automated security
+  review: a modified client could otherwise throw a null pointer in the server tick). A dedicated server
   and a joined client [not run: the channel is new, check it with the next production run].
