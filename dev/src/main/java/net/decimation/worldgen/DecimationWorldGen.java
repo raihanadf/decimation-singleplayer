@@ -132,6 +132,7 @@ public class DecimationWorldGen
         // guns of our own (tools/guns, assets/deci/...): the MAC-10 pilot
         net.decimation.fixes.NewGuns.register();
         net.decimation.fixes.NewSights.register(); // before SightPlacement: it moves these too
+        net.decimation.fixes.NewGrips.register(); // the RK-1 Foregrip (before GripPlacement)
         if (cpw.mods.fml.common.FMLCommonHandler.instance().getSide().isClient())
         {
             net.decimation.fixes.SightPlacement.apply(); // sights onto each gun's rail (sight_offsets.txt)

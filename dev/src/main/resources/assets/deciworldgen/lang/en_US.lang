@@ -40,3 +40,7 @@ deciworldgen.host.full=The free relay is full until tomorrow 07:00 WIB
 deciworldgen.host.failed=Hosting failed: %s
 deciworldgen.list.mods=Mods
 deciworldgen.list.unreachable=Community list not reachable, try Refresh
+item.eotech558.name=EOTech 558
+item.ta11acog.name=ACOG TA11 3.5x
+item.specterdr.name=ELCAN SpecterDR 1x/4x
+item.rk1.name=RK-1 Foregrip

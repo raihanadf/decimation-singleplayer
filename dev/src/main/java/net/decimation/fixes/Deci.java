@@ -119,6 +119,12 @@ public final class Deci
         return new deci.f.k(inv, deciIndex, 0, 0, parent).isItemValid(part);
     }
 
+    /** The gun's grip slot attachment (GunItem.getGripAttachment, J), or null. */
+    public static Item gripAttachment(ItemStack gun)
+    {
+        return gun == null || !(gun.getItem() instanceof deci.ay.i) ? null : ((deci.ay.i) gun.getItem()).J(gun);
+    }
+
     /** GunItem.isIntegrallySuppressed (fL). */
     public static boolean isIntegrallySuppressed(Item gun)
     {
@@ -294,6 +300,10 @@ public final class Deci
         public long maxBottlecaps() { return (long) data.Vo; }
         /** getHumanity (cd). */
         public int humanity() { return data.cd(); }
+        /** getRecoilPitch (cs): the gun's recoil still to turn the view up, applied a part each tick. */
+        public float recoilPitch() { return data.cs(); }
+        /** getRecoilYaw (ct): the sideways part. */
+        public float recoilYaw() { return data.ct(); }
         /** addHumanity (I). */
         public void addHumanity(int n) { data.I(n); }
         /** removeHumanity (J). */
@@ -1839,7 +1849,23 @@ public final class Deci
      * private activeContainer) and back. Model deci:models/attachments/sight/<name>.bmodel, texture
      * deci:textures/model/attachments/sight/<name>.png, icon deci:attach/<name>.
      */
-    public static Item newSightAttachment(String name, float zoomFov, float sway)
+    public static Item newSightAttachment(final String name, final float zoomFov, final float sway)
+    {
+        return inDecimation("sight " + name, () -> new deci.ay.h(deci.ay.b.sight, deci.ay.c.all, zoomFov, sway, name));
+    }
+
+    /**
+     * A new grip attachment (AttachmentItem deci.ay.h, slot grip, category rifle as Decimation's Foregrip) registered as
+     * deci:<name> like newSightAttachment. Model deci:models/attachments/grip/<name>.bmodel, texture
+     * deci:textures/model/attachments/grip/<name>.png, icon deci:attach/<name>.
+     */
+    public static Item newGripAttachment(final String name)
+    {
+        return inDecimation("grip " + name, () -> new deci.ay.h(deci.ay.b.grip, deci.ay.c.rifle, name));
+    }
+
+    /** Runs an item constructor with Decimation as FML's active mod container (its namespace), then switches back. */
+    private static Item inDecimation(String what, java.util.concurrent.Callable<Item> make)
     {
         cpw.mods.fml.common.ModContainer deciMod = cpw.mods.fml.common.Loader.instance().getIndexedModList().get("deci");
         java.lang.reflect.Field controller = null, active = null;
@@ -1853,11 +1879,11 @@ public final class Deci
             active.setAccessible(true);
             before = active.get(lc);
             active.set(lc, deciMod);
-            return new deci.ay.h(deci.ay.b.sight, deci.ay.c.all, zoomFov, sway, name);
+            return make.call();
         }
         catch (Exception e)
         {
-            cpw.mods.fml.common.FMLLog.warning("[deciworldgen] sight %s not registered: %s", name, e);
+            cpw.mods.fml.common.FMLLog.warning("[deciworldgen] %s not registered: %s", what, e);
             return null;
         }
         finally
