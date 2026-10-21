@@ -110,9 +110,9 @@
     "semantic_hash": "de153d1f8408971d6190e16a7d4256f9"
   },
   "CLAUDE.md": {
-    "mtime": 1792600561.3064086,
-    "ast_hash": "a4e95463f0c52c5db31a3538629c829f",
-    "semantic_hash": "a4e95463f0c52c5db31a3538629c829f"
+    "mtime": 1792601482.3753257,
+    "ast_hash": "8b816a7fe0a387fd6a86d366f21030f5",
+    "semantic_hash": "8b816a7fe0a387fd6a86d366f21030f5"
   },
   "DECIMATION_MOD_TASK.md": {
     "mtime": 1784958353.0126374,
@@ -120,9 +120,9 @@
     "semantic_hash": "aa4550575e47e7c1d0b020a51afbb501"
   },
   "bug.md": {
-    "mtime": 1792600539.0630531,
-    "ast_hash": "ba632e2bca5083323662e4efccb6c048",
-    "semantic_hash": "ba632e2bca5083323662e4efccb6c048"
+    "mtime": 1792601607.266037,
+    "ast_hash": "5ca61cdcbf679f04fd25df80e7740de1",
+    "semantic_hash": "5ca61cdcbf679f04fd25df80e7740de1"
   },
   "create_weapons.md": {
     "mtime": 1791653625.5948887,
@@ -580,9 +580,9 @@
     "semantic_hash": "fd4ea7636e1852e2efc573accbf999ef"
   },
   "dev/src/main/java/net/decimation/fixes/ScopeZoom.java": {
-    "mtime": 1792600484.493187,
-    "ast_hash": "8217eed6ef8ba7daf7e5ea1520688604",
-    "semantic_hash": "8217eed6ef8ba7daf7e5ea1520688604"
+    "mtime": 1792600986.8604598,
+    "ast_hash": "91c96029414c9b2d5122ff3fd3bb4f81",
+    "semantic_hash": "91c96029414c9b2d5122ff3fd3bb4f81"
   },
   "tools/patches/PatchScope.java": {
     "mtime": 1791461751.5304065,
@@ -840,9 +840,9 @@
     "semantic_hash": "a8c85437e7aa8ffa4b62b36f368d1493"
   },
   "docs/performance.md": {
-    "mtime": 1792483023.5908546,
-    "ast_hash": "04b1f1b0089432e1582d1541c4e32c54",
-    "semantic_hash": "04b1f1b0089432e1582d1541c4e32c54"
+    "mtime": 1792601492.061218,
+    "ast_hash": "249720e7c22abf695fb35cb0bf9d81a5",
+    "semantic_hash": "249720e7c22abf695fb35cb0bf9d81a5"
   },
   "dev/src/main/java/net/decimation/worldgen/devtest/CityViewTest.java": {
     "mtime": 1791581459.197368,
@@ -1540,9 +1540,9 @@
     "semantic_hash": "294036847a9caffda351bfa855a78636"
   },
   "docs/tasks.md": {
-    "mtime": 1792600565.7628665,
-    "ast_hash": "5a9e34d9b80292ba1d6639d185abc74c",
-    "semantic_hash": "5a9e34d9b80292ba1d6639d185abc74c"
+    "mtime": 1792601474.956299,
+    "ast_hash": "eb9070eb07cd650f3d16b5ae4db76d50",
+    "semantic_hash": "eb9070eb07cd650f3d16b5ae4db76d50"
   },
   "tools/skillcheck.py": {
     "mtime": 1792098139.5315723,
@@ -2290,9 +2290,9 @@
     "semantic_hash": "efe70658fb3a31ca88a4802dbaea3e0c"
   },
   "dev/src/main/java/net/decimation/worldgen/devtest/ScopeDiagTest.java": {
-    "mtime": 1792585283.11331,
-    "ast_hash": "b2bd96f05cbdcfaa20354a27fdd983e9",
-    "semantic_hash": "b2bd96f05cbdcfaa20354a27fdd983e9"
+    "mtime": 1792601435.0130172,
+    "ast_hash": "bb3a7c3990dc1d28dc171af8d5276a0b",
+    "semantic_hash": "bb3a7c3990dc1d28dc171af8d5276a0b"
   },
   "dev/src/main/java/net/decimation/worldgen/devtest/ScopePerfTest.java": {
     "mtime": 1792427987.0292118,
@@ -2695,9 +2695,9 @@
     "semantic_hash": "341f33256936ba44c2311a93f9a12600"
   },
   "dev/src/main/java/net/decimation/worldgen/devtest/AimDelayTest.java": {
-    "mtime": 1792600487.7716372,
-    "ast_hash": "ccf3d704ff083ee52414294d371e73b6",
-    "semantic_hash": "ccf3d704ff083ee52414294d371e73b6"
+    "mtime": 1792600871.7026124,
+    "ast_hash": "7d709d47d6967fa282976a2616257c51",
+    "semantic_hash": "7d709d47d6967fa282976a2616257c51"
   },
   "dev/src/test/java/net/decimation/fixes/GripRailsTest.java": {
     "mtime": 1792599525.0866473,
@@ -2708,5 +2708,15 @@
     "mtime": 1792599158.7148483,
     "ast_hash": "f42b0536bf990a6531ce7bdda66bd20e",
     "semantic_hash": "f42b0536bf990a6531ce7bdda66bd20e"
+  },
+  "dev/src/main/java/net/decimation/fixes/SightMemory.java": {
+    "mtime": 1792600851.678874,
+    "ast_hash": "b22f11d5c092bbe1b9e6a9c58ec1cf69",
+    "semantic_hash": "b22f11d5c092bbe1b9e6a9c58ec1cf69"
+  },
+  "dev/src/test/java/net/decimation/fixes/SightMemoryTest.java": {
+    "mtime": 1792600826.5779889,
+    "ast_hash": "c89271001adc93b76e97b1314a953eb5",
+    "semantic_hash": "c89271001adc93b76e97b1314a953eb5"
   }
 }
