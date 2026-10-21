@@ -346,7 +346,9 @@ source of truth about the real gun and about how it must look in game.
    2026: the gun crept off screen while aiming). Anything that hooks a Decimation render method
    (scope glass, attachments, gun parts) runs for EVERY gun drawn, the NPCs' guns in the world
    too; a measurement or state meant for the player's gun must be limited to the player's hand
-   draw. The aim tests (`aimdrift`, by default with an elite sniper NPC in view) cover this.
+   draw. The aim tests (`aimdrift`, by default with an elite sniper NPC in view) cover this. Check a sight in the
+   production client with OptiFine too: its HUD draws the player's figure holding the gun, so a sight's glass is drawn
+   6 times a frame there (case 24; `scopediag` counts them and checks the glass gets measured).
 25. Grips sit under each gun's own handguard (user, 21 Oktober 2026: "Placed per gun, every gun"). Decimation draws every
    grip slot attachment at one spot for all guns; fixes/GripPlacement moves a copy per gun from grip_offsets.txt. After a
    new gun or a new grip run `python3 tools/guns/gripfit.py`, then `--check` (0 pairs not right), like sightfit for
@@ -798,6 +800,17 @@ revision (same commit), never remove old ones.
   every gun (measured from its rail jaws).
 - Check: dev tests attachments (22), attachments perf=true (7), attachmentsmp (12), glstack; shots in
   docs/shots/attachments_v0.65.0/ (gripfit2/sheet_side.png: one gun per class). Not seen by the user in game yet.
+
+### Case 24: see-through glass frozen in the production client with OptiFine (21 Oktober 2026)
+- Found by the attachments perf test: every glass box read 0 x 0 there, and the SpecterDR's 4x glass showed sky and a
+  horizon over a stone floor (docs/shots/attachments_v0.65.0/prod_specter_4x.png); dev was fine on the same Mac.
+- Cause (scopediag with per frame counts): that client draws the glass 6 times a frame (the HUD's figure holds the gun),
+  dev once; PatchScope measures when (++glassFrame & mask) == 0 over EVERY glass draw, so the hand's draw sat at an odd
+  count every frame and was never measured; ScopeZoom never copied the world under the glass.
+- Fix: fixes/ScopeZoom counts frames itself and sets the mask to 0 only around its own hand draw on its measuring
+  frames (no jar patch). Checks: scopediag extra=1 in dev (RED 1 in 222 frames, GREEN 30 in 235), aimdrift shift
+  0.0049 / -0.2189 steady (the recorded value), production 45 in 347 frames and the boxes as in dev
+  (prod_specter_4x_fixed.png). bug.md "See-through glass not updated with OptiFine".
 
 ### Case 8: test traps met on the way (dev test gunview)
 - No gun in the shots: F1 (hideGUI) hides the held item too; first

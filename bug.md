@@ -1839,7 +1839,7 @@ what each frame after the arrival loaded for the first time.
 - In real play residents come into the client's view one by one as the player walks in (vanilla sends global entities
   within 80 blocks), not all in one frame as in the test [inferred].
 
-## See-through glass not updated with OptiFine (21 Oktober 2026, OPEN)
+## See-through glass not updated with OptiFine (21 Oktober 2026, FIXED on main and prerelease)
 
 Found by the attachments perf test in the production client with OptiFine HD U E7 (one jar of main, sha256 f0afd86c, this
 Mac): Deci.scopeGlassBox() read 0 x 0 for every see-through sight aimed (ACOG, EOTech, SpecterDR at 4x and 1x), so the
@@ -1866,6 +1866,18 @@ draw can land on odd counts only and is never measured (the HUD draw comes with 
 session starts with; that fits AKM + ACOG measured, AKM + SpecterDR and every M4A4 case not. Check: glass draws per frame
 in scopediag (dev 1, production 2 expected). Fix then in ScopeZoom alone: its own frame counter decides, and the mask is
 0 (every draw) around the hand draw on the frames it measures, -1 otherwise.
+Confirmed (scopediag, now with per frame counts): the production client with OptiFine draws the glass 6 times every frame
+(2 before the hand events, 1 in ScopeZoom's own hand draw, 3 after them: the stats box of the HUD shows the player's
+figure holding the gun), the dev client once. PatchScope's (++glassFrame & mask) == 0 then put the hand's draw at count
+6k + 3, odd, never hit by mask 1 or 7: 0 measurements in 354 frames. A dev reproduction: scopediag extra=1 draws the
+held gun once more after the hand (two draws a frame, the hand's odd): 1 measurement in 222 frames, FAIL.
+Fixed in fixes/ScopeZoom alone (no jar patch): its own frame counter picks the measuring frames (every 2nd while
+learning a sight, every 8th after), mask 0 (every draw) only around its own hand draw on those frames, -1 otherwise; no
+measuring at zoom 1.0. Dev: 30 in 235 frames with the extra draw (PASS), 32 in 244 without; aimdrift with the sniper NPC
+in view: shift 0.0049, -0.2189 steady 1 .. 15 s (the recorded value; the test player is now unhurt during the run: a
+"survivor" had shot him dead mid run and zeroed the shift, old code too). Production client with OptiFine: 45
+measurements in 347 frames (still 6 draws a frame), the four glass boxes as in dev, attachments 22 and perf 7 PASS,
+the 4x glass showing what is around it (docs/shots/attachments_v0.65.0/prod_specter_4x_fixed.png).
 
 ## Grips drawn at one spot for every gun (21 Oktober 2026, FIXED on main)
 

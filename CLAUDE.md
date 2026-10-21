@@ -1302,8 +1302,11 @@ of the last session:
   were noise: the same path read -0.61 ms); an aimed bench looking down from the arena (y 150) sees the land below; a
   geometry check must judge the placed result on its own and never reuse the fit's measure (the first gripfit check
   passed by construction while 37 grips floated: final review, bug.md).
-  Found and OPEN: the see-through glass is not updated in the production client with OptiFine for some guns and sights
-  (bug.md; the box PatchScope measures stays 0).
+  Found and FIXED: the see-through glass was never updated in the production client with OptiFine (bug.md): that client
+  draws a sight's glass 6 times a frame (its HUD figure holds the gun), and PatchScope counts EVERY glass draw, so a
+  "measure every Nth draw" mask never hit the hand's draw; ScopeZoom counts frames itself and sets the mask to 0 only
+  around its own hand draw. Trap: never key per frame work to a counter that other draws of the same model advance;
+  dev test scopediag (`extra=N` adds draws a frame) checks the glass gets measured.
   RELEASE 0.65.0 published 20 Oktober 2026 10:55 (pre-release, the first from the prerelease branch: tag 0.65.0 on
   14830b9; sha256 1c604032..., GitHub's asset digest equal; notes RELEASE_NOTES_0.65.0.md; jar kept in
   dist/previous/onejar-0.65.0). Checked after: public download 251,272,285 bytes, site Download 0.65.0 at 11:11 (ISR

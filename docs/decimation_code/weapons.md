@@ -250,11 +250,12 @@ takes 0.5); a miss used a round and hurt nothing; client and server copies agree
   -0.07 and +0.21 ms; glstack 88 gun cases, 0 leaking. Dedicated production server, a joined client (attachmentsmp, 12
   PASS): the RK-1 and the SpecterDR fitted by clicks as the server sent them back, recoil 0.333 / 0.333 and 0.500 / 0.250,
   G switches 4x to 1.25 with one click, one real shot 30 to 29 rounds with both fitted.
-- Found in the production client (not caused by these parts): the glass box reads 0 x 0 for every see-through sight
-  there (the ACOG and the EOTech too), so ScopeZoom never copies the world under the glass: in the SpecterDR's 4x shot
-  the glass shows sky and a horizon while the zoomed view around it is stone floor, a picture not taken in that frame
-  [inferred: the full frame copied once when the scope texture was made]. Dev reads real boxes on the same Mac. bug.md
-  "See-through glass not updated with OptiFine" [cause not found yet].
+- Found in the production client and FIXED (not caused by these parts): the glass box read 0 x 0 for every see-through
+  sight there (the ACOG and the EOTech too), so ScopeZoom never copied the world under the glass (the SpecterDR's 4x
+  glass showed sky and a horizon over a stone floor). That client draws the glass 6 times a frame (its HUD shows the
+  player's figure with the gun) and PatchScope's draw counter put the hand's draw on an odd count every frame; ScopeZoom
+  now counts frames itself and measures only its own hand draw (bug.md "See-through glass not updated with OptiFine"):
+  45 measurements in 347 frames there, the boxes as in dev.
 - Open (21 Oktober 2026): the user has not seen the RK-1 or the SpecterDR in game yet; the RK-1 hangs 40 % of the way
   from the magazine to the muzzle (M4A4 x 12.2, 60 % along the handguard), where the reference build had it at 36 %
   (x 10.7): one number in gripfit.py (FRONT) if the user wants it further back. The Gunsmith's grip line ends on the

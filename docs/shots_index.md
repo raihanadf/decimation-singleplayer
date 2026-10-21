@@ -1817,6 +1817,9 @@ Production client with OptiFine HD U E7 (the brother's laptop setup), AKM with t
 - `prod_specter_1x.png`, `prod_specter_4x.png` (the production client with OptiFine, same test): 1x as in dev (the glass
   pale grey with the reticle). 4x: the glass shows sky and a horizon while the zoomed view around it is stone floor, a
   picture not taken in that frame: bug.md "See-through glass not updated with OptiFine".
+- `prod_specter_4x_fixed.png` (the same client after the fix): the view around the eyepiece is pale sky and the glass
+  shows the same pale sky, a little darker (the lens tint), reticle centred; the HUD's stats box (top right) shows the
+  player's figure holding the gun, which draws the sight's glass again each frame.
 - `gripfit/attach_glock17_laser_side.png`, `_three.png` (study.py attach, as the game places it): the Laser Marker as a
   small dark box under the Glock 17's dust cover ahead of the trigger guard, side on and three quarter (first gripfit).
 - `gripfit2/` (after the final review's fix, study.py attach with the rewritten gripfit): side and three quarter renders
