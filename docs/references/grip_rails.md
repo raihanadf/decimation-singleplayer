@@ -63,3 +63,13 @@ guns (56 rifles take Foregrip and RK-1). Per rifle, from the side and underside 
 ## 5. Open (user decisions, 21 Oktober 2026)
 
 Rule and enforcement place, lights, snipers, guns already holding a grip in saved worlds: asked in chat.
+
+## 6. Sights need a mount too (user, 22 Oktober 2026, open)
+
+User: "same rule applied on sight too. for red dot i think its better to put only on pistol ... cause its very small and
+it fit on pistol better. cause some guns like ak or some non-AR platform doesnt fit well". Measured (study.py, on the
+M4A4): Decimation's red dot is 0.4 long, 0.68 tall, 0.7 wide (7 parts), a mini reflex the size of a pistol slide
+optic; the EOTech 2.25 x 1.45 x 1.29, the 2x 3.55 long, the ACOG 3.11, the SpecterDR 4.3, the 4x 4.7. Render:
+docs/shots/grip_rails_v0.65.0/reddot_guns.png. Real mini dots sit on pistol slides with an optic cut or plate, or on a
+rail; AK family rifles take optics through a side mount (dovetail), not on the top cover where Decimation draws them
+[real per gun facts not yet checked]. Decision asked in chat.
