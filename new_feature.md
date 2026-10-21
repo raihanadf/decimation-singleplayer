@@ -1184,3 +1184,16 @@ lineup photo zombies_v0.34.0. Not seen by the user in game yet
   lootmags (40 opens of Decimation's weapon cabinet through real clicks) RED (38 of 38 full) then GREEN (0 full of 39,
   mean 47 %), loot PASS; suite 154. Server side, once per loot click. Client display after the container sync [not
   looked at on screen].
+
+## Unload a magazine with shift + right click (22 Oktober 2026, feature 4 of docs/roadmap.md "Feature order")
+- User: "mags now can be unload by click shift + right click"; chosen: about a second like a reload, the rounds as
+  Decimation's loose rounds of that calibre into the inventory (dropped if full), the empty magazine stays.
+- Decimation's own right click on a magazine loads one round (AmmoItem.onItemRightClick, sneaking or not): the client
+  cancels a sneaking right click with a loaded magazine (no item use sent) and asks the server through our own channel
+  (fixes/Net "deciworldgen", message 0; the first channel of ours); fixes/MagUnload waits 20 ticks with the same
+  magazine in hand, then empties it (Deci.magazineRound: AmmoItem.bulletItem; full stacks first); switching away,
+  dropping it or dying stops it. Sounds: Decimation's bullet.in, low at the start, high at the end.
+- Checks: unit MagUnloadTest RED then GREEN (suite 155); dev test magunload (sneak held, a right click as the mouse makes
+  it: DevTestUtil.rightClick) RED (Decimation loaded a round: 21) then GREEN 6 of 6: unload 20 out (25 loose with the 5
+  held), switching away keeps 20, a full inventory drops 20. Server work only while a request runs. A dedicated server
+  and a joined client [not run: the channel is new, check it with the next production run].

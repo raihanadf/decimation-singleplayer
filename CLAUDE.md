@@ -1321,6 +1321,8 @@ of the last session:
   Foregrip or RK-1 only on the 19 rifles with a rail under the handguard (gripfit.py RAILED -> grip_offsets.txt ->
   fixes/GripRails: Gunsmith, NPC loadouts; fixes/MountStrip pops one off a rail-less gun, never while the Gunsmith is
   open). Trap: read every view of a reference (end and bottom too): a side view hid the RK-1's 45 degree roll.
+  Our own network channel since 22 Oktober 2026: fixes/Net ("deciworldgen", SimpleNetworkWrapper); message ids fixed,
+  new ones at the end (0: MagUnload). Before, everything rode on Decimation's packets, data watchers and container buttons.
   Sights need a mount too (22 Oktober 2026): sight_mounts.txt ("gun rail|side|slide") -> fixes/SightMounts; the red dot
   only on pistols with an optic cut or rail, other sights on a rail, claw mount or AK side mount; fixes/MountStrip (was
   GripStrip) pops off grips and sights a gun cannot mount. A new gun needs its row there.

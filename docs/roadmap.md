@@ -235,7 +235,7 @@ a short design talk each first:
 2. DONE 22 Oktober 2026 (new_feature.md): NPC tracers (34): each armed NPC one random tracer colour for life (Decimation's tracer colours), every NPC shot a
    tracer; player guns unchanged.
 3. DONE 22 Oktober 2026 (new_feature.md): Looted magazines (45): 1 round to full, weighted toward half full, rarely full, never empty.
-4. Unload a magazine (44): shift + right click, about a second like a reload, the rounds as Decimation's loose rounds of
+4. DONE 22 Oktober 2026 (new_feature.md): Unload a magazine (44): shift + right click, about a second like a reload, the rounds as Decimation's loose rounds of
    that calibre into the inventory (dropped if full), the empty magazine stays.
 5. Radiation status in the HUD (30).
 6. DayZ dark nights (52). 7. Radiation set (41 to 43). 8. Specific mobs at specific places (35). 9. Attachment
