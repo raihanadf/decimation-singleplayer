@@ -374,8 +374,10 @@ source of truth about the real gun and about how it must look in game.
    onto a gun, check the real gun AND the model: a vertical grip goes only where the handguard has a Picatinny rail,
    M-LOK / KeyMod slots or hard points under it (wood and plain polymer handguards, the AK family, RPK, FAL, G3, M16A1/A2,
    bolt rifles have none; a sniper's bipod rail does not count). The list: gripfit.py RAILED, read by fixes/GripRails
-   from grip_offsets.txt; a grip on a rail-less gun pops off (fixes/GripStrip). A new gun with a rail goes into RAILED.
-   Facts and sources: docs/references/grip_rails.md.
+   from grip_offsets.txt; a grip on a rail-less gun pops off (fixes/MountStrip). A new gun with a rail goes into RAILED.
+   Facts and sources: docs/references/grip_rails.md. Sights too (user, 22 Oktober 2026): a sight needs a top rail, claw
+   mount points or an AK style side mount, Decimation's small red dot only a pistol optic cut or rail (sight_mounts.txt,
+   fixes/SightMounts). A new gun gets its row in sight_mounts.txt (rail, side or slide), or none.
 
 ## Revision casebook (never delete a case; look here first)
 
@@ -834,7 +836,7 @@ revision (same commit), never remove old ones.
 - Fix: grips.py rk1 v2 (51 parts): clamp on the bottom rail, an angled mount, the grip rolled 45 degrees to +z, sized to
   the Foregrip (2.67 from the rail down, 0.84 thick; renders docs/shots/grip_rails_v0.65.0/rk1_v2_cmp.png,
   rk1_v2_railed.png). gripfit.py RAILED (19 rifles) and a clip check (a rolled grip's body inside the gun); grip_offsets
-  244 rows. fixes/GripRails (Gunsmith fit, NPC loadouts), fixes/GripStrip (pops it off once a second, never while the
+  244 rows. fixes/GripRails (Gunsmith fit, NPC loadouts), fixes/MountStrip (pops it off once a second, never while the
   Gunsmith is open: a mutation run without that guard copied the grip, the check caught it).
 - Check: unit GripRailsTest (RED on the old table, GREEN), dev attachments rails checks (RED 4, GREEN 5), gunsmith,
   glstack; attachmentsmp on the dedicated server.

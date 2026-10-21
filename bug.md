@@ -1923,7 +1923,7 @@ the client's empty slot]. Run aimdrift in a game of its own (or before scopediag
   end and bottom views show it rolled 45 degrees to the gun's left. Decimation fits its Foregrip by category, so every
   rifle took one, wooden AKs and the RPK included (docs/references/grip_rails.md).
 - Fix: tools/guns/grips.py rk1 v2 (Foregrip size, angled mount, rolled 45 degrees to +z); gripfit.py RAILED (19 rifles,
-  244 rows) and a clip check; fixes/GripRails (Gunsmith fit, NPC loadouts), fixes/GripStrip (a vertical grip on a
+  244 rows) and a clip check; fixes/GripRails (Gunsmith fit, NPC loadouts), fixes/MountStrip (a vertical grip on a
   rail-less gun goes back to the inventory or the ground, once a second, never while the Gunsmith is open).
 - Checks: unit GripRailsTest, dev attachments "rails:" checks (RED 4, GREEN 5; the Gunsmith guard proven by a mutation
   run), gunsmith, glstack; attachmentsmp's pop-off on the dedicated server.
@@ -1944,3 +1944,12 @@ the client's empty slot]. Run aimdrift in a game of its own (or before scopediag
   266) then GREEN on all 5 pairs (166 to 193 ms); aimdrift, scopeperf, scopediag PASS; production client with OptiFine:
   relaunch aims 167 to 194 ms, all 5 PASS, scopediag 38 measurements in 300 frames. scopediag's default sight is now
   the ACOG: with Decimation's red dot it counted 0 glass draws (that sight needs no measuring: 1.25x is under the hold).
+
+## Sights fitted on guns without a mount; the red dot on rifles (user 22 Oktober 2026, FIXED on main)
+- User: "same rule applied on sight too. for red dot i think its better to put only on pistol ... cause some guns like
+  ak or some non-AR platform doesnt fit well". Decimation fits every sight on every gun (category all).
+- Fix: sight_mounts.txt + fixes/SightMounts (red dot: pistols with a mount; other sights: rail or side mount),
+  GunParts.fits, NpcLoadouts.fitKit, fixes/MountStrip (sights pop off too). docs/references/grip_rails.md section 6.
+- Checks: unit SightMountsTest (3), dev attachments "mounts:" RED 4 then GREEN (fit table of 10 pairs, NPC kits, pop off
+  with the right ones kept), gunsmith (now the EOTech), aimdelay (the Glock with the red dot), glstack; production client
+  with OptiFine 145 PASS (attachments, gunsmith, aimdelay), glstack; dedicated server attachmentsmp + gunsmithmp 21 PASS.

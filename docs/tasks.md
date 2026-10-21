@@ -116,7 +116,8 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [x] new attachments RK-1 foregrip and SpecterDR 1x/4x (key G), grips placed per gun: built on main (dev 22 checks, perf 7, production with OptiFine 22 + 7, dedicated server 12; weapons.md section 8)
 - [x] user review: RK-1 v2 (Foregrip size, rolled 45 degrees left), Foregrip / RK-1 only on railed rifles, pops off others (docs/references/grip_rails.md)
 - [x] scope aim delay ("sometime it has delay ... loading the scope render"): learned sight positions kept between launches (fixes/SightMemory; dev test aimdelay)
-- [ ] user: look at RK-1 v2 in runClient (railed rifle, e.g. M4A4; an RPK refuses it)
+- [x] sights need a mount: red dot pistols with a mount only, other sights rail or side mount (sight_mounts.txt)
+- [ ] user: look at RK-1 v2 in runClient (railed rifle, e.g. M4A4; an RPK refuses it), the red dot on a Glock
 - [x] bug: see-through scope glass not updated in the production client with OptiFine: ScopeZoom counts its own frames (bug.md; dev, production with OptiFine checked)
 - [ ] later: full attachment update, grip and laser models on guns (docs/ideas.md 26)
 - [ ] later: optimize and bug audit skill (user, 21 Oktober 2026): audits each feature for bugs and performance before it ships (rule now in CLAUDE.md "Every feature: optimized before done")

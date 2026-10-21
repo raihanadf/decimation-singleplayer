@@ -410,7 +410,12 @@ Code: AttachmentItem, FilteredSlot (attachment screen), GunItemRenderer
 - Our rule on top (user, 21 Oktober 2026; docs/references/grip_rails.md):
   a vertical grip (Foregrip, RK-1) goes only on a rifle with a rail or
   slots under its handguard (tools/guns/gripfit.py RAILED, 19 rifles;
-  fixes/GripRails, fixes/GripStrip). A new railed gun goes into RAILED.
+  fixes/GripRails, fixes/MountStrip). A new railed gun goes into RAILED.
+- Sights (user, 22 Oktober 2026): a sight needs a mount on the real gun:
+  top rail or claw mount points ("rail"), an AK / SVD side mount
+  ("side"); Decimation's red dot only on a pistol with an optic cut or
+  rail ("slide"). Table sight_mounts.txt (fixes/SightMounts); a new gun
+  gets its row there.
 - Grip size: Decimation's Foregrip is the baseline for every grip of ours
   (1.0 long, 2.7 from the rail down, 0.8 thick: user "same as foregrip,
   use that as baseline size"). Never size an attachment from a photo's

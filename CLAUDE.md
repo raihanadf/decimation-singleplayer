@@ -1305,8 +1305,11 @@ of the last session:
   User review the same evening (docs/references/grip_rails.md): RK-1 v2 sized to Decimation's Foregrip (the baseline for
   every grip of ours) and rolled 45 degrees to the gun's left (+z), as the reference's end and bottom views show; a
   Foregrip or RK-1 only on the 19 rifles with a rail under the handguard (gripfit.py RAILED -> grip_offsets.txt ->
-  fixes/GripRails: Gunsmith, NPC loadouts; fixes/GripStrip pops one off a rail-less gun, never while the Gunsmith is
+  fixes/GripRails: Gunsmith, NPC loadouts; fixes/MountStrip pops one off a rail-less gun, never while the Gunsmith is
   open). Trap: read every view of a reference (end and bottom too): a side view hid the RK-1's 45 degree roll.
+  Sights need a mount too (22 Oktober 2026): sight_mounts.txt ("gun rail|side|slide") -> fixes/SightMounts; the red dot
+  only on pistols with an optic cut or rail, other sights on a rail, claw mount or AK side mount; fixes/MountStrip (was
+  GripStrip) pops off grips and sights a gun cannot mount. A new gun needs its row there.
   Found and FIXED: the see-through glass was never updated in the production client with OptiFine (bug.md): that client
   draws a sight's glass 6 times a frame (its HUD figure holds the gun), and PatchScope counts EVERY glass draw, so a
   "measure every Nth draw" mask never hit the hand's draw; ScopeZoom counts frames itself and sets the mask to 0 only

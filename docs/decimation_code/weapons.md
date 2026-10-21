@@ -270,12 +270,20 @@ takes 0.5); a miss used a round and hurt nothing; client and server copies agree
   aug3, aug3para, the five SCARs, g36c, honeybadger, m110, m4a4, mpt76, hk416, hk416tan, mk18); grip_offsets.txt 244
   rows (lights keep all 103 guns); gripfit --check also finds a rolled grip's body inside the gun (0 pairs not right).
   fixes/GripRails answers "may this grip go on this gun" from the table (the Gunsmith's GunParts.fits, NPC rifle
-  loadouts); fixes/GripStrip takes a Foregrip or RK-1 off a rail-less gun in a player's inventory once a second on the
+  loadouts); fixes/MountStrip takes a Foregrip or RK-1 off a rail-less gun in a player's inventory once a second on the
   server (back to the inventory, else dropped at the feet), never while the Gunsmith is open (its slots are a view of
   the gun: a mutation run without that guard copied the grip). Dev test attachments "rails:" (5 checks),
   attachmentsmp "a Foregrip on a rail-less RPK pops off". Measured: dev attachments 27 PASS, gunsmith, glstack; the
   production client with OptiFine 27 PASS, perf 7 PASS (gun draw none 0.485 ms, Foregrip 0.503, RK-1 v2 0.532 = +0.047,
   v1 was +0.083; CPU 0.141), glstack 88 cases 0 leaking; dedicated server attachmentsmp 13 PASS.
+- Sights need a mount too (user, 22 Oktober 2026: "same rule applied on sight too. for red dot i think its better to put
+  only on pistol"; docs/references/grip_rails.md section 6): Decimation's red dot (0.4 long, a mini reflex) only on
+  pistols with an optic cut or rail (glock17, deagle, barettam9); every other sight only on a top rail or claw mount
+  (railed rifles, G3, MP5, UMP, Vector, MP7, P90, M240, Mk48, AA-12, M4 Super 90) or an AK / SVD side mount (the AK
+  family, RPK, AS Val, SVD, M14, PKM, PKP). Table sight_mounts.txt, fixes/SightMounts (the Gunsmith's GunParts.fits, NPC
+  kits through NpcLoadouts.fitKit: an MG3 elite carries no 4x now, AKM NPCs never a red dot); fixes/MountStrip (was
+  GripStrip) takes a sight off its gun like a grip. Dev test attachments "mounts:" (3 checks, RED 4 then GREEN); the
+  Gunsmith tests fit the EOTech where they fitted the red dot on the M4A4.
 - How the budgets were measured (lessons): at the horizon a 1.25x view draws about 4.5 ms more world than a 3.5x one
   (the SpecterDR at 1x read +3.19 ms against the ACOG: the EOTech at 1.25x costs the same), so each mode is compared
   with our sight of its own zoom; looking down from the arena (150 high) a 1.25x view took in the land below (24 ms

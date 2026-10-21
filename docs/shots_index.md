@@ -1840,3 +1840,9 @@ Production client with OptiFine HD U E7 (the brother's laptop setup), AKM with t
   (M4A4, SCARs, MPT-76, M110, ACR, Honey Badger and AR-15 with M-LOK slots, AUG A3 with a rail under the front) do.
 - unsure_low.png, under_unsure.png: closer views of the unclear ones (acr, ak12, aug3, aug3para, g36c, famasi,
   jng90, barrett, fnscar, ...). The pitch in under_unsure.png ended up from above, not below: no help for bottom rails.
+- rk1_v2_cmp.png: the M4A4 with Decimation's Foregrip (top row) and RK-1 v2 (bottom row), side / front / low / three
+  quarter: the RK-1 now as big as the Foregrip and rolled 45 degrees toward the gun's left.
+- rk1_v2_railed.png: RK-1 v2 on each of the 19 railed rifles (three quarter from below), seated on every one.
+- reddot_guns.png: Decimation's red dot on the Glock 17, Desert Eagle, M4A4, AKM and MP5A3 (three quarter): a tiny
+  block on the rifles. reddot_pistols.png: the red dot on the Glock 17, Desert Eagle and Beretta M9, side and three
+  quarter: it sits on the slide's rear (x 2.41 to 2.81) and reads as part of the dark slide.

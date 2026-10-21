@@ -64,12 +64,30 @@ guns (56 rifles take Foregrip and RK-1). Per rifle, from the side and underside 
 
 Rule and enforcement place, lights, snipers, guns already holding a grip in saved worlds: asked in chat.
 
-## 6. Sights need a mount too (user, 22 Oktober 2026, open)
+## 6. Sights need a mount too (user, 22 Oktober 2026)
 
 User: "same rule applied on sight too. for red dot i think its better to put only on pistol ... cause its very small and
 it fit on pistol better. cause some guns like ak or some non-AR platform doesnt fit well". Measured (study.py, on the
 M4A4): Decimation's red dot is 0.4 long, 0.68 tall, 0.7 wide (7 parts), a mini reflex the size of a pistol slide
-optic; the EOTech 2.25 x 1.45 x 1.29, the 2x 3.55 long, the ACOG 3.11, the SpecterDR 4.3, the 4x 4.7. Render:
-docs/shots/grip_rails_v0.65.0/reddot_guns.png. Real mini dots sit on pistol slides with an optic cut or plate, or on a
-rail; AK family rifles take optics through a side mount (dovetail), not on the top cover where Decimation draws them
-[real per gun facts not yet checked]. Decision asked in chat.
+optic; the EOTech 2.25 x 1.45 x 1.29, the 2x 3.55 long, the ACOG 3.11, the SpecterDR 4.3, the 4x 4.7. Renders:
+docs/shots/grip_rails_v0.65.0/reddot_guns.png, reddot_pistols.png.
+
+Chosen (user): the red dot only on pistols with a mount; every other sight (2x, 4x, 8x, Dragunov scope, EOTech, ACOG,
+SpecterDR) on a top rail or a side mount; a sight off its mount pops off like a grip. Table:
+dev/src/main/resources/assets/deciworldgen/sight_mounts.txt ("gun rail|side|slide"), read by fixes/SightMounts.
+
+Real facts behind the table (web, 22 Oktober 2026):
+- Pistols (slide): the Glock 17 MOS is factory optics ready (since 2016, Gen4 MOS); the Desert Eagle carries a top rail;
+  the Beretta M9A4 has an optics cut [not verified]. No factory cut or rail: Browning Hi-Power, Colt 1911 (classic),
+  CZ 52, Makarov, Beretta M1934, Stechkin APS; revolvers (S&W 642, Raging Bull) none.
+- AK style side mount (side): standard on the AKMN / AK-74N and later AK-74M and 10x series, the AKS-74U from the late
+  1970s, VSS / AS Val, SVD; the PKM / PKP have one too [PK not verified]; a dovetail side rail takes only AK style mounts
+  (thinlineweapons.com application notes; patrolbase.co.uk AK side rail guide). The M14's receiver has the M21 scope
+  mount provision [inferred]. Our list counts the whole AK family (ak74, akm, akms, aks74, aks74u, kms72, rpk, rpk74)
+  as side mounted; vz58, galil, galilsar, insas are not AKs with that rail and get none [inferred].
+- Top rail or claw mount (rail): every Picatinny railed gun, plus HK's G3 and MP5 (claw mount points on the receiver,
+  the claw mount clamps onto them: UTG / NcSTAR claw mounts); the L85A1 (its own sight rail for the SUSAT); FAMAS FELIN
+  (famasi). None: Kar98k, Mosin, M1 Garand, SKS, SVT-40, vz52, FAL, Para FAL, M16A1/A2, XM177, M231, the old SMGs
+  (Uzi, MP40, MPi 40, Sten, Thompson, Suomi, Sa 24, MAC-10), MG3, M60, M1919, RPD, minigun, the classic shotguns (870,
+  SPAS-12, KS-23, the doubles), launchers and the crossbow.
+- Integrated scopes are Decimation's own rule and unchanged.
