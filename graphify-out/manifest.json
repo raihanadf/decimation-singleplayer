@@ -110,9 +110,9 @@
     "semantic_hash": "de153d1f8408971d6190e16a7d4256f9"
   },
   "CLAUDE.md": {
-    "mtime": 1792549682.0970263,
-    "ast_hash": "7e34dcfad062bc62dcdd228c2ec01b8a",
-    "semantic_hash": "7e34dcfad062bc62dcdd228c2ec01b8a"
+    "mtime": 1792553657.5734782,
+    "ast_hash": "450bb0d17c7d90e908739d62b8e8eeed",
+    "semantic_hash": "450bb0d17c7d90e908739d62b8e8eeed"
   },
   "DECIMATION_MOD_TASK.md": {
     "mtime": 1784958353.0126374,
@@ -325,9 +325,9 @@
     "semantic_hash": "0145e0863788d451e8ae4273d3c2abdd"
   },
   "docs/shots_index.md": {
-    "mtime": 1792549058.340104,
-    "ast_hash": "b4dd337024f7f3281b7799956278a5bf",
-    "semantic_hash": "b4dd337024f7f3281b7799956278a5bf"
+    "mtime": 1792553629.001439,
+    "ast_hash": "3961d29ff5c561a6f9f71f9263514759",
+    "semantic_hash": "3961d29ff5c561a6f9f71f9263514759"
   },
   "docs/interior_spec.md": {
     "mtime": 1791385593.9436893,
@@ -810,9 +810,9 @@
     "semantic_hash": "9c323a4f7fad7e1d89f2c84f7ebd94d1"
   },
   ".claude/skills/decimation-gun/SKILL.md": {
-    "mtime": 1792093550.3871264,
-    "ast_hash": "1493d25e49ba5c5811f67b3a6e523d6f",
-    "semantic_hash": "1493d25e49ba5c5811f67b3a6e523d6f"
+    "mtime": 1792553644.3340585,
+    "ast_hash": "09962a9dcba5b7c26ac6e87762f023f3",
+    "semantic_hash": "09962a9dcba5b7c26ac6e87762f023f3"
   },
   "tools/guns/ump9.py": {
     "mtime": 1791575647.9663312,
@@ -1230,9 +1230,9 @@
     "semantic_hash": "8a3ad8dda4604fb188e87f47efc3db90"
   },
   "docs/ideas.md": {
-    "mtime": 1792549531.5587726,
-    "ast_hash": "a569d1fb9ab5fcfb77c4d9d1026602b0",
-    "semantic_hash": "a569d1fb9ab5fcfb77c4d9d1026602b0"
+    "mtime": 1792553628.9957056,
+    "ast_hash": "05baf322953b50e66aa21eac70dcb6f3",
+    "semantic_hash": "05baf322953b50e66aa21eac70dcb6f3"
   },
   "dev/src/main/java/net/decimation/worldgen/NamedPlace.java": {
     "mtime": 1791753400.7417421,
@@ -1540,9 +1540,9 @@
     "semantic_hash": "294036847a9caffda351bfa855a78636"
   },
   "docs/tasks.md": {
-    "mtime": 1792551969.3554468,
-    "ast_hash": "55cb256e4e43ed60981b394cbb8fccdd",
-    "semantic_hash": "55cb256e4e43ed60981b394cbb8fccdd"
+    "mtime": 1792553628.996208,
+    "ast_hash": "a537ea664ff1de6884bf11af4ddedd8a",
+    "semantic_hash": "a537ea664ff1de6884bf11af4ddedd8a"
   },
   "tools/skillcheck.py": {
     "mtime": 1792098139.5315723,
@@ -2603,5 +2603,10 @@
     "mtime": 1792529626.5976083,
     "ast_hash": "336a9e2d99fdb912562dacfa91a2b7ef",
     "semantic_hash": "336a9e2d99fdb912562dacfa91a2b7ef"
+  },
+  "tools/guns/refcapture.py": {
+    "mtime": 1792553657.5722487,
+    "ast_hash": "c145cdb37e6965dd8bf0128120d0452c",
+    "semantic_hash": "c145cdb37e6965dd8bf0128120d0452c"
   }
 }

@@ -1774,3 +1774,15 @@ Production client with OptiFine HD U E7 (the brother's laptop setup), AKM with t
   the left: the boxes stay where they were, so the Barrel and Stock lines cross the whole gun (a look note for the
   user); `gunsmith_turned_-60_-30.png` zoom 2.5 seen from below and behind, the gun past the screen's edges, two line
   ends off screen, the magazine large and light. Each view's line ends were checked against a render of that view.
+
+## refcapture_v0.65.0 (21 Oktober 2026, tools/guns/refcapture.py, docs/ideas.md 26; REFERENCE ONLY, Battlestate Games' models)
+
+- `my_preset/` (the user's tarkovbot preset: CMMG Mk47 Mutant 7.62x39 with an ATP suppressor, Mk47 409mm barrel, MK3
+  RML15 rail, SpecterDR scope on a ONE mount, B-25U RK-1 foregrip, AK-103 magazine, Battle Grip, MOE FG stock; 13 parts
+  in parts.txt): 8 cut outs on clear backgrounds, 2560 x 1600 frame, 21 wheel steps out. `side.png` 846 x 258: muzzle
+  left, the long rail, the scope over the receiver, foregrip, curved AK magazine, pistol grip, collapsible stock;
+  `side_far.png` 892 x 272 the other side (muzzle right; a little bigger: the orbit point is off the gun's middle in
+  depth); `end_a.png` muzzle end on (suppressor face, scope ring above, foregrip and magazine below); `end_b.png` the
+  stock's butt plate end on (looks taller from perspective: 306 against the side's 258); `top.png` 907 x 107 and
+  `bottom.png` 858 x 103 (widths: the scope and the foregrip stick out most); `three_quarter_a/b.png` from 45 degrees
+  and above. `sheet.png` shows the 8 scaled to fit (sizes only in views.json). Rerun gave identical sizes.

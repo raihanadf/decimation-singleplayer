@@ -34,6 +34,16 @@ into the repo: measure and learn from them, build our own.
   MAC-10's side photo fixed every proportion in one pass: measure it in
   pixels against one known length (receiver = N units) and write the
   numbers into the spec header.
+- A Tarkov build as reference (user, 21 Oktober 2026: "you use that as reference as you know the model 3D so you make
+  new one with decimation styled"; single pictures put parts at wrong positions): the user builds the gun on
+  tarkovbot.eu/weapon-builder and downloads its preset JSON; `python3 tools/guns/refcapture.py PRESET.json OUTDIR`
+  (OUTDIR under docs/shots, as docs/shots/refcapture_v0.65.0/my_preset) loads it in the builder (agent-browser),
+  hides the slot points and writes
+  8 cut out views (side, far side, both ends, top, bottom, two three quarter), views.json (pixel boxes, one camera
+  distance for all views), parts.txt (every fitted part's name) and sheet.png. Lengths and heights from `side`, widths
+  from `top`; the camera is perspective (an end near the camera looks bigger: never take sizes from the end views).
+  REFERENCE ONLY: the pictures are Battlestate Games' models, never copied into our textures, never committed or
+  shipped; we build our own model in Decimation's style. Its "Export GLB" is hidden by the site: do not use it.
 - Real gun: length, height, width in mm; divide by 31 for model units
   (Decimation guns are slimmer than real: SMG width about 1.2 to 1.6).
 - Two or three Decimation guns of the same category and layout from the

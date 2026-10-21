@@ -1309,7 +1309,9 @@ of the last session:
   (renders / measures Decimation's guns from the jar, `attach` adds
   attachments as the game places them), dev test mode `gunview` (hip, aim
   and NPC shot per gun, -Pguns=uzi,mac10 -Pattach=reddot,smgSuppressor),
-  stats dataset docs/references/decimation_gun_stats.tsv. Project skill
+  stats dataset docs/references/decimation_gun_stats.tsv. tools/guns/refcapture.py (21 Oktober 2026): 8 cut out
+  views of a build on tarkovbot.eu's weapon builder from the user's preset JSON, as a modelling reference only (skill
+  decimation-gun step 1, docs/ideas.md 26). Project skill
   `.claude/skills/decimation-gun` (committed; .gitignore keeps only
   .claude/skills) runs the whole gun workflow.
   v0.36.0: MAC-10, first gun of our own: pipeline tools/guns (spec ->

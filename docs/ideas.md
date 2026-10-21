@@ -159,4 +159,9 @@ every item below that is not DONE.
     backdrop for a bright game scene (both busy: a picture of the gun alone needs a cut out, for example two backdrops
     differenced); an "Export GLB" button exports the build as a 3D model file. A GLB would give exact geometry (and maybe
     part names) for exact views and sizes; I may not download files from that site myself, so the user would export it
-    and hand over the file, kept outside the repo [decision open].
+    and hand over the file, kept outside the repo. Resolved the same day: that button is hidden by the site
+    (display none, not offered to users), so it is not used. BUILT 21 Oktober 2026: tools/guns/refcapture.py (skill
+    decimation-gun step 1): the preset loaded (upload retried until the gun or its parts change), points hidden, 8 views
+    each shot on the dark and the light backdrop and cut out by equal pixels (exact: no backdrop pixel is equal in both),
+    zoomed out 21 wheel steps so the side view fills a third of a 2560 x 1600 frame (perspective eased); the user's Mk47
+    preset gave side 846 x 258, top 907 x 107, the same sizes on a second run, and its 13 parts by name.
