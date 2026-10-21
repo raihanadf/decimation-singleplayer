@@ -163,3 +163,14 @@ Checked with it: bundled content unpacked, cities generated, no errors (bug.md v
   (renamed repository) then 302 then 200 with 252,093,001 bytes; the .sha256 reads e24df810. Site: Download 0.66.0 at
   02:27. Real update from GitHub with the 0.65.0 jar: found 0.66.0 through the API, then the download FAILED with 406
   (bug.md "Update downloads fail with 406"); jar not swapped. Fixed in Updater (e4fc4ca on prerelease), not released.
+
+## Results (22 Oktober 2026, hotfix 0.66.1, sha256 1a827037)
+- Against 0.66.0: base jar unchanged (linecheck PASS, 0 Decimation entries changed), ours only Updater, AttachmentsTest
+  and the version files.
+- Production client: 0.66.0 updated itself to the candidate through the fake server (swap sha256 1a827037); the running
+  0.66.1 with a fake release list (9.9.9) pointing at the real 0.66.0 asset on GitHub (fake_release_server REMOTE=):
+  240 MB in 29 s from GitHub, checksum READY, swapped (e24df810); the fake server saw only the 2 list requests.
+  attachments all PASS on 0.66.1 (one FAIL earlier came from a fake update on offer: its question on the Esc menu
+  pauses singleplayer); its real check at start: "up to date (0.66.1)".
+- Published 02:46 WIB (draft first, digest equal; public download 200, 252,093,168 bytes, .sha256 reads 1a827037). The
+  0.66.0 notes' Install section now says to install 0.66.1 by hand. Site: Download 0.66.1 at 02:50.
