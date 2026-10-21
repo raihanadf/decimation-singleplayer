@@ -227,6 +227,8 @@ docs/gun_model_spec.md); every user review goes into its lessons and casebook.
    Findings to act on: Open bugs 0 (WorldClock day, backend thread leak) and the README's findings list.
 
 ## Ideas (later, user 12 Oktober 2026)
+- 3D gun converter (docs/ideas.md 27, user 21 Oktober 2026, "for long development"): a private page that turns a 3D gun
+  model we may use into a Decimation styled .bmodel through tools/guns; after the RK-1 and SpecterDR.
 
 docs/ideas.md: more crate / loot block types, crate levels 1 / 2 / 3 with richer loot per level (user
 13 Oktober 2026, item 17; goes behind the wasteland's locked doors first), more military NPC outfits, a sniper bandit egg, harder

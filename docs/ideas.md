@@ -165,3 +165,15 @@ every item below that is not DONE.
     each shot on the dark and the light backdrop and cut out by equal pixels (exact: no backdrop pixel is equal in both),
     zoomed out 21 wheel steps so the side view fills a third of a 2560 x 1600 frame (perspective eased); the user's Mk47
     preset gave side 846 x 258, top 907 x 107, the same sizes on a second run, and its 13 parts by name.
+27. **3D gun converter: a model in, a Decimation styled .bmodel out** (user, 21 Oktober 2026, "for long development":
+    "later, we can make some private web html that convert 3D guns object as example we use tarkov 3D first and when it
+    click 'convert' there is convert tools that generate it to bmodel and minecraft decimation styled"). A private local
+    page (three.js) shows the source model and the converted one side by side; Convert runs our tools/guns pipeline:
+    scale to Decimation's units, cut the mesh into parts (by its node names where it has them), fit each part with
+    Decimation's shape kinds (boxes, tapers, octagon barrels; docs/gun_style_guide.md), flat dark tone textures, the
+    attachment points (rail, muzzle, grip) for sightfit and the grip fit, then .bmodel, icon and .anib from Decimation's
+    templates; an edit step before export. The hard part is the style, not the format: an automatic fit looks like a
+    voxel blob without gun anatomy, so the converter proposes and the decimation-gun skill refines. Inputs must be
+    models we may use (CC0 / CC BY, our own); Tarkov's models stay picture references only: their files are not offered
+    (the builder hides its GLB export) and a converted copy would be a copy of Battlestate Games' work in a public
+    release. Suggested start: after the RK-1 and SpecterDR, whose fit tools and style rules it reuses. Not designed.
