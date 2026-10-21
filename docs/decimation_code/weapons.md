@@ -131,4 +131,14 @@ takes 0.5); a miss used a round and hurt nothing; client and server copies agree
   Production client with OptiFine HD U E7 (one jar of main's tree, sha256 76b71b05): 92 checks and perf 8 PASS, frame
   median closed 4.39 ms, open 4.08 ms, own draw 0.90 ms full bag, 0.88 ms empty; joined to the dedicated production
   server (gunsmithmp, 8 PASS): frame 5.54 ms closed, 5.68 ms open.
+- Open, the final review's minor findings (deferred, 21 Oktober 2026): M1 the Barrel box says "Built in" on integrally
+  suppressed guns, which also blocks Decimation's bayonet there and hides one already fitted; M2 putting on the same
+  paint or tracer again uses an item for no change; M3 the open list's frame is drawn with item lighting still on; M4
+  smoke puffs of a shot fired just before opening are drawn and measured with the gun; M5 a dragged part lands only on
+  the inner 16 x 16 of a 24 x 24 box; M6 clicking the open box opens its list again instead of closing it; M7
+  GunsmithGuiHandler.install fails silently when Decimation's handler is missing; M8 box labels are not checked for
+  overlap or the screen edge; M9 keys act on a slot hidden under the open list; M10 boxes can sit on short guns (the
+  Glock's grip, the Uzi's tracer dot); M11 updateScreen builds two strings every tick; M12 test gaps (gun bounds on
+  screen, the crossbow, display list compiles not counted); M13 Deci.tracerItem's lazy cache is unsynchronized
+  (harmless).
 

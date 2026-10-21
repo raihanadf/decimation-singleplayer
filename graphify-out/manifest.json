@@ -110,9 +110,9 @@
     "semantic_hash": "de153d1f8408971d6190e16a7d4256f9"
   },
   "CLAUDE.md": {
-    "mtime": 1792541844.0255685,
-    "ast_hash": "354482c05d243437a2dae8abedb09d9c",
-    "semantic_hash": "354482c05d243437a2dae8abedb09d9c"
+    "mtime": 1792542183.861414,
+    "ast_hash": "3f1bd1afea1e29049fa25502f4b49ca6",
+    "semantic_hash": "3f1bd1afea1e29049fa25502f4b49ca6"
   },
   "DECIMATION_MOD_TASK.md": {
     "mtime": 1784958353.0126374,
@@ -1540,9 +1540,9 @@
     "semantic_hash": "294036847a9caffda351bfa855a78636"
   },
   "docs/tasks.md": {
-    "mtime": 1792541844.0259278,
-    "ast_hash": "0547cdc5c560ad9e26f15804bb252618",
-    "semantic_hash": "0547cdc5c560ad9e26f15804bb252618"
+    "mtime": 1792542183.8607183,
+    "ast_hash": "8d8663ad3e03be70d8cbdd9d2d083648",
+    "semantic_hash": "8d8663ad3e03be70d8cbdd9d2d083648"
   },
   "tools/skillcheck.py": {
     "mtime": 1792098139.5315723,
@@ -1575,9 +1575,9 @@
     "semantic_hash": "29a2562a5476966d3b76edb3a4590fff"
   },
   "docs/decimation_code/weapons.md": {
-    "mtime": 1792541844.026058,
-    "ast_hash": "a78bd88519d3927d79a5eda9bf55bf32",
-    "semantic_hash": "a78bd88519d3927d79a5eda9bf55bf32"
+    "mtime": 1792542183.8603632,
+    "ast_hash": "a8ab80408baf414bebdebc95992fc365",
+    "semantic_hash": "a8ab80408baf414bebdebc95992fc365"
   },
   ".claude/skills/decimation-code-npcs/SKILL.md": {
     "mtime": 1792199095.726065,

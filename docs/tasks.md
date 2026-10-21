@@ -107,7 +107,8 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [x] menu round 2: corner redone to FURY's measured layout, Multiplayer popup in players' words with game scenes (main 4674cfe, prerelease 3aa1cdd without the Multiplayer texts)
 - [ ] website session: Discord links, Coming soon down to two, BoehMod credit kept (sent to its session 21 Oktober)
 - [x] Gunsmith screen (Tarkov style, layout A): built on main (dev 80 checks, perf 8, production with OptiFine and a dedicated server), docs/decimation_code/weapons.md section 7
-- [~] Gunsmith final review fixes: part copy guard, cursor back on close and logout, drag, Inventory full in the screen, area only measuring, no per frame texts, no scope glass while open, list width (dev 92 checks, perf 8; production client with OptiFine 92 + 8, dedicated server 8; prerelease carry)
+- [x] Gunsmith final review fixes: part copy guard, cursor back on close and logout, drag, Inventory full in the screen, area only measuring, no per frame texts, no scope glass while open, list width (main 71bda92, prerelease 5cef9db; dev 92 checks, perf 8; production client with OptiFine 92 + 8, dedicated server 8; prerelease 92, unit 52)
+- [ ] later: Gunsmith minors M1 to M13 (docs/decimation_code/weapons.md section 7, "Open")
 - [ ] user: look at the Gunsmith screen in runClient (press I with a gun in hand)
 - [ ] later: full attachment update, grip and laser models on guns (docs/ideas.md 26)
 - [ ] later: optimize and bug audit skill (user, 21 Oktober 2026): audits each feature for bugs and performance before it ships (rule now in CLAUDE.md "Every feature: optimized before done")
