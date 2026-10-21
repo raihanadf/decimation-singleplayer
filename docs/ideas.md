@@ -182,3 +182,28 @@ every item below that is not DONE.
     models we may use (CC0 / CC BY, our own); Tarkov's models stay picture references only: their files are not offered
     (the builder hides its GLB export) and a converted copy would be a copy of Battlestate Games' work in a public
     release. Suggested start: after the RK-1 and SpecterDR, whose fit tools and style rules it reuses. Not designed.
+
+## The user's list of 22 Oktober 2026 (not designed; each needs a design talk first)
+User: "for the feat i have more". Notes on what we already have are mine [not analysed in code unless said].
+28. **Random events: a survivor with a timed quest** ("random survivor that provide random quest that need to be solved
+    with limited time before they dissapear"). Related: the survivor tier and camps (docs/safezone.md), WorldClock.
+29. **Tarkov style loot search** ("loot system where it need to be analyzed one by one before taking it. so the item will
+    show loading icon animation then if it done it can be take it"): items in a crate or body unknown until searched,
+    one at a time with a spinner. Related: our loot screen (fixes/Loot, Deci.setLootInventory), docs/loot_levels.md.
+30. **Radiation status in the HUD** ("radiation status below player status"). Decimation already tracks radiation per
+    player (docs/decimation_code/player.md) and draws its HUD in IngameHud (deci/g/j).
+31. **Full story mode with an achievement styled UI**. Related: the story item in "Ideas (later)" (docs/roadmap.md).
+32. **Friendly NPCs that give quests or gifts**: random friendly NPCs offer a quest or a gift; such an NPC never
+    despawns and glows (vanilla's glow effect does not exist in 1.7.10: an outline or particles of our own [inferred]).
+33. **Trader quests from easy to extreme**. Related: Decimation's traders (docs/decimation_code/traders.md).
+34. **NPC tracers in random colours, every bullet a tracer**: NPC guns use other tracer colours than white, and every
+    shot draws a tracer instead of one in 3 to 6. Related: PatchTracer, fixes/NpcShots, Decimation's tracer items
+    (TracerItem deci/ay/k, the Gunsmith's tracer slot).
+35. **Specific mobs at specific places** ("specific location can be spawned by specfic mob"). Related: zone infected
+    variants (fixes/InfectedVariants, docs/zones.md), MilitarySpawner, Garrisons.
+36. **Loot does not refill in singleplayer, a refill timer on servers**: "since city can be generated, loot by default is
+    empty forever after player loot it, except multiplayer they can be disable or enable for minutes refill loots (by
+    default is enable for server)". Decimation's crate cooldown is per position (deci/aB/e; docs/decimation_code/
+    loot.md): singleplayer would never reset it, servers a config (on by default, minutes).
+37. **More zombie variants, mutants too**. Related: fixes/InfectedVariants (v0.34.0), ideas 5 to 10 above.
+38. **Achievements from easy to extreme, and secret ones**. Related: item 31 (its UI), LocalStats.

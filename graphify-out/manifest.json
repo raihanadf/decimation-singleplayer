@@ -120,9 +120,9 @@
     "semantic_hash": "aa4550575e47e7c1d0b020a51afbb501"
   },
   "bug.md": {
-    "mtime": 1792612052.7995663,
-    "ast_hash": "14d726f5351a480c299ec3f9616abf90",
-    "semantic_hash": "14d726f5351a480c299ec3f9616abf90"
+    "mtime": 1792616072.1323946,
+    "ast_hash": "23591ea1bb36a094bd2348796a334e9a",
+    "semantic_hash": "23591ea1bb36a094bd2348796a334e9a"
   },
   "create_weapons.md": {
     "mtime": 1791653625.5948887,
@@ -655,9 +655,9 @@
     "semantic_hash": "1c39f26030dd9a038debdd20adca663f"
   },
   "docs/roadmap.md": {
-    "mtime": 1792577269.7824543,
-    "ast_hash": "a63e288998d2ac81ed8005b9735eee50",
-    "semantic_hash": "a63e288998d2ac81ed8005b9735eee50"
+    "mtime": 1792616072.1316347,
+    "ast_hash": "75297b9c9f5e8f9716143c201d897db0",
+    "semantic_hash": "75297b9c9f5e8f9716143c201d897db0"
   },
   "dev/src/main/java/net/decimation/worldgen/LegacyStreets.java": {
     "mtime": 1791487239.5087948,
@@ -1230,9 +1230,9 @@
     "semantic_hash": "8a3ad8dda4604fb188e87f47efc3db90"
   },
   "docs/ideas.md": {
-    "mtime": 1792577269.7805772,
-    "ast_hash": "7186a65e274e5fbadc7da6df47eed3e1",
-    "semantic_hash": "7186a65e274e5fbadc7da6df47eed3e1"
+    "mtime": 1792616072.0811803,
+    "ast_hash": "a16b428dfdb7012323b96cde1328ed4a",
+    "semantic_hash": "a16b428dfdb7012323b96cde1328ed4a"
   },
   "dev/src/main/java/net/decimation/worldgen/NamedPlace.java": {
     "mtime": 1791753400.7417421,
@@ -1540,9 +1540,9 @@
     "semantic_hash": "294036847a9caffda351bfa855a78636"
   },
   "docs/tasks.md": {
-    "mtime": 1792612052.8018324,
-    "ast_hash": "c784c1c05b7b4d0b4e1b122610f8971e",
-    "semantic_hash": "c784c1c05b7b4d0b4e1b122610f8971e"
+    "mtime": 1792616072.1328886,
+    "ast_hash": "88f2947b4d8af928269728f62ac41895",
+    "semantic_hash": "88f2947b4d8af928269728f62ac41895"
   },
   "tools/skillcheck.py": {
     "mtime": 1792098139.5315723,

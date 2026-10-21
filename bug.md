@@ -10,6 +10,28 @@ not something we introduced or need to fix) see `documentation.md`.
 
 ## Open
 
+### Inventory: no shift click (reported 22 Oktober 2026 by the user, OPEN, not analysed)
+- User: "fix where inventory cannot shift + click for fast item organize since decimation use custom design instead using
+  vanilla, shift click to armor is same so user need to take one by one on inv slot not like vanilla where you can fast
+  put armor with shortcut shift click".
+- Where to look [not analysed]: Decimation's inventory and loot screen (PlayerInventoryScreen deci/g/g, its container's
+  transferStackInSlot; docs/decimation_code/menus.md and items.md for the gear slots). Vanilla's shift click is
+  Container.transferStackInSlot; a container that returns null there makes shift click do nothing. Armor and
+  Decimation's gear slots (vest, backpack, mask) need their own rules. Check item loss and duplication (full inventory,
+  both sides, a dedicated server).
+
+### Foregrip invisible on some guns, the grip looks like it floats (reported 22 Oktober 2026 by the user, OPEN)
+- User: "foregrip on some gun is invicble so its looks flying below". Which guns: not given yet (ask, or shoot every
+  railed rifle with each grip: dev test attachments placement shots, gunview attach=foregrip).
+- Suspects [not analysed]: Decimation's Foregrip hangs its 8 parts from a parent "grip" whose plate the copies draw
+  without boxes (GripPlacement.STRAY); a gun whose rail lies above the grip's seat leaves a gap; the batched copy
+  (Deci.BatchedPart) on a gun where a part's first draw state differs.
+
+### Some props still break with one punch (reported 22 Oktober 2026 by the user, OPEN)
+- User: "fix some props that still can be easly destroyed by one click hand". Which props: not given. Earlier: military
+  wrecks (hardness 0, fixed v0.42.5 by fixes/WreckHardness). Find every Decimation block with hardness 0 (a dump over
+  the block registry: Block.getBlockHardness) and give props a hardness like BlockProp's 10 [not analysed].
+
 ### Cape in first person: drawn in front of the camera (reported 22 Oktober 2026 by the user, FIXED, user checked in game)
 - A player with a cape (Mojang account cape; OptiFine capes go the same way) saw it in front of himself in first
   person, in Prism with the 0.65.0 release jar.
