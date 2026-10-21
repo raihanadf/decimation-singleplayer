@@ -62,7 +62,9 @@ together in 1.0.0, so no jar a player downloads before 1.0.0 may hold multiplaye
   (5e000e1), Discord links and our footer (bd9fab9), the Updates and Coming soon popups (3de0c39; no Multiplayer popup),
   the corner art and MenuCorner (5246e4b), the popup crash fix (e541d84), the corner redone to FURY's measured layout
   and the siteshots cast column (3aa1cdd; not the Multiplayer popup texts), the Gunsmith screen (fixes/gunsmith, dev tests gunsmith and gunsmithmp;
-  0434450, the inside out fix b7c175a, the final review fixes 5cef9db, turning with the mouse 69c7157).
+  0434450, the inside out fix b7c175a, the final review fixes 5cef9db, turning with the mouse 69c7157), the new
+  attachments (RK-1, SpecterDR 1x/4x, recoil per grip, grips per gun from one list; dev tests attachments and
+  attachmentsmp; 8a976c8: needed there because the shared base jar's PatchGripRecoil calls GripRecoil).
   A NEW CHECKOUT'S RUN FOLDER needs the content: `cp dist/config/decimation_worldgen/*.schematic
   dev/run/client/config/decimation_worldgen/` (lc and large too when missing). StructureGenerator.generate returns at
   once while no small schematic is loaded ("0 schematic(s) ready" in the log), and that also stops cities, refuges, camps
