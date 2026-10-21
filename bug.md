@@ -1859,6 +1859,13 @@ drawing the hand itself); the three glass parts are alike (0.02 thick boxes). No
 runs with the mask off there, or GL feedback returns no polygon (counters inside PatchScope's pass needed: a jar patch).
 Next: those counters, then either the fix of the pass or the box from the matrices in Java (no GL feedback; bug.md
 "Scope: the glass was measured at the hip" already named that as the next step).
+Hypothesis (21 Oktober 2026, to check): the production client's HUD draws a player figure holding the gun in the stats box
+(seen in prod_specter_1x.png / _4x.png, absent from the dev shots), so the sight's glass is drawn twice a frame there.
+PatchScope measures when (++glassFrame & glassMask) == 0, counting every glass draw: with two draws a frame the hand's
+draw can land on odd counts only and is never measured (the HUD draw comes with the mask off), depending on the parity the
+session starts with; that fits AKM + ACOG measured, AKM + SpecterDR and every M4A4 case not. Check: glass draws per frame
+in scopediag (dev 1, production 2 expected). Fix then in ScopeZoom alone: its own frame counter decides, and the mask is
+0 (every draw) around the hand draw on the frames it measures, -1 otherwise.
 
 ## Grips drawn at one spot for every gun (21 Oktober 2026, FIXED on main)
 
@@ -1872,6 +1879,14 @@ Foregrip's parent without its stray plate (its 8 parts hang from a parent whose 
 magazine in foregrip.bmodel (ammoModel1..4) was never drawn: children of an ammoModel0 the file never declares, which
 Decimation's BModelLoader drops; study.py showed it until it did the same. Dev test attachments "placement" checks and
 four Gunsmith shots (docs/shots/attachments_v0.65.0/grip_*.png).
+Final review (21 Oktober 2026, one reviewer agent): that first gripfit still left 37 of 318 grips floating 0.15 to 1.6
+under the gun (bullpups AUG A1 / A3, the Model 642, our MAC-10, RPK, FAMAS-I, L85A1, M1 Garand, MGL, G36C): it rested a
+grip on the lowest point of any part touching its footprint (a sliver of a trigger guard), read a slanted part's lowest
+corner past the part's end, and its check reused that measure, so it agreed by construction. Rewritten (weapons.md
+section 8): an underside map from rays through the real faces, the run ahead of everything hanging below the gun, a flat
+seat; the check judges the placed parts alone. RED 42 pairs not right, GREEN 0; the reviewer's march check leaves only
+the P90's side mounted lights and the RPK / RPK-74 Foregrip resting on the folded bipod's legs. Lesson: a check must not
+reuse the code it checks.
 
 ## Our EOTech and ACOG showed raw item names (21 Oktober 2026, FIXED on main)
 

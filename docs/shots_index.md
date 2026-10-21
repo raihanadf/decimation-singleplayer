@@ -1818,4 +1818,14 @@ Production client with OptiFine HD U E7 (the brother's laptop setup), AKM with t
   pale grey with the reticle). 4x: the glass shows sky and a horizon while the zoomed view around it is stone floor, a
   picture not taken in that frame: bug.md "See-through glass not updated with OptiFine".
 - `gripfit/attach_glock17_laser_side.png`, `_three.png` (study.py attach, as the game places it): the Laser Marker as a
-  small dark box under the Glock 17's dust cover ahead of the trigger guard, side on and three quarter.
+  small dark box under the Glock 17's dust cover ahead of the trigger guard, side on and three quarter (first gripfit).
+- `gripfit2/` (after the final review's fix, study.py attach with the rewritten gripfit): side and three quarter renders
+  of 18 pairs and `sheet_side.png` (the 18 side views, labelled): AUG A1 + RK-1 and AUG A3 + Foregrip under the barrel
+  ahead of the AUG's own grip, L85A1 + RK-1 under the handguard, FAMAS-I + Foregrip under its front block, P90 + Laser on
+  the gun's +z side (not seen in its side view; which side the render shows was not checked), Model 642 + Laser under the barrel ahead of the cylinder, MAC-10 + Flashlight
+  under the front ahead of the trigger guard, G36C + Laser under the handguard, R870 + Flashlight under the magazine
+  tube ahead of the pump, RPG-7 + Flashlight (too small to make out at that scale), RPK + Foregrip and RPK + RK-1 under the folded bipod,
+  M4A4 + RK-1, AK-74 + Foregrip, Glock 17 + Laser, M1 Garand + Foregrip, Barrett + RK-1, MGL + Laser, each seen
+  touching the gun (the P90 and RPG-7 rows rest on the check alone).
+- The four `grip_*.png` Gunsmith shots were taken again with the rewritten table (same views; the RK-1 now flush with
+  the M4A4's rail, 0.16 higher than before).

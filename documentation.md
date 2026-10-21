@@ -318,6 +318,18 @@ the page), Players Online says coming soon, the Community tab says "Community se
 Global Server, Community Server and Download as Offline, and "My Supporter" in My Community is now "Early access"
 (coming soon). Details: docs/main_menu.md.
 
+## Gunsmith screen and attachments (21 Oktober 2026)
+
+The I key with a gun in hand opens the Gunsmith screen instead of Decimation's crafting style attachment screen: the
+held gun in 3D, six boxes (Stock, Sight, Barrel, Grip, Paint, Tracer) joined to their parts by lines, a click on a box
+lists what fits from your whole inventory (Decimation's own rules), the gun never leaves your hand. A left drag on empty
+space turns the gun all the way round, a double click turns it back, the wheel zooms. New parts: the RK-1 Foregrip
+(rifles; recoil up to 1/2 and sideways to 1/4, against 1/3 and 1/3 for Decimation's Foregrip) and the ELCAN SpecterDR
+1x/4x sight (every gun; G switches it between 4x and 1x for that gun, with a click; the gun and the see through glass
+stay at 4x, no black scope overlay). Both lie in loot where Decimation's Foregrip and 4x lie. Every grip (Foregrip,
+Laser Marker, Flashlight, RK-1) now sits under each gun's own handguard instead of one spot for all guns (on the P90 the
+lights sit on its side). Details: docs/decimation_code/weapons.md sections 7 and 8.
+
 ## Bug and feature tracking
 
 Dated history moved out of this file - see `bug.md` (fixed/open/pending bugs)

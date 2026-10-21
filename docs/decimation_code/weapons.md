@@ -182,19 +182,37 @@ takes 0.5); a miss used a round and hurt nothing; client and server copies agree
   both (GripRecoil.calmsView). Measured with a known recoil through Decimation's own tick (dev test attachments):
   no grip 40 degrees up and sideways, Foregrip 0.333 / 0.333, RK-1 0.500 / 0.250 of that.
 - Grips placed per gun: Decimation drew every grip at one spot for all guns (renderAttachments' grip translate): the
-  Foregrip sat on the M4A4's magazine, the Laser and Flashlight inside its handguard. tools/guns/gripfit.py measures each
-  gun's underside 40 % of the way from its magazine to its muzzle (pistols 62 %; stepped forward past a magazine that
-  reaches there, the G36C) and writes dev/src/main/resources/assets/deciworldgen/grip_offsets.txt (318 rows: every gun
-  of the jar and our five, each grip it takes); `gripfit.py --check` (0 pairs not right) checks each placed grip touches
-  the underside and is clear of the magazine. fixes/GripPlacement gives each gun its moved copy at startup
-  (Deci.offsetAttachment; 318 copies, 0 not found). The Foregrip hangs its 8 parts from a parent "grip" whose own plate
-  sits 7.5 behind them: the copies draw that parent without its boxes (Deci.clearAttachmentPartBoxes). The magazine in
-  foregrip.bmodel (ammoModel1..4) is never drawn: they are children of an ammoModel0 the file never declares and
-  Decimation's BModelLoader drops such parts (study.py now does the same).
+  Foregrip sat on the M4A4's magazine, the Laser and Flashlight inside its handguard. tools/guns/gripfit.py writes
+  dev/src/main/resources/assets/deciworldgen/grip_offsets.txt (318 rows: every gun of the jar and our five, each grip it
+  takes) from a map of each gun's underside (vertical rays through every part's real faces, a column each 0.05): the
+  grip goes ahead of the last thing hanging below the gun (a magazine or pump part below the body, anything more than
+  2.3 below the bore, which is flamePos y + 0.85; on pistols also the trigger guard, 0.6 deeper than the frame's nose),
+  40 % into that free run (pistols right ahead of the trigger guard), where the gun's underside is flat over the grip's
+  whole seat (6 of 7 places along it touching, nothing at its edges reaching into it). The seat is the face that bears:
+  the widest part at the grip's top and everything level with it (the RK-1's clamp, not its rail jaws). A light finding
+  no underside (the P90's front is its hand loop) sits against the gun's right side near the bore's height, as P90
+  lights sit on its side rails. `gripfit.py --check` judges every placed pair on its own (rays through the placed parts,
+  not the fit's map): 4 of 7 places along the seat touching (gap at most 0.25), nothing of the gun more than 0.15 into
+  the grip, no magazine or pump part in it, or for a light the same against the gun's side; 0 pairs not right.
+  fixes/GripPlacement gives each gun its moved copy at startup (Deci.offsetAttachment; 318 copies, 0 not found; once
+  at startup: 76 to 212 ms in the dev clients' logs, 96 to 333 ms in the production client's). The Foregrip hangs its 8 parts from a parent "grip" whose own plate sits 7.5 behind them:
+  the copies draw that parent without its boxes (Deci.clearAttachmentPartBoxes). The magazine in foregrip.bmodel
+  (ammoModel1..4) is never drawn: children of an ammoModel0 the file never declares, which Decimation's BModelLoader
+  drops (study.py now does the same).
+- Final review (21 Oktober 2026, one reviewer agent): the first gripfit placed by the lowest point of any part touching
+  the grip's footprint, a sliver included, and read a slanted part's lowest corner past its end, and its check reused
+  the same measure, so it passed by construction ("0 pairs not right") while 37 grips floated (AUG A1 and A3 1.2 to 1.6,
+  Model 642, our MAC-10, RPK, FAMAS-I, L85A1, M1 Garand, MGL, G36C). The rewritten check read 42 pairs not right on that
+  table (RED), 0 on the new one (GREEN); the reviewer's own march check (scratchpad review/float.py) leaves 4: the P90's
+  Laser and Flashlight (on its side by design) and the RPK and RPK-74 Foregrip (resting at its edges on the folded
+  bipod legs, 0.8 under the gas tube in the middle). Renders of one gun per class:
+  docs/shots/attachments_v0.65.0/gripfit2/sheet_side.png. The RK-1 had hung 0.11 low on every gun (measured from its
+  rail jaws, which rise 0.16 above the clamp): now flush (M4A4 dy 0.16 to 0.00; `grips.py --check` 0 unseated, was 1).
 - The SpecterDR's switch: fixes/SpecterKey ("DeciRemnant: SpecterDR 1x/4x" among Decimation's keys, default G, free in
   vanilla, Decimation and the voice chat) flips the held gun's mode with a click (fixes/SpecterMode: per gun by
   Decimation's "uniqueID", else by slot, for the session; 4x by default). ScopeZoom: 4x = magnification 4.0, 1x = 1.25
-  (config entries specterdr and specterdr1x); our sights never get the black sniper overlay, so the SpecterDR keeps the
+  (magnification names specterdr and specterdr1x: read from deciworldgen_scope.cfg when an entry is there, not written
+  to it by default, like eotech558 and ta11acog); our sights never get the black sniper overlay, so the SpecterDR keeps the
   gun and its see through glass at 4x, its reticle drawn in the glass (SightReticle) in both modes.
 - Checks: `python3 tools/devtest.py --live attachments` (21 checks: items, loot, recoil, placement, the switch; shots of
   four grips in the Gunsmith screen and the SpecterDR aimed at 1x and 4x), `attachments perf=true` (budgets, below),

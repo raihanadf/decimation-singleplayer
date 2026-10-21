@@ -351,7 +351,9 @@ source of truth about the real gun and about how it must look in game.
    grip slot attachment at one spot for all guns; fixes/GripPlacement moves a copy per gun from grip_offsets.txt. After a
    new gun or a new grip run `python3 tools/guns/gripfit.py`, then `--check` (0 pairs not right), like sightfit for
    sights; a new grip goes into gripfit.py GRIPS (with its category: rifle grips never fit SMGs or pistols) and study.py
-   ATTACH_SLOT. Build a grip in GUN space for the M4A4 (bottom rail y -1.30, handguard x 8.5 .. 14.7, centre z -0.15) and
+   ATTACH_SLOT. Look at renders of one gun per class too (bullpup, revolver, SMG, pump shotgun, launcher): the first
+   gripfit passed its own check while 37 grips floated (case 23). A grip's seat is its widest top face: parts meant to
+   rise beside a rail (the RK-1's jaws) must not set its height. Build a grip in GUN space for the M4A4 (bottom rail y -1.30, handguard x 8.5 .. 14.7, centre z -0.15) and
    shift it into the file by the grip translate (-3.2, 0.8, 0) (tools/guns/grips.py).
 26. An attachment from a Tarkov build (user, 21 Oktober 2026): `refcapture.py --fill` for close views, sizes from the
    part's ratio to the gun it sits on in the reference (the RK-1 is 1.81 times the M4A4 handguard's height), checked on
@@ -789,8 +791,13 @@ revision (same commit), never remove old ones.
   cheaper than the ACOG; at 1.25x the frame draws about 4.5 ms more world (compare with the EOTech, not the ACOG).
 - Found: the see-through glass is not updated in the production client with OptiFine for some guns and sights (bug.md,
   OPEN; the SpecterDR's 4x relies on that glass).
+- Final review: 37 grips still floated (bullpups, the Model 642, our MAC-10, RPK, FAMAS-I, L85A1, M1 Garand, MGL,
+  G36C) because gripfit rested grips on any sliver of a part and its check reused the same measure. Rewritten: an
+  underside map from rays through the real faces, the run ahead of everything hanging below the gun, a flat seat, the
+  P90's lights on its side; the check judges the placed parts alone (RED 42, GREEN 0). The RK-1 had hung 0.11 low on
+  every gun (measured from its rail jaws).
 - Check: dev tests attachments (22), attachments perf=true (7), attachmentsmp (12), glstack; shots in
-  docs/shots/attachments_v0.65.0/. Not seen by the user in game yet.
+  docs/shots/attachments_v0.65.0/ (gripfit2/sheet_side.png: one gun per class). Not seen by the user in game yet.
 
 ### Case 8: test traps met on the way (dev test gunview)
 - No gun in the shots: F1 (hideGUI) hides the held item too; first

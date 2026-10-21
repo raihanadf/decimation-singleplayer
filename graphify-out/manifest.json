@@ -110,9 +110,9 @@
     "semantic_hash": "de153d1f8408971d6190e16a7d4256f9"
   },
   "CLAUDE.md": {
-    "mtime": 1792578833.4165332,
-    "ast_hash": "20e8b80a43b498e53345f7fc01d360b2",
-    "semantic_hash": "20e8b80a43b498e53345f7fc01d360b2"
+    "mtime": 1792584587.9193034,
+    "ast_hash": "141803da32803ad491a507d7028c6fd0",
+    "semantic_hash": "141803da32803ad491a507d7028c6fd0"
   },
   "DECIMATION_MOD_TASK.md": {
     "mtime": 1784958353.0126374,
@@ -120,9 +120,9 @@
     "semantic_hash": "aa4550575e47e7c1d0b020a51afbb501"
   },
   "bug.md": {
-    "mtime": 1792577269.7832792,
-    "ast_hash": "c40f21edcf40776264c83852fa3b28d7",
-    "semantic_hash": "c40f21edcf40776264c83852fa3b28d7"
+    "mtime": 1792584587.9184792,
+    "ast_hash": "a2f0ba7d80f06bd5b923b31fe8c8d7ca",
+    "semantic_hash": "a2f0ba7d80f06bd5b923b31fe8c8d7ca"
   },
   "create_weapons.md": {
     "mtime": 1791653625.5948887,
@@ -145,9 +145,9 @@
     "semantic_hash": "5ec10a4c3f93750361afcbaae6df524a"
   },
   "documentation.md": {
-    "mtime": 1792190684.1057434,
-    "ast_hash": "07a8b4642bae01c8cfa17f417705686b",
-    "semantic_hash": "07a8b4642bae01c8cfa17f417705686b"
+    "mtime": 1792584723.7805731,
+    "ast_hash": "3f078f0bcdd3a0991459140f5d2f3f08",
+    "semantic_hash": "3f078f0bcdd3a0991459140f5d2f3f08"
   },
   "new_feature.md": {
     "mtime": 1792577371.4363742,
@@ -325,9 +325,9 @@
     "semantic_hash": "0145e0863788d451e8ae4273d3c2abdd"
   },
   "docs/shots_index.md": {
-    "mtime": 1792577351.011465,
-    "ast_hash": "6e53b347b7d1a0835250b0bba4a86359",
-    "semantic_hash": "6e53b347b7d1a0835250b0bba4a86359"
+    "mtime": 1792584595.9017441,
+    "ast_hash": "8bf46bc208a14006e177b7b19a119675",
+    "semantic_hash": "8bf46bc208a14006e177b7b19a119675"
   },
   "docs/interior_spec.md": {
     "mtime": 1791385593.9436893,
@@ -810,9 +810,9 @@
     "semantic_hash": "8cf55b3edd35b844913a12f9f385f226"
   },
   ".claude/skills/decimation-gun/SKILL.md": {
-    "mtime": 1792577309.7785263,
-    "ast_hash": "2cf481f4f5758484c27592fcecc3d526",
-    "semantic_hash": "2cf481f4f5758484c27592fcecc3d526"
+    "mtime": 1792584587.9203606,
+    "ast_hash": "cb83f44a97c346634e030716857acbf2",
+    "semantic_hash": "cb83f44a97c346634e030716857acbf2"
   },
   "tools/guns/ump9.py": {
     "mtime": 1791575647.9663312,
@@ -1575,9 +1575,9 @@
     "semantic_hash": "62c01dbf182c25ecbd43c5cd9490f377"
   },
   "docs/decimation_code/weapons.md": {
-    "mtime": 1792578799.1540222,
-    "ast_hash": "d8abf7110b30cb05c1394586d17123cd",
-    "semantic_hash": "d8abf7110b30cb05c1394586d17123cd"
+    "mtime": 1792584548.3853424,
+    "ast_hash": "cb43ea603e9c4e00f5717894e354290a",
+    "semantic_hash": "cb43ea603e9c4e00f5717894e354290a"
   },
   ".claude/skills/decimation-code-npcs/SKILL.md": {
     "mtime": 1792199095.726065,
@@ -2665,9 +2665,9 @@
     "semantic_hash": "74333fcd433500021836c44faf71f1ce"
   },
   "tools/guns/gripfit.py": {
-    "mtime": 1792572460.1726577,
-    "ast_hash": "9e6a7c2230a532eccf7ff8268b29e6e1",
-    "semantic_hash": "9e6a7c2230a532eccf7ff8268b29e6e1"
+    "mtime": 1792584563.4241052,
+    "ast_hash": "832d4134be777289b13d558bfb86b904",
+    "semantic_hash": "832d4134be777289b13d558bfb86b904"
   },
   "tools/guns/grips.py": {
     "mtime": 1792566937.1553857,
@@ -2675,9 +2675,9 @@
     "semantic_hash": "a3582f317ed4fa6ba17a582a8fec6905"
   },
   "tools/patches/PatchGripRecoil.java": {
-    "mtime": 1792570403.302273,
-    "ast_hash": "3658544859018b001ffde07e03ff9d48",
-    "semantic_hash": "3658544859018b001ffde07e03ff9d48"
+    "mtime": 1792584587.9198506,
+    "ast_hash": "974ca37c03b1f5a543d50ce2289db3a1",
+    "semantic_hash": "974ca37c03b1f5a543d50ce2289db3a1"
   },
   "docs/superpowers/plans/2026-10-21-new-attachments.md": {
     "mtime": 1792564254.4627678,
