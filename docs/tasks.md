@@ -129,5 +129,5 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [ ] toggleable Minecraft style HUD (user, next after the cape fix)
 - [ ] bug: inventory shift click (and shift click into armor / gear slots) does nothing (bug.md Open)
 - [ ] bug: foregrip invisible on some guns, looks like it floats (bug.md Open; which guns?)
-- [ ] bug: some props still break with one punch (bug.md Open; which props?)
+- [x] bug: 6 props broke with one punch: fixes/PropHardness (branch bugfix, bug.md; ropes left as they are)
 - [ ] ideas 28 to 52 (docs/ideas.md, user 22 Oktober 2026): design talk first

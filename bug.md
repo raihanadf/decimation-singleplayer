@@ -27,10 +27,18 @@ not something we introduced or need to fix) see `documentation.md`.
   without boxes (GripPlacement.STRAY); a gun whose rail lies above the grip's seat leaves a gap; the batched copy
   (Deci.BatchedPart) on a gun where a part's first draw state differs.
 
-### Some props still break with one punch (reported 22 Oktober 2026 by the user, OPEN)
-- User: "fix some props that still can be easly destroyed by one click hand". Which props: not given. Earlier: military
-  wrecks (hardness 0, fixed v0.42.5 by fixes/WreckHardness). Find every Decimation block with hardness 0 (a dump over
-  the block registry: Block.getBlockHardness) and give props a hardness like BlockProp's 10 [not analysed].
+### Some props still broke with one punch (reported 22 Oktober 2026 by the user, FIXED on branch bugfix)
+- User: "fix some props that still can be easly destroyed by one click hand".
+- Found by dev test `hardness` (every block of deci and deciworldgen set in the arena, a survival empty hand asked
+  getPlayerRelativeBlockHardness as onBlockClicked does; table run/client/devtest/hardness.tsv): 8 of 277 break with one
+  click, all hardness 0: BlockStreetBarrier, BlockBarrierTall, BlockMetalShelf, BlockMetalShelf_Empty (multiblock
+  BlockContainers, like the wrecks before WreckHardness), BlockElevator and BlockElevatorButton (elevator), BlockRope
+  and BlockRopeTop (climbing rope). Everything else takes at least 0.4 hardness (several clicks held).
+- Fix: fixes/PropHardness (init, after WreckHardness) gives every deci / deciworldgen block of hardness 0 BlockProp's
+  10, except MEANT_TO_BREAK: the two ropes (a player's own climbing tool, taken down with a click like vanilla string).
+- Checks: hardness RED "8: BlockElevatorButton BlockStreetBarrier BlockMetalShelf BlockElevator BlockRope BlockRopeTop
+  BlockMetalShelf_Empty BlockBarrierTall", GREEN 0; the dev dedicated server logs the same 6 set to 10; unit test
+  PropHardnessTest. Open question for the user: should ropes stay one click (now) or get a ladder's 0.4?
 
 ### Cape in first person: drawn in front of the camera (reported 22 Oktober 2026 by the user, FIXED, user checked in game)
 - A player with a cape (Mojang account cape; OptiFine capes go the same way) saw it in front of himself in first

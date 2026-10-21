@@ -42,7 +42,9 @@ across several versions had 3 screens with no door at all (left from earlier lay
 - The keycard reach is lopsided (-3 .. +2): place the screen so the door is west, below or north of it, or within 2
   blocks east, up or south.
 - Block break and place protection (config, turfs) are server proxy only: in singleplayer every block can be broken
-  and placed (our fixes/WreckHardness makes wreck props hard to break).
+  and placed (our fixes/WreckHardness makes wreck props hard to break, fixes/PropHardness every other block of hardness 0:
+  street barriers, tall barriers, metal shelves, elevator and its button; ropes still break with one click; dev test
+  `hardness` dumps every block's one click share, bug.md).
 
 ## 5. How our mod uses it
 
