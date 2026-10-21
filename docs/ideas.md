@@ -223,3 +223,23 @@ User: "for the feat i have more". Notes on what we already have are mine [not an
     wasteland district is a MILITARY zone today (docs/wasteland.md, city/Wasteland); Decimation's RADIATION zone works in
     singleplayer since v0.46.0 (fixes/ZoneRules). A place can be in two zone kinds only if the zone lists allow it
     [not analysed]. Goes with 41 and 42.
+44. **Unload a magazine with shift + right click** (its rounds back as ammo). Related: fixes/Magazines (v0.35.0),
+    Decimation's magazine items keep rounds in NBT (docs/decimation_code/weapons.md).
+45. **Magazines from loot hold a random number of rounds** ("all mag loot have variaty capacity ammo inside it").
+    Related: fixes/Loot, LootPools, Decimation's loot lists (docs/loot_levels.md section 2).
+46. **Armor nerf against NPC fire, 20 % less protection** ("nerf all armor buff by -20% that affected to player when
+    they shooted by npc. now the damage dealt more"). Today: fixes/ArmorGunfireHandler applies Decimation's
+    damageMultiplier per piece to the "human" and "turret" sources, helmets on headshots, after the old 35 % armor
+    buff (a one-off jar patch), then NPC hits x5 (v0.30.2). Exact meaning to settle in the design talk: each piece's
+    protection (1 - multiplier) times 0.8 [my reading].
+47. **Armor durability, repaired with parts**: armor 256, vests 512; 1 shot = 1 durability; armor repaired with an armor
+    part, vests with an armor plate (a new item found in military and police crates). Decimation's armor has no wear
+    against gunshots today [not analysed].
+48. **Gun durability, repaired with gun parts**. Decimation's guns have no durability today [not analysed].
+49. **More lootable props, each in two versions (plain and lootable)**: truck, wooden crate, water pallet, military
+    radio, small military radio. Decimation's loot registry is per block (33 blocks, docs/loot_levels.md section 2):
+    a lootable version is a block of ours or a metadata rule [not designed].
+50. **Props with a loot kind**: a shelf can hold civilian, military or police loot; the weapon cabinet in three versions:
+    civilian ("Cabinet", no "weapon" in the name), police and military. Today the metal shelf uses list 1 (general) and
+    the weapon cabinet list 10 (guns and magazines). Goes with crate levels (item 17, docs/loot_levels.md).
+51. **More new blocks** later (user, no list yet).

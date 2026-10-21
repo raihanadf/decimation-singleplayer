@@ -130,4 +130,4 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [ ] bug: inventory shift click (and shift click into armor / gear slots) does nothing (bug.md Open)
 - [ ] bug: foregrip invisible on some guns, looks like it floats (bug.md Open; which guns?)
 - [ ] bug: some props still break with one punch (bug.md Open; which props?)
-- [ ] ideas 28 to 43 (docs/ideas.md, user 22 Oktober 2026): design talk first
+- [ ] ideas 28 to 51 (docs/ideas.md, user 22 Oktober 2026): design talk first

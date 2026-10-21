@@ -234,7 +234,10 @@ docs/gun_model_spec.md); every user review goes into its lessons and casebook.
   loot refill in singleplayer (a refill timer on servers, on by default), more zombie variants and mutants,
   achievements easy to extreme and secret; added the same night (39 to 43): trader market supply and demand by day,
   attachments with benefits, radiation pills, gas mask durability refilled with filters, the wasteland city one
-  radiation zone. Not designed. Bugs of the same list in bug.md "Open" (inventory shift
+  radiation zone; then (44 to 51) magazines unloaded with shift + right click, loot magazines with random rounds, armor
+  20 % weaker against NPC fire, armor and vest durability repaired with parts and plates, gun durability repaired with
+  gun parts, more lootable props in plain and lootable versions, props with a loot kind (shelf, cabinet), more blocks.
+  Not designed. Bugs of the same list in bug.md "Open" (inventory shift
   click, invisible foregrips, props broken by one punch).
 - 3D gun converter (docs/ideas.md 27, user 21 Oktober 2026, "for long development"): a private page that turns a 3D gun
   model we may use into a Decimation styled .bmodel through tools/guns; after the RK-1 and SpecterDR.
