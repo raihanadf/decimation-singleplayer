@@ -1914,3 +1914,16 @@ RK-1 and the SpecterDR ("EOTech 558", "ACOG TA11 3.5x", "RK-1 Foregrip", "ELCAN 
 alike, on main and on prerelease; aimdrift alone in a fresh game gives 0.0048 .. 0.0050, -0.2190 steady. scopediag ends
 by emptying the hand on the client only and switching the aim off [the cause not investigated: a screen left open, or
 the client's empty slot]. Run aimdrift in a game of its own (or before scopediag) until this is understood.
+
+## RK-1 too big and not canted; Foregrips on rifles without a rail (user review 21 Oktober 2026, FIXED on main)
+- User: "rk grip ... its actually not vertical grip, it bit sway to left ... the grip use align 45%", "for RPK and
+  someguns that doesnt have picatiny rail, they dont support any grip on it", "its to big for decimation guns".
+- Cause: the RK-1 was sized from the reference's ratio to the handguard (1.9 x 3.96 x 1.58 against Decimation's Foregrip
+  1.0 x 2.7 x 0.8, down to the M4A4's magazine bottom) and built straight down from the side view only; the reference's
+  end and bottom views show it rolled 45 degrees to the gun's left. Decimation fits its Foregrip by category, so every
+  rifle took one, wooden AKs and the RPK included (docs/references/grip_rails.md).
+- Fix: tools/guns/grips.py rk1 v2 (Foregrip size, angled mount, rolled 45 degrees to +z); gripfit.py RAILED (19 rifles,
+  244 rows) and a clip check; fixes/GripRails (Gunsmith fit, NPC loadouts), fixes/GripStrip (a vertical grip on a
+  rail-less gun goes back to the inventory or the ground, once a second, never while the Gunsmith is open).
+- Checks: unit GripRailsTest, dev attachments "rails:" checks (RED 4, GREEN 5; the Gunsmith guard proven by a mutation
+  run), gunsmith, glstack; attachmentsmp's pop-off on the dedicated server.

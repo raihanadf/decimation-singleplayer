@@ -114,7 +114,9 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [x] user tried the turning in runClient: "nice, work really well" (21 Oktober 2026)
 - [x] reference capture tool tools/guns/refcapture.py: 8 cut out views of a tarkovbot build from its preset (the user's Mk47: docs/shots/refcapture_v0.65.0/my_preset); the site's GLB export is hidden, not used
 - [x] new attachments RK-1 foregrip and SpecterDR 1x/4x (key G), grips placed per gun: built on main (dev 22 checks, perf 7, production with OptiFine 22 + 7, dedicated server 12; weapons.md section 8)
-- [ ] user: look at the RK-1 and the SpecterDR in runClient (fit them with I, aim, press G)
+- [x] user review: RK-1 v2 (Foregrip size, rolled 45 degrees left), Foregrip / RK-1 only on railed rifles, pops off others (docs/references/grip_rails.md)
+- [~] scope aim delay ("sometime it has delay ... loading the scope render"): profile first (dev test aimdelay)
+- [ ] user: look at RK-1 v2 in runClient (railed rifle, e.g. M4A4; an RPK refuses it)
 - [x] bug: see-through scope glass not updated in the production client with OptiFine: ScopeZoom counts its own frames (bug.md; dev, production with OptiFine checked)
 - [ ] later: full attachment update, grip and laser models on guns (docs/ideas.md 26)
 - [ ] later: optimize and bug audit skill (user, 21 Oktober 2026): audits each feature for bugs and performance before it ships (rule now in CLAUDE.md "Every feature: optimized before done")

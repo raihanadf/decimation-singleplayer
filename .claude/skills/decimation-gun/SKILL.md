@@ -357,14 +357,25 @@ source of truth about the real gun and about how it must look in game.
    gripfit passed its own check while 37 grips floated (case 23). A grip's seat is its widest top face: parts meant to
    rise beside a rail (the RK-1's jaws) must not set its height. Build a grip in GUN space for the M4A4 (bottom rail y -1.30, handguard x 8.5 .. 14.7, centre z -0.15) and
    shift it into the file by the grip translate (-3.2, 0.8, 0) (tools/guns/grips.py).
-26. An attachment from a Tarkov build (user, 21 Oktober 2026): `refcapture.py --fill` for close views, sizes from the
-   part's ratio to the gun it sits on in the reference (the RK-1 is 1.81 times the M4A4 handguard's height), checked on
-   the M4A4 with `sights.check` / `grips.py --check` (study.with_attachments, at most 3 unseated parts); show the
-   comparison renders before registering.
+26. An attachment from a Tarkov build (user, 21 Oktober 2026): `refcapture.py --fill` for close views, then read EVERY
+   view, not only the side: the RK-1 looked vertical from the side but the end view (from the muzzle) and the bottom
+   view showed it rolled 45 degrees toward the gun's left (case 25). Never size it from the reference's proportions:
+   Decimation draws attachments far slimmer than real. Size a grip to Decimation's Foregrip (user: "same as foregrip,
+   use that as baseline size later if we want to add new grip in future": 1.0 long, 2.7 from the rail down, 0.8
+   thick), a sight to Decimation's sight of its kind; check on the M4A4 with `sights.check` / `grips.py --check`
+   (study.with_attachments, at most 3 unseated parts) and print the bounding box next to Decimation's. Show the
+   comparison renders before registering. The gun's left is +z (the M4A4's selector marks face +z).
 27. Measure what an attachment costs (CLAUDE.md "Every feature: optimized before done"): `attachments perf=true` draws
    the held gun once more a frame per attachment with glFinish around (GPU included) and the CPU part. Decimation's grips
    have 5 to 9 parts, its sights 7 to 68; ours 56 (RK-1, drawn from one display list) and 92 to 117 (sights). Aimed frame
    times compare only sights of the same zoom, at the sky, in paired rounds (case 23).
+28. A foregrip needs a rail (user, 21 Oktober 2026: "for RPK and some guns that doesnt have picatiny rail, they dont
+   support any grip on it ... you must learn how guns part work especially on attachment"). Before letting an attachment
+   onto a gun, check the real gun AND the model: a vertical grip goes only where the handguard has a Picatinny rail,
+   M-LOK / KeyMod slots or hard points under it (wood and plain polymer handguards, the AK family, RPK, FAL, G3, M16A1/A2,
+   bolt rifles have none; a sniper's bipod rail does not count). The list: gripfit.py RAILED, read by fixes/GripRails
+   from grip_offsets.txt; a grip on a rail-less gun pops off (fixes/GripStrip). A new gun with a rail goes into RAILED.
+   Facts and sources: docs/references/grip_rails.md.
 
 ## Revision casebook (never delete a case; look here first)
 
@@ -811,6 +822,22 @@ revision (same commit), never remove old ones.
   frames (no jar patch). Checks: scopediag extra=1 in dev (RED 1 in 222 frames, GREEN 30 in 235), aimdrift shift
   0.0049 / -0.2189 steady (the recorded value), production 45 in 347 frames and the boxes as in dev
   (prod_specter_4x_fixed.png). bug.md "See-through glass not updated with OptiFine".
+
+### Case 25: RK-1 too big, not canted, grips on rail-less rifles (user review, 21 Oktober 2026)
+- User: "rk grip ... its actually not vertical grip, it bit sway to left ... the grip use align 45%", "for RPK and
+  someguns that doesnt have picatiny rail, they dont support any grip on it", "its to big for decimation guns. check it
+  out by yourself if im true or not".
+- Checked: true on all three. RK-1 v1 was 1.9 x 3.96 x 1.58 against Decimation's Foregrip 1.0 x 2.7 x 0.8 (down to the
+  M4A4's magazine bottom): sized from the reference's ratio to the handguard (lesson 26 then said so). The reference's
+  end_a.png and bottom.png show the grip rolled about 45 degrees toward the gun's left (231 px out, 232 px down); its
+  side view hides that. Decimation fitted the Foregrip on all 56 rifles by category, including wooden AKs and the RPK.
+- Fix: grips.py rk1 v2 (51 parts): clamp on the bottom rail, an angled mount, the grip rolled 45 degrees to +z, sized to
+  the Foregrip (2.67 from the rail down, 0.84 thick; renders docs/shots/grip_rails_v0.65.0/rk1_v2_cmp.png,
+  rk1_v2_railed.png). gripfit.py RAILED (19 rifles) and a clip check (a rolled grip's body inside the gun); grip_offsets
+  244 rows. fixes/GripRails (Gunsmith fit, NPC loadouts), fixes/GripStrip (pops it off once a second, never while the
+  Gunsmith is open: a mutation run without that guard copied the grip, the check caught it).
+- Check: unit GripRailsTest (RED on the old table, GREEN), dev attachments rails checks (RED 4, GREEN 5), gunsmith,
+  glstack; attachmentsmp on the dedicated server.
 
 ### Case 8: test traps met on the way (dev test gunview)
 - No gun in the shots: F1 (hideGUI) hides the held item too; first

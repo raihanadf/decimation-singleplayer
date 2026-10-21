@@ -172,7 +172,7 @@ takes 0.5); a miss used a round and hurt nothing; client and server copies agree
   on a key (default G), the grip with its own numbers (recoil up to 1/2, sideways to 1/4), every grip placed per gun,
   loot like Decimation's 4x and Foregrip. Spec docs/superpowers/specs/2026-10-21-new-attachments-design.md. Models from
   the user's tarkovbot build (tools/guns/refcapture.py views, reference only), built in Decimation's style:
-  tools/guns/grips.py (rk1, 56 parts), tools/guns/sights.py (specterdr, 95 parts, reticle drawn in the glass).
+  tools/guns/grips.py (rk1, 56 parts; v2 51 parts, below), tools/guns/sights.py (specterdr, 95 parts, reticle drawn in the glass).
 - Items: AttachmentItems of ours registered as deci:rk1 (Deci.newGripAttachment, category rifle like the Foregrip:
   fixes/NewGrips) and deci:specterdr (Deci.newSightAttachment, category all: fixes/NewSights), named in our lang file,
   in every Decimation crate list holding the Foregrip / the 4x (Deci.addLootLike) and in LootPools (VERSION 2).
@@ -262,6 +262,20 @@ takes 0.5); a miss used a round and hurt nothing; client and server copies agree
   lowest point 60 to 80 % along the gun's outline (Silhouette), so on the UMP45 it ends on the magazine, not on a fitted
   Flashlight. Decimation's Laser and Flashlight are small flat grey boxes that barely show on the Gunsmith's dark
   backdrop. The OptiFine glass finding above (bug.md).
+- User review (21 Oktober 2026 evening; docs/references/grip_rails.md, bug.md "RK-1 too big and not canted"): the RK-1
+  was too big (1.9 x 3.96 x 1.58 against the Foregrip's 1.0 x 2.7 x 0.8) and is rolled 45 degrees to the gun's left on
+  the reference (end and bottom views), and grips need a rail. RK-1 v2 (grips.py, 51 parts): clamp on the bottom rail,
+  an angled mount, the grip rolled 45 degrees to +z, sized to the Foregrip (2.67 from the rail down, 0.84 thick); the
+  Foregrip is the size baseline of every future grip (user). Rails: gripfit.py RAILED (acr, ak12, ar15, ar15beowulf,
+  aug3, aug3para, the five SCARs, g36c, honeybadger, m110, m4a4, mpt76, hk416, hk416tan, mk18); grip_offsets.txt 244
+  rows (lights keep all 103 guns); gripfit --check also finds a rolled grip's body inside the gun (0 pairs not right).
+  fixes/GripRails answers "may this grip go on this gun" from the table (the Gunsmith's GunParts.fits, NPC rifle
+  loadouts); fixes/GripStrip takes a Foregrip or RK-1 off a rail-less gun in a player's inventory once a second on the
+  server (back to the inventory, else dropped at the feet), never while the Gunsmith is open (its slots are a view of
+  the gun: a mutation run without that guard copied the grip). Dev test attachments "rails:" (5 checks),
+  attachmentsmp "a Foregrip on a rail-less RPK pops off". Measured: dev attachments 27 PASS, gunsmith, glstack; the
+  production client with OptiFine 27 PASS, perf 7 PASS (gun draw none 0.485 ms, Foregrip 0.503, RK-1 v2 0.532 = +0.047,
+  v1 was +0.083; CPU 0.141), glstack 88 cases 0 leaking; dedicated server attachmentsmp 13 PASS.
 - How the budgets were measured (lessons): at the horizon a 1.25x view draws about 4.5 ms more world than a 3.5x one
   (the SpecterDR at 1x read +3.19 ms against the ACOG: the EOTech at 1.25x costs the same), so each mode is compared
   with our sight of its own zoom; looking down from the arena (150 high) a 1.25x view took in the land below (24 ms
