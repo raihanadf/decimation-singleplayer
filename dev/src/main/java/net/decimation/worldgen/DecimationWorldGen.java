@@ -136,6 +136,7 @@ public class DecimationWorldGen
         if (cpw.mods.fml.common.FMLCommonHandler.instance().getSide().isClient())
         {
             net.decimation.fixes.SightPlacement.apply(); // sights onto each gun's rail (sight_offsets.txt)
+            net.decimation.fixes.GripPlacement.apply(); // grips under each gun's handguard (grip_offsets.txt)
         }
         // local kill / death counters for the menu and HUD; the menu's session check calls a
         // Mojang service that no longer answers, so the menu said "Play offline" with an invalid

@@ -1854,6 +1854,104 @@ public final class Deci
         }
     }
 
+    /** The offset (BModel lc, ld, le) of an attachment's model copy for one gun (AttachmentItem.ST), or null. */
+    public static float[] attachmentOffset(Item gun, String attachment)
+    {
+        deci.n.f model = attachmentModel(gun, attachment);
+        if (model == null)
+        {
+            return null;
+        }
+        float[] o = new float[3];
+        String[] names = {"lc", "ld", "le"};
+        try
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                java.lang.reflect.Field f = deci.n.f.class.getDeclaredField(names[i]);
+                f.setAccessible(true);
+                o[i] = f.getFloat(model);
+            }
+        }
+        catch (Exception e)
+        {
+            return null;
+        }
+        return o;
+    }
+
+    /**
+     * The top level parts (BModel.parts, children hang from them) of an attachment's model copy for one gun: name
+     * (ModelRenderer.boxName) to the number of the part's own boxes (BModelPart.jQ), or null when there is no copy.
+     */
+    public static java.util.Map<String, Integer> attachmentPartBoxes(Item gun, String attachment)
+    {
+        deci.n.f model = attachmentModel(gun, attachment);
+        if (model == null)
+        {
+            return null;
+        }
+        java.util.Map<String, Integer> out = new java.util.LinkedHashMap<String, Integer>();
+        try
+        {
+            java.lang.reflect.Field boxes = deci.n.b.class.getDeclaredField("jQ");
+            boxes.setAccessible(true);
+            for (Object p : model.kC)
+            {
+                Object own = boxes.get(p);
+                out.put(((net.minecraft.client.model.ModelRenderer) p).boxName, own instanceof java.util.List ? ((java.util.List<?>) own).size() : 0);
+            }
+        }
+        catch (Exception e)
+        {
+            return null;
+        }
+        return out;
+    }
+
+    /**
+     * Draws a top level part of an attachment's model copy for one gun without its own boxes (its children stay): the
+     * part gets an empty box list (BModelPart.jQ), so call it before the copy is first drawn (its display lists compile
+     * then). True when the part was found.
+     */
+    public static boolean clearAttachmentPartBoxes(Item gun, String attachment, String part)
+    {
+        deci.n.f model = attachmentModel(gun, attachment);
+        if (model == null)
+        {
+            return false;
+        }
+        try
+        {
+            java.lang.reflect.Field boxes = deci.n.b.class.getDeclaredField("jQ");
+            boxes.setAccessible(true);
+            for (Object p : model.kC)
+            {
+                if (part.equals(((net.minecraft.client.model.ModelRenderer) p).boxName))
+                {
+                    boxes.set(p, new java.util.ArrayList<Object>());   // a new list: never the loaded model's own
+                    return true;
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            cpw.mods.fml.common.FMLLog.info("[deciworldgen] attachment part %s of %s not cleared: %s", part, attachment, e);
+        }
+        return false;
+    }
+
+    private static deci.n.f attachmentModel(Item gun, String attachment)
+    {
+        Item a = cpw.mods.fml.common.registry.GameRegistry.findItem("deci", attachment);
+        if (!(a instanceof deci.ay.h) || !(gun instanceof deci.ay.i))
+        {
+            return null;
+        }
+        Object m = ((deci.ay.h) a).ST.get(gun);
+        return m instanceof deci.n.f ? (deci.n.f) m : null;
+    }
+
     /**
      * A new sight attachment (AttachmentItem deci.ay.h, slot sight, all categories) registered as
      * deci:<name>. Decimation looks attachments up by GameRegistry.findItem("deci", name) (the gun's

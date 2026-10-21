@@ -43,7 +43,14 @@ public class AttachmentsTest extends DevTestMode
                 }
                 return true;
             case 1:
-                return recoil(mc);
+                if (!recoil(mc))
+                {
+                    step++;
+                    ticks = 0;
+                }
+                return true;
+            case 2:
+                return placement(mc);
             default:
                 return false;
         }
@@ -116,6 +123,61 @@ public class AttachmentsTest extends DevTestMode
             DevTestResults.value(name(), "recoil: no grip", String.format("up %.3f, sideways %.3f degrees", up0, side0));
             ratio("recoil: Foregrip", sums[1], up0, side0, 1 / 3.0, 1 / 3.0);
             ratio("recoil: RK-1", sums[2], up0, side0, 0.5, 0.25);
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Grips placed per gun (GripPlacement at startup): on the M4A4 Decimation's Foregrip, the Laser and our RK-1 have
+     * their own moved copy (not the one spot for all guns), the Foregrip's parent part without its stray plate; shots of
+     * four grips on their guns in the Gunsmith screen (Decimation's renderer draws them as in the world).
+     */
+    private boolean placement(Minecraft mc)
+    {
+        if (ticks == 1)
+        {
+            Item m4 = (Item) Item.itemRegistry.getObject("deci:m4a4");
+            for (String g : new String[] {"foregrip", "rk1", "laser"})
+            {
+                float[] o = Deci.attachmentOffset(m4, g);
+                DevTestResults.check(name(), "placement: " + g + " moved on the m4a4", o == null ? "the one spot" : String.format("%.2f %.2f %.2f",
+                    o[0], o[1], o[2]), o != null && (o[0] != 0 || o[1] != 0 || o[2] != 0), "its own offset from grip_offsets.txt");
+            }
+            Map<String, Integer> parts = Deci.attachmentPartBoxes(m4, "foregrip");
+            boolean plain = parts != null && Integer.valueOf(0).equals(parts.get("grip"))
+                            && parts.keySet().stream().noneMatch(n -> n.startsWith("ammoModel"));
+            DevTestResults.check(name(), "placement: Foregrip without its stray plate", parts == null ? "no copy" : "own boxes " + parts,
+                                 plain, "{grip=0}: the parent of its 8 parts drawn without its plate, no magazine");
+        }
+        // a grip on two rifles, an SMG and a pistol (the RK-1 and the Foregrip fit rifles only, Decimation's rule)
+        String[][] shots = {{"deci:m4a4", "rk1"}, {"deci:ak74", "foregrip"}, {"deci:ump45", "flashlight"}, {"deci:glock17", "laser"}};
+        int k = (ticks - 5) / 40, t = (ticks - 5) % 40;
+        if (ticks >= 5 && k < shots.length)
+        {
+            final String[] sh = shots[k];
+            if (t == 0)
+            {
+                onServer = () -> {
+                    EntityPlayerMP p = player();
+                    ItemStack gun = new ItemStack((Item) Item.itemRegistry.getObject(sh[0]));
+                    gun.stackTagCompound = new NBTTagCompound();
+                    gun.stackTagCompound.setInteger("ammo", 10);
+                    gun.stackTagCompound.setString("gripAttach", sh[1]);
+                    p.inventory.setInventorySlotContents(0, gun);
+                    p.inventory.currentItem = 0;
+                };
+                mc.thePlayer.inventory.currentItem = 0;
+                net.decimation.worldgen.DevAutoTest.keepScreen = true;
+            }
+            if (t == 8) GunsmithTest.pressAttach(mc);
+            if (t == 34) DevTestUtil.screenshot(mc, name(), "grip_" + sh[1] + "_" + sh[0].substring(5) + ".png");
+            if (t == 36) mc.thePlayer.closeScreen();
+            return true;
+        }
+        if (ticks >= 5)
+        {
+            net.decimation.worldgen.DevAutoTest.keepScreen = false;
             return false;
         }
         return true;
