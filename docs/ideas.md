@@ -207,3 +207,19 @@ User: "for the feat i have more". Notes on what we already have are mine [not an
     loot.md): singleplayer would never reset it, servers a config (on by default, minutes).
 37. **More zombie variants, mutants too**. Related: fixes/InfectedVariants (v0.34.0), ideas 5 to 10 above.
 38. **Achievements from easy to extreme, and secret ones**. Related: item 31 (its UI), LocalStats.
+39. **Trader market: supply and demand, changed each Minecraft day** ("trader now have dynamic market supply and demand,
+    its randomize by day in minecraft"). Related: Decimation's trader offers (docs/decimation_code/traders.md),
+    WorldClock.day() for the day (never getWorldTime() / 24000).
+40. **Attachments with benefits on guns** ("attachemnt can have benefit on guns"): each attachment changes stats
+    (recoil, spread, aim speed, noise...). Today: grips change recoil (fixes/GripRecoil), suppressors noise
+    (fixes/GunNoise), sights zoom; Decimation's own rules otherwise (docs/decimation_code/weapons.md).
+41. **Radiation pills** for radiation sickness. Decimation has no such item [checked in decimation_items.tsv: no rad
+    or iodine item]; its radiation today is only "irradiated" while inside a RADIATION zone without a gas mask, 10 % a
+    tick 1 damage (docs/zones.md RADIATION): a sickness that lasts after leaving would be new.
+42. **Gas mask durability, refilled with a gas mask filter**. Decimation already has the items: deci:gasmask,
+    deci:gasmaskmilitary (ItemGasMaskDeci) and deci:ItemScrapMilitaryGasMaskFilter ("Gas Mask Filter", today scrap, in
+    supply drops only). The mask protects without wear today.
+43. **The wasteland city one radiation zone everywhere** ("wasteland city become full radiation zone on all place"). Each
+    wasteland district is a MILITARY zone today (docs/wasteland.md, city/Wasteland); Decimation's RADIATION zone works in
+    singleplayer since v0.46.0 (fixes/ZoneRules). A place can be in two zone kinds only if the zone lists allow it
+    [not analysed]. Goes with 41 and 42.
