@@ -1859,3 +1859,23 @@ drawing the hand itself); the three glass parts are alike (0.02 thick boxes). No
 runs with the mask off there, or GL feedback returns no polygon (counters inside PatchScope's pass needed: a jar patch).
 Next: those counters, then either the fix of the pass or the box from the matrices in Java (no GL feedback; bug.md
 "Scope: the glass was measured at the hip" already named that as the next step).
+
+## Grips drawn at one spot for every gun (21 Oktober 2026, FIXED on main)
+
+User (21 Oktober 2026, ideas item 26: "in future we may fix grip and laser model since they dont have model on it"):
+Decimation draws every grip slot attachment at one fixed offset for all guns (GunItemRenderer.renderAttachments' grip
+translate, (-3.2, 0.8, 0) model units): on the M4A4 its Foregrip sat on the magazine and the Laser and Flashlight inside
+the handguard (study.py renders). Fixed: tools/guns/gripfit.py measures each gun's underside 40 % of the way from its
+magazine to its muzzle (pistols 62 %) and writes grip_offsets.txt (318 rows: every gun of the jar and our five, each grip
+it takes; `--check` 0 pairs not right); fixes/GripPlacement gives each gun its own moved copy at startup and draws the
+Foregrip's parent without its stray plate (its 8 parts hang from a parent whose own plate sits 7.5 behind them). The
+magazine in foregrip.bmodel (ammoModel1..4) was never drawn: children of an ammoModel0 the file never declares, which
+Decimation's BModelLoader drops; study.py showed it until it did the same. Dev test attachments "placement" checks and
+four Gunsmith shots (docs/shots/attachments_v0.65.0/grip_*.png).
+
+## Our EOTech and ACOG showed raw item names (21 Oktober 2026, FIXED on main)
+
+The EOTech 558 and the ACOG TA11 (fixes/NewSights, v0.41.0) had no lang lines: the game showed "item.eotech558.name"
+and "item.ta11acog.name" (seen in the attachments test's RED run). Named in assets/deciworldgen/lang/en_US.lang with the
+RK-1 and the SpecterDR ("EOTech 558", "ACOG TA11 3.5x", "RK-1 Foregrip", "ELCAN SpecterDR 1x/4x"); dev test attachments
+"items" checks every name.

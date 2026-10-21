@@ -472,6 +472,11 @@ SRG→MCP from the old root `src/` via `mcp_stable/12` CSVs; the root `src/` +
   `PatchModelBatch.java` (same day): BModelPart deci/n/b and BModelQuad deci/n/c: each part's quads captured once at
   compile into one more display list (fixes/ModelBatch), drawn instead of Decimation's two lists of one draw per quad;
   ModelBatch.enabled switches back at run time (dev tests gunbatch, npcdraw);
+  `PatchGripRecoil.java` (21 Oktober 2026, docs/decimation_code/weapons.md section 8): GunItem.clientHeldTick (deci/ay/i
+  .d) turns the view by fixes/GripRecoil's factor for the fitted grip (Foregrip 1/3, RK-1 1/2 up and 1/4 sideways) instead
+  of comparing with Decimation's Foregrip, and GunItemRenderer.renderItem (deci/K/b, on top of PatchScope and
+  PatchIronSights: read dist/Decimation.jar) calms the view kick through GripRecoil.calmsView; it throws unless it finds
+  exactly 2 Foregrip reads, 2 pitch and 2 yaw reads and 1 equals;
   `PatchVehicleArrows.java` (2026-10-11, bug.md vehicle entry): indirect player hits
   (arrows, thrown, TNT) on deci/ad/e take the health path, not pickup;
   `PatchInfectedAI.java` (2026-10-10, docs/performance.md): infected
@@ -1281,6 +1286,20 @@ of the last session:
   yourself when a slot is a view of the held stack (a swap and a click in one tick copied parts); vanilla's
   onContainerClosed drops the cursor and a logout saves the player with the screen open and the cursor unsaved
   (GunsmithContainer.Logout returns it on PlayerLoggedOutEvent, which FML posts before the save).
+  New attachments (21 Oktober 2026, docs/decimation_code/weapons.md section 8, plan and ledger in docs/superpowers): the
+  RK-1 Foregrip (deci:rk1, fixes/NewGrips, Deci.newGripAttachment) and the ELCAN SpecterDR 1x/4x (deci:specterdr; G flips
+  it per gun: fixes/SpecterMode, fixes/SpecterKey; ScopeZoom: our sights never get the black overlay); recoil per grip
+  (GripRecoil, PatchGripRecoil); every grip placed per gun (tools/guns/gripfit.py, rerun it after a new gun or grip like
+  sightfit; fixes/GripPlacement) and drawn from one display list a copy (Deci.BatchedPart). Dev tests attachments (22),
+  attachments perf=true (7), attachmentsmp (12, dedicated server), glstack now with every sight and grip. Traps:
+  Decimation's BModelLoader drops children of a parent the file never declares (foregrip.bmodel's magazine is never
+  drawn; study.py does the same now); a display list must never compile inside another (BatchedPart lets each part
+  compile on a first draw, then compiles its own); BModel copies of attachments are per gun (AttachmentItem.ST) and
+  must be changed before their first draw; compare aimed frame times only between sights of the same zoom (a 1.25x view
+  draws about 4.5 ms more world than a 3.5x one) and look at the sky, in rounds with paired differences (single readings
+  were noise: the same path read -0.61 ms); an aimed bench looking down from the arena (y 150) sees the land below.
+  Found and OPEN: the see-through glass is not updated in the production client with OptiFine for some guns and sights
+  (bug.md; the box PatchScope measures stays 0).
   RELEASE 0.65.0 published 20 Oktober 2026 10:55 (pre-release, the first from the prerelease branch: tag 0.65.0 on
   14830b9; sha256 1c604032..., GitHub's asset digest equal; notes RELEASE_NOTES_0.65.0.md; jar kept in
   dist/previous/onejar-0.65.0). Checked after: public download 251,272,285 bytes, site Download 0.65.0 at 11:11 (ISR

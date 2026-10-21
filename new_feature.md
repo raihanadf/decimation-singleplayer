@@ -7,6 +7,14 @@ Status values: `Done` / `Decided` (direction agreed, not built yet) /
 
 ## Done
 
+### New attachments: RK-1 Foregrip, ELCAN SpecterDR 1x/4x, grips on every gun (21 Oktober 2026, main)
+- User: "we have 2 new attachment: new grip, and 4x scope"; chosen: the SpecterDR with a 1x/4x switch on a key (G),
+  the grip with its own recoil (1/2 up, 1/4 sideways), every grip placed per gun, loot like the 4x and the Foregrip.
+- Spec and plan: docs/superpowers/specs/2026-10-21-new-attachments-design.md, docs/superpowers/plans/
+  2026-10-21-new-attachments.md. Code map, numbers, checks and what is open: docs/decimation_code/weapons.md section 8.
+- Checked: dev client (attachments 22, perf 7), production client with OptiFine (22 + 7, glstack), dedicated server
+  (attachmentsmp 12). Not seen by the user in game yet; carried to prerelease with the docs.
+
 ### Wasteland gates: 5 looks, 8 in 10 shut (14 Oktober 2026, v0.61.0)
 - User on 0.60.2: gates between a wasteland city and its city in about 6 styles, the first a toll gate;
   then 80 % shut so players and mobs cannot pass, 20 % broken open; closures barbed wire with landmines

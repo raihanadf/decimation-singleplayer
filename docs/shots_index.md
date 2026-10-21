@@ -1786,3 +1786,36 @@ Production client with OptiFine HD U E7 (the brother's laptop setup), AKM with t
   stock's butt plate end on (looks taller from perspective: 306 against the side's 258); `top.png` 907 x 107 and
   `bottom.png` 858 x 103 (widths: the scope and the foregrip stick out most); `three_quarter_a/b.png` from 45 degrees
   and above. `sheet.png` shows the 8 scaled to fit (sizes only in views.json). Rerun gave identical sizes.
+
+## attachments_v0.65.0 (21 Oktober 2026, new attachments: docs/decimation_code/weapons.md section 8)
+
+- `rk1_cmp.png` (2406 x 711, study.py renders and the reference): our RK-1 on the M4A4 side on (vertical grip under the
+  handguard rail: clamp, squared neck, round body with a groove panel, ribbed ring, cap; the light grey magazine at the
+  left edge); the tarkovbot close view of the B-25U RK-1 (checkered body, knurled ring, lettered cap; REFERENCE ONLY,
+  Battlestate Games' model); ours three quarter from the front right and from the left below. Rendered at the design spot
+  (x 10.7, before GripPlacement moved it to x 12.2).
+- `specterdr_cmp.png` (2785 x 529): our SpecterDR on the M4A4's rail side on (tube with eyepiece and objective rings, the
+  side lever, the windage knob, the clamp mount with its QD levers); the tarkovbot reference on its ONE mount ("4X" and
+  "1X" marks, "UP" arrow, tethered caps; reference only); ours three quarter from the rear right, the eyepiece glass
+  bluish.
+- `icons.png` (1054 x 256, inventory icons rendered from the models): the RK-1 standing; the SpecterDR; our ACOG TA11
+  (green fibre on top) and EOTech 558 beside them for tone.
+- `grip_rk1_m4a4.png`, `grip_foregrip_ak74.png`, `grip_flashlight_ump45.png`, `grip_laser_glock17.png` (854 x 480, dev
+  test attachments, the Gunsmith screen): each grip as GripPlacement puts it. The RK-1 hangs under the M4A4's handguard in
+  its front part, touching the rail, the line from the "RK-1 Foregrip" box ending at its cap; Decimation's Foregrip is a
+  thin dark grip under the AK-74's lower handguard ahead of the magazine; the Flashlight is a small flat grey box under
+  the UMP45's front (x 562 .. 578, y 168 .. 180; it barely shows on the dark backdrop) while the grip line ends at the
+  magazine's bottom (Silhouette's rule, not the part); the Laser Marker is a flat grey box (48 x 22 px, pixel value 47 on
+  a 50 .. 56 backdrop) under the Glock's dust cover ahead of the trigger guard.
+- `gunview_rk1_m4a4_ak74.png` (sheet of six, dev test gunview attach=rk1): hip, aimed and NPC side views of the M4A4 and
+  the AK-74 with the RK-1; at the hip and aimed the grip is below the frame; in the NPC views it hangs under each
+  handguard ahead of the NPC's left hand. The AK row is red tinted (the test player was at 30 % health).
+- `specter_1x.png`, `specter_4x.png` (854 x 480, dev client, noon, full health): the M4A4 with the SpecterDR aimed. 1x:
+  the eyepiece small in the middle, the reticle (heavy posts, thin cross, red dot) in the glass, the gun below, stone floor
+  to the horizon. 4x: the eyepiece fills the middle third, the reticle in the glass, the stone floor seen through the
+  glass as around it, the gun's body kept (no black sniper overlay).
+- `prod_specter_1x.png`, `prod_specter_4x.png` (the production client with OptiFine, same test): 1x as in dev (the glass
+  pale grey with the reticle). 4x: the glass shows sky and a horizon while the zoomed view around it is stone floor, a
+  picture not taken in that frame: bug.md "See-through glass not updated with OptiFine".
+- `gripfit/attach_glock17_laser_side.png`, `_three.png` (study.py attach, as the game places it): the Laser Marker as a
+  small dark box under the Glock 17's dust cover ahead of the trigger guard, side on and three quarter.

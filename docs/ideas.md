@@ -165,6 +165,11 @@ every item below that is not DONE.
     each shot on the dark and the light backdrop and cut out by equal pixels (exact: no backdrop pixel is equal in both),
     zoomed out 21 wheel steps so the side view fills a third of a 2560 x 1600 frame (perspective eased); the user's Mk47
     preset gave side 846 x 258, top 907 x 107, the same sizes on a second run, and its 13 parts by name.
+    PART BUILT 21 Oktober 2026 (plan docs/superpowers/plans/2026-10-21-new-attachments.md, weapons.md section 8): every
+    grip (Decimation's Foregrip, Laser, Flashlight and our RK-1) placed under each gun's own handguard (gripfit.py,
+    GripPlacement), the RK-1 Foregrip (recoil 1/2 up, 1/4 sideways: GripRecoil, PatchGripRecoil) and the ELCAN SpecterDR
+    1x/4x (G switches it: SpecterMode, SpecterKey), modelled from the user's build's views. Still open from this idea: a
+    laser beam and a flashlight that lights, new laser and flashlight models, more attachments.
 27. **3D gun converter: a model in, a Decimation styled .bmodel out** (user, 21 Oktober 2026, "for long development":
     "later, we can make some private web html that convert 3D guns object as example we use tarkov 3D first and when it
     click 'convert' there is convert tools that generate it to bmodel and minecraft decimation styled"). A private local

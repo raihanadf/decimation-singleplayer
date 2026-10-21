@@ -78,6 +78,10 @@ takes 0.5); a miss used a round and hurt nothing; client and server copies agree
 | armor against NPC shots | fixes/ArmorGunfireHandler (NPC shots use the "human" source, not PacketGunHit) |
 | gunshot noise | fixes/GunNoise |
 | open a body with a gun in hand | fixes/GunUseKey (after Decimation's tick: use key bound while the crosshair is on a corpse or loot body) |
+| grips placed per gun | tools/guns/gripfit.py (grip_offsets.txt; `--check`), fixes/GripPlacement (`Deci.offsetAttachment`, `Deci.clearAttachmentPartBoxes`, `Deci.batchAttachmentParts`: one display list a copy, Deci.BatchedPart); section 8 |
+| recoil per grip | fixes/GripRecoil (Foregrip 1/3, RK-1 1/2 up and 1/4 sideways), tools/patches/PatchGripRecoil.java (GunItem.clientHeldTick, GunItemRenderer.renderItem; three jars) |
+| new attachments | `Deci.newGripAttachment` (fixes/NewGrips: RK-1), `Deci.newSightAttachment` (fixes/NewSights: EOTech 558, ACOG TA11, SpecterDR); models tools/guns/grips.py, tools/guns/sights.py |
+| the SpecterDR's 1x / 4x | fixes/SpecterMode (per gun for the session), fixes/SpecterKey (G), `ScopeZoom.magnificationFor`, `ScopeZoom.overlays` |
 | fit attachments (the I key) | the Gunsmith screen: fixes/gunsmith/GunsmithGuiHandler.java (Decimation's attachments GUI id, `Deci.attachmentsGuiId`, opens our container and screen), GunsmithContainer, GunsmithScreen, GunParts (`Deci.fitsSlot`: Decimation's own FilteredSlot rules); section 7 |
 
 ## 6. Checks
@@ -89,6 +93,10 @@ takes 0.5); a miss used a round and hurt nothing; client and server copies agree
   logout, 8 guns at two sizes, every registered gun's layout, turning and zoom),
   `gunsmith perf=true` (10 checks, section 7), `gunsmithmp server=HOST:PORT` (a joined client on a dedicated server; run
   it last, it leaves for the menu).
+- `attachments` (22 checks: the RK-1 and SpecterDR items, loot, recoil per grip, grips placed per gun, the SpecterDR's
+  switch), `attachments perf=true` (7 checks: draw cost per attachment, aimed frames, GL, allocation; section 8),
+  `attachmentsmp server=HOST:PORT` (12 checks on a dedicated server; run it last), `python3 tools/guns/gripfit.py
+  --check` (every gun and grip pair placed right), `glstack` (every sight and grip on two guns).
 
 ## 7. The Gunsmith screen (21 Oktober 2026, plan docs/superpowers/plans/2026-10-21-gunsmith-screen.md)
 
@@ -210,6 +218,12 @@ takes 0.5); a miss used a round and hurt nothing; client and server copies agree
   133, SpecterDR 4x 225 x 225, EOTech 62 x 48, SpecterDR 1x 70 x 70. SpecterMode.isFour: 0 to 3,224 bytes in 100,000
   calls (a one time cost; it built a string key, 80 bytes a call, before). glstack: 88 gun cases (the SpecterDR and four
   grips on the AKM and M4A4, hip and aimed, first and third person), 0 leaking.
+- scopeperf sight=specterdr (dev, the AKM, 4x): aiming median 8.3 ms, slowest 1 % 17.0 ms, against 8.2 / 16.3 over iron
+  sights; 59 glass measurements while aiming, 0 at the hip; no GL error at five points of every frame; the glass a plain
+  lens again after aiming (100 %). Main's suites after the carry: unit 139, attachments 22, gunsmith 110 (run after
+  attachments in one game), playerfire, scopeperf all PASS; prerelease 8a976c8: unit 60, attachments 22, gunsmith 110
+  (one earlier run there read "measuring: under a frame" 26.7 ms against 8 right after attachments in the same game,
+  M4A4 + 4x, no grip; alone 3.97 ms) [the stall not explained: GC suspected, not verified].
 - Production client with OptiFine HD U E7 (one jar of main's tree, sha256 f0afd86c), same Mac: attachments 22 PASS, perf
   7 PASS: gun draw none 0.540 ms (CPU 0.146), Foregrip 0.550, RK-1 from one list 0.622 = +0.083 (one by one +0.104; the
   first production run, before the one list, read +0.127 and failed the budget), 4x 0.573, ACOG 0.658, SpecterDR 0.617
@@ -223,6 +237,12 @@ takes 0.5); a miss used a round and hurt nothing; client and server copies agree
   the glass shows sky and a horizon while the zoomed view around it is stone floor, a picture not taken in that frame
   [inferred: the full frame copied once when the scope texture was made]. Dev reads real boxes on the same Mac. bug.md
   "See-through glass not updated with OptiFine" [cause not found yet].
+- Open (21 Oktober 2026): the user has not seen the RK-1 or the SpecterDR in game yet; the RK-1 hangs 40 % of the way
+  from the magazine to the muzzle (M4A4 x 12.2, 60 % along the handguard), where the reference build had it at 36 %
+  (x 10.7): one number in gripfit.py (FRONT) if the user wants it further back. The Gunsmith's grip line ends on the
+  lowest point 60 to 80 % along the gun's outline (Silhouette), so on the UMP45 it ends on the magazine, not on a fitted
+  Flashlight. Decimation's Laser and Flashlight are small flat grey boxes that barely show on the Gunsmith's dark
+  backdrop. The OptiFine glass finding above (bug.md).
 - How the budgets were measured (lessons): at the horizon a 1.25x view draws about 4.5 ms more world than a 3.5x one
   (the SpecterDR at 1x read +3.19 ms against the ACOG: the EOTech at 1.25x costs the same), so each mode is compared
   with our sight of its own zoom; looking down from the arena (150 high) a 1.25x view took in the land below (24 ms

@@ -18,6 +18,7 @@ Facts and the verified shot order: docs/decimation_code/weapons.md. Making a gun
 | hit handling on the server | PacketGunHit handler (deci/aE/a$z) |
 | NPC gunfire (not PacketGunHit) | fixes/NpcShots, fixes/ArmorGunfireHandler, the NPC feature |
 | fit attachments (the I key): the Gunsmith screen | fixes/gunsmith/GunsmithGuiHandler.java, `Deci.fitsSlot` (Decimation's rules), doc section 7; tests `gunsmith`, `gunsmith perf=true`, `gunsmithmp` |
+| grips placed per gun, recoil per grip, the SpecterDR's 1x / 4x | doc section 8; fixes/GripPlacement, fixes/GripRecoil, fixes/SpecterMode, fixes/SpecterKey; tests `attachments`, `attachments perf=true`, `attachmentsmp` |
 
 ## Rules
 

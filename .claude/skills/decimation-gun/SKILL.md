@@ -347,6 +347,20 @@ source of truth about the real gun and about how it must look in game.
    (scope glass, attachments, gun parts) runs for EVERY gun drawn, the NPCs' guns in the world
    too; a measurement or state meant for the player's gun must be limited to the player's hand
    draw. The aim tests (`aimdrift`, by default with an elite sniper NPC in view) cover this.
+25. Grips sit under each gun's own handguard (user, 21 Oktober 2026: "Placed per gun, every gun"). Decimation draws every
+   grip slot attachment at one spot for all guns; fixes/GripPlacement moves a copy per gun from grip_offsets.txt. After a
+   new gun or a new grip run `python3 tools/guns/gripfit.py`, then `--check` (0 pairs not right), like sightfit for
+   sights; a new grip goes into gripfit.py GRIPS (with its category: rifle grips never fit SMGs or pistols) and study.py
+   ATTACH_SLOT. Build a grip in GUN space for the M4A4 (bottom rail y -1.30, handguard x 8.5 .. 14.7, centre z -0.15) and
+   shift it into the file by the grip translate (-3.2, 0.8, 0) (tools/guns/grips.py).
+26. An attachment from a Tarkov build (user, 21 Oktober 2026): `refcapture.py --fill` for close views, sizes from the
+   part's ratio to the gun it sits on in the reference (the RK-1 is 1.81 times the M4A4 handguard's height), checked on
+   the M4A4 with `sights.check` / `grips.py --check` (study.with_attachments, at most 3 unseated parts); show the
+   comparison renders before registering.
+27. Measure what an attachment costs (CLAUDE.md "Every feature: optimized before done"): `attachments perf=true` draws
+   the held gun once more a frame per attachment with glFinish around (GPU included) and the CPU part. Decimation's grips
+   have 5 to 9 parts, its sights 7 to 68; ours 56 (RK-1, drawn from one display list) and 92 to 117 (sights). Aimed frame
+   times compare only sights of the same zoom, at the sky, in paired rounds (case 23).
 
 ## Revision casebook (never delete a case; look here first)
 
@@ -755,6 +769,28 @@ revision (same commit), never remove old ones.
 - Follow up (v0.43.2, user: "maybe the bug appear in change"): `aimdrift
   changes=ak74:reddot,m4a4:2x,ak74:ta11acog` swaps gun / sight while aiming, 6 s each; each
   settles and stays on screen (docs/shots/aimdrift_v0.43.2/sheet_changes.png).
+
+### Case 23: RK-1 Foregrip and ELCAN SpecterDR 1x/4x, grips on every gun (21 Oktober 2026)
+- Request (user): "we have 2 new attachment: new grip, and 4x scope"; chosen: the SpecterDR with a 1x/4x switch on G,
+  the grip with its own recoil (1/2 up, 1/4 sideways), every grip placed per gun, loot like the 4x and the Foregrip.
+- References: the user's tarkovbot build (Mk47 with a B-25U RK-1 and a SpecterDR on a ONE mount), close views by
+  refcapture --fill (docs/shots/refcapture_v0.65.0/my_preset_close). Models: tools/guns/grips.py rk1 (56 parts),
+  tools/guns/sights.py specterdr (95 parts, reticle in the glass, sightfit rows); renders compared side by side
+  (docs/shots/attachments_v0.65.0/rk1_cmp.png, specterdr_cmp.png).
+- Placement problems met (gripfit.py): ammunition ahead of the muzzle (RPG-7 rocket, crossbow bolt) took the front part
+  to 45 % of the gun; the G36C's magazine reaches x 13.7, so the grip steps forward until clear of it; Decimation's
+  Foregrip hangs its 8 parts from a parent with a stray plate 7.5 behind them (the copies draw the parent without its
+  boxes); the magazine in foregrip.bmodel is never drawn (BModelLoader drops children of an undeclared parent: study.py
+  showed it until it did the same); the fit and the check had different footprints until both used underside().
+- Recoil: PatchGripRecoil's first pass recorded bytecode offsets across replacements and found 2, 1, 2 reads: one
+  ordered ExprEditor pass with state instead ("each Foregrip read arms the next two recoil reads").
+- Performance: the RK-1 drew +0.127 ms part by part in the production client (about 80 % handing calls to the driver):
+  grip copies draw from one display list (Deci.BatchedPart; 0 of 4,637 pixels differ) +0.083; the SpecterDR draws
+  cheaper than the ACOG; at 1.25x the frame draws about 4.5 ms more world (compare with the EOTech, not the ACOG).
+- Found: the see-through glass is not updated in the production client with OptiFine for some guns and sights (bug.md,
+  OPEN; the SpecterDR's 4x relies on that glass).
+- Check: dev tests attachments (22), attachments perf=true (7), attachmentsmp (12), glstack; shots in
+  docs/shots/attachments_v0.65.0/. Not seen by the user in game yet.
 
 ### Case 8: test traps met on the way (dev test gunview)
 - No gun in the shots: F1 (hideGUI) hides the held item too; first

@@ -126,7 +126,8 @@ docs/gun_model_spec.md); every user review goes into its lessons and casebook.
    on request with the user's photos.
 4. **NPC loot system**: under "NPCs and combat" (the sniper nerf is done, v0.42.5).
 5. **Gunsmith screen** (docs/ideas.md 25): BUILT 21 Oktober 2026, waiting for the user's look in game (press I with a
-   gun). Next on it: idea 26, the full attachment update (grip, laser and flashlight models on every gun, new attachments).
+   gun). Next on it: idea 26, the full attachment update; its first part is built (below): grips placed per gun, the
+   RK-1 and the SpecterDR. Left: laser beam, flashlight light, new laser and flashlight models, more attachments.
 
 ## UI
 
@@ -263,6 +264,11 @@ menu, a survivor partner who follows the player and carries the gear the player 
    ElevenLabs or Freesound MCP for sounds (API keys).
 
 ## Recently done (details in bug.md / new_feature.md)
+
+- 21 Oktober 2026: new attachments (docs/decimation_code/weapons.md section 8): the RK-1 Foregrip (recoil 1/2 up and 1/4
+  sideways) and the ELCAN SpecterDR 1x/4x (G switches it), modelled from the user's tarkovbot build; every grip placed
+  under each gun's own handguard and drawn from one display list; measured in the dev client, the production client
+  with OptiFine and on a dedicated server (dev tests attachments, attachments perf=true, attachmentsmp).
 
 - 21 Oktober 2026: the Gunsmith screen (Tarkov style, mockup A) replaces Decimation's crafting style attachment screen:
   the held gun in 3D, six slots joined to their parts, click to fit from the whole inventory, Decimation's own rules;
