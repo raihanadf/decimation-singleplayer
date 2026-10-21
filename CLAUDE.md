@@ -66,7 +66,11 @@ together in 1.0.0, so no jar a player downloads before 1.0.0 may hold multiplaye
   attachments (RK-1, SpecterDR 1x/4x, recoil per grip, grips per gun from one list; dev tests attachments and
   attachmentsmp; 8a976c8: needed there because the shared base jar's PatchGripRecoil calls GripRecoil), the user's
   review of them (RK-1 v2, grips and sights only on their mounts, MountStrip, kept sight positions SightMemory and dev
-  test aimdelay: 55b5fa8, be01288, beb4103, 99813b0).
+  test aimdelay: 55b5fa8, be01288, beb4103, 99813b0), the updater's Accept header (e4fc4ca, released 0.66.1), and on
+  22 Oktober 2026 the bugfix agent's fixes (prop hardness b4241f5, inventory shift click 16fdd6f, Foregrip seat
+  7541706) and features 1 to 4 (armor 1db8fee, NPC tracer colours 31a8411, loot magazine rounds 3276b01, magazine
+  unload and our channel e63e59b, 419ec46). Carries touching DecimationWorldGen / DevAutoTest: apply without those two
+  files and add the registration lines by hand (prerelease lacks main's hosting and cape lines, 3-way merges conflict).
   A NEW CHECKOUT'S RUN FOLDER needs the content: `cp dist/config/decimation_worldgen/*.schematic
   dev/run/client/config/decimation_worldgen/` (lc and large too when missing). StructureGenerator.generate returns at
   once while no small schematic is loaded ("0 schematic(s) ready" in the log), and that also stops cities, refuges, camps

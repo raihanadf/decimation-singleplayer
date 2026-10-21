@@ -131,3 +131,6 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [x] bug: foregrip floated on all 19 railed rifles: seated by its body, not its clamp tabs (branch bugfix, bug.md)
 - [x] bug: 6 props broke with one punch: fixes/PropHardness (branch bugfix, bug.md; ropes left as they are)
 - [ ] ideas 28 to 52 (docs/ideas.md, user 22 Oktober 2026): design talk first
+- [x] features 1 to 4 (armor vs NPCs, NPC tracer colours, loot magazine rounds, magazine unload) on main and prerelease
+- [ ] production client and dedicated server check of the magazine unload channel before the next release
+- [ ] user: ropes stay one click? shift click into a worn backpack before the row swap? (bug agent's questions)
