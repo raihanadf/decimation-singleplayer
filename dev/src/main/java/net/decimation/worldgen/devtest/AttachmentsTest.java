@@ -25,10 +25,9 @@ public class AttachmentsTest extends DevTestMode
 
     private int ticks, step, grip;
     private volatile Runnable onServer;
-    /** Recoil per grip (none, Foregrip, RK-1): summed rotation and summed PlayerData recoil, pitch and yaw. */
+    /** Recoil per grip (none, Foregrip, RK-1): the view's turn up and sideways in one recoil tick. */
     private static final String[] GRIPS = {"", "foregrip", "rk1"};
     private final double[][] sums = new double[GRIPS.length][4];
-    private float lastPitch, lastYaw;
 
     public boolean client(Minecraft mc)
     {
@@ -61,61 +60,63 @@ public class AttachmentsTest extends DevTestMode
     }
 
     /**
-     * Each grip in turn: an M4A4 with 30 rounds and that grip in the hand, looking level, one shot (Deci.fireHeldGun,
-     * the mouse's path), then for 30 ticks the view's turn against PlayerData's recoil of the same ticks (the random
-     * side kick cancels out). The ratios against no grip are the grip's factors (spec section 2).
+     * Each grip in turn on an M4A4 in the hand: a known recoil (1000 up, 1000 sideways) set in PlayerData, then one run
+     * of Decimation's own GunItem.clientHeldTick, the code that turns the view (Deci.runClientHeldTick: no sway or
+     * server sync in between). It keeps 4 % of the recoil and turns the view by it, divided by the grip's factor: 40 x
+     * the factor up and sideways. The ratios against no grip are the factors (spec section 2). A real shot cannot be
+     * measured: its turn is that small 4 % and Decimation's view sway moves the view more per tick (seen).
      */
     private boolean recoil(Minecraft mc)
     {
         if (ticks == 1)
         {
-            final String g = GRIPS[grip];
             onServer = () -> {
                 EntityPlayerMP p = player();
                 ItemStack gun = new ItemStack((Item) Item.itemRegistry.getObject("deci:m4a4"));
                 gun.stackTagCompound = new NBTTagCompound();
                 gun.stackTagCompound.setInteger("ammo", 30);
-                gun.stackTagCompound.setString("gripAttach", g);
                 p.inventory.setInventorySlotContents(0, gun);
                 p.inventory.currentItem = 0;
-                p.playerNetServerHandler.setPlayerLocation(p.posX, p.posY, p.posZ, p.rotationYaw, 0);
             };
             mc.thePlayer.inventory.currentItem = 0;
         }
         if (ticks == 20)
         {
             ItemStack held = mc.thePlayer.getHeldItem();
+            Deci.Player d = Deci.player(mc.thePlayer);
+            for (int g = 0; g < GRIPS.length; g++)
+            {
+                if (held == null || held.stackTagCompound == null || d == null)
+                {
+                    break;
+                }
+                held.stackTagCompound.setString("gripAttach", GRIPS[g]);
+                mc.thePlayer.rotationPitch = 0;
+                d.setRecoil(1000, 1000);
+                float p0 = mc.thePlayer.rotationPitch, y0 = mc.thePlayer.rotationYawHead;
+                try
+                {
+                    Deci.runClientHeldTick(held, mc.thePlayer);
+                }
+                catch (Exception e)
+                {
+                    DevTestResults.value(name(), "recoil tick failed", String.valueOf(e));
+                }
+                sums[g][0] = p0 - mc.thePlayer.rotationPitch;
+                sums[g][2] = y0 - mc.thePlayer.rotationYawHead;
+                sums[g][1] = sums[g][3] = 1;
+                d.setRecoil(0, 0);
+                mc.thePlayer.rotationPitch = 0;
+            }
             if (held != null && held.stackTagCompound != null)
             {
-                held.stackTagCompound.setString("gripAttach", GRIPS[grip]); // the client copy may lag the server's
+                held.stackTagCompound.setString("gripAttach", "");
             }
-            mc.thePlayer.rotationPitch = 0;
-            Deci.fireHeldGun(mc.thePlayer);
-            lastPitch = mc.thePlayer.rotationPitch;
-            lastYaw = mc.thePlayer.rotationYawHead;
-        }
-        if (ticks > 20 && ticks <= 50)
-        {
-            Deci.Player d = Deci.player(mc.thePlayer);
-            double[] s = sums[grip];
-            s[0] += lastPitch - mc.thePlayer.rotationPitch;
-            s[1] += d == null ? 0 : d.recoilPitch();
-            s[2] += Math.abs(mc.thePlayer.rotationYawHead - lastYaw);
-            s[3] += d == null ? 0 : Math.abs(d.recoilYaw());
-            lastPitch = mc.thePlayer.rotationPitch;
-            lastYaw = mc.thePlayer.rotationYawHead;
-        }
-        if (ticks == 55)
-        {
-            grip++;
-            ticks = 0;
-            if (grip == GRIPS.length)
-            {
-                double up0 = sums[0][0] / Math.max(1e-9, sums[0][1]), side0 = sums[0][2] / Math.max(1e-9, sums[0][3]);
-                ratio("recoil: Foregrip", sums[1], up0, side0, 1 / 3.0, 1 / 3.0);
-                ratio("recoil: RK-1", sums[2], up0, side0, 0.5, 0.25);
-                return false;
-            }
+            double up0 = sums[0][0], side0 = sums[0][2];
+            DevTestResults.value(name(), "recoil: no grip", String.format("up %.3f, sideways %.3f degrees", up0, side0));
+            ratio("recoil: Foregrip", sums[1], up0, side0, 1 / 3.0, 1 / 3.0);
+            ratio("recoil: RK-1", sums[2], up0, side0, 0.5, 0.25);
+            return false;
         }
         return true;
     }

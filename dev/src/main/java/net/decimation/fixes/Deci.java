@@ -119,6 +119,17 @@ public final class Deci
         return new deci.f.k(inv, deciIndex, 0, 0, parent).isItemValid(part);
     }
 
+    /**
+     * One run of GunItem.clientHeldTick (d, private) for a held gun: the client's per tick gun work, where Decimation
+     * turns the view by the player's recoil (dev test attachments calls it right after setting a known recoil).
+     */
+    public static void runClientHeldTick(ItemStack gun, net.minecraft.entity.player.EntityPlayer player) throws Exception
+    {
+        java.lang.reflect.Method m = deci.ay.i.class.getDeclaredMethod("d", ItemStack.class, net.minecraft.entity.player.EntityPlayer.class);
+        m.setAccessible(true);
+        m.invoke(gun.getItem(), gun, player);
+    }
+
     /** The gun's grip slot attachment (GunItem.getGripAttachment, J), or null. */
     public static Item gripAttachment(ItemStack gun)
     {
@@ -304,6 +315,8 @@ public final class Deci
         public float recoilPitch() { return data.cs(); }
         /** getRecoilYaw (ct): the sideways part. */
         public float recoilYaw() { return data.ct(); }
+        /** setRecoilPitch (j) / setRecoilYaw (k). */
+        public void setRecoil(float pitch, float yaw) { data.j(pitch); data.k(yaw); }
         /** addHumanity (I). */
         public void addHumanity(int n) { data.I(n); }
         /** removeHumanity (J). */
