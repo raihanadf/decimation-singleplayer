@@ -10,27 +10,63 @@ not something we introduced or need to fix) see `documentation.md`.
 
 ## Open
 
-### Inventory: no shift click (reported 22 Oktober 2026 by the user, OPEN, not analysed)
+### Inventory: no shift click (reported 22 Oktober 2026 by the user, FIXED on branch bugfix)
 - User: "fix where inventory cannot shift + click for fast item organize since decimation use custom design instead using
   vanilla, shift click to armor is same so user need to take one by one on inv slot not like vanilla where you can fast
   put armor with shortcut shift click".
-- Where to look [not analysed]: Decimation's inventory and loot screen (PlayerInventoryScreen deci/g/g, its container's
-  transferStackInSlot; docs/decimation_code/menus.md and items.md for the gear slots). Vanilla's shift click is
-  Container.transferStackInSlot; a container that returns null there makes shift click do nothing. Armor and
-  Decimation's gear slots (vest, backpack, mask) need their own rules. Check item loss and duplication (full inventory,
-  both sides, a dedicated server).
+- Cause (decompiled PlayerGearContainer deci/f/d): transferStackInSlot returns null, so vanilla's shift click moves
+  nothing, in every part of the screen (armor, mask / vest / backpack, worn backpack, loot area).
+- Fix, no jar patch: Deci.GearContainer (PlayerGearContainer with transferStackInSlot sent to fixes/InventoryShift).
+  The server gets it from InventoryShift.Handler, a wrapper of Decimation's GUI handler installed after the Gunsmith's
+  (GUI_LOOT only); the client screen builds its own container in initGui, InventoryShift.Client swaps it on
+  InitGuiEvent.Post (same slots from Decimation's setupSlots, same window id), so the client predicts the move too.
+  Rules: from the inventory first onto the body (armor slot, then Decimation's mask, vest, backpack slots; only empty
+  slots, each slot's own isItemValid: Decimation's armor slots refuse vests and masks), then into a worn backpack, then
+  the other row (main to hotbar, hotbar to main); from armor, gear, backpack or loot into the inventory, main rows first.
+  Equal stacks merge first, slot limits kept, nothing moves when nothing fits. Off switch InventoryShift.enabled
+  (-Ddeciworldgen.invshift=false).
+- Checks: dev test `invshift` (11 cases through PlayerControllerMP.windowClick mode 1, items counted before and after,
+  client slots equal to the server's, client prediction): `fix=off` (Decimation's containers) 21 FAIL, then 46 PASS (helmet
+  on and off, hotbar helmet, vest, gas mask, backpack, 20 into a worn backpack, 10 onto a hotbar 60 = 64 + 6, 40 out of
+  the loot area, a full inventory leaves the helmet on, a full backpack taken off keeps its 20). Dedicated dev server
+  (`invshiftmp`, client joins localhost:25576): 17 PASS (the inventory key opens the screen with shift click, helmet,
+  vest, mask, backpack, stack into the backpack, helmet back off; 24 items in every step, none on the ground). Unit test
+  InventoryShiftTest.
+- Not verified: the production client with OptiFine and a release jar on the production server (only the dev
+  dedicated server); a window resize while the screen is open (Decimation's initGui then makes a container with window
+  id 0, an old Decimation behaviour we copy, not fixed) [not verified]. Open question for the user: with a backpack worn,
+  a shift click from the inventory goes into the backpack before the other row (like a chest); say if the row swap
+  should come first.
 
-### Foregrip invisible on some guns, the grip looks like it floats (reported 22 Oktober 2026 by the user, OPEN)
-- User: "foregrip on some gun is invicble so its looks flying below". Which guns: not given yet (ask, or shoot every
-  railed rifle with each grip: dev test attachments placement shots, gunview attach=foregrip).
-- Suspects [not analysed]: Decimation's Foregrip hangs its 8 parts from a parent "grip" whose plate the copies draw
-  without boxes (GripPlacement.STRAY); a gun whose rail lies above the grip's seat leaves a gap; the batched copy
-  (Deci.BatchedPart) on a gun where a part's first draw state differs.
+### Foregrip looked like it floated under the gun (reported 22 Oktober 2026 by the user, FIXED on branch bugfix)
+- User: "foregrip on some gun is invicble so its looks flying below". Swept in game (dev test `gripsweep`: every gun and
+  grip pair of grip_offsets.txt in the Gunsmith screen): every one of the 19 Foregrip pairs, not some; the RK-1 sat
+  right on all 19. Shots docs/shots/grip_float_v0.65.0/.
+- Cause: Decimation's foregrip.bmodel has two clamp tabs (grip_1, grip_2: 0.2 long, 0.1 tall) 0.3 above the grip's
+  body. gripfit.py's seat() took the widest part at the grip's top, the tabs, so the tabs touched the rail and the body
+  hung 0.35 to 0.4 below it; the tabs are too small to see, so the grip looked like it floated. study.py draws the same
+  (study_m110_foregrip_before.png): not a drawing fault. Ruled out in game: BatchedPart off and ModelBatch off draw the
+  same; Decimation's own copy at its one spot (AKM, no row) has the same gap.
+- Fix: gripfit.py CLAMP / bearing(): the Foregrip is seated by its body (the tabs sink into the rail); fit and check both
+  use it; grip_offsets.txt rewritten (19 Foregrip rows 0.4 higher, nothing else changed).
+- Checks: `gripfit.py --check` with the new seat on the old table: 19 pairs not right ("floats: 0 of 7 places touch,
+  gaps 0.35 ..") (RED), on the new table 0 (GREEN); gripsweep after: each Foregrip touches its handguard
+  (foregrip_after.png, m110_before_after.png); `attachments` 30 PASS; unit suite 155 PASS.
+- Not verified: lights (laser, flashlight) on all 103 guns were not shot in game (their models have no such tabs and the
+  check passes them); the production client [not verified]; NPC held views [not verified].
 
-### Some props still break with one punch (reported 22 Oktober 2026 by the user, OPEN)
-- User: "fix some props that still can be easly destroyed by one click hand". Which props: not given. Earlier: military
-  wrecks (hardness 0, fixed v0.42.5 by fixes/WreckHardness). Find every Decimation block with hardness 0 (a dump over
-  the block registry: Block.getBlockHardness) and give props a hardness like BlockProp's 10 [not analysed].
+### Some props still broke with one punch (reported 22 Oktober 2026 by the user, FIXED on branch bugfix)
+- User: "fix some props that still can be easly destroyed by one click hand".
+- Found by dev test `hardness` (every block of deci and deciworldgen set in the arena, a survival empty hand asked
+  getPlayerRelativeBlockHardness as onBlockClicked does; table run/client/devtest/hardness.tsv): 8 of 277 break with one
+  click, all hardness 0: BlockStreetBarrier, BlockBarrierTall, BlockMetalShelf, BlockMetalShelf_Empty (multiblock
+  BlockContainers, like the wrecks before WreckHardness), BlockElevator and BlockElevatorButton (elevator), BlockRope
+  and BlockRopeTop (climbing rope). Everything else takes at least 0.4 hardness (several clicks held).
+- Fix: fixes/PropHardness (init, after WreckHardness) gives every deci / deciworldgen block of hardness 0 BlockProp's
+  10, except MEANT_TO_BREAK: the two ropes (a player's own climbing tool, taken down with a click like vanilla string).
+- Checks: hardness RED "8: BlockElevatorButton BlockStreetBarrier BlockMetalShelf BlockElevator BlockRope BlockRopeTop
+  BlockMetalShelf_Empty BlockBarrierTall", GREEN 0; the dev dedicated server logs the same 6 set to 10; unit test
+  PropHardnessTest. Open question for the user: should ropes stay one click (now) or get a ladder's 0.4?
 
 ### Cape in first person: drawn in front of the camera (reported 22 Oktober 2026 by the user, FIXED, user checked in game)
 - A player with a cape (Mojang account cape; OptiFine capes go the same way) saw it in front of himself in first

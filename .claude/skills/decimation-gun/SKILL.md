@@ -856,3 +856,12 @@ revision (same commit), never remove old ones.
   after --stop.
 - A stray NPC killed the test bandit: kill other living entities during
   the NPC phase; a Soviet target makes the bandit turn its side.
+
+### Case 26: the Foregrip floated under every rail (user, 22 Oktober 2026)
+- User: "foregrip on some gun is invicble so its looks flying below". All 19 Foregrip pairs, not some: gripfit seated
+  the grip by its widest top part, Decimation's two clamp tabs (0.2 x 0.1), which sit 0.3 above the grip's body; the
+  tabs touched the rail, too small to see, and the body hung 0.35 to 0.4 below.
+- Fix: gripfit.py CLAMP / bearing(): seat a grip by a part that can be seen to bear (the Foregrip's body); the tabs go
+  into the rail. Table rewritten, `--check` RED 19, GREEN 0; dev test gripsweep shows every pair in game.
+- Rule for any attachment placed by a fit: the bearing face must be visible; tiny tabs or jaws are not a seat, and a
+  check that reuses the same seat cannot catch it, so look at every pair in game once (gripsweep).

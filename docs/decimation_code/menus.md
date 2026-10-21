@@ -18,7 +18,7 @@ own HUD (conditions, zone and turf banners, ammo, compass, gas mask view) with t
 | GuiEulaAgreement, GuiIntroBoehModLogo, GuiIntroJumpscare (deci/i/b, c, d) | first start EULA, boot intros |
 | UpdateChecker (net/decimation/mod/common/utils/h) | `isUpdateRequired` (gI): "Play" or "Update"; `tickVersionCheck` (gH, empty since PatchNoVersionFetch: it fetched a dead file every 60 s); our PatchNoUpdate answers through fixes/Updater |
 | DeciScreen (deci/d/i), MenuPanel, ScrollPanel (deci/d/l), PanelElement, DeciButton | the menu toolkit (all methods named in m_methods_rest.tsv) |
-| PlayerInventoryScreen (deci/g/g) | the inventory with gear slots and the loot area (GUI_LOOT) |
+| PlayerInventoryScreen (deci/g/g) | the inventory with gear slots and the loot area (GUI_LOOT); its PlayerGearContainer (deci/f/d) answers shift click with null: our Deci.GearContainer / fixes/InventoryShift takes its place on both sides (slots 0..3 armor, 4..30 main, 31..39 hotbar, 40 backpack, 41 mask, 42 vest, then the worn backpack, then loot; dev tests invshift, invshiftmp) |
 | TraderScreen (deci/g/q), BankerScreen (deci/g/c), AttachmentScreen (deci/g/a), LockpickingScreen (deci/g/k) | trader, banker, gun attachments (writes the attachment NBT), lockpicking minigame |
 | IngameHud (deci/g/j) | singleton HUD: conditions, stats, compass and zone info, turf banner and chat line, ammo; `render` once a frame |
 | ToastNotification (deci/b/b), TipPopup (deci/b/d), BlockTipLayer | sliding notices, one time tips (kept in a local file), floating hints over blocks |
