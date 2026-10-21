@@ -1312,6 +1312,11 @@ of the last session:
   "measure every Nth draw" mask never hit the hand's draw; ScopeZoom counts frames itself and sets the mask to 0 only
   around its own hand draw. Trap: never key per frame work to a counter that other draws of the same model advance;
   dev test scopediag (`extra=N` adds draws a frame) checks the glass gets measured.
+  Scope aim delay (user, same day: "sometime it has delay"): profiled with dev test `aimdelay` (time to 95 % zoom, worst
+  frame; first, learned and relaunched aims): no stall, the first aim of each gun and sight in every launch waited for
+  ScopeZoom to learn the sight (ACOG 431 ms against 187). fixes/SightMemory keeps learned positions between launches
+  (config/deciworldgen_sights.txt, per build). scopediag's default sight is the ACOG (Decimation's red dot has no
+  measured glass draws).
   RELEASE 0.65.0 published 20 Oktober 2026 10:55 (pre-release, the first from the prerelease branch: tag 0.65.0 on
   14830b9; sha256 1c604032..., GitHub's asset digest equal; notes RELEASE_NOTES_0.65.0.md; jar kept in
   dist/previous/onejar-0.65.0). Checked after: public download 251,272,285 bytes, site Download 0.65.0 at 11:11 (ISR

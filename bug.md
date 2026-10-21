@@ -1927,3 +1927,20 @@ the client's empty slot]. Run aimdrift in a game of its own (or before scopediag
   rail-less gun goes back to the inventory or the ground, once a second, never while the Gunsmith is open).
 - Checks: unit GripRailsTest, dev attachments "rails:" checks (RED 4, GREEN 5; the Gunsmith guard proven by a mutation
   run), gunsmith, glstack; attachmentsmp's pop-off on the dedicated server.
+
+## Scope aim sometimes slow to zoom in (user 21 Oktober 2026, FIXED on main)
+- User: "the scope aiming still need more optimizing cause sometime it has delay on it. due to loading the scope render".
+- Profiled first (new dev test `aimdelay`: time from the aim to 95 % of the zoom, worst frame, frames over 50 ms; first
+  aim with ScopeZoom's learned sights forgotten, then a second aim). Dev: ACOG 3.5x 431 ms first against 187 ms
+  learned, SpecterDR 4x 382 / 200, Decimation's 2x 339 / 183, 1.25x sights 166 both; production client with OptiFine
+  375 / 193, 392 / 193, 351 / 178. No stall anywhere (worst frame 37 ms, none over 50 ms): nothing is loaded late.
+- Cause: ScopeZoom holds the zoom at 1.5x on the first aim of each gun, sight and window shape until it has measured
+  where the sight sits (10 settled samples, measured every 2nd frame), at most 1.5 s; the learned positions lived for
+  the session only, so every launch waited again on every gun and sight, longer at lower frame rates.
+- Fix: fixes/SightMemory keeps learned positions in config/deciworldgen_sights.txt (lines "gun|sight|aspect x y", a file
+  of another build ignored), read on ScopeZoom's first frame, written when a sight becomes learned. Only the very first
+  aim of a gun and sight ever (per window shape and build) still waits.
+- Checks: unit SightMemoryTest (3); aimdelay "after a relaunch zooms like a learned sight" RED (366 ms against at most
+  266) then GREEN on all 5 pairs (166 to 193 ms); aimdrift, scopeperf, scopediag PASS; production client with OptiFine:
+  relaunch aims 167 to 194 ms, all 5 PASS, scopediag 38 measurements in 300 frames. scopediag's default sight is now
+  the ACOG: with Decimation's red dot it counted 0 glass draws (that sight needs no measuring: 1.25x is under the hold).

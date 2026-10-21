@@ -338,3 +338,18 @@ IOAccelerator). Check "no Decimation texture loaded at arrival". Switches for co
   [idea, not built].
 - Left: about 1,100 part compiles in the first frame when a whole refuge appears at once (the test's worst case); in play
   residents come within the client's 80 block entity range one by one [inferred].
+
+## 11. Scope aim delay (21 Oktober 2026)
+
+- Report (user): "the scope aiming still need more optimizing cause sometime it has delay on it. due to loading the
+  scope render". Suspects before measuring: the glass texture allocated on the first aim (glCopyTexImage2D), the
+  reticle texture's first bind, the sight model's display list compiled on its first draw, ScopeZoom's learning hold.
+- Probe: dev test `aimdelay` (devtest/AimDelayTest; `pairs=gun:sight,...`): per pair a first aim (ScopeZoom's learned
+  sights forgotten), a second aim, and an aim after a relaunch (kept sights read back); per aim the time until the zoom
+  is 95 % in, the worst frame in the first second and the frames over 50 ms.
+- Found: no stall (dev worst 27 ms, production with OptiFine 37 ms, none over 50 ms): nothing loads late. The delay is
+  the learning hold: magnified sights took about twice as long on the first aim of every launch (dev ACOG 431 / 187 ms,
+  SpecterDR 382 / 200, 2x 339 / 183; production 375 / 193, 392 / 193, 351 / 178; 1.25x sights 166 both, under the hold).
+  At lower frame rates it is longer (10 samples every 2nd frame, at most 1.5 s).
+- Fix: fixes/SightMemory (bug.md "Scope aim sometimes slow to zoom in"): after a relaunch every pair zooms like a learned
+  sight (dev 166 to 193 ms).
