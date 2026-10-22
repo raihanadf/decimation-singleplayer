@@ -69,7 +69,7 @@ together in 1.0.0, so no jar a player downloads before 1.0.0 may hold multiplaye
   test aimdelay: 55b5fa8, be01288, beb4103, 99813b0), the updater's Accept header (e4fc4ca, released 0.66.1), and on
   22 Oktober 2026 the bugfix agent's fixes (prop hardness b4241f5, inventory shift click 16fdd6f, Foregrip seat
   7541706) and features 1 to 4 (armor 1db8fee, NPC tracer colours 31a8411, loot magazine rounds 3276b01, magazine
-  unload and our channel e63e59b, 419ec46; unload v2, one round a sneaking click like Decimation's loading in reverse, ed9fe9c; looted guns hold rounds cb940c1; radiation dose on the HUD 62a059f, its test fixes 4e4b85c; no Steve (Decimation skins by name, corpses) c3cb6a1). Carries touching DecimationWorldGen / DevAutoTest: apply without those two
+  unload and our channel e63e59b, 419ec46; unload v2, one round a sneaking click like Decimation's loading in reverse, ed9fe9c; looted guns hold rounds cb940c1; radiation dose on the HUD 62a059f, its test fixes 4e4b85c; no Steve (Decimation skins by name, corpses) c3cb6a1; DayZ dark nights and real moon phases 787a955). Carries touching DecimationWorldGen / DevAutoTest: apply without those two
   files and add the registration lines by hand (prerelease lacks main's hosting and cape lines, 3-way merges conflict).
   A NEW CHECKOUT'S RUN FOLDER needs the content: `cp dist/config/decimation_worldgen/*.schematic
   dev/run/client/config/decimation_worldgen/` (lc and large too when missing). StructureGenerator.generate returns at
