@@ -1805,5 +1805,8 @@ lineup photo zombies_v0.34.0. Not seen by the user in game yet
   reads the caps before and after a trade message and queues it, the server thread checks the item against the trader's
   offers and moves the pressure (no world data or offer lists touched off the server thread). Rerun: market (15 of 15
   counted) and trade PASS, suite 280.
+- Third round (same night): with the trader check off the network thread, a class list reset by a new trader object held
+  base prices until the next server tick; now the watcher drops any trade message whose price is not one of today's for
+  that item (a read of the day's table, swapped whole at each refresh) before Decimation sees it (TraderMarketTest 8).
 - Not verified: the tooltips in the trader screen (no shot: the screen opens through Decimation's dialogue); a dedicated
   server with a joined client (the table and the trade watcher there); the production client.
