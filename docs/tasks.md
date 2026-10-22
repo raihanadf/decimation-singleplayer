@@ -141,7 +141,7 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [x] feature 8 specific mobs at specific places (idea 35): table config/deciworldgen_places.json, natural infected spawns become the place's mobs; branch bugfix, dev test placespawns 29 of 29; production client and dedicated server still to run
 - [x] gun converter milestone 1, converter side: page, converter, packages ak47 (CC0) and akmc (CC BY), 73 unit tests, page smoke test (branch gunconv-tool, docs/gunconv.md)
 - [ ] gun converter later: anatomy labels for one material files, details the source lacks, more guns and kinds (docs/gunconv.md section 7)
-- [x] gun converter milestone 2: dataset of Decimation guns (labeller 83 %; merged into main 22 Oktober 2026, in game check pending), exemplar areas, like gun icons, report per gun (docs/gunconv.md section 10)
+- [x] gun converter milestone 2: dataset of Decimation guns (labeller 83 %; merged into main 22 Oktober 2026; in the dev client akmc aims as the akm, reload 30; the user's look pending), exemplar areas, like gun icons, report per gun (docs/gunconv.md section 10)
 - [x] gun converter, game side milestone 1 (branch gunconv-game): gun packages load data driven (fixes/gunpack), agent 1's akmc held, aimed, fired, reloaded, carried by an NPC in the dev client
 - [ ] gun converter next: production client with OptiFine, the user's look in game, a release with a package (both branches merged into main 22 Oktober 2026)
 - [x] features 1 to 4 (armor vs NPCs, NPC tracer colours, loot magazine rounds, magazine unload) on main and prerelease

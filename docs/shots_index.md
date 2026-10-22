@@ -1944,6 +1944,10 @@ pixels a unit.
   theme, the source white, ours in tones); exported with the package file list and gaps table (full page); dark theme
   with a lighter canvas and the like gun outline over ours; light theme, three quarter, part colours; the AKM GLB
   uploaded, source in its own materials beside the conversion; the rear view of both.
+- ingame_m2_gunview.png (main session, after the milestone 2 merge): dev client gunview of Decimation's akm, akmc and
+  ak47 (hip, aim, NPC): akmc's hip and aim match the akm closely (rear sight block and front post with ears in aim), ak47
+  darker and plainer, its NPC holds it as the akm. The red tint in the top two rows and akmc's empty NPC frame are test
+  noise: a survivor NPC shot the test player during the run ("Developer was shot by a survivor").
 
 ## gunpack_v0.66.1 (22 Oktober 2026, 3D gun converter game side, milestone 1; dev client 854 x 480)
 - gunpack_held.png: dev test gunpack, first person hip: akmc ("AKM Converted", agent 1's first converted rifle: dark
