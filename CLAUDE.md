@@ -501,6 +501,9 @@ SRG→MCP from the old root `src/` via `mcp_stable/12` CSVs; the root `src/` +
   of comparing with Decimation's Foregrip, and GunItemRenderer.renderItem (deci/K/b, on top of PatchIronSights: read
   dist/Decimation.jar) calms the view kick through GripRecoil.calmsView; it throws unless it finds
   exactly 2 Foregrip reads, 2 pitch and 2 yaw reads and 1 equals;
+  `PatchDurabilityBars.java` (23 Oktober 2026, new_feature.md "Durability v2"): GunItem (deci/ay/i, on top of
+  PatchGripRecoil and PatchGunWear: read dist/Decimation.jar) and ItemGasMaskDeci get Forge's showDurabilityBar /
+  getDurabilityForDisplay, answered by fixes/DurabilityBars (gun wear, mask filter): vanilla's own bar on their icons;
   `PatchVehicleArrows.java` (2026-10-11, bug.md vehicle entry): indirect player hits
   (arrows, thrown, TNT) on deci/ad/e take the health path, not pickup;
   `PatchInfectedAI.java` (2026-10-10, docs/performance.md): infected
@@ -1358,6 +1361,15 @@ of the last session:
   tools/patches/PatchGunWear.java on GunItem (three jars, on top of PatchGripRecoil): its calls catch
   NoClassDefFoundError because the base jar is shared by every checkout. Trap: Decimation's reload key field is named
   "do", a Java keyword (Deci.reloadKey reads it by reflection). Dev test durability.
+  Durability v2 (23 Oktober 2026, user): native bars on gun and gas mask icons (PatchDurabilityBars, fixes/DurabilityBars),
+  the gun's durability line back in its tooltip, vests worn by every shot and every zombie hit, the radiation percent
+  centred (RadiationHud.textX), NPC tracers Decimation's GENERIC near white on every shot (NpcLoadouts.withTracer).
+  Traps: Decimation's ClientEventHandler.onItemTooltip clears the tooltip of guns, magazines and food at NORMAL priority
+  and registers after us, so our lines for those items go in at EventPriority.LOW; the harness closes client screens
+  with displayGuiScreen(null), which never tells the server: DevAutoTest now closes a container a mode left open on the
+  server and records "server screen left open" (radset leaves Decimation's gear container); a test that sets the held
+  slot on the server must select it on the client too (mc.thePlayer.inventory.currentItem), the saved world may hold
+  another.
   Test trap (same day): a mode that switches the player to survival must put the game mode back (the world saves it);
   zombies, which assumed creative, had its player killed by a hulk and read nothing. Set weather strengths too
   (setRainStrength), not only the raining flag: isDaytime() counts the fading rain.

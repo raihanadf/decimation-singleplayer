@@ -1877,3 +1877,27 @@ Spec docs/superpowers/specs/2026-10-23-gun-mesh-design.md; everything in docs/gu
   (production); graphics memory no step at the first draw.
 - Not done: the user's look in game, a release with a package; prerelease gets nothing (the gun package loader is main
   only).
+
+## Durability v2: icon bars, the gun tooltip, vests (23 Oktober 2026, user)
+- User: "for gun show durability on hover, and the icon gun item has progress bar in there showing durability like native
+  progress bar. vest armor still doesnt affected when hit by zombie or shot"; "for gas mask, you better add durability
+  progress on it, so user know remaning the durability".
+- Bars: Forge's own bar (RenderItem.renderItemOverlayIntoGUI asks Item.showDurabilityBar / getDurabilityForDisplay) on
+  guns by wear and gas masks by filter left. tools/patches/PatchDurabilityBars.java adds both methods to GunItem (deci/ay/i,
+  on top of PatchGripRecoil and PatchGunWear) and ItemGasMaskDeci (three jars), answered by fixes/DurabilityBars
+  (Durability.barShown / barFraction). As on a vanilla tool the bar shows once something is used up; a worn out gun or an
+  empty filter shows the empty track. Armor and vests had vanilla's bar already (item damage). Guns do not mirror their
+  wear into item damage: Decimation's traders refuse a damaged item.
+- Tooltip and vests: bug.md (Decimation wiped our gun line; vests now wear on every shot and on zombie hits).
+- Checks (dev client): durability 27 PASS (bars: worn gun 0.5, half filter 0.5, empty filter 1.0, full filter none, new
+  gun none, vest 0.5; tooltip line; vest wear and its client copy), radiation 16, radset 39, tracer 3, glstack, gun: 88
+  PASS.
+  Hotbar picture docs/shots/durability_v0.70.0/bars_hotbar_4x.png. Cost: two tag reads for each drawn gun or mask, no
+  allocation [inferred from the code; not timed].
+
+## NPC tracers white again (23 Oktober 2026, user)
+- User: "oh yeah pls make the npc shot white tracer again, just changing the color only, the tracer each shot still intact".
+- NpcLoadouts.withTracer gives every NPC Decimation's GENERIC (8, #FFF6E8, the near white Decimation drew NPC shots in)
+  and replaces the random colours saved since 22 Oktober 2026 when the NPC loads; a gun with a colour id draws a tracer on
+  every shot, so that stays.
+- Checks: unit NpcTracerTest; dev test tracer "every shot a white tracer" RED ({GREEN=81}) then GREEN ({GENERIC=79}).

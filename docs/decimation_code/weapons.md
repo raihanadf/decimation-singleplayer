@@ -88,7 +88,12 @@ takes 0.5); a miss used a round and hurt nothing; client and server copies agree
 
 - NPC tracer colour: Decimation's PacketGunFireEffects handler picks GENERIC (40 %) or INVIS, unless the held gun has a
   tracer colour (NBT tracerColorID, GunItem.getTracerColor; its setTracerColor writes "tracerColor", a key nothing reads).
-  Our NPCs carry one each (NpcLoadouts.withTracer, 22 Oktober 2026).
+  Our NPCs carry one each (NpcLoadouts.withTracer, 22 Oktober 2026), GENERIC since 23 Oktober 2026 (user: white again,
+  every shot): an id on the gun draws on every shot.
+- Tooltips: Decimation's ClientEventHandler.onItemTooltip (deci/c/c, NORMAL) clears the tooltip of guns, magazines and
+  food and writes its own; our lines for those items go in at EventPriority.LOW (GunWearClient), or Decimation wipes them.
+- Durability bars: Forge draws a tool's bar from Item.showDurabilityBar / getDurabilityForDisplay; PatchDurabilityBars
+  adds both to GunItem and ItemGasMaskDeci, answered by fixes/DurabilityBars (gun wear, mask filter).
 
 ## 6. Checks
 

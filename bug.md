@@ -10,6 +10,42 @@ not something we introduced or need to fix) see `documentation.md`.
 
 ## Open
 
+### Gun durability gone from the tooltip; vests not worn by zombies, only one body piece by a shot (reported 23 Oktober 2026 by the user, FIXED on main)
+- User: "for gun show durability on hover ... vest armor still doesnt affected when hit by zombie or shot. only armor
+  affected, fix that."
+- Tooltip cause: Decimation's ClientEventHandler.onItemTooltip (deci/c/c, NORMAL priority) clears the tooltip of guns,
+  magazines and food and writes its own lines. At one priority Forge calls listeners in registration order: Decimation
+  registers at init, our GunWearClient at preInit, so Decimation's clear ran after our durability line and wiped it (the
+  RED run: 18 lines ending with Decimation's weight line "13%"). Fix: GunWearClient.onTooltip at EventPriority.LOW, the
+  gun's durability laid out as Decimation lays out its entries (a blank line, "Durability", the value in red).
+- Vest causes: a shot wore only the one of vest and chest piece that counted (ArmorGunfireHandler.wear); melee wear is
+  Forge's ArmorProperties.ApplyArmor, which knows only the four armor slots, while the vest lives in Decimation's player
+  data. Fix: a shot wears boots, legs, chest piece and vest by 1 (the helmet on a headshot); meleeLast wears the vest by
+  Forge's wear of a piece of its points (Durability.meleeWear), stopping on its maximum. The client sees it through
+  Decimation's player data sync (PacketSyncPlayerData every 6 ticks carries the vest stack).
+- Checks: dev test durability RED (chest 0 after a shot, a zombie hit left the vest 3 to 3, no Durability line) then
+  GREEN 27 PASS with "the client sees the vest's wear"; unit DurabilityTest (meleeWear). The same run also showed a test
+  flaw: the test set the gun's hotbar slot on the server only, and the saved test world had another slot selected on
+  the client, so its shots never fired; it now selects slot 0 on the client as pressing 1 does.
+
+### Radiation percent not centred on its icon (reported 23 Oktober 2026 by the user with a screenshot, FIXED on main)
+- Cause: RadiationHud drew the percent from 2x + 17 at half scale, Decimation's own start for its percents, which
+  centres only a text as wide as "100%"; shorter texts sat left (-2.5 half pixels for "49%"). Fix: RadiationHud.textX
+  (2x + 30 less half the text's width). Decimation's food, water, blood and health percents keep their own start, so a
+  short value of theirs ("40%" on the health cross) still sits a little left: not changed (user's call).
+- Checks: unit RadiationHudTest; dev test radiation "percent centred on the icon" RED -2.5 then GREEN; shot
+  docs/shots/durability_v0.70.0/radiation_half.png.
+
+### Dev tests left a server screen open (found 23 Oktober 2026 in the 0.70.0 checks, FIXED in the harness)
+- Seen: radset failed 6 checks after a long batch in the production client, 8 when run again alone in the same game, and
+  passed 40 of 40 in a fresh game. Its filter wear and fitting run only while the server sees no screen open.
+- Cause: DevAutoTest closes client screens with displayGuiScreen(null), which never tells the server (Esc sends
+  C0DPacketCloseWindow), so a container a mode opened stayed open there; radset itself leaves Decimation's gear
+  container (Deci$GearContainer) open, so a second radset in one game failed.
+- Fix: after each mode the harness looks at the player's container on the next server tick, records "server screen left
+  open" with its class and closes it as Esc would (EntityPlayerMP.closeScreen). Not a player bug: Esc and the inventory
+  key send the close packet [inferred from vanilla's closeScreen].
+
 ### Inventory: no shift click (reported 22 Oktober 2026 by the user, FIXED on branch bugfix)
 - User: "fix where inventory cannot shift + click for fast item organize since decimation use custom design instead using
   vanilla, shift click to armor is same so user need to take one by one on inv slot not like vanilla where you can fast

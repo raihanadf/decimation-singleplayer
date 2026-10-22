@@ -171,3 +171,6 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [ ] sprint stamina (docs/ideas.md 58)
 - [ ] personal skills upgraded with points in a UI (docs/ideas.md 59)
 - [ ] random events at places announced to the player: helicopter crash with hard infected, survivor camp with a task giver and a trader (docs/ideas.md 60, big; quests milestone 0.80)
+- [x] durability v2 on main: bars on gun and gas mask icons, the gun tooltip's durability line, vests worn by shots and zombie hits, radiation percent centred, NPC tracers white again (dev client 88 PASS)
+- [~] release 0.70.0: carry durability v2 to prerelease, third candidate, production client and update checks
+- [ ] more clothing slots (docs/ideas.md 61)

@@ -354,4 +354,7 @@ User: "for the feat i have more". Notes on what we already have are mine [not an
     a place and the player is told there is one there; examples: a helicopter crash guarded by hard infected to kill;
     a survivor camp of 3 to 5 people where one gives a task and another trades. Belongs with the quests milestone
     (docs/roadmap.md "Version milestones", 0.80; docs/superpowers/specs/2026-10-22-events-quests-design.md, draft).
+61. **More clothing slots** (user, 23 Oktober 2026: "in future, we can have more clothing slot feat"): more worn gear
+    slots than Decimation's armor, mask, vest and backpack (not designed yet; which slots, what each gives, the gear
+    screen's layout).
 

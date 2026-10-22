@@ -2087,3 +2087,17 @@ pixels a unit.
   its splat). Earlier colours (dark red only) did not show on black uniforms.
 - wounds_b.png: infected B after four hits while the player looked over its head (random spots): a big splat across
   the chest and one on a sleeve.
+
+## durability_v0.70.0 (23 Oktober 2026, dev test durability and radiation, dev client 854 x 480; new_feature.md "Durability v2")
+- `bars_full.png`: the whole frame of the durability test's "bars" shot (arena, rain, the M4A4 in hand, the hotbar).
+- `bars_hotbar.png`, `bars_hotbar_4x.png`: the hotbar enlarged. Slot 1 the held M4A4 with a short red bar (wear 1125 of
+  1500 after the repair check), slots 2 to 4 the repair parts (no bar), slot 5 an M4A4 half worn (yellow bar at half),
+  slot 6 a gas mask with half a filter (yellow at half), slot 7 a gas mask with an empty filter (only the dark track),
+  slot 8 a gas mask with a full filter (no bar), slot 9 a Military Vest half worn (yellow at half, vanilla's own bar). The
+  bars look like vanilla's tool bars. The chat above shows the repair test's messages.
+- `radiation_half.png`: right edge of the radiation test's "inside_half" shot, 3x: Decimation's apple, water and blood
+  with "100%", the health cross with "40%" (Decimation's own start, a little left), our trefoil left of it with "49%"
+  centred on it.
+- `radiation_more_lines.png`: the same from the "two_more_lines" shot (two more stats lines push the column down):
+  every icon lower, health "100%", the trefoil left of it with "34%" centred on it.
+

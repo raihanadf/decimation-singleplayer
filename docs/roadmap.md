@@ -13,7 +13,8 @@ A version number marks a milestone, a set of features with their fixes, not one 
 smaller releases sit in between (0.70.1, 0.71 ...).
 - **0.70.0** (next release, name proposed "Scavenger"): everything carried to prerelease since 0.66.1: loot rules A B C,
   looted mags and guns with rounds, magazine unload, the radiation set and dose HUD, dark nights and moon phases,
-  durability and repair parts, the trader market by day, mobs by place, NPC tracer colours, armor x 0.8 against NPCs,
+  durability and repair parts (bars on gun and gas mask icons, vests worn by every hit), the trader market by day, mobs
+  by place, a tracer on every NPC shot (Decimation's near white), armor x 0.8 against NPCs,
   no Steve, inventory shift click, prop hardness, foregrip seat. Not in it: the gun converter's mesh guns (the package
   loader is main only), multiplayer.
 - **0.80**: quests (docs/superpowers/specs/2026-10-22-events-quests-design.md, draft).
@@ -252,7 +253,7 @@ a short design talk each first:
 1. DONE 22 Oktober 2026 (new_feature.md): Armor against NPC fire 20 % weaker (46): each piece's protection x 0.8 (a piece blocking 50 % blocks 40 %), helmets
    too; player shots unchanged.
 2. DONE 22 Oktober 2026 (new_feature.md): NPC tracers (34): each armed NPC one random tracer colour for life (Decimation's tracer colours), every NPC shot a
-   tracer; player guns unchanged.
+   tracer; player guns unchanged. 23 Oktober 2026 (user): white again, Decimation's GENERIC on every NPC, still every shot.
 3. DONE 22 Oktober 2026 (new_feature.md): Looted magazines (45): 1 round to full, weighted toward half full, rarely full, never empty.
 4. DONE 22 Oktober 2026 (new_feature.md): Unload a magazine (44): shift + right click takes one round out, Decimation's loading backwards (v2 same day, user),
    the round into the inventory (dropped if full); held, one every 4 ticks.
