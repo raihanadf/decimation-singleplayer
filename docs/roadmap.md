@@ -271,6 +271,8 @@ Agent rules: our channel's message ids from 32 up (this session from 2), no grap
   docs/superpowers/specs/2026-10-22-gun-converter-design.md; agent 1 (converter, ../Decimation-gunconv-tool, branch
   gunconv-tool), agent 2 (game side, ../Decimation-gunconv-game, branch gunconv-game); milestone 1 one CC0 / CC BY rifle
   end to end. The user asked for Tarkov's models through an API: declined (public repository and releases).
+  Milestone 1, converter side DONE 22 Oktober 2026 (branch gunconv-tool, docs/gunconv.md): tools/gunconv page and
+  converter, packages ak47 (CC0, the milestone rifle) and akmc (CC BY) in build/gunconv/out; game side open (agent 2).
 
 docs/ideas.md: more crate / loot block types, crate levels 1 / 2 / 3 with richer loot per level (user
 13 Oktober 2026, item 17; goes behind the wasteland's locked doors first), more military NPC outfits, a sniper bandit egg, harder

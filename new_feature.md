@@ -1390,3 +1390,20 @@ lineup photo zombies_v0.34.0. Not seen by the user in game yet
   run: the hit and shot hooks are the same server code as in singleplayer; the R rack rides Net message 3 like
   message 0, which channelmp checked there].
 
+
+## 3D gun converter, milestone 1: the converter (22 Oktober 2026, idea 27, agent 1, branch gunconv-tool)
+- User, 21 and 22 Oktober 2026: a private page that converts a 3D gun model into a Decimation styled gun; two agents
+  (converter, game side), first milestone one rifle end to end. Spec docs/superpowers/specs/2026-10-22-gun-converter-
+  design.md; how it works, results, limits: docs/gunconv.md.
+- Built: tools/gunconv (meshio.py readers for GLB, glTF, OBJ and Blockbench .bbmodel; fit.py axes, pieces, cross
+  sections, Decimation shape kinds; match.py Decimation's guns as references: like gun, alignment, palette, anatomy;
+  convert.py the pipeline and command line; package.py the gun package and study.py's gaps; edit.py the reshapes;
+  server.py and web/ the private page on 127.0.0.1 with three.js 0.160.0). Sources: docs/references/gunconv_sources.md.
+- Packages (build/gunconv/out, git ignored): ak47 from Lamoot's CC0 "High poly AK-47" (the milestone rifle, 205
+  parts, like akm, 2 of 19 study.py metrics outside Decimation's rifle range, 2 parts not seated) and akmc from
+  J-Toastie's CC BY 3.0 "AKM" (153 parts, 2 of 19 outside, 7 not seated).
+- Checks: 73 unit tests (RED first for every step); the page driven with agent-browser (sample loaded, converted, a part
+  selected, moved by one step, reshaped, dropped, undone, exported, the 8 files on disk; a GLB uploaded and converted;
+  both colour themes; no page errors).
+- Found on the way: study.py's renders were scaled by the gun's part count (bug.md, fixed).
+- Not done here: the game side (agent 2: register, aim, fire, reload, grips, NPCs, gunperf). Not verified in game.

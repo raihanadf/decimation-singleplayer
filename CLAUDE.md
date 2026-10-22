@@ -190,6 +190,9 @@ Knowledge index:
   Decimation guns (tools/guns/study.py renders them from the jar, no
   game; dataset docs/references/decimation_guns.tsv): shape box parts,
   part counts, sizes, octagon / curve / panel recipes, dark flat tones.
+- `docs/gunconv.md`: the 3D gun converter (tools/gunconv: private local page on 127.0.0.1, converter, gun packages
+  for the game side in build/gunconv/out; study.py reads a package through STUDY_OURS). Sources:
+  docs/references/gunconv_sources.md (CC0 / CC BY only, credited).
 - `docs/military_base.md`: US FOB style military bases (reference research,
   layout of the three sizes, prop mapping, code map, how to test).
 - `docs/prop_placement.md`: READ BEFORE PLACING ANY DECIMATION PROP FROM CODE.
