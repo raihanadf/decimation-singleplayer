@@ -224,16 +224,26 @@ User: "for the feat i have more". Notes on what we already have are mine [not an
     tick 1 damage (docs/zones.md RADIATION): a sickness that lasts after leaving would be new.
     Decided 22 Oktober 2026 (user): a pill takes 40 percentage points off the radiation dose at once (fixes/RadiationDose,
     feature 5); found in medical loot. Built by the agent on branch bugfix (feature 7).
+    Built 22 Oktober 2026 (new_feature.md "Radiation set"): deciworldgen:radiation_pills (fixes/RadiationPills), used
+    like Decimation's Pain Killers (4 a stack, 32 ticks of use, its syringe sounds), in medical crates like Vitamin
+    Capsules; dev test radset.
 42. **Gas mask durability, refilled with a gas mask filter**. Decimation already has the items: deci:gasmask,
     deci:gasmaskmilitary (ItemGasMaskDeci) and deci:ItemScrapMilitaryGasMaskFilter ("Gas Mask Filter", today scrap, in
     supply drops only). The mask protects without wear today.
     Decided 22 Oktober 2026 (user): a filter wears only while its wearer is in radiation, about 10 minutes a filter; an
     empty filter protects no more until a new Gas Mask Filter is fitted (right click it). Agent, feature 7.
+    Built 22 Oktober 2026 (fixes/GasMaskFilter): 12000 ticks a filter in the worn mask's tag, "Filter: N%" in the
+    tooltip, an empty filter lets our dose rise and gets Decimation's zone damage, Decimation's HUD then says
+    "Irradiated"; fitting through our channel (message 32), one filter used; filters in military and police loot (one
+    entry each, as rare as a gas mask).
 43. **The wasteland city one radiation zone everywhere** ("wasteland city become full radiation zone on all place"). Each
     wasteland district is a MILITARY zone today (docs/wasteland.md, city/Wasteland); Decimation's RADIATION zone works in
     singleplayer since v0.46.0 (fixes/ZoneRules). A place can be in two zone kinds only if the zone lists allow it
     [not analysed]. Goes with 41 and 42.
     Agent, feature 7 (user wish as written: the whole wasteland city one radiation zone).
+    Built 22 Oktober 2026 (city/WastelandRadiation): two kinds on one place work (each zone check asks one kind,
+    docs/zones.md section 2); one RADIATION box over each wasteland sector (older worlds: each district), older worlds
+    get theirs at load.
 44. **Unload a magazine with shift + right click** (its rounds back as ammo). Related: fixes/Magazines (v0.35.0),
     Decimation's magazine items keep rounds in NBT (docs/decimation_code/weapons.md).
 45. **Magazines from loot hold a random number of rounds** ("all mag loot have variaty capacity ammo inside it").

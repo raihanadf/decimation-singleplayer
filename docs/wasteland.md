@@ -49,6 +49,7 @@ DEADZONE_RANGE (2) cells of a military sector (LcCity.style). On top:
 | Fence (v0.56.0) | On the land round the wasteland city (EdgePlan.grade, WastelandFence), by Chebyshev distance d to it: d 4 chain link (iron bars 3 high) between dark metal posts every 4 with barbed wire on top, d 5 barbed wire at the foot every second cell, d 6 to 16 Decimation's landmines (about 1 in 28 columns: entities "deci.Landmine", go off under a player, power 4, no block damage); every street running out of the district goes on through a gate (the street to d 9, striped barriers across the road at the fence between taller posts, a stone guard booth with windows and a metal door on the sidewalk inside: one = military post, both sides = toll gate) | WastelandFence, Deci.newLandmine |
 | Bunker (v0.56.0) | DeceasedCraft's bunker (underground, a trapdoor hatch): a 5 x 5 stone brick blockhouse over the hatch with the locked door and a keycard screen; every container military, up to 8 more (weapon cabinets, ammo cases, military crates); a mob spawner cage breeding infected in the military outfit (Garrisons.onJoin within 6 blocks); 5 posts manned by juggernauts and elite military on the first visit (within 40 blocks), each post once its chunk is loaded, never despawning, each guard kept near its post by a home area (since v0.64.3, docs/airport.md section 12) | BuildingDress.bunker / blockhouse, worldgen/Garrisons, StructureData lists "!gar_<id>" |
 | Name | Unchanged since v0.52.0: "City: Wasteland - n", controlled by Military | city/CityNames |
+| Radiation (22 Oktober 2026, feature 7) | The whole wasteland city is also a RADIATION zone (user: "wasteland city become full radiation zone on all place"): in worlds with whole sector wasteland cities one box over the sector (256 x 256, every height), in older worlds one over each district (the military box's ground). Added with the district's military zone (marker `!wr_s<rx>_<rz>` or `!wr_<gx>_<gz>`); a world from before gets its boxes at load (every wasteland military zone without radiation over its middle). Both kinds apply at once (docs/zones.md section 2): military looks and rules unchanged, Decimation's radiation (irradiated flag, about 1 damage a second without a working gas mask) and our dose on top. Gas mask filters wear only here and in other radiation zones (10 minutes a filter); filters are in military and police loot, radiation pills in medical crates (new_feature.md "Radiation set"). Players only: garrisons and NPCs are unaffected | city/WastelandRadiation, Wasteland.zone |
 
 Crates are never stacked: a military crate is drawn 1.15 high, one on another overlaps it by 0.15
 (propclash reports from 0.15).
@@ -60,6 +61,8 @@ Crates are never stacked: a military crate is drawn 1.15 high, one on another ov
   `Wasteland.setLayout`). An older world would get buildings cut at the edge of its generated chunks.
 - Everything else (zone, dressing, loot, NPC rules) applies to chunks generated from now on in any
   world; the NPC rules to the whole district at once (they follow from the seed).
+- The radiation zone (22 Oktober 2026) applies to every world, older ones included: it adds zones only, no blocks, so
+  WastelandRadiation gives a loaded world the boxes its wasteland military zones lack (one pass over our zones at load).
 
 ## 3. Code map
 - `city/Wasteland`: district test (`chunk`, `at`), the world flag, `weight`, `zone`, `streetSpot`.
@@ -74,11 +77,13 @@ Crates are never stacked: a military crate is drawn 1.15 high, one on another ov
   `force` (dev test only) with `Wasteland.previewLot` writes a lot with a chosen scene into the world.
 - `fixes/NpcLoadouts.military` (public), `fixes/MilitarySpawner` (street spots, 16 tries).
 - `ZoneStore.has` (dev tests), devtest `WastelandTest` (mode `wasteland`).
+- `city/WastelandRadiation` (22 Oktober 2026): the radiation box per sector or district (`box`, `marker`), `add` (called
+  by Wasteland.zone), `upgrade` (world load, lowest priority, after ZoneStore); devtest `RadSetTest` (mode `radset`).
 
 ## 4. How to test
 - Server (no game window): `python3 tools/servertest.py 1 type=decimation dress pregen=-64,192,12`
   (seed 1's wasteland districts lie around x -256..127, z 128..255). Log lines: "wasteland military
-  zone", "dress zone entry", "dress military vehicle / convoy", "dress fighting position", "dress lot
+  zone", "wasteland radiation zone" (one a sector, or "(a world from before)" at load), "dress zone entry", "dress military vehicle / convoy", "dress fighting position", "dress lot
   military", "wasteland loot NAME: n containers military, m kept", "dressed building ... wasteland".
 - `python3 tools/props/dressbalance.py build/server.log`: wasteland buildings are their own rows (w).
 - Blocks: `tools/props/worlddump.py` + `propclash.py` on the district, diff against v0.53;

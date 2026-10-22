@@ -50,6 +50,17 @@ built while `itemSplint` was still null. SplintItem's use time is static too (th
   gunfire": a chest of x0.552 gives x0.642.
 - Helmets: ItemArmorDeci multipliers skip the helmet on player gunshots; our fixes/ArmorGunfireHandler counts helmets
   on headshots for NPC fire (CLAUDE.md v0.9.1).
+- Gas masks (ItemGasMaskDeci, deci:gasmask and deci:gasmaskmilitary, 1 a stack, damageable 255) protect by the ITEM in
+  every check Decimation makes (PlayerData.tick radiation damage, IngameHud "Protected", ClientEventHandler tint, tear
+  gas). The worn mask lives in PlayerData (getMask); Decimation's gear screen puts that same stack object in its mask
+  slot (PlayerGearContainer, PlayerExtraInventory), and a slot update for it on the client clears the cursor and
+  rebuilds the slots (PlayerExtraInventory.markDirty sees a new object): never change the worn mask's tag while a
+  screen is open (fixes/GasMaskFilter waits). The mask goes to the client with its tag in PacketSyncPlayerData.
+- Decimation's pills (Pain Killers, Vitamin Capsules) are HealingSyringeItem / DrugSyringeItem: 4 a stack, block pose,
+  32 ticks of use, "deci:item.syringe.open" at most every 8 s (PlayerData.isLongTimerElapsed), on finishing the
+  effect, one used and "deci:item.syringe.use" on the server, a green chat line on the client. A held button takes the
+  next one of the stack right after (vanilla's repeat). The Gas Mask Filter (deci:ItemScrapMilitaryGasMaskFilter) is
+  an ItemDescribed (8 a stack, "Sold to scrap traders") with no use of its own.
 
 ## 5. How our mod uses it
 
@@ -60,8 +71,11 @@ built while `itemSplint` was still null. SplintItem's use time is static too (th
 | armor against NPC fire | fixes/ArmorGunfireHandler, fixes/Protection (draft table) |
 | item dump with loot chances | dev test `items` -> docs/references/decimation_items.tsv |
 | our own items | fixes/NewGuns, fixes/Magazines, fixes/NewSights, NPC and zombie eggs; lang in assets/deciworldgen/lang |
+| a medical item of ours used like Decimation's | fixes/RadiationPills (deciworldgen:radiation_pills): `Deci.actionTimerElapsed`, `Deci.markActionTime`, `Deci.medicalTab` |
+| the worn mask, gas masks, the filter | `Deci.playerMask`, `Deci.isGasMask`, `Deci.wearsGasMask` (filter left too), `Deci.gasMaskFilter`, `Deci.markPlayerDataDirty`; fixes/GasMaskFilter |
 
 ## 6. Checks
 
 - `python3 tools/devtest.py --live useitems`: bandage twice, splint, bottled water (7 checks).
 - `checks`: armor and helmets against NPC fire; `items`: the item dump.
+- `python3 tools/devtest.py --live radset`: radiation pills, gas mask filters, their loot (36 checks).

@@ -135,7 +135,7 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [x] feature 10 armor, vest and gun durability with repair parts (ideas 47, 48): main, production client with OptiFine, prerelease
 - [ ] feature 12 loot rules, lootable props, loot kinds, Tarkov search (ideas 29, 36, 49, 50, decided): this session
 - [~] 3D gun converter (idea 27): two agents, milestone 1 one rifle end to end (spec 2026-10-22-gun-converter-design.md)
-- [~] feature 7 radiation set (ideas 41 to 43, decided: pill -40 points, filters wear only in radiation, 10 min): agent on branch bugfix
+- [x] feature 7 radiation set (ideas 41 to 43, decided: pill -40 points, filters wear only in radiation, 10 min): branch bugfix, dev test radset 36 of 36; merged into main; production client and dedicated server still to run
 - [x] features 1 to 4 (armor vs NPCs, NPC tracer colours, loot magazine rounds, magazine unload) on main and prerelease
 - [x] looted guns hold rounds (1 in 2, like loot magazines; idea 53) on main and prerelease
 - [x] feature 5 radiation dose on the HUD (idea 30): main, prerelease, production client with OptiFine, dedicated server

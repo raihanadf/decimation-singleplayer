@@ -53,6 +53,10 @@ Dev test `loot` step 3 right clicks a placed `deci:BlockMilitaryCrate` through t
 
 - Magazines in the lists carry no NBT and fill themselves to capacity on their first tick in an inventory
   (AmmoItem.onUpdate); fixes/LootMagazines gives looted ones random rounds right after the roll (22 Oktober 2026).
+- An entry's weight is its ITEM's (LootChanceItem, OwnedItem, ItemArmorDeci getLootChance, else 0.9: `Deci.lootWeight`),
+  the same in every list; the "xN" of docs/references/decimation_items.tsv is the entry's stack size, not a count. Our
+  Gas Mask Filters (weight 0.5) joined the military and police lists, Radiation Pills (0.9) the medical list, one entry
+  each (22 Oktober 2026, dev test radset rolls each crate 10000 times).
 
 ## 4. Singleplayer state
 

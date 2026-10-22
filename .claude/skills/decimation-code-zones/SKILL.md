@@ -34,3 +34,5 @@ docs/decimation_code/singleplayer.md.
 - Using `EnumZoneType` directly in our code: obfuscated names go through `Deci`.
 - Forgetting the safezone grace timer: it blocks every attack on the player for a while after leaving, radiation too.
 - Expecting zone boxes on the client without a sync: the client only knows what PacketZoneLists sent (ZoneRules.sync).
+- Thinking a place has one zone kind: every check asks one kind, so boxes of two kinds on the same ground both apply
+  (the wasteland city is MILITARY and RADIATION, city/WastelandRadiation; docs/zones.md section 2).
