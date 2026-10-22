@@ -1897,6 +1897,15 @@ Production client with OptiFine HD U E7 (the brother's laptop setup), AKM with t
   splint icons at 8x (32 x 32, outlined, shaded); bottom, ours: Armor Repair Kit (an olive case with a grey plate
   emblem and a dark strap), Armor Plate (a dark plate with cut top corners and a light band), Gun Parts (a grey bolt
   carrier and a spring drawn as a row of slanted strokes, the weakest of the three).
+## lootblocks_v0.66.1 (22 Oktober 2026, feature 12 B: lootable copies and loot kinds; dev test lootblocks)
+- sheet_lootblocks.png: the look check, 30 frames in pairs (a = Decimation's original, b = our copy) at one spot with one
+  camera, 1920 wide: the six pickup trucks (black, blue, green, red, grey, white) seen from behind, the water pallet and the
+  pallet under its blue tarp, the big and the small military radio, the wooden crate, the metal shelf (police and
+  military copies), the weapon cabinet (the civilian "Cabinet" and the police copy). Every b frame matches its a frame
+  (pixels apart 0.000 % for 13, trucks 0.012 to 0.258 %). The props face away from the camera (their backs show).
+- cabinet_original.png, cabinet_copy.png: one such pair at full size (854 x 480): a dark grey locker, its loot hint text
+  of Decimation's BlockTipLayer floating at its middle in both.
+
 ## radset_v0.66.1 (22 Oktober 2026, feature 7: radiation set; dev test radset; branch bugfix worktree only)
 - icons_decimation_vs_ours.png: Decimation's Pain Killers (white bottle, dark lid, red label with a white cross) and
   Vitamin Capsules (grey canister, purple band) at 8x, our Radiation Pills at the right (amber bottle, white ridged

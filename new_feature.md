@@ -1712,3 +1712,22 @@ lineup photo zombies_v0.34.0. Not seen by the user in game yet
   pick package guns (an NPC carries one only when given, as in the gun test) [open: an optional "npcs" field].
 - Open: the main session merges both branches, then the user's look in game; agent 1's sight picture and icon points
   above; for a release, the package folder and its index line (docs/gun_model_spec.md section 7).
+
+## Loot rules B: lootable copies and loot kinds (22 Oktober 2026, feature 12 B, ideas 49, 50)
+- fixes/LootBlocks: 15 blocks of ours made from Decimation's own classes (Deci.copyProp copies every BlockProp field and the
+  Block look; Deci.newMetalShelf, newWeaponCabinet), each bound to a Decimation list through a loot entry of its own made
+  from a block that has that list (Deci.addLootBlock): six pickup trucks (car wreck list), water pallet and tarp (food and
+  drink), big and small military radio (military), a plain wooden crate (no list), police and military metal shelves,
+  "Cabinet" (civilian, general list) and a police weapon cabinet. Tooltip "Lootable: <kind> loot" (originals of the shelf
+  and cabinet too). World generation: Dress.lootKinds swaps shelves and cabinets by building (police, military and the
+  wasteland military, the rest civilian; the original cabinet stays the military one), CanvasPlan swaps them in bases and
+  airports. Worlds already generated keep what they have.
+- Checks: unit LootBlocksTest 5 (RED with the mapping broken, then GREEN); dev test lootblocks 23 PASS (15 copies, each of its
+  original's class, light, size, tab, hardness; names and tooltips; each copy draws as its original at one spot with one
+  camera, 0.000 % of pixels apart for 13, trucks 0.01 to 0.26 %; a real click opens only its list's items, the plain crate
+  nothing; a police shelf placed from its item fills both cells with one loot spot; forPlace 5.88 ns for any other block).
+  Dev dedicated server seed 1: 15 copies, 14 with a list; around 1536,512 109 wasteland buildings as military (9 shelves
+  swapped), the police office at 336,544 got 3 police cabinets (counted in the saved world). The pass costs 73 us a
+  building (median, p90 207 us). Regressions loot, lootrules, lootmags, milbase 46 PASS.
+- Trap: Block.getCreativeTabToDisplayOn is client only (a dedicated server strips it: NoSuchMethodError at start).
+- Not done yet: the graph, the carry to prerelease, the production client and server, docs/decimation_code/loot.md row.

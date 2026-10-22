@@ -133,14 +133,14 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [ ] ideas 28 to 52 (docs/ideas.md, user 22 Oktober 2026): design talk first
 - [x] feature 6 DayZ dark nights (idea 52): main, production client with OptiFine, prerelease
 - [x] feature 10 armor, vest and gun durability with repair parts (ideas 47, 48): main, production client with OptiFine, prerelease
-- [~] feature 12 loot rules, lootable props, loot kinds, Tarkov search (ideas 29, 36, 49, 50, decided): this session; A looted stays looted DONE on main (lootrules all PASS, 0.48 us a click); B lootable copies and loot kinds, C Tarkov search open
+- [~] feature 12 loot rules, lootable props, loot kinds, Tarkov search (ideas 29, 36, 49, 50, decided): this session; A looted stays looted DONE on main (lootrules all PASS, 0.48 us a click); B lootable copies and loot kinds DONE on main (lootblocks 23 PASS; not carried, no graph yet); C Tarkov search open
 - [~] 3D gun converter (idea 27): two agents, milestone 1 one rifle end to end (spec 2026-10-22-gun-converter-design.md)
 - [~] agent (branch bugfix): feature 7 follow up and feature 8 done (22 Oktober 2026); 9 attachment benefits next, not started
 - [x] feature 7 radiation set (ideas 41 to 43, decided: pill -40 points, filters wear only in radiation, 10 min): branch bugfix, dev test radset 36 of 36; merged into main; production client and dedicated server still to run
 - [x] feature 7 follow up: filters about 3 % of military crate opens (police 5.6 %, nearest 7 % with whole entries), an empty filter lets tear gas through; branch bugfix, radset
 - [x] feature 8 specific mobs at specific places (idea 35): table config/deciworldgen_places.json, natural infected spawns become the place's mobs; branch bugfix, dev test placespawns 29 of 29; production client and dedicated server still to run
 - [x] gun converter milestone 1, converter side: page, converter, packages ak47 (CC0) and akmc (CC BY), 73 unit tests, page smoke test (branch gunconv-tool, docs/gunconv.md)
-- [ ] gun converter later: anatomy labels for one material files, details the source lacks, more guns and kinds (docs/gunconv.md section 7)
+- [~] gun converter milestone 2 (user, 22 Oktober 2026: "make dataset full of decimation guns and used as data"; chosen: exemplar areas): a local dataset of all 98 Decimation guns labelled by area, each area of a converted gun rebuilt from the closest Decimation example (converter agent, branch gunconv-tool)
 - [x] gun converter, game side milestone 1 (branch gunconv-game): gun packages load data driven (fixes/gunpack), agent 1's akmc held, aimed, fired, reloaded, carried by an NPC in the dev client
 - [ ] gun converter next: production client with OptiFine, the user's look in game, a release with a package (both branches merged into main 22 Oktober 2026)
 - [x] features 1 to 4 (armor vs NPCs, NPC tracer colours, loot magazine rounds, magazine unload) on main and prerelease
