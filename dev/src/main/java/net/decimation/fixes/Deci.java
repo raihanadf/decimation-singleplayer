@@ -3111,6 +3111,76 @@ public final class Deci
         }
     }
 
+    /** TearGasGrenadeEntity (deci.ak.p): Decimation's tear gas grenade. */
+    public static Class<? extends net.minecraft.entity.Entity> tearGasClass()
+    {
+        return deci.ak.p.class;
+    }
+
+    /** TearGasGrenadeEntity.active (acz): settled and giving off its gas (both sides; 600 ticks, then gone). */
+    public static boolean tearGasActive(net.minecraft.entity.Entity e)
+    {
+        return e instanceof deci.ak.p && ((deci.ak.p) e).acz;
+    }
+
+    /** A new TearGasGrenadeEntity (deci.ak.p) with no thrower, never exploding (dev tests). */
+    public static net.minecraft.entity.Entity newTearGas(net.minecraft.world.World world)
+    {
+        return new deci.ak.p(world);
+    }
+
+    /** As addLootLike, this many copies in every pool holding `like`. Returns the pools changed. */
+    public static int addLootCopies(Item like, net.minecraft.item.ItemStack add, int copies)
+    {
+        int n = 0;
+        for (int i = 0; i < copies; i++)
+        {
+            n = addLootLike(like, add);
+        }
+        return n;
+    }
+
+    /**
+     * A new Decimation mob by the place table's name (fixes/PlaceSpawns): infected (InfectedEntity deci.ag.d), infected_dog
+     * (deci.ag.g), crawler (f), hulk (j), frail (h), bloater (e), demon (DemonEntity deci.ag.b), soldier (SoldierEntity
+     * deci.ag.l), bandit (BanditEntity deci.ag.a), soviet (SovietEntity deci.ag.m); null for any other name.
+     */
+    public static net.minecraft.entity.EntityLiving newMob(String name, net.minecraft.world.World world)
+    {
+        if (name == null)
+        {
+            return null;
+        }
+        switch (name)
+        {
+            case "infected": return new deci.ag.d(world);
+            case "infected_dog": return new deci.ag.g(world);
+            case "crawler": return new deci.ag.f(world);
+            case "hulk": return new deci.ag.j(world);
+            case "frail": return new deci.ag.h(world);
+            case "bloater": return new deci.ag.e(world);
+            case "demon": return new deci.ag.b(world);
+            case "soldier": return new deci.ag.l(world);
+            case "bandit": return new deci.ag.a(world);
+            case "soviet": return new deci.ag.m(world);
+            default: return null;
+        }
+    }
+
+    /** The place table's name of a Decimation mob (newMob's names; "hazmat" for a hazmat soldier), or null. */
+    public static String mobName(net.minecraft.entity.Entity e)
+    {
+        if (e instanceof deci.ag.g) return "infected_dog";
+        if (e instanceof deci.ag.f) return "crawler";
+        if (e instanceof deci.ag.j) return "hulk";
+        if (e instanceof deci.ag.h) return "frail";
+        if (e instanceof deci.ag.e) return "bloater";
+        if (e instanceof deci.ag.b) return "demon";
+        if (isPlainInfected(e)) return "infected";
+        NpcKind k = npcKind(e);
+        return k == null ? null : k.name().toLowerCase();
+    }
+
     /** LootTableRegistry.hasPool (deci.aD.l.d): a right click on this block rolls Decimation's loot (crates, wrecks, bins). */
     public static boolean hasLootPool(net.minecraft.block.Block block)
     {

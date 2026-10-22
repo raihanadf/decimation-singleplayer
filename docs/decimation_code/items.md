@@ -56,6 +56,11 @@ built while `itemSplint` was still null. SplintItem's use time is static too (th
   slot (PlayerGearContainer, PlayerExtraInventory), and a slot update for it on the client clears the cursor and
   rebuilds the slots (PlayerExtraInventory.markDirty sees a new object): never change the worn mask's tag while a
   screen is open (fixes/GasMaskFilter waits). The mask goes to the client with its tag in PacketSyncPlayerData.
+- Tear gas (TearGasGrenadeEntity deci/ak/p, the M7A3 style grenade): once settled (`active`) it lasts 600 ticks; the
+  poisoning is decided on the CLIENT each tick: every player whose box meets x and z within 6, 3 below to 5 above the
+  gas and under 5 blocks away, not creative, not poisoned and without a gas mask item, is sent to the server in
+  PacketApplyPoison (deci/aE/a$ak), whose handler gives Poison V for 40 ticks. A worn gas mask with an empty filter gets
+  the same poison from fixes/GasMaskFilter on the server.
 - Decimation's pills (Pain Killers, Vitamin Capsules) are HealingSyringeItem / DrugSyringeItem: 4 a stack, block pose,
   32 ticks of use, "deci:item.syringe.open" at most every 8 s (PlayerData.isLongTimerElapsed), on finishing the
   effect, one used and "deci:item.syringe.use" on the server, a green chat line on the client. A held button takes the

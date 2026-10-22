@@ -17,7 +17,7 @@ Facts and the verified turn order: docs/decimation_code/npcs.md. Our tiers: new_
 | spawn one | `Deci.newBandit` / `newSoldier` / `newSoviet` / `newInfected`, retry until `spawnEntityInWorld` is true |
 | NPC shots | our `NpcShots` through `Deci.setNpcShotHook` (PatchTracer v2), not Decimation's `shootAt` body |
 | tiers and gear | `fixes/NpcLoadouts` (gun synced through data watcher slot 26) |
-| natural spawns | `MobSpawnRegistry` (deci/aD/j), zones: fixes/ZoneSpawnHandler |
+| natural spawns | `MobSpawnRegistry` (deci/aD/j), zones: fixes/ZoneSpawnHandler, places: fixes/PlaceSpawns (config deciworldgen_places.json) |
 
 ## Rules
 
@@ -35,6 +35,8 @@ Facts and the verified turn order: docs/decimation_code/npcs.md. Our tiers: new_
 - Reading `entityToAttack` as "is fighting": it is never cleared; use `getAITarget`.
 - Expecting the client to show the server's gun: Decimation rolls guns per side; use NpcLoadouts' synced gun.
 - Spawning in the air for a test: the client copy falls; stand NPCs on the DevTestArena floor.
+- Testing a spawn check (Forge's CheckSpawn, `ForgeEventFactory.canEntitySpawn`) on the player's own spot: the player
+  collides, so getCanSpawnHere fails; in peaceful it fails for every EntityMob. Use a spot away from the player.
 - Forgetting traders are FactionHumanEntity too: a "every human" rule hits traders unless they are excluded.
 - Spawning a mob from an EntityJoinWorldEvent handler while a chunk loads: World.addLoadedEntities walks the chunk's
   live list and adds the new mob again (Decimation's PlayerJoinSync swaps did: double speed mobs; fixes/JoinOnce now

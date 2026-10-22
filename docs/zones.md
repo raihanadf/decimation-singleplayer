@@ -64,6 +64,9 @@ Rules in the code, and whether they run in singleplayer (SP) before v0.46.0:
 ### MILITARY and POLICE
 - Infected spawning inside: 25 % get the military (marine set) or police (NYPD) variant
   (EntitySpawnZoneHandler; ours since v0.7.0).
+- Since 22 Oktober 2026 (feature 8, fixes/PlaceSpawns): a natural infected spawn at a place of our table (airport, base,
+  police station, hospital, highway, wasteland, forest; worldgen/Places) may get the place's look or be replaced by its
+  mobs; the place's look is put on after this zone look and wins over it.
 - Map: military zones drawn on the GPS map (client list).
 - Our generator tags military sites and bases MILITARY, city streets / police places POLICE, and
   since v0.54.0 each city's wasteland district as one MILITARY box (128 x 128, y 0 to 255; city/

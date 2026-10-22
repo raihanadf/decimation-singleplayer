@@ -207,6 +207,9 @@ User: "for the feat i have more". Notes on what we already have are mine [not an
     Decided 22 Oktober 2026 (user): a table per place kind, editable in a config file: the wasteland irradiated and
     military infected, demons at night; bases and airports soldiers; hospitals medic infected; police stations riot
     infected; forests infected dogs; highways bandit groups. Agent, feature 8.
+    Built 22 Oktober 2026 (new_feature.md "Specific mobs at specific places"): config/deciworldgen_places.json, the
+    place kinds known from the seed and our named places (worldgen/Places), natural infected spawns turned into the
+    place's mobs or looks (fixes/PlaceSpawns), new looks irradiated and medic; dev test placespawns.
 36. **Loot does not refill in singleplayer, a refill timer on servers**: "since city can be generated, loot by default is
     empty forever after player loot it, except multiplayer they can be disable or enable for minutes refill loots (by
     default is enable for server)". Decimation's crate cooldown is per position (deci/aB/e; docs/decimation_code/
@@ -245,6 +248,9 @@ User: "for the feat i have more". Notes on what we already have are mine [not an
     entry each, as rare as a gas mask).
     Follow up decided 22 Oktober 2026 (user): Gas Mask Filters about 3 % of military crate opens (police 7 % as built); an
     empty filter protects against nothing, Decimation's tear gas included. Agent, feature 7 follow up.
+    Follow up built 22 Oktober 2026 (new_feature.md "Radiation set", follow up): 9 filter entries in the military pools,
+    3.2 % of military crate opens; police 1 entry, 5.6 % now (feature 10's repair parts grew the pool, 2 entries would
+    be 10.6 %); an empty filter lets Decimation's tear gas poison through (fixes/GasMaskFilter, server side).
 43. **The wasteland city one radiation zone everywhere** ("wasteland city become full radiation zone on all place"). Each
     wasteland district is a MILITARY zone today (docs/wasteland.md, city/Wasteland); Decimation's RADIATION zone works in
     singleplayer since v0.46.0 (fixes/ZoneRules). A place can be in two zone kinds only if the zone lists allow it

@@ -1353,7 +1353,8 @@ of the last session:
   Radiation set (22 Oktober 2026, feature 7, branch bugfix, new_feature.md): fixes/RadiationPills (deciworldgen:
   radiation_pills, used like Decimation's Pain Killers, 40 dose points off), fixes/GasMaskFilter (filter life in the worn
   mask's tag, wears only in radiation, a right click fits Decimation's Gas Mask Filter through message 32;
-  Deci.wearsGasMask needs filter left), city/WastelandRadiation (RADIATION over every wasteland city, older worlds at
+  Deci.wearsGasMask needs filter left; an empty filter also lets Decimation's tear gas poison through, whose own check
+  runs on the client; loot rates per share of opens, copiesFor), city/WastelandRadiation (RADIATION over every wasteland city, older worlds at
   load; two zone kinds on one place both apply); dev test radset. Traps: Decimation's gear screen holds the worn mask
   stack itself, and a changed tag sent to that slot clears the client's cursor (write it only with no screen open); a
   held use key takes the next item of a stack right after a use ends (a test holds one in the hand); per thread
@@ -1365,6 +1366,12 @@ of the last session:
   never runs (an @Mod.EventHandler method registered on the event buses), so it outlives a world reload in one game;
   tests reset loot with LootRefill.clearAll(); leaving a world in a test needs a screen right after mc.loadWorld(null)
   (GuiMainMenu), or the next client tick crashes.
+  Mobs by place (22 Oktober 2026, feature 8, branch bugfix, new_feature.md): fixes/PlaceSpawns (table in
+  config/deciworldgen_places.json) turns Decimation's natural plain infected spawns into the place's look or mobs;
+  worldgen/Places names the place (airport, base, police station, hospital, highway, wasteland, forest) from the seed and
+  our named places, memoised per chunk; dev test placespawns. Traps: Forge's CheckSpawn fires for natural spawns only
+  (SpawnerAnimals; spawner blocks, eggs and code never); a synthetic spawn check on the player's own spot fails
+  getCanSpawnHere (the player collides), and EntityMob.getCanSpawnHere refuses everything in peaceful.
   Sights need a mount too (22 Oktober 2026): sight_mounts.txt ("gun rail|side|slide") -> fixes/SightMounts; the red dot
   only on pistols with an optic cut or rail, other sights on a rail, claw mount or AK side mount; fixes/MountStrip (was
   GripStrip) pops off grips and sights a gun cannot mount. A new gun needs its row there.
