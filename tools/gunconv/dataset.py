@@ -35,6 +35,7 @@ DETAIL = 0.3          # a part whose longest side is under this is a detail (riv
 STATIONS = 12         # profile stations along an area's run axis
 GRIP_MAX = 4.5        # a pistol grip is at most this long
 NO_STOCK = ("pistol", "revolver")
+ZC = -0.15           # Decimation's centre line in z
 # study.Part.verts() order as (ix, iy, iz) corners of the box
 STUDY_ORDER = [(1, 0, 0), (1, 1, 0), (0, 1, 0), (0, 0, 1), (1, 0, 1), (1, 1, 1), (0, 1, 1), (0, 0, 0)]
 # Decimation's own part names and a source file's names, first match wins
@@ -84,7 +85,13 @@ def anchors(shapes, header, cat):
     fp = header.get("flamePos")
     bore = fp[1] + 0.85 if fp else statistics.median(s.centre[1] for s in body)
     ammo = [s for s in shapes if s.group == "ammoModel"]
+    if ammo:                           # the magazine's main cluster (a stray round elsewhere does not stretch it)
+        mid = statistics.median(s.centre[0] for s in ammo)
+        ammo = [s for s in ammo if abs(s.centre[0] - mid) <= 2.5] or ammo
     mag = [(min(s.box[i][0] for s in ammo), max(s.box[i][1] for s in ammo)) for i in range(3)] if ammo else None
+    if mag and (mag[1][0] + mag[1][1]) / 2 < bore:
+        mag = None                     # a magazine lying on top (the P90's) says nothing about the grip or the receiver
+    bullpup = False
     step, xs = 0.1, []
     x = x0
     while x <= x1 + 1e-9:
@@ -94,18 +101,37 @@ def anchors(shapes, header, cat):
     for x in xs:
         bot = [s.box[1][1] for s in body if s.box[0][0] - 1e-9 <= x <= s.box[0][1] + 1e-9]
         depth.append(max(bot) - bore if bot else None)
+    # a bullpup: the magazine in the rear 40 % of the gun and a grip as deep as the deepest clearly in front of it (AUG,
+    # FAMAS, L85); the Uzi's magazine sits that far back too, but inside its grip
+    if mag and (mag[0][0] + mag[0][1]) / 2 < x0 + 0.4 * (x1 - x0):
+        deepest = max((d for d in depth if d is not None), default=0.0)
+        ahead = max((d for x, d in zip(xs, depth) if d is not None and x >= mag[0][1] + 0.3), default=0.0)
+        bullpup = ahead >= 0.8 * deepest
     # the grip is looked for beside the magazine first (a magwell hanging around it is often deeper than the grip:
     # the SCARs, G36C), then with the magazine's columns too (pistols and the Uzi hold the magazine in the grip)
     grip = None
     for skip_mag in ((True, False) if mag else (False,)):
-        cols = [None if (skip_mag and mag[0][0] - 0.2 <= x <= mag[0][1] + 0.2) else d for x, d in zip(xs, depth)]
-        grip = find_grip(xs, cols, x0, cat)
+        cols = [None if (skip_mag and mag[0][0] - 0.2 <= x <= mag[0][1] + 0.2) or (bullpup and x < mag[0][1] - 0.5)
+                else d for x, d in zip(xs, depth)]
+        # beside skipped magazine columns a run is a piece of a grip around the magazine (the Uzi's, a pistol's)
+        near = (mag[0][0] - 0.55, mag[0][1] + 0.55) if skip_mag else None
+        grip = find_grip(xs, cols, x0, cat, near)
         if grip:
             break
+    core_bottom = None
     if cat in NO_STOCK:
-        stock_end = x0 - 1.0
+        stock_end = stock_low = x0 - 1.0
+    elif grip:
+        # behind the grip everything below the receiver is stock; at the receiver's height the stock starts only behind
+        # the receiver core, the long parts near the bore passing over the grip and on forward (the Uzi's receiver runs
+        # back past its grip, the AKM's ends at the grip's rear)
+        stock_low = grip[0] - 0.1
+        core = [s for s in body if s.dims[0] >= 2.0 and abs(s.centre[1] - bore) <= 1.0
+                and s.box[0][0] <= grip[0] and s.box[0][1] >= grip[1] + 1.0]
+        stock_end = min([stock_low] + [s.box[0][0] - 0.05 for s in core])
+        core_bottom = max(s.box[1][1] for s in core) if core else None
     else:
-        stock_end = grip[0] - 0.1 if grip else x0 + (x1 - x0) / 3
+        stock_end = stock_low = x0 + (x1 - x0) / 3
     if mag and (grip is None or mag[0][0] >= grip[1] - 0.5):
         front = mag[0][1] + min(2.5, max(0.6, 0.12 * (x1 - mag[0][1])))
     elif grip:
@@ -113,27 +139,44 @@ def anchors(shapes, header, cat):
     else:
         front = x0 + 0.5 * (x1 - x0)
     zone = [s for s in body if s.dims[0] >= 1.0 and s.box[0][1] >= stock_end and s.box[0][0] <= front]
-    top = statistics.median(s.box[1][0] for s in zone) if zone else bore - 1.0
+    top = min(s.box[1][0] for s in zone) if zone else bore - 1.0       # the highest long part: the receiver's top
     zlo = statistics.median(s.box[2][0] for s in zone) if zone else -0.75
-    return {"bore": bore, "x0": x0, "x1": x1, "mag": mag, "grip": grip, "stock_end": stock_end,
-            "receiver_front": front, "top": top, "zlo": zlo}
+    return {"bore": bore, "x0": x0, "x1": x1, "mag": mag, "grip": grip, "stock_end": stock_end, "stock_low": stock_low,
+            "core_bottom": core_bottom, "receiver_front": front, "top": top, "zlo": zlo, "bullpup": bullpup}
 
 
-def find_grip(xs, depth, x0, cat):
-    """The deepest run of columns hanging at least 55 % as deep as the deepest, at most GRIP_MAX long, not at the rear
-    end (except on guns without a stock), or None."""
-    deepest = max((d for d in depth if d is not None), default=0.0)
-    if deepest <= 1.0:
-        return None
-    need = 0.55 * deepest
-    runs, start = [], None
+def runs_of(xs, depth, need):
+    out, start = [], None
     for i, d in enumerate(depth + [None]):
         if d is not None and d >= need:
             start = i if start is None else start
         elif start is not None:
-            runs.append((xs[start], xs[i - 1], max(depth[start:i])))
+            out.append((start, i - 1))
             start = None
-    for a, b, d in sorted(runs, key=lambda r: -r[2]):
+    return out
+
+
+def find_grip(xs, depth, x0, cat, near=None):
+    """The deepest run of columns hanging at least 55 % as deep as the deepest, at most GRIP_MAX long, not at the rear
+    end (except on guns without a stock), or None. A run too long (grip, guard and lower receiver in one, the M4A4)
+    gives its deepest part: the columns at 80 % of its depth around its deepest one. `near`: an x range a run must
+    not touch (magazine columns left out)."""
+    deepest = max((d for d in depth if d is not None), default=0.0)
+    if deepest <= 1.0:
+        return None
+    runs = [(i, j, max(depth[i:j + 1])) for i, j in runs_of(xs, depth, 0.55 * deepest)]
+    for i, j, d in sorted(runs, key=lambda r: -r[2]):
+        a, b = xs[i], xs[j]
+        if b - a > GRIP_MAX:
+            k = max(range(i, j + 1), key=lambda q: depth[q])
+            lo = hi = k
+            while lo > i and depth[lo - 1] >= 0.8 * d:
+                lo -= 1
+            while hi < j and depth[hi + 1] >= 0.8 * d:
+                hi += 1
+            a, b = xs[lo], xs[hi]
+        if near and (near[0] <= a <= near[1] or near[0] <= b <= near[1]):
+            continue
         if b - a <= GRIP_MAX and (a > x0 + 0.3 or cat in NO_STOCK):
             return (a, b)
     return None
@@ -192,14 +235,18 @@ def position_area(s, a, rail):
         return "rail"
     if grip and grip[0] - 0.1 <= cx <= grip[1] + 0.1 and cy > bore + 1.0:
         return "grip"
-    if cx < a["stock_end"]:
+    below = a["core_bottom"] is None or cy > a["core_bottom"]
+    if cx < a["stock_end"] or (cx < a["stock_low"] and below):
         return "buttpad" if bx1 <= a["x0"] + 0.6 and by1 - by0 >= 0.6 else "stock"
     if cx > a["receiver_front"]:
-        slender = by1 - by0 <= 1.0 and bz1 - bz0 <= 1.0
-        if slender and abs(cy - bore) <= 0.7 and cx >= a["x1"] - 1.6:
+        # Decimation builds barrels from short slices (octagon thirds, rings, a magazine tube under it): anything whose
+        # whole section stays near the bore line is barrel, at the front muzzle, whatever its length
+        on_line = (by0 >= bore - 1.2 and by1 <= bore + 1.2 and max(by1 - by0, bz1 - bz0) <= 0.9
+                   and abs((bz0 + bz1) / 2 - ZC) <= 0.6)
+        if on_line and abs(cy - bore) <= 0.7 and cx >= a["x1"] - 1.6:
             return "muzzle"
-        if slender and abs(cy - bore) <= 1.3 and bx1 - bx0 >= 1.0:
-            return "barrel"                              # the barrel and the tubes along it (gas, magazine tube)
+        if on_line:
+            return "barrel"
         if by0 < bore - 0.75 and cx >= a["x1"] - 0.35 * (a["x1"] - a["receiver_front"]):
             return "front_sight"
         return "handguard"
@@ -207,8 +254,8 @@ def position_area(s, a, rail):
         return "magwell"
     rear = grip[1] if grip else a["stock_end"]
     ahead = mag[0][0] if mag and mag[0][0] > rear else a["receiver_front"]
-    if cy > bore + 1.0 and rear - 0.2 <= cx <= ahead + 0.2:
-        return "trigger_guard" if max(s.dims) >= 0.8 else "trigger"
+    if cy > bore + 1.0 and rear - 0.2 <= cx <= ahead + 0.2 and min(s.dims) <= 0.25:
+        return "trigger_guard" if max(s.dims) >= 0.8 else "trigger"     # bulky ones are the lower receiver (the M4's)
     if max(s.dims) <= 1.0 and bz0 < a["zlo"] - 0.15:
         return "charging_handle"
     if max(s.dims) <= 1.2 and by0 < a["top"] - 0.2:
@@ -378,7 +425,9 @@ def render_labels(name, out):
         col = COLOURS.get(area, (255, 0, 255))
         if detail:
             col = tuple(min(255, c + 60) for c in col)
-        d.rectangle([p.u * k, p.v * k, (p.u + 2 * (dd + w)) * k - 1, (p.v + dd + h) * k - 1], fill=col + (255,))
+        x1, y1 = (p.u + 2 * (dd + w)) * k - 1, (p.v + dd + h) * k - 1
+        if x1 >= p.u * k and y1 >= p.v * k:                  # a part declared 0 wide has no island
+            d.rectangle([p.u * k, p.v * k, x1, y1], fill=col + (255,))
     g.texture = img
     os.makedirs(out, exist_ok=True)
     paths = []

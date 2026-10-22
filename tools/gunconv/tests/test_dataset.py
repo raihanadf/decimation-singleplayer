@@ -113,11 +113,10 @@ class JarTest(unittest.TestCase):
                 self.assertEqual(lab[0], "magazine")
         self.assertIsNotNone(match)
 
-    @unittest.expectedFailure
     def test_rules_agree_with_decimations_own_names(self):
         """Labelled by position and size only, the parts Decimation itself named stock, grip and barrel. Target 80 %
-        (spec, milestone 2); measured 73.8 % (398 of 539) on 22 Oktober 2026, open: bullpups (AUG, P90), the Thompson,
-        famas and benelli barrel groups (docs/gunconv.md section 10)."""
+        (spec, milestone 2); 69.6 % at first, 82.9 % (447 of 539) with the grip beside the magazine, bullpups, the
+        magazine on top and barrel slices (docs/gunconv.md section 10)."""
         agree, total = dataset.name_agreement()
         self.assertGreater(total, 300)
         self.assertGreaterEqual(agree / total, 0.8, (agree, total))
