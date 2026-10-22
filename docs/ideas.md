@@ -337,4 +337,14 @@ User: "for the feat i have more". Notes on what we already have are mine [not an
        is known exactly before export.
     6. **Attachment aim preview**: for a converted sight, how it looks while aiming through it, with its own reticle /
        crosshair.
+56. **Gunsmith: no slots a gun cannot use, and stats** (user, 23 Oktober 2026: "some guns that doesnt support any
+    attachment no longer need to show attachment slot in there, so user dont think that gun have attachment. and gun
+    custom UI have stats later"). A fix for later: the Gunsmith screen (fixes/gunsmith) hides every slot the held gun
+    cannot take (sight mount, grip rail, barrel), so a gun without any shows none; and the stats panel (feature 9,
+    docs/superpowers/specs/2026-10-22-attachment-benefits-design.md) joins it.
+57. **More blocks and colour variants of props** (user, 23 Oktober 2026: "more blocks maybe related with decimation
+    ... more color type crate, example military crate has 4 color, green, tan desert, grey, black. this feat not on
+    crate too, its on some other props too like package. so this feat just retexture task"): new blocks in Decimation's
+    world, and the same prop in several colours (a military crate in green, desert tan, grey and black; packages and
+    other props too): retextured copies of Decimation's props (as fixes/LootBlocks copies them), loot kept per kind.
 

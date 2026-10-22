@@ -166,3 +166,5 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [x] HUD styles Decimation / Inline: Minecraft style bars, humanity bar, the player in the top right corner (fixes/HudStyle, InlineHud, HudDoll; key J, Settings button; dev test hud)
 - [x] blood splats that stay on hit infected (fixes/Wounds; dev test wounds)
 - [ ] user: look at the inline HUD and the splats in game; HUD with OptiFine (production client) not checked yet
+- [ ] Gunsmith: hide slots a gun cannot take (no slots at all for a gun without attachments), stats panel later (docs/ideas.md 56)
+- [ ] more Decimation blocks; colour variants of crates and props (military crate green / desert tan / grey / black, packages): retextures (docs/ideas.md 57)
