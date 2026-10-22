@@ -694,10 +694,11 @@ OUTLIER_VOL = 0.05    # a part under this share of the parts' volume ...
 OUTLIER_GROW = 0.15   # ... that widens their box by more than this share of it is an outlier (robust_box)
 
 
-def robust_box(corner_list):
+def robust_box(corner_list, keep_axis=None):
     """The box of corner dicts without small outliers: parts under OUTLIER_VOL of the total volume that widen the box of
     the others by more than OUTLIER_GROW of its size along some axis (a stray pin under a receiver). An exemplar is
-    mapped from its robust box onto ours (milestone 3), so such parts no longer stretch the map."""
+    mapped from its robust box onto ours (milestone 3), so such parts no longer stretch the map. keep_axis: that axis
+    keeps the full extent (an area's run: its ends must meet the next area's)."""
     boxes = [[(min(q[i] for q in c.values()), max(q[i] for q in c.values())) for i in range(3)] for c in corner_list]
     vols = [max(1e-9, (b[0][1] - b[0][0]) * (b[1][1] - b[1][0]) * (b[2][1] - b[2][0])) for b in boxes]
     total = sum(vols)
@@ -711,6 +712,9 @@ def robust_box(corner_list):
         rest = [j for j in keep if j != i]
         b, full = box_of(rest), box_of(keep)
         if any((full[a][1] - full[a][0]) - (b[a][1] - b[a][0]) > OUTLIER_GROW * max(1e-9, b[a][1] - b[a][0])
-               for a in range(3)):
+               for a in range(3) if a != keep_axis):
             keep = rest
-    return box_of(keep)
+    out = box_of(keep)
+    if keep_axis is not None:
+        out[keep_axis] = box_of(range(len(boxes)))[keep_axis]
+    return out

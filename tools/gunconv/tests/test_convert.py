@@ -158,6 +158,28 @@ class TemplateColourTest(unittest.TestCase):
         self.assertTrue(receiver and all(abs(c[0] - c[2]) <= 8 for c in receiver), receiver)   # grey metal
 
 
+@unittest.skipUnless(JAR, "needs Decimation.jar")
+class PartColourTest(unittest.TestCase):
+    def test_one_piece_with_two_colours(self):
+        """A textured one material file (the Lightning sample) holds its wooden stock and its steel barrel in one
+        connected piece: each fitted part takes the colour of the source under it, not the piece's average."""
+        wood, steel = (120, 70, 40), (140, 140, 145)
+        rings = [(0.0, -1.5, 1.5, -0.4, 0.4, wood), (6.0, -1.2, 1.2, -0.4, 0.4, wood),
+                 (6.0, -0.3, 0.3, -0.3, 0.3, steel), (20.0, -0.3, 0.3, -0.3, 0.3, steel)]
+        mesh, cols = synth.stepped_bar(rings)
+        g = synth.Glb()
+        g.node("gun", mesh=g.mesh("gun", mesh, g.material("m", (255, 255, 255)), colours=cols))
+        conv = convert.convert(meshio.read_bytes(g.bytes(), "onepiece.glb"), name="onepiece", category="rifle",
+                               exemplars=False)
+        xs = lambda p: [q[0] for q in p.points()]  # noqa: E731
+        (x0, x1), _, _ = bounds(conv.parts)
+        cut = x0 + 6.0 / 20.0 * (x1 - x0)
+        rear = [p.colour for p in conv.parts if max(xs(p)) <= cut + 0.05]
+        front = [p.colour for p in conv.parts if min(xs(p)) >= cut - 0.05]
+        self.assertTrue(rear and all(c[0] > c[2] + 8 for c in rear), rear)        # brown wood
+        self.assertTrue(front and all(abs(c[0] - c[2]) <= 8 for c in front), front)  # grey steel
+
+
 class NameTest(unittest.TestCase):
     def test_valid(self):
         for n in ("ak47", "akmx", "m4c"):

@@ -35,6 +35,8 @@ DETAIL = 0.3          # a part whose longest side is under this is a detail (riv
 STATIONS = 12         # profile stations along an area's run axis
 VERSION = 2           # 2: details by study.detail_parts and their records (milestone 3)
 GRIP_MAX = 4.5        # a pistol grip is at most this long
+GRIP_REAR = 0.2       # without a magazine below, the grip starts ahead of the rear fifth (a straight stock's butt is not one)
+GRIP_TO_MAG = 4.0     # with one, the grip's front is at most this far behind the magazine (the Skorpion's grip is at the rear)
 NO_STOCK = ("pistol", "revolver")
 ZC = -0.15           # Decimation's centre line in z
 # study.Part.verts() order as (ix, iy, iz) corners of the box
@@ -116,7 +118,7 @@ def anchors(shapes, header, cat):
                 else d for x, d in zip(xs, depth)]
         # beside skipped magazine columns a run is a piece of a grip around the magazine (the Uzi's, a pistol's)
         near = (mag[0][0] - 0.55, mag[0][1] + 0.55) if skip_mag else None
-        grip = find_grip(xs, cols, x0, cat, near)
+        grip = find_grip(xs, cols, x0, cat, near, mag[0] if mag else None)
         if grip:
             break
     core_bottom = None
@@ -157,9 +159,10 @@ def runs_of(xs, depth, need):
     return out
 
 
-def find_grip(xs, depth, x0, cat, near=None):
-    """The deepest run of columns hanging at least 55 % as deep as the deepest, at most GRIP_MAX long, not at the rear
-    end (except on guns without a stock), or None. A run too long (grip, guard and lower receiver in one, the M4A4)
+def find_grip(xs, depth, x0, cat, near=None, mag_x=None):
+    """The deepest run of columns hanging at least 55 % as deep as the deepest, at most GRIP_MAX long, near the
+    magazine (its front at most GRIP_TO_MAG behind it) or, without a magazine, not in the rear GRIP_REAR of the gun
+    (except on guns without a stock): the butt of a straight stock hangs deepest but is no grip. Or None. A run too long (grip, guard and lower receiver in one, the M4A4)
     gives its deepest part: the columns at 80 % of its depth around its deepest one. `near`: an x range a run must
     not touch (magazine columns left out)."""
     deepest = max((d for d in depth if d is not None), default=0.0)
@@ -178,7 +181,11 @@ def find_grip(xs, depth, x0, cat, near=None):
             a, b = xs[lo], xs[hi]
         if near and (near[0] <= a <= near[1] or near[0] <= b <= near[1]):
             continue
-        if b - a <= GRIP_MAX and (a > x0 + 0.3 or cat in NO_STOCK):
+        if mag_x is not None:
+            placed = b >= mag_x[0] - GRIP_TO_MAG          # a pistol grip stands near the magazine (a butt does not)
+        else:
+            placed = cat in NO_STOCK or a > x0 + GRIP_REAR * (xs[-1] - x0)
+        if b - a <= GRIP_MAX and placed and (a > x0 + 0.3 or cat in NO_STOCK or mag_x is not None):
             return (a, b)
     return None
 

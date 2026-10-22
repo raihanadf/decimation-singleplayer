@@ -173,6 +173,22 @@ class AssemblyTest(unittest.TestCase):
         self.assertNotIn("receiver", plan)                            # its details came with the exemplar
 
 
+class AssemblyKeepsTest(unittest.TestCase):
+    def test_areas_the_exemplar_lacks_stay_ours(self):
+        """Our bolt (slideModel, it moves when firing) stays when the assembly's exemplar has no bolt of its own."""
+        data = {"guns": {"ex1": gun(receiver=[((0, -2, -0.5), (10, -1, 0.5), "gunModel")],
+                                    magwell=[((3, -1, -0.4), (6, 0, 0.4), "gunModel")])}}
+        parts = [ours("rec", (0, -2, -0.5), (10, -1.5, 0.5)), ours("low", (0, -1.5, -0.5), (10, -1, 0.5)),
+                 ours("well", (3, -1, -0.4), (6, 0, 0.4)), ours("bolt", (2, -1.9, -0.7), (4, -1.6, -0.5), "slideModel")]
+        out, rep, by, plan = exemplar.apply(parts, "rifle", "ex1", {}, data,
+                                            labels=["receiver", "magwell", "magwell", "bolt"])
+        self.assertEqual(rep["receiver"]["via"], "action")
+        bolts = [p for p in out if p.group == "slideModel"]
+        self.assertEqual(len(bolts), 1)
+        self.assertIsNone(getattr(bolts[0], "exemplar", None))
+        self.assertEqual(rep["bolt"], {"fit": 1})            # judged as an area of its own below: no exemplar has one
+
+
 class SectionsTest(unittest.TestCase):
     """Ours: a bar along 0 .. 10 with a block on top of its front half. ex_front matches only the front half (its
     block hangs below the bar instead), ex_rear only the rear half."""
@@ -259,6 +275,53 @@ class ToneTest(unittest.TestCase):
         self.assertEqual(out[0].colour, (41, 25, 22))
         out, rep, by, plan = exemplar.apply(parts, "rifle", "ex1", {}, data, labels=["grip"])
         self.assertEqual(out[0].colour, (20, 20, 20))
+
+
+class SectionPolicyTest(unittest.TestCase):
+    def test_a_small_match_is_no_section(self):
+        """An exemplar that matches only a sliver of the area (one metre of a long receiver) gives no section: a
+        patchwork of exemplar pieces looked worse than the fit with its details (the m590's first run)."""
+        parts = [ours("bar", (0, -2, -0.5), (10, -1, 0.5)), ours("top", (0, -3, -0.5), (1, -2, 0.5))]
+        ex = gun(receiver=[((0, -2, -0.5), (10, -1, 0.5), "gunModel"), ((0, -3, -0.5), (10, -2, 0.5), "gunModel")])
+        out, rep, by, plan = exemplar.apply(parts, "rifle", "ex", {}, {"guns": {"ex": ex}}, labels=["receiver"] * 2)
+        self.assertIn("fit", rep["receiver"])
+        self.assertNotIn("sections", rep["receiver"])
+        self.assertEqual(plan["receiver"], {"gun": "ex"})
+
+
+class FamilyTest(unittest.TestCase):
+    def test_only_guns_close_overall_give_parts(self):
+        """Donors come from the family (the guns closest to ours overall, the like gun first): an area of a far gun
+        that happens to fit (an AK receiver on a lever rifle) is not taken."""
+        body = ((0, -2, -0.5), (10, -1, 0.5))
+        data = {"guns": {"near": gun(receiver=[((0, -2.2, -0.5), (10, -0.6, 0.5), "gunModel"),
+                                               ((2, -0.6, -0.5), (4, 0.0, 0.5), "gunModel")]),
+                         "far": gun(receiver=[(body[0], body[1], "gunModel")])}}
+        parts = [ours("rec", *body)]
+        out, rep, by, plan = exemplar.apply(parts, "rifle", "near", {}, data, labels=["receiver"], family=["near"])
+        self.assertNotIn("far", by)
+        out, rep, by, plan = exemplar.apply(parts, "rifle", "near", {}, data, labels=["receiver"])
+        self.assertIn("far", by)
+
+
+class NoInterleaveTest(unittest.TestCase):
+    def test_a_second_exemplar_stays_outside_the_first(self):
+        """The best exemplar matches the rear and the front of a receiver, a second one its middle: the middle keeps
+        our fit instead of a patchwork of three pieces from two guns (the m590's receiver)."""
+        bar = ((0, -1.5, -0.5), (12, -1, 0.5), "gunModel")
+        a = gun(receiver=[bar, ((0, -3, -0.5), (3.5, -1.5, 0.5), "gunModel"),
+                          ((9.5, -3, -0.5), (12, -1.5, 0.5), "gunModel")])
+        b = gun(receiver=[bar, ((3.5, -3, -0.5), (9.5, -1.5, 0.5), "gunModel"), ((0, -3, -0.5), (0.4, -2.9, 0.5), "gunModel"),
+                          ((11.6, -3, -0.5), (12, -2.9, 0.5), "gunModel")])
+        parts = [ours("bar", (0, -1.5, -0.5), (12, -1, 0.5)), ours("top", (0, -3, -0.5), (12, -1.5, 0.5))]
+        out, rep, by, plan = exemplar.apply(parts, "rifle", "a", {}, {"guns": {"a": a, "b": b}},
+                                            labels=["receiver"] * 2)
+        secs = rep["receiver"]["sections"]
+        self.assertEqual({s["gun"] for s in secs}, {"a"})
+        self.assertEqual(len(plan["receiver"]["ranges"]), 1)
+        x0, x1 = plan["receiver"]["ranges"][0]
+        self.assertGreaterEqual(x0, 2.9)
+        self.assertLessEqual(x1, 10.1)
 
 
 class GroupTest(unittest.TestCase):

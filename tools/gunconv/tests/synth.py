@@ -227,9 +227,12 @@ class Glb:
             "baseColorFactor": [srgb_to_linear(c) for c in rgb255] + [1.0]}})
         return len(self.j["materials"]) - 1
 
-    def mesh(self, name, mesh, material=None, joints=None, weights=None):
+    def mesh(self, name, mesh, material=None, joints=None, weights=None, colours=None):
         verts, faces = mesh
         attrs = {"POSITION": self.accessor(verts, "f", 5126, "VEC3", 3, minmax=True)}
+        if colours is not None:                       # sRGB 0..255 per vertex, stored linear (COLOR_0)
+            attrs["COLOR_0"] = self.accessor([tuple(srgb_to_linear(c) for c in col) for col in colours], "f", 5126,
+                                             "VEC3", 3)
         if joints is not None:
             attrs["JOINTS_0"] = self.accessor(joints, "B", 5121, "VEC4", 4)
             attrs["WEIGHTS_0"] = self.accessor(weights, "f", 5126, "VEC4", 4)
@@ -285,3 +288,34 @@ def glb_of(pieces):
             mats[mat] = g.material(mat, col)
         g.node(name, mesh=g.mesh(name, mesh, mats[mat]))
     return g
+
+
+def stepped_bar(rings):
+    """One connected closed mesh along x through rings [(x, y0, y1, z0, z1, colour)] (two rings at one x make a
+    step), with each ring's vertex colour: a stock and a barrel in one piece, as a one material textured file has
+    them. Returns ((verts, faces), colours)."""
+    verts, cols = [], []
+    for x, y0, y1, z0, z1, col in rings:
+        verts += [(x, y0, z0), (x, y1, z0), (x, y1, z1), (x, y0, z1)]
+        cols += [col] * 4
+    faces = []
+    for r in range(len(rings) - 1):
+        a, b = 4 * r, 4 * (r + 1)
+        for k in range(4):
+            k2 = (k + 1) % 4
+            faces += [(a + k, a + k2, b + k2), (a + k, b + k2, b + k)]
+    last = 4 * (len(rings) - 1)
+    faces += [(0, 1, 2), (0, 2, 3), (last, last + 1, last + 2), (last, last + 2, last + 3)]
+    centre = [sum(v[i] for v in verts) / len(verts) for i in range(3)]
+    out = []
+    for f in faces:                                   # outward: away from the axis line through the centre
+        a, b, c = (verts[i] for i in f)
+        n = cross(sub(b, a), sub(c, a))
+        m = [(a[i] + b[i] + c[i]) / 3 for i in range(3)]
+        axis_pt = (m[0], centre[1], centre[2])
+        d = sub(m, axis_pt)
+        if abs(d[1]) + abs(d[2]) < 1e-9:              # an end cap: outward along x
+            d = (m[0] - centre[0], 0.0, 0.0)
+        out.append(f if dot(n, d) >= 0 else (f[0], f[2], f[1]))
+    return (verts, out), cols
+

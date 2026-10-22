@@ -32,6 +32,13 @@ def lum(c):
     return 0.3 * c[0] + 0.59 * c[1] + 0.11 * c[2]
 
 
+def shade(base, delta, step=18.0):
+    """base lighter or darker by delta in luminance (at most step), its hue kept (exemplar.shade)."""
+    d = max(-step, min(step, delta))
+    lb = max(1.0, lum(base))
+    return tuple(int(round(max(0, min(255, v * max(0.0, lb + d) / lb)))) for v in base)
+
+
 class Shape:
     """A convex part (corners keyed (ix, iy, iz)) with its box and planes, and the part it stands for."""
 
@@ -287,10 +294,9 @@ def apply(parts, plan, data):
             if ranges and not any(x0 - 1e-9 <= cx <= x1 + 1e-9 for x0, x1 in ranges):
                 continue
             host = d.host.part
-            f = 1.0
-            if rec.get("tone") and rec.get("hostTone") and lum(rec["hostTone"]) > 0:
-                f = min(1.6, max(0.6, lum(rec["tone"]) / lum(rec["hostTone"])))
-            colour = tuple(int(round(min(255, c * f))) for c in host.colour)
+            colour = tuple(host.colour)
+            if rec.get("tone") and rec.get("hostTone"):
+                colour = shade(host.colour, lum(rec["tone"]) - lum(rec["hostTone"]))
             q = fit.new_part("%sD%d" % (area, i), host.group, colour, d.corners, area)
             q.area = area
             q.detail_from = gun

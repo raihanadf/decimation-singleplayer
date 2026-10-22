@@ -44,7 +44,8 @@ FRONT = ("handguard", "barrel", "front_sight", "muzzle", "pump")
 ASSEMBLIES = (("body", ACTION + FRONT), ("action", ACTION), ("front", FRONT), ("butt", ("stock", "buttpad")))
 BIN = 0.5             # section bins along x
 MIN_RUN = 2           # an exemplar takes runs of at least this many bins
-SECTION_CANDS = 3     # exemplars tried on the sections of an area
+SECTION_CANDS = 2     # exemplars tried on the sections of an area (spec: the best, then a second on the bins left)
+SECTION_SHARE = 0.4   # sections only when one exemplar takes at least this share of the bins (else a patchwork)
 WARP_K = 10.0         # columns a unit for the warp along x
 WARP_BAND = 0.3       # the warp moves a column at most this share of the length
 WHOLE = 0.5           # parts at most this long along x are never cut at a section edge: they go by their centre
@@ -86,8 +87,9 @@ def box_of(corner_list):
 
 
 def target_area(corner_list):
-    box = [list(ab) for ab in fit.robust_box(corner_list)]
-    axis = max(range(3), key=lambda i: (box[i][1] - box[i][0], -i))
+    plain = box_of(corner_list)
+    axis = max(range(3), key=lambda i: (plain[i][1] - plain[i][0], -i))
+    box = [list(ab) for ab in fit.robust_box(corner_list, keep_axis=axis)]
     return {"box": box, "axis": axis, "corners": corner_list}
 
 
@@ -214,7 +216,7 @@ def refit(ex, area, follow=True, smooth=False):
     a = area["axis"]
     b, c = fit.CYCLIC[a]
     src = corners_of(ex)
-    ebox, tbox = [list(ab) for ab in fit.robust_box(src)], area["box"]
+    ebox, tbox = [list(ab) for ab in fit.robust_box(src, keep_axis=a)], area["box"]
     if follow:
         eprof = profile_of(src, a, ebox)
         tprof = target_profile(area, smooth)
@@ -447,16 +449,19 @@ def runs(flags, value=True):
 
 def sections(tarea, cands, follow=False):
     """Bins of BIN along x: each of the candidates [(name, score, exemplar)] in turn takes the free bins where its
-    outline overlaps ours by GATE (runs of MIN_RUN bins at least). (owners per bin, bin edges, {name: warped})."""
+    outline overlaps ours by GATE (runs of MIN_RUN bins at least); a later one only outside the first one's span (no
+    patchwork of two guns). (owners per bin, bin edges, {name: warped})."""
     x0, x1 = tarea["box"][0]
     nb = max(1, int(math.ceil((x1 - x0) / BIN - 1e-9)))
     edges = [x0 + (x1 - x0) * i / nb for i in range(nb + 1)]
     owner = [None] * nb
     warped = {}
+    span = None                                # bins from the first exemplar's first to its last: no one else inside
     for name, _, ex in cands[:SECTION_CANDS]:
         w = fitted(ex, tarea, follow)
         loc = bin_overlaps(w, tarea["corners"], edges)
-        free = [owner[i] is None and loc[i] >= GATE for i in range(nb)]
+        free = [owner[i] is None and loc[i] >= GATE and (span is None or not span[0] <= i <= span[1])
+                for i in range(nb)]
         took = False
         for a, b in runs(free):
             if b - a + 1 >= MIN_RUN:
@@ -465,28 +470,45 @@ def sections(tarea, cands, follow=False):
                 took = True
         if took:
             warped[name] = w
+            if span is None:
+                mine = [i for i in range(nb) if owner[i] == name]
+                span = (mine[0], mine[-1])
     return owner, edges, warped
 
 
 # ---------------------------------------------------------------- the areas of a converted gun
 
+TONE_STEP = 18.0      # an exemplar part or a detail differs from its base by at most this in luminance
+
+
+def shade(base, delta):
+    """base (RGB) lighter or darker by delta in luminance (clamped to TONE_STEP), its hue kept."""
+    d = max(-TONE_STEP, min(TONE_STEP, delta))
+    lb = max(1.0, lum(base))
+    f = max(0.0, lb + d) / lb
+    return tuple(int(round(max(0, min(255, v * f)))) for v in base)
+
+
 def _tone(mean, p, exl):
-    f = 1.0
+    """Our area's tone shaded as the exemplar part is against its area's mean (additive in luminance: Decimation's
+    dark islands made a multiplier blow up on lighter guns)."""
     if exl and p.get("tone"):
-        f = min(1.6, max(0.6, lum(p["tone"]) / max(1.0, exl)))
-    return tuple(int(round(min(255, v * f))) for v in mean)
+        return shade(mean, lum(p["tone"]) - exl)
+    return tuple(int(round(v)) for v in mean)
 
 
 def _mean(colours):
     return [sum(c[j] for c in colours) / len(colours) for j in range(3)] if colours else None
 
 
-def apply(parts, cat, like, header, data=None, labels=None, folding=False, exemplar_tones=False):
+def apply(parts, cat, like, header, data=None, labels=None, folding=False, exemplar_tones=False, family=None):
     """Exemplar areas on our fitted parts: (parts, report, parts per Decimation gun, plan for the detail layer). Every
     part gets .area; replaced parts carry .exemplar = the gun. plan: {area: {"gun", "ranges"}} for the areas (or x
     ranges of them) that kept our fit: their details come from that gun (details.apply). exemplar_tones: the source
     has no colours of its own (its tones were borrowed from the like gun by position), so exemplar parts keep the
-    exemplar's own tones (a wooden grip stays wood where the borrowed tone was the receiver's black)."""
+    exemplar's own tones (a wooden grip stays wood where the borrowed tone was the receiver's black). family: the
+    Decimation guns that may give parts (the closest to ours overall, the like gun among them); all of the category
+    when None."""
     data = data or dataset.load()
     if labels is None:
         labels = [a for a, _ in dataset.label_shapes(dataset.shapes_of_parts(parts), header, cat)]
@@ -497,7 +519,7 @@ def apply(parts, cat, like, header, data=None, labels=None, folding=False, exemp
     by = defaultdict(list)
     for i, a in enumerate(labels):
         by[a].append(i)
-    guns = {n: g for n, g in data["guns"].items() if g["cat"] == cat}
+    guns = {n: g for n, g in data["guns"].items() if g["cat"] == cat and (family is None or n in family or n == like)}
     ours_tone = {a: _mean([parts[i].colour for i in idx]) for a, idx in by.items()}
     keep = set(range(len(parts)))
     added, report, by_gun, plan, done = [], {}, Counter(), {}, set()
@@ -548,12 +570,14 @@ def apply(parts, cat, like, header, data=None, labels=None, folding=False, exemp
         fallback = _mean([parts[i].colour for i in idx])
         known = [it[0]["tone"] for it in items if it[0].get("tone")]
         made = new_parts(warped, items, gname, fallback, _mean(known))
+        theirs = set(a for _, a, _ in items)
+        taken = [a for a in mine if a in theirs]           # our areas the exemplar lacks (a moving bolt) stay ours
         added += made
-        keep -= set(idx)
-        done |= set(mine)
+        keep -= set(i for a in taken for i in by[a])
+        done |= set(taken)
         by_gun[gname] += len(made)
         counts = Counter(q.area for q in made)
-        for a in sorted(set(mine) | set(counts)):
+        for a in sorted(set(taken) | set(counts)):
             report[a] = {"gun": gname, "parts": counts.get(a, 0), "score": round(s, 3), "overlap": round(ov, 3),
                          "via": name}
 
@@ -584,7 +608,7 @@ def apply(parts, cat, like, header, data=None, labels=None, folding=False, exemp
         owner = None
         if not follow and tarea["axis"] == 0:
             owner, edges, warped_of = sections(tarea, [(n, sc, cands[n]) for n, sc in order])
-        if not owner or not any(owner):
+        if not owner or max(Counter(o for o in owner if o).values(), default=0) < SECTION_SHARE * len(owner):
             report[area] = {"fit": len(idx), "best": gname, "overlap": round(ov, 3)}
             plan[area] = {"gun": gname}
             continue

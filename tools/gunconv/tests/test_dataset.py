@@ -13,6 +13,7 @@ sys.path.insert(0, HERE)
 sys.path.insert(0, os.path.dirname(HERE))
 sys.path.insert(0, os.path.join(TOOLS, "guns"))
 import dataset  # noqa: E402
+import fit  # noqa: E402
 import gunmodel  # noqa: E402
 import study  # noqa: E402
 
@@ -82,6 +83,23 @@ class LabelTest(unittest.TestCase):
         self.assertAlmostEqual(a["grip"][0], -5.0, delta=0.15)
         self.assertAlmostEqual(a["grip"][1], -3.6, delta=0.15)
         self.assertEqual([round(v, 2) for v in a["mag"][0]], [0.0, 3.0])
+
+
+class StraightStockTest(unittest.TestCase):
+    def test_a_butt_is_not_a_grip(self):
+        """A rifle without a pistol grip (a lever or pump action, the Colt Lightning sample): its straight stock's butt
+        hangs deepest, but it is the stock, not a grip."""
+        boxes = [("stock", (-11.0, -4.6, -0.5), (-1.5, -1.0, 0.3)), ("butt", (-10.6, -1.0, -0.5), (-8.0, 1.5, 0.3)),
+                 ("receiver", (-1.5, -4.8, -0.4), (3.5, -3.2, 0.2)), ("barrel", (3.5, -4.4, -0.3), (23.0, -3.9, 0.1)),
+                 ("tube", (3.5, -3.9, -0.3), (20.0, -3.4, 0.1)), ("guard", (0.0, -3.2, -0.2), (1.6, -2.5, 0.0))]
+        shapes = [dataset.Shape(n, "gunModel", {k: [b[i] if k[i] else a[i] for i in range(3)] for k in fit.CORNERS})
+                  for n, a, b in boxes]
+        a = dataset.anchors(shapes, {"flamePos": (22.9, -5.0, -0.15)}, "rifle")
+        self.assertTrue(a["grip"] is None or a["grip"][0] > -4.0, a["grip"])
+        labels = dict(zip([n for n, _, _ in boxes], dataset.label_shapes(shapes, {"flamePos": (22.9, -5.0, -0.15)},
+                                                                        "rifle")))
+        self.assertIn(labels["butt"][0], ("stock", "buttpad"))
+        self.assertEqual(labels["stock"][0], "stock")
 
 
 class ExemplarTest(unittest.TestCase):

@@ -40,6 +40,8 @@ HANDS = {"pistol": ((-6.35, 1.07, -2.0), (-1.55, 9.12, 5.32)), "smg": ((-6.55, 1
 MIN_SIZE = 0.08       # parts whose longest side is shorter are not seen in game: dropped
 PANEL = 1.5           # flat parts longer than this along x become panels (rifle parts: longest side median 1.0, q90 1.4)
 SIGHT_REACH = 1.5     # the front sight is moved onto the like gun's sight line only when it is this close already
+FAMILY = 6            # exemplar parts and details come from this many of the closest guns (and the like gun)
+WEAK_LIKE = 0.6       # a best silhouette overlap under this: no Decimation gun is close, the like gun is a guess
 SLIDE_KICK = {"pistol": 1.2, "revolver": 0.0, "smg": 1.6}  # Fire: slideModel back (style guide section 10: about 2.4)
 KEYWORDS = [("ammoModel", re.compile(r"mag|clip|ammo|cartridge|bullet|shell", re.I)),
             ("slideModel", re.compile(r"bolt|slide|carrier|charg|cocking", re.I)),
@@ -209,8 +211,9 @@ def body_z(tris, k=64.0):
 # ---------------------------------------------------------------- pieces
 
 class Piece:
-    def __init__(self, tris, label, material, mesh_name, colour):
+    def __init__(self, tris, label, material, mesh_name, colour, tri_colours=None):
         self.tris, self.label, self.material, self.mesh_name, self.colour = tris, label, material, mesh_name, colour
+        self.tri_colours = tri_colours            # per triangle (the mean of its vertices' colours), or None
 
     def centre(self):
         pts = [q for t in self.tris for q in t]
@@ -237,9 +240,12 @@ def pieces_of(model, m):
                 by.setdefault(lab, []).append(fi)
             for lab, fis in by.items():
                 tris = [tuple(verts[i] for i in mesh.faces[fi]) for fi in fis]
+                tri_colours = None
                 if mesh.vcolours:
                     cs = [mesh.vcolours[i] for fi in fis for i in mesh.faces[fi]]
                     colour = tuple(int(round(sum(c[k] for c in cs) / len(cs))) for k in range(3))
+                    tri_colours = [tuple(sum(mesh.vcolours[i][k] for i in mesh.faces[fi]) / 3.0 for k in range(3))
+                                   for fi in fis]
                 else:
                     colour = mesh.colour
                 if lab and not ROOTISH.match(lab):
@@ -248,8 +254,42 @@ def pieces_of(model, m):
                     label = mesh.name
                 else:
                     label = mesh.material or mesh.name
-                out.append(Piece(tris, label, mesh.material or "", mesh.name, colour))
+                out.append(Piece(tris, label, mesh.material or "", mesh.name, colour, tri_colours))
     return out
+
+
+VARIED = 24.0         # a piece whose triangles' colours spread this much (RGB distance, q10 .. q90) gets them per part
+
+
+def varied(piece):
+    """The piece's triangle colours spread by VARIED or more in luminance or in red minus blue (q10 .. q90)."""
+    tc = piece.tri_colours
+    if not tc:
+        return False
+    for vals in (sorted(0.3 * c[0] + 0.59 * c[1] + 0.11 * c[2] for c in tc), sorted(c[0] - c[2] for c in tc)):
+        if vals[int(0.9 * (len(vals) - 1))] - vals[int(0.1 * (len(vals) - 1))] >= VARIED:
+            return True
+    return False
+
+
+def part_colour(part, piece):
+    """The source colour under a fitted part: the area weighted mean of the piece's triangle colours whose middles lie
+    in the part's box (grown 0.05) when the piece's colours vary (a textured one material file), else the piece's."""
+    tc = piece.tri_colours
+    if not varied(piece):
+        return tuple(piece.colour)
+    (x0, x1), (y0, y1), (z0, z1) = [(a - 0.05, b + 0.05) for a, b in fit.bounds([part])]
+    acc, wsum = [0.0, 0.0, 0.0], 0.0
+    for tri, c in zip(piece.tris, tc):
+        m = [(tri[0][i] + tri[1][i] + tri[2][i]) / 3.0 for i in range(3)]
+        if x0 <= m[0] <= x1 and y0 <= m[1] <= y1 and z0 <= m[2] <= z1:
+            w = 0.5 * math.sqrt(sum(v * v for v in fit.cross(fit.sub(tri[1], tri[0]), fit.sub(tri[2], tri[0]))))
+            for i in range(3):
+                acc[i] += w * c[i]
+            wsum += w
+    if wsum <= 1e-12:
+        return tuple(piece.colour)
+    return tuple(int(round(a / wsum)) for a in acc)
 
 
 def keyword_group(piece):
@@ -438,6 +478,9 @@ def convert(model, name=None, display=None, category=None, like=None, length=Non
         raise ValueError("like %r needs Decimation.jar (not found)" % like)
     if like is None and cands:
         like = cands[0][0]
+        if cands[0][1] < WEAK_LIKE:
+            warnings.append("no Decimation gun is close (best %s %.2f): the like gun is a guess, pick one on the page"
+                            % cands[0])
     info = None
     if like:
         if like not in match.guns():
@@ -493,20 +536,27 @@ def convert(model, name=None, display=None, category=None, like=None, length=Non
     M = compose(rot, s, zscale, (tx, ty, tz))
     pieces = pieces_of(model, M)
     groups = groups_of(pieces, info)
-    one_colour = bool(like and len(set(tuple(p.colour) for p in pieces)) <= 1)
-    if one_colour:
-        # one colour in the whole file: the like gun's own part tones by position (a colouring template)
-        lt = match.part_tones(like)
-        tones = [match.template_tone(p.box(), lt) for p in pieces]
-        warnings.append("the file has one colour: tones taken from %s's parts by position" % like)
-    else:
-        tones = palette_tones(pieces, groups, match.palette(like) if like else None)
+    one_colour = bool(like and len(set(tuple(p.colour) for p in pieces)) <= 1 and not any(varied(p) for p in pieces))
     parts, labels_seen = [], {}
-    for piece, group, colour in zip(pieces, groups, tones):
+    for piece, group in zip(pieces, groups):
         base = re.sub(r"[^A-Za-z0-9]", "", piece.label) or "part"
         k = labels_seen.get(base, 0)
         labels_seen[base] = k + 1
-        parts += fit.fit_piece(piece.tris, "%s%d" % (base, k), group, colour, tol=tol, label=piece.label)
+        fitted = fit.fit_piece(piece.tris, "%s%d" % (base, k), group, piece.colour, tol=tol, label=piece.label)
+        for q in fitted:
+            q.colour = part_colour(q, piece)
+        parts += fitted
+    # tones per fitted part (a piece can hold a wooden stock and a steel barrel: part_colour)
+    if one_colour:
+        # one colour in the whole file: the like gun's own part tones by position (a colouring template)
+        lt = match.part_tones(like)
+        for q in parts:
+            q.colour = match.template_tone(fit.bounds([q]), lt)
+        warnings.append("the file has one colour: tones taken from %s's parts by position" % like)
+    else:
+        tones = palette_tones(parts, [q.group for q in parts], match.palette(like) if like else None)
+        for q, c in zip(parts, tones):
+            q.colour = c
     n_fit = len(parts)
     parts = [p for p in parts if size_of(p) >= MIN_SIZE]
     small = n_fit - len(parts)
@@ -519,9 +569,10 @@ def convert(model, name=None, display=None, category=None, like=None, length=Non
     if exemplars and info:
         import exemplar
         provisional = {"flamePos": tuple(points_of(parts, info, mount)["flame"])}
+        family = [n for n, _ in cands[:FAMILY]] if cands else None
         parts, ex_report, by_gun, plan = exemplar.apply(parts, category, like, provisional,
                                                          folding=bool(info.get("foldingSights")),
-                                                         exemplar_tones=one_colour)
+                                                         exemplar_tones=one_colour, family=family)
     parts = layered(panelled(parts))
     if exemplars and info and details_on:
         import dataset
