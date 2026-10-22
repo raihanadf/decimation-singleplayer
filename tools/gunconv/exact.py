@@ -16,25 +16,26 @@ MIN_SIDE = 0.06       # faces whose longest side is shorter are not seen in game
 COPLANAR = 3.0        # two triangles within this many degrees make one quad
 BORDER_W = 100.0      # weight of the planes that hold a border edge in place
 TRI_SLACK = 1.5       # simplify to this many triangles a face of budget first (merging makes quads of pairs)
-DEFAULT_BUDGET = 800
+DEFAULT_BUDGET = 400   # within the cost budget (417 parts at 1.5 x the akm's draw time)
 BUDGET_RANGE = (300, 2000)
 
 # ---------------------------------------------------------------- the cost gate (spec, "Cost gate")
-# Fitted on the in game measurements (gunpack perf=true, docs/gunconv.md section 12): draw time per gun in ms, GPU
-# included, against Decimation's akm. Until measured: proportional to the parts, the akm's 194 at AKM_MS.
+# Fitted on the in game measurements (dev test gunpack perf=true, 23 Oktober 2026, docs/gunconv.md section 12): the
+# draw time of a held gun, median of 200, glFinish around (GPU included), ModelBatch on, dev client on the M4: eight
+# exact guns of 354 to 1,940 parts lie on 0.290 + 0.000946 ms a part (within 0.04 ms); Decimation's akm (194 parts) drew
+# in 0.438 to 0.530 ms, median 0.456, in the same runs.
 AKM_PARTS = 194
-AKM_MS = 0.30
-COST_A = 0.0          # ms a gun whatever its parts
-COST_B = AKM_MS / AKM_PARTS   # ms a part
-MEM_KB_PART = 0.0     # graphics memory a part (KB), measured with ModelBatch
-BUDGET = 1.5          # at most this times the akm's draw time; above: warn, above twice it: refuse
+AKM_MS = 0.456
+COST_A = 0.290        # ms a gun whatever its parts
+COST_B = 0.000946     # ms a part
+BUDGET = 1.5          # at most this times the akm's draw time (417 parts); above: warn, above twice it: refuse (1140)
 
 
 def estimate(parts):
-    """The cost of a gun of `parts` parts: draw time (ms), its ratio to the akm's, graphics memory (MB)."""
+    """The cost of a gun of `parts` parts: draw time (ms) and its ratio to the akm's, and its quads (6 a part: the
+    display lists Decimation compiles grow with them; graphics memory per gun could not be isolated with vmmap)."""
     ms = COST_A + COST_B * parts
-    akm = COST_A + COST_B * AKM_PARTS
-    return {"drawMs": round(ms, 3), "ratio": round(ms / akm, 3), "memoryMB": round(MEM_KB_PART * parts / 1024.0, 2)}
+    return {"drawMs": round(ms, 3), "ratio": round(ms / AKM_MS, 3), "quads": 6 * parts}
 
 
 def verdict(ratio):
@@ -289,16 +290,22 @@ def area_of(tris):
     return sum(0.5 * math.sqrt(dot(n, n)) for n in (cross(sub(t[1], t[0]), sub(t[2], t[0])) for t in tris))
 
 
-def prepare(tris, budget=DEFAULT_BUDGET, min_side=MIN_SIDE):
+def prepare(tris, budget=DEFAULT_BUDGET, min_side=MIN_SIDE, mesh=None):
     """One piece's triangles as polygons (lists of 3 or 4 points) within `budget` faces: welded, simplified, merged into
-    quads, faces too small to see dropped."""
-    verts, faces = weld(tris)
-    if not faces:
-        return []
+    quads, faces too small to see dropped. mesh: a (verts, faces) this piece was already simplified to (a smaller budget
+    goes on from it instead of from the start)."""
+    return prepare_mesh(tris, budget, min_side, mesh)[0]
+
+
+def prepare_mesh(tris, budget=DEFAULT_BUDGET, min_side=MIN_SIDE, mesh=None):
+    """prepare() and the simplified (verts, faces) it ended with."""
+    v2, f2 = mesh if mesh is not None else weld(tris)
+    if not f2:
+        return [], (v2, f2)
     polys = None
     target = max(2, int(budget * TRI_SLACK))
-    for _ in range(4):
-        v2, f2 = simplify(verts, faces, target)
+    for _ in range(6):
+        v2, f2 = simplify(v2, f2, target)                 # each pass goes on from the last one
         polys = merge_quads(v2, f2)
         if len(polys) <= budget or target <= 2:
             break
@@ -311,7 +318,7 @@ def prepare(tris, budget=DEFAULT_BUDGET, min_side=MIN_SIDE):
         if longest < min_side or dot(n, n) <= 1e-18:
             continue
         out.append(pts)
-    return out
+    return out, (v2, f2)
 
 
 def share(areas, budget, least=2):

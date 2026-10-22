@@ -78,8 +78,8 @@ class SimplifyTest(unittest.TestCase):
         polys = exact.prepare(tris_of((verts, faces)), budget=60)
         self.assertLessEqual(len(polys), 60)
         pts = [q for p in polys for q in p]
-        self.assertAlmostEqual(max(q[0] for q in pts), 10, delta=1e-6)
-        self.assertAlmostEqual(min(q[0] for q in pts), 0, delta=1e-6)
+        self.assertAlmostEqual(max(q[0] for q in pts), 10, delta=1e-3)          # a thousandth of a unit: 0.03 mm
+        self.assertAlmostEqual(min(q[0] for q in pts), 0, delta=1e-3)
         self.assertGreater(max(q[1] for q in pts), 0.45)            # still round, not collapsed to a line
 
     def test_under_budget_stays_exact(self):
@@ -185,6 +185,14 @@ class ConvertTest(unittest.TestCase):
         self.assertAlmostEqual(x1 - x0, 28.0, delta=0.1)
         self.assertEqual(set(conv.points), {"flame", "railTop", "rail", "gripRail", "mount"})
         self.assertIn(st["cost"]["verdict"], ("ok", "warn", "refuse"))
+
+    def test_the_lamoot_sample_stays_within_a_small_budget(self):
+        sample = os.path.join(ROOT, "build", "gunconv", "inputs", "lamoot_ak47", "highpoly_ak47.obj")
+        if not os.path.exists(sample):
+            self.skipTest("needs the git ignored sample")
+        import convert
+        conv = convert.convert_exact(sample, name="lamootexact", like="akm", budget=300)
+        self.assertLessEqual(conv.stats["faces"], 300)                    # 354 before the shares were redone
 
     def test_many_pieces_stay_within_the_budget(self):
         """Every piece gets at least a couple of faces: with many small pieces (a one object file cut into its
