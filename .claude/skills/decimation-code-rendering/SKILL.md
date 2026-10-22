@@ -17,6 +17,7 @@ docs/performance.md.
 | per frame world layers | WorldRenderLayerDispatcher (deci/c/d), layers in deci/M |
 | props | the TESRs in deci/I, PatchPropCulling |
 | human NPCs and infected | ModelHuman (deci/q/h): looks from one picture by fixes/HumanLayers, PatchHumanLayers |
+| blood splats that stay on hit infected | fixes/Wounds, painted into the NPC's own look picture from HumanLayers; dev test `wounds` |
 | .bmodel parts (guns, gear) | BModelPart (deci/n/b), BModelQuad (deci/n/c): one draw per part by fixes/ModelBatch, PatchModelBatch |
 
 ## Rules

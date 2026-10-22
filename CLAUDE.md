@@ -1250,6 +1250,13 @@ of the last session:
   PatchModelBatch; dev tests gunbatch (npclook's comparison for parts), npcdraw `scenes=camp,horde,fight` (old way =
   Decimation's whole drawing). Trap: BModelPart.render's children list is compiled once (frozen poses); a capture runs at
   that same moment, so both ways hold the same geometry.
+  HUD styles and infected wounds (22 Oktober 2026, new_feature.md "HUD styles", bug.md "Hits on infected leave nothing"):
+  fixes/HudStyle (Decimation default / Inline; key J, Settings page button, config deciworldgen_hud.cfg; holds IngameHud's
+  ClientState cf / cl while inline), fixes/InlineHud (Minecraft layout over the hotbar, humanity on the experience bar),
+  fixes/HudDoll (the player top right: Decimation's toasts and tips own the top left, vanilla's tutorial / achievement
+  toasts the top 32 px); fixes/Wounds (splats painted into each hit infected's own look picture via HumanLayers). Dev
+  tests hud, wounds. Traps: the local player's posY is eye level (use getPosition(1.0f) for its view ray); a dev test
+  that acts on `ticks == N` misses ticks (the client tick can skip server ticks): use steps with a wait counter.
   World generation stalls (20 Oktober 2026, bug.md "Server stalls while new city areas generate", docs/performance.md 9):
   terrain/DeciBiome.decorate runs vanilla decoration's block updates at once (its gravel and sand queued 188,721 ticks
   that every chunk save walked); worldgen/BlockBatch writes Slices' blocks without per block light and lights the
