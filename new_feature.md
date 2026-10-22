@@ -1335,3 +1335,51 @@ lineup photo zombies_v0.34.0. Not seen by the user in game yet
   against vanilla's 0.297: OptiFine does not override the map), glstack PASS, rebuild 55 us. Dedicated server [not run:
   the light map is client only; the moon day message rides our channel like message 1, checked there by channelmp].
 
+## Durability of armor, vests and guns, with repair parts (22 Oktober 2026, feature 10, ideas 47, 48)
+- User: "armor durability highly nerf to 256 and they will be reduce by hit or shot, 1 shot = 1 durability. armor now
+  can be repaired with armor part and for vest durability is 512 and need armor plate item that can be find it on
+  military or police crate. guns now has durabitlity and they need to be repaired by guns part"; chosen: kept at 0 but
+  working no more, a quarter a part, guns jam below 25 % and stop at 0, parts in military and police crates only; and,
+  told that vests protected NOTHING (their multiplier was never applied, by Decimation or by us), the stronger of vest
+  and chest piece counts against body shots. Spec docs/superpowers/specs/2026-10-22-durability-design.md.
+- Armor and vests (fixes/ArmorGunfireHandler, fixes/Durability): every Decimation armor piece 256, every vest 512, masks
+  untouched (ArmorGunfireHandler.setMaxima at preInit); the vanilla durability bar shows. A gunshot wears each piece
+  that counted by 1 (body pieces on every shot, the helmet on a headshot, the vest or the chest piece, whichever
+  counted); a used up piece protects nothing (its factor is taken back out of Decimation's player hit, and Forge's
+  ArmorProperties.ApplyArmor already lets a piece absorb no more than its durability left against melee); melee wear
+  stays vanilla's (Forge's, at least 1 a piece) but ends on the maximum, never destroying a piece (meleeLast sets it
+  back first). Vests: Durability.bodyFactor, applied to NPC shots directly and to a player's shot by swapping the chest
+  piece's factor (Decimation's handler applied it) for the vest's when the vest is stronger.
+- Guns (fixes/GunWear, GunWearClient, tools/patches/PatchGunWear.java on the three jars): NBT deciworldgen_wear and
+  deciworldgen_jammed; rifle 1500 rounds, SMG 1800, pistol and revolver 2500, shotgun 1200, machine gun 1000, launchers
+  and crossbows none. GunItem.fire (client) asks GunWear.blocked first: a jammed or worn out gun gives Decimation's
+  empty click and, now and then, a toast "Jammed: press R to rack" / "Worn out: repair with Gun Parts";
+  GunItem.onServerFire calls GunWear.onShot once a shot (wear, and below 25 % left a 2 % jam roll). Both calls sit in a
+  catch of NoClassDefFoundError: the base jar is shared by every checkout. R with a jammed gun in hand plays
+  Decimation's Rack animation (Deci.playRack) and sends Net message 3; the server clears the jam; the press is taken in
+  the client tick's START phase, before Decimation reads R in END, so no reload starts. Decimation's reload key field is
+  named "do" (a Java keyword): Deci.reloadKey reads it by reflection.
+- Parts (fixes/RepairPart, icons tools/item_icons.py in the style of Decimation's 32 x 32 item icons): Armor Repair Kit
+  (the most worn armor piece worn), Armor Plate (the vest), Gun Parts (the most worn gun in the hotbar); a right click
+  repairs a quarter of the maximum and uses one, nothing to repair uses nothing. Loot: Deci.addLootShare, next to
+  Decimation's Pistol Suppressor (military and police pools, never civilian), copies sized per pool for about 3 % of
+  its entries (plates 2 %): 23 copies in military pools, 3 in police ones. Tooltips: "Durability N / M", the reason in
+  red when jammed or worn out.
+- Checks: unit DurabilityTest and GunWearTest RED then GREEN, suite 198. Dev test `durability` 16 of 16: an NPC shot
+  0.642 lost against 0.642 expected (vest counted over the Marine top) and boots, legs, vest worn 1, chest 0; used up
+  boots protect nothing and stay at 256 of 256; a player's shot with used up boots and the vest 0.946 against 0.946; a
+  melee hit on a piece with 1 left ends on 256 of 256, kept; three real shots (the mouse path) wear 3; a jammed gun does
+  not fire; R racks it with no reload (ammo kept); a worn out gun does not fire; each part repairs a quarter and is used
+  up; nothing to repair uses nothing; parts in military and police loot, none civilian. Costs: hurt hook 28.7 us a hit
+  after warm up (285 us the first, class loading), shot hook under 36 us; nothing a tick.
+- Regression on the way: checks, playerfire, gun, attachments, glstack PASS (61); zombies failed twice and the cause
+  was in the tests: radiation, durability (and magunload) left the player in survival, the world saved it, and in the
+  next zombies run a hulk killed the test player, which took the watched infected out of the world (ticksExisted stuck
+  at 2, not in loadedEntityList), while leftover rain made isDaytime false at noon. Now durability and radiation put
+  the game mode back, zombies makes its player creative and zeroes rain and thunder strength: zombies, durability,
+  radiation, zombies in one game 42 of 42.
+- Production client with OptiFine (one jar of main's tree, with PatchGunWear): durability 16 of 16 with the same
+  numbers, playerfire and glstack PASS (24 in all); hooks 3.4 us a hit warm and 16.4 us a shot. Dedicated server [not
+  run: the hit and shot hooks are the same server code as in singleplayer; the R rack rides Net message 3 like
+  message 0, which channelmp checked there].
+

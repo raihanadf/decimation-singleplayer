@@ -15,6 +15,7 @@ crafting and trading.
 |---|---|
 | ItemRegistry (deci/aD/k) | registers every item in preInit (`init`); field names follow the unlocalized names |
 | ItemArmorDeci (net/decimation/mod/common/item/armor) | armor with `damageMultiplier` against player gunshots (PacketGunHit handler, slots 0 to 2; the helmet is skipped there) and a full body .bmodel |
+| ItemVestDeci (same package) | a vest in PlayerData's vest slot (getVest cw); its damageMultiplier (0.455 military to 0.6175 press) was applied by nobody until feature 10 (fixes/ArmorGunfireHandler: the stronger of vest and chest piece against body shots) |
 | PlayerData extra slots | backpack, vest, mask (PacketSyncExtraArmor); PlayerGearContainer (deci/f/d), BackpackContainer (deci/f/b) |
 | FoodItem (deci/ar/a), CannedFoodItem (d), PacketFoodItem (c), RawMeatFoodItem (b), InfectedFleshItem (e) | food with hydration / nutrition ratings; raw meat may infect, infected flesh does |
 | BottledDrinkItem (deci/aq/a), CannedDrinkItem (deci/aq/b) | drinks: only usable when thirsty (`onItemRightClick` checks), +6 water, a glass bottle back |

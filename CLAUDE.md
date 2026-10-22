@@ -1341,6 +1341,14 @@ of the last session:
   event once a tick; fixes/MoonClock gives the overworld real moon phases (MoonProvider, our day counter, Net message 2):
   Decimation's DayLengthHandler resets world time every day, so vanilla's moon was full every night. Test trap: weather
   changed on the server outside its weather tick never reaches the client; set it on both sides (dev test nights).
+  Durability (22 Oktober 2026, feature 10): fixes/Durability, ArmorGunfireHandler (wear, used up pieces, vests protect
+  now), GunWear + GunWearClient (jams, R racks, Net message 3), RepairPart (three part items, Deci.addLootShare);
+  tools/patches/PatchGunWear.java on GunItem (three jars, on top of PatchGripRecoil): its calls catch
+  NoClassDefFoundError because the base jar is shared by every checkout. Trap: Decimation's reload key field is named
+  "do", a Java keyword (Deci.reloadKey reads it by reflection). Dev test durability.
+  Test trap (same day): a mode that switches the player to survival must put the game mode back (the world saves it);
+  zombies, which assumed creative, had its player killed by a hulk and read nothing. Set weather strengths too
+  (setRainStrength), not only the raining flag: isDaytime() counts the fading rain.
   Sights need a mount too (22 Oktober 2026): sight_mounts.txt ("gun rail|side|slide") -> fixes/SightMounts; the red dot
   only on pistols with an optic cut or rail, other sights on a rail, claw mount or AK side mount; fixes/MountStrip (was
   GripStrip) pops off grips and sights a gun cannot mount. A new gun needs its row there.

@@ -188,4 +188,6 @@ Checked with it: bundled content unpacked, cities generated, no errors (bug.md v
   (ProdTester has no skin: human0 on the player, the menu preview, the gun arms and the corpse).
 - Same day, feature 6 (dark nights): nights 10 of 10 and glstack in the production client with OptiFine; the shot's
   floor at a new moon 0.054 against vanilla's 0.297 (OptiFine keeps our light map).
+- Same day, feature 10 (durability, PatchGunWear in the base jar): durability 16 of 16, playerfire, glstack in the
+  production client with OptiFine (24 PASS); hooks 3.4 us a hit, 16.4 us a shot.
 

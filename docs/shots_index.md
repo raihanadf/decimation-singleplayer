@@ -1891,3 +1891,9 @@ Production client with OptiFine HD U E7 (the brother's laptop setup), AKM with t
 - city_noon.png, city_full_moon.png, city_new_moon.png: a seed 1 city street (1460, 272, looking east): noon; full moon
   dark navy with the street, curbs and building fronts faintly visible; new moon close to black, faint outlines only,
   the zone banner "Now entering Fort Northmouth: Wasteland" at the bottom left.
+
+## durability_v0.66.1 (22 Oktober 2026, feature 10: repair parts)
+- part_icons_vs_decimation.png: top, Decimation's first aid kit, metal wall kit, duct tape, pliers, screwdriver and
+  splint icons at 8x (32 x 32, outlined, shaded); bottom, ours: Armor Repair Kit (an olive case with a grey plate
+  emblem and a dark strap), Armor Plate (a dark plate with cut top corners and a light band), Gun Parts (a grey bolt
+  carrier and a spring drawn as a row of slanted strokes, the weakest of the three).

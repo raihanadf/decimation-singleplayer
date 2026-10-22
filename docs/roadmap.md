@@ -244,7 +244,7 @@ a short design talk each first:
    5b. DONE 22 Oktober 2026 (new_feature.md): Every player a random Decimation skin instead of Steve (54): picked by name,
    own skins kept, all 21 human skins, corpses wear their player's skin.
 6. DONE 22 Oktober 2026 (new_feature.md): DayZ dark nights (52), moon phases from our day counter. 7. Radiation set (41 to 43). 8. Specific mobs at specific places (35). 9. Attachment
-   benefits (40). 10. Armor, vest and gun durability with repair parts (47, 48). 11. Trader market by day (39).
+   benefits (40). 10. DONE 22 Oktober 2026 (new_feature.md): Armor, vest and gun durability with repair parts (47, 48); vests protect now. 11. Trader market by day (39).
 12. Loot rules, lootable props, loot kinds, Tarkov search (36, 49, 50, 29). 13. Zombie variants and mutants (37).
 14. Achievements and story mode UI (38, 31). 15. Survivor events, friendly NPC and trader quests (28, 32, 33).
 Split (user 22 Oktober 2026: "use previous subagent ... for low - medium feat task and this session for hard - extreme"):
