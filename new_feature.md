@@ -1792,5 +1792,13 @@ lineup photo zombies_v0.34.0. Not seen by the user in game yet
   eased the pressure 10 -> 7; trade (Decimation's own trade test, now reading the price of the moment) PASS; camp PASS.
 - Performance: a refresh of every trader kind 0.06 ms (only at dawn, per trade and for a trader kind's first spawn), the
   table 276 bytes; nothing per tick but a queue poll.
+- Security review (automated, same night), fixed test first (TraderMarketTest 6): a trade now counts only when its own
+  message moved the player's caps by exactly its price, read right before and after Decimation handles it on the same
+  network thread, and only for an item the trader's class offers (a forged or refused message, or caps moving for another
+  reason, pushes nothing; no client chosen keys in the saved map); prices go back in whenever a class's list holds offers we
+  did not write (each server tick, before each trade, and on cancelled joins, whose constructor reset the list); no trader
+  buys an item for as much as any trader sells it that day (no buying here and selling there for profit; per currency).
+  The saved pressures are written under the same lock as a trade's update. Rerun: market (15 trades seen, 15 counted) and
+  trade PASS, suite 279.
 - Not verified: the tooltips in the trader screen (no shot: the screen opens through Decimation's dialogue); a dedicated
   server with a joined client (the table and the trade watcher there); the production client.
