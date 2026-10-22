@@ -32,6 +32,11 @@ mostly magazines), vanilla box UV. Checked against the look of the Uzi,
 MP5, AK74, Glock (renders match their shapes; texture flips per face
 [not verified], irrelevant at this pixel size).
 
+`STUDY_OURS=DIR` reads "ours:NAME" from another assets/deci folder (a converted gun's package, docs/gunconv.md).
+Renders made before 22 Oktober 2026 were drawn at the gun's part count in pixels a unit (the render loop reused the
+scale variable; bug.md "study.py renders scaled by part count"): old sheets of guns with different part counts are not
+at one scale; render them again to compare sizes.
+
 Dataset: `docs/references/decimation_guns.tsv`, one line per gun (parts,
 shaped %, rotated %, length / height / width in model units, median part
 volume, texture size and pixel density, part groups). Measurements only,

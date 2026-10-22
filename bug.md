@@ -2055,3 +2055,14 @@ the client's empty slot]. Run aimdrift in a game of its own (or before scopediag
   Every older updater (0.64.7 to 0.66.0) still fails: their players install 0.66.1 by hand once (0.66.0 shows a
   Download page button on a failed download, 0.65.0 only Try again / Back). The 0.66.0 release notes and the site's
   Updating guide and questions say so (site commit 29bf8a3, pushed by the user).
+
+## study.py renders scaled by part count (22 Oktober 2026, FIXED on branch gunconv-tool)
+- Found while comparing the gun converter's AKM (88 parts) with Decimation's akm (194) in one `study.py sheet`: same
+  length (28.5 units), ours drawn at less than half the size.
+- Cause: tools/guns/study.py render() set k = scale x supersampling, then looped `for k, part in enumerate(gun.parts)`,
+  so every face was drawn at (number of parts minus 1) pixels a unit, whatever --scale said.
+- Effect: every sheet, render, attach view and icon source since study.py was written. Sheets of two guns with about
+  the same part count (Uzi 105, MAC-10 102) looked right, which is why it went unnoticed; sizes in older sheets of guns
+  with different part counts are not comparable. Icons are scaled down to 30 pixels anyway (shape unchanged).
+- Fix: the loop variable renamed (pi). Check: akm and the converted gun now 707 pixels wide each at --scale 24, the Uzi
+  350 (13.6 units). docs/gun_style_guide.md section 1 and the decimation-gun skill say so.
