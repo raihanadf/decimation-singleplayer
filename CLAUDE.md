@@ -1386,6 +1386,10 @@ of the last session:
   message 4), Deci.GearContainer refuses clicks on unsearched slots; dev test lootsearch (timing in server ticks, costs as
   medians). Traps: another mod's tooltip lines come after ours, clear tooltips at LOWEST; a test that moves loot at once
   turns LootSearch.enabled off; per player server state shared by several viewers must tick once a server tick.
+  Trader market (feature 11, new_feature.md): fixes/TraderMarket rewrites Decimation's static offer lists per class (a new
+  trader object resets its class's list: re-apply on EntityJoinWorld), Net message 5 carries the day's table; trades are seen
+  by our handler in Decimation's server channel after its codec (Deci.decimationChannel). Tests that trade read the price of
+  the moment (TradeTest); dev test market.
   Sights need a mount too (22 Oktober 2026): sight_mounts.txt ("gun rail|side|slide") -> fixes/SightMounts; the red dot
   only on pistols with an optic cut or rail, other sights on a rail, claw mount or AK side mount; fixes/MountStrip (was
   GripStrip) pops off grips and sights a gun cannot mount. A new gun needs its row there.

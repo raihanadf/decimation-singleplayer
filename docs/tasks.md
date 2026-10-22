@@ -152,5 +152,6 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [x] production client and dedicated server check of our channel: unload (message 0) and the radiation dose (message 1), dev test channelmp 7 of 7 (22 Oktober 2026)
 - [ ] user: ropes stay one click? shift click into a worn backpack before the row swap? (bug agent's questions)
 - [~] feature 13 zombie variants and mutants (decided 22 Oktober 2026): plan approved as a plan only (user 22 Oktober 2026), not built
-- [ ] feature 11 trader market (decided; plan 2026-10-22-trader-market-design.md), feature 9 attachment benefits (plan 2026-10-22-attachment-benefits-design.md; user: wait)
+- [x] feature 11 trader market built on main (market all PASS; not carried, no production run yet)
+- [ ] feature 9 attachment benefits (plan 2026-10-22-attachment-benefits-design.md; user: wait)
 - [ ] features 14 (achievements, story UI) and 15 (events, quests): draft plans with open questions for the user

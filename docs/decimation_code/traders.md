@@ -50,6 +50,7 @@ packet's fields on the server.
 | is it a trader / armed trader | `Deci.isTrader`, `Deci.isArmedTrader` |
 | a trader's offers | `Deci.traderOffers(trader)` |
 | trade like the trader screen | `Deci.sendTrade(action, item, price, traderId, currency)` (client) |
+| prices by day (feature 11) | fixes/TraderMarket rewrites the class offer lists (`Deci.traderOfferLists`, `Deci.newTraderOffer`), sees trades in Decimation's channel (`Deci.decimationChannel`, `Deci.tradeMessage`); test `market` |
 | traders in our camps and refuges | worldgen/SafezoneSites (EntityList names "TraderGuns", "TraderGuard", ...), docs/safezone.md |
 
 ## 6. Checks

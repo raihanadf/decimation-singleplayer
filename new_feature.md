@@ -1772,3 +1772,25 @@ lineup photo zombies_v0.34.0. Not seen by the user in game yet
   either way. Hiding them needs placeholder stacks in that sync [open; matters for public servers, docs/release_1.0.md].
 - Carried to prerelease (from main 0233182 and 757fa57; lootsearch and invshift PASS there). Production client with OptiFine:
   lootsearch, invshift, loot, glstack 75 PASS; the production dedicated server starts clean with it.
+
+## Trader market by day (22 Oktober 2026 night, feature 11, idea 39)
+- User: "trader now have dynamic market supply and demand, its randomize by day in minecraft"; chosen: daily drift plus
+  player trades, both easing back over days, a few items on sale and in demand per trader and day. Plan
+  docs/superpowers/specs/2026-10-22-trader-market-design.md.
+- fixes/TraderMarket: Decimation keeps one offer list per trader class and checks a trade's price against it; a new trader
+  object puts a fresh list of base prices in. The market keeps those bases and writes the day's offers into the lists at
+  dawn (a new day by WorldClock), after each trade, when a trader joins a world, and on clients from the price table it
+  sends (Net message 5, at login, each new day and after trades). Price = base x drift (0.85 .. 1.15 by world seed, day
+  and item) x pressure (1 + 0.03 a unit, 0.6 .. 1.6; a buy +1, a sale -1; 30 % back toward 0 each day), whole caps,
+  buy at least 1, sell under buy; up to 3 offers on sale (buy at 70 %) and 3 wanted (sell at 150 %) per trader kind and
+  day, shown in the trader screen's tooltips ("On sale today", "Wanted today"). Trades are seen by a handler of ours in
+  Decimation's own server channel right after its codec (no jar patch) and counted on the next server tick only when the
+  player's caps changed. Pressures saved per world (data/deciworldgen_market.dat).
+- Checks: unit TraderMarketTest 4 (RED: no class, then GREEN); suite 277. Dev test market all PASS: the food trader's 29
+  offers at the day's prices on server and client alike, 3 on sale and 3 wanted, ten buys raised that item 11 -> 13
+  (pressure +10), five sales took another's pressure 5 down, a buy at the morning's price refused once it rose, the next day
+  eased the pressure 10 -> 7; trade (Decimation's own trade test, now reading the price of the moment) PASS; camp PASS.
+- Performance: a refresh of every trader kind 0.06 ms (only at dawn, per trade and for a trader kind's first spawn), the
+  table 276 bytes; nothing per tick but a queue poll.
+- Not verified: the tooltips in the trader screen (no shot: the screen opens through Decimation's dialogue); a dedicated
+  server with a joined client (the table and the trade watcher there); the production client.
