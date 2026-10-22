@@ -208,3 +208,12 @@ Checked with it: bundled content unpacked, cities generated, no errors (bug.md v
   m590m 0.847 / 1.281, p228m 1.128 / 0.942; 0 GL errors, 0 stack changes.
 - The classpath had to be rebuilt with tools/prodclient/classpath.py, which took the server install's Forge universal
   jar (trap 1 above: "binary discrepency ... ahu"); it now takes prodclient/dl/forge-universal.jar and stops without it.
+
+## Results (23 Oktober 2026, release candidate 0.70.0 "Scavenger" from the prerelease branch, sha256 794ddf75)
+- Version 0.70.0 (user: a milestone number, docs/roadmap.md "Version milestones"); name proposed "Scavenger".
+- Base jar = main's dist/Decimation.jar (22 Oktober 15:36, with the durability patch) minus the four Multiplayer
+  pictures (the old worktree base kept in build/release_0700/prerelease-base-before.jar); linecheck PASS (32 references
+  into our code from 12 Decimation classes, all present); since 0.66.1: 1 changed Decimation entry, deci/ay/i (GunItem:
+  PatchGunWear, the durability feature carried as acc19bf), no multiplayer. Resources equal to main's but the Host
+  Online texts and the gunpack index (main only); content 3d2721f3ce41 (same as 0.66.1); the candidate holds no hosting,
+  gunpack or relay class. Tag 0.70.0 on prerelease 176482c (local); worktree unit tests 172, 0 failed.
