@@ -63,3 +63,6 @@ dev/src/main/resources/assets/deci/animations/mk18/
 
 # brainstorming companion mockups (local only: may hold Decimation screenshots)
 .superpowers/
+
+# the design hook's cache (its config.json is kept: sanctioned exceptions)
+.impeccable/hook.cache.json
