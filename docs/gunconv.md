@@ -134,3 +134,31 @@ big parts before), levelled gentle slopes (AK-47 skews 18 % to 7 %, AKM 11 % to 
 
 Offline: 1.5 to 6 s a gun. In game a converted gun must cost what one of ours costs: its part count (ak47 205, akmc
 153) sits inside Decimation's rifle range (akm 194); gunperf against the akm is agent 2's [not run].
+
+## 10. Milestone 2 status (22 Oktober 2026, stopped at a clean point: the user's usage limit)
+
+Spec: docs/superpowers/specs/2026-10-22-gun-converter-design.md, "Milestone 2: the dataset and exemplar areas".
+
+Done and tested:
+- tools/gunconv/dataset.py: the anatomy labeller (anchors: bore, magazine, grip beside the magazine first, stock end,
+  receiver front; names first, then position and size; rail rows; details under 0.3), exemplars per area (box, run axis,
+  profile at 12 stations, every part's corners, kind, group, tone from the texture island, detail flag), the dataset
+  build into build/gunconv/dataset/decimation_areas.json (git ignored, made again from the jar, never committed), the
+  aggregate rows for docs/references/decimation_gun_areas.tsv (numbers only), `check` (agreement with Decimation's own
+  names) and `render` (one colour per area, for the eye). fit.hexa_tris and fit.profile.
+- tests/test_dataset.py: 7 tests (the synthetic rifle labelled area by area, names over position, anchors, exemplars,
+  the akm's areas, the build into a temporary folder). Suite: 80 tests, all pass, 1 expected failure (below).
+
+Measured, not yet good enough: with names switched off the rules agree with Decimation's own stock, grip and barrel names
+on 398 of 539 parts (73.8 %; target 80 %). Fixed on the way: the grip was taken from the magwell on the SCARs, G36C and
+AR15 Beowulf (now looked for beside the magazine first, 69.6 % before); tubes along the barrel counted as handguard.
+Still wrong: the AUG and P90 bullpups (their stock holds the action), the Thompson's barrel group, part of the FAMAS-I
+and Benelli M4 barrel groups.
+
+Left (not started): the eye check on renders of two guns per category (`dataset.py render`); `dataset.py build` and the
+committed aggregate TSV; exemplar.py (choose the exemplar per area, the like gun first; refit along the profile; the
+0.7 overlap gate; tones relative to the exemplar's mean) and its tests; the converter step (areas labelled on our parts,
+exemplar parts replace an area, panels and plates only where the fit stays, the report "exemplars" and "byGun" in
+gun.json and on the page); the icon from the like gun's icon proportions (akmc's was 31 by 9 against the AKM's 32 by
+21); akmc's rear sight notch from the rear sight exemplar; the quality gates (ak47 and akmc again, gaps, vocab and
+contact before and after, renders next to the akm and a non AK rifle, the page smoke test, conversion times).
