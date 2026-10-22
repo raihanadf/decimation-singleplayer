@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gun Converter</title>
+<link rel="stylesheet" href="/style.css">
+<script type="importmap">
+{"imports": {"three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+             "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}
+</script>
+</head>
+<body>
+<header class="masthead">
+  <p class="kicker">DeciRemnant tools, private and local</p>
+  <h1>Gun converter</h1>
+  <p class="standfirst">A CC0 or CC BY 3D gun in, a Decimation styled gun package out. The converter proposes the
+    parts in Decimation's shape kinds; adjust them here, then export the package for the game.</p>
+</header>
+
+<main>
+  <section class="panel">
+    <h2 class="label">Model</h2>
+    <div class="row">
+      <label>Sample <select id="sample"></select></label>
+      <button id="load-sample" type="button">Load sample</button>
+      <label class="file">Or a file <input type="file" id="file" accept=".glb,.gltf,.obj,.bbmodel"></label>
+    </div>
+    <div class="row credit">
+      <label>Author <input id="author" autocomplete="off"></label>
+      <label>Link <input id="url" autocomplete="off"></label>
+      <label>License <input id="license" autocomplete="off" placeholder="CC0 1.0, CC BY 4.0 or own"></label>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2 class="label">Conversion</h2>
+    <div class="row">
+      <label>Name <input id="name" size="10" autocomplete="off" placeholder="from the file"></label>
+      <label>Display <input id="display" size="14" autocomplete="off"></label>
+      <label>Category <select id="category"><option value="">auto</option></select></label>
+      <label>Like <select id="like"><option value="">auto</option></select></label>
+      <label>Real length mm <input id="length-mm" type="number" min="50" max="3000" step="1" size="6"></label>
+      <label>Muzzle <select id="muzzle" class="axis"></select></label>
+      <label>Up <select id="up" class="axis"></select></label>
+      <label class="check"><input type="checkbox" id="mirror"> Mirror</label>
+    </div>
+    <div class="row">
+      <button id="convert" class="primary" type="button">Convert</button>
+      <button id="export" type="button">Export</button>
+      <p id="status" class="status" role="status">Load a model to begin.</p>
+    </div>
+  </section>
+
+  <section class="views">
+    <figure class="view">
+      <figcaption class="label">Source</figcaption>
+      <div id="view-source" class="canvas"></div>
+    </figure>
+    <figure class="view">
+      <figcaption class="label">Converted <span id="conv-count" class="muted"></span></figcaption>
+      <div id="view-conv" class="canvas"></div>
+    </figure>
+  </section>
+  <div class="row viewbar">
+    <span class="label">View</span>
+    <button type="button" data-view="side">Side</button>
+    <button type="button" data-view="top">Top</button>
+    <button type="button" data-view="three">Three quarter</button>
+    <button type="button" data-view="rear">Rear</button>
+    <label class="check"><input type="checkbox" id="split"> Part colours</label>
+    <label class="check"><input type="checkbox" id="ghost"> Like gun outline</label>
+  </div>
+
+  <section class="columns">
+    <section class="panel">
+      <h2 class="label">Edit</h2>
+      <p id="sel-info" class="muted">No part selected. Click one in the converted view or in the list.</p>
+      <div class="row">
+        <label>Group <select id="group">
+          <option>gunModel</option><option>ammoModel</option><option>slideModel</option><option>defaultScopeModel</option>
+        </select></label>
+        <label>Kind <select id="kind">
+          <option>cuboid</option><option>taper</option><option>wedge</option><option>skew</option>
+          <option>octagon</option><option>split</option>
+        </select></label>
+        <button id="apply-kind" type="button">Apply kind</button>
+      </div>
+      <div class="row">
+        <label>Step <input id="step" type="number" value="0.05" min="0.01" step="0.01" size="5"></label>
+        <button type="button" data-move="-1,0,0">Back</button>
+        <button type="button" data-move="1,0,0">Forward</button>
+        <button type="button" data-move="0,-1,0">Up</button>
+        <button type="button" data-move="0,1,0">Down</button>
+        <button type="button" data-move="0,0,1">Left</button>
+        <button type="button" data-move="0,0,-1">Right</button>
+      </div>
+      <div class="row">
+        <button id="drop" type="button">Drop part</button>
+        <button id="undo" type="button">Undo</button>
+      </div>
+      <div class="table-box">
+        <table id="parts">
+          <thead><tr><th>#</th><th>Group</th><th>Label</th><th>Kind</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2 class="label">Attachment points</h2>
+      <div class="row">
+        <label>Flame x <input id="flame-x" type="number" step="0.05" size="6"></label>
+        <label>y <input id="flame-y" type="number" step="0.05" size="6"></label>
+        <label>z <input id="flame-z" type="number" step="0.05" size="6"></label>
+      </div>
+      <div class="row">
+        <label>Rail top y <input id="rail-top" type="number" step="0.05" size="6"></label>
+        <label>Mount <select id="mount">
+          <option value="">none</option><option>rail</option><option>side</option><option>slide</option>
+        </select></label>
+      </div>
+      <div class="row">
+        <label>Top rail from <input id="rail-from" type="number" step="0.1" size="6"></label>
+        <label>to <input id="rail-to" type="number" step="0.1" size="6"></label>
+      </div>
+      <div class="row">
+        <label>Grip rail from <input id="grip-from" type="number" step="0.1" size="6"></label>
+        <label>to <input id="grip-to" type="number" step="0.1" size="6"></label>
+      </div>
+      <h2 class="label">Notes from the converter</h2>
+      <ul id="warnings" class="notes"></ul>
+      <h2 class="label">Package</h2>
+      <div id="report" class="muted">Nothing exported yet.</div>
+    </section>
+  </section>
+</main>
+<script type="module" src="/app.js"></script>
+</body>
+</html>
