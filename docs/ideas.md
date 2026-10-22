@@ -253,5 +253,11 @@ User: "for the feat i have more". Notes on what we already have are mine [not an
     empty"). DONE the same day (new_feature.md "Looted guns hold rounds").
 54. **No Steve: every player a random Decimation skin** (user, 22 Oktober 2026: "later we dont use steve default skin,
     instead using decimation skin with randomize so each player has unique skin they use, maybe like random ID we got
-    from 1-10 skin as example"). Design talk first [not analysed yet].
+    from 1-10 skin as example"). Decided the same day (user answers): the skin comes from the player's id (the same
+    skin every time, every client works it out alone, no packets: "as long not distrub other feature especially
+    multiplyaer"); only players showing the default skin get one ("player that have skins before can use their own
+    skin"; Minecraft 1.7.10 has only Steve, Alex came in 1.8); all of Decimation's 21 human skins (human0 to human20,
+    textures/model/entities/mob/human, the ones its NPCs wear); built later, as 5b of docs/roadmap.md "Feature order".
+    Open for the build [not analysed]: how Decimation draws players (its own player renderer and gear layers, or
+    vanilla RenderPlayer), and whether its human skins fit the player model's texture layout (64 x 32).
 

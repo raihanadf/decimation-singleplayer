@@ -228,7 +228,7 @@ docs/gun_model_spec.md); every user review goes into its lessons and casebook.
    Findings to act on: Open bugs 0 (WorldClock day, backend thread leak) and the README's findings list.
 
 ## Feature order (user 22 Oktober 2026: "from easiest ones to hardest"; bugs go to the bugfix agent)
-Built in this order, ideas numbers from docs/ideas.md; 1 to 5 decided together (user choices 22 Oktober 2026), from 6 on
+Built in this order, ideas numbers from docs/ideas.md; 1 to 4 decided together (user choices 22 Oktober 2026), from 5 on
 a short design talk each first:
 1. DONE 22 Oktober 2026 (new_feature.md): Armor against NPC fire 20 % weaker (46): each piece's protection x 0.8 (a piece blocking 50 % blocks 40 %), helmets
    too; player shots unchanged.
@@ -240,6 +240,8 @@ a short design talk each first:
    4b. DONE 22 Oktober 2026 (new_feature.md): Looted guns hold rounds (53): 1 in 2 loaded, the rounds like a looted magazine's;
    crates and car loot only, no launchers or crossbows.
 5. Radiation status in the HUD (30).
+   5b. Every player a random Decimation skin instead of Steve (54): by player id, own skins kept, all 21 human skins
+   (user answers 22 Oktober 2026).
 6. DayZ dark nights (52). 7. Radiation set (41 to 43). 8. Specific mobs at specific places (35). 9. Attachment
    benefits (40). 10. Armor, vest and gun durability with repair parts (47, 48). 11. Trader market by day (39).
 12. Loot rules, lootable props, loot kinds, Tarkov search (36, 49, 50, 29). 13. Zombie variants and mutants (37).
