@@ -42,6 +42,9 @@ Milestone 3 (22 Oktober 2026): guns WITHOUT a Decimation twin, of other kinds, f
 - ducky_lightning: pump action rifle with a tube magazine (Colt Lightning style; Decimation has none). CC0; "A low-poly
   model ... the high-poly model I used to bake the textures from" (own work); lightning.glb 3,046 triangles, one mesh
   with joints Root, Pump, Hammer, Trigger, Pin, Lifter. We credit LonesomeDucky all the same.
+- Used in (22 Oktober 2026, docs/gunconv.md section 11): jtoastie_m590 became package m590, pukk_p228 package p228,
+  kutejnikov_smg package csmg (display "SMG vz61 style"), ducky_lightning package lightning. Their CC BY credits are in
+  their gun.json files and must go wherever they ship.
 - Looked at and NOT used: austincford's guns on poly.pizza (MPX, MDR, MK14, SR1MP, P226 and more, "CC-BY 3.0" but no
   word on where they come from, and the set matches a game's weapon list closely: the rule says never models of other
   games, so they stay out).

@@ -12,7 +12,8 @@ The converted rifles have not been in the game yet: that is agent 2's part of mi
 | The page (private, local) | `python3 tools/gunconv/server.py [--port 8790]`, then open http://127.0.0.1:8790/ . Listens on 127.0.0.1 only, never published. three.js 0.160.0 comes from cdn.jsdelivr.net, so the page needs the network. |
 | A conversion without the page | `python3 tools/gunconv/convert.py MODEL --name NAME --display TEXT [--like GUN] [--category CAT] [--length UNITS or --length-mm MM] [--muzzle +x] [--up +y] [--mirror] [--author A --url U --license L]` writes build/gunconv/out/NAME/ |
 | Compare with Decimation's guns | `STUDY_OURS=$PWD/build/gunconv/out/NAME/assets/deci python3 tools/guns/study.py gaps ours:NAME` (also sheet, render, vocab, contact, attach) |
-| Tests | `python3 -m unittest discover -s tools/gunconv/tests -t tools/gunconv/tests` (73 tests, about 12 s; tests with a like gun need Decimation.jar, two need the git ignored samples) |
+| Tests | `python3 -m unittest discover -s tools/gunconv/tests -t tools/gunconv/tests` (139 tests, about 9 s; tests with a like gun need Decimation.jar, two need the git ignored samples) |
+| Details per area | `python3 tools/gunconv/dataset.py density build/gunconv/out/NAME ...` (details and details a unit of each area's length against the category's medians, milestone 3) |
 
 Folders (all git ignored under build/gunconv): inputs/<folder>/ holds a sample model and its source.json
 ({"author", "url", "license"}); work/uploads/ the files opened on the page; out/<name>/ the packages.
@@ -172,3 +173,81 @@ every source gun per area, akm gives 31 % (ak47) and 69 % (akmc) of the parts.
 
 Not verified: the converted guns in game after milestone 2 (agent 2's loader reads the same package format); the aim
 picture with the new rear sight; icons in the inventory.
+
+## 11. Milestone 3: the details (22 Oktober 2026, done on the converter side)
+
+User, after the milestone 2 sheet, rear view, icons and in game shots: "still need big improvement yet. so lets do max
+effort to this convert feature. still so many missing detail in there". Spec: docs/superpowers/specs/
+2026-10-22-gun-converter-design.md, "Milestone 3".
+
+Why milestone 2 fell short (measured first): the overlap gate judged one area at a time, and the labeller cut a source
+at other lines than Decimation's guns (the ak47's lower receiver landed in "magwell", so its milled receiver failed at
+0.605; the akmc's handguard held its gas block, 0.489); barrel, handguard, magwell, trigger and guard never passed on
+either AK; small parts came only with a whole area.
+
+| Piece | What |
+|---|---|
+| study.py detail_parts | The detail rule: smallest side at most 0.3, on a host at least 3 times its volume that it touches (27 grid points of each part, so a pin through the receiver counts), its footprint inside the host's face and at most 35 % of it, sticking out at most 0.45 (a barrel out of a receiver is no detail, the slices of an octagon are none). Decimation's AKM: 78 of 194 parts (rivets, pins, dust cover ribs, selector, strips, sight ears). study.metrics gets "details" and "detail%", so gaps compares them. |
+| dataset.py, version 2 | Each part's detail flag by the rule, each area's detail records (details.records: face, u along the area, v across its outline, corners relative to the host's surface, tone, host tone), aggregates with "density" (details a unit of the area's length), `density PKG`. The grip is now looked for near the magazine (its front at most 4.0 behind it) or, without a magazine, outside the rear fifth: a straight stock's butt hangs deepest and had been taken for a grip (the Lightning). Labeller agreement unchanged, 83.1 %. |
+| details.py | The detail layer: each record placed on our area at its u and v, each corner on our surface (probed along the face's normal), the inner face 0.06 in, the outer as proud as Decimation made it, a pin through spanning our width; long details shrink with a shorter area; dropped when floating, hidden, inside another area's part or within 0.25 of a detail already there (the source's own small parts count). gun.json "details" per area and "detailsByGun". |
+| exemplar.py, version 3 | Robust boxes (small outliers out, the run axis kept whole); a warp along x after the box map (dynamic time warping of the side outline columns, steps of at most 2); assemblies first: body (action and front together, so their joint stays shut), action, front, butt (a handgun's grip joins its frame); then single areas; then sections: bins of 0.5 where the best exemplar's outline overlaps ours by 0.7, a second exemplar only outside the first's span, sections only when one exemplar takes 40 % of the bins (no patchwork); donors only from the six guns closest overall and the like gun; wood against steel along the run must agree (25 % of the bins at most); exemplar parts keep their own groups (a charging handle knob on Decimation's bolt carrier stays slideModel) and, for a one colour source, their own tones; profiles from each station's longest connected stretch with outlier stations replaced (a latch beside a magazine's top no longer makes a wedge), smoothed for grip, stock and buttpad; details thinned when an exemplar is squeezed onto a shorter area; later areas prefer the gun that gave an assembly; holes left between areas filled from the fit; crude fitted sights scaled to the category's median. |
+| convert.py | Per part source colours (a textured one material file holds a wooden stock and a steel barrel in one piece), one colour only when no piece's colours vary, greys ranked and mapped by area (a grey covering most of the gun takes the like gun's common metal, not its brightest accent), Decimation's pistol scale for real lengths (25 mm a unit; its long guns about 31), a warning when no Decimation gun is close (best overlap under 0.6), the detail layer after panels and plates. gun.json "converter" version 3 adds "details", "detailsByGun", "fromDetails". The page lists sections and placed details. |
+
+New guns WITHOUT a Decimation twin (docs/references/gunconv_sources.md; packages m590, p228, csmg, lightning):
+J-Toastie's Mossberg 590A1 (pump shotgun, CC BY 3.0), PuKkBuMXDD's SIG P228 (pistol, CC BY 3.0), Kutejnikov's vz. 61
+style submachine gun (CC BY 4.0), LonesomeDucky's Colt Lightning style pump rifle (CC0). Real lengths given (1003, 180,
+270, 1100 mm); the like gun automatic except the SMG (p90 at 0.48 was a guess; uzi set by hand, as the page allows).
+
+Results (study.py against Decimation's guns of each category; details by the rule; contact = parts not seated):
+
+| | parts | from exemplars | details placed by the layer | details (rule) | gaps outside q10 .. q90 | contact | time |
+|---|---|---|---|---|---|---|---|
+| ak47 milestone 2 | 204 | 74 (akm 64, ak74 7, insas 3) | none | 54 = 26.5 % | 3: middle side, its share of the length, tone spread 9.3 | 3 | 9.8 s |
+| ak47 milestone 3 | 215 | 196 (akm 194, ak12 2); 19 filled from the fit | 0 (every area from an exemplar) | 84 = 39.1 % | 1: corner offset 0.45 | 3 (the akm's own) | 3.1 to 4.0 s |
+| akmc milestone 2 | 162 | 120 (akm 111, vz58 6, mpt76 3) | none | 60 = 37.0 % | 2: offset, taper 77 % | 7 | 3.6 s |
+| akmc milestone 3 | 195 | 195 (akm 194, insas 1) | 0 | 72 = 36.9 % | 1: offset 0.46 | 5 (the akm's own) | 1.9 to 2.5 s |
+| m590 (like benellim4) | 158 | 90 (benellim4 79, spas12 11) | 11 (benellim4 9, spas12 2) | 40 = 25.3 % | 5: parts 158 (q90 138), offset, cuboid 17 %, detail 25 %, tone spread | 0 | 1.3 to 1.7 s |
+| p228 (like m1934) | 117 | 74 (m1934) | 0 | 60 = 51.3 % | 5: width 0.87, longest side, offset, top two fifths 63 %, tone spread | 1 | 1.6 to 2.1 s |
+| csmg (like uzi) | 145 | 98 (uzi 80, vz24 10, p90 4, mp5a3 4) | 1 (mp7) | 69 = 47.6 % | 7: length 8.7 (q10 13.75) and what follows from a gun that small, offset | 1 | 1.4 to 1.8 s |
+| lightning (like kar98k) | 148 | 49 (kar98k 46, m14 3) | 6 (kar98k 3, m14 3) | 33 = 22.3 % | 5: width 1.27, part sizes, top two fifths 88.5 %, detail 22 % | 0 | 1.7 to 2.0 s |
+
+Times are a whole CLI run (reading the jar and the dataset each time); milestone 2's were measured the same way.
+
+Details a unit of length per area against Decimation's medians (rifle receiver 1.83, handguard 0.95, barrel 0.68):
+ak47 receiver 2.08 then 2.86, handguard 0 then 0.63, barrel 1.14 then 0.63, muzzle 0 then 4.16; akmc receiver 4.02 then
+2.74, handguard 0 then 0.62, barrel 0.11 then 0.68; m590 receiver 0.93 (shotgun median 0.37), barrel 0.89 (0.25);
+lightning receiver 1.69, handguard 0.23, barrel 0.29; csmg receiver 7.49 (SMG median 1.7: the Uzi's receiver squeezed
+onto a much shorter one, after thinning); p228 receiver 1.48 (pistol median 0.33). The full rows: `dataset.py density`.
+
+In game (this worktree's dev client, live port 25595, `--gunpacks=build/gunconv/out`): gunview hip, aim and NPC for
+akm / ak47 / akmc, r870 / m590 / kar98k / lightning, uzi / csmg / m1934 / p228, all registered and held; ak47 and akmc
+sit at the akm's place and size at the hip, aim with its rear sight block and front post; every NPC holds its gun. The
+gunpack test: 124 PASS, 0 FAIL, six packages registered, loader 144.7 ms at startup. Shots: docs/shots_index.md,
+gunconv_v0.66.1 "m3_".
+
+What I saw (sheets m3_final_sheet.png, m3_before_after.png):
+- akmc: reads as Decimation's AKM. The front, magazine, stock and grip are the akm's construction on J-Toastie's
+  outline; the source's own character is mostly the proportions. Honest: 194 of 195 parts are the akm's.
+- ak47: now an AK in Decimation's construction too (receiver with ribs, rivets and selector, handguards, gas tube, front
+  sight, magazine slices), on Lamoot's longer receiver, bigger magazine and its large raked grip. 194 of 215 parts are the
+  akm's, 19 our fit (16 pieces filling holes the akm left, cut into panels and plates).
+- m590: dark, reads as a Decimation shotgun; the receiver kept the fit with 9 benellim4 details, the front is the
+  Benelli's (a long tube and no pump ribs), the stock the Benelli's with a pistol grip the source does not have.
+- lightning: a wooden kar98k stock and a short kar98k forend on the source's slim receiver, barrel and tube; plain (the
+  fit receiver and barrel carry few details); reads as a simple lever or pump rifle, not yet as a Colt Lightning.
+- csmg: recognisable vz. 61 outline with the folded wire stock; the Uzi's receiver squeezed onto it (crowded), a vz24
+  wooden grip and an MP5 magazine with its lighter band; weak.
+- p228: an M1934 frame and slide on the P228's outline, a vertical boxy grip and the M1934's finger rest; weakest.
+
+Still weak, and why:
+- The AKs are now nearly all Decimation's AKM (reported per gun); whether that is wanted is the user's call.
+- The detail layer places few details (0 to 11 a gun): most areas now come from exemplars with their own details, and on
+  fitted areas most records were dropped next to the source's own small parts (dup) or as clashes.
+- One source piece lofted along x makes a pistol's grip area hold part of its frame (an L shaped piece): the P228's grip
+  is the M1934's stretched onto it. Splitting L shaped pieces in the fit is the next step.
+- Unnamed pump guns (m590, lightning) get no slideModel or ammoModel: Fire and Reload1 move nothing (the warning says so).
+- The like gun by silhouette picks benellim4 for the Mossberg (the R870 is the closer design) and p90 for the SMG.
+- Hole filling adds fit pieces (P228 40, m590 25, csmg 23, ak47 16, lightning 9) that can overlap exemplar parts.
+- Not verified: the user's look; the aim pictures only on the 854 x 480 shots; gunperf; attachments on the new guns;
+  the page beyond one smoke test (the Mossberg sample, m3_page_m590.png).
+

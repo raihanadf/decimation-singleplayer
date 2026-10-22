@@ -2001,3 +2001,19 @@ pixels a unit.
 - m2_page_exported.png: the page after converting and exporting akmc: notes list "From Decimation exemplars: 120 parts
   (akm 111, vz58 6, mpt76 3); from the fit: 42 parts" and the areas kept as fitted.
 - m2_final_sheet.png: Decimation's akm and m4a4, ours ak47 (204 parts) and akmc (162) side by side.
+- m3_final_sheet.png (milestone 3, docs/gunconv.md section 11) and its groups m3_group_0..4.png, side and three quarter:
+  0 akm, ak74, ours ak47 and akmc (both now built from the akm's parts on their own outlines: receiver ribs, rivets,
+  selector, handguards, gas tube, sight block, magazine slices; ak47 with its big raked grip and bigger magazine); 1 r870,
+  benellim4, ours m590 (dark, Benelli front and stock with a pistol grip, fitted receiver with Benelli details); 2 kar98k,
+  m1garand, ours lightning (kar98k stock and short forend on a plain fitted receiver, barrel and tube); 3 uzi, vz24, ours
+  csmg (vz. 61 outline, folded wire stock on top, Uzi receiver squeezed on, a vz24 wooden grip, an MP5 magazine with a
+  lighter band); 4 m1934, glock17, ours p228 (M1934 frame and slide, a vertical boxy grip, the finger rest).
+- m3_before_after.png: akm, then ak47 and akmc from milestone 2 and from milestone 3, side, three quarter, rear: the
+  milestone 3 pair has the akm's receiver, front and magazine; milestone 2's ak47 a flat black receiver slab.
+- m3_ingame_gunview_aks.png: dev client gunview (this worktree, live port 25595) of akm, ak47, akmc: the three hip
+  pictures alike in size and place, ak47 and akmc aim with the rear sight block and post; the akm's aim frame came out
+  empty (test timing), NPCs hold each. m3_ingame_gunview_long.png: r870, m590, kar98k, lightning (smoke clouds and a thrown
+  NPC are test noise from other mobs); m3_ingame_gunview_short.png: uzi, csmg, m1934, p228, hip and aim like their like
+  guns. m3_ingame_gunpack.png: the six packages held in first person with their names and icons (gunpack 124 PASS).
+- m3_page_m590.png: the converter page after converting the Mossberg sample: source and converted side by side, notes
+  with the exemplar guns, the partly fitted areas and "Details placed on fitted areas: 11 (benellim4 9, spas12 2)".

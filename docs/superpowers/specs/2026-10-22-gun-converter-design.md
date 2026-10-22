@@ -198,3 +198,10 @@ closest Decimation guns and an honest verdict per gun.
 The dataset build adds the detail rule (one pass over each gun's part pairs, boxes first). A conversion adds the warp
 (a few hundred columns squared at most) and the detail placement (a few hundred probes): seconds. In game a converted
 gun costs what its parts cost; the part count stays inside the category's q10..q90 (study.py gaps).
+
+### Status (22 Oktober 2026)
+Converter side done: docs/gunconv.md section 11 (what was built, results before and after, the in game checks, the
+verdict per gun, what is still weak). Beyond this section on the way: per part source colours, greys mapped by area,
+Decimation's pistol scale, donors from the closest guns, wood against steel agreement, holes filled from the fit, details
+thinned on squeezed exemplars.
+
