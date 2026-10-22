@@ -134,3 +134,41 @@ big parts before), levelled gentle slopes (AK-47 skews 18 % to 7 %, AKM 11 % to 
 
 Offline: 1.5 to 6 s a gun. In game a converted gun must cost what one of ours costs: its part count (ak47 205, akmc
 153) sits inside Decimation's rifle range (akm 194); gunperf against the akm is agent 2's [not run].
+
+## 10. Milestone 2: the dataset and exemplar areas (22 Oktober 2026, done on the converter side)
+
+Spec: docs/superpowers/specs/2026-10-22-gun-converter-design.md, "Milestone 2".
+
+| Piece | What |
+|---|---|
+| tools/gunconv/dataset.py | The anatomy labeller and the dataset. Anchors: bore, magazine (its main cluster; one lying on top is ignored), grip (looked for beside the magazine first, a run beside skipped magazine columns rejected, a too long run cut to its deepest part, in front of the magazine on bullpups: magazine in the rear 40 % with a full depth grip ahead), stock (below the receiver behind the grip; at receiver height only behind the receiver core), receiver front. Barrels are found by section (short slices on the bore line count). `python3 tools/gunconv/dataset.py build` writes build/gunconv/dataset/decimation_areas.json (98 guns, 16,757 parts, 5.2 MB, 13 s; git ignored, made again when the jar changes) and docs/references/decimation_gun_areas.tsv (medians per category and area, numbers only); `check`, `render GUN`. |
+| tools/gunconv/exemplar.py | Per area of the converted gun: candidates of the category, score = normalised side outline overlap (0.7) and box proportions (0.3), the like gun's unless another scores 0.1 better; refit along the source's profile for magazine, grip, stock and buttpad, box to box elsewhere (a profile map stretched the AKM receiver's sight details into strands); kept when the side outline overlaps the source area's by 0.7; tones: our area's tone shaded like the exemplar. |
+| convert.py, package.py | exemplars=True by default; panels and top plates only where the fit stays; gun.json "converter" version 2 with "exemplars" (per area: gun, parts, score, overlap, or "fit"), "byGun", "fromExemplars", "fromFit"; the page lists them. The icon takes the like gun's icon proportions (package.icon_like). |
+
+Labeller check: with names switched off it agrees with Decimation's own stock, grip and barrel names on 448 of 539
+parts (83.1 %; target 80; 69.6 % at first). Read by eye on area colour renders of the AKM, M4A4, AUG, MP5A3, Uzi, Glock
+17, R870 and PKM (docs/shots_index.md, gunconv_v0.66.1). Still labelled differently from Decimation's names: the
+Thompson's "barrel" group (it covers receiver plates), bipods named barrel on the FAMAS-I.
+
+Results (study.py against Decimation's 53 rifles; before = milestone 1):
+
+| | ak47 before | ak47 after | akmc before | akmc after |
+|---|---|---|---|---|
+| parts | 205 | 204 (74 from exemplars: akm 64, ak74 7, insas 3) | 153 | 162 (120 from exemplars: akm 111, vz58 6, mpt76 3) |
+| gaps outside q10 .. q90 | 2: offset 0.43, top2fifths 89 % | 3: middle side 0.63 and relative, tone spread 9.3 (q10 9.4) | 2: middle side 0.70 and relative | 2: offset 0.43, taper 77.2 % (q90 76.5) |
+| vocab taper / cuboid / skew | 66 / 27 / 7 % | 70 / 23 / 8 % | 75 / 24 / 1 % | 77 / 19 / 4 % |
+| contact, parts not seated | 2 | 3 | 7 | 7 |
+| tone spread (akm 15.5) | 12.5 | 9.3 | 12.3 | 15.1 |
+| icon box (akm 32 x 21) | 30 x 9 | 32 x 23 | 31 x 9 | 32 x 22 |
+| convert time | 2.9 s | 9.8 s | 1.6 s | 3.6 s (13.5 s on the page, first conversion of the server) |
+
+Verdict: akmc gains the most: its receiver, stock, grip and magazine are Decimation's AKM construction refitted to the
+source's outline (receiver overlap 0.89), its middle part size and tone spread now sit where Decimation's do, and its
+rear view shows the AKM's receiver top with the rear sight block and a front post with ears (agent 2's "single post"
+finding; [not verified in game]). ak47 takes stock, grip, magazine, bolt, front sight and muzzle from exemplars; its
+milled receiver does not pass the gate (its outline differs from every rifle receiver) and stays fitted. Barrel,
+handguard, magwell, trigger and guard did not pass the gate on either gun. Neither gun is a clone: the report names
+every source gun per area, akm gives 31 % (ak47) and 69 % (akmc) of the parts.
+
+Not verified: the converted guns in game after milestone 2 (agent 2's loader reads the same package format); the aim
+picture with the new rear sight; icons in the inventory.

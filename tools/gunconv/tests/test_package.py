@@ -113,6 +113,14 @@ class PackageTest(unittest.TestCase):
         tex = Image.open(os.path.join(self.dir, "assets/deci/textures/model/guns/rifle/synthgun/synthgun.png"))
         self.assertEqual(tex.size[0], 1024)
 
+    def test_icon_takes_the_like_guns_proportions(self):
+        """Decimation draws rifle icons about twice as tall as true (the AKM's: 32 x 21); ours follow the like gun's."""
+        from PIL import Image
+        icon = Image.open(os.path.join(self.dir, "assets/deci/textures/items/gun/rifle/synthgun.png"))
+        x0, y0, x1, y1 = icon.getchannel("A").getbbox()
+        self.assertGreaterEqual(x1 - x0, 28)
+        self.assertGreaterEqual(y1 - y0, 15)
+
     def test_reexport_replaces_old_files(self):
         stray = os.path.join(self.dir, "assets", "deci", "stray.txt")
         with open(stray, "w") as f:

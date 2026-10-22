@@ -333,11 +333,13 @@ def exposed_top(p, boxes, i):
 
 
 def layered(parts):
-    """Body parts that are bulky and open on top get Decimation's bevelled top plate (fit.layer_top)."""
+    """Body parts that are bulky and open on top get Decimation's bevelled top plate (fit.layer_top); exemplar parts
+    already carry Decimation's construction."""
     boxes = [fit.bounds([p]) for p in parts]
     out = []
     for i, p in enumerate(parts):
-        if p.group == "gunModel" and not getattr(p, "round", False) and exposed_top(p, boxes, i):
+        if (p.group == "gunModel" and not getattr(p, "round", False) and not getattr(p, "exemplar", None)
+                and exposed_top(p, boxes, i)):
             out += fit.layer_top(p)
         else:
             out.append(p)
@@ -385,7 +387,7 @@ def points_of(parts, like, mount=None):
 # ---------------------------------------------------------------- the conversion
 
 def convert(model, name=None, display=None, category=None, like=None, length=None, length_mm=None, up=None,
-            muzzle=None, mirror=False, tol=fit.TOL, source=None, mount=None):
+            muzzle=None, mirror=False, tol=fit.TOL, source=None, mount=None, exemplars=True):
     warnings = []
     if name:
         validate_name(name)                              # before the work: a taken name fails at once
@@ -485,8 +487,15 @@ def convert(model, name=None, display=None, category=None, like=None, length=Non
     hidden = before - len(parts)
     if small or hidden:
         warnings.append("dropped %d parts too small to see and %d hidden inside others" % (small, hidden))
-    parts = [fit.snap_part(q) for p in parts for q in (fit.panels(p, PANEL) if p.group == "gunModel"
-                                                       and not getattr(p, "round", False) else [p])]
+    ex_report, by_gun = {}, {}
+    if exemplars and info:
+        import exemplar
+        provisional = {"flamePos": tuple(points_of(parts, info, mount)["flame"])}
+        parts, ex_report, by_gun = exemplar.apply(parts, category, like, provisional)
+    parts = [q for p in parts for q in (
+        [p] if getattr(p, "exemplar", None) else
+        [fit.snap_part(r) for r in (fit.panels(p, PANEL) if p.group == "gunModel" and not getattr(p, "round", False)
+                                    else [p])])]
     parts = layered(parts)
     if not any(p.group == "ammoModel" for p in parts):
         warnings.append("no magazine found (no ammoModel part): the reload moves nothing; set a part's group")
@@ -506,8 +515,10 @@ def convert(model, name=None, display=None, category=None, like=None, length=Non
     counts = {}
     for p in parts:
         counts[p.group] = counts.get(p.group, 0) + 1
+    from_ex = sum(1 for p in parts if getattr(p, "exemplar", None))
     stats = {"triangles": model.triangle_count(), "pieces": len(pieces), "parts": len(parts), "groups": counts,
-             "scale": s, "length": target, "zscale": zscale}
+             "scale": s, "length": target, "zscale": zscale, "exemplars": ex_report, "byGun": by_gun,
+             "fromExemplars": from_ex, "fromFit": len(parts) - from_ex}
     return Conversion(name=name, display=display or default_display(model.name or name), category=category,
                       like=like, candidates=cands, parts=parts, points=points, header=header, warnings=warnings,
                       matrix=[list(r) for r in M], source=source, stats=stats)

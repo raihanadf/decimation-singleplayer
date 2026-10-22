@@ -567,9 +567,19 @@ $("convert").addEventListener("click", async () => {
     showPoints(r.points);
     const ul = $("warnings");
     ul.innerHTML = "";
-    for (const w of r.warnings.length ? r.warnings : ["none"]) {
+    const notes = r.warnings.slice();
+    const st = r.stats || {};
+    if (st.byGun) {
+      const guns = Object.entries(st.byGun).sort((a, b) => b[1] - a[1]).map(([g, n]) => g + " " + n).join(", ");
+      notes.unshift("From Decimation exemplars: " + (st.fromExemplars || 0) + " parts (" + (guns || "none") +
+        "); from the fit: " + (st.fromFit || 0) + " parts.");
+      const kept = Object.entries(st.exemplars || {}).filter(([, v]) => v.fit !== undefined).map(([a]) => a);
+      if (kept.length) notes.push("Areas kept as fitted (no exemplar passed the overlap gate): " + kept.join(", ") + ".");
+    }
+    for (const w of notes.length ? notes : ["none"]) {
       const li = document.createElement("li");
       li.textContent = w;
+      li.className = "note";
       ul.appendChild(li);
     }
     applySourceMatrix();

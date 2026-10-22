@@ -1733,3 +1733,12 @@ lineup photo zombies_v0.34.0. Not seen by the user in game yet
 - Carried to prerelease (611a767 with its test fix; there lootblocks all PASS, 158 unit tests). Production client with
   OptiFine 61 PASS (lootblocks, lootrules, loot, glstack); production dedicated server: 15 copies, the loot file written with
   refill=true, 15 minutes (docs/production_test.md).
+## 3D gun converter, milestone 2: dataset and exemplar areas (22 Oktober 2026, agent 1, branch gunconv-tool)
+- User: "make dataset full of decimation guns and used as data so the converter can be good enough"; chosen: exemplar
+  areas. Spec section "Milestone 2"; results, numbers and limits: docs/gunconv.md section 10.
+- Built: tools/gunconv/dataset.py (anatomy labeller, 83.1 % agreement with Decimation's own stock, grip and barrel
+  names; dataset in build/, aggregates docs/references/decimation_gun_areas.tsv), tools/gunconv/exemplar.py (closest
+  exemplar per area, the like gun first, refit, overlap gate, tones), the converter step, the report in gun.json and on
+  the page, icons in the like gun's proportions. Tests: 85, RED first for the labeller, exemplars and icon.
+- ak47: 74 of 204 parts from exemplars; akmc: 120 of 162 (receiver, stock, grip, magazine of the AKM fitted to the
+  source). Page smoke test passed (agent-browser, port 8791). Not verified in game.
