@@ -114,12 +114,62 @@ def export(conv, out_root, display=None, source=None):
         study.OURS = assets
         try:
             gunmodel.build(spec, assets)
+            if conv.like and match.jar_ok():
+                icon_like(name, conv.like, os.path.join(assets, "textures", "items", "gun", conv.category, name + ".png"))
         finally:
             study.OURS = old
         with open(os.path.join(out_dir, "gun.json"), "w") as f:
             json.dump(gun_json(conv, display, source), f, indent=2)
             f.write("\n")
     return {"dir": out_dir, "files": listing(out_dir), "parts": len(conv.parts)}
+
+
+def like_icon_box(like):
+    """The opaque box (x0, y0, x1, y1) of the like gun's 32 x 32 icon in the jar, or None."""
+    from PIL import Image
+    g = match.guns()[like]
+    path = "assets/deci/textures/items/gun/%s/%s.png" % (g.cat, like)
+    with zipfile.ZipFile(study.JAR) as z:
+        if path not in z.namelist():
+            return None
+        img = Image.open(BytesIO(z.read(path))).convert("RGBA")
+    return img.getchannel("A").getbbox()
+
+
+def icon_like(name, like, path, size=32):
+    """The icon in the like gun's proportions: Decimation draws rifle icons about twice as tall as true (the AKM's 32 x
+    21 for a gun 3.5 times as long as high). Our side render (muzzle right, as the accepted MAC-10's) is scaled to the
+    like gun's icon width and to its height times the ratio of the two guns' proportions, then outlined."""
+    from PIL import Image
+    box = like_icon_box(like)
+    if not box:
+        return
+    lw, lh = box[2] - box[0], box[3] - box[1]
+    info = match.info(like)
+    ours = study.load("ours:" + name)
+    (ox0, ox1), (oy0, oy1), _ = ours.bounds()
+    like_lh, ours_lh = info["length"] / info["height"], (ox1 - ox0) / (oy1 - oy0)
+    w = lw
+    h = max(4, min(size - 2, int(round(lh * like_lh / ours_lh))))
+    img = study.render(ours, "other", scale=24, pad=0, bg=(0, 0, 0, 0)).transpose(Image.FLIP_LEFT_RIGHT)
+    small = img.resize((w, h), Image.BOX)
+    out = Image.new("RGBA", (size, size), (0, 0, 0, 0))
+    ox = max(1, min(size - w - 1, (box[0] + box[2] - w) // 2)) if w < size else 0
+    oy = max(1, min(size - h - 1, (box[1] + box[3] - h) // 2))
+    for y in range(h):
+        for x in range(w):
+            r, g, b, a = small.getpixel((x, y))
+            if a >= 140:
+                f = 255.0 / a * 1.3
+                out.putpixel((ox + x, oy + y), (min(255, int(r * f)), min(255, int(g * f)), min(255, int(b * f)), 255))
+    edge = out.copy()
+    for y in range(size):
+        for x in range(size):
+            if out.getpixel((x, y))[3] == 0 and any(0 <= x + dx < size and 0 <= y + dy < size and
+                                                    out.getpixel((x + dx, y + dy))[3]
+                                                    for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1))):
+                edge.putpixel((x, y), (10, 10, 12, 255))
+    edge.save(path)
 
 
 # ---------------------------------------------------------------- comparison with Decimation's guns (study.py gaps)

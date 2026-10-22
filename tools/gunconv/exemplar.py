@@ -20,6 +20,9 @@ GATE = 0.7            # side outline overlap a refit must reach
 LIKE_MARGIN = 0.1     # another gun's exemplar wins only when it scores this much better than the like gun's
 STATIONS = 12
 MIN_SPAN = 0.15       # a section narrower than this is too thin to scale by: the box is used there
+# areas that curve or rake follow the source's profile station by station; boxy areas (receiver, handguard, sights)
+# map box to box: a section that jumps (a sight block) otherwise stretched thin exemplar parts into strands
+PROFILE_AREAS = ("magazine", "grip", "stock", "buttpad")
 
 
 def lum(c):
@@ -69,14 +72,19 @@ def interp(prof, t):
     return prof[-1][1:]
 
 
-def refit(ex, area):
-    """The exemplar's parts carried onto the target area: corner dicts."""
+def refit(ex, area, follow=True):
+    """The exemplar's parts carried onto the target area: corner dicts. follow: across the run axis relative to each
+    station's section (curved and raked areas), else box to box."""
     a = area["axis"]
     b, c = fit.CYCLIC[a]
     src = corners_of(ex)
     ebox, tbox = box_of(src), area["box"]
-    eprof = profile_of(src, a, ebox)
-    tprof = profile_of(area["corners"], a, tbox)
+    if follow:
+        eprof = profile_of(src, a, ebox)
+        tprof = profile_of(area["corners"], a, tbox)
+    else:
+        eprof = [[0.5, ebox[b][0], ebox[b][1], ebox[c][0], ebox[c][1]]]
+        tprof = [[0.5, tbox[b][0], tbox[b][1], tbox[c][0], tbox[c][1]]]
     e0, e1 = ebox[a]
     t0, t1 = tbox[a]
 
@@ -168,7 +176,7 @@ def apply(parts, cat, like, header, data=None):
             continue
         name, s = pick([(n, score(ex, tarea)) for n, ex in cands.items()], like)
         ex = cands[name]
-        warped = refit(ex, tarea)
+        warped = refit(ex, tarea, area in PROFILE_AREAS)
         ov = overlap(warped, target)
         if ov < GATE:
             report[area] = {"fit": len(idx), "best": name, "overlap": round(ov, 3)}

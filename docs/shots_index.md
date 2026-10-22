@@ -1971,3 +1971,15 @@ pixels a unit.
   right, 9 rows high, brown and black, no clear outline), 8x.
 - icons_decimation_and_mac10.png: Decimation's M4A4, AK-74, MP5A3, Uzi, Glock 17, SVD icons (every muzzle left) and our
   MAC-10's (muzzle right), 6x.
+- areas_sheet_side.png, areas_sheet_fixed.png, areas/: Decimation guns with every part painted its anatomy area
+  (key on top): AKM, M4A4, AUG, MP5A3, Uzi, Glock 17, R870, PKM side views; the fixed sheet the Uzi (receiver body
+  blue, folded stock brown, grip green), Glock 17 (slide blue, grip green) and M4A4 (grip green, magwell, rail teeth
+  white) after the labeller fixes.
+- m2_v1_cmp.png: first exemplar run: magazines, stocks and grips like the akm's, receivers with stretched strands on
+  top (the profile map). m2_v2_cmp.png: boxy areas mapped box to box: akmc's receiver clean, the AKM's construction.
+- m2_icons_akm_ak47_akmc.png: icons at 8x: Decimation's akm 32 x 21 (muzzle left), ours 32 x 23 and 32 x 22 (muzzle
+  right, darker, a little chunkier). m2_rear_akm_akmc.png: rear views (the sight picture): akmc now shows the akm's
+  receiver top and rear sight block and a front post with ears like the akm.
+- m2_page_exported.png: the page after converting and exporting akmc: notes list "From Decimation exemplars: 120 parts
+  (akm 111, vz58 6, mpt76 3); from the fit: 42 parts" and the areas kept as fitted.
+- m2_final_sheet.png: Decimation's akm and m4a4, ours ak47 (204 parts) and akmc (162) side by side.
