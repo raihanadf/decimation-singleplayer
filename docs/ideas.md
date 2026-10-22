@@ -221,10 +221,14 @@ User: "for the feat i have more". Notes on what we already have are mine [not an
     default with a per world config switch; cooldowns saved with the world. Feature 12, this session. BUILT 22 Oktober
     2026 on main (fixes/LootRefill, <world>/deciworldgen_loot.cfg; new_feature.md "Loot rules A").
 37. **More zombie variants, mutants too**. Related: fixes/InfectedVariants (v0.34.0), ideas 5 to 10 above.
+    Decided 22 Oktober 2026 (user): special infected, rare big mutants and infected animals; Decimation models with new
+    skins of ours; spec docs/superpowers/specs/2026-10-22-zombie-variants-design.md (feature 13).
 38. **Achievements from easy to extreme, and secret ones**. Related: item 31 (its UI), LocalStats.
 39. **Trader market: supply and demand, changed each Minecraft day** ("trader now have dynamic market supply and demand,
     its randomize by day in minecraft"). Related: Decimation's trader offers (docs/decimation_code/traders.md),
     WorldClock.day() for the day (never getWorldTime() / 24000).
+    Decided 22 Oktober 2026 (user): daily random drift plus player trades (selling a lot lowers a price, buying raises it,
+    both ease back over days), each trader a few items on sale and in demand per day (feature 11, agent).
 40. **Attachments with benefits on guns** ("attachemnt can have benefit on guns"): each attachment changes stats
     (recoil, spread, aim speed, noise...). Today: grips change recoil (fixes/GripRecoil), suppressors noise
     (fixes/GunNoise), sights zoom; Decimation's own rules otherwise (docs/decimation_code/weapons.md).
