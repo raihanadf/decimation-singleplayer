@@ -133,6 +133,7 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [ ] ideas 28 to 52 (docs/ideas.md, user 22 Oktober 2026): design talk first
 - [x] feature 6 DayZ dark nights (idea 52): main, production client with OptiFine, prerelease
 - [x] feature 10 armor, vest and gun durability with repair parts (ideas 47, 48): main, production client with OptiFine, prerelease
+- [~] 3D gun converter (idea 27): two agents, milestone 1 one rifle end to end (spec 2026-10-22-gun-converter-design.md)
 - [~] feature 7 radiation set (ideas 41 to 43, decided: pill -40 points, filters wear only in radiation, 10 min): agent on branch bugfix
 - [x] features 1 to 4 (armor vs NPCs, NPC tracer colours, loot magazine rounds, magazine unload) on main and prerelease
 - [x] looted guns hold rounds (1 in 2, like loot magazines; idea 53) on main and prerelease

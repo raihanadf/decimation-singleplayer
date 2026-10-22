@@ -267,6 +267,10 @@ Agent rules: our channel's message ids from 32 up (this session from 2), no grap
   click, invisible foregrips, props broken by one punch).
 - 3D gun converter (docs/ideas.md 27, user 21 Oktober 2026, "for long development"): a private page that turns a 3D gun
   model we may use into a Decimation styled .bmodel through tools/guns; after the RK-1 and SpecterDR.
+  STARTED 22 Oktober 2026 (user: "setup 2 agent for big feature: convert 3D gun"): spec
+  docs/superpowers/specs/2026-10-22-gun-converter-design.md; agent 1 (converter, ../Decimation-gunconv-tool, branch
+  gunconv-tool), agent 2 (game side, ../Decimation-gunconv-game, branch gunconv-game); milestone 1 one CC0 / CC BY rifle
+  end to end. The user asked for Tarkov's models through an API: declined (public repository and releases).
 
 docs/ideas.md: more crate / loot block types, crate levels 1 / 2 / 3 with richer loot per level (user
 13 Oktober 2026, item 17; goes behind the wasteland's locked doors first), more military NPC outfits, a sniper bandit egg, harder
