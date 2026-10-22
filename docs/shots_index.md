@@ -2056,3 +2056,9 @@ pixels a unit.
 - user_mk47_editor.png: the user's screenshot of the editor (23 Oktober 2026, "well pretty nuts"): a CC0 Mk47 Mutant
   converted, colour by role and the Decimation gun's outline on: the magazine orange, but also the buffer tube end and
   the muzzle (painted with the magazine's material), blue rail bits (material "bolt1"); exported as "m4a1" (stale id).
+- mk47_gunview_sheet.png: gunview, the akm and the user's Mk47 Mutant (mesh): hip (the model's own red dot on top), aim
+  (looking through that red dot's ring, near the screen centre), an NPC holding each.
+- mk47_gun_sheet.png: gun gun=mk47: first person, reload frames 8 to 48 (the gun tilts up and back), fire frames, the
+  Uzi control, an NPC with the Mk47 from the side, the front and firing.
+- mk47_meshgun_rain.png: meshgun's view ahead in rain (streaks over every frame) with mobs in the distance: why the test
+  dries the weather and stops spawning.

@@ -420,3 +420,16 @@ from that screenshot (a CC0 Mk47 Mutant of the user's):
   "magrelease" matched "mag". Releases, catches, safeties, selectors and wells stay with the body; a piece named as a
   body part stays body; only a generic name (Object_12) leaves it to the material. Mk47: magazine 2,430 to 1,726
   triangles (the magazine and its rounds), bolt 444 to 400 (bolt and charging handle); the six other models unchanged.
+
+The user's Mk47 Mutant in game (23 Oktober 2026, after the two fixes; converted as mk47, like akm, 14,154 triangles:
+magazine 1,726, bolt 400, texture 256 x 256; packages in build/gunconv/meshtest, worktree gunconv-game):
+- gunpack: registered with the akm's stats, the AK magazines (ak74Mag, aks74uMag, rpk74Mag, ak12Mag, ak60Mag), the akm's
+  loot (10 pools) and sounds, 3 mesh groups drawn; meshgun: the bolt (339 px) and the magazine (3,429 px) move as one
+  piece each, the akm control too; gun: a reload loads 30, the reload and fire poses play, an NPC carries and fires
+  it; gunview: hip, aim (through the model's own red dot, on the akm's sight line) and the NPC beside the akm
+  (mk47_gunview_sheet.png, mk47_gun_sheet.png); perf: 0.538 ms against the akm's 0.436 (1.23 x), 0 GL errors.
+- The first meshgun run failed on rain and wandering mobs (whole frames changed, mk47_meshgun_rain.png): meshgun now
+  dries the weather on the server and the client and stops mob spawning until its comparisons are done.
+- Open: it takes the akm's sight mount (an AK side mount) and measured the sight height on top of the model's own red
+  dot (railTop -6.43), so an attached sight would sit over that red dot [not verified in game]; on the page: set
+  "Sights on" to a top rail, the sight height to the rail, or mark the red dot "Iron sights" so it hides under one.

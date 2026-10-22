@@ -38,6 +38,7 @@ public class MeshGunLiveTest extends DevTestMode
     private volatile int ticks;
     private int clientTicks;
     private volatile boolean handOver;
+    private volatile String spawning;
     private boolean listed;
     private java.awt.image.BufferedImage rest;
     private Ahead ahead;
@@ -95,6 +96,14 @@ public class MeshGunLiveTest extends DevTestMode
         {
             clientTicks = 0;                                     // the server builds the arena first
             return true;
+        }
+        if (clientTicks == 1)
+        {
+            // dry on the client too: a server change outside its weather tick never reaches the client
+            mc.theWorld.getWorldInfo().setRaining(false);
+            mc.theWorld.getWorldInfo().setThundering(false);
+            mc.theWorld.setRainStrength(0F);
+            mc.theWorld.setThunderStrength(0F);
         }
         mc.gameSettings.hideGUI = true;
         mc.gameSettings.thirdPersonView = 0;
@@ -207,8 +216,17 @@ public class MeshGunLiveTest extends DevTestMode
         }
         if (t == 5)
         {
-            DevTestArena.build(p.worldObj, p);
-            p.worldObj.setWorldTime(6000);
+            net.minecraft.world.World w = p.worldObj;
+            w.setWorldTime(6000);
+            w.getWorldInfo().setRaining(false);                  // rain streaks and wandering mobs change every frame
+            w.getWorldInfo().setThundering(false);
+            w.getWorldInfo().setRainTime(100000);
+            w.getWorldInfo().setThunderTime(100000);
+            w.setRainStrength(0F);
+            w.setThunderStrength(0F);
+            spawning = w.getGameRules().getGameRuleStringValue("doMobSpawning");
+            w.getGameRules().setOrCreateGameRule("doMobSpawning", "false");
+            DevTestArena.build(w, p);
             p.capabilities.isFlying = true;
             for (int s = 0; s < 9; s++)
             {
@@ -218,6 +236,11 @@ public class MeshGunLiveTest extends DevTestMode
         }
         if (handOver)
         {
+            if (spawning != null)                                // the comparisons are done: the world's own spawning back
+            {
+                p.worldObj.getGameRules().setOrCreateGameRule("doMobSpawning", spawning);
+                spawning = null;
+            }
             handOver = false;
             p.inventory.currentItem = 0;
             p.inventory.mainInventory[0] = stack(guns.get(0), 0);
