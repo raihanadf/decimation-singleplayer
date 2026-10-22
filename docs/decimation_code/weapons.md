@@ -83,6 +83,7 @@ takes 0.5); a miss used a round and hurt nothing; client and server copies agree
 | gun wear, jams, racking | fixes/GunWear, GunWearClient, tools/patches/PatchGunWear.java (GunItem.fire a and onServerFire b start with our calls, guarded by a catch of NoClassDefFoundError; three jars); R is KeyBindingHandler.keyReload (field "do"), read in Decimation's client tick END |
 | new attachments | `Deci.newGripAttachment` (fixes/NewGrips: RK-1), `Deci.newSightAttachment` (fixes/NewSights: EOTech 558, ACOG TA11, SpecterDR); models tools/guns/grips.py, tools/guns/sights.py |
 | the SpecterDR's 1x / 4x | fixes/SpecterMode (per gun for the session), fixes/SpecterKey (G), `ScopeZoom.magnificationFor`, `ScopeZoom.overlays` |
+| guns from gun packages (the 3D gun converter) | fixes/gunpack (GunPacks, GunPackResources, GripFit), `Deci.newGunLike` (a copy of a like gun's GunStats and fields), `Deci.gunFacts`; docs/gun_model_spec.md section 7 |
 | fit attachments (the I key) | the Gunsmith screen: fixes/gunsmith/GunsmithGuiHandler.java (Decimation's attachments GUI id, `Deci.attachmentsGuiId`, opens our container and screen), GunsmithContainer, GunsmithScreen, GunParts (`Deci.fitsSlot`: Decimation's own FilteredSlot rules); section 7 |
 
 - NPC tracer colour: Decimation's PacketGunFireEffects handler picks GENERIC (40 %) or INVIS, unless the held gun has a
@@ -299,3 +300,21 @@ takes 0.5); a miss used a round and hurt nothing; client and server copies agree
   with our sight of its own zoom; looking down from the arena (150 high) a 1.25x view took in the land below (24 ms
   frames); at the sky the world is out of the way. One reading per configuration was noise (the same path read -0.61
   ms in production): rounds in turn and the median of their paired differences.
+
+## 9. Learned while loading gun packages (22 Oktober 2026, docs/gun_model_spec.md section 7)
+
+- GunItem's constructor loads the gun's .bmodel at once through Minecraft's resource manager
+  (BModelLoader.load: getResourceManager().getResource), on the client, and registers its sound entries on both sides:
+  files from outside the jars must be served by a resource pack BEFORE the item is made (fixes/gunpack/GunPackResources
+  goes into Minecraft's default packs and straight into the manager). Its icon is deci:gun/CAT/NAME, read at the next
+  texture reload.
+- BModel.parts (kC) holds the top level parts only: an addChild child hangs from its parent (the M4A4 declares 229
+  parts, 228 at the top). Its hand poses are public floats kK .. kV (left hand x y z, right hand x y z, then the
+  rotations).
+- GunStats' fields recoilPitch, recoilYaw, recoilRecovery, openBolt, fireModes, modeParams and aimTable are final: a
+  changed copy goes through the constructor (Deci.newGunLike); secondsPerShot is copied as it is, not through rounds a
+  minute and back (float rounding). GunStats$FireMode.toString is StringUtils.capitalize of the name, which leaves
+  "AUTO" as it is ("PUMP Action" for pumps): compare fire modes by name().
+- GunItem.hasNoFireSounds (fK) is private (its field aeA, read by reflection); reducedBass (aey) has no public reader.
+- Decimation's crate roll weighs each item by OwnedItem.lootChance (getLootChance, default 0.5; its rifles keep the
+  default): a gun like another copies it.

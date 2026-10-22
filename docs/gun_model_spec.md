@@ -281,3 +281,78 @@ gunmodel.py paints the box UV texture as usual. The generator's own atlas
 and UVs are useless here (box UV is fixed by BModelBox).
 Decision (user, 2026-10-10): keep the tools/guns pipeline (spec boxes +
 Blockbench MCP previews); no OBJ converter, no outside generator.
+
+## 7. Gun packages: guns from the converter, data driven (game side, milestone 1, 22 Oktober 2026)
+
+Contract and plan: docs/superpowers/specs/2026-10-22-gun-converter-design.md ("The gun package"). The converter
+(tools/gunconv, agent 1) writes one folder per gun; the game (fixes/gunpack, agent 2) registers it at start with no Java
+line per gun. Status, checks and numbers: new_feature.md "3D gun converter, game side, milestone 1".
+
+### Where packages live (found in this order; the first VALID package of a name wins, a later one is "shadowed")
+1. The folders named in the system property `deciworldgen.gunpacks` (a package folder, or a folder of package folders;
+   several separated by the path separator or commas): `./gradlew runClient -Pgunpacks=DIR` (runServer too),
+   `python3 tools/devtest.py --live --gunpacks=DIR MODE` when it starts the live game. Agent 1's output:
+   `--gunpacks=../Decimation-gunconv-tool/build/gunconv/out`.
+2. Dev workspace only (deobfuscated run): the checkout's `build/gunpacks/` (git ignored), no flag needed.
+   `python3 tools/guns/gunpack_standin.py` writes stand ins there: gcmac10 (our MAC-10 as a package), gcm4a4
+   (Decimation's M4A4, local only, license "test") and gcbroken (must be refused).
+3. Shipped: our jar's `assets/deciworldgen/gunpacks/NAME/` (dev/src/main/resources), the names listed one a line in
+   `assets/deciworldgen/gunpacks/index.txt` (comments with #). None shipped yet.
+
+A RELEASE ADDS ONE by copying the converter's folder to dev/src/main/resources/assets/deciworldgen/gunpacks/NAME/ and
+adding NAME to index.txt (only CC0, CC BY with the credit kept, or our own model: its row in
+docs/references/gunconv_sources.md, its credit in the release notes); tools/onejar.py carries it into the one jar like
+any of our resources. Removing a shipped gun later leaves worlds holding it on Forge's missing items screen, like any
+mod item.
+
+### What the loader does (fixes/gunpack/GunPacks.register, preInit right after NewGuns, both sides)
+- gun.json read and checked (GunPack.parse): every problem listed at once; an unknown field is a warning, never an
+  error (either side may add optional fields). Refused: a bad name ([a-z][a-z0-9_]{1,31}, the folder's name too), a
+  category outside rifle smg mg shotgun pistol revolver rocket crossbow, a magazine other than "like" or {name,
+  capacity 1 .. 500, like}, stats out of range, flame not 3 numbers, a rail span from >= to, a mount outside rail side
+  slide (or one without railTop), a license other than CC0, CC BY or "own" ("test" only in the dev workspace).
+- Files checked: model, texture, icon, Fire and Reload1 must exist; Rack and SlideBack are optional (a warning).
+- Checked before any item exists (so a refused package leaves nothing): like is a Decimation gun (deci:NAME: its sound
+  files are read from guns/CAT/LIKE/), the names are free in deci and deciworldgen, magazine.like and magazine.icon are
+  Decimation magazines.
+- Client: one resource pack (GunPackResources, domain deci) serves only each package's own paths (models/guns/CAT/
+  NAME.bmodel, textures/model/guns/CAT/NAME/*, textures/items/gun/CAT/NAME.png, animations/NAME/*) plus a generated
+  deci:lang/en_US.lang with the names. It goes into Minecraft's default packs (survives every reload) and straight into
+  the resource manager BEFORE the first gun is made: GunItem's constructor loads its .bmodel through the resource
+  manager on the spot.
+- The gun: Deci.newGunLike, a copy of the like gun's GunStats (recoil, fire modes and params, aim table, rate of fire,
+  manufacturer, particles, forced tracer), damage, slowdown, capacity, crate weight (lootChance), integral suppressor,
+  no fire sounds, reduced bass, launcher ammo, with the overrides of "stats": damage (as Decimation registers it, halved
+  in game like every gun), rpm, pitch, yaw, recovery, slowdown, auto (AUTO + SINGLE or SINGLE). Not copied: an
+  integrated scope (it is the like gun's model). Registers as deciworldgen:NAME.
+- Magazine: "like" loads the like gun's magazines (60 round ones included); an own magazine is Deci.newMagazine with
+  magazine.like's round and loot, magazine.icon's icon (default like), display "<capacity>rnd <display> Magazine" ("30rnd MAC-10 (gun package) Magazine") unless given.
+- Loot: Decimation's crates and car wrecks wherever the like gun (and like magazine, 2 a stack) is (Deci.addLootLike);
+  our lists in postInit, in memory, wherever the like is named (LootPools.addLike; the user's json is not rewritten).
+- Client: the like gun's sounds (Deci.useGunSounds); its hand poses only when the model has no rhPos and no lhPos line;
+  points.barrelShift (optional, game side) moves barrel attachments per gun as NewGuns does for the MAC-10.
+- Attachment rows (GunPackRows, the same text as the shipped tables; GripRails, SightMounts, SightPlacement and
+  GripPlacement read their table through GunPackRows.with): sight rows as tools/guns/sightfit.py writes them (dy =
+  railTop + 4.45 down when over 0.06; dx 0 when the top rail holds x 0.8 .. 5.5, else the least shift that puts a long
+  scope on the rail, or the scope's middle on a short rail's middle; points.sightShift wins), only with a mount; the
+  mount row; grip rows by GripFit, tools/guns/gripfit.py in Java (230 of the shipped rows reproduced within 0.0015, unit
+  GripFitTest): lights on every gun, a Foregrip and the RK-1 only on a rifle with points.gripRail, their seat on it.
+- Nothing runs after startup; ScopeZoom learns a package gun's sight glass on its first aim like any gun's
+  (SightMemory keeps it); IronSights folds defaultScopeModel* parts under a sight like any gun's.
+
+### Field meanings the game side relies on (points)
+flame: the muzzle as the model's flamePos (Decimation uses the model's; a mismatch over 0.05 is a warning). railTop: the
+top of what a sight sits on (rail teeth, a side mount's base); Decimation places sights for -4.45. rail: the top rail's
+x span. gripRail: the bottom rail's x span under the handguard (null: no foregrip). mount: rail, side (AK / SVD style),
+slide (pistol optic cut: the red dot only) or null (no sight). Optional of the game side: sightShift (number),
+barrelShift ({attachment: [dx, dy, dz]}), magazine.icon, magazine.display.
+
+### Tests
+Unit (fixes/gunpack): GunPackTest (contract), GunPackRowsTest (rows, tables with package lines), GripFitTest (the
+shipped grip table reproduced), PackModelTest (.bmodel geometry as study.py), GunPackSourceTest (jar and folder
+sources; test resources assets/deciworldgen/gunpacks_test, never shipped). Live: `devtest.py --live gunpack` (the
+loader, every package against its like gun, rows as placed, a stand in gc<gun> against <gun>, first person shots),
+`gunpack perf=true` (draw time against the like gun or the copied gun, glFinish around); with the gun's name: `gun
+gun=NAME [mag=deci:LIKEMAG]`, `playerfire gun=NAME`, `gunview guns=LIKE,NAME [attach=...]`, `gunperf guns=LIKE,NAME`,
+`gripsweep pairs=NAME:foregrip,...`. Traps: the live key=value settings stay set (clear gun= and perf=); the packages
+are read at start, so a changed package needs the live game restarted.

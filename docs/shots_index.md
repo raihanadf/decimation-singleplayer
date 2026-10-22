@@ -1897,3 +1897,39 @@ Production client with OptiFine HD U E7 (the brother's laptop setup), AKM with t
   splint icons at 8x (32 x 32, outlined, shaded); bottom, ours: Armor Repair Kit (an olive case with a grey plate
   emblem and a dark strap), Armor Plate (a dark plate with cut top corners and a light band), Gun Parts (a grey bolt
   carrier and a spring drawn as a row of slanted strokes, the weakest of the three).
+
+## gunpack_v0.66.1 (22 Oktober 2026, 3D gun converter game side, milestone 1; dev client 854 x 480)
+- gunpack_held.png: dev test gunpack, first person hip: akmc ("AKM Converted", agent 1's first converted rifle: dark
+  receiver, brown wood handguard, front post at the muzzle), gcm4a4 (the M4A4 stand in), gcmac10 (the MAC-10 stand in),
+  each with its name and its own icon in the hotbar.
+- gun_akmc.png: dev test gun with akmc: the reload pose (the gun tilts up, frames 8 to 48), hip after it, the Uzi
+  control, a bandit holding the long rifle side on (gun_npc_side) and the fire camera (bandit low on the stone floor).
+- gun_gcmac10.png: the same with gcmac10 and its own magazine: reload pose, a bandit firing it (muzzle flash beside it,
+  other figures at the horizon).
+- gunview_plain.png: hip / aim / NPC of m4a4, gcm4a4, uzi, mac10, gcmac10, no attachments: each stand in identical to
+  the gun it copies at hip and in the iron sight aim; several bandits knocked down by the Soviet target in the NPC column
+  (Decimation's M4A4 too: the test's world, not the guns).
+- gunview_m4a4_eotech_foregrip.png: m4a4 and gcm4a4 with the EOTech and the Foregrip: the sight on the rail at the
+  same spot, the aimed EOTech window and red ring centred on both; gcm4a4 shows a rainbow strip under the sight (the
+  M4A4's placeholder rail teeth, hidden by IronSights only on the gun named m4a4); NPC views close up.
+- hip_eotech_cmp.png: crops of those two hip shots, 3x: the same EOTech place; the M4A4's window black with a bright
+  ring, gcm4a4's a dim lens (the shared glass picture's state: the M4A4 was shot before any aim).
+- hip_eotech_cmp_swapped.png: the same crops with the order swapped: both windows now alike (dark, red ring), so the
+  difference was the order, not the gun.
+- acog_m4a4_gcm4a4.png: hip and aimed ACOG on m4a4 (left) and gcm4a4 (right): aimed pictures identical, magnified sky
+  and horizon in the glass, green dot on the centre; gcm4a4's hip shot with the rainbow teeth at the mount.
+- gunview_mac10_suppressor_laser.png: mac10 and gcmac10 with the SMG suppressor and the laser: hip and aim alike; the
+  NPC views differ by the bandit's pose (one fallen), a red laser line and dot on mac10's.
+- gunview_akm_akmc.png: Decimation's AKM (top) and akmc (bottom): hip alike in size and place, the converted one with
+  a darker, flatter receiver; aimed: the AKM's rear notch ears with the post between, akmc a single post; NPCs close up.
+- aim_iron_akm_akmc.png: the two aimed shots cropped round the centre, 4x, red centre lines: the AKM's notch ears level
+  with the horizontal line and the post at the vertical one; akmc's post top on the horizontal line and on the vertical
+  one, no notch around it.
+- gunview_akm_akmc_acog_laser.png: the AKM and akmc with the ACOG (side mount) and the laser: the ACOG on top of both
+  receivers, aimed pictures identical (reticle centred, magnified glass).
+- gripsweep_rifles_mac10.png: the Gunsmith screen: m4a4 and gcm4a4 with the Foregrip (body under the handguard, line to
+  it), then with the RK-1, the same place on both; mac10 and gcmac10 with the Laser Marker under the front, the same.
+- icon_akm_akmc.png: Decimation's AKM icon (left, muzzle left, dark outline, 21 rows high) and akmc's (right, muzzle
+  right, 9 rows high, brown and black, no clear outline), 8x.
+- icons_decimation_and_mac10.png: Decimation's M4A4, AK-74, MP5A3, Uzi, Glock 17, SVD icons (every muzzle left) and our
+  MAC-10's (muzzle right), 6x.
