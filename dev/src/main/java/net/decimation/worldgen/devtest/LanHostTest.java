@@ -333,7 +333,7 @@ public class LanHostTest extends DevTestMode
             if (b != null)
             {
                 w.setBlock(crateX, crateY, crateZ, b, 0, 3);
-                Deci.clearLootCooldowns();
+                net.decimation.fixes.LootRefill.clearAll();
             }
             answer = (b == null ? "none" : "ok") + " " + crateX + " " + crateY + " " + crateZ + " " + pick;
         }

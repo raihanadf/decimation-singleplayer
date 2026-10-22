@@ -1358,6 +1358,13 @@ of the last session:
   stack itself, and a changed tag sent to that slot clears the client's cursor (write it only with no screen open); a
   held use key takes the next item of a stack right after a use ends (a test holds one in the hand); per thread
   allocation read right after a path first runs is JIT warm up (warm up first, take the steadiest batch).
+  Loot rules A (22 Oktober 2026, feature 12, new_feature.md): fixes/LootRefill keeps looted spots with the world (record
+  deciworldgen_looted, <world>/deciworldgen_loot.cfg: refill off in singleplayer, on with Decimation's 15 minutes on a
+  dedicated server) and sets Decimation's own mark of a clicked spot before its handler (Deci.setLootCooldown, lootSpot);
+  dev test lootrules (a real save and reload). Traps: Decimation's cooldown map is static and its clear at server start
+  never runs (an @Mod.EventHandler method registered on the event buses), so it outlives a world reload in one game;
+  tests reset loot with LootRefill.clearAll(); leaving a world in a test needs a screen right after mc.loadWorld(null)
+  (GuiMainMenu), or the next client tick crashes.
   Sights need a mount too (22 Oktober 2026): sight_mounts.txt ("gun rail|side|slide") -> fixes/SightMounts; the red dot
   only on pistols with an optic cut or rail, other sights on a rail, claw mount or AK side mount; fixes/MountStrip (was
   GripStrip) pops off grips and sights a gun cannot mount. A new gun needs its row there.

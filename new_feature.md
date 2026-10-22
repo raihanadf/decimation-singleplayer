@@ -1498,3 +1498,43 @@ lineup photo zombies_v0.34.0. Not seen by the user in game yet
   Capsules are, one filter entry per list, the "still full" refusal, warnings at 10 % and empty, Decimation's HUD saying
   "Irradiated" with an empty filter, the fit sound, the block click rule, the sector box, existing worlds upgraded at
   load, "Filter: N%" written like Decimation's "Damage Reduction 5%".
+
+## Loot rules A: looted stays looted (22 Oktober 2026, feature 12 A, idea 36)
+- User: "loot by default is empty forever after player loot it, except multiplayer they can be disable or enable for
+  minutes refill loots (by default is enable for server)"; "15 minute use old decimation setting, for singleplayer it has
+  option on cfg file world too so they can use refill method or not". Spec docs/superpowers/specs/2026-10-22-loot-rules-design.md.
+- Before: Decimation keeps each looted spot for 15 minutes of real time in one static map in memory (LootCooldownRegistry,
+  keyed by dimension and position). A new game refilled every crate; a world reloaded in the same game, or ANOTHER world
+  with a crate at the same coordinates, kept the marks. Its clear at server start never runs (ServerAboutToStartHandler
+  is an @Mod.EventHandler method put on the event buses: FML never posts lifecycle events there).
+- Now (fixes/LootRefill): a record saved with the world (data/deciworldgen_looted.dat, per dimension the world tick of
+  each spot's last loot, 5 ints a spot) is the one rule. A right click on a loot block (one with a list; not a supply
+  drop, not in creative) sets Decimation's own mark of that spot before its handler reads it (HIGHEST): looted, and the
+  handler answers its own "This <block> is empty..."; ready, and its mark is taken out of the map (the private
+  TLongLongMap, found by type) so it rolls as always. After the handler (LOWEST, also when cancelled) a new loot inventory
+  means Decimation looted it, and the spot is written with the world's tick. A multiblock is kept by its origin, as the
+  handler resolves it (Deci.lootSpot). Our record also ends the cross world leftovers.
+- The switch: <world>/deciworldgen_loot.cfg, written at the world's load when missing: `refill` (false in singleplayer,
+  true on a dedicated server) and `refillMinutes` (Decimation's lootRespawnTime / 60: 15, or a server admin's own value).
+  Minutes are world time (1200 ticks a minute), so a paused or closed world does not refill. At each load spots that
+  would refill anyway are dropped from the record (refill on only). A LAN or hosted world is a singleplayer world:
+  refill off unless its file says so [my call].
+- Checks: unit LootRefillTest 8 (never looted, refill off forever, minutes of world time, defaults from Decimation's
+  seconds, the key equals Decimation's packPos, the record through NBT with two dimensions and negative coordinates, prune,
+  the file written then read as edited): RED (compile) then GREEN; suite 219, 0 failures. Dev test `lootrules` (real
+  clicks on Decimation's military crate, a metal shelf on its upper part and a supply drop; a real save and reload: the
+  client leaves, the integrated server stops and saves, the world opens again, then Decimation's map emptied as a new game
+  has it): RED without LootRefill registered, 7 FAIL (no record, no file at load, the crate opened after the reload, the
+  shelf not kept, no refill after its minute); GREEN all PASS: record tick 939718 read back after the reload, the file
+  written again at load (808 bytes), the crate empty after the reload with Decimation's own line, the shelf kept by its
+  origin, its lower part empty, the supply drop untouched (gone after closing, no record), refill on 1 minute: shut 55 s
+  after its loot, open after it, the record moved to the new loot. Regressions in the same game: loot, lootmags, radset
+  58 PASS (their crate resets call LootRefill.clearAll now).
+- Performance (budget: under 20 us a click, nothing per tick): our two handlers 0.48 us a click (5000 warm clicks); a
+  record of 10000 spots written in 1.8 ms, read in 1.4 ms, 55 KB on disk; nothing runs per tick or per frame, no packets.
+  Memory about 80 bytes a spot in the HashMap [inferred].
+- Bug review: nothing is given or taken (only whether Decimation rolls); a crash between autosaves loses the marks since
+  the last save (those spots refill: the player's favour); the loot hint still shows on a looted spot (Decimation asks the
+  client's map, which nothing marks; not in scope, spec A); a broken and replaced loot block keeps its spot's mark [my
+  call: rare, and a looted spot should not refill by breaking it]. Not verified: a dedicated server's first load
+  (refill true written) and a real game restart (the test empties Decimation's map instead).

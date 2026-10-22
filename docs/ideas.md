@@ -213,7 +213,8 @@ User: "for the feat i have more". Notes on what we already have are mine [not an
     loot.md): singleplayer would never reset it, servers a config (on by default, minutes).
     Decided 22 Oktober 2026 (user): "15 minute use old decimation setting, for singleplayer it has option on cfg file world
     too so they can use refill method or not": servers refill after 15 minutes (on by default), singleplayer never by
-    default with a per world config switch; cooldowns saved with the world. Feature 12, this session.
+    default with a per world config switch; cooldowns saved with the world. Feature 12, this session. BUILT 22 Oktober
+    2026 on main (fixes/LootRefill, <world>/deciworldgen_loot.cfg; new_feature.md "Loot rules A").
 37. **More zombie variants, mutants too**. Related: fixes/InfectedVariants (v0.34.0), ideas 5 to 10 above.
 38. **Achievements from easy to extreme, and secret ones**. Related: item 31 (its UI), LocalStats.
 39. **Trader market: supply and demand, changed each Minecraft day** ("trader now have dynamic market supply and demand,

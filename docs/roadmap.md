@@ -248,7 +248,7 @@ a short design talk each first:
    gas mask filters wear in radiation (10 minutes), the wasteland city a radiation zone.
 8. Specific mobs at specific places (35). 9. Attachment
    benefits (40). 10. DONE 22 Oktober 2026 (new_feature.md): Armor, vest and gun durability with repair parts (47, 48); vests protect now. 11. Trader market by day (39).
-12. Loot rules, lootable props, loot kinds, Tarkov search (36, 49, 50, 29). 13. Zombie variants and mutants (37).
+12. Loot rules, lootable props, loot kinds, Tarkov search (36, 49, 50, 29; A looted stays looted built 22 Oktober 2026). 13. Zombie variants and mutants (37).
 14. Achievements and story mode UI (38, 31). 15. Survivor events, friendly NPC and trader quests (28, 32, 33).
 Split (user 22 Oktober 2026: "use previous subagent ... for low - medium feat task and this session for hard - extreme"):
 the agent in ../Decimation-bugfix (branch bugfix, ports 25596 / 5008) builds 7, 8, 9, 11 and new bug reports; this

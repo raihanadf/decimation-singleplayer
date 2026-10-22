@@ -21,7 +21,7 @@ BlockMilitaryRadioSmall (and their Off versions) are not lootable; BlockWoodCrat
 the general list, BlockWeaponCabinet the guns and magazines list.
 
 ## Design
-A. Refill (fixes/LootRefill): a saved record per world (WorldSavedData, position -> world tick of the last loot), read
+A. Refill (fixes/LootRefill; BUILT 22 Oktober 2026, new_feature.md "Loot rules A"): a saved record per world (WorldSavedData, position -> world tick of the last loot), read
    before Decimation's handler (PlayerInteractEvent HIGHEST): a looted spot answers Decimation's own "This <block> is
    empty..." and nothing opens, unless refill is on and its minutes have passed. Written after Decimation looted it
    (LOWEST, also when cancelled, as LootMagazines does). The switch: <world>/deciworldgen_loot.cfg, written on first

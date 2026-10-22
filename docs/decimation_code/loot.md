@@ -20,7 +20,7 @@ rolls a fresh handful of items from that block's list into Decimation's inventor
 | LootEntry (deci/aB/d) | one ItemStack plus a stack size range; `roll` (c) |
 | IntRange (deci/aB/a) | roll counts and stack sizes; `pick` (b). Was [1, n): PatchLootRolls makes it 1 .. n |
 | WeightedRandom (deci/aB/f) | weight = the item's getLootChance (OwnedItem, LootChanceItem, ItemArmorDeci), else 0.9 |
-| LootCooldownRegistry (deci/aB/e) | per dimension map packed position -> last open in ms; `forWorld` (d), `isReady` (k), `markLooted` (l), `clear`. In memory only: a restart makes every crate full again |
+| LootCooldownRegistry (deci/aB/e) | per dimension map packed position -> last open in ms; `forWorld` (d), `isReady` (k), `markLooted` (l), `clear`. In memory only and static: it lives for the whole game, across worlds (keyed by dimension, not world), and a new game makes every crate full again. Its clear at server start (ServerAboutToStartHandler) never runs: an @Mod.EventHandler method registered on the event buses, where FML never posts FMLServerAboutToStartEvent (lootrules 22 Oktober 2026: Decimation's map still held the crate after a world reload) |
 | LootCloseCallback (deci/aB/b) | blocks told when the player closes the loot screen (SupplyDropBlock removes itself) |
 | PacketLootInventory (deci/aE/a$R) | server to client: the rolled inventory, stored in the client's PlayerData |
 | PlayerData (deci/Q/b) | `setLootInventory` (a), `getLootInventory` (cN): what the loot area of the screen shows |
@@ -69,7 +69,9 @@ Dev test `loot` step 3 right clicks a placed `deci:BlockMilitaryCrate` through t
   possible [inferred]. A clean fix would tick the server queue from a ServerTickEvent of ours instead.
 - The loot hint (BlockTipLayer) asks the CLIENT world's cooldown registry, which nothing marks, so the hint stays
   on a crate that is on cooldown [inferred from the code; not looked at in game].
-- Cooldowns are not saved: leaving and reloading a world refills every crate.
+- Cooldowns were never saved: a new game refilled every crate, while a world reloaded in the same game (and any other
+  world with a crate at the same coordinates) kept Decimation's in memory marks. Since 22 Oktober 2026 fixes/LootRefill
+  keeps every looted spot with the world (section 5) and sets Decimation's mark of the clicked spot before each click.
 - Supply drop timer: ServerTickHandler is dedicated server only; our fixes/SupplyDropScheduler runs the same
   countdown and chat warnings in singleplayer and drops Decimation's falling crate 64 to 144 blocks from a player
   (dev test `checks`: "supply drop landed").
@@ -81,7 +83,8 @@ Dev test `loot` step 3 right clicks a placed `deci:BlockMilitaryCrate` through t
 | roll a Decimation list into an inventory | `Deci.rollDecimationLoot(block, inv)` |
 | read or extend the table | `Deci.lootTable()`, `Deci.addLootLike(item, stack)` (our guns join every list holding a similar item) |
 | show our own inventory on the loot screen | `fixes/Loot.open` (Deci.setLootInventory + Deci.openLootGui), LootBody entity |
-| cooldown | `Deci.lootReady(world, x, y, z)`, `Deci.clearLootCooldowns()` |
+| cooldown | `Deci.lootReady(world, x, y, z)`, `Deci.clearLootCooldowns()`; Decimation's mark of one spot: `Deci.setLootCooldown` |
+| looted spots saved per world, refill switch | fixes/LootRefill (feature 12 A): record deciworldgen_looted.dat (world tick of each spot's last loot, a multiblock by its origin: `Deci.lootSpot`), `<world>/deciworldgen_loot.cfg` (refill, refillMinutes; new worlds: off in singleplayer, on with Decimation's lootRespawnTime on a dedicated server), `LootRefill.clearAll()` for tests |
 | supply drops | `Deci.supplyDropsEnabled / supplyDropCountdown / setSupplyDropCountdown / supplyDropInterval / supplyDropBlock / isFallingSupplyDrop`, fixes/SupplyDropScheduler |
 | our own item lists | fixes/LootPools (config/deciworldgen_loot.json) |
 | roll counts | tools/patches/PatchLootRolls.java (three jars) |
@@ -93,4 +96,6 @@ Loot inside our structures needs no code: place a block that has a pool and Deci
 - `python3 tools/devtest.py --live loot`: 16 checks (our inventory on the screen, the body, Decimation's crate by a
   real click with cooldown).
 - `python3 tools/devtest.py --live checks`: supply drop lands.
+- `python3 tools/devtest.py --live lootrules`: looted stays looted through a save and reload, a shelf by its origin,
+  supply drops untouched, refill on a 1 minute setting, the costs (22 Oktober 2026: all PASS, 0.48 us a click).
 - Dev test `items` dumps every item with its loot chance (docs/references/decimation_items.tsv).

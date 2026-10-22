@@ -140,6 +140,7 @@ public class DecimationWorldGen
         net.decimation.fixes.SightMounts.load(); // a sight only on its mount (sight_mounts.txt)
         cpw.mods.fml.common.FMLCommonHandler.instance().bus().register(new net.decimation.fixes.MountStrip());
         net.minecraftforge.common.MinecraftForge.EVENT_BUS.register(new net.decimation.fixes.LootMagazines()); // loot mags half full
+        net.minecraftforge.common.MinecraftForge.EVENT_BUS.register(new net.decimation.fixes.LootRefill()); // looted stays looted
         net.decimation.fixes.Net.register(); // our own channel (fixes/Net)
         net.decimation.fixes.MagUnload unload = new net.decimation.fixes.MagUnload(); // shift + right click empties a magazine
         net.minecraftforge.common.MinecraftForge.EVENT_BUS.register(unload);

@@ -18,7 +18,8 @@ docs/loot_levels.md. Read the doc section you need, not Decimation's source.
 | our items in Decimation's lists | `Deci.addLootLike(item, stack)` |
 | show any inventory on the loot screen | `fixes/Loot.open`, entity `fixes/LootBody` |
 | our own lists | `fixes/LootPools`, config/deciworldgen_loot.json |
-| cooldown | `Deci.lootReady`, `Deci.clearLootCooldowns` |
+| cooldown | `Deci.lootReady`, `Deci.clearLootCooldowns`, `Deci.setLootCooldown` |
+| looted stays looted, refill switch per world | `fixes/LootRefill` (record with the world, `<world>/deciworldgen_loot.cfg`), test `lootrules` |
 | supply drops in singleplayer | `fixes/SupplyDropScheduler`, `Deci.supplyDrop*` accessors |
 | roll count off by one | `tools/patches/PatchLootRolls.java` (three jars) |
 
@@ -29,8 +30,9 @@ docs/loot_levels.md. Read the doc section you need, not Decimation's source.
 3. Test loot changes with the live dev test, never by reasoning alone:
    `python3 tools/devtest.py --live loot` (16 checks, a real click on a real crate). Add
    `'-Ptrace=deci.aK.k,deci.aB,deci.aD.l'` to see the calls.
-4. Cooldowns are in memory per world object. Tests must call `Deci.clearLootCooldowns()` first or a rerun within
-   15 minutes finds the crate empty.
+4. Decimation's cooldowns live in one static map for the whole game (its clear at server start never runs), and our
+   LootRefill record keeps looted spots with the world. Tests call `LootRefill.clearAll()` (both) before clicking, or
+   a rerun finds the crate empty.
 5. The handler skips creative players: put the test player in survival for the click, restore after.
 
 ## Common mistakes
