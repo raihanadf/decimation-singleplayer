@@ -186,4 +186,6 @@ Checked with it: bundled content unpacked, cities generated, no errors (bug.md v
   saved by this newer jar now: move them aside before an update test with an older jar (missing blocks screen).
 - Same day, feature 5b (skins), one jar of main's tree: skins, armskin, glstack 11 of 11 in the production client
   (ProdTester has no skin: human0 on the player, the menu preview, the gun arms and the corpse).
+- Same day, feature 6 (dark nights): nights 10 of 10 and glstack in the production client with OptiFine; the shot's
+  floor at a new moon 0.054 against vanilla's 0.297 (OptiFine keeps our light map).
 

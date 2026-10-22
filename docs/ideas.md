@@ -257,6 +257,7 @@ User: "for the feat i have more". Notes on what we already have are mine [not an
     that nights are too dark now.
     Decided 22 Oktober 2026 (user): DayZ style, near black (about 95 %) on a new moon, a full moon lets you make out
     shapes; light sources work as now; nights ignore the brightness slider (daytime keeps it). Feature 6, this session.
+    BUILT the same day (new_feature.md "DayZ dark nights"; with real moon phases: fixes/MoonClock).
 53. **Some looted guns hold rounds** (user, 22 Oktober 2026: "some guns loot have ammo inside it, so not all of them is
     empty"). DONE the same day (new_feature.md "Looted guns hold rounds").
 54. **No Steve: every player a random Decimation skin** (user, 22 Oktober 2026: "later we dont use steve default skin,

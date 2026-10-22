@@ -34,7 +34,10 @@ Traced `deci.aI,deci.an.p,deci.b.i.a`: client thread WeatherType.byId 112 (once 
   sets `byId(1)` every tick anyway, overwriting what PacketSetWeather set.
 - No dynamic weather in singleplayer at all (WeatherController is server proxy only); nothing lost given the above.
 - The world's day count never grows: world time goes back to 0 after 24000, so the moon phase (computed from the day)
-  stays the same night after night and `/time set` past 24000 is undone [inferred].
+  stays the same night after night and `/time set` past 24000 is undone. Checked 22 Oktober 2026 (dev test nights,
+  first run): a full moon every night (phase 0). Decimation reads fixed hours of world time in AmbientMusicPlayer
+  (day music 100 to 12000) and StereoRenderer (its clock), so the reset stays; our moon comes from fixes/MoonClock
+  (the overworld provider MoonProvider, phase from WorldClock's saved day; feature 6, new_feature.md).
 - OUR fixes/WorldClock counted days as world time / 24000 + 1, so with this reset its day stayed 1, and at each
   midnight it saw the time go back to 0 and treated it as "time set back": DAY fired each midnight but always as
   day 2 (confirmed by the core test "clock: two midnights", bug.md "WorldClock day never advances"). FIXED

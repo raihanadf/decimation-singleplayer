@@ -1337,6 +1337,10 @@ of the last session:
   human skins, picked by NAME (an offline server knows a client by another id than the client itself); corpses wear
   their player's skin through alias textures under "skins/<id>". Trap: never deleteTexture such a name (it frees the
   player's skin); dev test skins (the dev account has a skin of its own, the production test account none).
+  DayZ dark nights (22 Oktober 2026, feature 6): fixes/NightLight + DarkNights rebuild the light map on Forge's FogColors
+  event once a tick; fixes/MoonClock gives the overworld real moon phases (MoonProvider, our day counter, Net message 2):
+  Decimation's DayLengthHandler resets world time every day, so vanilla's moon was full every night. Test trap: weather
+  changed on the server outside its weather tick never reaches the client; set it on both sides (dev test nights).
   Sights need a mount too (22 Oktober 2026): sight_mounts.txt ("gun rail|side|slide") -> fixes/SightMounts; the red dot
   only on pistols with an optic cut or rail, other sights on a rail, claw mount or AK side mount; fixes/MountStrip (was
   GripStrip) pops off grips and sights a gun cannot mount. A new gun needs its row there.

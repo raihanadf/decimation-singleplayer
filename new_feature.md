@@ -1300,3 +1300,38 @@ lineup photo zombies_v0.34.0. Not seen by the user in game yet
   texture); hook 0.23 us a call. Dedicated server [not run: client only code; a corpse there carries the server id,
   which the alias covers with the offline id].
 
+## DayZ dark nights (22 Oktober 2026, feature 6, idea 52)
+- User: "the night become so dark so its like dayz they almost black 95% in night time"; chosen: DayZ style, the moon
+  matters (near black at a new moon, shapes at a full one), nights ignore the brightness slider, daytime keeps it.
+- fixes/NightLight (pure): Minecraft's 16 x 16 light map built as EntityRenderer.updateLightmap does, with three night
+  changes weighted by the night share (1 minus daylight from the sun's height): the sky term from the moon (0.09 new to
+  0.36 full, down to 0.4 of that in rain) instead of vanilla's 0.24, the two 0.03 ambient floors gone, the slider
+  (gamma) times daylight. At full daylight it is vanilla's map to the bit (unit test). Block light (torches, our street
+  lights), lightning and night vision (Decimation's goggles give the potion) as in vanilla.
+- fixes/DarkNights (client): vanilla rebuilds its light map once a tick at the start of a frame; Forge's
+  EntityViewRenderEvent.FogColors fires later in that frame, before the sky and the world are drawn (renderWorld:
+  updateLightmap, updateFogColor, renderSky, terrain), and Decimation does not use it. There, once a tick, NightLight's
+  colours go into EntityRenderer.lightmapColors (field_78504_Q) and its texture (field_78513_d) is uploaded. Overworld
+  only, nothing at full daylight, -Ddeciworldgen.darknights=false switches it off. No jar patch, no core mod.
+- fixes/MoonClock: the first live run read a full moon where it set day 5 by world time. Decimation's DayLengthHandler
+  puts world time back to 0 after 24000, so vanilla's phase (time / 24000 % 8) was a full moon EVERY night, in the sky
+  too. The reset stays (Decimation's ambient music and the stereo's clock read fixed hours). The overworld's provider
+  becomes MoonProvider (a WorldProviderSurface, only while vanilla's is the registered one) whose phase is
+  (WorldClock day - 1) % 8: day 1 full, day 5 new, changing where vanilla's would (world time 0, when WorldClock counts
+  the day). The client gets the day by message (Net 2) when joining and at each new day. Sky moon, light map and
+  vanilla's moon rules all follow. MoonClock.setDay (and WorldClock.setDay) for tests and admins.
+- Checks: unit NightLightTest (vanilla at full daylight for three slider settings and rain; new moon 0.03 to 0.06;
+  full moon 0.12 to 0.22 and 2.5 times the new; the slider does nothing at night; vanilla nights were over 0.4 at the
+  brightest slider; torches as vanilla's darkest slider; night vision close to vanilla's; smooth dusk; rain hides the
+  moon) and MoonClockTest RED then GREEN, suite 188 (one expectation of mine was wrong: vanilla's night vision reaches
+  about 0.6, not 0.85). Dev test `nights` 10 of 10 at 1440 x 810 with the slider at its brightest: noon bright and
+  untouched (0 rebuilds), new moon midnight open sky 0.044 (vanilla 0.489), full moon 0.176, torch light 0.957, night
+  vision 0.514; on screen (the saved shot's floor, whatever uploaded the map last) new moon 0.055 against vanilla's
+  0.299, full moon 0.116. A test trap found on the way: weather changed on the server outside its weather tick never
+  reaches the client (no packet), the client kept its rain (every value 0.4 of the dry one); the test dries both sides.
+- Performance: a rebuild 53 to 74 us, once a client tick (about 1 ms a second), none by day; nothing per frame.
+  Shots docs/shots/nights_v0.66.1.
+- Production client with OptiFine (one jar of main's tree): nights 10 of 10 with the same numbers (on screen 0.054
+  against vanilla's 0.297: OptiFine does not override the map), glstack PASS, rebuild 55 us. Dedicated server [not run:
+  the light map is client only; the moon day message rides our channel like message 1, checked there by channelmp].
+

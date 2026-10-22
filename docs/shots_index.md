@@ -1880,3 +1880,14 @@ Production client with OptiFine HD U E7 (the brother's laptop setup), AKM with t
   SkinTest0 (right, human0: black coat), name tags "Survivor"; bottom, the first run's corpses: SkinTest0's in human0
   (left), the dev account's as STEVE (right: Decimation's crafatar path), the bug the alias textures fixed.
 - corpses_after_alias.png: the same two corpses after the fix: human0 left, the dev account's own skin right.
+
+## nights_v0.66.1 (22 Oktober 2026, feature 6: DayZ dark nights; dev test nights, dev client 1440 x 810, slider at brightest)
+- arena_noon.png: the stone arena at noon, a row of seven torches ahead, bright as vanilla.
+- arena_new_moon_vanilla.png: midnight of day 5 with our hook off: vanilla's night at the brightest slider, the floor a
+  light purple grey (screen floor brightness 0.299).
+- arena_new_moon.png: the same with our light map: the floor near black (0.055), warm pools of light round the torches,
+  stars in the sky; the gun in hand barely visible.
+- arena_full_moon.png: day 1 midnight: the floor a dim blue grey, shapes readable (0.116).
+- city_noon.png, city_full_moon.png, city_new_moon.png: a seed 1 city street (1460, 272, looking east): noon; full moon
+  dark navy with the street, curbs and building fronts faintly visible; new moon close to black, faint outlines only,
+  the zone banner "Now entering Fort Northmouth: Wasteland" at the bottom left.
