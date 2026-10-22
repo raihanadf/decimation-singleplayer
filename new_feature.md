@@ -1516,3 +1516,65 @@ lineup photo zombies_v0.34.0. Not seen by the user in game yet
     loot checks count opens holding a filter (rolled within 4 sigma of the weights) and that one entry more or less
     would land further from the target.
   - Cost: nothing more for a player with filter left; with an empty filter one small box search every 4 ticks.
+
+## Specific mobs at specific places (22 Oktober 2026, feature 8 of docs/roadmap.md "Feature order", idea 35; branch bugfix)
+- User (docs/ideas.md 35): "a table per place kind, editable in a config file: the wasteland irradiated and military
+  infected, demons at night; bases and airports soldiers; hospitals medic infected; police stations riot infected;
+  forests infected dogs; highways bandit groups".
+- The table: config/deciworldgen_places.json (fixes/PlaceSpawns), one list per place kind. An entry: "mob" (infected,
+  infected_dog, crawler, hulk, frail, bloater, demon, soldier, bandit, soviet), "look" for infected (military and police
+  are Decimation's own looks; runner, riot, screamer and the new irradiated and medic are ours, fixes/InfectedVariants),
+  "chance" in percent, "group" [least, most], "time" (any, day, night), "cap" (no more of that mob within 64 blocks
+  across and 32 up or down; 0 none). Written with the user's table when missing or older than its version (the old file kept as .old), then the
+  user's: edit and restart; mistakes (an unknown place, mob, look or time, chances above 100 at one time of day) are
+  logged and the entry skipped. My numbers [draft]: wasteland irradiated 30, military 30, a demon 2 at night (cap 2);
+  base and airport soldiers 30 (2 to 3, cap 6); hospital medic 60; police station riot 60; forest infected dogs 30 (1
+  to 2, cap 6); highway bandits 15 (2 to 4, cap 8).
+- How (my design): the table changes WHAT spawns where, not how many. When the game's own natural spawning (vanilla's
+  SpawnerAnimals over Decimation's biome lists) puts a plain infected at a place of the table, Forge's CheckSpawn event
+  (fired by SpawnerAnimals only: spawner blocks, eggs, commands and our code never pass it) rolls 100 through that
+  place's entries in order: an infected entry tags it with a look, put on when it joins at LOW priority (after the zone
+  handlers' 25 % military and police looks, before InfectedVariants' random roll); another mob refuses the infected
+  (only on a spot it could spawn on) and spawns the group on its spot as SpawnerAnimals spawns (special spawn event,
+  onSpawnWithEgg), each member on a free cell beside it, every one tagged with its place (entity data
+  deciworldgen_place). The rest stays as Decimation spawns it. So the game's mob cap, doMobSpawning, peaceful and the
+  spawn rules stay in charge, NpcLoadouts still gives soldiers and bandits their tiers, Decimation still swaps some
+  (hulks, bloaters, mechs), ZoneSpawnHandler still refuses bandits in safezones, and nothing runs per tick.
+- Places (worldgen/Places), the first that holds wins: airport (Airport.site of a wasteland sector), base (the
+  military's named places in StructureData: PlaceNames stores a base's box with its first slice), police station and
+  hospital (the city building planned on that chunk, LcCity.buildingKind: BuildingDress's kinds by the building's name,
+  "police", "hospital", "polyclinic"), highway (Highways.at), wasteland (Wasteland.chunk), forest (a biome of Forge's
+  FOREST type: vanilla forests and taigas, our Overgrown Forest, Overgrown Hills and Burnt Forest). The seed's places
+  of a chunk are memoised in a direct mapped table of 8192 chunks (no allocation on a hit), cleared at every world load.
+  Could NOT be known: buildings in worlds without the converted city content (the procedural city has no police or
+  hospital buildings), buildings of hand made maps or other mods, a base before its first slice (no spawns there yet
+  anyway), Decimation's own wasteland military buildings as "bases" (they count as wasteland), a forest's trees
+  outside a forest biome, the inside of a building against its roof or yard on the same chunk.
+- New looks (InfectedVariants, last in the list, weight 0 so never rolled at random): irradiated (Decimation's hazmat
+  suit, bare headed: the screamer wears the hood; health 24) and medic (Decimation's medic vest, the one its soldier
+  medics wear, gray trousers, white shoes). Their spawn eggs come with them (ZombieEgg metadata 3 and 4).
+- Checks: unit PlaceSpawnsTest 6 (the roll walks the entries in order, day and night entries, night by the time of
+  day, the user's table is the default and checks clean, mistakes reported, the file written once then the user's)
+  and PlacesTest 3 (the order, base boxes from place entries, the chunk memo): RED (55 compile errors) then GREEN;
+  suite 224. Dev test `placespawns` 29 checks, all PASS: a position of each kind from the seed's own sources where
+  only it holds, and Places agrees (airport -640,-1600, police station 344,552, hospital 536,-552, highway 8,8,
+  wasteland 8,520, forest -40,-40, a test base among the named places; search 162 ms); the table 7 of 7, no problems,
+  the file written; 2000 spawn checks a place through Forge's own event, each entry within 4 sigma of its chance (for
+  example forest dogs 652 of 2000 against 600, the night demon 40 against 40, none by day); looks put on at join (medic
+  vest, riot coat and helmet, hazmat vest bare headed, Decimation's military variant 1); replacements (an infected
+  refused for 2 bandits with tiers, 2 soldiers with tiers, 2 dogs, 1 demon at night); the highway's bandit cap kept
+  the infected; natural spawning for 20 s with the forest forced: 98 checks through the table, 31 rolled dogs, 22
+  forest dogs in the world (13 capped); last run 97 checks, 36 dogs rolled, 23 in the world, 16 capped. Same game:
+  zombies, npc, nospawn PASS.
+- Performance (budgets: nothing per tick, a place lookup under 5 us without allocation, our part of a spawn check
+  under 10 us, a cap search under 500 us): Places.at 0.11 to 0.27 us a lookup, 0 bytes in 10000 (memo hits, steadiest
+  of 3 runs); over the natural window, two runs (load average about 8 with another dev game running, then lower): 5.9
+  and 2.7 us a check of our own (place, roll, tag), a cap search 143 and 55 us (a box of the chunks' entity lists 128
+  across, 32 up and down; only when an entry with a cap is rolled: 36 of 97 and 36 of 124 checks with the forest's
+  dogs), a replacement mob 258 and 102 us with every join handler (the game's own cost of a spawn); nothing per tick. A first try searched the full height for the cap (30 us
+  a check on average): the box is now 64 high round the spot.
+- Bug review: a replacement only where the infected could spawn (getCanSpawnHere: in peaceful never, with an entity in
+  the spot never); caps count living mobs of that kind within 64 blocks before a group; a look tag left on an infected
+  Decimation swapped away is dropped with it; the place memo resets at every world load, so a world with other layout
+  switches never reads the last one's places; dedicated server: the same event and join order [not verified: no
+  production runs on this branch].

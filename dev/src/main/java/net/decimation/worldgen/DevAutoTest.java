@@ -178,6 +178,7 @@ public class DevAutoTest
         if (name.equals("nights")) return new net.decimation.worldgen.devtest.NightsTest();
         if (name.equals("durability")) return new net.decimation.worldgen.devtest.DurabilityLiveTest();
         if (name.equals("radset")) return new net.decimation.worldgen.devtest.RadSetTest(); // feature 7: pills, filters, wasteland
+        if (name.equals("placespawns")) return new net.decimation.worldgen.devtest.PlaceSpawnTest(); // feature 8: mobs by place
         if (name.equals("bench")) return new net.decimation.worldgen.devtest.BenchTest();
         if (name.equals("targetpace")) return new net.decimation.worldgen.devtest.TargetPaceTest();
         if (name.equals("npclook")) return new net.decimation.worldgen.devtest.NpcLookTest();

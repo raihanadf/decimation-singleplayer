@@ -1359,6 +1359,12 @@ of the last session:
   stack itself, and a changed tag sent to that slot clears the client's cursor (write it only with no screen open); a
   held use key takes the next item of a stack right after a use ends (a test holds one in the hand); per thread
   allocation read right after a path first runs is JIT warm up (warm up first, take the steadiest batch).
+  Mobs by place (22 Oktober 2026, feature 8, branch bugfix, new_feature.md): fixes/PlaceSpawns (table in
+  config/deciworldgen_places.json) turns Decimation's natural plain infected spawns into the place's look or mobs;
+  worldgen/Places names the place (airport, base, police station, hospital, highway, wasteland, forest) from the seed and
+  our named places, memoised per chunk; dev test placespawns. Traps: Forge's CheckSpawn fires for natural spawns only
+  (SpawnerAnimals; spawner blocks, eggs and code never); a synthetic spawn check on the player's own spot fails
+  getCanSpawnHere (the player collides), and EntityMob.getCanSpawnHere refuses everything in peaceful.
   Sights need a mount too (22 Oktober 2026): sight_mounts.txt ("gun rail|side|slide") -> fixes/SightMounts; the red dot
   only on pistols with an optic cut or rail, other sights on a rail, claw mount or AK side mount; fixes/MountStrip (was
   GripStrip) pops off grips and sights a gun cannot mount. A new gun needs its row there.

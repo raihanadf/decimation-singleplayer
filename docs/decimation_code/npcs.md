@@ -24,7 +24,7 @@ included depending on the player's humanity.
 | InfectedEntity (deci/ag/d) | zombie: melee AI on players, animals, FactionHumanEntity and mechs; variant (data watcher 21: 0 common, 1 military in marine gear, 2 police in NYPD gear) set by the zone spawn handler; horde: 10 or more infected within 20 blocks makes the base speed 0.3 (else 0.25), reset EVERY tick; 8 % of hits infect a player (ServerConfig.enableInfection); drops flesh 70 %, else a cap, 1 in 10000 a gold cap |
 | InfectedCrawlerEntity, InfectedDogEntity, FrailEntity, GawkerEntity, HulkEntity, BloaterEntity (deci/ag/f, g, h, i, j, e) | infected kinds (crawler, dog, crying frail, staring gawker, knock up hulk, exploding bloater) |
 | DemonEntity (deci/ag/b), MechEntity (deci/ag/k) | flying carrier demon (capped by maxDemonCount); walking mech with machine gun and mortar |
-| MobSpawnRegistry (deci/aD/j) | biome spawn lists for every biome: humans as `creature` (Human weight 1 x1-4, Bandit / Soviet / Soldier / Hazmat 1 x1-2), infected as `monster` (Infected 10 x1-4, Crawler, Hulk, Frail 1, InfectedDog 1); CommonProxy removes vanilla monsters |
+| MobSpawnRegistry (deci/aD/j) | (natural spawns: vanilla's SpawnerAnimals over these lists fires Forge's CheckSpawn for each one; spawner blocks do not in this Forge) biome spawn lists for every biome: humans as `creature` (Human weight 1 x1-4, Bandit / Soviet / Soldier / Hazmat 1 x1-2), infected as `monster` (Infected 10 x1-4, Crawler, Hulk, Frail 1, InfectedDog 1); CommonProxy removes vanilla monsters |
 | EntitySpawnZoneHandler (event) | zone variants (25 % in MILITARY / POLICE), no hostiles in safezones, demon cap: dedicated server only (our fixes/ZoneSpawnHandler) |
 | DamageSources.human | NPC gunfire source "human" (not GunDamageSource) |
 
@@ -77,6 +77,7 @@ Dev test `shots` (153 s, bandits, soldiers and Soviets in the arena), trace pref
 | who fights whom | `Deci.npcHostileTo`, tools/patches/PatchFactions.java |
 | tiers, groups | fixes/NpcLoadouts (config deciworldgen_npc.cfg), fixes/MilitarySpawner, NPC eggs fixes/NpcEgg |
 | infected kinds | `Deci.setInfectedVariant`, `Deci.infectedVariant`, fixes/InfectedVariants, fixes/ZombieEgg |
+| mobs by place | fixes/PlaceSpawns (config deciworldgen_places.json), worldgen/Places; `Deci.newMob`, `Deci.mobName` |
 | hearing gunshots | fixes/GunNoise |
 | vanilla mobs out | fixes/VanillaMobs (a test needing one sets the KEEP flag) |
 | no spawns on their own (tests) | `/gamerule doMobSpawning false`: vanilla stops the biome lists (all of Decimation's own NPC and infected spawns); fixes/NaturalSpawns makes MilitarySpawner, garrison posts and garrison spawner cages follow it; code, eggs and /summon still spawn |

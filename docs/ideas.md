@@ -207,6 +207,9 @@ User: "for the feat i have more". Notes on what we already have are mine [not an
     Decided 22 Oktober 2026 (user): a table per place kind, editable in a config file: the wasteland irradiated and
     military infected, demons at night; bases and airports soldiers; hospitals medic infected; police stations riot
     infected; forests infected dogs; highways bandit groups. Agent, feature 8.
+    Built 22 Oktober 2026 (new_feature.md "Specific mobs at specific places"): config/deciworldgen_places.json, the
+    place kinds known from the seed and our named places (worldgen/Places), natural infected spawns turned into the
+    place's mobs or looks (fixes/PlaceSpawns), new looks irradiated and medic; dev test placespawns.
 36. **Loot does not refill in singleplayer, a refill timer on servers**: "since city can be generated, loot by default is
     empty forever after player loot it, except multiplayer they can be disable or enable for minutes refill loots (by
     default is enable for server)". Decimation's crate cooldown is per position (deci/aB/e; docs/decimation_code/
