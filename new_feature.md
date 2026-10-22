@@ -1730,4 +1730,6 @@ lineup photo zombies_v0.34.0. Not seen by the user in game yet
   swapped), the police office at 336,544 got 3 police cabinets (counted in the saved world). The pass costs 73 us a
   building (median, p90 207 us). Regressions loot, lootrules, lootmags, milbase 46 PASS.
 - Trap: Block.getCreativeTabToDisplayOn is client only (a dedicated server strips it: NoSuchMethodError at start).
-- Not done yet: the graph, the carry to prerelease, the production client and server, docs/decimation_code/loot.md row.
+- Carried to prerelease (611a767 with its test fix; there lootblocks all PASS, 158 unit tests). Production client with
+  OptiFine 61 PASS (lootblocks, lootrules, loot, glstack); production dedicated server: 15 copies, the loot file written with
+  refill=true, 15 minutes (docs/production_test.md).

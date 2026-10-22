@@ -193,4 +193,8 @@ Checked with it: bundled content unpacked, cities generated, no errors (bug.md v
 - Same day, feature 7 (radiation set, merged from bugfix as 12afb2b): radset 36 of 36 and glstack in the production
   client with OptiFine (38 PASS, one jar sha256 a9e39441); a player's server cost 0.07 us in radiation, 0.16 us out of
   it; HUD handlers 2.32 us a frame. Not run yet: the dedicated server (messages 32 fit and 3 rack).
+- Same day, feature 12 A and B (loot rules, lootable copies): lootblocks, lootrules, loot, glstack in the production client
+  with OptiFine, 61 PASS (every copy draws as its original, a click 0.24 us, 0 GL stack leaks). Production dedicated
+  server: "loot copies: 15 made, 14 with a loot list", the world's deciworldgen_loot.cfg written at load with refill=true and
+  refillMinutes=15 (a server's default), no NoSuchMethodError.
 
