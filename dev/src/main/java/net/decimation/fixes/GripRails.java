@@ -76,6 +76,7 @@ public final class GripRails
         try
         {
             InputStream in = GripRails.class.getResourceAsStream(TABLE);
+            in = net.decimation.fixes.gunpack.GunPackRows.with(in, "grip_offsets.txt"); // gun packages' rows (gunpack/GunPacks)
             if (in != null)
             {
                 BufferedReader r = new BufferedReader(new InputStreamReader(in, "UTF-8"));

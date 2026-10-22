@@ -21,7 +21,8 @@ public class PlayerFireTest extends DevTestMode
 {
     public String name() { return "playerfire"; }
 
-    private static final String GUN = "akm";
+    /** The gun fired: gun=NAME (deci:NAME, else deciworldgen:NAME: a gun package's), default Decimation's AKM; per run. */
+    private final String GUN = System.getProperty("deciworldgen.autotest.gun", "akm");
     private static final int ROUNDS = 30;
     private volatile int ticks, targetId = -1;
     private volatile boolean ready, shot1, check1Done, shot2, check2Done;
@@ -112,7 +113,9 @@ public class PlayerFireTest extends DevTestMode
             DevTestArena.build(w, p);
             w.setWorldTime(18000);
             p.capabilities.disableDamage = true;
-            ItemStack g = new ItemStack(GameRegistry.findItem("deci", GUN));
+            net.minecraft.item.Item gi = GameRegistry.findItem("deci", GUN);
+            ItemStack g = new ItemStack(gi != null ? gi : GameRegistry.findItem("deciworldgen", GUN));
+            DevTestResults.value(name(), "gun", GUN);
             g.stackTagCompound = new NBTTagCompound();
             g.stackTagCompound.setInteger("ammo", ROUNDS);
             p.inventory.setInventorySlotContents(p.inventory.currentItem, g);

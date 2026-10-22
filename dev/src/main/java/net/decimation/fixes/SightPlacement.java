@@ -79,6 +79,7 @@ public final class SightPlacement
     public static void apply()
     {
         InputStream in = SightPlacement.class.getResourceAsStream("/assets/deciworldgen/sight_offsets.txt");
+        in = net.decimation.fixes.gunpack.GunPackRows.with(in, "sight_offsets.txt"); // gun packages' rows (gunpack/GunPacks)
         if (in == null)
         {
             FMLLog.info("[deciworldgen] sight placement: no table");

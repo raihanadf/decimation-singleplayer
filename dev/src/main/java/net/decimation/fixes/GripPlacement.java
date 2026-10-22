@@ -73,6 +73,7 @@ public final class GripPlacement
     {
         long started = System.nanoTime();
         InputStream in = GripPlacement.class.getResourceAsStream("/assets/deciworldgen/grip_offsets.txt");
+        in = net.decimation.fixes.gunpack.GunPackRows.with(in, "grip_offsets.txt"); // gun packages' rows (gunpack/GunPacks)
         if (in == null)
         {
             FMLLog.info("[deciworldgen] grip placement: no table");

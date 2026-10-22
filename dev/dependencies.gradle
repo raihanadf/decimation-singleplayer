@@ -254,3 +254,11 @@ tasks.matching { it.name.startsWith("runClient") }.configureEach {
         jvmArgs("-Ddeciworldgen.autotest.shots=" + project.property("shots"))
     }
 }
+// `-Pgunpacks=DIR[:DIR]` (runClient / runServer): gun packages from these folders too (a package folder or a folder of
+// them, e.g. the converter's ../Decimation-gunconv-tool/build/gunconv/out; fixes/gunpack/GunPacks). The dev workspace
+// also reads the checkout's build/gunpacks (tools/guns/gunpack_standin.py) without it.
+tasks.matching { it.name == "runServer" || it.name.startsWith("runClient") }.configureEach {
+    if (project.hasProperty("gunpacks")) {
+        jvmArgs("-Ddeciworldgen.gunpacks=" + project.property("gunpacks"))
+    }
+}

@@ -1,0 +1,2 @@
+# unit test GunPackSourceTest: a package on the class path (never shipped: test resources)
+tiny

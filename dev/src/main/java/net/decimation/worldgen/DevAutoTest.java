@@ -207,6 +207,8 @@ public class DevAutoTest
         if (name.equals("gates")) return new net.decimation.worldgen.devtest.GateTest();
         if (name.equals("gatewalk")) return new net.decimation.worldgen.devtest.GateWalkTest();
         if (name.equals("airport")) return new net.decimation.worldgen.devtest.AirportTest();
+        // gun packages (fixes/gunpack): the loader, every package's gun against its like gun, rows, a reload and a shot
+        if (name.equals("gunpack")) return new net.decimation.worldgen.devtest.GunPackLiveTest();
         return null;
     }
 

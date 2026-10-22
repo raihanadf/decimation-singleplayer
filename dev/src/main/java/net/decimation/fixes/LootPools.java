@@ -380,6 +380,43 @@ public class LootPools
         }
     }
 
+    /**
+     * Gun packages (fixes/gunpack): `add` (a registry name) joins every loaded list that names `like`, with the like's
+     * weight and count, in memory only (the file stays the user's: a list the user took the like out of gets nothing).
+     * Returns the lists changed.
+     */
+    public static synchronized int addLike(String like, String add)
+    {
+        Item item = (Item) Item.itemRegistry.getObject(add);
+        if (item == null || like == null)
+        {
+            return 0;
+        }
+        int n = 0;
+        for (Pool p : pools.values())
+        {
+            Entry had = null;
+            boolean already = false;
+            for (Entry e : p.items)
+            {
+                had = had == null && like.equals(e.item) ? e : had;
+                already |= add.equals(e.item);
+            }
+            if (had != null && !already)
+            {
+                Entry e = new Entry();
+                e.item = add;
+                e.meta = had.meta;
+                e.weight = had.weight;
+                e.count = had.count == null ? null : had.count.clone();
+                e.resolved = item;
+                p.items.add(e);
+                n++;
+            }
+        }
+        return n;
+    }
+
     /** Registry names of the magazines the guns load (their own lists, so a new gun brings its mags). */
     private static String[] mags(String... guns)
     {
