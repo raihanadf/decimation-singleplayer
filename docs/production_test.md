@@ -200,3 +200,11 @@ Checked with it: bundled content unpacked, cities generated, no errors (bug.md v
 - Same day, feature 12 C (Tarkov style loot search, after the security review fixes): lootsearch, invshift, loot, glstack in
   the production client with OptiFine, 75 PASS; the production dedicated server starts clean.
 
+
+## Results (23 Oktober 2026, converter milestone 4: mesh guns; test one jar of main 8ee390a, sha256 68db55ea)
+- Client with OptiFine, packages from `-Ddeciworldgen.gunpacks=<main>/build/gunconv/meshtest` (scratchpad
+  prodclient/run_mesh.sh): gunpack with perf=true and meshgun all PASS: the four meshes registered, 10 mesh lists and
+  47,177 triangles drawn, each group follows its part; draws ak47m 2.064 ms against the akm's 1.557, akmm 1.052 / 1.375,
+  m590m 0.847 / 1.281, p228m 1.128 / 0.942; 0 GL errors, 0 stack changes.
+- The classpath had to be rebuilt with tools/prodclient/classpath.py, which took the server install's Forge universal
+  jar (trap 1 above: "binary discrepency ... ahu"); it now takes prodclient/dl/forge-universal.jar and stops without it.

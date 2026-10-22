@@ -2026,3 +2026,20 @@ pixels a unit.
   the Exact button (373 parts, "estimated draw 0.64 ms, 1.41 x the akm's: within the budget").
 - m3_page_m590.png: the converter page after converting the Mossberg sample: source and converted side by side, notes
   with the exemplar guns, the partly fitted areas and "Details placed on fitted areas: 11 (benellim4 9, spas12 2)".
+
+## gunconv_mesh_v0.66.1 (23 Oktober 2026, converter milestone 4: mesh guns 1:1)
+- page_mesh.png: the converter page after Convert on J-Toastie's AKM: source left, the converted mesh right, the same
+  shape in Decimation's dark tones with square texels; "5,240 triangles, texture 256 x 128; estimated draw 0.87 x".
+- page_groups.png: Group colours on (magazine orange, bolt blue, the rest grey), the pieces table with the Bolt moved to
+  gunModel, the package report (9 files, 5,240 triangles).
+- view_akmm.png, view_p228m.png, view_ak47m_m590m.png: offline renders of the packages (side and three quarter, per
+  pixel texture, tone() tones of the first bake): every source part is there; the P228's texels read big on a pistol.
+- fp_cmp.png: first person in the dev client: the box version (akmc) beside the mesh AKM, the high poly AK and the P228.
+- reload_full.png: the mesh AKM held, at rest, reload frames 22 and 36 and a fire frame: the reload tilts the gun, the
+  magazine is below the screen in first person.
+- p228_zoom.png: the mesh P228 at rest, reload 22 (magazine dropping), reload 36 (magazine going back into the grip),
+  fire 4.
+- tones.png: meshgun's view ahead: the mesh AKM and Decimation's AKM, the mesh P228 and Decimation's M1934 in the same
+  light, after the like gun's tones (the first bake read lighter grey than the akm's near black metal).
+- prod_diff.png: the production client with OptiFine: changed pixels when slideModel0 / ammoModel0 move (AKM magazine,
+  P228 slide, P228 magazine as whole blocks; the rest is OptiFine's shimmer on the floor, no longer counted).

@@ -356,3 +356,13 @@ loader, every package against its like gun, rows as placed, a stand in gc<gun> a
 gun=NAME [mag=deci:LIKEMAG]`, `playerfire gun=NAME`, `gunview guns=LIKE,NAME [attach=...]`, `gunperf guns=LIKE,NAME`,
 `gripsweep pairs=NAME:foregrip,...`. Traps: the live key=value settings stay set (clear gun= and perf=); the packages
 are read at start, so a changed package needs the live game restarted.
+
+### Mesh packages (converter milestone 4, 23 Oktober 2026)
+A package whose gun.json names `"mesh": "mesh.dmesh"` is a converted mesh, 1:1 (docs/gunconv.md section 13). Beside
+gun.json: mesh.dmesh (big endian "DMESH1"; per group its name, pivot, triangles of x, y, z relative to the pivot, normal,
+u, v). Its .bmodel is a skeleton: per group one part <group>0, a plain 1 x 1 x 1 cube at (id, group index, 7777), id the
+gun name's FNV-1a 32 folded to 16 bits, the rotation point the group's pivot. GunPacks registers the mesh on the client
+(fixes/gunpack/MeshGun); ModelBatch compiles the group's triangles in place of the cube when Decimation compiles that
+part, so Decimation's animations, hands, aim and attachment rows work on it as on any gun. A mesh name clash refuses
+the package. Tests: unit MeshGunTest, GunPackTest "a mesh gun names its mesh file"; dev tests gunpack (mesh checks) and
+meshgun (each group follows its part).

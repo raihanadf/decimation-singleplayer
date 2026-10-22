@@ -50,14 +50,14 @@
     "semantic_hash": "40a108bc09ab115aa0d69f0465c51079"
   },
   "dev/src/main/java/net/decimation/worldgen/DecimationWorldGen.java": {
-    "mtime": 1792678029.621179,
-    "ast_hash": "138caa2fdc80f75ba497a390181b825a",
-    "semantic_hash": "138caa2fdc80f75ba497a390181b825a"
+    "mtime": 1792689127.8425913,
+    "ast_hash": "2e04cd0304deb3d991e51ef0146bcc77",
+    "semantic_hash": "2e04cd0304deb3d991e51ef0146bcc77"
   },
   "dev/src/main/java/net/decimation/worldgen/DevAutoTest.java": {
-    "mtime": 1792678143.5335636,
-    "ast_hash": "e711c09f000aaef06f911ffbc20121fe",
-    "semantic_hash": "e711c09f000aaef06f911ffbc20121fe"
+    "mtime": 1792696523.4149458,
+    "ast_hash": "05497fb2d87a83a087b91de872f2f2d6",
+    "semantic_hash": "05497fb2d87a83a087b91de872f2f2d6"
   },
   "dev/src/main/java/net/decimation/worldgen/Rotation.java": {
     "mtime": 1791315242.0110583,
@@ -110,9 +110,9 @@
     "semantic_hash": "de153d1f8408971d6190e16a7d4256f9"
   },
   "CLAUDE.md": {
-    "mtime": 1792680837.1737056,
-    "ast_hash": "550299438d48c6b43a2d0e02be9ce2d2",
-    "semantic_hash": "550299438d48c6b43a2d0e02be9ce2d2"
+    "mtime": 1792698761.5231555,
+    "ast_hash": "399ecb15529fe2744936c7ba78cfd268",
+    "semantic_hash": "399ecb15529fe2744936c7ba78cfd268"
   },
   "DECIMATION_MOD_TASK.md": {
     "mtime": 1784958353.0126374,
@@ -140,9 +140,9 @@
     "semantic_hash": "f00b410585efe1a6120301dbb01c3098"
   },
   "docs/gun_model_spec.md": {
-    "mtime": 1792666245.1186597,
-    "ast_hash": "db17478fcb32dc58149b74c6d91c134a",
-    "semantic_hash": "db17478fcb32dc58149b74c6d91c134a"
+    "mtime": 1792698711.0850792,
+    "ast_hash": "5aa3dfdd7bde9ed19264c313be90e039",
+    "semantic_hash": "5aa3dfdd7bde9ed19264c313be90e039"
   },
   "documentation.md": {
     "mtime": 1792584723.7805731,
@@ -150,9 +150,9 @@
     "semantic_hash": "3f078f0bcdd3a0991459140f5d2f3f08"
   },
   "new_feature.md": {
-    "mtime": 1792680837.172484,
-    "ast_hash": "4d28cd2ffc7f25357e67f456311e3269",
-    "semantic_hash": "4d28cd2ffc7f25357e67f456311e3269"
+    "mtime": 1792698711.1462512,
+    "ast_hash": "b729a77d1f891f89541a3d2a769cd3cd",
+    "semantic_hash": "b729a77d1f891f89541a3d2a769cd3cd"
   },
   "tools/graph_update.py": {
     "mtime": 1792423601.130674,
@@ -325,9 +325,9 @@
     "semantic_hash": "0145e0863788d451e8ae4273d3c2abdd"
   },
   "docs/shots_index.md": {
-    "mtime": 1792680135.537592,
-    "ast_hash": "c912aeb2c2aecb3f54c0d54d0a152c55",
-    "semantic_hash": "c912aeb2c2aecb3f54c0d54d0a152c55"
+    "mtime": 1792698751.8385189,
+    "ast_hash": "a3d708130af23dd933f94c2585e9049b",
+    "semantic_hash": "a3d708130af23dd933f94c2585e9049b"
   },
   "docs/interior_spec.md": {
     "mtime": 1791385593.9436893,
@@ -575,9 +575,9 @@
     "semantic_hash": "e46c40888199b9029bb359b53d218012"
   },
   "dev/src/main/java/net/decimation/fixes/Deci.java": {
-    "mtime": 1792678029.6201952,
-    "ast_hash": "ce4e5f2bfb2981362203076aaa0d7ba2",
-    "semantic_hash": "ce4e5f2bfb2981362203076aaa0d7ba2"
+    "mtime": 1792697624.2986035,
+    "ast_hash": "2dd6940b24fb70b27a91d56bf1ea4390",
+    "semantic_hash": "2dd6940b24fb70b27a91d56bf1ea4390"
   },
   "dev/src/main/java/net/decimation/fixes/ScopeZoom.java": {
     "mtime": 1792600986.8604598,
@@ -795,9 +795,9 @@
     "semantic_hash": "f110cfba79ef0990e6ac5e7912914fa1"
   },
   "tools/guns/study.py": {
-    "mtime": 1792666223.5824208,
-    "ast_hash": "78d0cf7c7f836d8508ac864ee200f9ed",
-    "semantic_hash": "78d0cf7c7f836d8508ac864ee200f9ed"
+    "mtime": 1792692377.0899787,
+    "ast_hash": "0ae0a41416875e38607ff9c9314a3c61",
+    "semantic_hash": "0ae0a41416875e38607ff9c9314a3c61"
   },
   "docs/gun_style_guide.md": {
     "mtime": 1792666223.5770304,
@@ -1230,9 +1230,9 @@
     "semantic_hash": "8a3ad8dda4604fb188e87f47efc3db90"
   },
   "docs/ideas.md": {
-    "mtime": 1792676287.3848336,
-    "ast_hash": "bcb52011072c589fda20e8e0c4fc34bd",
-    "semantic_hash": "bcb52011072c589fda20e8e0c4fc34bd"
+    "mtime": 1792684752.801473,
+    "ast_hash": "8162fae464806fee4a00a4f4ad0e5b3f",
+    "semantic_hash": "8162fae464806fee4a00a4f4ad0e5b3f"
   },
   "dev/src/main/java/net/decimation/worldgen/NamedPlace.java": {
     "mtime": 1791753400.7417421,
@@ -1425,14 +1425,14 @@
     "semantic_hash": "bb42dc3b79edb5ed630e7ef0bff12c78"
   },
   "tools/prodclient/classpath.py": {
-    "mtime": 1791884978.3965542,
-    "ast_hash": "c65a27842aee5ff4b471f84a704c2267",
-    "semantic_hash": "c65a27842aee5ff4b471f84a704c2267"
+    "mtime": 1792697803.350796,
+    "ast_hash": "00483e1e807a8cbaaded69cf08da1173",
+    "semantic_hash": "00483e1e807a8cbaaded69cf08da1173"
   },
   "docs/production_test.md": {
-    "mtime": 1792680837.1730564,
-    "ast_hash": "89e287aa2e5858eacbf9966290ac26d8",
-    "semantic_hash": "89e287aa2e5858eacbf9966290ac26d8"
+    "mtime": 1792698751.839643,
+    "ast_hash": "1433a4d6c797e49eaa60562e8af708ae",
+    "semantic_hash": "1433a4d6c797e49eaa60562e8af708ae"
   },
   "dev/src/main/java/net/decimation/worldgen/CityLayout.java": {
     "mtime": 1791899693.3849845,
@@ -1540,9 +1540,9 @@
     "semantic_hash": "294036847a9caffda351bfa855a78636"
   },
   "docs/tasks.md": {
-    "mtime": 1792680837.1739736,
-    "ast_hash": "f3cf2c11c475322e94f2c0024ba5226a",
-    "semantic_hash": "f3cf2c11c475322e94f2c0024ba5226a"
+    "mtime": 1792698751.8360116,
+    "ast_hash": "3c12e7d3314314d82043dc4d71aedf09",
+    "semantic_hash": "3c12e7d3314314d82043dc4d71aedf09"
   },
   "tools/skillcheck.py": {
     "mtime": 1792098139.5315723,
@@ -1640,9 +1640,9 @@
     "semantic_hash": "c3afb178b12e0793d28a1bfef0929b56"
   },
   "dev/src/main/java/net/decimation/worldgen/devtest/TradeTest.java": {
-    "mtime": 1792096532.5864308,
-    "ast_hash": "134c2191e45ffcde54a19841009456f2",
-    "semantic_hash": "134c2191e45ffcde54a19841009456f2"
+    "mtime": 1792689170.5039134,
+    "ast_hash": "5d50702df1ac0d414be2d24aef52f7ed",
+    "semantic_hash": "5d50702df1ac0d414be2d24aef52f7ed"
   },
   ".claude/skills/decimation-code-traders/SKILL.md": {
     "mtime": 1792098116.9821951,
@@ -1650,9 +1650,9 @@
     "semantic_hash": "826eb5d3be5a3474e7c4742b6e642170"
   },
   "docs/decimation_code/traders.md": {
-    "mtime": 1792096688.7766407,
-    "ast_hash": "32f042a2b38651375d031fa15e81b0a4",
-    "semantic_hash": "32f042a2b38651375d031fa15e81b0a4"
+    "mtime": 1792689810.6021273,
+    "ast_hash": "a0f9a89f8f3d5e30589e62b067d4839e",
+    "semantic_hash": "a0f9a89f8f3d5e30589e62b067d4839e"
   },
   "dev/src/main/java/net/decimation/worldgen/devtest/UseItemsTest.java": {
     "mtime": 1792096802.7771974,
@@ -1985,9 +1985,9 @@
     "semantic_hash": "1b1d4f853458651c2c891da1e3f4c0db"
   },
   "dev/src/test/java/net/decimation/fixes/hosting/EchoServer.java": {
-    "mtime": 1792344946.4413693,
-    "ast_hash": "a4caa642a8dfde28e4be4859b1c67ace",
-    "semantic_hash": "a4caa642a8dfde28e4be4859b1c67ace"
+    "mtime": 1792695924.7757597,
+    "ast_hash": "3e92bc33fa8c58fda76f640c552a3a9c",
+    "semantic_hash": "3e92bc33fa8c58fda76f640c552a3a9c"
   },
   "dev/src/test/java/net/decimation/fixes/hosting/HostServiceTest.java": {
     "mtime": 1792340175.4264107,
@@ -2195,9 +2195,9 @@
     "semantic_hash": "ebd911fc40ffc2ff9c73d33cbd5aa0ad"
   },
   "dev/src/test/java/net/decimation/fixes/hosting/ColosTest.java": {
-    "mtime": 1792344946.4416332,
-    "ast_hash": "6cc775a51263f0fad698ce7639e9f3c1",
-    "semantic_hash": "6cc775a51263f0fad698ce7639e9f3c1"
+    "mtime": 1792695924.776004,
+    "ast_hash": "6a86216635059b135e6a06fb5a8962f4",
+    "semantic_hash": "6a86216635059b135e6a06fb5a8962f4"
   },
   "relay/src/hint.ts": {
     "mtime": 1792341624.805261,
@@ -2385,9 +2385,9 @@
     "semantic_hash": "9c0400a2113bc2e923ad3e36801ea6e8"
   },
   "dev/src/main/java/net/decimation/fixes/ModelBatch.java": {
-    "mtime": 1792483123.485347,
-    "ast_hash": "a7fc45be05c099efd0364a57e34865a2",
-    "semantic_hash": "a7fc45be05c099efd0364a57e34865a2"
+    "mtime": 1792694092.4916708,
+    "ast_hash": "a27ce5a244ae5b804dd55088aae4d948",
+    "semantic_hash": "a27ce5a244ae5b804dd55088aae4d948"
   },
   "dev/src/test/java/net/decimation/fixes/ModelBatchTest.java": {
     "mtime": 1792426019.419263,
@@ -2440,9 +2440,9 @@
     "semantic_hash": "ad2e28637e85503aed4448ff8c5ac12d"
   },
   "dev/src/main/java/net/decimation/worldgen/devtest/RefugeVisitTest.java": {
-    "mtime": 1792482148.5414836,
-    "ast_hash": "56cd628d5c0a6f48085517e13707e242",
-    "semantic_hash": "56cd628d5c0a6f48085517e13707e242"
+    "mtime": 1792697188.5215805,
+    "ast_hash": "6ca8279ac289f1dbe200fa836672d3d8",
+    "semantic_hash": "6ca8279ac289f1dbe200fa836672d3d8"
   },
   "dev/src/test/java/net/decimation/fixes/ModelWarmupTest.java": {
     "mtime": 1792482075.9940784,
@@ -2750,9 +2750,9 @@
     "semantic_hash": "3f85a9d75c2fd181324c0ff8215ae0ed"
   },
   "dev/src/main/java/net/decimation/fixes/Net.java": {
-    "mtime": 1792678029.620669,
-    "ast_hash": "4fd2da36c56b286601954c17346c8407",
-    "semantic_hash": "4fd2da36c56b286601954c17346c8407"
+    "mtime": 1792689127.8419147,
+    "ast_hash": "766f6a4564b8a6ce4e8e32e6fd0a3323",
+    "semantic_hash": "766f6a4564b8a6ce4e8e32e6fd0a3323"
   },
   "dev/src/main/java/net/decimation/fixes/PropHardness.java": {
     "mtime": 1792620390.6740868,
@@ -2945,9 +2945,9 @@
     "semantic_hash": "7ee10961b1a261d2535c64c669706df3"
   },
   "docs/superpowers/specs/2026-10-22-gun-converter-design.md": {
-    "mtime": 1792677648.5650578,
-    "ast_hash": "6d4c63f760a6f8336c93967394e2bf61",
-    "semantic_hash": "6d4c63f760a6f8336c93967394e2bf61"
+    "mtime": 1792692377.082612,
+    "ast_hash": "20c35ae1664fe048ddf7774a0e048521",
+    "semantic_hash": "20c35ae1664fe048ddf7774a0e048521"
   },
   "dev/src/main/java/net/decimation/fixes/GasMaskFilter.java": {
     "mtime": 1792665442.3111978,
@@ -3035,9 +3035,9 @@
     "semantic_hash": "c6691701472848fd96a2da97963020df"
   },
   "dev/src/main/java/net/decimation/fixes/gunpack/GunPack.java": {
-    "mtime": 1792666245.112374,
-    "ast_hash": "40d97f4e7b0417cc90bc97a246217072",
-    "semantic_hash": "40d97f4e7b0417cc90bc97a246217072"
+    "mtime": 1792695846.0345657,
+    "ast_hash": "2bfbc28468e15a2e9fbb37177f8571bd",
+    "semantic_hash": "2bfbc28468e15a2e9fbb37177f8571bd"
   },
   "dev/src/main/java/net/decimation/fixes/gunpack/GunPackResources.java": {
     "mtime": 1792666245.1124566,
@@ -3050,14 +3050,14 @@
     "semantic_hash": "258b36e5b478b66724f18d672c5d7603"
   },
   "dev/src/main/java/net/decimation/fixes/gunpack/GunPackSource.java": {
-    "mtime": 1792666245.1125908,
-    "ast_hash": "4ba4283e6ef0d98c81b816f2f22e421e",
-    "semantic_hash": "4ba4283e6ef0d98c81b816f2f22e421e"
+    "mtime": 1792694196.0007098,
+    "ast_hash": "59512d4e4bc6674d809548d68c2efe61",
+    "semantic_hash": "59512d4e4bc6674d809548d68c2efe61"
   },
   "dev/src/main/java/net/decimation/fixes/gunpack/GunPacks.java": {
-    "mtime": 1792666245.112695,
-    "ast_hash": "117f00f4726193eb49230753bd9ec7c5",
-    "semantic_hash": "117f00f4726193eb49230753bd9ec7c5"
+    "mtime": 1792694202.6438475,
+    "ast_hash": "d8091083a0c8142edd4d9a3d843a17f6",
+    "semantic_hash": "d8091083a0c8142edd4d9a3d843a17f6"
   },
   "dev/src/main/java/net/decimation/fixes/gunpack/GunPacksClient.java": {
     "mtime": 1792666245.1128087,
@@ -3070,9 +3070,9 @@
     "semantic_hash": "50cce7b39fc4b8cb18667ac6142f399f"
   },
   "dev/src/main/java/net/decimation/worldgen/devtest/GunPackLiveTest.java": {
-    "mtime": 1792666245.1136038,
-    "ast_hash": "fdf8bbfbfdf9f48e7d89f909a842091f",
-    "semantic_hash": "fdf8bbfbfdf9f48e7d89f909a842091f"
+    "mtime": 1792696004.3939338,
+    "ast_hash": "e23078a4288105e9671f237605bc223f",
+    "semantic_hash": "e23078a4288105e9671f237605bc223f"
   },
   "dev/src/main/java/net/decimation/worldgen/devtest/LootBlocksLiveTest.java": {
     "mtime": 1792676600.634984,
@@ -3100,9 +3100,9 @@
     "semantic_hash": "eb94652f04c6b0af5dbd59faad12f621"
   },
   "dev/src/test/java/net/decimation/fixes/gunpack/GunPackTest.java": {
-    "mtime": 1792666245.1153865,
-    "ast_hash": "22c1cd5f4f53447da40e0c5815670298",
-    "semantic_hash": "22c1cd5f4f53447da40e0c5815670298"
+    "mtime": 1792695835.4871433,
+    "ast_hash": "0f13666104d8eb503a8505cef3c1de57",
+    "semantic_hash": "0f13666104d8eb503a8505cef3c1de57"
   },
   "dev/src/test/java/net/decimation/fixes/gunpack/PackModelTest.java": {
     "mtime": 1792666245.1154494,
@@ -3115,9 +3115,9 @@
     "semantic_hash": "3c8173adb49fc2c25f90779fd234fddd"
   },
   "tools/gunconv/convert.py": {
-    "mtime": 1792677648.5665746,
-    "ast_hash": "8a336062cf6ed1ea11c05706c074489d",
-    "semantic_hash": "8a336062cf6ed1ea11c05706c074489d"
+    "mtime": 1792698518.4510787,
+    "ast_hash": "22401a4b1205cc974edcfb79e9c3e3ed",
+    "semantic_hash": "22401a4b1205cc974edcfb79e9c3e3ed"
   },
   "tools/gunconv/edit.py": {
     "mtime": 1792666223.5794194,
@@ -3125,39 +3125,39 @@
     "semantic_hash": "7ac73840bd1366bbaaa8c2539549a16f"
   },
   "tools/gunconv/fit.py": {
-    "mtime": 1792677648.5673656,
-    "ast_hash": "0a5bc86d6a50aeb305c29495dbb1391d",
-    "semantic_hash": "0a5bc86d6a50aeb305c29495dbb1391d"
+    "mtime": 1792687572.6207669,
+    "ast_hash": "06f375273e59d01ebcf5a38ec3a592a0",
+    "semantic_hash": "06f375273e59d01ebcf5a38ec3a592a0"
   },
   "tools/gunconv/match.py": {
-    "mtime": 1792666223.579657,
-    "ast_hash": "a23c90ca49720f0108482b065349c722",
-    "semantic_hash": "a23c90ca49720f0108482b065349c722"
+    "mtime": 1792687572.621183,
+    "ast_hash": "7b3bfd36522fad4ad83b6f959d47d381",
+    "semantic_hash": "7b3bfd36522fad4ad83b6f959d47d381"
   },
   "tools/gunconv/meshio.py": {
-    "mtime": 1792666223.579763,
-    "ast_hash": "fbf4d95500adbf17ef16165f7577ff35",
-    "semantic_hash": "fbf4d95500adbf17ef16165f7577ff35"
+    "mtime": 1792695055.3516092,
+    "ast_hash": "e7624efe91942f425f0a589f7392092d",
+    "semantic_hash": "e7624efe91942f425f0a589f7392092d"
   },
   "tools/gunconv/package.py": {
-    "mtime": 1792677648.5677934,
-    "ast_hash": "fc94bb788bd793d1b52a7a8eb36ca9f1",
-    "semantic_hash": "fc94bb788bd793d1b52a7a8eb36ca9f1"
+    "mtime": 1792695568.4031215,
+    "ast_hash": "015ec80a118aa14c10f4592edafdc03f",
+    "semantic_hash": "015ec80a118aa14c10f4592edafdc03f"
   },
   "tools/gunconv/server.py": {
-    "mtime": 1792666223.5799847,
-    "ast_hash": "30e75714ce5a383834f7d479baf05bab",
-    "semantic_hash": "30e75714ce5a383834f7d479baf05bab"
+    "mtime": 1792698264.3897243,
+    "ast_hash": "7d4d0a707cf6ef92570ca46c830c4293",
+    "semantic_hash": "7d4d0a707cf6ef92570ca46c830c4293"
   },
   "tools/gunconv/tests/synth.py": {
-    "mtime": 1792666223.580155,
-    "ast_hash": "1980eab363316c31a5314d6904d3bffa",
-    "semantic_hash": "1980eab363316c31a5314d6904d3bffa"
+    "mtime": 1792695039.8047075,
+    "ast_hash": "a77993e2e8e0180beceb72442e99798e",
+    "semantic_hash": "a77993e2e8e0180beceb72442e99798e"
   },
   "tools/gunconv/tests/test_convert.py": {
-    "mtime": 1792677648.5679965,
-    "ast_hash": "3d5c0f01dbc122ff9e68fd98f02868b3",
-    "semantic_hash": "3d5c0f01dbc122ff9e68fd98f02868b3"
+    "mtime": 1792687572.6240118,
+    "ast_hash": "8f6aad8138b52781f54ea25a6494e956",
+    "semantic_hash": "8f6aad8138b52781f54ea25a6494e956"
   },
   "tools/gunconv/tests/test_edit.py": {
     "mtime": 1792666223.5803049,
@@ -3170,9 +3170,9 @@
     "semantic_hash": "cfad7ebb25db608226af11b1ebfb4f56"
   },
   "tools/gunconv/tests/test_meshio.py": {
-    "mtime": 1792666223.5804675,
-    "ast_hash": "8af983a9c8cde11e515f3fbf83004a48",
-    "semantic_hash": "8af983a9c8cde11e515f3fbf83004a48"
+    "mtime": 1792695039.8051312,
+    "ast_hash": "59f13548ce2ef41c2d1c338f5c2dd5f5",
+    "semantic_hash": "59f13548ce2ef41c2d1c338f5c2dd5f5"
   },
   "tools/gunconv/tests/test_package.py": {
     "mtime": 1792677648.5684595,
@@ -3180,14 +3180,14 @@
     "semantic_hash": "41683ef4d1b962e84541e59ec750fe42"
   },
   "tools/gunconv/tests/test_server.py": {
-    "mtime": 1792666223.5805852,
-    "ast_hash": "4c1ec00dd974e53fe4cbc60f5a321829",
-    "semantic_hash": "4c1ec00dd974e53fe4cbc60f5a321829"
+    "mtime": 1792698236.4848835,
+    "ast_hash": "cb801be33c29bdd30b30c4da784cbd90",
+    "semantic_hash": "cb801be33c29bdd30b30c4da784cbd90"
   },
   "tools/gunconv/web/app.js": {
-    "mtime": 1792677648.5687437,
-    "ast_hash": "1bd91384af60429d13e42507a408c3cf",
-    "semantic_hash": "1bd91384af60429d13e42507a408c3cf"
+    "mtime": 1792698432.6573005,
+    "ast_hash": "40ac903d41c554328305a2f3e3dd5764",
+    "semantic_hash": "40ac903d41c554328305a2f3e3dd5764"
   },
   "tools/guns/gunpack_standin.py": {
     "mtime": 1792666245.1224093,
@@ -3200,19 +3200,19 @@
     "semantic_hash": "ab4f1605f4e6483d363a9a791e8a6681"
   },
   "docs/gunconv.md": {
-    "mtime": 1792677648.563366,
-    "ast_hash": "477c59c32f0e8ae8f18a320924d12da8",
-    "semantic_hash": "477c59c32f0e8ae8f18a320924d12da8"
+    "mtime": 1792698687.0119414,
+    "ast_hash": "4661c495429cf11fed792a181a718ec3",
+    "semantic_hash": "4661c495429cf11fed792a181a718ec3"
   },
   "docs/references/gunconv_sources.md": {
-    "mtime": 1792666223.5775476,
-    "ast_hash": "32ff97aee9fdd924793c4036d630dafa",
-    "semantic_hash": "32ff97aee9fdd924793c4036d630dafa"
+    "mtime": 1792687572.6162803,
+    "ast_hash": "479302d38e5a568f04b97ef46a2ccc22",
+    "semantic_hash": "479302d38e5a568f04b97ef46a2ccc22"
   },
   "tools/gunconv/web/index.html": {
-    "mtime": 1792666223.5816674,
-    "ast_hash": "d94182d6b5e1e5817ed53fd538c69b0f",
-    "semantic_hash": "d94182d6b5e1e5817ed53fd538c69b0f"
+    "mtime": 1792698355.0134203,
+    "ast_hash": "0d39877ff5ca5e209800184f451ba90a",
+    "semantic_hash": "0d39877ff5ca5e209800184f451ba90a"
   },
   "dev/src/test/resources/assets/deciworldgen/gunpacks_test/tiny/assets/deci/textures/items/gun/smg/tiny.png": {
     "mtime": 1792666245.1165066,
@@ -3240,23 +3240,113 @@
     "semantic_hash": "43ba82be6ac6a066ee0b92e18ba18cac"
   },
   "tools/gunconv/dataset.py": {
-    "mtime": 1792677648.5667522,
-    "ast_hash": "8c9af053607fd55d1dc6f1616484f9e7",
-    "semantic_hash": "8c9af053607fd55d1dc6f1616484f9e7"
+    "mtime": 1792687572.6195464,
+    "ast_hash": "8571f07c67a69f283d265baaad1ecbbb",
+    "semantic_hash": "8571f07c67a69f283d265baaad1ecbbb"
   },
   "tools/gunconv/exemplar.py": {
-    "mtime": 1792677648.5670083,
-    "ast_hash": "e22449c5d12d940e42c2c3737f2aaf25",
-    "semantic_hash": "e22449c5d12d940e42c2c3737f2aaf25"
+    "mtime": 1792687572.620454,
+    "ast_hash": "2fca9ef7ef69b3fcf9e1fdc34ba369c6",
+    "semantic_hash": "2fca9ef7ef69b3fcf9e1fdc34ba369c6"
   },
   "tools/gunconv/tests/test_dataset.py": {
-    "mtime": 1792677648.5681164,
-    "ast_hash": "0470d07c02ba1d078ea2ba3de610fcb2",
-    "semantic_hash": "0470d07c02ba1d078ea2ba3de610fcb2"
+    "mtime": 1792687572.6243496,
+    "ast_hash": "c18720521f8a22cfc57bf04f95e8e618",
+    "semantic_hash": "c18720521f8a22cfc57bf04f95e8e618"
   },
   "tools/gunconv/tests/test_exemplar.py": {
-    "mtime": 1792677648.5682256,
-    "ast_hash": "689ad215188d4ad53b2b14c45d045529",
-    "semantic_hash": "689ad215188d4ad53b2b14c45d045529"
+    "mtime": 1792687572.6248126,
+    "ast_hash": "707beb98d826857b692b26683de7a6e6",
+    "semantic_hash": "707beb98d826857b692b26683de7a6e6"
+  },
+  "dev/src/main/java/net/decimation/fixes/TraderMarket.java": {
+    "mtime": 1792691689.2809274,
+    "ast_hash": "02dce0866d0f9c6ef4ac7b04b8890227",
+    "semantic_hash": "02dce0866d0f9c6ef4ac7b04b8890227"
+  },
+  "dev/src/main/java/net/decimation/fixes/gunpack/MeshGun.java": {
+    "mtime": 1792694853.496836,
+    "ast_hash": "69f06ae032ef32a0e52757f21a3e40d2",
+    "semantic_hash": "69f06ae032ef32a0e52757f21a3e40d2"
+  },
+  "dev/src/main/java/net/decimation/worldgen/devtest/MarketTest.java": {
+    "mtime": 1792689477.1838708,
+    "ast_hash": "f7883b4b4674e648ffaa739b6d54b4a2",
+    "semantic_hash": "f7883b4b4674e648ffaa739b6d54b4a2"
+  },
+  "dev/src/main/java/net/decimation/worldgen/devtest/MeshGunLiveTest.java": {
+    "mtime": 1792698089.419608,
+    "ast_hash": "56e6333b160ecdbc4cab125cda5583e2",
+    "semantic_hash": "56e6333b160ecdbc4cab125cda5583e2"
+  },
+  "dev/src/test/java/net/decimation/fixes/TraderMarketTest.java": {
+    "mtime": 1792691672.4421566,
+    "ast_hash": "1c8e66f2663e91f3138da9c6db566c5f",
+    "semantic_hash": "1c8e66f2663e91f3138da9c6db566c5f"
+  },
+  "dev/src/test/java/net/decimation/fixes/gunpack/MeshGunTest.java": {
+    "mtime": 1792694829.60196,
+    "ast_hash": "8e95bc725f514ef1b09e93aef483565e",
+    "semantic_hash": "8e95bc725f514ef1b09e93aef483565e"
+  },
+  "tools/gunconv/details.py": {
+    "mtime": 1792687572.6198342,
+    "ast_hash": "90f58a6900a53b2941407c8e101b2f72",
+    "semantic_hash": "90f58a6900a53b2941407c8e101b2f72"
+  },
+  "tools/gunconv/exact.py": {
+    "mtime": 1792692377.083859,
+    "ast_hash": "4f23ba75471645550402c9030e9c15a3",
+    "semantic_hash": "4f23ba75471645550402c9030e9c15a3"
+  },
+  "tools/gunconv/meshpack.py": {
+    "mtime": 1792698310.1442099,
+    "ast_hash": "d00a06137e332856749b6af20d0ba7fa",
+    "semantic_hash": "d00a06137e332856749b6af20d0ba7fa"
+  },
+  "tools/gunconv/tests/test_details.py": {
+    "mtime": 1792687572.6245546,
+    "ast_hash": "1eec6d103dc6732b4a52e9739f434ce6",
+    "semantic_hash": "1eec6d103dc6732b4a52e9739f434ce6"
+  },
+  "tools/gunconv/tests/test_exact.py": {
+    "mtime": 1792692377.0882251,
+    "ast_hash": "4e80c738d534b3252cfcf04b3f9d8b83",
+    "semantic_hash": "4e80c738d534b3252cfcf04b3f9d8b83"
+  },
+  "tools/gunconv/tests/test_meshpack.py": {
+    "mtime": 1792698501.5239599,
+    "ast_hash": "44238cfab7030e20337c5d1b394d20da",
+    "semantic_hash": "44238cfab7030e20337c5d1b394d20da"
+  },
+  "docs/superpowers/specs/2026-10-22-achievements-story-design.md": {
+    "mtime": 1792687639.1821082,
+    "ast_hash": "abfc307cd1a754757289a20e1e935f77",
+    "semantic_hash": "abfc307cd1a754757289a20e1e935f77"
+  },
+  "docs/superpowers/specs/2026-10-22-attachment-benefits-design.md": {
+    "mtime": 1792688887.946803,
+    "ast_hash": "11a41c0c26abffeeccfcb61fba70b154",
+    "semantic_hash": "11a41c0c26abffeeccfcb61fba70b154"
+  },
+  "docs/superpowers/specs/2026-10-22-events-quests-design.md": {
+    "mtime": 1792687639.1845288,
+    "ast_hash": "c9479bd37eeeb088a135e9bcdb9e2ecb",
+    "semantic_hash": "c9479bd37eeeb088a135e9bcdb9e2ecb"
+  },
+  "docs/superpowers/specs/2026-10-22-trader-market-design.md": {
+    "mtime": 1792687618.1862066,
+    "ast_hash": "73cd7bcb19b18a168e08b958d3c969ac",
+    "semantic_hash": "73cd7bcb19b18a168e08b958d3c969ac"
+  },
+  "docs/superpowers/specs/2026-10-22-zombie-variants-design.md": {
+    "mtime": 1792684746.08678,
+    "ast_hash": "d5fc8092c76d03cadad0fa955aa332d7",
+    "semantic_hash": "d5fc8092c76d03cadad0fa955aa332d7"
+  },
+  "docs/superpowers/specs/2026-10-23-gun-mesh-design.md": {
+    "mtime": 1792698751.84064,
+    "ast_hash": "4a4e5f4ac557efe3cda4712877985810",
+    "semantic_hash": "4a4e5f4ac557efe3cda4712877985810"
   }
 }

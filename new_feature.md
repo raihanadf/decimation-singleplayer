@@ -1810,3 +1810,19 @@ lineup photo zombies_v0.34.0. Not seen by the user in game yet
   that item (a read of the day's table, swapped whole at each refresh) before Decimation sees it (TraderMarketTest 8).
 - Not verified: the tooltips in the trader screen (no shot: the screen opens through Decimation's dialogue); a dedicated
   server with a joined client (the table and the trade watcher there); the production client.
+
+## Gun converter milestone 4: converted guns as real meshes, 1:1 (23 Oktober 2026, main)
+
+User: "use convert 1:1 instead generating decimation style guns"; "pixelated like decimation, cap 30000 triangles".
+Spec docs/superpowers/specs/2026-10-23-gun-mesh-design.md; everything in docs/gunconv.md section 13.
+- Converter: mesh mode is the page's one Convert and the command line's default (tools/gunconv/meshpack.py, convert_mesh,
+  export_mesh): the source's triangles (simplified only over 30000), smooth normals at 40 degrees, a pixel texture of our
+  own charts (a texel a quarter unit) in the like gun's tones, the skeleton .bmodel, the icon from the mesh, Decimation's
+  animation timings. 180 converter tests.
+- Game: fixes/gunpack/MeshGun + ModelBatch draw each group's triangles in place of its placeholder part; GunPack "mesh".
+  288 Java unit tests (plus a hosting test isolation fix, ColosTest).
+- Checked in game: dev tests gunpack (mesh checks) and meshgun (each group follows its part), the dev client and the
+  production client with OptiFine; cost: 5,240 triangles 0.87 x the akm's draw, 30,000 1.50 x (dev), 0.77 x and 1.33 x
+  (production); graphics memory no step at the first draw.
+- Not done: the user's look in game, a release with a package; prerelease gets nothing (the gun package loader is main
+  only).

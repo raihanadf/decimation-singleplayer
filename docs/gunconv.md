@@ -303,3 +303,90 @@ per face); the P228's slide serrations come out as lighter strips; unnamed pump 
 ammoModel. Not verified: the user's look; backface lighting closer than 854 x 480; attachments on exact guns; gunperf
 with NPCs carrying exact guns.
 
+
+## 13. Mesh mode: the source's mesh 1:1 (23 Oktober 2026, milestone 4)
+
+User, 23 Oktober 2026: "i change representation of decimation style, its just use texture style, not gun model itself. i
+think we just use convert 1:1 instead generating decimation style guns. i tested with 3 guns its never hit same output";
+then "pixelated like decimation, cap 30000 triangles". Spec: docs/superpowers/specs/2026-10-23-gun-mesh-design.md. Exact
+mode's boxes (section 12) looked "like dice game" and cost a part a face; Decimation's .bmodel holds only shape boxes drawn
+flat, so the mesh now goes beside the model and the game draws it.
+
+| Piece | What |
+|---|---|
+| meshio.py | A Mesh keeps its texture: uvs (v down as images run; OBJ's v flipped), image, tint (glTF linear factor, OBJ Kd), per vertex multipliers. `colour_at(face, weights)`: the texture at the interpolated UV, else vertex colours, else the material colour. |
+| meshpack.py | `write_dmesh` / `read_dmesh` (the file below), `mesh_id` (FNV-1a 32, halves xored to 16 bits; MeshGun.id the same), `smooth_normals` (corner normals averaged over faces within 40 degrees, angle weighted), `orient` (a piece wound inward, by its signed volume, turned out), `cap_pieces` (over 30000: exact.simplify, one quadric queue, pieces apart), `bake` (charts and the texture), `skeleton` (the .bmodel), `icon`, `estimate` (draw cost), `build` (all of it: a MeshResult whose groups are set at export). |
+| convert.py | `convert_mesh`: place, pieces_of (each triangle remembers its source face), groups_of, then tones: each piece its like gun's tone (palette_tones over the pieces' boxes, as Exact mode) plus the source's light and dark inside it at 40/255 (DETAIL); a one colour file takes the like gun's part tones by position (ToneIndex). No parts: `conv.mesh`, `conv.pieces` (id, label, group, triangles). CLI `--mode mesh` (default), `style`, `exact`. |
+| package.py | `export_mesh`: mesh.dmesh, the skeleton .bmodel, the baked texture, the icon, Decimation's animation timings on slideModel0 / ammoModel0, gun.json "mesh": "mesh.dmesh" and "converter" mode mesh, triangles, texture, groups. |
+| server.py, page | One Convert (mode mesh by default; style and exact only by name, for the command line), a textured preview (each piece a three.js mesh, nearest filtering, flipY off), Group colours, a pieces table with a group per piece, the estimated draw line. The mesh stays on the server under a token (the last 4); export by token with the page's groups, name, display and points. |
+
+The texture (bake): every face is drawn from the axis it faces most (six directions a piece), so a texel is a quarter of a
+model unit on every face (TEXEL 0.25; Decimation's own guns have about half a unit, the box UV of declared sizes); faces of
+one direction that lie over each other more than half a unit apart get their own chart (layers, outermost first); charts
+shelf packed into the smallest power of two sheet (2048 at most). Each texel takes the colour of the source surface
+under its centre (colour_at at that point), then gunmodel.paint's recipe: a shade per piece of 6 %, +5 at the top of the
+gun to -5 at the bottom, faces looking up +2 and down -2, sides 1.5 a chart, noise -4 .. 4. A face thinner than a texel
+colours the texel under its middle; empty border texels take a neighbour's colour. Over the cap each texel takes the
+nearest source face's colour (by its middle, facing the same way).
+
+The file (mesh.dmesh, big endian): "DMESH1", the group count; per group its name (short length, UTF-8), its pivot (the
+group's lowest corner, as gunmodel.part_block turns a part about its own), the triangle count, then per vertex x, y, z
+relative to the pivot, the normal, u, v. The skeleton .bmodel: Decimation's header lines, the texture size, and per group
+in that order a part named <group>0, `addShape(id, k, 7777, eight {0F, 0F, 0F}, 1, 1, 1)` and its rotation point the
+pivot.
+
+Game side (no jar patch): fixes/gunpack/GunPacks reads "mesh" (GunPack: a plain name like mesh.dmesh) and, on the client,
+registers the file under the gun name's id (MeshGun.register; a clash refuses the package). When Decimation compiles a
+part, ModelBatch captures its quads (PatchModelBatch); a capture that is exactly the marker cube (six faces, every corner
+on a cube corner, its lowest z 7777 times its size: the size comes from that z, since a scale floats cannot hold, like
+0.05, rounds the cube's own size by about 0.5 %) is compiled as that group's triangles instead (normals per vertex,
+culling off for open meshes, scaled by the marker's size), and the part draws one list a frame with its own animated
+transform. With ModelBatch off (dev switch) a mesh gun shows only its tiny marker cubes far away.
+
+Samples (convert and export, offline):
+
+| Gun | Source | Triangles | Like | Texture | Time |
+|---|---|---|---|---|---|
+| akmm (J-Toastie's AKM, CC BY 3.0) | akm.glb, 9 meshes | 5,240 | akm | 256 x 128 | 1.2 s |
+| ak47m (Lamoot's AK-47, CC0) | highpoly_ak47.obj, one colour | 30,730 to 30,000 | akm | 256 x 128 | 2.5 s |
+| m590m (J-Toastie's M590, CC BY 3.0) | m590a1.glb | 2,138 | benellim4 | 128 x 128 | 0.4 s |
+| p228m (PuKkBuMXDD's P228, CC BY 3.0) | p228.glb, 10 meshes | 9,799 | m1934 | 128 x 128 | 0.9 s |
+
+In game (worktree gunconv-game, its own test world; packages in build/gunconv/meshtest of main, git ignored):
+- Dev test gunpack: each mesh registered under its id with a group a placeholder part; "mesh guns drawn from their
+  meshes": 10 lists, 47,177 triangles (FAILED with ModelBatch's mesh hook taken out: 0 lists; then PASS).
+- Dev test meshgun (new): each gun drawn three blocks ahead by its own renderer; slideModel0 moved back 2 and ammoModel0
+  down 3 on their rotation points, as Decimation's GunAnimation poses parts; the pixels of the gun's dark tones that
+  changed: ak47m 197 and 6,131, akmm 222 and 5,025, p228m 1,318 and 1,973, the like guns (controls) 59 to 1,818, each
+  change boxed where the group is; m590m has neither group (its source names none). Then a reload of the first gun for
+  the eye. In the hand (gun gun=p228m) the magazine group drops out of the grip and comes back (p228_zoom.png).
+- Cost (gunpack perf=true, median of 200, glFinish around, the like gun in the same frames): dev client ak47m 0.915 ms
+  against the akm's 0.611 (1.50 x, the budget's edge), akmm 0.411 against 0.475 (0.87 x), m590m 0.346 against the
+  benellim4's 0.458, p228m 0.451 against the m1934's 0.377; production client with OptiFine 2.064 / 1.557 (1.33 x),
+  1.052 / 1.375, 0.847 / 1.281, 1.128 / 0.942; GL errors 0, stack 0 in both. meshpack.estimate draws the line through the
+  two AK readings: 0.7365 + 0.025543 akm draws per 1000 triangles.
+- Graphics memory (meshgun vmmap=true, a fresh game): IOAccelerator 715.9 MB before and after ak47m's first draw (30,000
+  triangles, three lists): no step. Exact mode's first gun stepped the driver's pools by 260 MB.
+- Tones: the first bake used tone() alone and read lighter than Decimation's akm in the same light (tones.png); each piece
+  now takes the like gun's tone (test "grey pieces take the like gun's metal": the receiver 24 against the akm's common
+  metal 24, it read 39.8 before).
+
+Traps found:
+- Decimation's SlideBack never holds: GunItem's held tick calls GunAnimation.get each tick, which sets the cached
+  animation's active and static flags false, so an empty gun's slide shows back for a tick at most, on its own guns too.
+  A test of what a pose moves moves the part itself (Deci.nudgeGunPart) and first ends any animation still running
+  (Deci.stopGunAnimation): a reload left active put the parts it names back to rest on whatever gun was drawn.
+- A live dev game started without the --gunpacks folder of the world's package guns drops them from the world (FML logs
+  "Found a missing id" and goes on): pass the same --gunpacks on every devtest.py call (it starts a new game when none
+  answers).
+- A test that hands over a stack of a null item (the like magazine of a "magazine": "like" package, GunPacks.Loaded
+  likeMagazine is null then) crashes the client's next tick (ItemStack.updateAnimation NPE): take Deci.gunMagazines.
+- GunTest expects 30 rounds after the reload: a pistol package (m1934Mag holds 8) fails it by design.
+- The production client's classpath must start with the Forge universal jar downloaded on its own (prodclient/dl):
+  tools/prodclient/classpath.py took the server install's copy, whose manifest put minecraft_server first ("binary
+  discrepency"); fixed.
+
+Not verified: the user's look in game; sources with custom normals (ours are always computed, 40 degrees); big sheets
+near 2048; Decimation's mud and blood overlays on a mesh gun (they draw the parts again with another texture over our
+UVs) [not verified]; a mesh gun as an NPC's gun beyond the gunpack and gunview frames [not verified].
+Shots: docs/shots/gunconv_mesh_v0.66.1 (docs/shots_index.md).

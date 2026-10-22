@@ -1411,6 +1411,16 @@ of the last session:
   resource manager at once, so package files are served by a resource pack installed first (GunPackResources); BModel.parts
   holds top level parts only; FireMode.toString keeps the enum name; packages are read at start (restart the live game
   after a change). Dev test gunpack (perf=true); gun, playerfire, gunview, gunperf, gripsweep take the package gun's name.
+  Mesh guns (23 Oktober 2026, converter milestone 4, docs/gunconv.md 13): the converter's default now keeps the source's
+  triangles 1:1 (cap 30000) with a pixel texture in the like gun's tones (tools/gunconv/meshpack.py); a package names
+  "mesh": "mesh.dmesh", its .bmodel is a skeleton of marker cubes and ModelBatch compiles each group's triangles in place
+  of its cube (fixes/gunpack/MeshGun; no jar patch). Dev test meshgun (each group follows its part, poses set with
+  Deci.nudgeGunPart). Traps: Decimation's SlideBack never holds (GunAnimation.get resets its flags every held tick); an
+  animation left running resets the parts it names on any gun drawn (Deci.stopGunAnimation before posing); pass the same
+  devtest.py --gunpacks on every call (a new game started without it drops those guns from the world); never hand a
+  stack of a null item to a player (the client's next tick crashes: likeMagazine is null for "magazine": "like");
+  the gunconv-game worktree's test world now holds akmm, ak47m, m590m, p228m and akmc: start it with
+  --gunpacks=<main>/build/gunconv/meshtest.
   RELEASE 0.66.1 published 22 Oktober 2026 02:46 WIB (hotfix, pre-release from prerelease e4fc4ca; sha256 1a827037...,
   digest equal; only Updater and a test changed against 0.66.0): the updater names its Accept header. Checked: 0.66.0
   updated itself to it through the fake server; the running 0.66.1 downloaded the real 0.66.0 file from GitHub with its

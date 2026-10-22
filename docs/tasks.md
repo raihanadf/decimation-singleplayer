@@ -146,6 +146,9 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [x] gun converter milestone 2: dataset of Decimation guns (labeller 83 %; merged into main 22 Oktober 2026; in the dev client akmc aims as the akm, reload 30; the user's look pending), exemplar areas, like gun icons, report per gun (docs/gunconv.md section 10)
 - [x] gun converter, game side milestone 1 (branch gunconv-game): gun packages load data driven (fixes/gunpack), agent 1's akmc held, aimed, fired, reloaded, carried by an NPC in the dev client
 - [ ] gun converter next: production client with OptiFine, the user's look in game, a release with a package (both branches merged into main 22 Oktober 2026)
+- [x] gun converter milestone 4: converted guns as real meshes 1:1, pixel texture in the like gun's tones, cap 30000 (docs/gunconv.md 13; dev and production client with OptiFine checked)
+- [~] gun converter page in the DeciRemnant site's look, plain labels (user, 23 Oktober 2026)
+- [ ] gun converter mesh guns: the user's look in game
 - [x] features 1 to 4 (armor vs NPCs, NPC tracer colours, loot magazine rounds, magazine unload) on main and prerelease
 - [x] looted guns hold rounds (1 in 2, like loot magazines; idea 53) on main and prerelease
 - [x] feature 5 radiation dose on the HUD (idea 30): main, prerelease, production client with OptiFine, dedicated server

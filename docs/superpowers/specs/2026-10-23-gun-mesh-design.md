@@ -43,3 +43,7 @@ Python: the dmesh round trip, the cap, normals by angle, the skeleton's markers,
 Java: the dmesh reader, marker detection from captured quads (pure). Dev test `meshgun`: a converted gun's parts drawn
 from mesh lists (triangle count), the magazine group moving in the reload pose, the bolt in the fire pose, first person
 shot beside the page's render, costs; gunpack, gunview, glstack; production with OptiFine.
+
+## Status (23 Oktober 2026)
+Built on main and checked in the dev client and the production client with OptiFine: docs/gunconv.md section 13 (code,
+numbers, traps). Open: the user's look in game.
