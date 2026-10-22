@@ -1770,4 +1770,5 @@ lineup photo zombies_v0.34.0. Not seen by the user in game yet
   left as is: the client still receives the hidden stacks (Decimation's PacketLootInventory and the container sync send the
   whole inventory), so a modified client could read what is inside before the search ends; taking is refused on the server
   either way. Hiding them needs placeholder stacks in that sync [open; matters for public servers, docs/release_1.0.md].
-- Not done: the production client with OptiFine, the graph.
+- Carried to prerelease (from main 0233182 and 757fa57; lootsearch and invshift PASS there). Production client with OptiFine:
+  lootsearch, invshift, loot, glstack 75 PASS; the production dedicated server starts clean with it.

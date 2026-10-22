@@ -197,4 +197,6 @@ Checked with it: bundled content unpacked, cities generated, no errors (bug.md v
   with OptiFine, 61 PASS (every copy draws as its original, a click 0.24 us, 0 GL stack leaks). Production dedicated
   server: "loot copies: 15 made, 14 with a loot list", the world's deciworldgen_loot.cfg written at load with refill=true and
   refillMinutes=15 (a server's default), no NoSuchMethodError.
+- Same day, feature 12 C (Tarkov style loot search, after the security review fixes): lootsearch, invshift, loot, glstack in
+  the production client with OptiFine, 75 PASS; the production dedicated server starts clean.
 
