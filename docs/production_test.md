@@ -184,3 +184,6 @@ Checked with it: bundled content unpacked, cities generated, no errors (bug.md v
 - Trap: a test that holds the player still in the production world must turn mob spawning off and clear mobs: a
   survivor NPC shot the test player (humanity Bandit) mid test. The production client's and server's test worlds are
   saved by this newer jar now: move them aside before an update test with an older jar (missing blocks screen).
+- Same day, feature 5b (skins), one jar of main's tree: skins, armskin, glstack 11 of 11 in the production client
+  (ProdTester has no skin: human0 on the player, the menu preview, the gun arms and the corpse).
+

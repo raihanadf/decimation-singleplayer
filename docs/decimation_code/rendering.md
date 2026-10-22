@@ -80,6 +80,22 @@ GunAnimation.get 99 (a lookup each frame while the gun is held).
 | .bmodel parts in one draw each | fixes/ModelBatch, tools/patches/PatchModelBatch.java |
 | textures and gear models before their first draw | fixes/ModelWarmup (`Deci.loadGearModel`) |
 
+## 5b. Player skins and corpses (read 22 Oktober 2026 for fixes/PlayerSkins)
+
+- Players are drawn by vanilla's RenderPlayer; Decimation only swaps its model (PlayerModelSwapper on
+  RenderPlayerEvent.Pre), so the texture is AbstractClientPlayer.getLocationSkin(): the skin manager's download, or
+  Steve while locationSkin is null (func_152123_o false). func_152121_a(SKIN, location) sets it (the skin manager's own
+  callback, public).
+- Decimation's menu preview player (MenuPreviewPlayer deci/e/a, DecimationMod.fakePlayerProfile.getPlayer: the HUD
+  stats box with fancy graphics, the profile page) is an AbstractClientPlayer in a world of its own.
+- Corpses (EntityCorpse deci/ae/a, owner id from DeathHandler: the dead player's server GameProfile id, sent in the spawn
+  data; getOwnerUUID ef) are drawn by CorpseRenderer: it binds "skins/<owner id>", which RenderUtil.loadSkin fills from
+  crafatar.com by id with Steve as the fallback, only when nothing is registered under that name yet. Before 5b every
+  corpse of an offline id, and of the dev account, showed Steve.
+- The gun arms (GunItemRenderer) use fixes/GunArmSkin, which follows getLocationSkin().
+- Ours (feature 5b): fixes/PlayerSkins gives skinless players one of Decimation's 21 human skins (by name) and puts an
+  alias texture under each seen player's corpse names; never deleteTexture such a name (it frees the player's skin).
+
 ## 6. Checks
 
 - `gunview` (guns in hand, aimed, on an NPC), `scope`, `props` (prop fps), `cityfps` / `cityview` (fps: never with the

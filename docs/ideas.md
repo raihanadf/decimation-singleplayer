@@ -260,5 +260,6 @@ User: "for the feat i have more". Notes on what we already have are mine [not an
     skin"; Minecraft 1.7.10 has only Steve, Alex came in 1.8); all of Decimation's 21 human skins (human0 to human20,
     textures/model/entities/mob/human, the ones its NPCs wear); built later, as 5b of docs/roadmap.md "Feature order".
     Open for the build [not analysed]: how Decimation draws players (its own player renderer and gear layers, or
-    vanilla RenderPlayer), and whether its human skins fit the player model's texture layout (64 x 32).
+    vanilla RenderPlayer), and whether its human skins fit the player model's texture layout (64 x 32). BUILT the same
+    day (new_feature.md "Random Decimation skins instead of Steve"): vanilla RenderPlayer, skins 64 x 32, picked by name.
 

@@ -1333,6 +1333,10 @@ of the last session:
   our pixel icon from tools/hud_icons.py); dev tests radiation, channelmp (dedicated server: both channel messages).
   Trap: Decimation's status column (IngameHud) moves down 10 a stats line and runs off the bottom of a short GUI (1080p at
   GUI scale auto is 270 high): anything placed in it needs a fallback (docs/decimation_code/menus.md 3b).
+  No Steve (22 Oktober 2026, new_feature.md feature 5b): fixes/PlayerSkins gives skinless players one of Decimation's 21
+  human skins, picked by NAME (an offline server knows a client by another id than the client itself); corpses wear
+  their player's skin through alias textures under "skins/<id>". Trap: never deleteTexture such a name (it frees the
+  player's skin); dev test skins (the dev account has a skin of its own, the production test account none).
   Sights need a mount too (22 Oktober 2026): sight_mounts.txt ("gun rail|side|slide") -> fixes/SightMounts; the red dot
   only on pistols with an optic cut or rail, other sights on a rail, claw mount or AK side mount; fixes/MountStrip (was
   GripStrip) pops off grips and sights a gun cannot mount. A new gun needs its row there.

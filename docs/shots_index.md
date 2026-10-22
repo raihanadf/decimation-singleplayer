@@ -1871,3 +1871,12 @@ Production client with OptiFine HD U E7 (the brother's laptop setup), AKM with t
   still under it.
 - hud_854x480_pair.png: the same two moments at 854 x 480 (GUI 240 high), 2x: the column would run off the bottom,
   so ours sits left of the health cross on its row (49 % beside health 55 %; 34 % beside 100 %), whole on screen.
+
+## skins_v0.66.1 (22 Oktober 2026, feature 5b: Decimation skins instead of Steve; dev test skins)
+- decimation_human_skins.png: Decimation's 21 human skins (human0 .. human20) at 4x, 7 a row: each a 64 x 32 player
+  skin with a full outfit (coats, jackets, flannel, a medical outfit, an orange jumpsuit; human14 is mostly bare skin).
+- players_and_corpses_first_run.png: top, the dev client at 1440 x 810 in front view: stand-in SkinTest1 (left,
+  human2: brown outfit), the local dev account in its own skin (middle, bald with a beard, dark blue clothes) and
+  SkinTest0 (right, human0: black coat), name tags "Survivor"; bottom, the first run's corpses: SkinTest0's in human0
+  (left), the dev account's as STEVE (right: Decimation's crafatar path), the bug the alias textures fixed.
+- corpses_after_alias.png: the same two corpses after the fix: human0 left, the dev account's own skin right.

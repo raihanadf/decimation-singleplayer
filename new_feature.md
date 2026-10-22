@@ -1271,3 +1271,32 @@ lineup photo zombies_v0.34.0. Not seen by the user in game yet
   it flies while setting the corners and the box reaches 4 below to 6 above the ground. The `lootmags` gun share bound
   failed once by chance (15 of 21 loaded against 30 to 70 %): 3 standard deviations of half now.
 
+## Random Decimation skins instead of Steve (22 Oktober 2026, feature 5b, idea 54)
+- User: "later we dont use steve default skin, instead using decimation skin with randomize so each player has unique
+  skin they use, maybe like random ID we got from 1-10 skin as example"; chosen: by the player's id ("as long not
+  distrub other feature especially multiplyaer"), players with a skin of their own keep it, all 21 skins.
+- fixes/PlayerSkins (client only, nothing sent): a player with no skin when joining a client world, or when first drawn
+  (Decimation's menu preview player), gets one of Decimation's human skins (human0 .. human20, 64 x 32 player layout,
+  textures/model/entities/mob/human) through AbstractClientPlayer.func_152121_a, the skin manager's own setter; an own
+  skin arriving later replaces it. My call: the pick comes from the NAME (murmur3 mix of the lower case name, mod 21),
+  not the UUID: on an offline server a client knows itself by its session id and the others by the offline id made
+  from the name, so a UUID pick would show a player one skin and their friends another; every client agrees on names.
+- Corpses: Decimation's corpse binds "skins/<owner id>" and fills it from crafatar.com (Steve for offline ids; Steve for
+  the dev account too, though the game shows its own skin). For every player joining this client's world an alias
+  texture (PlayerSkins.CorpseSkin) goes under both of the player's ids (server id, offline id): it hands over the
+  player's current skin, so a corpse wears what its player wore, ours or their own; no crafatar download for them. Trap:
+  TextureManager.deleteTexture on such a name would free the player's skin texture (1.7.10's deleteTexture keeps the
+  map entry and frees the GL texture of whatever is there).
+- Checks: unit PlayerSkinsTest (same name same skin, ignoring case; all 21 used about evenly over 21000 names; close
+  names spread; the offline id is Minecraft's) RED then GREEN, suite 176. Dev test `skins` all PASS at 1440 x 810: the
+  dev account keeps its own skin (never Steve), stand-in players SkinTest0 / SkinTest1 wear human0 / human2, an own
+  skin arriving later wins and stays, Decimation's menu preview player wears the local player's, a corpse of a stand-in
+  wears its skin of ours and the local player's corpse its own (same GL texture; the first run found the corpse of the
+  own skinned dev account in ours, and before that Decimation drew Steve for both); armskin PASS. Hook cost 1.2 to
+  2.8 us a drawn player (RenderPlayerEvent.Pre: one check), nothing per frame otherwise. Shots
+  docs/shots/skins_v0.66.1.
+- Production client with OptiFine (one jar of main's tree): skins, armskin, glstack 11 of 11: the production test
+  account (no skin of its own) wears human0, so do the menu preview player, the gun arms and its corpse (same GL
+  texture); hook 0.23 us a call. Dedicated server [not run: client only code; a corpse there carries the server id,
+  which the alias covers with the offline id].
+

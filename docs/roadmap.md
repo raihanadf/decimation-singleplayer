@@ -241,8 +241,8 @@ a short design talk each first:
    crates and car loot only, no launchers or crossbows.
 5. DONE 22 Oktober 2026 (new_feature.md): Radiation status in the HUD (30): a dose in percent as a fifth status icon, rises
    in a radiation zone without a gas mask (20 s to full), falls in 20 minutes, hurts from 50 %; Decimation's zone damage kept.
-   5b. Every player a random Decimation skin instead of Steve (54): by player id, own skins kept, all 21 human skins
-   (user answers 22 Oktober 2026).
+   5b. DONE 22 Oktober 2026 (new_feature.md): Every player a random Decimation skin instead of Steve (54): picked by name,
+   own skins kept, all 21 human skins, corpses wear their player's skin.
 6. DayZ dark nights (52). 7. Radiation set (41 to 43). 8. Specific mobs at specific places (35). 9. Attachment
    benefits (40). 10. Armor, vest and gun durability with repair parts (47, 48). 11. Trader market by day (39).
 12. Loot rules, lootable props, loot kinds, Tarkov search (36, 49, 50, 29). 13. Zombie variants and mutants (37).
