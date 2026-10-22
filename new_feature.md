@@ -1209,3 +1209,22 @@ lineup photo zombies_v0.34.0. Not seen by the user in game yet
   Checks: unit MagUnloadTest (step order and texts) RED (no Step / step / message) then GREEN, suite 163; dev test
   magunload 5 of 5 (one click 20 to 19 with 6 loose, five clicks 15 with 10, empty stays 0 with 5, full inventory 19 with
   1 on the ground, a plain click still loads 21). Dedicated server and joined client [not run, as above].
+
+## Looted guns hold rounds (22 Oktober 2026, idea 53)
+- User: "some guns loot have ammo inside it, so not all of them is empty"; chosen: about 1 in 2 loaded, the rounds like a
+  looted magazine's (1 round to a full magazine, around half, rarely full), Decimation's crates and car loot only (NPC
+  guns and corpse drops unchanged).
+- How Decimation keeps rounds in a gun: NBT "ammo" and "ammoType" (index into GunItem.ammoTypes, the magazine it holds;
+  0 = the first); a reload (PacketReload type 0) ejects that magazine with the rounds less the chambered one. A looted
+  gun has no tag until first held (GunItem.initTag).
+- fixes/LootMagazines.fill (the same loot hook as the magazines) calls Deci.loadLootGun for each gun without a tag:
+  LootMagazines.gunRounds (1 in 2 none, else rounds(magazine size)); the magazine size is the first magazine's capacity
+  (the gun's own capacity for bullet and stripper clip feeds); Decimation's initTag through reflection, then "ammo".
+  My call: launchers and crossbows never come loaded (a free rocket), guns already tagged are left alone.
+- Checks: unit LootMagazinesTest (about half loaded, mean around half, none over the magazine; a size 0 gun stays empty)
+  RED (no gunRounds) then GREEN, suite 165; dev test lootmags (Decimation's weapon cabinet opened 40 times by real right
+  clicks) all PASS: 12 of 24 guns loaded, 0 outside their magazine, all with Decimation's tag, a loaded looted gun fired
+  in hand by the mouse path (Deci.fireHeldGun) went 10 to 9 on the server. Before the change the live gun checks would
+  read 0 loaded [inferred: looted guns had no tag, so no rounds; not run against the old code]. Cost: one roll a gun at
+  a loot click, server side; no per tick work.
+

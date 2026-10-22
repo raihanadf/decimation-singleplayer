@@ -237,6 +237,8 @@ a short design talk each first:
 3. DONE 22 Oktober 2026 (new_feature.md): Looted magazines (45): 1 round to full, weighted toward half full, rarely full, never empty.
 4. DONE 22 Oktober 2026 (new_feature.md): Unload a magazine (44): shift + right click takes one round out, Decimation's loading backwards (v2 same day, user),
    the round into the inventory (dropped if full); held, one every 4 ticks.
+   4b. DONE 22 Oktober 2026 (new_feature.md): Looted guns hold rounds (53): 1 in 2 loaded, the rounds like a looted magazine's;
+   crates and car loot only, no launchers or crossbows.
 5. Radiation status in the HUD (30).
 6. DayZ dark nights (52). 7. Radiation set (41 to 43). 8. Specific mobs at specific places (35). 9. Attachment
    benefits (40). 10. Armor, vest and gun durability with repair parts (47, 48). 11. Trader market by day (39).

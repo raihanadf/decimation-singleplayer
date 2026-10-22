@@ -150,9 +150,9 @@
     "semantic_hash": "3f078f0bcdd3a0991459140f5d2f3f08"
   },
   "new_feature.md": {
-    "mtime": 1792630839.6259515,
-    "ast_hash": "2cb7dfd17160cfdb38298b2553eb1293",
-    "semantic_hash": "2cb7dfd17160cfdb38298b2553eb1293"
+    "mtime": 1792631873.8221366,
+    "ast_hash": "dda0da07e3eea360806bd30177e2e235",
+    "semantic_hash": "dda0da07e3eea360806bd30177e2e235"
   },
   "tools/graph_update.py": {
     "mtime": 1792423601.130674,
@@ -575,9 +575,9 @@
     "semantic_hash": "e46c40888199b9029bb359b53d218012"
   },
   "dev/src/main/java/net/decimation/fixes/Deci.java": {
-    "mtime": 1792620390.6738513,
-    "ast_hash": "7f36ff7f68efe77946945c5f4c339a2c",
-    "semantic_hash": "7f36ff7f68efe77946945c5f4c339a2c"
+    "mtime": 1792631686.5279071,
+    "ast_hash": "6be6b6dff24df3591d7a2ea80db3e0f5",
+    "semantic_hash": "6be6b6dff24df3591d7a2ea80db3e0f5"
   },
   "dev/src/main/java/net/decimation/fixes/ScopeZoom.java": {
     "mtime": 1792600986.8604598,
@@ -655,9 +655,9 @@
     "semantic_hash": "1c39f26030dd9a038debdd20adca663f"
   },
   "docs/roadmap.md": {
-    "mtime": 1792630839.6264243,
-    "ast_hash": "1454e915216d52ddef699fee8f4d981e",
-    "semantic_hash": "1454e915216d52ddef699fee8f4d981e"
+    "mtime": 1792631873.821284,
+    "ast_hash": "c06105580366e29d91260b9e738dde7c",
+    "semantic_hash": "c06105580366e29d91260b9e738dde7c"
   },
   "dev/src/main/java/net/decimation/worldgen/LegacyStreets.java": {
     "mtime": 1791487239.5087948,
@@ -1230,9 +1230,9 @@
     "semantic_hash": "8a3ad8dda4604fb188e87f47efc3db90"
   },
   "docs/ideas.md": {
-    "mtime": 1792617452.7942553,
-    "ast_hash": "6870ae4f2f4c1b845657ad3fab73ca6d",
-    "semantic_hash": "6870ae4f2f4c1b845657ad3fab73ca6d"
+    "mtime": 1792631873.8208907,
+    "ast_hash": "9b8719c802fdda284787c98a50e711eb",
+    "semantic_hash": "9b8719c802fdda284787c98a50e711eb"
   },
   "dev/src/main/java/net/decimation/worldgen/NamedPlace.java": {
     "mtime": 1791753400.7417421,
@@ -1540,9 +1540,9 @@
     "semantic_hash": "294036847a9caffda351bfa855a78636"
   },
   "docs/tasks.md": {
-    "mtime": 1792621318.0251653,
-    "ast_hash": "600b8b20f06f34f3bfe860aca4cfc532",
-    "semantic_hash": "600b8b20f06f34f3bfe860aca4cfc532"
+    "mtime": 1792631873.8216102,
+    "ast_hash": "5de101dcea4bad5c8a3f13491bac6a02",
+    "semantic_hash": "5de101dcea4bad5c8a3f13491bac6a02"
   },
   "tools/skillcheck.py": {
     "mtime": 1792098139.5315723,
@@ -2740,9 +2740,9 @@
     "semantic_hash": "8e479ed62435ee86df1215eb52234db1"
   },
   "dev/src/main/java/net/decimation/fixes/LootMagazines.java": {
-    "mtime": 1792620027.6813288,
-    "ast_hash": "1426dd3457cd0f88747f14e9501ba7dc",
-    "semantic_hash": "1426dd3457cd0f88747f14e9501ba7dc"
+    "mtime": 1792631686.5285766,
+    "ast_hash": "14b8374ffca6d1955506ddcb973fcdcf",
+    "semantic_hash": "14b8374ffca6d1955506ddcb973fcdcf"
   },
   "dev/src/main/java/net/decimation/fixes/MagUnload.java": {
     "mtime": 1792630713.9559853,
@@ -2780,9 +2780,9 @@
     "semantic_hash": "782fc347b6ef5b1af42dd9f10815592a"
   },
   "dev/src/main/java/net/decimation/worldgen/devtest/LootMagsTest.java": {
-    "mtime": 1792619778.9006624,
-    "ast_hash": "aa7a7ee2f4edec4985e083e7af850b43",
-    "semantic_hash": "aa7a7ee2f4edec4985e083e7af850b43"
+    "mtime": 1792631714.7499223,
+    "ast_hash": "b404e50cefdfd6be588aeab4751de7aa",
+    "semantic_hash": "b404e50cefdfd6be588aeab4751de7aa"
   },
   "dev/src/main/java/net/decimation/worldgen/devtest/MagUnloadTest.java": {
     "mtime": 1792630734.3413422,
@@ -2800,9 +2800,9 @@
     "semantic_hash": "17c24097d8d00696c78a2283a71f3586"
   },
   "dev/src/test/java/net/decimation/fixes/LootMagazinesTest.java": {
-    "mtime": 1792619778.9047759,
-    "ast_hash": "3dc640e1ad8762969aaa88af4bb036b0",
-    "semantic_hash": "3dc640e1ad8762969aaa88af4bb036b0"
+    "mtime": 1792631657.0970435,
+    "ast_hash": "a80e83c0e6601b8b507bc05da6a221fc",
+    "semantic_hash": "a80e83c0e6601b8b507bc05da6a221fc"
   },
   "dev/src/test/java/net/decimation/fixes/MagUnloadTest.java": {
     "mtime": 1792630666.4985533,

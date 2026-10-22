@@ -249,3 +249,5 @@ User: "for the feat i have more". Notes on what we already have are mine [not an
     setting); it needs our own light map at night, and a fix so the player's brightness setting cannot undo it
     [not analysed; Decimation's weather and fog: docs/decimation_code/world.md]. My reading: a feature, not a report
     that nights are too dark now.
+53. **Some looted guns hold rounds** (user, 22 Oktober 2026: "some guns loot have ammo inside it, so not all of them is
+    empty"). DONE the same day (new_feature.md "Looted guns hold rounds").
