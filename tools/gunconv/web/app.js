@@ -254,6 +254,7 @@ function drawParts() {
   conv.render();
   renderTable();
   $("conv-count").textContent = state.parts.length ? "(" + state.parts.length + " parts)" : "";
+  if (state.conv && state.conv.stats && state.conv.stats.mode === "exact") $("cost").textContent = costLine(state.parts.length);
 }
 
 function edgeLines(corners, colour, opacity) {
@@ -539,15 +540,28 @@ $("file").addEventListener("change", async () => {
   }
 });
 
-$("convert").addEventListener("click", async () => {
+$("budget").addEventListener("input", () => { $("budget-value").textContent = $("budget").value; });
+
+// The cost of an exact mode gun (tools/gunconv/exact.py estimate, measured in game: 0.290 ms plus 0.000946 ms a part,
+// Decimation's akm 0.456 ms): shown before export; over 1.5 x the akm's a warning, over twice that the export refuses.
+function costLine(parts) {
+  const ms = 0.290 + 0.000946 * parts, ratio = ms / 0.456;
+  const verdict = ratio <= 1.5 ? "within the budget" : ratio <= 3.0 ? "heavy: over 1.5 x the akm's" : "refused at export: over 3 x";
+  return parts + " parts, estimated draw " + ms.toFixed(2) + " ms, " + ratio.toFixed(2) + " x the akm's: " + verdict + ".";
+}
+
+$("exact").addEventListener("click", () => convertWith("exact"));
+$("convert").addEventListener("click", () => convertWith(""));
+
+async function convertWith(mode) {
   if (!state.path) return status("Load a model first.", true);
   busy(true);
-  status("Converting ...");
+  status(mode === "exact" ? "Converting exact ..." : "Converting ...");
   const req = {
     [state.path.startsWith("uploads/") ? "upload" : "sample"]: state.path,
     name: $("name").value.trim(), display: $("display").value.trim(), category: $("category").value,
     like: $("like").value, lengthMm: num("length-mm"), muzzle: $("muzzle").value, up: $("up").value,
-    mirror: $("mirror").checked,
+    mirror: $("mirror").checked, mode: mode, budget: Number($("budget").value),
     source: { author: $("author").value.trim(), url: $("url").value.trim(), license: $("license").value.trim() },
   };
   try {
@@ -595,14 +609,15 @@ $("convert").addEventListener("click", async () => {
     select(-1);
     frameBoth("side");
     const g = r.stats.groups;
-    status("Converted in " + r.seconds + " s: " + r.parts.length + " parts (" + Object.entries(g).map(([k, v]) => k + " " + v)
-      .join(", ") + "), like " + r.like + ", " + r.category + ".");
+    status("Converted " + (mode === "exact" ? "exact " : "") + "in " + r.seconds + " s: " + r.parts.length + " parts (" +
+      Object.entries(g).map(([k, v]) => k + " " + v).join(", ") + "), like " + r.like + ", " + r.category + ".");
+    $("cost").textContent = mode === "exact" ? costLine(r.parts.length) : "";
   } catch (e) {
     status(e.message, true);
   } finally {
     busy(false);
   }
-});
+}
 
 $("export").addEventListener("click", async () => {
   if (!state.conv) return status("Convert first.", true);

@@ -214,7 +214,7 @@ class ConvertTest(unittest.TestCase):
         g = synth.glb_of(synth.rotated(synth.synth_gun(), synth.ROTATIONS["identity"], scale=1.0))
         conv = convert.convert_exact(meshio.read_bytes(g.bytes(), "synthgun.glb"), name="synthexact", like="akm",
                                      length=28.0, budget=300)
-        conv.stats["cost"] = dict(conv.stats["cost"], verdict="refuse")
+        conv.parts = conv.parts * (1200 // len(conv.parts) + 1)   # over 1,140 parts: twice the cost budget
         conv.source = {"file": "synthgun.glb", "author": "test", "license": "CC0"}
         out = tempfile.mkdtemp()
         with self.assertRaises(ValueError):

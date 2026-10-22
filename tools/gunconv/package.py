@@ -95,6 +95,11 @@ def export(conv, out_root, display=None, source=None, force=False):
     """Write the package of a Conversion to out_root/<name>/ (an old folder of that name is replaced whole). An exact
     mode gun whose estimated draw time is over twice the budget is refused unless force (spec, "Cost gate")."""
     name = convert.validate_name(conv.name)
+    if (conv.stats or {}).get("mode") == "exact":       # the parts as they are now (the page may have edited them)
+        import exact
+        cost = exact.estimate(len(conv.parts))
+        cost["verdict"] = exact.verdict(cost["ratio"])
+        conv.stats["cost"], conv.stats["faces"] = cost, len(conv.parts)
     cost = (conv.stats or {}).get("cost") or {}
     if cost.get("verdict") == "refuse" and not force:
         raise ValueError("estimated draw time %.2f x the akm's, over twice the budget: lower the face budget"
