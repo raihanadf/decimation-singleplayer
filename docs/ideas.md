@@ -251,3 +251,7 @@ User: "for the feat i have more". Notes on what we already have are mine [not an
     that nights are too dark now.
 53. **Some looted guns hold rounds** (user, 22 Oktober 2026: "some guns loot have ammo inside it, so not all of them is
     empty"). DONE the same day (new_feature.md "Looted guns hold rounds").
+54. **No Steve: every player a random Decimation skin** (user, 22 Oktober 2026: "later we dont use steve default skin,
+    instead using decimation skin with randomize so each player has unique skin they use, maybe like random ID we got
+    from 1-10 skin as example"). Design talk first [not analysed yet].
+

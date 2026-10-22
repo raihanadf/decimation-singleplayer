@@ -110,9 +110,9 @@
     "semantic_hash": "de153d1f8408971d6190e16a7d4256f9"
   },
   "CLAUDE.md": {
-    "mtime": 1792631060.102595,
-    "ast_hash": "7af047a2a8392a4a4709f210d06a8de0",
-    "semantic_hash": "7af047a2a8392a4a4709f210d06a8de0"
+    "mtime": 1792632052.8184206,
+    "ast_hash": "93f5b85dcff30ce600b694e98a2c996b",
+    "semantic_hash": "93f5b85dcff30ce600b694e98a2c996b"
   },
   "DECIMATION_MOD_TASK.md": {
     "mtime": 1784958353.0126374,
@@ -1230,9 +1230,9 @@
     "semantic_hash": "8a3ad8dda4604fb188e87f47efc3db90"
   },
   "docs/ideas.md": {
-    "mtime": 1792631873.8208907,
-    "ast_hash": "9b8719c802fdda284787c98a50e711eb",
-    "semantic_hash": "9b8719c802fdda284787c98a50e711eb"
+    "mtime": 1792632052.8223636,
+    "ast_hash": "6f415e6dfda383f6fb04155076130f57",
+    "semantic_hash": "6f415e6dfda383f6fb04155076130f57"
   },
   "dev/src/main/java/net/decimation/worldgen/NamedPlace.java": {
     "mtime": 1791753400.7417421,
