@@ -1257,4 +1257,17 @@ lineup photo zombies_v0.34.0. Not seen by the user in game yet
   (6300 frames; nearly all of it the outlined percent, 9 string draws like each of Decimation's four), server 4.5 to
   4.8 us a tick with one player; no allocation a frame (the text is rebuilt only when the percent changes), a packet
   only on change.
+- Production (one jar of main's tree with the production client and OptiFine, docs/production_test.md; then the
+  production dedicated server joined from that client): radiation 15 of 15 (HUD 45.8 and 53.3 us a frame over 6600
+  frames, server 2.7 and 5.0 us a tick; icon beside health in its 240 high GUI), glstack PASS (88 cases, 0 leaking);
+  dev test `channelmp` on the dedicated server 7 of 7: the unload over our channel (20 and 5 became 19 and 6, the first
+  run of message 0 off the integrated server), Decimation's irradiated flag on from its own server zone tick in a zone
+  made with its commands (/deci pos1, pos2, /zone create radiation; removed after), the HUD's dose 52 % after 10 s
+  (message 1), 52 then 51 % 10 s after leaving.
+- Test fixes on the way (both in my tests, not the feature): in the production world a survivor NPC shot the test
+  player (humanity Bandit) during the mask check ("ProdTester was shot by a survivor": health 4, then 0 damage at 90 %
+  around the death), so `radiation` turns mob spawning off and removes every mob near the arena each second; in the
+  first `channelmp` run the player fell between the corner teleports and stood under the new zone (flag off, 0 %), so
+  it flies while setting the corners and the box reaches 4 below to 6 above the ground. The `lootmags` gun share bound
+  failed once by chance (15 of 21 loaded against 30 to 70 %): 3 standard deviations of half now.
 

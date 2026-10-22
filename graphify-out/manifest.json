@@ -150,9 +150,9 @@
     "semantic_hash": "3f078f0bcdd3a0991459140f5d2f3f08"
   },
   "new_feature.md": {
-    "mtime": 1792634104.4707112,
-    "ast_hash": "072c63517f1a23339362df7dc145f78b",
-    "semantic_hash": "072c63517f1a23339362df7dc145f78b"
+    "mtime": 1792634633.727777,
+    "ast_hash": "0fb838a93a57ba6070fa3eea5e5ff75d",
+    "semantic_hash": "0fb838a93a57ba6070fa3eea5e5ff75d"
   },
   "tools/graph_update.py": {
     "mtime": 1792423601.130674,
@@ -1430,9 +1430,9 @@
     "semantic_hash": "c65a27842aee5ff4b471f84a704c2267"
   },
   "docs/production_test.md": {
-    "mtime": 1792612069.3230834,
-    "ast_hash": "2c498d1c455bc52605e1f5c90b55e32e",
-    "semantic_hash": "2c498d1c455bc52605e1f5c90b55e32e"
+    "mtime": 1792634642.7156067,
+    "ast_hash": "6867387efc5218d13b5c80e37d0ce26b",
+    "semantic_hash": "6867387efc5218d13b5c80e37d0ce26b"
   },
   "dev/src/main/java/net/decimation/worldgen/CityLayout.java": {
     "mtime": 1791899693.3849845,
@@ -1540,9 +1540,9 @@
     "semantic_hash": "294036847a9caffda351bfa855a78636"
   },
   "docs/tasks.md": {
-    "mtime": 1792634150.264647,
-    "ast_hash": "e3a61e43ff8c5ec0df200f9bb5f84f0b",
-    "semantic_hash": "e3a61e43ff8c5ec0df200f9bb5f84f0b"
+    "mtime": 1792634633.7280354,
+    "ast_hash": "38d7228de8d0d60bb96ff7a81befabab",
+    "semantic_hash": "38d7228de8d0d60bb96ff7a81befabab"
   },
   "tools/skillcheck.py": {
     "mtime": 1792098139.5315723,
@@ -2830,14 +2830,14 @@
     "semantic_hash": "696f86056d74dc3a9f4806caf8577e90"
   },
   "dev/src/main/java/net/decimation/worldgen/devtest/ChannelRemoteTest.java": {
-    "mtime": 1792634014.1495051,
-    "ast_hash": "ad084cba45c8a6d787eab9d68633ca05",
-    "semantic_hash": "ad084cba45c8a6d787eab9d68633ca05"
+    "mtime": 1792634441.8067784,
+    "ast_hash": "cdf2683ceeb5afd2386a4541a91fb3de",
+    "semantic_hash": "cdf2683ceeb5afd2386a4541a91fb3de"
   },
   "dev/src/main/java/net/decimation/worldgen/devtest/RadiationTest.java": {
-    "mtime": 1792633536.3980389,
-    "ast_hash": "0e5f352c62cc15d18f01992b9590ecc4",
-    "semantic_hash": "0e5f352c62cc15d18f01992b9590ecc4"
+    "mtime": 1792634441.806641,
+    "ast_hash": "5734b8a14488680e3570d8c2adb27b02",
+    "semantic_hash": "5734b8a14488680e3570d8c2adb27b02"
   },
   "dev/src/test/java/net/decimation/fixes/RadiationDoseTest.java": {
     "mtime": 1792633385.818605,

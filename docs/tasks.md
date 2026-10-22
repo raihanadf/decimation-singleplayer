@@ -133,7 +133,7 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [ ] ideas 28 to 52 (docs/ideas.md, user 22 Oktober 2026): design talk first
 - [x] features 1 to 4 (armor vs NPCs, NPC tracer colours, loot magazine rounds, magazine unload) on main and prerelease
 - [x] looted guns hold rounds (1 in 2, like loot magazines; idea 53) on main and prerelease
-- [x] feature 5 radiation dose on the HUD (idea 30): main; prerelease carry and production run below
+- [x] feature 5 radiation dose on the HUD (idea 30): main, prerelease, production client with OptiFine, dedicated server
 - [ ] feature 5b random Decimation skins instead of Steve (idea 54, decided; built after 5)
-- [ ] production client and dedicated server check of the magazine unload channel before the next release
+- [x] production client and dedicated server check of our channel: unload (message 0) and the radiation dose (message 1), dev test channelmp 7 of 7 (22 Oktober 2026)
 - [ ] user: ropes stay one click? shift click into a worn backpack before the row swap? (bug agent's questions)

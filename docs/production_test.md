@@ -174,3 +174,13 @@ Checked with it: bundled content unpacked, cities generated, no errors (bug.md v
   pauses singleplayer); its real check at start: "up to date (0.66.1)".
 - Published 02:46 WIB (draft first, digest equal; public download 200, 252,093,168 bytes, .sha256 reads 1a827037). The
   0.66.0 notes' Install section now says to install 0.66.1 by hand. Site: Download 0.66.1 at 02:50.
+
+## Results (22 Oktober 2026, features 4 and 5: our channel and the radiation dose; test one jar of main f1b6610 plus test fixes, sha256 1aa7ecb4)
+- Production client with OptiFine, singleplayer: radiation 15 of 15 (HUD 53.3 us a frame, server 5.0 us a tick),
+  magunload, lootmags and glstack PASS (the first run of the same code).
+- Production dedicated server joined from that client: dev test channelmp 7 of 7 (unload over message 0: 19 and 6;
+  dose over message 1: Decimation's flag on, 52 % after 10 s, falling after). New mode, needs a server operator:
+  `python3 tools/devtest.py --live --port=25598 --results=FILE channelmp server=127.0.0.1:25577`.
+- Trap: a test that holds the player still in the production world must turn mob spawning off and clear mobs: a
+  survivor NPC shot the test player (humanity Bandit) mid test. The production client's and server's test worlds are
+  saved by this newer jar now: move them aside before an update test with an older jar (missing blocks screen).
