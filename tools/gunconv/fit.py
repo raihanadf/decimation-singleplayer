@@ -688,3 +688,29 @@ def profile(tris, axis, box, n):
 def bounds(parts):
     pts = [q for p in parts for q in p.c.values()]
     return [(min(q[i] for q in pts), max(q[i] for q in pts)) for i in range(3)]
+
+
+OUTLIER_VOL = 0.05    # a part under this share of the parts' volume ...
+OUTLIER_GROW = 0.15   # ... that widens their box by more than this share of it is an outlier (robust_box)
+
+
+def robust_box(corner_list):
+    """The box of corner dicts without small outliers: parts under OUTLIER_VOL of the total volume that widen the box of
+    the others by more than OUTLIER_GROW of its size along some axis (a stray pin under a receiver). An exemplar is
+    mapped from its robust box onto ours (milestone 3), so such parts no longer stretch the map."""
+    boxes = [[(min(q[i] for q in c.values()), max(q[i] for q in c.values())) for i in range(3)] for c in corner_list]
+    vols = [max(1e-9, (b[0][1] - b[0][0]) * (b[1][1] - b[1][0]) * (b[2][1] - b[2][0])) for b in boxes]
+    total = sum(vols)
+
+    def box_of(idx):
+        return [(min(boxes[i][a][0] for i in idx), max(boxes[i][a][1] for i in idx)) for a in range(3)]
+    keep = list(range(len(boxes)))
+    for i in sorted(range(len(boxes)), key=lambda i: vols[i]):
+        if vols[i] >= OUTLIER_VOL * total or len(keep) <= 1:
+            break
+        rest = [j for j in keep if j != i]
+        b, full = box_of(rest), box_of(keep)
+        if any((full[a][1] - full[a][0]) - (b[a][1] - b[a][0]) > OUTLIER_GROW * max(1e-9, b[a][1] - b[a][0])
+               for a in range(3)):
+            keep = rest
+    return box_of(keep)

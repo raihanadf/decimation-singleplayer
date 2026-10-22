@@ -477,6 +477,9 @@ def metrics(gun):
         m[k + "/L%"] = 100.0 * m[k] / m["length"]
     for k in ("taper", "cuboid", "skew", "wedge"):
         m[k + "%"] = 100.0 * kinds.get(k, 0) / n
+    # small parts on a host (rivets, pins, ribs, strips, levers): detail_parts' rule
+    m["details"] = sum(1 for r in detail_parts([p.verts() for p in gun.parts]) if r)
+    m["detail%"] = 100.0 * m["details"] / n
     if gun.texture:
         px = [c for c in gun.texture.get_flattened_data() if c[3] > 0]
         lum = [0.3 * r + 0.59 * g + 0.11 * b for r, g, b, a in px]
@@ -506,23 +509,131 @@ def stats(gun):
 
 def inside(part, q, eps=0.03):
     """True when point q lies in the part's (convex) shape, grown by eps."""
-    v = part.verts()
+    return inside_planes(planes_of(part.verts()), q, eps)
+
+
+# Part.verts() order as (ix, iy, iz) box corners, and the vertex indices of Part.quads()' faces
+CORNER_KEYS = [(1, 0, 0), (1, 1, 0), (0, 1, 0), (0, 0, 1), (1, 0, 1), (1, 1, 1), (0, 1, 1), (0, 0, 0)]
+QUADS = [(4, 0, 1, 5), (7, 3, 6, 2), (4, 3, 7, 0), (1, 2, 6, 5), (0, 7, 2, 1), (3, 4, 5, 6)]
+
+
+def verts_of_corners(c):
+    """A part's corners keyed (ix, iy, iz) (gunmodel and the converter) in Part.verts() order."""
+    return [tuple(c[k]) for k in CORNER_KEYS]
+
+
+def planes_of(v):
+    """Outward (normal, point) planes of a convex part given by its 8 vertices in Part.verts() order; collapsed faces
+    (a wedge's edge) are skipped."""
     c = [sum(p[i] for p in v) / 8 for i in range(3)]
-    for quad, _ in part.quads():
-        a, b, d = quad[0], quad[1], quad[3]
-        e1 = [quad[2][i] - a[i] for i in range(3)]
+    out = []
+    for ia, ib, ic, idd in QUADS:
+        a, b, q2, d = v[ia], v[ib], v[ic], v[idd]
+        e1 = [q2[i] - a[i] for i in range(3)]
         e2 = [d[i] - b[i] for i in range(3)]
         n = (e1[1] * e2[2] - e1[2] * e2[1], e1[2] * e2[0] - e1[0] * e2[2], e1[0] * e2[1] - e1[1] * e2[0])
         nl = math.sqrt(sum(x * x for x in n))
         if nl < 1e-9:
-            continue          # a collapsed face (wedge edge)
+            continue
         n = [x / nl for x in n]
-        m = [sum(p[i] for p in quad) / 4 for i in range(3)]
+        m = [(a[i] + b[i] + q2[i] + d[i]) / 4 for i in range(3)]
         if sum(n[i] * (c[i] - m[i]) for i in range(3)) > 0:
             n = [-x for x in n]   # outward
-        if sum(n[i] * (q[i] - m[i]) for i in range(3)) > eps:
-            return False
-    return True
+        out.append((n, m))
+    return out
+
+
+def inside_planes(planes, q, eps=0.03):
+    return all(n[0] * (q[0] - m[0]) + n[1] * (q[1] - m[1]) + n[2] * (q[2] - m[2]) <= eps for n, m in planes)
+
+
+def grid_points(v):
+    """27 points of a part (8 vertices in Part.verts() order): its corners, edge and face middles and centre. A pin
+    through a receiver has no corner inside it, its middle is."""
+    c = {k: v[i] for i, k in enumerate(CORNER_KEYS)}
+    out = []
+    for fx in (0.0, 0.5, 1.0):
+        for fy in (0.0, 0.5, 1.0):
+            for fz in (0.0, 0.5, 1.0):
+                q = [0.0, 0.0, 0.0]
+                for k, p in c.items():
+                    w = (fx if k[0] else 1 - fx) * (fy if k[1] else 1 - fy) * (fz if k[2] else 1 - fz)
+                    if w:
+                        for i in range(3):
+                            q[i] += w * p[i]
+                out.append(q)
+    return out
+
+
+def touching(va, pa, vb, pb, eps=0.03):
+    """Two convex parts (vertices, planes) touch or overlap: a grid point of one inside the other grown by eps."""
+    return any(inside_planes(pb, q, eps) for q in grid_points(va)) or any(inside_planes(pa, q, eps)
+                                                                          for q in grid_points(vb))
+
+
+DETAIL_THIN = 0.3        # a detail's smallest side is at most this
+DETAIL_SMALL = 0.35      # a part whose longest side is under this, touching a bigger one, is a detail anyway
+DETAIL_HOST = 3.0        # the host is at least this many times the detail's volume
+DETAIL_FOOT = 0.35       # the detail's footprint is at most this share of the host's face
+DETAIL_OUT = 0.45        # and it sticks out of the host by at most this along that face's normal
+
+
+def detail_parts(vert_lists):
+    """Decimation's details (spec docs/superpowers/specs/2026-10-22-gun-converter-design.md, milestone 3): for every
+    part None, or {"host", "axis", "side"} when it is a small or thin part sitting on a bigger one (rivets, pins through
+    the receiver, ribs, strips, levers, sight ears, screws). side +1 / -1: the face of the host it stands on along axis
+    (y grows downward: a top rib is axis 1, side -1); 0: a pin through the host."""
+    boxes = [[(min(q[i] for q in v), max(q[i] for q in v)) for i in range(3)] for v in vert_lists]
+    vols = [max(1e-9, (b[0][1] - b[0][0]) * (b[1][1] - b[1][0]) * (b[2][1] - b[2][0])) for b in boxes]
+    planes = [None] * len(vert_lists)
+
+    def pl(j):
+        if planes[j] is None:
+            planes[j] = planes_of(vert_lists[j])
+        return planes[j]
+    out = []
+    for i, b in enumerate(boxes):
+        dims = sorted(b[k][1] - b[k][0] for k in range(3))
+        if dims[0] > DETAIL_THIN:
+            out.append(None)
+            continue
+        small = dims[2] < DETAIL_SMALL
+        best = None
+        for j, h in enumerate(boxes):
+            if j == i or vols[j] < DETAIL_HOST * vols[i]:
+                continue
+            if not all(b[k][0] - 0.03 <= h[k][1] and h[k][0] - 0.03 <= b[k][1] for k in range(3)):
+                continue
+            if not touching(vert_lists[i], pl(i), vert_lists[j], pl(j)):
+                continue
+            outs = [(max(0.0, b[a][1] - h[a][1]), max(0.0, h[a][0] - b[a][0])) for a in range(3)]
+            axes = []
+            for a in range(3):
+                o = [k for k in range(3) if k != a]
+                foot_in = all(h[k][0] - 0.05 <= b[k][0] and b[k][1] <= h[k][1] + 0.05 for k in o)
+                foot = (b[o[0]][1] - b[o[0]][0]) * (b[o[1]][1] - b[o[1]][0])
+                face = (h[o[0]][1] - h[o[0]][0]) * (h[o[1]][1] - h[o[1]][0])
+                if foot_in and foot <= DETAIL_FOOT * face and max(outs[a]) <= DETAIL_OUT:
+                    axes.append(a)
+            if not axes and small and max(max(o) for o in outs) <= DETAIL_OUT:
+                axes = [max(range(3), key=lambda a: (max(outs[a]), -(b[a][1] - b[a][0])))]
+            if not axes:
+                continue
+            if best is None or vols[j] > vols[best[0]]:
+                a = max(axes, key=lambda a: (sum(outs[a]), -(b[a][1] - b[a][0])))
+                best = (j, a, outs[a])
+        if best is None:
+            out.append(None)
+            continue
+        j, a, (plus, minus) = best
+        if plus > 0.02 and minus > 0.02:
+            side = 0
+        elif plus > 0.0 or minus > 0.0:
+            side = 1 if plus >= minus else -1
+        else:                                  # flush or sunk: the half of the host it is in
+            side = 1 if (b[a][0] + b[a][1]) >= (boxes[j][a][0] + boxes[j][a][1]) else -1
+        out.append({"host": j, "axis": a, "side": side})
+    return out
 
 
 def contact(gun, only=None):
