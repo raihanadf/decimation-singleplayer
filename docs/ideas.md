@@ -190,6 +190,8 @@ User: "for the feat i have more". Notes on what we already have are mine [not an
 29. **Tarkov style loot search** ("loot system where it need to be analyzed one by one before taking it. so the item will
     show loading icon animation then if it done it can be take it"): items in a crate or body unknown until searched,
     one at a time with a spinner. Related: our loot screen (fixes/Loot, Deci.setLootInventory), docs/loot_levels.md.
+    Decided 22 Oktober 2026 (user): by value, 1 to 3 s an item (ammo and scrap 1 s, attachments and gear 2 s, guns and
+    rare items 3 s), one by one with a spinner, crates and bodies alike. Feature 12, this session.
 30. **Radiation status in the HUD** ("radiation status below player status"). Decimation already tracks radiation per
     player (docs/decimation_code/player.md) and draws its HUD in IngameHud (deci/g/j). Built 22 Oktober 2026 as a radiation dose in
     percent (new_feature.md "Radiation dose on the HUD").
@@ -206,6 +208,9 @@ User: "for the feat i have more". Notes on what we already have are mine [not an
     empty forever after player loot it, except multiplayer they can be disable or enable for minutes refill loots (by
     default is enable for server)". Decimation's crate cooldown is per position (deci/aB/e; docs/decimation_code/
     loot.md): singleplayer would never reset it, servers a config (on by default, minutes).
+    Decided 22 Oktober 2026 (user): "15 minute use old decimation setting, for singleplayer it has option on cfg file world
+    too so they can use refill method or not": servers refill after 15 minutes (on by default), singleplayer never by
+    default with a per world config switch; cooldowns saved with the world. Feature 12, this session.
 37. **More zombie variants, mutants too**. Related: fixes/InfectedVariants (v0.34.0), ideas 5 to 10 above.
 38. **Achievements from easy to extreme, and secret ones**. Related: item 31 (its UI), LocalStats.
 39. **Trader market: supply and demand, changed each Minecraft day** ("trader now have dynamic market supply and demand,
@@ -255,9 +260,14 @@ User: "for the feat i have more". Notes on what we already have are mine [not an
 49. **More lootable props, each in two versions (plain and lootable)**: truck, wooden crate, water pallet, military
     radio, small military radio. Decimation's loot registry is per block (33 blocks, docs/loot_levels.md section 2):
     a lootable version is a block of ours or a metadata rule [not designed].
+    Decided 22 Oktober 2026 (user): "lootable is just copy of block the props i say then make lootable version ... so later
+    when we make world city props, we can placed 2 version props non loot and lootable": a lootable copy of each of these
+    props (same look), marked by Decimation's loot hint; worldgen places either. Feature 12, this session.
 50. **Props with a loot kind**: a shelf can hold civilian, military or police loot; the weapon cabinet in three versions:
     civilian ("Cabinet", no "weapon" in the name), police and military. Today the metal shelf uses list 1 (general) and
     the weapon cabinet list 10 (guns and magazines). Goes with crate levels (item 17, docs/loot_levels.md).
+    Decided 22 Oktober 2026 (user): the building a prop stands in decides its kind (police stations police, military
+    buildings and bases military, else civilian); the civilian weapon cabinet is called "Cabinet". Feature 12.
 51. **More new blocks** later (user, no list yet).
 52. **DayZ dark nights** ("the night become so dark so its like dayz they almost black 95% in night time"): at night the
     world goes almost black, about 95 %, so light matters (the Flashlight attachment, night vision goggles, torches,
