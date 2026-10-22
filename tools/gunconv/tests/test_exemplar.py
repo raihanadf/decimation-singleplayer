@@ -58,6 +58,218 @@ class SelectTest(unittest.TestCase):
         self.assertEqual(exemplar.pick([("x", 0.6)], None)[0], "x")
 
 
+def ours(name, a, b, group="gunModel", colour=(40, 40, 40)):
+    p = fit.new_part(name, group, colour, box_corners(a, b), name)
+    return p
+
+
+def gun(**areas):
+    """A synthetic dataset gun: area name -> [(a, b, group)]."""
+    out = {}
+    for area, boxes in areas.items():
+        out[area] = exemplar.make_area([box_corners(a, b) for a, b, _ in boxes], [(50, 50, 50)] * len(boxes),
+                                       [g for _, _, g in boxes])
+    return {"cat": "rifle", "areas": out}
+
+
+def xs_of(c):
+    return [q[0] for q in c.values()]
+
+
+class RobustBoxTest(unittest.TestCase):
+    def test_a_small_outlier_does_not_widen_the_box(self):
+        body = box_corners((0, 0, 0), (10, 2, 1))
+        pin = box_corners((4.0, 2.0, 0.4), (4.2, 3.5, 0.6))         # a thin stray part hanging 1.5 below
+        b = fit.robust_box([body, pin])
+        self.assertEqual([tuple(round(v, 6) for v in ab) for ab in b], [(0, 10), (0, 2), (0, 1)])
+
+    def test_big_parts_count(self):
+        body = box_corners((0, 0, 0), (10, 2, 1))
+        mag = box_corners((4, 2, 0), (6, 6, 1))                       # 8 of 28: not an outlier
+        self.assertEqual(round(fit.robust_box([body, mag])[1][1], 6), 6.0)
+
+
+class ProfileTest(unittest.TestCase):
+    def test_a_piece_apart_does_not_shape_the_profile(self):
+        """A piece beside a magazine's top and apart from it (a latch) is left out of the profile the exemplar
+        follows: each station takes its largest connected stretch."""
+        slices = [box_corners((0.3 * i, i, -0.4), (0.3 * i + 2.0, i + 1, 0.4)) for i in range(6)]
+        latch = box_corners((3.6, 0.0, -0.6), (3.9, 1.2, 0.6))
+        prof = exemplar.target_profile(exemplar.target_area(slices + [latch]))
+        self.assertLess(prof[0][4], 2.5)                    # the top station's x extent ends at the slice, not the latch
+        self.assertGreater(prof[0][3], -0.1)
+
+    def test_touching_pieces_count_together(self):
+        """A skewed bottom segment beside a slice (the AKM sample's magazine) widens the station: both count."""
+        a = box_corners((1.1, 3.0, -0.5), (3.9, 3.4, 0.2))
+        b = box_corners((2.7, 3.0, -0.5), (4.2, 5.0, 0.2))
+        top = box_corners((0.0, 0.0, -0.5), (3.0, 3.0, 0.2))
+        area = exemplar.target_area([top, a, b])
+        self.assertEqual(area["axis"], 1)
+        prof = exemplar.target_profile(area)                    # rows: t, z lo, z hi, x lo, x hi (CYCLIC[1])
+        mid = [r for r in prof if 3.05 <= 5.0 * r[0] <= 3.35]
+        self.assertTrue(mid)
+        self.assertAlmostEqual(min(r[3] for r in mid), 1.1, delta=0.01)
+        self.assertAlmostEqual(max(r[4] for r in mid), 4.2, delta=0.01)
+
+
+class WarpTest(unittest.TestCase):
+    def test_a_block_lands_where_ours_is(self):
+        """Box to box puts the exemplar's sight block at its own place along the run; the warp moves it onto ours."""
+        ex = [box_corners((0, 0, 0), (10, 1, 1)), box_corners((3, -1, 0), (4, 0, 1))]
+        tg = [box_corners((0, 0, 0), (10, 1, 1)), box_corners((5, -1, 0), (6, 0, 1))]
+        w = exemplar.warp_x(ex, tg)
+        xs = xs_of(w[1])
+        self.assertAlmostEqual(sum(xs) / 8, 5.5, delta=0.3)
+        self.assertGreater(exemplar.overlap(w, tg), exemplar.overlap(ex, tg) + 0.1)
+        bar = xs_of(w[0])
+        self.assertAlmostEqual(min(bar), 0.0, delta=0.15)              # the ends stay where they were
+        self.assertAlmostEqual(max(bar), 10.0, delta=0.15)
+
+
+class ClipTest(unittest.TestCase):
+    def test_cut_a_taper_along_x(self):
+        c = box_corners((0, 0, 0), (10, 2, 1))
+        for k in fit.CORNERS:
+            if k[0] == 1:
+                c[k][1] = 1.0 if k[1] else 0.5                      # the front end narrower: y 0.5 .. 1.0
+        cut = exemplar.clip_x(c, 2.0, 6.0)
+        self.assertEqual(sorted(set(round(v, 6) for v in xs_of(cut))), [2.0, 6.0])
+        front = [q for k, q in cut.items() if k[0] == 1]
+        self.assertAlmostEqual(min(q[1] for q in front), 0.3, delta=1e-6)   # 0 + (0.5 - 0) * 0.6
+
+    def test_a_part_across_the_run_goes_by_its_centre(self):
+        c = box_corners((0, 0, 0), (0.4, 3, 1))
+        self.assertIsNotNone(exemplar.clip_x(c, 0.0, 1.0))
+        self.assertIsNone(exemplar.clip_x(c, 1.0, 2.0))
+
+
+class AssemblyTest(unittest.TestCase):
+    """Our receiver and magwell are cut at another line than the exemplar's: area by area the outlines differ, together
+    they are the same, so the action assembly takes the exemplar's parts."""
+
+    def setUp(self):
+        self.data = {"guns": {"ex1": gun(receiver=[((0, -2, -0.5), (10, -1, 0.5), "gunModel")],
+                                         magwell=[((3, -1, -0.4), (6, 0, 0.4), "gunModel")])}}
+        self.parts = [ours("rec", (0, -2, -0.5), (10, -1.5, 0.5)), ours("low", (0, -1.5, -0.5), (10, -1, 0.5)),
+                      ours("well", (3, -1, -0.4), (6, 0, 0.4))]
+        self.labels = ["receiver", "magwell", "magwell"]
+
+    def test_areas_alone_fail(self):
+        tg = [self.parts[i].c for i in (1, 2)]
+        ex = self.data["guns"]["ex1"]["areas"]["magwell"]
+        w = exemplar.refit(ex, exemplar.target_area(tg), False)
+        self.assertLess(exemplar.overlap(w, tg), exemplar.GATE)
+
+    def test_assembly_passes(self):
+        out, rep, by, plan = exemplar.apply(self.parts, "rifle", "ex1", {}, self.data, labels=self.labels)
+        self.assertEqual(rep["receiver"]["gun"], "ex1")
+        self.assertEqual(rep["receiver"]["via"], "action")
+        self.assertEqual(rep["magwell"]["via"], "action")
+        self.assertEqual(len(out), 2)
+        self.assertTrue(all(getattr(p, "exemplar", None) == "ex1" for p in out))
+        self.assertEqual(sorted(p.area for p in out), ["magwell", "receiver"])
+        self.assertEqual(by, {"ex1": 2})
+        self.assertNotIn("receiver", plan)                            # its details came with the exemplar
+
+
+class SectionsTest(unittest.TestCase):
+    """Ours: a bar along 0 .. 10 with a block on top of its front half. ex_front matches only the front half (its
+    block hangs below the bar instead), ex_rear only the rear half."""
+
+    def setUp(self):
+        self.parts = [ours("bar", (0, -2, -0.5), (10, -1, 0.5)), ours("top", (5, -3, -0.5), (10, -2, 0.5))]
+        self.labels = ["receiver", "receiver"]
+        self.front = gun(receiver=[((0, -2, -0.5), (10, -1, 0.5), "gunModel"), ((5, -1, -0.5), (10, 0, 0.5), "gunModel")])
+        self.rear = gun(receiver=[((0, -2, -0.5), (5, -1, 0.5), "gunModel"), ((5, -3, -0.5), (10, -2.5, 0.5), "gunModel")])
+
+    def test_whole_area_fails(self):
+        tg = [p.c for p in self.parts]
+        w = exemplar.refit(self.front["areas"]["receiver"], exemplar.target_area(tg), False)
+        self.assertLess(exemplar.overlap(w, tg), exemplar.GATE)
+
+    def test_front_from_the_exemplar_rear_kept(self):
+        data = {"guns": {"ex_front": self.front}}
+        out, rep, by, plan = exemplar.apply(self.parts, "rifle", "ex_front", {}, data, labels=self.labels)
+        r = rep["receiver"]
+        self.assertEqual([s["gun"] for s in r["sections"]], ["ex_front"])
+        self.assertAlmostEqual(r["sections"][0]["from"], 5.0, delta=0.51)
+        self.assertAlmostEqual(r["sections"][0]["to"], 10.0, delta=0.01)
+        ex = [p for p in out if getattr(p, "exemplar", None)]
+        kept = [p for p in out if not getattr(p, "exemplar", None)]
+        self.assertTrue(ex and kept)
+        self.assertGreaterEqual(min(min(xs_of(p.c)) for p in ex), 4.49)
+        self.assertLessEqual(max(max(xs_of(p.c)) for p in kept), r["sections"][0]["from"] + 1e-6)
+        self.assertEqual(plan["receiver"]["gun"], "ex_front")
+        self.assertEqual(plan["receiver"]["ranges"], [(0.0, r["sections"][0]["from"])])
+
+    def test_two_exemplars_combined(self):
+        data = {"guns": {"ex_front": self.front, "ex_rear": self.rear}}
+        out, rep, by, plan = exemplar.apply(self.parts, "rifle", "ex_front", {}, data, labels=self.labels)
+        guns = sorted(s["gun"] for s in rep["receiver"]["sections"])
+        self.assertEqual(guns, ["ex_front", "ex_rear"])
+        self.assertEqual(set(by), {"ex_front", "ex_rear"})
+        self.assertNotIn("receiver", plan)                             # no bin left to the fit
+
+
+class SmoothTest(unittest.TestCase):
+    def test_a_collapsed_end_takes_its_neighbour(self):
+        """A slanted butt cap makes the last station narrow: the exemplar's end must not be squeezed into it."""
+        prof = [[(i + 0.5) / 12, -3.0, 0.5, -0.5, 0.4] for i in range(12)]
+        prof[0] = [prof[0][0], -2.7, -1.6, -0.5, 0.4]
+        out = exemplar.smooth_profile(prof)
+        self.assertAlmostEqual(out[0][2], 0.5, delta=1e-6)
+        self.assertAlmostEqual(out[0][1], -3.0, delta=1e-6)
+
+    def test_wide_stations_are_outliers(self):
+        """A piece that is not magazine (a latch) widens the magazine's top stations: they take the nearest normal one,
+        so the exemplar's top slice is not stretched into a wedge."""
+        prof = [[(i + 0.5) / 12, 0.2 * i, 0.2 * i + 2.2, -0.5, 0.3] for i in range(12)]
+        prof[1] = [prof[1][0], -0.6, 3.9, -0.8, 0.5]
+        prof[2] = [prof[2][0], -0.4, 3.9, -0.7, 0.4]
+        out = exemplar.robust_profile(prof)
+        self.assertEqual(out[1][1:], prof[0][1:])
+        self.assertEqual(out[2][1:], prof[3][1:])
+        self.assertEqual(out[5], prof[5])
+
+    def test_an_end_station_off_the_line_is_an_outlier(self):
+        """A narrow end station far from its neighbour (a latch at the top of a magazine) takes the neighbour's; a
+        narrowing end on the line (a magazine's rounded base) stays."""
+        prof = [[(i + 0.5) / 12, 0.2 * i, 0.2 * i + 2.2, -0.5, 0.3] for i in range(12)]
+        prof[0] = [prof[0][0], 3.6, 3.9, -0.5, 0.3]
+        prof[11] = [prof[11][0], 2.4, 3.0, -0.5, 0.3]
+        out = exemplar.robust_profile(prof)
+        self.assertEqual(out[0][1:], prof[1][1:])
+        self.assertEqual(out[11], prof[11])
+
+    def test_a_straight_edge_stays_a_line(self):
+        prof = [[(i + 0.5) / 12, -3.0 + 0.05 * (i % 2), 0.5, -0.5, 0.4] for i in range(12)]
+        out = exemplar.smooth_profile(prof)
+        top = [r[1] for r in out]
+        steps = [b - a for a, b in zip(top, top[1:])]
+        self.assertLess(max(steps) - min(steps), 1e-9)                 # one straight line
+
+
+class ToneTest(unittest.TestCase):
+    def test_exemplar_tones_for_a_one_colour_source(self):
+        data = {"guns": {"ex1": {"cat": "rifle", "areas": {"grip": exemplar.make_area(
+            [box_corners((0, 0, 0), (1, 3, 0.8))], [(41, 25, 22)], ["gunModel"])}}}}
+        parts = [ours("grip", (0, 0, 0), (1.1, 3.2, 0.8), colour=(20, 20, 20))]
+        out, rep, by, plan = exemplar.apply(parts, "rifle", "ex1", {}, data, labels=["grip"], exemplar_tones=True)
+        self.assertEqual(out[0].colour, (41, 25, 22))
+        out, rep, by, plan = exemplar.apply(parts, "rifle", "ex1", {}, data, labels=["grip"])
+        self.assertEqual(out[0].colour, (20, 20, 20))
+
+
+class GroupTest(unittest.TestCase):
+    def test_moving_parts_keep_their_group(self):
+        self.assertEqual(exemplar.new_group("slideModel", False), "slideModel")
+        self.assertEqual(exemplar.new_group("ammoModel", False), "ammoModel")
+        self.assertEqual(exemplar.new_group("defaultStockModel", False), "gunModel")
+        self.assertEqual(exemplar.new_group("defaultScopeModel", False), "gunModel")
+        self.assertEqual(exemplar.new_group("defaultScopeModel", True), "defaultScopeModel")
+
+
 @unittest.skipUnless(JAR, "needs Decimation.jar")
 class ConvertTest(unittest.TestCase):
     def test_report_says_where_parts_came_from(self):
@@ -73,9 +285,19 @@ class ConvertTest(unittest.TestCase):
         self.assertEqual(sum(conv.stats["byGun"].values()), len(from_ex))
         for area, r in rep.items():
             self.assertTrue("gun" in r or "fit" in r, (area, r))
-        self.assertEqual(conv.stats["fromExemplars"] + conv.stats["fromFit"], len(conv.parts))
+        st = conv.stats
+        self.assertEqual(st["fromExemplars"] + st["fromDetails"] + st["fromFit"], len(conv.parts))
         groups = {p.group for p in conv.parts}
         self.assertTrue({"ammoModel", "slideModel"} <= groups, groups)        # magazine and bolt keep their groups
+        self.assertTrue(all(getattr(p, "area", None) for p in conv.parts))  # every part knows its area
+        import details
+        placed = [p for p in conv.parts if getattr(p, "detail_from", None)]
+        self.assertEqual(sum(st["detailsByGun"].values()), len(placed))
+        self.assertEqual(st["fromDetails"], len(placed))
+        for area, r in st["details"].items():
+            self.assertIn("gun", r)
+            self.assertIn("placed", r)
+        self.assertEqual(details.unseated(conv.parts), [])                   # no transferred detail floats
 
 
 if __name__ == "__main__":

@@ -149,8 +149,9 @@ class TemplateColourTest(unittest.TestCase):
         gun's part it overlaps most (Decimation's akm: wood stock, dark metal receiver)."""
         grey = [(n, mesh, "Default", (128, 128, 128)) for n, mesh, _, _ in synth.synth_gun()]
         g = synth.glb_of(synth.rotated(grey, synth.ROTATIONS["identity"], scale=1.0))
+        # the fit's tones (exemplar parts keep their exemplar's own tones: test_exemplar.ToneTest)
         conv = convert.convert(meshio.read_bytes(g.bytes(), "onecolour.glb"), name="onecolour", like="akm",
-                               length=28.0)
+                               length=28.0, exemplars=False)
         stock = [p.colour for p in conv.parts if p.label == "stock"]
         receiver = [p.colour for p in conv.parts if p.label == "receiver"]
         self.assertTrue(stock and all(c[0] > c[2] + 8 for c in stock), stock)          # brown wood

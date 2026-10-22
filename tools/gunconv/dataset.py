@@ -33,6 +33,7 @@ AREAS = ("receiver", "handguard", "barrel", "muzzle", "front_sight", "rear_sight
          "trigger_guard", "trigger", "magazine", "magwell", "charging_handle", "bolt", "rail", "pump", "cylinder")
 DETAIL = 0.3          # a part whose longest side is under this is a detail (rivet, screw, vent, groove) of its area
 STATIONS = 12         # profile stations along an area's run axis
+VERSION = 2           # 2: details by study.detail_parts and their records (milestone 3)
 GRIP_MAX = 4.5        # a pistol grip is at most this long
 NO_STOCK = ("pistol", "revolver")
 ZC = -0.15           # Decimation's centre line in z
@@ -296,13 +297,23 @@ def area_entry(items):
 
 
 def exemplars(gun, labels):
-    """{area: exemplar} of one study.Gun (tones from its texture when it has one)."""
+    """{area: exemplar} of one study.Gun (tones from its texture when it has one). Each part's detail flag and each
+    area's detail records follow study.detail_parts (milestone 3: small or thin parts on a host)."""
+    import details
     shapes = shapes_of_gun(gun)
+    rule = study.detail_parts([p.verts() for p in gun.parts])
+    tones = [match.island_tone(gun, p) if gun.texture is not None else None for p in gun.parts]
+    groups = [prefix(p.name) for p in gun.parts]
+    kinds = [study.shape_kind(p) for p in gun.parts]
     by = {}
-    for p, s, (area, detail) in zip(gun.parts, shapes, labels):
-        tone = match.island_tone(gun, p) if gun.texture is not None else None
-        by.setdefault(area, []).append((s, detail, prefix(p.name), study.shape_kind(p), tone))
-    return {area: area_entry(items) for area, items in by.items()}
+    for i, (area, _) in enumerate(labels):
+        by.setdefault(area, []).append(i)
+    out = {}
+    for area, idx in by.items():
+        e = area_entry([(shapes[i], bool(rule[i]), groups[i], kinds[i], tones[i]) for i in idx])
+        e["detailRecs"] = details.records([s.c for s in shapes], rule, idx, tones, groups, kinds)
+        out[area] = e
+    return out
 
 
 # ---------------------------------------------------------------- the dataset
@@ -316,7 +327,7 @@ def build(out=DATASET, names=None):
     """Read every Decimation gun from the jar (textures too), label it and store its exemplars as
     out/decimation_areas.json. Returns a summary."""
     from PIL import Image
-    data = {"version": 1, "jar": jar_stamp(), "areas": list(AREAS), "guns": {}}
+    data = {"version": VERSION, "jar": jar_stamp(), "areas": list(AREAS), "guns": {}}
     total = 0
     with zipfile.ZipFile(study.JAR) as z:
         listing = set(z.namelist())
@@ -353,7 +364,7 @@ def load(out=DATASET):
     if os.path.exists(path):
         with open(path) as f:
             data = json.load(f)
-        if data.get("jar") != jar_stamp() or data.get("version") != 1:
+        if data.get("jar") != jar_stamp() or data.get("version") != VERSION:
             data = None
     if data is None:
         build(out)
@@ -369,18 +380,20 @@ def aggregate(data):
     for g in data["guns"].values():
         for area, ex in g["areas"].items():
             b = ex["box"]
+            run = max(1e-6, b[ex["axis"]][1] - b[ex["axis"]][0])
             cells.setdefault((g["cat"], area), []).append((ex["count"], ex["details"], b[0][1] - b[0][0],
-                                                          b[1][1] - b[1][0], b[2][1] - b[2][0]))
+                                                          b[1][1] - b[1][0], b[2][1] - b[2][0], ex["details"] / run))
     rows = []
     for (cat, area), vals in sorted(cells.items()):
-        med = [statistics.median(v[i] for v in vals) for i in range(5)]
+        med = [statistics.median(v[i] for v in vals) for i in range(6)]
         rows.append({"category": cat, "area": area, "guns": len(vals), "parts": med[0], "details": med[1],
-                     "length": round(med[2], 2), "height": round(med[3], 2), "width": round(med[4], 2)})
+                     "length": round(med[2], 2), "height": round(med[3], 2), "width": round(med[4], 2),
+                     "density": round(med[5], 2)})
     return rows
 
 
 def write_aggregate(rows, path=AGGREGATE):
-    keys = ["category", "area", "guns", "parts", "details", "length", "height", "width"]
+    keys = ["category", "area", "guns", "parts", "details", "length", "height", "width", "density"]
     with open(path, "w") as f:
         f.write("# Decimation's guns by anatomy area: medians per category (tools/gunconv/dataset.py; numbers only)\n")
         f.write("\t".join(keys) + "\n")
