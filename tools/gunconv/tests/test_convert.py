@@ -37,7 +37,8 @@ def centre(parts, label):
 class LayoutTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.conv = convert.convert(synth_model(), name="synthgun", like="akm", length=28.0)
+        # the milestone 1 fit path (exemplar areas: tests/test_exemplar.py)
+        cls.conv = convert.convert(synth_model(), name="synthgun", like="akm", length=28.0, exemplars=False)
 
     def test_length_and_units(self):
         (x0, x1), _, _ = bounds(self.conv.parts)
@@ -127,7 +128,8 @@ class LayoutTest(unittest.TestCase):
 @unittest.skipUnless(JAR, "needs Decimation.jar")
 class LikeRulesTest(unittest.TestCase):
     def test_sights_fold_when_the_like_gun_folds_its_own(self):
-        conv = convert.convert(synth_model(rot="identity", scale=1.0), name="synthgun", like="m4a4", length=26.0)
+        conv = convert.convert(synth_model(rot="identity", scale=1.0), name="synthgun", like="m4a4", length=26.0,
+                               exemplars=False)
         groups = {p.label: p.group for p in conv.parts}
         self.assertEqual(groups["frontSight"], "defaultScopeModel")
 

@@ -77,8 +77,10 @@ def gun_json(conv, display, source):
     return {
         "name": conv.name, "display": display, "category": conv.category, "like": conv.like, "magazine": "like",
         "stats": {}, "points": conv.points, "source": source,
-        "converter": {"version": 1, "parts": len(conv.parts), "likeCandidates": conv.candidates[:5],
-                      "warnings": conv.warnings},
+        "converter": {"version": 2, "parts": len(conv.parts), "likeCandidates": conv.candidates[:5],
+                      "warnings": conv.warnings, "exemplars": conv.stats.get("exemplars", {}),
+                      "byGun": conv.stats.get("byGun", {}), "fromExemplars": conv.stats.get("fromExemplars", 0),
+                      "fromFit": conv.stats.get("fromFit", len(conv.parts))},
     }
 
 
