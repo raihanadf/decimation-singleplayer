@@ -135,3 +135,5 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [x] looted guns hold rounds (1 in 2, like loot magazines; idea 53) on main and prerelease
 - [ ] production client and dedicated server check of the magazine unload channel before the next release
 - [ ] user: ropes stay one click? shift click into a worn backpack before the row swap? (bug agent's questions)
+- [x] Karambit and Katana with first person draw and inspect (fixes/NewMelee, MeleeRenderer, MeleeMotion; dev test melee)
+- [ ] user: the katana's toss and catch draw in game (not seen yet)

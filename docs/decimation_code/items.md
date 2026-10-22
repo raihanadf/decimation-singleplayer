@@ -37,6 +37,41 @@ a STATIC field, so the last item of each kind built in ItemRegistry sets it for 
 rag's dirty rag stack; every splint (and the morphine syringe, which is a SplintItem) uses the splint's own stack,
 built while `itemSplint` was still null. SplintItem's use time is static too (the last one built: 32).
 
+### 3b. Melee weapons (read from the code, 23 Oktober 2026; not measured in game)
+
+`MeleeWeaponItem` (deci/az/b, new MeleeWeaponItem(durability, damage)) in ItemRegistry, creative tab "melee":
+
+| Item (unlocalized) | Name | Damage | Durability |
+|---|---|---|---|
+| ItemIcePick | Ice Pick | 9 | 255 |
+| ItemMachete | Machete | 7 | 255 |
+| ItemCombatKnife | Combat Knife | 7 | 255 |
+| ItemBaseballBatNails | Nailed Baseball Bat | 7 | 255 |
+| ItemFireaxe | Fireaxe | 6 | 255 |
+| ItemBaseballBat | Baseball Bat | 6 | 255 |
+| ItemCricketbat | Cricket Bat | 5 | 255 |
+| ItemButcherKnife | Butcher Knife | 5 | 255 |
+| ItemChainsaw (ChainsawItem deci/az/a) | Chainsaw | 4, +4 while on with fuel | 255 |
+| ItemCrowbar | Crowbar | 3 | 250 |
+| ItemHammer | Hammer | 2 | 250 |
+| ItemPoliceBaton | Police Baton | 2 | 255 |
+| ItemRiotshield (ShieldItem deci/az/c) | Riot Shield | 1 | 255 |
+
+- Damage: DamageModifierHandler.onLivingHurt (registered in DecimationMod for both sides: runs in singleplayer) takes
+  the weapon's damage straight off the target's health (setHealth, so armor does not reduce it), on top of the vanilla
+  hit itself (an item that is not a sword hits like a fist: 1); plays deci:mob.impact; wears the weapon by 1. Clan
+  members cannot hurt each other with melee on a dedicated server.
+- Chainsaw: right click toggles it; on and a Jerry Can with fuel in the inventory: 4 more damage a hit, attack and idle
+  sounds, smoke, fuel used while running, 3x speed on wood; it switches off without fuel.
+- Riot Shield: right click toggles defence; while defending, a player's incoming hurt is halved (the shield wears by 1
+  a hit) [the halving sits in the player hurt branch; which damage sources reach it not checked].
+- Not melee items but close: the gun Bayonet attachment makes a hit 10 (DamageModifierHandler, the event amount set to
+  10); ItemConstructionHammer is a building tool (OwnedItem, durability 10).
+- Loot: crowbar, fireaxe, hammer, cricket bat, butcher knife, chainsaw, machete, ice pick and both baseball bats in the
+  general list (vanilla chest, car wrecks 1 to 5, metal shelf); the police baton in the police list (police crate,
+  police car wrecks). No trader sells a melee weapon (offers are set in the trader classes' code; none names one). The
+  combat knife and the riot shield are in no loot list and no trader: creative only [from the code].
+
 ## 4. Singleplayer state and known faults
 
 - Using items works in singleplayer (checked above).
