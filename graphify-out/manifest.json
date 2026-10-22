@@ -325,9 +325,9 @@
     "semantic_hash": "0145e0863788d451e8ae4273d3c2abdd"
   },
   "docs/shots_index.md": {
-    "mtime": 1792701639.2988775,
-    "ast_hash": "b97be67e5b61742c8b520950607561ec",
-    "semantic_hash": "b97be67e5b61742c8b520950607561ec"
+    "mtime": 1792702179.4711962,
+    "ast_hash": "3fbcb1871cf9fe50ab228b4abaf9534b",
+    "semantic_hash": "3fbcb1871cf9fe50ab228b4abaf9534b"
   },
   "docs/interior_spec.md": {
     "mtime": 1791385593.9436893,
@@ -3200,9 +3200,9 @@
     "semantic_hash": "ab4f1605f4e6483d363a9a791e8a6681"
   },
   "docs/gunconv.md": {
-    "mtime": 1792701639.2985075,
-    "ast_hash": "7a8a0f449e13cfc317f43245d92dd01d",
-    "semantic_hash": "7a8a0f449e13cfc317f43245d92dd01d"
+    "mtime": 1792702179.470193,
+    "ast_hash": "fafd2a7d5f01a68ba3a205c1f626297b",
+    "semantic_hash": "fafd2a7d5f01a68ba3a205c1f626297b"
   },
   "docs/references/gunconv_sources.md": {
     "mtime": 1792687572.6162803,
@@ -3275,9 +3275,9 @@
     "semantic_hash": "f7883b4b4674e648ffaa739b6d54b4a2"
   },
   "dev/src/main/java/net/decimation/worldgen/devtest/MeshGunLiveTest.java": {
-    "mtime": 1792698089.419608,
-    "ast_hash": "56e6333b160ecdbc4cab125cda5583e2",
-    "semantic_hash": "56e6333b160ecdbc4cab125cda5583e2"
+    "mtime": 1792701917.4783494,
+    "ast_hash": "fdc04971fc567614988f87c90d631134",
+    "semantic_hash": "fdc04971fc567614988f87c90d631134"
   },
   "dev/src/test/java/net/decimation/fixes/TraderMarketTest.java": {
     "mtime": 1792691672.4421566,
