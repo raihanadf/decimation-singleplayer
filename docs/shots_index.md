@@ -2047,3 +2047,9 @@ pixels a unit.
   with faint camo, tan step numbers, slot inputs, the coral torn Convert; then the P228 checked with "Colour by what each
   part does" (slide blue, the magazine's base plate orange, the picked magazine boxed in coral), the plain attachment
   fields and the export report with its devtest.py line.
+- editor_references.png: the editors studied before the converter's editor layout (23 Oktober 2026): the three.js
+  editor, gltf.report, Babylon's sandbox, model-viewer's editor, Blockbench's start screen (empty states).
+- editor_empty.png, editor_converted.png, editor_p228.png: the converter as an editor: top bar (sample, Load sample, Open
+  a file, Convert, Export), the sidebar panels, Your model and In the game side by side with counts, the status bar;
+  empty (hints in both views, actions disabled), the AKM with the magazine picked, the P228 at an angle with the slide
+  picked and the Export panel open.

@@ -19,15 +19,23 @@ The converted rifles have not been in the game yet: that is agent 2's part of mi
 Folders (all git ignored under build/gunconv): inputs/<folder>/ holds a sample model and its source.json
 ({"author", "url", "license"}); work/uploads/ the files opened on the page; out/<name>/ the packages.
 
-The page since 23 Oktober 2026 (user: "use deci web repo style. make sure the input and word UX friendly and easy to
-understand"): the DeciRemnant site's look (its app/globals.css tokens: charcoal, tan labels in Minecraft's font,
-the coral torn button for a step's action, inputs as item slots, lined tables) in five plain steps: Pick a model,
-Credit the maker, Set it up (Name in the game, Item id, Gun type, Handles like; size and turning tucked away), Check it
-(Your model beside In the game, "Colour by what each part does", parts as Body / Magazine / Bolt or slide / Iron
-sights, where attachments go), Export (the folder and the devtest.py line to try it). The font is public domain
-(tools/gunconv/web/fonts, its readme); the site's art (logo, camo, torn masks: Decimation's textures) is served from the
-site's local repo by server.py /ui/ (DECIREMNANT_SITE overrides the path) and used only when it loads (body.site-art),
-never committed here. Checked with agent-browser at 1400 and 390 wide (no sideways scroll), 0 console errors.
+The page since 23 Oktober 2026 is an editor (user: "design is bad, i think better use editor UI, with sidebar and 2
+screen compare. searching how the UI looks before making it"; an earlier pass in the DeciRemnant site's scrolling
+install guide look was rejected the same night). Studied first (docs/shots/gunconv_mesh_v0.66.1/editor_references.png):
+Blockbench (menu bar, panels with small uppercase headers, a viewport with overlays, a mode switch on the right), the
+three.js editor (a sidebar of property rows, counts in a corner of the view), model-viewer's editor (collapsible
+sections), gltf.report (a centred "select a file" card, drop a file on the view), GitHub's 2-up image diff (two pictures
+side by side). Taken: one window with no page scroll; a top bar with the sample, Load sample, Open a file, then Convert
+(coral) and Export on the right, both disabled until they make sense; one sidebar of collapsible panels (Model: the
+credit; Gun: name in game, item id, gun type, handles like, "Wrong size or turned the wrong way?"; Parts: an outliner
+with what each part does, "What this part does" for the picked one; Attachments; Notes; Export: the folder, the
+devtest.py line, the files); two views side by side with linked cameras, each labelled (Your model, In the game) with
+its counts, a tool row over them (Side, Top, Angle, Behind, Colour by what each part does, Decimation gun's outline),
+a model file dropped on the views opens it; a status bar (what happened, left; the estimated draw time, right).
+DeciRemnant's identity stays small: the logo, tan panel headers in Minecraft's font (public domain, tools/gunconv/web/
+fonts), the coral accent; the site's art (logo, camo) is served from the site's local repo by server.py /ui/
+(DECIREMNANT_SITE overrides the path) and used only when it loads (body.site-art), never committed here. Checked with
+agent-browser at 1440 x 900: no page scroll, 0 console errors, sample load, convert, colour by role, pick, export.
 
 Before (milestones 1 to 3, the box modes): Model (a sample or a file of yours, with its author, link and license), Conversion (name, display name,
 category, like gun, the real length in mm, muzzle and up directions when the guess is wrong, mirror), Convert. The source

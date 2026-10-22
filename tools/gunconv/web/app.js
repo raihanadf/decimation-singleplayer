@@ -165,7 +165,9 @@ function status(text, error) {
 }
 
 function busy(on) {
-  for (const id of ["convert", "export", "load-sample"]) $(id).disabled = on;
+  $("load-sample").disabled = on;
+  $("convert").disabled = on || !state.path;          // a model first
+  $("export").disabled = on || !state.conv;           // a conversion first
 }
 
 // ------------------------------------------------------------------ the source model
@@ -215,6 +217,15 @@ async function loadSource(path) {
   if (!obj) obj = await meshFromServer(path);
   source.root.add(obj);
   source.frame("three");
+  let meshes = 0, tris = 0;
+  obj.traverse((o) => {
+    if (!o.isMesh || !o.geometry) return;
+    meshes++;
+    const g = o.geometry;
+    tris += (g.index ? g.index.count : g.attributes.position.count) / 3;
+  });
+  $("src-stats").textContent = Math.round(tris).toLocaleString() + " triangles, " + meshes + " mesh" + (meshes === 1 ? "" : "es");
+  $("pane-source").classList.add("has");
 }
 
 function applySourceMatrix() {
@@ -301,7 +312,10 @@ function drawParts() {
   conv.render();
   renderTable();
   const st = (state.conv || {}).stats || {};
-  $("conv-count").textContent = st.triangles ? "(" + st.triangles.toLocaleString() + " triangles)" : "";
+  $("conv-count").textContent = st.triangles ? st.triangles.toLocaleString() + " triangles, " + st.texture.join(" x ") +
+    " texture" : "";
+  $("pane-conv").classList.toggle("has", !!m);
+  $("parts-count").textContent = state.pieces.length ? state.pieces.length + " parts" : "";
   $("cost").textContent = costLine();
 }
 
@@ -371,7 +385,8 @@ function select(i) {
       p.triangles.toLocaleString() + " triangles.";
     $("group").value = p.group;
   } else {
-    $("sel-info").textContent = "No part picked. Click one in the game view or in the list.";
+    $("sel-info").textContent = state.pieces.length ? "Click a part in the game view or in the list." :
+      "Convert, then click a part in the game view or in the list.";
     $("group").value = "";
   }
   drawOutline();
@@ -489,19 +504,36 @@ $("load-sample").addEventListener("click", async () => {
   setCredit(s && s.source);
   conv.clear();
   drawParts();
+  busy(true);
   status("Loading the sample ...");
   try {
     await loadSource(path);
-    status("Loaded. Fill in the credit if it is empty, then press Convert.");
+    status("Loaded. Check the Model panel's credit, then press Convert.");
   } catch (e) {
     status(e.message, true);
+  } finally {
+    busy(false);
   }
 });
 
-$("file").addEventListener("change", async () => {
-  const f = $("file").files[0];
+$("file").addEventListener("change", () => openFile($("file").files[0]));
+
+// a model file dropped on either view opens like "Open a file" (gltf.report, model-viewer's editor)
+const views = $("views");
+views.addEventListener("dragover", (e) => { e.preventDefault(); views.classList.add("drag"); });
+views.addEventListener("dragleave", (e) => { if (e.target === views || !views.contains(e.relatedTarget)) views.classList.remove("drag"); });
+views.addEventListener("drop", (e) => {
+  e.preventDefault();
+  views.classList.remove("drag");
+  const f = e.dataTransfer.files[0];
+  if (f && /\.(glb|gltf|obj|bbmodel)$/i.test(f.name)) openFile(f);
+  else status("Drop a .glb, .gltf, .obj or .bbmodel file.", true);
+});
+
+async function openFile(f) {
   if (!f) return;
   status("Opening " + f.name + " ...");
+  busy(true);
   try {
     const r = await api("/api/upload?filename=" + encodeURIComponent(f.name), await f.arrayBuffer(), true);
     state.path = r.path;
@@ -513,20 +545,21 @@ $("file").addEventListener("change", async () => {
     conv.clear();
     drawParts();
     await loadSource(r.path);
-    status("Loaded " + f.name + ". Fill in who made it and its license (step 2), then press Convert.");
+    status("Loaded " + f.name + ". Fill in who made it and its license in the Model panel, then press Convert.");
   } catch (e) {
     status(e.message, true);
+  } finally {
+    busy(false);
   }
-});
+}
 
 // The cost line: triangles, the texture, the draw time estimated from the game's measurements (meshpack.estimate).
 function costLine() {
   const st = (state.conv || {}).stats || {};
   if (!st.cost) return "";
-  return st.triangles.toLocaleString() + " triangles" + (st.exact ? "" : " (the model had " + st.source.toLocaleString() +
-    ", more than the 30,000 a gun may have)") + ", a " + st.texture.join(" x ") + " texture. It takes about " +
-    st.cost.ratio.toFixed(2) + " times as long to draw as Decimation's AKM" + (st.cost.verdict === "ok"
-    ? " (fine up to " + st.cost.budget + ")." : ": heavier than the " + st.cost.budget + " we aim for.");
+  return (st.exact ? "" : "Cut from " + st.source.toLocaleString() + " to 30,000 triangles. ") + "Draws in about " +
+    st.cost.ratio.toFixed(2) + " times the AKM's time" + (st.cost.verdict === "ok" ? " (fine up to " + st.cost.budget + ")"
+    : ", over the " + st.cost.budget + " we aim for");
 }
 
 $("convert").addEventListener("click", convertNow);
@@ -559,6 +592,7 @@ async function convertNow() {
     showPoints(r.points);
     const ul = $("warnings");
     ul.innerHTML = "";
+    $("notes-count").textContent = r.warnings.length ? r.warnings.length + "" : "";
     for (const w of r.warnings.length ? r.warnings : ["Nothing to watch out for."]) {
       const li = document.createElement("li");
       li.textContent = w;
@@ -570,9 +604,9 @@ async function convertNow() {
     select(-1);
     frameBoth("side");
     const g = r.stats.groups;
-    status("Done in " + r.seconds + " s. " + Object.entries(g).map(([k, v]) => (ROLES[k] || k) + " " +
-      v.toLocaleString()).join(", ") + " triangles; " + (TYPES[r.category] || r.category).toLowerCase() + ", handles like the " +
-      r.like + ". Check it below, then export.");
+    status("Converted in " + r.seconds + " s: " + (TYPES[r.category] || r.category).toLowerCase() + ", handles like the " +
+      r.like + ". " + Object.entries(g).map(([k, v]) => (ROLES[k] || k) + " " + v.toLocaleString()).join(", ") +
+      " triangles. Check the parts, then Export.");
   } catch (e) {
     status(e.message, true);
   } finally {
@@ -609,10 +643,12 @@ $("export").addEventListener("click", async () => {
     const ul = el("ul");
     ul.id = "package-files";
     for (const f of r.files) ul.appendChild(el("li", f));
-    const next = el("p", "To try it in the dev client, start the test game with this folder's parent:");
+    const next = el("p", "To try it, start the dev test game with this folder's parent:");
     const cmd = el("pre", "python3 tools/devtest.py --live --gunpacks=" + r.dir.replace(/\/[^/]+$/, "") + " gunpack", "cmd");
     report.append(p, next, cmd, ul);
-    status("Exported. The folder is listed below.");
+    $("export-panel").open = true;
+    $("export-panel").scrollIntoView({ block: "nearest", behavior: "smooth" });
+    status("Exported to " + r.dir + ".");
   } catch (e) {
     status(e.message, true);
   } finally {

@@ -11,213 +11,147 @@
 </script>
 </head>
 <body>
-<header class="bar camo">
+<header class="topbar camo">
   <span class="brand"><img src="/ui/deciremnant-logo.webp" alt="DeciRemnant" onerror="this.parentNode.textContent = 'DeciRemnant'"></span>
-  <span class="mc s2 bar-note">Gun converter: private, runs on this computer only</span>
+  <span class="app-name mc s2">Gun converter</span>
+  <div class="filebar">
+    <label class="sr" for="sample">Sample</label>
+    <select id="sample" title="A sample model"></select>
+    <button id="load-sample" class="tool" type="button">Load sample</button>
+    <span class="or">or</span>
+    <label class="tool" for="file">Open a file</label>
+    <input type="file" id="file" class="sr" accept=".glb,.gltf,.obj,.bbmodel">
+  </div>
+  <span class="spacer"></span>
+  <button id="convert" class="primary" type="button" disabled>Convert</button>
+  <button id="export" class="secondary" type="button" disabled>Export</button>
 </header>
 
-<main class="wrap">
-  <section class="intro">
-    <p class="mc s2 label">DeciRemnant tools</p>
-    <h1 class="hd">Gun converter</h1>
-    <p class="pitch">Turn a free 3D gun model into a gun for the game. The shape stays exactly as the model has it; the
-      colours turn into Decimation's dark, pixelated tones. Five steps, top to bottom.</p>
-  </section>
-
-  <section class="step" aria-labelledby="h-pick">
-    <span class="n mc s3">1</span>
-    <div class="body">
-      <h2 id="h-pick">Pick a model</h2>
-      <p class="hint">Try one of the samples, or open your own file: GLB, glTF, OBJ or a Blockbench model.</p>
-      <div class="fields">
-        <div class="field grow">
-          <label for="sample">Sample</label>
-          <select id="sample"></select>
-        </div>
-        <div class="field">
-          <span class="ghost-label" aria-hidden="true">.</span>
-          <button id="load-sample" class="btn" type="button">Load sample</button>
-        </div>
-        <div class="field grow">
-          <label for="file">Or your own file</label>
-          <input type="file" id="file" accept=".glb,.gltf,.obj,.bbmodel">
-        </div>
-      </div>
+<aside class="sidebar" aria-label="Settings">
+  <details class="panel" open>
+    <summary><span class="mc s2">Model</span></summary>
+    <div class="rows">
+      <label class="row"><span>Made by</span><input id="author" autocomplete="off" placeholder="The artist's name"></label>
+      <label class="row"><span>Found at</span><input id="url" autocomplete="off" placeholder="Link to the model's page"></label>
+      <label class="row"><span>License</span><input id="license" autocomplete="off" placeholder="CC0, CC BY 4.0 or own"></label>
+      <p class="hint">Only CC0, CC BY or your own models go into the game; the game's credits name the maker.</p>
     </div>
-  </section>
+  </details>
 
-  <section class="step" aria-labelledby="h-credit">
-    <span class="n mc s3">2</span>
-    <div class="body">
-      <h2 id="h-credit">Credit the maker</h2>
-      <p class="hint">Only models we may share go into the game: CC0, CC BY, or a model you made yourself. The game's
-        credits show who made it.</p>
-      <div class="fields">
-        <div class="field grow">
-          <label for="author">Made by</label>
-          <input id="author" autocomplete="off" placeholder="The artist's name">
-        </div>
-        <div class="field grow">
-          <label for="url">Found at</label>
-          <input id="url" autocomplete="off" placeholder="Link to the model's page">
-        </div>
-        <div class="field">
-          <label for="license">License</label>
-          <input id="license" autocomplete="off" placeholder="CC0, CC BY 4.0 or own" size="16">
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="step" aria-labelledby="h-setup">
-    <span class="n mc s3">3</span>
-    <div class="body">
-      <h2 id="h-setup">Set it up</h2>
-      <p class="hint">Everything here has a sensible default: you can convert straight away and come back if something
-        looks off.</p>
-      <div class="fields">
-        <div class="field grow">
-          <label for="display">Name in the game</label>
-          <input id="display" autocomplete="off" placeholder="From the file name">
-        </div>
-        <div class="field">
-          <label for="name">Item id</label>
-          <input id="name" size="12" autocomplete="off" placeholder="automatic">
-          <small>Lower case letters and digits.</small>
-        </div>
-        <div class="field">
-          <label for="category">Gun type</label>
-          <select id="category"><option value="">Automatic</option></select>
-        </div>
-        <div class="field">
-          <label for="like">Handles like</label>
-          <select id="like"><option value="">Automatic</option></select>
-          <small>The Decimation gun it takes its damage, sounds, magazines and hands from.</small>
-        </div>
-      </div>
-      <details class="more">
-        <summary>If the gun comes out the wrong size or turned the wrong way</summary>
-        <div class="fields">
-          <div class="field">
-            <label for="length-mm">Real length in mm</label>
-            <input id="length-mm" type="number" min="50" max="3000" step="1" size="8" placeholder="optional">
-          </div>
-          <div class="field">
-            <label for="muzzle">Muzzle points along</label>
-            <select id="muzzle" class="axis"></select>
-          </div>
-          <div class="field">
-            <label for="up">Top of the gun points along</label>
-            <select id="up" class="axis"></select>
-          </div>
-          <label class="check"><input type="checkbox" id="mirror"> Mirror it (left and right swapped)</label>
-        </div>
+  <details class="panel" open>
+    <summary><span class="mc s2">Gun</span></summary>
+    <div class="rows">
+      <label class="row"><span>Name in game</span><input id="display" autocomplete="off" placeholder="From the file name"></label>
+      <label class="row"><span>Item id</span><input id="name" autocomplete="off" placeholder="automatic"></label>
+      <label class="row"><span>Gun type</span><select id="category"><option value="">Automatic</option></select></label>
+      <label class="row"><span>Handles like</span><select id="like"><option value="">Automatic</option></select></label>
+      <p class="hint">"Handles like" is the Decimation gun it takes its damage, sounds, magazines and hands from.</p>
+      <details class="sub">
+        <summary>Wrong size or turned the wrong way?</summary>
+        <label class="row"><span>Real length</span><input id="length-mm" type="number" min="50" max="3000" step="1" placeholder="mm, optional"></label>
+        <label class="row"><span>Muzzle along</span><select id="muzzle" class="axis"></select></label>
+        <label class="row"><span>Top along</span><select id="up" class="axis"></select></label>
+        <label class="row check"><input type="checkbox" id="mirror"><span>Mirror (swap left and right)</span></label>
       </details>
-      <div class="actions">
-        <button id="convert" class="btn-main mc s3" type="button">Convert</button>
-        <p id="status" class="status" role="status">Load a model to begin.</p>
-      </div>
     </div>
-  </section>
+  </details>
 
-  <section class="step wide" aria-labelledby="h-check">
-    <span class="n mc s3">4</span>
-    <div class="body">
-      <h2 id="h-check">Check it</h2>
-      <p class="hint">The model as you gave it on the left, the gun as the game will draw it on the right. Drag to turn,
-        scroll to zoom. Click a part to see what it does.</p>
-      <p id="cost" class="cost"></p>
-      <div class="views">
-        <figure class="view">
-          <figcaption class="mc s2 label">Your model</figcaption>
-          <div id="view-source" class="canvas"></div>
-        </figure>
-        <figure class="view">
-          <figcaption class="mc s2 label">In the game <span id="conv-count" class="count"></span></figcaption>
-          <div id="view-conv" class="canvas"></div>
-        </figure>
-      </div>
-      <div class="viewbar">
-        <span class="mc s2 label">View</span>
-        <button type="button" class="chip" data-view="side">Side</button>
-        <button type="button" class="chip" data-view="top">Top</button>
-        <button type="button" class="chip" data-view="three">Angle</button>
-        <button type="button" class="chip" data-view="rear">From behind</button>
-        <label class="check"><input type="checkbox" id="split"> Colour by what each part does</label>
-        <label class="check"><input type="checkbox" id="ghost"> Show the Decimation gun's outline</label>
-      </div>
-
-      <div class="columns">
-        <section>
-          <h3 class="mc s2 label">Parts</h3>
-          <p id="sel-info" class="hint">No part picked. Click one in the game view or in the list.</p>
-          <div class="fields">
-            <div class="field grow">
-              <label for="group">What this part does</label>
-              <select id="group" disabled>
-                <option value="" hidden>Pick a part first</option>
-                <option value="gunModel">Body: stays still</option>
-                <option value="ammoModel">Magazine: comes out when reloading</option>
-                <option value="slideModel">Bolt or slide: moves back when firing</option>
-                <option value="defaultScopeModel">Iron sights: hidden under a scope</option>
-              </select>
-            </div>
-          </div>
-          <div class="table-box">
-            <table id="parts" class="facts">
-              <thead><tr><th>#</th><th>Does</th><th>Part</th><th class="num">Triangles</th></tr></thead>
-              <tbody></tbody>
-            </table>
-          </div>
-        </section>
-
-        <section>
-          <h3 class="mc s2 label">Where attachments go</h3>
-          <p class="hint">Found from the model. Numbers are in model units (one unit is about 31 mm); x runs from the
-            stock to the muzzle, y down.</p>
-          <div class="fields">
-            <div class="field"><label for="flame-x">Muzzle x</label><input id="flame-x" type="number" step="0.05" size="7"></div>
-            <div class="field"><label for="flame-y">Muzzle y</label><input id="flame-y" type="number" step="0.05" size="7"></div>
-            <div class="field"><label for="flame-z">Muzzle z</label><input id="flame-z" type="number" step="0.05" size="7"></div>
-          </div>
-          <div class="fields">
-            <div class="field"><label for="rail-top">Sight rail height</label><input id="rail-top" type="number" step="0.05" size="7"></div>
-            <div class="field">
-              <label for="mount">Sights mount on</label>
-              <select id="mount">
-                <option value="">Nothing (no sights)</option><option value="rail">A rail on top</option>
-                <option value="side">An AK side mount</option><option value="slide">A pistol slide</option>
-              </select>
-            </div>
-          </div>
-          <div class="fields">
-            <div class="field"><label for="rail-from">Top rail starts at x</label><input id="rail-from" type="number" step="0.1" size="7" placeholder="none"></div>
-            <div class="field"><label for="rail-to">and ends at x</label><input id="rail-to" type="number" step="0.1" size="7" placeholder="none"></div>
-          </div>
-          <div class="fields">
-            <div class="field"><label for="grip-from">Rail under the front starts at x</label><input id="grip-from" type="number" step="0.1" size="7" placeholder="none"></div>
-            <div class="field"><label for="grip-to">and ends at x</label><input id="grip-to" type="number" step="0.1" size="7" placeholder="none"></div>
-          </div>
-          <p class="hint">A grip fits only where there is a rail under the front; leave both empty for none.</p>
-          <h3 class="mc s2 label">Notes from the converter</h3>
-          <ul id="warnings" class="notes"></ul>
-        </section>
-      </div>
+  <details class="panel" open>
+    <summary><span class="mc s2">Parts</span> <span id="parts-count" class="count"></span></summary>
+    <div class="rows">
+      <p id="sel-info" class="hint">Convert, then click a part in the game view or in the list.</p>
+      <label class="row stack"><span>What this part does</span>
+        <select id="group" disabled>
+          <option value="" hidden>Pick a part first</option>
+          <option value="gunModel">Body: stays still</option>
+          <option value="ammoModel">Magazine: comes out on reload</option>
+          <option value="slideModel">Bolt or slide: moves when firing</option>
+          <option value="defaultScopeModel">Iron sights: hidden under a scope</option>
+        </select>
+      </label>
     </div>
-  </section>
-
-  <section class="step" aria-labelledby="h-export">
-    <span class="n mc s3">5</span>
-    <div class="body">
-      <h2 id="h-export">Export</h2>
-      <p class="hint">Writes the gun's folder: its model, texture, icon, animations and gun.json.</p>
-      <div class="actions">
-        <button id="export" class="btn-main mc s3" type="button">Export package</button>
-      </div>
-      <div id="report" class="hint">Nothing exported yet.</div>
+    <div class="outliner">
+      <table id="parts">
+        <thead><tr><th>#</th><th>Does</th><th>Part</th><th class="num">Tris</th></tr></thead>
+        <tbody></tbody>
+      </table>
     </div>
-  </section>
+  </details>
+
+  <details class="panel">
+    <summary><span class="mc s2">Attachments</span></summary>
+    <div class="rows">
+      <p class="hint">Found from the model, in model units (about 31 mm each): x from stock to muzzle, y down.</p>
+      <div class="row"><span>Muzzle</span>
+        <span class="xyz">
+          <input id="flame-x" type="number" step="0.05" aria-label="Muzzle x" title="x">
+          <input id="flame-y" type="number" step="0.05" aria-label="Muzzle y" title="y">
+          <input id="flame-z" type="number" step="0.05" aria-label="Muzzle z" title="z">
+        </span>
+      </div>
+      <label class="row"><span>Sights on</span>
+        <select id="mount">
+          <option value="">Nothing</option><option value="rail">A top rail</option>
+          <option value="side">An AK side mount</option><option value="slide">A pistol slide</option>
+        </select>
+      </label>
+      <label class="row"><span>Sight height</span><input id="rail-top" type="number" step="0.05"></label>
+      <div class="row"><span>Top rail x</span>
+        <span class="xyz two">
+          <input id="rail-from" type="number" step="0.1" placeholder="from" aria-label="Top rail from x">
+          <input id="rail-to" type="number" step="0.1" placeholder="to" aria-label="Top rail to x">
+        </span>
+      </div>
+      <div class="row"><span>Under rail x</span>
+        <span class="xyz two">
+          <input id="grip-from" type="number" step="0.1" placeholder="from" aria-label="Rail under the front from x">
+          <input id="grip-to" type="number" step="0.1" placeholder="to" aria-label="Rail under the front to x">
+        </span>
+      </div>
+      <p class="hint">A foregrip fits only where there is a rail under the front; leave it empty for none.</p>
+    </div>
+  </details>
+
+  <details class="panel">
+    <summary><span class="mc s2">Notes</span> <span id="notes-count" class="count"></span></summary>
+    <ul id="warnings" class="notes"><li>Nothing yet.</li></ul>
+  </details>
+
+  <details class="panel" id="export-panel">
+    <summary><span class="mc s2">Export</span></summary>
+    <div id="report" class="rows hint">Press Export in the top bar once the gun looks right.</div>
+  </details>
+</aside>
+
+<main class="stage">
+  <div class="viewtools">
+    <span class="group" role="group" aria-label="Camera">
+      <button type="button" class="seg" data-view="side">Side</button>
+      <button type="button" class="seg" data-view="top">Top</button>
+      <button type="button" class="seg" data-view="three">Angle</button>
+      <button type="button" class="seg" data-view="rear">Behind</button>
+    </span>
+    <label class="toggle"><input type="checkbox" id="split"> Colour by what each part does</label>
+    <label class="toggle"><input type="checkbox" id="ghost"> Decimation gun's outline</label>
+  </div>
+  <div class="views" id="views">
+    <figure class="view" id="pane-source">
+      <figcaption><span class="mc s2">Your model</span> <span id="src-stats" class="stats"></span></figcaption>
+      <div id="view-source" class="canvas"></div>
+      <p class="empty">Drop a GLB, glTF, OBJ or Blockbench file here, or pick a sample in the top bar.</p>
+    </figure>
+    <figure class="view" id="pane-conv">
+      <figcaption><span class="mc s2">In the game</span> <span id="conv-count" class="stats"></span></figcaption>
+      <div id="view-conv" class="canvas"></div>
+      <p class="empty">Press Convert to see the gun as the game will draw it.</p>
+    </figure>
+  </div>
 </main>
+
+<footer class="statusbar">
+  <span id="status" role="status">Load a model to begin.</span>
+  <span id="cost"></span>
+</footer>
 <script type="module" src="/app.js"></script>
 </body>
 </html>
