@@ -67,3 +67,6 @@ there. for multiplayer + new city gen release, it will be released at 1.0.0 vers
    sure the commit upstream still appear"): branch `prerelease` from tag 0.64.8 with the plain fixes carried from main
    (CLAUDE.md "Two branches"); main keeps every commit. At 1.0.0 the release is built from main.
 (My earlier suggestion was 0.65 with multiplayer first; replaced by the user's order.)
+- Loot search on public servers: the client receives the stacks of unsearched slots (a modified client could read them before
+  the search ends; taking is refused on the server). Placeholder stacks in the loot sync would close it (new_feature.md
+  "Loot rules C").

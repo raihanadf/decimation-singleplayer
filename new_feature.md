@@ -1764,4 +1764,10 @@ lineup photo zombies_v0.34.0. Not seen by the user in game yet
 - Performance (budget: server under 20 us a tick, drawing under 100 us a frame, a packet only at a reveal): server 4.42 us a
   tick (median of 451, with a loot screen open), drawing 45.2 us a frame (median of 154); one message per reveal.
 - Trap: a busy Mac (an emulator at 228 % and a forgotten process of mine at 90 %) tripled averages: costs are medians now.
-- Not done: the carry to prerelease, the production client with OptiFine, the graph.
+- Security review (automated, same evening): fixed, test first (LootSearchTest 6): the server failed open between the screen
+  opening and its first tick (no search yet: a quick click could take an item), now hidden() starts the search there and
+  fails closed; a body two players look at was searched twice as fast, now a search ticks once a server tick. Known limit,
+  left as is: the client still receives the hidden stacks (Decimation's PacketLootInventory and the container sync send the
+  whole inventory), so a modified client could read what is inside before the search ends; taking is refused on the server
+  either way. Hiding them needs placeholder stacks in that sync [open; matters for public servers, docs/release_1.0.md].
+- Not done: the production client with OptiFine, the graph.
