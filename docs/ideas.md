@@ -181,7 +181,9 @@ every item below that is not DONE.
     voxel blob without gun anatomy, so the converter proposes and the decimation-gun skill refines. Inputs must be
     models we may use (CC0 / CC BY, our own); Tarkov's models stay picture references only: their files are not offered
     (the builder hides its GLB export) and a converted copy would be a copy of Battlestate Games' work in a public
-    release. Suggested start: after the RK-1 and SpecterDR, whose fit tools and style rules it reuses. Not designed.
+    release. Suggested start: after the RK-1 and SpecterDR, whose fit tools and style rules it reuses. Designed and
+    started 22 Oktober 2026 (spec docs/superpowers/specs/2026-10-22-gun-converter-design.md); milestone 1 converter
+    side built: docs/gunconv.md.
 
 ## The user's list of 22 Oktober 2026 (not designed; each needs a design talk first)
 User: "for the feat i have more". Notes on what we already have are mine [not analysed in code unless said].

@@ -100,7 +100,9 @@ into the repo: measure and learn from them, build our own.
 ## 4. Compare without the game (loop until it matches)
 
 - `python3 tools/guns/study.py sheet <ref> ours:<gun> --cols 2 --scale 24
-  --out ...`: silhouette, width, density, tone next to the reference.
+  --out ...`: silhouette, width, density, tone next to the reference. Sheets made before 22 Oktober 2026 were drawn at
+  the part count in pixels a unit (bug.md "study.py renders scaled by part count"): re-render old ones before judging
+  sizes. A converted gun's package: STUDY_OURS=<package>/assets/deci (docs/gunconv.md).
 - `python3 tools/guns/study.py render ours:<gun> --split`: part cuts.
   Views side, other, top, three, rear (from behind, slightly above: the
   sight picture) and low (three quarter from below: parts hanging off

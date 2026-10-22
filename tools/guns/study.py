@@ -32,7 +32,9 @@ from PIL import Image, ImageDraw
 
 ROOT = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", ".."))
 JAR = os.path.join(ROOT, "Decimation.jar")
-OURS = os.path.join(ROOT, "dev", "src", "main", "resources", "assets", "deci")
+# STUDY_OURS: read "ours:NAME" from another assets/deci folder, e.g. a converted gun's package
+# (build/gunconv/out/<name>/assets/deci, docs/gunconv.md)
+OURS = os.environ.get("STUDY_OURS") or os.path.join(ROOT, "dev", "src", "main", "resources", "assets", "deci")
 
 NUM = r"-?[\d.]+(?:[eE]-?\d+)?F?"
 
@@ -363,10 +365,10 @@ def render(gun, view, scale=24, ss=2, pad=12, bg=(236, 233, 224, 255), only=None
     light = (0.35, -0.75, 0.55)
     ln = math.sqrt(sum(c * c for c in light))
     light = tuple(c / ln for c in light)
-    for k, part in enumerate(gun.parts):
+    for pi, part in enumerate(gun.parts):     # not k: k is the scale (a loop over k drew at part count px a unit)
         if only and part.group not in only:
             continue
-        colour = ((k * 97) % 200 + 40, (k * 57 + 80) % 200 + 40, (k * 151 + 30) % 200 + 40)
+        colour = ((pi * 97) % 200 + 40, (pi * 57 + 80) % 200 + 40, (pi * 151 + 30) % 200 + 40)
         ptex, fx, fy = tex, tex.width / gun.tw, tex.height / gun.th
         if part.tex:
             ptex = part.tex[0] or Image.new("RGBA", (part.tex[1], part.tex[2]), (150, 120, 60, 255))

@@ -1909,3 +1909,29 @@ Production client with OptiFine HD U E7 (the brother's laptop setup), AKM with t
   yellow "Your gas mask filter is almost used up!" and red "Your gas mask filter is used up! Fit a new Gas Mask
   Filter.", health 80 %, our radiation icon 17 %; a Decimation tip card "Bleeding" top left (left from the radiation
   test run before).
+
+## gunconv_v0.66.1 (22 Oktober 2026, 3D gun converter milestone 1: docs/gunconv.md; branch gunconv-tool)
+All study.py renders here are after the render scale fix (bug.md "study.py renders scaled by part count"), 24 or 20
+pixels a unit.
+- ref_akm_ak74.png: Decimation's akm and ak74, side, the reference: near black receiver, dark brown wood stock and
+  handguards, an orange brown curved magazine, an A shaped front sight. ref_akm_split/: the akm's part cut (receiver in
+  big panels, the magazine in 6 slices along its curve, stock 4 parts, grip a few skewed parts).
+- v1_sheet_akm.png, v1_split/: the first conversion of J-Toastie's AKM (88 parts): the magazine one straight slab, the
+  grip a vertical bar, the trigger guard slivers, all one dark tone family.
+- v2_sheet_akm.png, v2_split/: chamfered tips left out of the fit: the grip raked back, the magazine curved in slices.
+- v3_sheet_akm.png: the like gun's palette: metal near black, wood dark brown, the magazine a lighter orange brown,
+  like the akm.
+- v4_sheet_akm.png, v4_split/: step cuts and panels (116 parts): the guard a loop, receiver and stock in panels.
+- v5_sheet_akm.png, v5_views_cmp.png, v5_views/: top plates (153 parts); the akm (left) and ours (right) in three
+  quarter, rear, low and top views: same silhouette, ours plainer on the receiver side.
+- lamoot_v1_sheet.png: Lamoot's one colour AK-47 converted: shape right (milled receiver, curved magazine), all grey.
+  lamoot_v2_sheet.png: the same with the akm's part tones by position: wood stock and handguards, orange brown magazine.
+- final_sheet_ak47.png, final_ak47_overview.png, final_ak47/ (all views, normal and --split): the milestone rifle ak47
+  (205 parts) next to the akm; overview adds a three quarter and the rear (first person) view. No steps from the
+  levelled panels.
+- final_sheet_akmc.png, final_akmc/: the second package akmc (153 parts).
+- icons_akm_ak47_akmc.png: 32 x 32 icons at 8x: Decimation's akm (faces left), ours ak47 and akmc (face right, darker).
+- page_1_loaded.png .. page_7_rear.png: the private page (agent-browser, 1440 wide): sample loaded; converted (dark
+  theme, the source white, ours in tones); exported with the package file list and gaps table (full page); dark theme
+  with a lighter canvas and the like gun outline over ours; light theme, three quarter, part colours; the AKM GLB
+  uploaded, source in its own materials beside the conversion; the rear view of both.
