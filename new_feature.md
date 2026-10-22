@@ -1800,5 +1800,10 @@ lineup photo zombies_v0.34.0. Not seen by the user in game yet
   buys an item for as much as any trader sells it that day (no buying here and selling there for profit; per currency).
   The saved pressures are written under the same lock as a trade's update. Rerun: market (15 trades seen, 15 counted) and
   trade PASS, suite 279.
+- Second security round (23 Oktober 2026), fixed test first (TraderMarketTest 7): buying pushes only buy prices ("b:" pressure)
+  and selling only sell prices ("s:"), so buying a stack up never raises what selling it back pays; the network thread only
+  reads the caps before and after a trade message and queues it, the server thread checks the item against the trader's
+  offers and moves the pressure (no world data or offer lists touched off the server thread). Rerun: market (15 of 15
+  counted) and trade PASS, suite 280.
 - Not verified: the tooltips in the trader screen (no shot: the screen opens through Decimation's dialogue); a dedicated
   server with a joined client (the table and the trade watcher there); the production client.
