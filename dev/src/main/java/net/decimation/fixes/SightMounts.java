@@ -73,6 +73,7 @@ public final class SightMounts
         try
         {
             InputStream in = SightMounts.class.getResourceAsStream(TABLE);
+            in = net.decimation.fixes.gunpack.GunPackRows.with(in, "sight_mounts.txt"); // gun packages' rows (gunpack/GunPacks)
             if (in != null)
             {
                 BufferedReader r = new BufferedReader(new InputStreamReader(in, "UTF-8"));

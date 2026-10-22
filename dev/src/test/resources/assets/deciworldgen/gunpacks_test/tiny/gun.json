@@ -1,0 +1,3 @@
+{"name": "tiny", "display": "Tiny", "category": "smg", "like": "uzi", "magazine": "like",
+ "points": {"flame": [3.0, -1.0, -0.15], "railTop": null, "rail": null, "gripRail": null, "mount": null},
+ "source": {"file": "tiny.bmodel", "author": "DeciRemnant unit test", "url": "", "license": "own"}}

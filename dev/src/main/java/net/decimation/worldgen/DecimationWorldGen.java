@@ -134,6 +134,8 @@ public class DecimationWorldGen
         net.decimation.fixes.RepairPart.register(); // armor kits, plates, gun parts; military and police loot
         // guns of our own (tools/guns, assets/deci/...): the MAC-10 pilot
         net.decimation.fixes.NewGuns.register();
+        // guns from gun packages, data driven (fixes/gunpack, docs/gun_model_spec.md section 7): before the tables are read
+        net.decimation.fixes.gunpack.GunPacks.register();
         net.decimation.fixes.NewSights.register(); // before SightPlacement: it moves these too
         net.decimation.fixes.NewGrips.register(); // the RK-1 Foregrip (before GripPlacement)
         net.decimation.fixes.GripRails.load(); // a Foregrip or RK-1 only on a gun with a rail (grip_offsets.txt)
@@ -373,6 +375,7 @@ public class DecimationWorldGen
     {
         // loot lists and the protection table name items of every mod: all registered by now
         net.decimation.fixes.LootPools.load(configDir);
+        net.decimation.fixes.gunpack.GunPacks.postInit(); // gun package guns join the lists of their like guns
         net.decimation.fixes.Protection.load(configDir);
         net.decimation.fixes.PlaceSpawns.load(configDir); // the place spawn table (feature 8): after InfectedVariants' looks
         net.decimation.fixes.hosting.OptionalMods.install(); // joiners without the voice chat jar (bug.md)

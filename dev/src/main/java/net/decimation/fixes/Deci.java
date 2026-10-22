@@ -3208,4 +3208,233 @@ public final class Deci
         }
         return 0.9;
     }
+
+    // ---- gun packages (fixes/gunpack, docs/superpowers/specs/2026-10-22-gun-converter-design.md): guns registered from
+    //      gun.json with the stats and behaviour of a "like" gun. GunItem = deci.ay.i, GunStats = deci.ay.e (FireMode
+    //      deci.ay.e$a), AmmoItem = deci.ay.f (AmmoFeedType deci.ay.a), BModel = deci.n.f, GunAnimation = deci.F.a
+
+    /**
+     * A gun like another: a copy of the like gun's GunStats (recoil pitch adl / yaw adm, recovery adn, fire modes adp and
+     * their params adq, aim table adk, secondsPerShot ads, manufacturer adr, flags adt .. adw, particles adx .. adz,
+     * forced tracer adA / adB) with the overrides set, then its damage (aew copied: setDamage halves, so an override goes
+     * through setDamage am like every Decimation registration), setMovementSlowdown (f), setCapacity (al), setLootChance
+     * (g, Decimation's crate weight), integral suppressor (fH), no fire sounds (fI), reduced bass (private aey, fP),
+     * launcher ammo (aex). Not the integrated scope: that belongs to the like gun's model. Registers as deciworldgen:NAME
+     * (the running mod), its sounds guns/CATEGORY/NAME/... and, on the client, loads models/guns/CATEGORY/NAME.bmodel.
+     */
+    public static Item newGunLike(String name, String category, Item like, net.decimation.fixes.gunpack.GunPack.Stats over,
+                                  Item... mags)
+    {
+        deci.ay.i l = (deci.ay.i) like;
+        deci.ay.e src = l.aeq;
+        float pitch = over.pitch != null ? over.pitch : src.adl;
+        float yaw = over.yaw != null ? over.yaw : src.adm;
+        float recovery = over.recovery != null ? over.recovery : src.adn;
+        deci.ay.e.a[] modes;
+        int[] params;
+        if (over.auto == null)
+        {
+            modes = src.adp.clone();
+            params = src.adq.clone();
+        }
+        else
+        {
+            modes = over.auto ? new deci.ay.e.a[] {deci.ay.e.a.AUTO, deci.ay.e.a.SINGLE} : new deci.ay.e.a[] {deci.ay.e.a.SINGLE};
+            params = src.adq.length == modes.length ? src.adq.clone() : new int[] {1, 1};   // as newGun
+        }
+        float[][] aim = new float[src.adk.length][];
+        for (int i = 0; i < aim.length; i++)
+        {
+            aim[i] = src.adk[i].clone();
+        }
+        deci.ay.e s = new deci.ay.e(new float[] {pitch, yaw}, modes, params, aim, recovery, over.rpm != null ? over.rpm : 600f);
+        if (over.rpm == null)
+        {
+            s.ads = src.ads;   // exact: not through rounds a minute and back
+        }
+        s.adr = src.adr;
+        s.adt = src.adt;
+        s.adu = src.adu;
+        s.adv = src.adv;
+        s.adw = src.adw;
+        s.adx = src.adx;
+        s.ady = src.ady;
+        s.adz = src.adz;
+        s.adA = src.adA;
+        s.adB = src.adB;
+        deci.ay.i g = new deci.ay.i(name, s, deci.ay.c.valueOf(category), mags);
+        if (over.damage != null)
+        {
+            g.am(over.damage);
+        }
+        else
+        {
+            g.aew = l.aew;
+        }
+        g.f(over.slowdown != null ? over.slowdown : l.m((ItemStack) null));
+        g.al(l.getCapacity());
+        g.g(l.getLootChance());
+        if (l.fL())
+        {
+            g.fH();
+        }
+        if (privateFlag(l, "aeA"))   // noFireSounds (its reader fK is private)
+        {
+            g.fI();
+        }
+        if (privateFlag(l, "aey"))   // reducedBass
+        {
+            g.fP();
+        }
+        g.aex = l.aex;
+        return g;
+    }
+
+    /** A private boolean of GunItem: aey reducedBass, aeA noFireSounds. */
+    private static boolean privateFlag(deci.ay.i g, String field)
+    {
+        try
+        {
+            java.lang.reflect.Field f = deci.ay.i.class.getDeclaredField(field);
+            f.setAccessible(true);
+            return f.getBoolean(g);
+        }
+        catch (ReflectiveOperationException e)
+        {
+            return false;
+        }
+    }
+
+    /** What a gun is made of, readable, for comparing a package's gun with its like gun (dev test gunpack). */
+    public static java.util.Map<String, Object> gunFacts(Item gun)
+    {
+        java.util.Map<String, Object> m = new java.util.LinkedHashMap<String, Object>();
+        if (!(gun instanceof deci.ay.i))
+        {
+            return m;
+        }
+        deci.ay.i g = (deci.ay.i) gun;
+        deci.ay.e s = g.aeq;
+        m.put("category", g.aes == null ? null : g.aes.name());
+        m.put("pitch", s.adl);
+        m.put("yaw", s.adm);
+        m.put("recovery", s.adn);
+        m.put("secondsPerShot", s.ads);
+        StringBuilder modes = new StringBuilder();
+        for (deci.ay.e.a mode : s.adp)
+        {
+            modes.append(modes.length() > 0 ? ", " : "").append(mode.name());   // its toString keeps the name too ("PUMP Action")
+        }
+        m.put("modes", "[" + modes + "]");
+        m.put("params", java.util.Arrays.toString(s.adq));
+        m.put("aim", java.util.Arrays.deepToString(s.adk));
+        m.put("damage", g.aew);
+        m.put("slowdown", g.m((ItemStack) null));
+        m.put("capacity", g.getCapacity());
+        m.put("lootChance", g.getLootChance());
+        m.put("suppressed", g.fL());
+        m.put("noFireSounds", privateFlag(g, "aeA"));
+        m.put("reducedBass", privateFlag(g, "aey"));
+        m.put("launcher", String.valueOf(g.aex));
+        m.put("manufacturer", s.adr);
+        m.put("particles", s.adx + "/" + s.ady + "/" + s.adz);
+        m.put("flags", s.adt + "/" + s.adu + "/" + s.adv + "/" + s.adw);
+        m.put("tracer", s.adA + "/" + s.adB);
+        StringBuilder mags = new StringBuilder();
+        for (deci.ay.f a : g.aep == null ? new deci.ay.f[0] : g.aep)
+        {
+            mags.append(mags.length() > 0 ? "," : "").append(net.minecraft.item.Item.itemRegistry.getNameForObject(a));
+        }
+        m.put("mags", mags.toString());
+        return m;
+    }
+
+    /** True for a magazine (AmmoItem deci.ay.f fed as a magazine, AmmoFeedType mag). */
+    public static boolean isMagazine(Item item)
+    {
+        return item instanceof deci.ay.f && ((deci.ay.f) item).adE == deci.ay.a.mag;
+    }
+
+    /** The round a magazine loads (AmmoItem.bulletItem adI), or null. */
+    public static Item magazineBullet(Item mag)
+    {
+        return mag instanceof deci.ay.f ? ((deci.ay.f) mag).adI : null;
+    }
+
+    /**
+     * The hand poses of a gun's model (BModel kK .. kV): left hand x, y, z, right hand x, y, z, right hand rotation x, y,
+     * z, left hand rotation x, y, z; null before the model is loaded. Client only (GunItem.model is client side).
+     */
+    @cpw.mods.fml.relauncher.SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)
+    public static float[] gunHands(Item gun)
+    {
+        deci.n.f m = gun instanceof deci.ay.i ? ((deci.ay.i) gun).aeu : null;
+        return m == null ? null : new float[] {m.kK, m.kL, m.kM, m.kN, m.kO, m.kP, m.kQ, m.kR, m.kS, m.kT, m.kU, m.kV};
+    }
+
+    /** Sets the hand poses of a gun's model, in gunHands' order. Client only. */
+    @cpw.mods.fml.relauncher.SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)
+    public static boolean setGunHands(Item gun, float[] h)
+    {
+        deci.n.f m = gun instanceof deci.ay.i ? ((deci.ay.i) gun).aeu : null;
+        if (m == null || h == null || h.length != 12)
+        {
+            return false;
+        }
+        m.kK = h[0];
+        m.kL = h[1];
+        m.kM = h[2];
+        m.kN = h[3];
+        m.kO = h[4];
+        m.kP = h[5];
+        m.kQ = h[6];
+        m.kR = h[7];
+        m.kS = h[8];
+        m.kT = h[9];
+        m.kU = h[10];
+        m.kV = h[11];
+        return true;
+    }
+
+    /** Parts in a gun's loaded model (BModel.parts kC: every part the file declares), -1 when none loaded. Client only. */
+    @cpw.mods.fml.relauncher.SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)
+    public static int gunModelParts(Item gun)
+    {
+        deci.n.f m = gun instanceof deci.ay.i ? ((deci.ay.i) gun).aeu : null;
+        return m == null ? -1 : m.kC.size();
+    }
+
+    /** Decimation's sound entries of a gun (SoundRegistry Ue, SoundEntry name / path): name -> path. Client only. */
+    @cpw.mods.fml.relauncher.SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)
+    public static java.util.Map<String, String> gunSoundPaths(String gun)
+    {
+        java.util.Map<String, String> out = new java.util.LinkedHashMap<String, String>();
+        try
+        {
+            java.lang.reflect.Field name = deci.N.c.class.getDeclaredField("name");
+            java.lang.reflect.Field path = deci.N.c.class.getDeclaredField("path");
+            name.setAccessible(true);
+            path.setAccessible(true);
+            for (Object o : deci.a.b.a().p().Ue)
+            {
+                String n = (String) name.get(o);
+                if (n != null && n.startsWith(gun) && n.length() > gun.length() && Character.isUpperCase(n.charAt(gun.length())))
+                {
+                    out.put(n, (String) path.get(o));
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            out.put("error", e.toString());
+        }
+        return out;
+    }
+
+    /** True when Decimation finds the gun's animation (GunAnimation.get b: animations/NAME/NAME<kind>.anib). Client only. */
+    @cpw.mods.fml.relauncher.SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)
+    public static boolean gunAnimationFound(String gun, String kind)
+    {
+        return deci.F.a.b(new net.minecraft.util.ResourceLocation("deci", "animations/" + gun + "/" + gun + kind + ".anib")) != null;
+    }
 }

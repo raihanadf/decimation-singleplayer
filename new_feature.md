@@ -1638,3 +1638,77 @@ lineup photo zombies_v0.34.0. Not seen by the user in game yet
   both colour themes; no page errors).
 - Found on the way: study.py's renders were scaled by the gun's part count (bug.md, fixed).
 - Not done here: the game side (agent 2: register, aim, fire, reload, grips, NPCs, gunperf). Not verified in game.
+
+## 3D gun converter, game side, milestone 1 (22 Oktober 2026, docs/ideas.md 27; agent 2 on branch gunconv-game)
+- User: "a model file in, a game gun out", two agents (the converter tools/gunconv and the game side), milestone 1 one
+  rifle end to end. Spec docs/superpowers/specs/2026-10-22-gun-converter-design.md; the loader, field by field:
+  docs/gun_model_spec.md section 7.
+- Built (fixes/gunpack): GunPack (gun.json read and checked, every problem at once, unknown fields only warnings),
+  GunPackSource (package folders; the jar's assets/deciworldgen/gunpacks/index.txt), GunPacks (found in order:
+  -Ddeciworldgen.gunpacks folders, the dev checkout's build/gunpacks, the jar; checked before any item exists;
+  registered at preInit right after NewGuns; loot; our lists in postInit), GunPacksClient and GunPackResources (one
+  resource pack of the deci domain serving only each package's own paths and a generated lang file, installed before the
+  first gun loads its model; the like gun's sounds; its hands when the model has none; barrel shifts), GunPackRows (the
+  sight, grip and mount table lines; GripRails, SightMounts, SightPlacement and GripPlacement read their table through
+  GunPackRows.with, one line each), GripFit (tools/guns/gripfit.py in Java), PackModel (a .bmodel as geometry, as
+  study.py). Deci: newGunLike (a copy of the like gun's GunStats and gun fields with the overrides), gunFacts,
+  isMagazine, magazineBullet, gunHands / setGunHands, gunModelParts, gunSoundPaths, gunAnimationFound. LootPools.addLike.
+  Dev: tools/guns/gunpack_standin.py (gcmac10 from our MAC-10, gcm4a4 from Decimation's M4A4 local only, gcbroken),
+  `-Pgunpacks=DIR`, `devtest.py --live --gunpacks=DIR`, dev test `gunpack` (`perf=true`), playerfire takes `gun=`,
+  GunTest reads `gun=` per run (its static field kept the first value for a whole live session).
+- Decided on the way (agent 2, reasons): packages live as self contained folders (the contract's layout) in the jar
+  under assets/deciworldgen/gunpacks/NAME/ with an index (a jar cannot be listed reliably, and the index fixes the
+  order); dev folders come first so a converter's newer output wins over a shipped copy; "like" must be a Decimation gun
+  (our guns' sounds are themselves redirected); grip rows come from the model's geometry with gripfit's own algorithm
+  (the contract gives the rail's x span, not its height; same numbers as every other gun's rows), points.gripRail
+  decides whether a foregrip fits and bounds where its seat goes; lights use the same fit on every gun; the sight shift
+  from "rail" puts a long scope (x 0.8 .. 5.5) on the top rail; license "test" (packages made from Decimation's art)
+  only in the dev workspace; added optional fields: magazine.icon, magazine.display, points.sightShift,
+  points.barrelShift.
+- Checks, unit: 229 PASS (30 new). RED first: with GunPack.parse stubbed GunPackTest failed 9 of 9 and GunPackRowsTest
+  4 of 7 (one waiting for the readers to take package lines), then GREEN. GripFitTest reads the shipped
+  grip_offsets.txt: 230 rows reproduced within 0.0015 (14 skipped: UMP9, HK416, HK416 Tan, Mk18 exist only where their
+  generators ran), 666 ms for about 100 guns.
+- Checks, live dev client (port 25594): `gunpack` 46 of 46 with the stand ins, then all PASS with agent 1's first
+  rifle too (akmc, "AKM Converted", J-Toastie's CC BY 3.0 AKM, their output of 17:30): each gun registered as
+  deciworldgen:NAME of its category; stats 19 of 19 facts equal to the like gun's or its override (gcmac10's seven
+  overrides of the Uzi); magazines the like gun's (akmc: ak74Mag, aks74uMag, rpk74Mag, ak12Mag, ak60Mag) or its own
+  (gcmac10Mag, 30 rounds of the UMP45 magazine's round); crate pools as the like gun (7 for the AKM, 8 for the M4A4 and
+  the Uzi), our lists as the like gun (1); wear as its category (rifle 1500, SMG 1800); foregrip and RK-1 only with a
+  gripRail (Gunsmith rules and MountStrip: kept on gcm4a4, taken off akmc and gcmac10); sight mounts (rail, side: the
+  EOTech fits, the red dot not); model parts as declared top level (akmc 153, gcm4a4 228 of 229: one child, gcmac10
+  110); files served, animations found, name, icon deci:gun/CAT/NAME, 6 sounds at the like gun's files, hands from the
+  model; every sight and grip row placed on the gun's attachment copies (gcm4a4 12, gcmac10 3, akmc 2) and drawn from
+  one list; gcm4a4 and gcmac10 got exactly the rows of the M4A4 and the MAC-10 (12 and 3 attachments); gcbroken refused
+  ("missing ... gcbroken.png"), nothing registered. Loader time at startup 135 to 180 ms for three packages (akmc 82 ms,
+  gcm4a4 53 to 113 ms: the first fit pays the JIT); nothing runs after startup.
+- `gun gun=gcm4a4 mag=deci:m4a4Mag`, `gun gun=gcmac10`, `gun gun=akmc mag=deci:ak74Mag`: reload loads 30, the reload
+  pose plays, a bandit carries each and fires (gun_npc_fire_110: tracer and flash). `playerfire gun=...` (the mouse
+  path): gcm4a4 hits for 8 (the M4A4's), gcmac10 for 6 (its override 12, halved), akmc for 8 (the AKM's 15 halved and
+  rounded), one round each on server and client, a miss uses a round and hurts nothing.
+- `gunview` next to the like guns: hip and iron sight aim of gcm4a4 / gcmac10 identical to the M4A4 / MAC-10; the
+  EOTech and ACOG on gcm4a4 placed and aimed as on the M4A4 (reticle centred, magnified glass learned on the first aim);
+  the converted AKM holds like the AKM, the ACOG on its side mount aims identically, its iron sight post sits on the
+  centre (the sight picture differs: below). `gripsweep`: Foregrip and RK-1 on gcm4a4 where the M4A4 has them, the
+  Laser on gcmac10 where the MAC-10 has it, the lights under akmc's handguard as under the AKM's.
+- Cost, `gunpack perf=true` (each gun drawn once more a frame as Decimation draws it, glFinish around, medians of 200,
+  order alternating): akmc 0.786 ms (CPU 0.317) against the AKM's 0.879 (0.375): cheaper, 153 parts against 194;
+  gcm4a4 against the M4A4 +0.022, -0.018, +0.028, +0.009 ms in four runs; gcmac10 against the MAC-10 +0.015, +0.009,
+  +0.005, -0.017 ms (noise of the order of 0.02 ms, budget 0.05); 0 GL errors, no stack change. `gunperf` on a loaded Mac
+  (load 6 to 10, other agents' games): readings swing 4 to 9 fps for the same gun; held, the AKM 39 and 39 against akmc
+  37 and 40; M4A4 and gcm4a4 averaged over two passes 55.5 and 58.5 held.
+- Dedicated dev server (servertest, port 25593): the same packages registered with the same rows (gcmac10's barrel
+  shift and every sound are client only), loot and lists as in the client, no client class loaded, Done in 4.9 s.
+- Found: Decimation's gun icons (M4A4, AK-74, MP5A3, Uzi, Glock 17, SVD) point the muzzle LEFT with a dark outline; our
+  MAC-10's icon and akmc's point it right (the decimation-gun skill says "muzzle right"): the skill and Decimation
+  disagree, not changed. akmc's icon is 9 rows high against the AKM's 21. akmc's aimed iron sights show a single post on
+  the centre where the AKM shows its rear notch ears with the post between them. The stand in gcm4a4 shows the M4A4's
+  rainbow rail teeth under a sight (bug.md "Colourful rail teeth": IronSights hides them only on the gun named m4a4);
+  a real package has its own texture. Minecraft's TEXTURE ERRORS report names our pack's class among the deci packs
+  (FML knows only its own pack types); the 7 missing textures are Decimation's own, the same in main.
+- Not verified: shipped packages in game (the jar path is only unit tested: GunPackSourceTest); the production client
+  with OptiFine (the main session's ports); a client joined to a dedicated server with packages; client and server
+  with different package sets (both need the same packages, as with any mod's items) [not handled]; NPC loadouts do not
+  pick package guns (an NPC carries one only when given, as in the gun test) [open: an optional "npcs" field].
+- Open: the main session merges both branches, then the user's look in game; agent 1's sight picture and icon points
+  above; for a release, the package folder and its index line (docs/gun_model_spec.md section 7).

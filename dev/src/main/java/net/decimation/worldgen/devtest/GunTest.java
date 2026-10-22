@@ -122,26 +122,26 @@ public class GunTest extends DevTestMode
 
     /** A full magazine: Decimation keeps a mag's rounds in its NBT "ammo" (none = empty). */
     /** The gun under test: -Pgun=NAME (deciworldgen:NAME with magazine NAMEMag; default mac10). */
-    private static final String GUN = System.getProperty("deciworldgen.autotest.gun", "mac10");
+    private final String GUN = System.getProperty("deciworldgen.autotest.gun", "mac10");   // per run (live gun= changes)
 
     private static Item ours(String name)
     {
         return (Item) Item.itemRegistry.getObject("deciworldgen:" + name);
     }
 
-    private static Item gun()
+    private Item gun()
     {
         return ours(GUN);
     }
 
-    private static Item mag()
+    private Item mag()
     {
         // -Pmag=deci:m4a4Mag for guns that take a Decimation magazine (HK416); else deciworldgen:<gun>Mag
         String m = System.getProperty("deciworldgen.autotest.mag", "");
         return m.isEmpty() ? ours(GUN + "Mag") : (Item) Item.itemRegistry.getObject(m);
     }
 
-    private static ItemStack fullMag()
+    private ItemStack fullMag()
     {
         ItemStack m = new ItemStack(mag());
         m.stackTagCompound = new net.minecraft.nbt.NBTTagCompound();

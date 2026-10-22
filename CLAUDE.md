@@ -173,7 +173,8 @@ Knowledge index:
   shown in Claude Code's usage band and pane (usage-pane mod, ~/.claude-mods); update it whenever an
   item opens, starts or ends (user request 16 Oktober 2026).
 - `docs/gun_model_spec.md`: gun `.bmodel` / `.anib` formats, paths, renderer,
-  new gun checklist.
+  new gun checklist; section 7: gun packages of the 3D gun converter (fixes/gunpack: where they live, how a release
+  adds one, the rows from "points").
 - `docs/production_test.md`: testing the RELEASE jar in a plain Forge server and client built in the
   scratchpad (never Prism): steps, traps (server jar via the Forge manifest, -XstartOnFirstThread hang),
   driving it with devtest.py --live.
@@ -1388,6 +1389,14 @@ of the last session:
   ScopeZoom to learn the sight (ACOG 431 ms against 187). fixes/SightMemory keeps learned positions between launches
   (config/deciworldgen_sights.txt, per build). scopediag's default sight is the ACOG (Decimation's red dot has no
   measured glass draws).
+  Gun packages (22 Oktober 2026, 3D gun converter game side, docs/gun_model_spec.md section 7): fixes/gunpack registers
+  guns from the converter's folders (gun.json + assets/deci/...) at preInit with no Java line per gun: the like gun's
+  stats, magazines, loot, sounds; attachment rows from "points" (GripFit is gripfit.py in Java). Dev: build/gunpacks is
+  read in the dev workspace (tools/guns/gunpack_standin.py), more folders with -Pgunpacks / devtest.py --gunpacks=;
+  shipped ones in assets/deciworldgen/gunpacks/ + index.txt. Traps: GunItem's constructor loads its model through the
+  resource manager at once, so package files are served by a resource pack installed first (GunPackResources); BModel.parts
+  holds top level parts only; FireMode.toString keeps the enum name; packages are read at start (restart the live game
+  after a change). Dev test gunpack (perf=true); gun, playerfire, gunview, gunperf, gripsweep take the package gun's name.
   RELEASE 0.66.1 published 22 Oktober 2026 02:46 WIB (hotfix, pre-release from prerelease e4fc4ca; sha256 1a827037...,
   digest equal; only Updater and a test changed against 0.66.0): the updater names its Accept header. Checked: 0.66.0
   updated itself to it through the fake server; the running 0.66.1 downloaded the real 0.66.0 file from GitHub with its

@@ -19,6 +19,7 @@ LIVE (no game launch per run, docs/roadmap.md "Live dev test mode"):
     python3 tools/devtest.py --live --java25 MODE     # start it on Java 25 with lwjgl3ify (runClient25)
     python3 tools/devtest.py --live --dress MODE      # start it with the city dressing on (docs/city_dressing.md)
     python3 tools/devtest.py --live --window=1920x1080 MODE   # start the live game with that window size
+    python3 tools/devtest.py --live --gunpacks=DIR gunpack   # start it with gun packages from DIR (docs/gun_model_spec.md 7)
     python3 tools/devtest.py --live MODE -Ptrace=deci.aE,deci.n.d   # record the run's calls (docs/call_trace.md)
     python3 tools/devtest.py --live --trace=deci/aE MODE ...        # start the game marking only those packages
     python3 tools/devtest.py --live --port=25598 --results=FILE MODE  # a second game on its own live port
@@ -138,6 +139,10 @@ def run_live(modes, extra, swap, angelica=False, task="runClient", dress=False):
             start += ["-Pwindow=" + windows[0]]
         if angelica:  # Angelica rendering overhaul in the dev client (docs/performance.md)
             start += ["-Pangelica", "-PforceEnableMixins=true"]
+        packs = [a[len("--gunpacks="):] for a in sys.argv if a.startswith("--gunpacks=")]
+        if packs:  # gun packages from more folders (fixes/gunpack/GunPacks; build/gunpacks is read anyway in dev)
+            dirs = [d for d in re.split(r"[,%s]" % re.escape(os.pathsep), packs[0]) if d]
+            start += ["-Pgunpacks=" + os.pathsep.join(os.path.abspath(d) for d in dirs)]
         marks = [a[len("--trace="):] for a in sys.argv if a.startswith("--trace=")]
         if trace or marks or "--trace" in sys.argv:  # call logger agent (docs/call_trace.md)
             if not os.path.isfile(os.path.join(ROOT, "build", "trace", "decitrace-agent.jar")):

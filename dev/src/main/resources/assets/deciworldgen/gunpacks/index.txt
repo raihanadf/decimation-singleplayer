@@ -1,0 +1,4 @@
+# Gun packages shipped in the jar (fixes/gunpack/GunPacks, docs/gun_model_spec.md section 7): one package name a line.
+# Each is a folder next to this file, as the converter (tools/gunconv) writes it: NAME/gun.json and NAME/assets/deci/...
+# Only CC0, CC BY (credit kept) or our own models (gun.json "source", docs/references/gunconv_sources.md); a package with
+# license "test" is refused outside the dev workspace. None shipped yet.
