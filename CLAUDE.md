@@ -1376,6 +1376,12 @@ of the last session:
   our named places, memoised per chunk; dev test placespawns. Traps: Forge's CheckSpawn fires for natural spawns only
   (SpawnerAnimals; spawner blocks, eggs and code never); a synthetic spawn check on the player's own spot fails
   getCanSpawnHere (the player collides), and EntityMob.getCanSpawnHere refuses everything in peaceful.
+  Loot rules B (22 Oktober 2026, new_feature.md): fixes/LootBlocks, 15 copies of Decimation props of their own class
+  (Deci.copyProp copies every BlockProp field) with loot entries of their own (Deci.addLootBlock: Decimation's entries copy
+  their item lists, so additions reach each once); shelves and cabinets by building (Dress.lootKinds, CanvasPlan.lootPlace);
+  dev test lootblocks compares pixels of original and copy at one spot. Traps: Block.getCreativeTabToDisplayOn is client
+  only (a dedicated server strips it); ScreenShotHelper saves without a file extension; a live game started without
+  --gunpacks on a world holding package guns stops on Forge's missing items screen (pass the same --gunpacks every start).
   Sights need a mount too (22 Oktober 2026): sight_mounts.txt ("gun rail|side|slide") -> fixes/SightMounts; the red dot
   only on pistols with an optic cut or rail, other sights on a rail, claw mount or AK side mount; fixes/MountStrip (was
   GripStrip) pops off grips and sights a gun cannot mount. A new gun needs its row there.

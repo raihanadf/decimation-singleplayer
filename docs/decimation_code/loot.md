@@ -84,6 +84,7 @@ Dev test `loot` step 3 right clicks a placed `deci:BlockMilitaryCrate` through t
 | read or extend the table | `Deci.lootTable()`, `Deci.addLootLike(item, stack)` (our guns join every list holding a similar item) |
 | show our own inventory on the loot screen | `fixes/Loot.open` (Deci.setLootInventory + Deci.openLootGui), LootBody entity |
 | cooldown | `Deci.lootReady(world, x, y, z)`, `Deci.clearLootCooldowns()`; Decimation's mark of one spot: `Deci.setLootCooldown` |
+| lootable copies of props, police and military shelves, "Cabinet" | fixes/LootBlocks (feature 12 B): copies of Decimation's own classes (`Deci.copyProp`, `Deci.newMetalShelf`, `Deci.newWeaponCabinet`), each with a loot entry of its own made from a block holding the list (`Deci.addLootBlock`); worldgen picks shelves and cabinets by building (`LootBlocks.forPlace`, Dress.lootKinds, CanvasPlan.lootPlace); test `lootblocks` |
 | looted spots saved per world, refill switch | fixes/LootRefill (feature 12 A): record deciworldgen_looted.dat (world tick of each spot's last loot, a multiblock by its origin: `Deci.lootSpot`), `<world>/deciworldgen_loot.cfg` (refill, refillMinutes; new worlds: off in singleplayer, on with Decimation's lootRespawnTime on a dedicated server), `LootRefill.clearAll()` for tests |
 | supply drops | `Deci.supplyDropsEnabled / supplyDropCountdown / setSupplyDropCountdown / supplyDropInterval / supplyDropBlock / isFallingSupplyDrop`, fixes/SupplyDropScheduler |
 | our own item lists | fixes/LootPools (config/deciworldgen_loot.json) |
@@ -96,6 +97,8 @@ Loot inside our structures needs no code: place a block that has a pool and Deci
 - `python3 tools/devtest.py --live loot`: 16 checks (our inventory on the screen, the body, Decimation's crate by a
   real click with cooldown).
 - `python3 tools/devtest.py --live checks`: supply drop lands.
+- `python3 tools/devtest.py --live lootblocks`: every lootable copy registered, drawn as its original (pixels compared at one
+  spot), a real click opens only its list (22 Oktober 2026: 23 PASS).
 - `python3 tools/devtest.py --live lootrules`: looted stays looted through a save and reload, a shelf by its origin,
   supply drops untouched, refill on a 1 minute setting, the costs (22 Oktober 2026: all PASS, 0.48 us a click).
 - Dev test `items` dumps every item with its loot chance (docs/references/decimation_items.tsv).

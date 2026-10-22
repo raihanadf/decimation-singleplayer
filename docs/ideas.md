@@ -290,11 +290,13 @@ User: "for the feat i have more". Notes on what we already have are mine [not an
     Decided 22 Oktober 2026 (user): "lootable is just copy of block the props i say then make lootable version ... so later
     when we make world city props, we can placed 2 version props non loot and lootable": a lootable copy of each of these
     props (same look), marked by Decimation's loot hint; worldgen places either. Feature 12, this session.
+    BUILT 22 Oktober 2026 on main (fixes/LootBlocks; new_feature.md "Loot rules B").
 50. **Props with a loot kind**: a shelf can hold civilian, military or police loot; the weapon cabinet in three versions:
     civilian ("Cabinet", no "weapon" in the name), police and military. Today the metal shelf uses list 1 (general) and
     the weapon cabinet list 10 (guns and magazines). Goes with crate levels (item 17, docs/loot_levels.md).
     Decided 22 Oktober 2026 (user): the building a prop stands in decides its kind (police stations police, military
     buildings and bases military, else civilian); the civilian weapon cabinet is called "Cabinet". Feature 12.
+    BUILT 22 Oktober 2026 on main (fixes/LootBlocks; new_feature.md "Loot rules B").
 51. **More new blocks** later (user, no list yet).
 52. **DayZ dark nights** ("the night become so dark so its like dayz they almost black 95% in night time"): at night the
     world goes almost black, about 95 %, so light matters (the Flashlight attachment, night vision goggles, torches,

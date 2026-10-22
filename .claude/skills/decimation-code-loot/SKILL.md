@@ -19,6 +19,7 @@ docs/loot_levels.md. Read the doc section you need, not Decimation's source.
 | show any inventory on the loot screen | `fixes/Loot.open`, entity `fixes/LootBody` |
 | our own lists | `fixes/LootPools`, config/deciworldgen_loot.json |
 | cooldown | `Deci.lootReady`, `Deci.clearLootCooldowns`, `Deci.setLootCooldown` |
+| a lootable version of a prop, shelf and cabinet kinds | `fixes/LootBlocks` (`Deci.copyProp`, `Deci.addLootBlock`), test `lootblocks` |
 | looted stays looted, refill switch per world | `fixes/LootRefill` (record with the world, `<world>/deciworldgen_loot.cfg`), test `lootrules` |
 | supply drops in singleplayer | `fixes/SupplyDropScheduler`, `Deci.supplyDrop*` accessors |
 | roll count off by one | `tools/patches/PatchLootRolls.java` (three jars) |

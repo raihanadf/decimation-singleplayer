@@ -28,7 +28,7 @@ A. Refill (fixes/LootRefill; BUILT 22 Oktober 2026, new_feature.md "Loot rules A
    load: refill false in singleplayer, true with 15 minutes on a dedicated server; either can be changed per world.
    Supply drops (they vanish) and our loot bodies keep their own rules. The loot hint of a looted spot: [not in scope:
    Decimation asks the client's never marked registry; noted].
-B. Lootable copies and loot kinds (fixes/LootBlocks): blocks of ours made from Decimation's own prop classes (same
+B. Lootable copies and loot kinds (fixes/LootBlocks; BUILT 22 Oktober 2026, new_feature.md "Loot rules B"): blocks of ours made from Decimation's own prop classes (same
    look, same multiblock behaviour), each bound to a Decimation list in its table (a new table entry), the loot hint
    then shows by itself:
    - lootable copies: the six pickup trucks (car wreck list), the water pallets (the food and drink list), the two
