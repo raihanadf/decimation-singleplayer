@@ -379,6 +379,49 @@ class HoleTest(unittest.TestCase):
         self.assertEqual(rep["barrel"]["filled"], len(filled))
 
 
+class ThinTest(unittest.TestCase):
+    def test_details_thin_out_on_a_shorter_area(self):
+        """An exemplar receiver twice as long as ours brings half its rivets: compressed, all of them crowded it (the
+        Uzi's receiver on the short vz. 61 style SMG: 9.7 details a unit, Decimation's SMG receivers 1.7)."""
+        body = ((0, -2, -0.5), (10, -1, 0.5), "gunModel")
+        rivets = [((i + 0.4, -1.6, 0.48), (i + 0.6, -1.4, 0.56), "gunModel") for i in range(10)]
+        ex = gun(receiver=[body] + rivets)
+        for p in ex["areas"]["receiver"]["parts"][1:]:
+            p["detail"] = True
+        parts = [ours("rec", (0, -2, -0.5), (5, -1, 0.5))]
+        out, rep, by, plan = exemplar.apply(parts, "rifle", "ex", {}, {"guns": {"ex": ex}}, labels=["receiver"])
+        self.assertEqual(rep["receiver"]["gun"], "ex")
+        small = [p for p in out if max(q[0] for q in p.c.values()) - min(q[0] for q in p.c.values()) < 0.3]
+        self.assertEqual(len(small), 5)
+        xs = sorted(sum(q[0] for q in p.c.values()) / 8 for p in small)
+        self.assertGreater(min(b - a for a, b in zip(xs, xs[1:])), 0.6)   # spread along the receiver, not bunched
+        self.assertEqual(rep["receiver"]["thinned"], 5)
+
+
+class ProportionTest(unittest.TestCase):
+    def test_a_crude_tall_sight_takes_the_median(self):
+        """A fitted front sight taller than the category's q90 is scaled about its base to the median (a crude source
+        gives a tall block: the akmc's first front sight)."""
+        sights = [gun(front_sight=[((0, -h, -0.1), (0.4, 0, 0.1), "gunModel")]) for h in (0.6, 0.8, 0.9, 1.0, 1.1)]
+        data = {"guns": {"g%d" % i: g for i, g in enumerate(sights)}}
+        post = ours("post", (10, -2.6, -0.2), (10.8, -0.4, 0.0))          # 2.2 tall
+        post.area = "front_sight"
+        out, rep = exemplar.proportions([post], "rifle", data)
+        ys = [q[1] for q in out[0].c.values()]
+        self.assertAlmostEqual(max(ys), -0.4, delta=1e-6)                  # the base stays
+        self.assertAlmostEqual(max(ys) - min(ys), 0.9, delta=1e-6)         # the median height
+        self.assertEqual(rep["front_sight"]["scaled"], 1)
+
+    def test_a_normal_sight_stays(self):
+        sights = [gun(front_sight=[((0, -h, -0.1), (0.4, 0, 0.1), "gunModel")]) for h in (0.6, 0.8, 0.9, 1.0, 1.1)]
+        data = {"guns": {"g%d" % i: g for i, g in enumerate(sights)}}
+        post = ours("post", (10, -1.3, -0.2), (10.4, -0.4, 0.0))
+        post.area = "front_sight"
+        out, rep = exemplar.proportions([post], "rifle", data)
+        self.assertEqual(out[0].c, post.c)
+        self.assertEqual(rep, {})
+
+
 class GroupTest(unittest.TestCase):
     def test_moving_parts_keep_their_group(self):
         self.assertEqual(exemplar.new_group("slideModel", False), "slideModel")

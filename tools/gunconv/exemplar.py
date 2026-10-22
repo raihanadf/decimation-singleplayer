@@ -597,6 +597,72 @@ def _tone(mean, p, exl):
     return tuple(int(round(v)) for v in mean)
 
 
+THIN_BELOW = 0.8      # an exemplar mapped onto an area shorter than this share of its own keeps a share of its details
+
+
+def thin(warped, items, ratio):
+    """Keep round(n x ratio) of the exemplar's detail parts (part["detail"]) evenly spread along x, all the others:
+    an exemplar squeezed onto a shorter area otherwise crowds it with all its rivets. (warped, items, dropped)."""
+    if ratio >= THIN_BELOW:
+        return warped, items, 0
+    det = [i for i, it in enumerate(items) if it[0].get("detail")]
+    keep_n = int(round(len(det) * ratio))
+    if keep_n >= len(det):
+        return warped, items, 0
+    det.sort(key=lambda i: sum(q[0] for q in warped[i].values()) / 8.0)
+    if keep_n <= 0:
+        picks = set()
+    elif keep_n == 1:
+        picks = {det[len(det) // 2]}
+    else:
+        picks = set(det[int(round(j * (len(det) - 1) / (keep_n - 1)))] for j in range(keep_n))
+    drop = set(det) - picks
+    return ([c for i, c in enumerate(warped) if i not in drop], [it for i, it in enumerate(items) if i not in drop],
+            len(drop))
+
+
+def run_ratio(target_box, ex_corners, axis):
+    """Our area's length over the exemplar's along the run axis."""
+    eb = box_of(ex_corners)
+    return (target_box[axis][1] - target_box[axis][0]) / max(1e-6, eb[axis][1] - eb[axis][0])
+
+
+SIGHTS = ("front_sight", "rear_sight")
+
+
+def proportions(parts, cat, data):
+    """Sights that kept our fit and stand taller or longer than the category's q90 (a crude source's block) are scaled
+    about their base (the bottom, y grows downward) to the category's median height and length. (parts, report)."""
+    out, report = list(parts), {}
+    for area in SIGHTS:
+        idx = [i for i, p in enumerate(out) if getattr(p, "area", None) == area and not getattr(p, "exemplar", None)]
+        if not idx:
+            continue
+        dims = [(g["areas"][area]["box"][1][1] - g["areas"][area]["box"][1][0],
+                 g["areas"][area]["box"][0][1] - g["areas"][area]["box"][0][0])
+                for g in data["guns"].values() if g["cat"] == cat and area in g["areas"]]
+        if len(dims) < 3:
+            continue
+        hs, ls = sorted(d[0] for d in dims), sorted(d[1] for d in dims)
+        q90 = lambda v: v[min(len(v) - 1, int(0.9 * len(v)))]  # noqa: E731
+        med = lambda v: v[len(v) // 2]  # noqa: E731
+        box = box_of([out[i].c for i in idx])
+        h, ln = box[1][1] - box[1][0], box[0][1] - box[0][0]
+        fy = med(hs) / h if h > 1.05 * q90(hs) else 1.0
+        fx = med(ls) / ln if ln > 1.05 * q90(ls) else 1.0
+        if fy == 1.0 and fx == 1.0:
+            continue
+        base, cx = box[1][1], (box[0][0] + box[0][1]) / 2
+        for i in idx:
+            p = out[i]
+            c = {k: [cx + (v[0] - cx) * fx, base + (v[1] - base) * fy, v[2]] for k, v in p.c.items()}
+            q = fit.new_part(p.name, p.group, p.colour, c, getattr(p, "label", p.name))
+            q.area = area
+            out[i] = q
+        report[area] = {"scaled": len(idx), "height": round(h * fy, 3), "length": round(ln * fx, 3)}
+    return out, report
+
+
 def _mean(colours):
     return [sum(c[j] for c in colours) / len(colours) for j in range(3)] if colours else None
 
@@ -674,6 +740,7 @@ def apply(parts, cat, like, header, data=None, labels=None, folding=False, exemp
                 continue
         fallback = _mean([parts[i].colour for i in idx])
         known = [it[0]["tone"] for it in items if it[0].get("tone")]
+        warped, items, thinned = thin(warped, items, run_ratio(tarea["box"], corners_of(ex), tarea["axis"]))
         made = new_parts(warped, items, gname, fallback, _mean(known))
         theirs = set(a for _, a, _ in items)
         taken = [a for a in mine if a in theirs]           # our areas the exemplar lacks (a moving bolt) stay ours
@@ -685,6 +752,8 @@ def apply(parts, cat, like, header, data=None, labels=None, folding=False, exemp
         for a in sorted(set(taken) | set(counts)):
             report[a] = {"gun": gname, "parts": counts.get(a, 0), "score": round(s, 3), "overlap": round(ov, 3),
                          "via": name}
+        if thinned:
+            report[sorted(set(taken) | set(counts))[0]]["thinned"] = thinned
 
     # 2. single areas, then 3. sections of them
     for area, idx in sorted(by.items()):
@@ -708,12 +777,17 @@ def apply(parts, cat, like, header, data=None, labels=None, folding=False, exemp
             _, bad = material_agreement(target, ours_cols, warped, [p.get("tone") for p in cands[gname]["parts"]],
                                         bins_of(tarea["box"]))
         if ov >= GATE and bad <= MATERIAL_TOL:
-            made = new_parts(warped, [(p, area, exl(gname)) for p in cands[gname]["parts"]], gname, None, None)
+            items = [(p, area, exl(gname)) for p in cands[gname]["parts"]]
+            warped, items, thinned = thin(warped, items, run_ratio(tarea["box"], corners_of(cands[gname]),
+                                                                    tarea["axis"]))
+            made = new_parts(warped, items, gname, None, None)
             added += made
             keep -= set(idx)
             by_gun[gname] += len(made)
             report[area] = {"gun": gname, "parts": len(made), "score": round(s, 3), "overlap": round(ov, 3),
                             "via": "area"}
+            if thinned:
+                report[area]["thinned"] = thinned
             continue
         owner = None
         if not follow and tarea["axis"] == 0:

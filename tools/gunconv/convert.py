@@ -41,6 +41,10 @@ MIN_SIZE = 0.08       # parts whose longest side is shorter are not seen in game
 PANEL = 1.5           # flat parts longer than this along x become panels (rifle parts: longest side median 1.0, q90 1.4)
 SIGHT_REACH = 1.5     # the front sight is moved onto the like gun's sight line only when it is this close already
 FAMILY = 6            # exemplar parts and details come from this many of the closest guns (and the like gun)
+# Decimation draws pistols bigger than its long guns: real lengths over model lengths, pistols 21 .. 30 mm a unit
+# (median about 25: glock17 28.8, m1934 21.1, makarov 24.6, browninghp 23.5, colt 26.0, cz52 24.3), rifles, shotguns
+# and SMGs about 31 (akm 30.9, r870 29.3, mp5a3 29.7) [real lengths from memory, not checked]
+MM_PER_UNIT = {"pistol": 25.0, "revolver": 25.0}
 WEAK_LIKE = 0.6       # a best silhouette overlap under this: no Decimation gun is close, the like gun is a guess
 SLIDE_KICK = {"pistol": 1.2, "revolver": 0.0, "smg": 1.6}  # Fire: slideModel back (style guide section 10: about 2.4)
 KEYWORDS = [("ammoModel", re.compile(r"mag|clip|ammo|cartridge|bullet|shell", re.I)),
@@ -531,7 +535,7 @@ def convert(model, name=None, display=None, category=None, like=None, length=Non
     if length:
         target = float(length)
     elif length_mm:
-        target = float(length_mm) / 31.0
+        target = float(length_mm) / MM_PER_UNIT.get(category, 31.0)
     elif info:
         target = info["length"]
     else:
@@ -608,6 +612,10 @@ def convert(model, name=None, display=None, category=None, like=None, length=Non
                                                          folding=bool(info.get("foldingSights")),
                                                          exemplar_tones=one_colour, family=family)
     parts = layered(panelled(parts))
+    if exemplars and info:
+        parts, scaled = exemplar.proportions(parts, category, dataset_data())
+        for a, r in scaled.items():
+            ex_report.setdefault(a, {}).update(r)
     if exemplars and info and details_on:
         import dataset
         import details
@@ -639,6 +647,11 @@ def convert(model, name=None, display=None, category=None, like=None, length=Non
     return Conversion(name=name, display=display or default_display(model.name or name), category=category,
                       like=like, candidates=cands, parts=parts, points=points, header=header, warnings=warnings,
                       matrix=[list(r) for r in M], source=source, stats=stats)
+
+
+def dataset_data():
+    import dataset
+    return dataset.load()
 
 
 def default_display(stem):

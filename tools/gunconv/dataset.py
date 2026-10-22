@@ -7,6 +7,7 @@ their corners, kind, group, tone, detail flag) that the converter refits onto a 
                                                       # + docs/references/decimation_gun_areas.tsv (aggregates only)
     python3 tools/gunconv/dataset.py check            # the rules against Decimation's own stock / grip / barrel names
     python3 tools/gunconv/dataset.py render GUN ...   # one colour per area, for the eye (docs/shots, git ignored)
+    python3 tools/gunconv/dataset.py density PKG ...  # details per area of converted packages vs the medians
 
 LEGAL: the dataset is Decimation's model data in another form. It stays under build/, is made again from the jar by
 this tool and is never committed; only this code, the rules and the aggregate numbers go into the repository.
@@ -399,6 +400,34 @@ def aggregate(data):
     return rows
 
 
+def medians(data):
+    """{(category, area): {"details", "density"}} medians over Decimation's guns (aggregate)."""
+    return {(r["category"], r["area"]): {"details": r["details"], "density": r["density"]} for r in aggregate(data)}
+
+
+def density(gun, med=None):
+    """Per area of a study.Gun: parts, details (study.detail_parts), the area's length along its run, details a unit
+    of it, and the category's medians (milestone 3 metric; med from medians(), else loaded)."""
+    if med is None:
+        med = medians(load())
+    rule = study.detail_parts([p.verts() for p in gun.parts])
+    shapes = shapes_of_gun(gun)
+    by = {}
+    for i, (area, _) in enumerate(label_gun(gun)):
+        by.setdefault(area, []).append(i)
+    rows = []
+    for area, idx in sorted(by.items()):
+        pts = [q for i in idx for q in shapes[i].c.values()]
+        box = [(min(q[a] for q in pts), max(q[a] for q in pts)) for a in range(3)]
+        run = max(b - a for a, b in box)
+        n = sum(1 for i in idx if rule[i])
+        m = med.get((gun.cat, area), {})
+        rows.append({"area": area, "parts": len(idx), "details": n, "length": round(run, 3),
+                     "density": round(n / run, 3) if run > 0 else 0.0, "medianDetails": m.get("details"),
+                     "medianDensity": m.get("density")})
+    return rows
+
+
 def write_aggregate(rows, path=AGGREGATE):
     keys = ["category", "area", "guns", "parts", "details", "length", "height", "width", "density"]
     with open(path, "w") as f:
@@ -468,6 +497,18 @@ def main(argv):
     elif argv[0] == "check":
         agree, total = name_agreement()
         print("rules agree with Decimation's own names on %d of %d parts (%.1f %%)" % (agree, total, 100.0 * agree / total))
+    elif argv[0] == "density":
+        # dataset.py density PACKAGE_DIR ...: details per area of converted guns against the category's medians
+        import package
+        med = medians(load())
+        for d in argv[1:]:
+            g = package.built_gun(d)
+            print("%s (%s), %d parts" % (g.name, g.cat, len(g.parts)))
+            print("  %-16s %5s %7s %7s %8s %8s %8s" % ("area", "parts", "details", "length", "per unit", "median",
+                                                       "med/unit"))
+            for r in density(g, med):
+                print("  %-16s %5d %7d %7.2f %8.2f %8s %8s" % (r["area"], r["parts"], r["details"], r["length"],
+                                                              r["density"], r["medianDetails"], r["medianDensity"]))
     elif argv[0] == "render":
         out = os.path.join(ROOT, "docs", "shots", "gunconv_v0.66.1", "areas")
         for n in argv[1:]:

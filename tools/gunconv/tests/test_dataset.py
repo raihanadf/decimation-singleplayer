@@ -85,6 +85,20 @@ class LabelTest(unittest.TestCase):
         self.assertEqual([round(v, 2) for v in a["mag"][0]], [0.0, 3.0])
 
 
+class DensityTest(unittest.TestCase):
+    def test_rows_per_area(self):
+        """Details (study.detail_parts) per area and per unit of the area's length, next to the category's medians."""
+        gun, names = synth_gun()
+        medians = {("rifle", "receiver"): {"details": 19.0, "density": 1.83}}
+        rows = {r["area"]: r for r in dataset.density(gun, medians)}
+        rec = rows["receiver"]
+        self.assertEqual(rec["details"], 1)                         # the rivet
+        self.assertAlmostEqual(rec["density"], 1 / 10.0, delta=0.01)  # 10 long
+        self.assertEqual(rec["medianDetails"], 19.0)
+        self.assertEqual(rec["medianDensity"], 1.83)
+        self.assertIsNone(rows["stock"]["medianDensity"])
+
+
 class StraightStockTest(unittest.TestCase):
     def test_a_butt_is_not_a_grip(self):
         """A rifle without a pistol grip (a lever or pump action, the Colt Lightning sample): its straight stock's butt
