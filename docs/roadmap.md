@@ -247,8 +247,11 @@ a short design talk each first:
    benefits (40). 10. Armor, vest and gun durability with repair parts (47, 48). 11. Trader market by day (39).
 12. Loot rules, lootable props, loot kinds, Tarkov search (36, 49, 50, 29). 13. Zombie variants and mutants (37).
 14. Achievements and story mode UI (38, 31). 15. Survivor events, friendly NPC and trader quests (28, 32, 33).
-The bugfix agent works in ../Decimation-bugfix (branch bugfix, ports 25596 / 5008): inventory shift click, invisible
-foregrips, props broken by one punch (bug.md Open); its work is reviewed and merged into main, then carried.
+Split (user 22 Oktober 2026: "use previous subagent ... for low - medium feat task and this session for hard - extreme"):
+the agent in ../Decimation-bugfix (branch bugfix, ports 25596 / 5008) builds 7, 8, 9, 11 and new bug reports; this
+session builds 6, 10, 12, 13, 14, 15. The agent's work is reviewed and merged into main by this session, then carried.
+Agent rules: our channel's message ids from 32 up (this session from 2), no graph edits on its branch, no production runs
+(the production client and server ports are this session's).
 
 ## Ideas (later, user 12 Oktober 2026)
 - The user's list of 22 Oktober 2026 (docs/ideas.md 28 to 38): random survivor events with timed quests, Tarkov style

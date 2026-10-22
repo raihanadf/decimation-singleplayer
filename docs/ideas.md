@@ -217,13 +217,18 @@ User: "for the feat i have more". Notes on what we already have are mine [not an
 41. **Radiation pills** for radiation sickness. Decimation has no such item [checked in decimation_items.tsv: no rad
     or iodine item]; its radiation today is only "irradiated" while inside a RADIATION zone without a gas mask, 10 % a
     tick 1 damage (docs/zones.md RADIATION): a sickness that lasts after leaving would be new.
+    Decided 22 Oktober 2026 (user): a pill takes 40 percentage points off the radiation dose at once (fixes/RadiationDose,
+    feature 5); found in medical loot. Built by the agent on branch bugfix (feature 7).
 42. **Gas mask durability, refilled with a gas mask filter**. Decimation already has the items: deci:gasmask,
     deci:gasmaskmilitary (ItemGasMaskDeci) and deci:ItemScrapMilitaryGasMaskFilter ("Gas Mask Filter", today scrap, in
     supply drops only). The mask protects without wear today.
+    Decided 22 Oktober 2026 (user): a filter wears only while its wearer is in radiation, about 10 minutes a filter; an
+    empty filter protects no more until a new Gas Mask Filter is fitted (right click it). Agent, feature 7.
 43. **The wasteland city one radiation zone everywhere** ("wasteland city become full radiation zone on all place"). Each
     wasteland district is a MILITARY zone today (docs/wasteland.md, city/Wasteland); Decimation's RADIATION zone works in
     singleplayer since v0.46.0 (fixes/ZoneRules). A place can be in two zone kinds only if the zone lists allow it
     [not analysed]. Goes with 41 and 42.
+    Agent, feature 7 (user wish as written: the whole wasteland city one radiation zone).
 44. **Unload a magazine with shift + right click** (its rounds back as ammo). Related: fixes/Magazines (v0.35.0),
     Decimation's magazine items keep rounds in NBT (docs/decimation_code/weapons.md).
 45. **Magazines from loot hold a random number of rounds** ("all mag loot have variaty capacity ammo inside it").
@@ -250,6 +255,8 @@ User: "for the feat i have more". Notes on what we already have are mine [not an
     setting); it needs our own light map at night, and a fix so the player's brightness setting cannot undo it
     [not analysed; Decimation's weather and fog: docs/decimation_code/world.md]. My reading: a feature, not a report
     that nights are too dark now.
+    Decided 22 Oktober 2026 (user): DayZ style, near black (about 95 %) on a new moon, a full moon lets you make out
+    shapes; light sources work as now; nights ignore the brightness slider (daytime keeps it). Feature 6, this session.
 53. **Some looted guns hold rounds** (user, 22 Oktober 2026: "some guns loot have ammo inside it, so not all of them is
     empty"). DONE the same day (new_feature.md "Looted guns hold rounds").
 54. **No Steve: every player a random Decimation skin** (user, 22 Oktober 2026: "later we dont use steve default skin,
