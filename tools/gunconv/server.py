@@ -10,7 +10,8 @@ API (JSON):
     GET  /api/gun?name=GUN            a Decimation gun's parts (corners and groups, no texture): the like gun overlay
     POST /api/upload?filename=F       body = the file; stored under build/gunconv/work/uploads/
     POST /api/convert                 {sample | upload, name, display, like, category, length, lengthMm, muzzle, up,
-                                       mirror, source}: the converted parts, points, header, candidates, matrix
+                                       mirror, source, mode ("exact"), budget}: the converted parts, points, header,
+                                       candidates, matrix, stats (exact mode: faces and the estimated cost)
     POST /api/reshape                 {part, kind}: the part as another kind (edit.py)
     POST /api/export                  the (edited) conversion: writes build/gunconv/out/<name>/, returns files and
                                        the study.py gaps rows against Decimation's guns of the category
@@ -177,11 +178,15 @@ class Handler(BaseHTTPRequestHandler):
         src = package.source_for(path)
         src.update({k: v for k, v in (req.get("source") or {}).items() if k in ("author", "url", "license") and v})
         t = time.time()
-        conv = convert.convert(path, name=req.get("name") or None, display=req.get("display") or None,
-                               category=req.get("category") or None, like=req.get("like") or None,
-                               length=req.get("length") or None, length_mm=req.get("lengthMm") or None,
-                               muzzle=req.get("muzzle") or None, up=req.get("up") or None,
-                               mirror=bool(req.get("mirror")), source=src)
+        kw = dict(name=req.get("name") or None, display=req.get("display") or None,
+                  category=req.get("category") or None, like=req.get("like") or None,
+                  length=req.get("length") or None, length_mm=req.get("lengthMm") or None,
+                  muzzle=req.get("muzzle") or None, up=req.get("up") or None, mirror=bool(req.get("mirror")),
+                  source=src)
+        if req.get("mode") == "exact":                   # the Exact button: the faces 1:1 (exact.py)
+            conv = convert.convert_exact(path, budget=req.get("budget") or None, **kw)
+        else:
+            conv = convert.convert(path, **kw)
         out = conv.to_json()
         out["path"] = rel
         out["seconds"] = round(time.time() - t, 2)

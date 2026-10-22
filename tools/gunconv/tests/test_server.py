@@ -108,6 +108,24 @@ class ServerTest(unittest.TestCase):
         self.assertEqual(res["parts"], len(conv["parts"]))
         self.assertIn("metrics", res)
 
+    @unittest.skipUnless(JAR, "needs Decimation.jar for the like gun")
+    def test_exact_mode(self):
+        """The page's Exact button: the faces 1:1 as plates within the budget, the estimated cost with its verdict; an
+        export over twice the cost budget (the parts of an edit counted again) is refused."""
+        conv = self.post("/api/convert", {"sample": "synth/synthgun.glb", "name": "synthexact", "like": "akm",
+                                          "length": 28, "mode": "exact", "budget": 300})
+        st = conv["stats"]
+        self.assertEqual(st["mode"], "exact")
+        self.assertLessEqual(st["faces"], 300)
+        self.assertEqual(len(conv["parts"]), st["faces"])
+        self.assertIn(st["cost"]["verdict"], ("ok", "warn", "refuse"))
+        self.assertIn("drawMs", st["cost"])
+        res = self.post("/api/export", conv)
+        self.assertTrue(os.path.isfile(os.path.join(res["dir"], "gun.json")))
+        heavy = dict(conv, parts=conv["parts"] * (1200 // len(conv["parts"]) + 1))   # over 1,140 parts: refused
+        with self.assertRaises(Exception):
+            self.post("/api/export", heavy)
+
 
 if __name__ == "__main__":
     unittest.main()

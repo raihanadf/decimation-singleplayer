@@ -14,6 +14,7 @@ The converted rifles have not been in the game yet: that is agent 2's part of mi
 | Compare with Decimation's guns | `STUDY_OURS=$PWD/build/gunconv/out/NAME/assets/deci python3 tools/guns/study.py gaps ours:NAME` (also sheet, render, vocab, contact, attach) |
 | Tests | `python3 -m unittest discover -s tools/gunconv/tests -t tools/gunconv/tests` (139 tests, about 9 s; tests with a like gun need Decimation.jar, two need the git ignored samples) |
 | Details per area | `python3 tools/gunconv/dataset.py density build/gunconv/out/NAME ...` (details and details a unit of each area's length against the category's medians, milestone 3) |
+| Exact mode | `convert.py MODEL --exact [--budget FACES] [--force] ...` (section 12; budget 300 to 2000, default 350; --force writes a package over twice the cost budget, to measure it); on the page the Exact button and the face budget slider |
 
 Folders (all git ignored under build/gunconv): inputs/<folder>/ holds a sample model and its source.json
 ({"author", "url", "license"}); work/uploads/ the files opened on the page; out/<name>/ the packages.
@@ -250,4 +251,55 @@ Still weak, and why:
 - Hole filling adds fit pieces (P228 40, m590 25, csmg 23, ak47 16, lightning 9) that can overlap exemplar parts.
 - Not verified: the user's look; the aim pictures only on the 854 x 480 shots; gunperf; attachments on the new guns;
   the page beyond one smoke test (the Mossberg sample, m3_page_m590.png).
+
+## 12. Exact mode (23 Oktober 2026)
+
+User: "add 1 method converter that only convert 3D gun to bmodel with same 1:1 output, so its basicly just changing the
+format"; "yes build exact mode. and for the texture still using decimation style". Spec: docs/superpowers/specs/
+2026-10-22-gun-converter-design.md, "Exact mode".
+
+| Piece | What |
+|---|---|
+| exact.py | Weld, then one quadric edge collapse queue over all pieces (Garland and Heckbert; never across pieces; border edges held by extra planes; collapses that flip or fold a face, or break the link condition, refused), coplanar triangles merged into quads (3 degrees, convex), faces with a longest side under 0.06 dropped. Every face one part: a plate 0.02 thick, the face on both sides, corners right handed so each side's normal points away from it (a triangle repeats its last corner). The cost model and the gate (estimate, verdict). |
+| convert.py | place() shared by both modes (axes, like gun, scale, alignment, z centre); convert_exact(): groups from names or the like gun's anatomy, Decimation style tones (palette by area, one colour files from the like gun's parts by position), points and header as now. CLI --exact, --budget, --force. |
+| package.py | gun.json "converter" gets "mode": "exact", "faces", "budget", "cost"; export counts the cost again from the parts (an edit may add some) and refuses over twice the budget unless forced. |
+| page | Exact button beside Convert, the face budget slider (300 to 2000, 350), the part count and estimated draw time against the akm after converting and after every edit. |
+| study.py | Faces with two corners on one point drawn with an affine texture map (they were drawn blank). |
+
+Cost, measured in game (dev test gunpack perf=true: median of 200 draws, glFinish around, GPU included, ModelBatch on,
+the dev client on the M4). Fourteen exact guns of 354 to 1,940 parts in two launches lie on 0.344 + 0.000903 ms a part
+(within 0.061 ms); Decimation's akm (194 parts) drew in 0.425 to 0.530 ms, median 0.4605. So 1.5 x the akm is about 384
+parts and twice that budget 1,148: the default budget is 350 (the user's suggested 800 draws about 2.2 x the akm's).
+
+| Gun (exact, budget 350) | Parts | Draw time, quiet launch | Ratio to the akm, quiet / busy launch | Against its like gun (1.5 x + 0.05 ms) | Convert time |
+|---|---|---|---|---|---|
+| ak47x | 350 | 0.690 ms | 1.57 / 1.40 | akm: PASS | 5.3 s |
+| akmcx | 348 | 0.667 ms | 1.52 / 1.55 | akm: PASS | 3.5 s |
+| m590x | 347 | 0.629 ms | 1.43 / 1.31 | benellim4 0.38 ms: FAIL | 2.0 s |
+| p228x | 347 | 0.652 ms | 1.48 / 1.40 | m1934 0.33 ms: FAIL | 2.4 s |
+| csmgx | 341 | 0.664 ms | 1.51 / 1.35 | uzi 0.36 ms: FAIL | 2.0 s |
+| lightningx | 349 | 0.653 ms | 1.48 / 1.41 | kar98k: PASS (by 0.002 ms in the quiet launch; 400 faces failed) | 2.2 s |
+
+The quiet launch's packages had the same part counts with the budget shared by area (before the one queue); the busy
+launch (every time about 1.8 x, akm 0.82 to 0.88 ms) ran the final packages; ratios hold across both. Decimation style
+packages drew 0.39 to 0.56 ms in the same runs (within 1.5 x their like guns).
+
+Graphics memory (vmmap, IOAccelerator graphics regions summed): not attributable per gun. The driver grows its pools in
+steps: in launches that started at 1.37 GB, the first exact gun drawn added 260 to 268 MB and every later one about 1 MB
+(1,940 parts included); in a launch that started at 375 MB, four exact guns (2,322 parts) took it to 1,379 MB. Decimation
+style guns added 0.3 to 4 MB each in the same launches. Each part is three display lists (Decimation's two and
+ModelBatch's one) and six quads: an exact gun of 350 parts holds 2,100 quads, the akm 1,164.
+
+Seen (x_exact_sheet.png; in game x_ingame_final_1.png and _2.png, all hip, aim and NPC frames): every exact gun is its
+source's shape, smooth low poly in Decimation's dark tones: the AK-47's milled receiver and front, J-Toastie's AKM, the
+Mossberg's pump and tube, the Lightning's crescent butt and wooden pump, the vz. 61 with its folded wire stock, the P228's
+slide and frame. No holes or inverted lighting showed in the game at 854 x 480 (the plates' two sides). Exact keeps the
+source's identity, which the Decimation style versions lost (the Lightning, the vz. 61 and the P228 most), but it has
+none of Decimation's construction or details and costs about 1.5 x the akm to draw.
+
+Still weak: cost against cheaper like guns (pistols, SMGs, shotguns draw 0.33 to 0.38 ms: 350 faces is 1.7 to 2 x
+them); the per part tone shade makes neighbouring faces of one surface differ a little (Decimation's gradation applied
+per face); the P228's slide serrations come out as lighter strips; unnamed pump guns still get no slideModel or
+ammoModel. Not verified: the user's look; backface lighting closer than 854 x 480; attachments on exact guns; gunperf
+with NPCs carrying exact guns.
 
