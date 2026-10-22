@@ -168,3 +168,6 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [ ] user: look at the inline HUD and the splats in game; HUD with OptiFine (production client) not checked yet
 - [ ] Gunsmith: hide slots a gun cannot take (no slots at all for a gun without attachments), stats panel later (docs/ideas.md 56)
 - [ ] more Decimation blocks; colour variants of crates and props (military crate green / desert tan / grey / black, packages): retextures (docs/ideas.md 57)
+- [ ] sprint stamina (docs/ideas.md 58)
+- [ ] personal skills upgraded with points in a UI (docs/ideas.md 59)
+- [ ] random events at places announced to the player: helicopter crash with hard infected, survivor camp with a task giver and a trader (docs/ideas.md 60, big; quests milestone 0.80)

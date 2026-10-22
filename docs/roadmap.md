@@ -18,12 +18,13 @@ smaller releases sit in between (0.70.1, 0.71 ...).
   loader is main only), multiplayer.
 - **0.80**: quests (docs/superpowers/specs/2026-10-22-events-quests-design.md, draft).
 - **0.90**: the cities revamped and changed (docs/city_replacement.md).
-- **0.95**: optimizing every part, multiplayer above all.
-- **1.0.0**: the first release (docs/release_1.0.md).
-- OPEN, asked 23 Oktober 2026: the 18 Oktober rule says "pre-releases carry only low to medium fixes; multiplayer and
-  the new cities ship together in 1.0.0, so no jar a player downloads before 1.0.0 may hold multiplayer code"; whether
-  0.90 ships the new cities to players and 0.95 ships multiplayer, or both stay on main until 1.0.0, is the user's
-  answer to wait for.
+- **0.95**: optimizing every part; multiplayer tested as a full QA pass (user: "multiplayer still have many bug so in
+  that feat we act like full QA tester"), on main, not in a pre-release.
+- **1.0.0**: the first release (docs/release_1.0.md), with multiplayer: "still keep release on 1.0.0 since its main
+  promotion and one of main feature" (user, 23 Oktober 2026). The 18 Oktober rule stands for multiplayer: no jar a
+  player downloads before 1.0.0 holds multiplayer code.
+- OPEN, asked 23 Oktober 2026: whether 0.90 ships the revamped cities to players or they stay on main until 1.0.0 (the
+  18 Oktober rule had cities and multiplayer together in 1.0.0).
 
 ## Open bugs
 

@@ -347,4 +347,11 @@ User: "for the feat i have more". Notes on what we already have are mine [not an
     crate too, its on some other props too like package. so this feat just retexture task"): new blocks in Decimation's
     world, and the same prop in several colours (a military crate in green, desert tan, grey and black; packages and
     other props too): retextured copies of Decimation's props (as fixes/LootBlocks copies them), loot kept per kind.
+58. **Sprint stamina** (user, 23 Oktober 2026): running costs stamina; a stamina bar, slower when empty.
+59. **Personal skills, upgraded with points through a UI** (user, 23 Oktober 2026: "personal skill upgrade UI based and
+    point based"): the player earns points and spends them on skills in a screen of their own.
+60. **Random events at places, announced to the player** (user, 23 Oktober 2026, "big feature"): an event starts at
+    a place and the player is told there is one there; examples: a helicopter crash guarded by hard infected to kill;
+    a survivor camp of 3 to 5 people where one gives a task and another trades. Belongs with the quests milestone
+    (docs/roadmap.md "Version milestones", 0.80; docs/superpowers/specs/2026-10-22-events-quests-design.md, draft).
 
