@@ -6,7 +6,9 @@
 main (multiplayer) and prerelease (plain fixes) are two checkouts of one repo (CLAUDE.md "Repository"). Each line's
 live test game (tools/devtest.py --live, devtest/DevTestLive) and debug port (-Photswap / -Plive, tools/hotswap.py)
 gets its own number, so a live game of one line never answers the other line's runs. The bugfix worktree
-(../Decimation-bugfix, branch bugfix, 22 Oktober 2026: a second agent fixes bugs there) has its own pair. main's second game on this Mac
+(../Decimation-bugfix, branch bugfix, 22 Oktober 2026: a second agent fixes bugs there) has its own pair. So have the
+gun converter's two worktrees (../Decimation-gunconv-tool and ../Decimation-gunconv-game, 22 Oktober 2026: two agents
+build the 3D gun converter, docs/ideas.md 27). main's second game on this Mac
 (the production client as a joiner, docs/player_hosting.md) keeps 25598 / 5006.
 """
 import os
@@ -14,7 +16,7 @@ import subprocess
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DEFAULT = (25599, 5005)
-PORTS = {"prerelease": (25597, 5007), "bugfix": (25596, 5008)}
+PORTS = {"prerelease": (25597, 5007), "bugfix": (25596, 5008), "gunconv-tool": (25595, 5009), "gunconv-game": (25594, 5010)}
 
 
 def branch():
