@@ -162,3 +162,5 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [x] feature 11 trader market built on main (market all PASS; not carried, no production run yet)
 - [ ] feature 9 attachment benefits (plan 2026-10-22-attachment-benefits-design.md; user: wait)
 - [ ] features 14 (achievements, story UI) and 15 (events, quests): draft plans with open questions for the user
+- [x] Karambit and Katana with first person draw and inspect (fixes/NewMelee, MeleeRenderer, MeleeMotion; dev test melee)
+- [ ] user: the katana's toss and catch draw in game (not seen yet)

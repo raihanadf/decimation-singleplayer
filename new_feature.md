@@ -7,6 +7,28 @@ Status values: `Done` / `Decided` (direction agreed, not built yet) /
 
 ## Done
 
+### Karambit and Katana: our own melee weapons with first person draw and inspect (23 Oktober 2026, branch feature/karambit-katana)
+- User: "add 2 more knife: Karambit (held like CS) and a long Katana (like Valorant), vanilla version of how a katana would
+  look like in a zombie apocalypse"; draw animation on pulling it out and an inspect (CS / Valorant smooth).
+- Models, textures and icons: tools/guns/melee.py (Decimation style parts, worn and bloodied); registered by fixes/NewMelee
+  as deci:karambit (7 damage) and deci:katana (9), Decimation's MeleeWeaponItem, loot wherever the machete is.
+- fixes/MeleeRenderer: first person forearm in the player's skin holding the knife (Decimation cancels the hand for
+  everything but its guns: MeleeMotion lifts that for our knives), third person, dropped, flat icon.
+- fixes/MeleeMotion: keyframed draw and inspect (Catmull-Rom on real time, every frame), key "DeciRemnant: Inspect" (Y),
+  a swing ends the inspect; Minecraft's equip dip held off. Katana draw after the user's Valorant Sovereign frames: tossed
+  out of the hand spinning, a fake catch, the catch into the low hold (the knife has its own place off the hand); inspect:
+  upright, tilted, hung point down, flat across. Decimation's first person body hides its arms only for guns: showModel
+  off for our knives (three hands when looking down, user).
+- Slashes (user: "the slashing animation is legit boring, refer to the video"): after the Sovereign blade's attacks, clicks
+  closer than 0.9 s chain A (forehand, right to left), B (backhand, left to right), C (katana: heavy overhead diagonal;
+  karambit: a thrust); a new swing is Minecraft's swingProgressInt back at 0. Minecraft's own swing is held at 0 for the
+  first person frame (onRenderTick START / END), so third person still swings. Follow throughs keep the blade in view.
+- Checked: dev test `melee` 6 PASS (slot change starts the draw, Y starts the inspect, a swing starts slash A, each
+  knife), frames compared with the reference videos; `-Pgif` samples draw, inspect and slashes every 1/20 s without the
+  HUD. User checked earlier builds in Prism; toss draw and slashes not seen by the user yet [not verified in game]. Arm is
+  one skin block (no fingers). Looking down: the user reports the katana's handling as bugged; dev shots show only the
+  body (feet, floor edge) below the view, same as an empty hand: cause not found yet.
+
 ### New attachments: RK-1 Foregrip, ELCAN SpecterDR 1x/4x, grips on every gun (21 Oktober 2026, main)
 - User: "we have 2 new attachment: new grip, and 4x scope"; chosen: the SpecterDR with a 1x/4x switch on a key (G),
   the grip with its own recoil (1/2 up, 1/4 sideways), every grip placed per gun, loot like the 4x and the Foregrip.
