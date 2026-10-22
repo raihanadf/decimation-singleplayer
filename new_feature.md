@@ -1199,3 +1199,13 @@ lineup photo zombies_v0.34.0. Not seen by the user in game yet
   the client's check (a loaded magazine with a known round) and keeps any failure inside the tick (automated security
   review: a modified client could otherwise throw a null pointer in the server tick). A dedicated server
   and a joined client [not run: the channel is new, check it with the next production run].
+- v2, same day (user: "just make it same like load ammo process code, just wanted reverse version or unload version"):
+  unloading is Decimation's loading backwards (AmmoItem.onItemRightClick: one round in a right click, the button held
+  repeats it every 4 ticks, bullet.in at pitch 1, one loose round taken, in creative only the round). Now one round out a
+  sneaking right click (held: one every 4 ticks), bullet.in at pitch 1, one loose round given (on the ground when full),
+  in creative only the round; a stack of magazines gets "You can only unload 1 magazine at a time! Not N!", an empty one
+  "This Magazine is empty!" (Decimation: "This Magazine is full!"), and an empty magazine no longer falls through to
+  Decimation's loading on a sneaking click. No timer, no running list: the server does at most one step a player a tick.
+  Checks: unit MagUnloadTest (step order and texts) RED (no Step / step / message) then GREEN, suite 163; dev test
+  magunload 5 of 5 (one click 20 to 19 with 6 loose, five clicks 15 with 10, empty stays 0 with 5, full inventory 19 with
+  1 on the ground, a plain click still loads 21). Dedicated server and joined client [not run, as above].
