@@ -148,7 +148,8 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [ ] gun converter next: production client with OptiFine, the user's look in game, a release with a package (both branches merged into main 22 Oktober 2026)
 - [x] gun converter milestone 4: converted guns as real meshes 1:1, pixel texture in the like gun's tones, cap 30000 (docs/gunconv.md 13; dev and production client with OptiFine checked)
 - [x] gun converter page in the DeciRemnant site's look, plain labels (user, 23 Oktober 2026; local, checked in the browser)
-- [ ] gun converter mesh guns: the user's look in game
+- [x] gun converter editor page and mesh guns: user verdict 23 Oktober 2026 "pretty nuts ... most of them is well so good" (page)
+- [ ] gun converter mesh guns: the user's look in game, slight improvements as they show up
 - [x] features 1 to 4 (armor vs NPCs, NPC tracer colours, loot magazine rounds, magazine unload) on main and prerelease
 - [x] looted guns hold rounds (1 in 2, like loot magazines; idea 53) on main and prerelease
 - [x] feature 5 radiation dose on the HUD (idea 30): main, prerelease, production client with OptiFine, dedicated server

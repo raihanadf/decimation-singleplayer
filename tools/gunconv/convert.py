@@ -339,10 +339,29 @@ def part_colour(part, piece):
     return tuple(int(round(a / wsum)) for a in acc)
 
 
+LEVER = re.compile(r"release|catch|safety|selector|well", re.I)   # levers and the well of the receiver, never moved
+BODY = re.compile(r"body|receiver|frame|stock|barrel|rail|handguard|grip|trigger|guard|muzzle|buffer|scope|optic|base",
+                  re.I)
+
+
 def keyword_group(piece):
-    for text in (piece.label, piece.material, piece.mesh_name):
+    """The group a piece's names give it, or None. Its own names (object, mesh) decide first: a magazine release, a
+    safety, a bolt catch or a mag well is the receiver's, and a piece named as a body part stays body whatever its
+    material (the user's Mk47: the artist painted the buffer tube, the muzzle and the safety with the magazine's "mag1"
+    and a rail strip with "bolt1"). Only a generic name (Object_12) leaves it to the material."""
+    for text in (piece.label, piece.mesh_name):
+        if not text:
+            continue
+        if LEVER.search(text):
+            return None
         for group, rx in KEYWORDS:
-            if text and rx.search(text):
+            if rx.search(text):
+                return group
+        if BODY.search(text):
+            return None
+    if piece.material and not LEVER.search(piece.material):
+        for group, rx in KEYWORDS:
+            if rx.search(piece.material):
                 return group
     return None
 

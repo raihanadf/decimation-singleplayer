@@ -408,3 +408,15 @@ Not verified: the user's look in game; sources with custom normals (ours are alw
 near 2048; Decimation's mud and blood overlays on a mesh gun (they draw the parts again with another texture over our
 UVs) [not verified]; a mesh gun as an NPC's gun beyond the gunpack and gunview frames [not verified].
 Shots: docs/shots/gunconv_mesh_v0.66.1 (docs/shots_index.md).
+
+User verdict on the editor and the mesh guns (23 Oktober 2026, docs/shots/gunconv_mesh_v0.66.1/user_mk47_editor.png):
+"well pretty nuts, the guns convert too btw, just need slight improvment but most of them is well so good". Two fixes
+from that screenshot (a CC0 Mk47 Mutant of the user's):
+- The page kept the last gun's item id, name, type and like gun when another model was opened: the Mk47 was exported as
+  "m4a1", handled like the akm. Opening a model now clears every per gun field (app.js resetSettings); the user's
+  build/gunconv/out/m4a1 holds that Mk47 (convert it again to name it).
+- A piece's own name now decides its role before its material (convert.keyword_group): its artist painted the buffer
+  tube, the muzzle, the safety and rail bits with the magazine's "mag1" / "mag2" and a rail strip with "bolt1", and
+  "magrelease" matched "mag". Releases, catches, safeties, selectors and wells stay with the body; a piece named as a
+  body part stays body; only a generic name (Object_12) leaves it to the material. Mk47: magazine 2,430 to 1,726
+  triangles (the magazine and its rounds), bolt 444 to 400 (bolt and charging handle); the six other models unchanged.

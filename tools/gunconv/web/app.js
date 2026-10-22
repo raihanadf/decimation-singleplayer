@@ -467,6 +467,21 @@ function fillSelect(sel, values, keep) {
   if (keep) sel.value = cur;
 }
 
+// A new model starts from scratch: its own name, id, type, like gun, size and turn, points and notes (the user's Mk47
+// was exported as "m4a1", handled like the akm, because the last gun's fields stayed).
+function resetSettings() {
+  for (const id of ["name", "display", "length-mm", "flame-x", "flame-y", "flame-z", "rail-top", "rail-from", "rail-to",
+    "grip-from", "grip-to"]) $(id).value = "";
+  for (const id of ["category", "muzzle", "up", "mount"]) $(id).value = "";
+  fillSelect($("like"), [["", "Automatic"]]);
+  $("mirror").checked = false;
+  $("warnings").innerHTML = "<li>Nothing yet.</li>";
+  $("notes-count").textContent = "";
+  $("report").textContent = "Press Export in the top bar once the gun looks right.";
+  $("src-stats").textContent = "";
+  $("pane-source").classList.remove("has");
+}
+
 function setCredit(src) {
   $("author").value = (src && src.author) || "";
   $("url").value = (src && src.url) || "";
@@ -501,6 +516,7 @@ $("load-sample").addEventListener("click", async () => {
   state.parts = [];
   state.pieces = [];
   state.sourceFile = s ? s.file : path.split("/").pop();
+  resetSettings();
   setCredit(s && s.source);
   conv.clear();
   drawParts();
@@ -541,6 +557,7 @@ async function openFile(f) {
     state.parts = [];
     state.pieces = [];
     state.sourceFile = f.name;
+    resetSettings();
     setCredit(null);
     conv.clear();
     drawParts();

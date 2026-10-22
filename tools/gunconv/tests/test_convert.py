@@ -246,3 +246,28 @@ class SampleTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class RolesFromNamesTest(unittest.TestCase):
+    """A piece's own name decides its role before its material (user's Mk47 Mutant, 23 Oktober 2026: the artist painted
+    the buffer tube, the muzzle and the safety with the magazine's "mag1" material and a rail strip with "bolt1")."""
+
+    def role(self, label, material, mesh=None):
+        p = convert.Piece([((0, 0, 0), (1, 0, 0), (0, 1, 0))], label, material, mesh or label, (60, 60, 60))
+        return convert.groups_of([p], None)[0]
+
+    def test_the_name_wins_over_the_material(self):
+        self.assertEqual(self.role("body_00", "mag1"), "gunModel")
+        self.assertEqual(self.role("body_00", "bolt1"), "gunModel")
+        self.assertEqual(self.role("mag_06", "mag1"), "ammoModel")
+        self.assertEqual(self.role("bolt_05", "bolt1"), "slideModel")
+        self.assertEqual(self.role("charginghandle_04", "Material"), "slideModel")
+
+    def test_levers_on_the_receiver_stay_with_the_body(self):
+        for label in ("magrelease_01", "mag_catch", "safety_02", "boltcatch", "magwell", "fire_selector"):
+            self.assertEqual(self.role(label, "mag1"), "gunModel", label)
+
+    def test_a_generic_name_leaves_it_to_the_material(self):
+        self.assertEqual(self.role("Object_12", "Magazine_Black"), "ammoModel")
+        self.assertEqual(self.role("mesh3", "bolt_carrier"), "slideModel")
+        self.assertEqual(self.role("Object_7", "Metal"), "gunModel")

@@ -2053,3 +2053,6 @@ pixels a unit.
   a file, Convert, Export), the sidebar panels, Your model and In the game side by side with counts, the status bar;
   empty (hints in both views, actions disabled), the AKM with the magazine picked, the P228 at an angle with the slide
   picked and the Export panel open.
+- user_mk47_editor.png: the user's screenshot of the editor (23 Oktober 2026, "well pretty nuts"): a CC0 Mk47 Mutant
+  converted, colour by role and the Decimation gun's outline on: the magazine orange, but also the buffer tube end and
+  the muzzle (painted with the magazine's material), blue rail bits (material "bolt1"); exported as "m4a1" (stale id).
