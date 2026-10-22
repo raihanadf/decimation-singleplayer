@@ -772,6 +772,29 @@ def source_colour(piece):
     return lambda t, w, p: src[t][0].colour_at(src[t][1], w)
 
 
+class BoxProxy:
+    """A piece as palette_tones reads parts: its colour and its box's corners (area_of)."""
+
+    def __init__(self, piece):
+        self.colour = piece.colour
+        b = piece.box()
+        self.c = {k: tuple(b[a][k[a]] for a in range(3)) for k in fit.CORNERS}
+
+
+DETAIL = 40.0 / 255.0    # luminance differences inside a piece (texture detail), scaled as tone() scales greys
+
+
+def toned_source(piece, base):
+    """A piece's colour in Decimation's tones: the like gun's tone for it (palette_tones) plus the source's light and dark
+    inside it (its texture, vertex colours), scaled down."""
+    src, mean = piece.src, match.lum(piece.colour)
+
+    def fn(t, w, p):
+        d = (match.lum(src[t][0].colour_at(src[t][1], w)) - mean) * DETAIL
+        return (base[0] + d, base[1] + d, base[2] + d)
+    return fn
+
+
 def convert_mesh(model, name=None, display=None, category=None, like=None, length=None, length_mm=None, up=None,
                  muzzle=None, mirror=False, source=None, mount=None, cap=None):
     """Mesh mode (converter milestone 4, docs/superpowers/specs/2026-10-23-gun-mesh-design.md; user, 23 Oktober 2026:
@@ -793,7 +816,8 @@ def convert_mesh(model, name=None, display=None, category=None, like=None, lengt
         fns, tone_fn = [lambda t, w, p: index.at(p)] * len(pieces), None
         warnings.append("the file has one colour: tones taken from %s's parts by position" % like)
     else:
-        fns, tone_fn = [source_colour(p) for p in pieces], tone
+        tones = palette_tones([BoxProxy(p) for p in pieces], groups, match.palette(like) if like else None)
+        fns, tone_fn = [toned_source(p, c) for p, c in zip(pieces, tones)], None
     name = name or default_name(model.name or "gun")
     res = meshpack.build([p.tris for p in pieces], fns, tone=tone_fn, seed=meshpack.mesh_id(name), cap=cap)
     parts = [MeshPiece(p.label, g, r["tris"]) for p, g, r in zip(pieces, groups, res.pieces)]

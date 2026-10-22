@@ -286,6 +286,28 @@ class MeshConversionTest(unittest.TestCase):
         with open(os.path.join(d, "assets/deci/animations/synthmesh/synthmeshFire.anib")) as f:
             self.assertIn("slideModel0", f.read(), "the bolt kicks in Fire")
 
+    def test_grey_pieces_take_the_like_guns_metal(self):
+        """Decimation's akm is near black metal (10 .. 46): a grey piece covering most of the source reads as its common
+        metal, as Exact mode's palette_tones gives it (match.palette), not tone()'s generic band (24 .. 64)."""
+        import match
+        conv = convert.convert_mesh(synth_model(), name="synthmesh", like="akm", length=28.0)
+        greys = match.palette("akm")["greyW"]
+        total, acc, common = sum(w for _, w in greys), 0.0, None
+        for v, w in greys:
+            acc += w
+            if common is None and acc >= total / 2:
+                common = v
+        k = [p["label"] for p in conv.pieces].index("receiver")
+        built = conv.mesh
+        W, H = built.image.size
+        lums = []
+        for uv in built.pieces[k]["uvs"]:
+            u, v = sum(q[0] for q in uv) / 3, sum(q[1] for q in uv) / 3
+            c = built.image.getpixel((min(W - 1, int(u * W)), min(H - 1, int(v * H))))
+            lums.append(match.lum(c))
+        mean = sum(lums) / len(lums)
+        self.assertAlmostEqual(mean, common, delta=10, msg="receiver %.1f, the akm's common metal %.1f" % (mean, common))
+
     def test_a_mirrored_source_still_faces_out(self):
         conv = convert.convert_mesh(synth_model(mirror_z=True), name="synthmesh", like="akm", length=28.0)
         for p in conv.mesh.pieces:

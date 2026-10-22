@@ -492,7 +492,7 @@ public class RefugeVisitTest extends DevTestMode
      * This process's resident memory in MB (ps), and on macOS its physical footprint and the graphics driver's share
      * (vmmap -summary: "Physical footprint", IOAccelerator regions; display lists and textures live there).
      */
-    private static String rss()
+    static String rss()
     {
         StringBuilder out = new StringBuilder();
         try

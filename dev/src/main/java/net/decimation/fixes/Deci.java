@@ -3633,6 +3633,45 @@ public final class Deci
         return m == null ? -1 : m.kC.size();
     }
 
+    /**
+     * Ends the gun renderer's current animation (GunItemRenderer.iNSTANCE TI .currentAnimation TM): an animation still
+     * active puts the parts it names back to their rest pose when it ends, on whatever gun is drawn. Client only (tests).
+     */
+    @cpw.mods.fml.relauncher.SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)
+    public static void stopGunAnimation()
+    {
+        if (deci.K.b.TI != null)
+        {
+            deci.K.b.TI.TM = null;
+        }
+    }
+
+    /**
+     * Moves the named part of a gun's loaded model (BModel.parts kC) by (dx, dy, dz) on its rotation point, as Decimation's
+     * GunAnimation poses parts (rotationPointX += ..., matched by boxName ignoring case); false when there is no such part.
+     * Client only: tests of what a pose moves (dev test meshgun).
+     */
+    @cpw.mods.fml.relauncher.SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)
+    public static boolean nudgeGunPart(Item gun, String part, float dx, float dy, float dz)
+    {
+        deci.n.f m = gun instanceof deci.ay.i ? ((deci.ay.i) gun).aeu : null;
+        if (m == null)
+        {
+            return false;
+        }
+        for (deci.n.b p : m.kC)
+        {
+            if (part.equalsIgnoreCase(p.boxName))
+            {
+                p.rotationPointX += dx;
+                p.rotationPointY += dy;
+                p.rotationPointZ += dz;
+                return true;
+            }
+        }
+        return false;
+    }
+
     /** Decimation's sound entries of a gun (SoundRegistry Ue, SoundEntry name / path): name -> path. Client only. */
     @cpw.mods.fml.relauncher.SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)
     public static java.util.Map<String, String> gunSoundPaths(String gun)
