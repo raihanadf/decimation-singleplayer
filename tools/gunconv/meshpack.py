@@ -38,6 +38,20 @@ def mesh_id(name):
     return ((h >> 16) ^ (h & 0xffff)) & 0xffff
 
 
+# ---------------------------------------------------------------- cost
+
+# Draw time against Decimation's akm in the same runs (dev test gunpack perf=true, 23 Oktober 2026, dev client: akmm
+# 5,240 triangles 0.411 ms against 0.475, ak47m 30,000 triangles 0.915 ms against 0.611; the production client with
+# OptiFine 0.77 x and 1.33 x): a line through the two, in akm draws.
+COST_BASE, COST_PER_K, BUDGET = 0.7365, 0.025543, 1.5
+
+
+def estimate(triangles):
+    """{"ratio": the draw time in akm draws, "budget", "verdict": ok | heavy}."""
+    ratio = round(COST_BASE + COST_PER_K * triangles / 1000.0, 3)
+    return {"ratio": ratio, "budget": BUDGET, "verdict": "ok" if ratio <= BUDGET + 0.01 else "heavy"}
+
+
 # ---------------------------------------------------------------- the .dmesh file
 
 def write_dmesh(groups):

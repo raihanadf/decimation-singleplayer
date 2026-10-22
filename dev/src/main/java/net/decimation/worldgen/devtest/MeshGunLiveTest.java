@@ -288,7 +288,17 @@ public class MeshGunLiveTest extends DevTestMode
         }
     }
 
-    /** {pixels differing by more than 24 in a channel, pixels compared, the box of the changes x0, y0, x1, y1}. */
+    /**
+     * {pixels differing by more than 24 in a channel where either picture is dark (the gun's tones: sky and floor are
+     * light, and OptiFine's shimmer on them must not count), pixels compared, the box of the changes x0, y0, x1, y1}.
+     */
+    private static final int DARK = 90;
+
+    private static int lum(int rgb)
+    {
+        return (3 * (rgb >> 16 & 255) + 6 * (rgb >> 8 & 255) + (rgb & 255)) / 10;
+    }
+
     private static int[] changed(java.awt.image.BufferedImage a, java.awt.image.BufferedImage b)
     {
         if (a == null || b == null || a.getWidth() != b.getWidth() || a.getHeight() != b.getHeight())
@@ -301,8 +311,8 @@ public class MeshGunLiveTest extends DevTestMode
             for (int x = 0; x < a.getWidth(); x++)
             {
                 int p = a.getRGB(x, y), q = b.getRGB(x, y);
-                if (Math.abs((p >> 16 & 255) - (q >> 16 & 255)) > 24 || Math.abs((p >> 8 & 255) - (q >> 8 & 255)) > 24
-                    || Math.abs((p & 255) - (q & 255)) > 24)
+                if (Math.min(lum(p), lum(q)) < DARK && (Math.abs((p >> 16 & 255) - (q >> 16 & 255)) > 24
+                    || Math.abs((p >> 8 & 255) - (q >> 8 & 255)) > 24 || Math.abs((p & 255) - (q & 255)) > 24))
                 {
                     n++;
                     x0 = Math.min(x0, x);

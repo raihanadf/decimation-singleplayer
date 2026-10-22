@@ -87,7 +87,7 @@ class ServerTest(unittest.TestCase):
     @unittest.skipUnless(JAR, "needs Decimation.jar for the like gun")
     def test_convert_reshape_export(self):
         conv = self.post("/api/convert", {"sample": "synth/synthgun.glb", "name": "synthgun", "like": "akm",
-                                          "length": 28})
+                                          "length": 28, "mode": "style"})
         self.assertEqual(conv["like"], "akm")
         self.assertGreater(len(conv["parts"]), 10)
         part = conv["parts"][0]
@@ -107,6 +107,34 @@ class ServerTest(unittest.TestCase):
         self.assertEqual(j["source"]["license"], "own")
         self.assertEqual(res["parts"], len(conv["parts"]))
         self.assertIn("metrics", res)
+
+    @unittest.skipUnless(JAR, "needs Decimation.jar for the like gun")
+    def test_convert_is_the_mesh_one_to_one(self):
+        """The page's one Convert (milestone 4): the source's triangles with a pixel texture, its pieces with their groups;
+        a piece moved to another group on the page is exported so, by the conversion's token (the mesh stays here)."""
+        conv = self.post("/api/convert", {"sample": "synth/synthgun.glb", "name": "synthmesh", "like": "akm", "length": 28})
+        st = conv["stats"]
+        self.assertEqual(st["mode"], "mesh")
+        self.assertEqual(conv["parts"], [])
+        self.assertTrue(conv["token"])
+        self.assertTrue(conv["mesh"]["texture"].startswith("data:image/png;base64,"))
+        self.assertEqual(conv["mesh"]["triangles"], st["triangles"])
+        bolt = [p for p in conv["pieces"] if p["group"] == "slideModel"]
+        self.assertTrue(bolt, conv["pieces"])
+        for p in bolt:
+            p["group"] = "gunModel"                              # an edit on the page
+        conv["display"] = "Synth Mesh"
+        res = self.post("/api/export", conv)
+        self.assertIn("mesh.dmesh", res["files"])
+        with open(os.path.join(res["dir"], "gun.json")) as f:
+            j = json.load(f)
+        self.assertEqual(j["display"], "Synth Mesh")
+        self.assertNotIn("slideModel", j["converter"]["groups"], "the page's group edit")
+        gone = dict(conv, token="no-such-conversion")
+        with self.assertRaises(urllib.error.HTTPError) as e:
+            self.post("/api/export", gone)
+        self.assertIn(b"convert again", e.exception.read())
+        e.exception.close()
 
     @unittest.skipUnless(JAR, "needs Decimation.jar for the like gun")
     def test_exact_mode(self):

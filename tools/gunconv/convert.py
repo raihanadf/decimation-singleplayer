@@ -833,7 +833,10 @@ def convert_mesh(model, name=None, display=None, category=None, like=None, lengt
     counts = {}
     for q in live:
         counts[q.group] = counts.get(q.group, 0) + len(q.tris)
-    stats = {"mode": "mesh", "triangles": res.stats["triangles"], "source": model.triangle_count(), "cap": cap,
+    cost = meshpack.estimate(res.stats["triangles"])
+    if cost["verdict"] != "ok":
+        warnings.append("estimated draw %.2f x the akm's (budget %.1f x)" % (cost["ratio"], cost["budget"]))
+    stats = {"mode": "mesh", "triangles": res.stats["triangles"], "source": model.triangle_count(), "cap": cap, "cost": cost,
              "exact": res.stats["exact"], "texture": res.stats["texture"], "charts": res.stats["charts"],
              "pieces": len(pieces), "groups": counts, "scale": pl["s"], "length": pl["target"], "zscale": pl["zscale"]}
     return Conversion(name=name, display=display or default_display(model.name or name), category=category,
@@ -857,7 +860,8 @@ def default_display(stem):
 
 def main(argv=None):
     import package
-    ap = argparse.ArgumentParser(description="Convert a 3D gun model into a Decimation gun package.")
+    ap = argparse.ArgumentParser(description="Convert a 3D gun model into a Decimation gun package: its mesh 1:1 with a "
+                                             "pixel texture in Decimation's tones (--mode style / exact: the older box ways).")
     ap.add_argument("model")
     ap.add_argument("--name")
     ap.add_argument("--display")
@@ -872,7 +876,9 @@ def main(argv=None):
     ap.add_argument("--url")
     ap.add_argument("--license")
     ap.add_argument("--out", default=os.path.join(ROOT, "build", "gunconv", "out"))
-    ap.add_argument("--exact", action="store_true", help="exact mode: the source's faces 1:1 as plates")
+    ap.add_argument("--mode", choices=("mesh", "style", "exact"), default="mesh",
+                    help="mesh (default): the triangles 1:1 up to 30000; style: Decimation style boxes; exact: box plates")
+    ap.add_argument("--exact", action="store_true", help="the same as --mode exact")
     ap.add_argument("--budget", type=int, help="exact mode's face budget (300 to 2000, default 800)")
     ap.add_argument("--force", action="store_true", help="export even over twice the cost budget (to measure it)")
     a = ap.parse_args(argv)
@@ -880,16 +886,23 @@ def main(argv=None):
     for k in ("author", "url", "license"):
         if getattr(a, k):
             src[k] = getattr(a, k)
-    if a.exact:
-        conv = convert_exact(a.model, name=a.name, display=a.display, category=a.category, like=a.like,
-                             length=a.length, length_mm=a.length_mm, up=a.up, muzzle=a.muzzle, mirror=a.mirror,
-                             source=src, budget=a.budget)
+    kw = dict(name=a.name, display=a.display, category=a.category, like=a.like, length=a.length, length_mm=a.length_mm,
+              up=a.up, muzzle=a.muzzle, mirror=a.mirror, source=src)
+    mode = "exact" if a.exact else a.mode
+    if mode == "exact":
+        conv = convert_exact(a.model, budget=a.budget, **kw)
+    elif mode == "style":
+        conv = convert(a.model, **kw)
     else:
-        conv = convert(a.model, name=a.name, display=a.display, category=a.category, like=a.like, length=a.length,
-                       length_mm=a.length_mm, up=a.up, muzzle=a.muzzle, mirror=a.mirror, source=src)
+        conv = convert_mesh(a.model, **kw)
     res = package.export(conv, a.out, force=a.force)
-    print("%s (%s), like %s; %d parts %s" % (conv.name, conv.category, conv.like, len(conv.parts),
-                                             json.dumps(conv.stats["groups"])))
+    if mode == "mesh":
+        print("%s (%s), like %s; %d triangles %s, texture %s, estimated draw %.2f x the akm's"
+              % (conv.name, conv.category, conv.like, conv.stats["triangles"], json.dumps(conv.stats["groups"]),
+                 "x".join(str(v) for v in conv.stats["texture"]), conv.stats["cost"]["ratio"]))
+    else:
+        print("%s (%s), like %s; %d parts %s" % (conv.name, conv.category, conv.like, len(conv.parts),
+                                                 json.dumps(conv.stats["groups"])))
     print("candidates: " + ", ".join("%s %.3f" % c for c in conv.candidates[:5]))
     for w in conv.warnings:
         print("warning: " + w)

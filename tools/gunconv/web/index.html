@@ -14,8 +14,8 @@
 <header class="masthead">
   <p class="kicker">DeciRemnant tools, private and local</p>
   <h1>Gun converter</h1>
-  <p class="standfirst">A CC0 or CC BY 3D gun in, a Decimation styled gun package out. The converter proposes the
-    parts in Decimation's shape kinds; adjust them here, then export the package for the game.</p>
+  <p class="standfirst">A CC0 or CC BY 3D gun in, the same mesh out (1:1, up to 30,000 triangles) with a pixel texture
+    in Decimation's tones. Check which pieces are the magazine and the bolt, then export the package for the game.</p>
 </header>
 
 <main>
@@ -47,9 +47,6 @@
     </div>
     <div class="row">
       <button id="convert" class="primary" type="button">Convert</button>
-      <button id="exact" type="button" title="The source's faces 1:1 as thin plates, Decimation style tones">Exact</button>
-      <label>Face budget <input id="budget" type="range" min="300" max="2000" step="50" value="350">
-        <span id="budget-value">350</span></label>
       <button id="export" type="button">Export</button>
       <p id="cost" class="status muted"></p>
       <p id="status" class="status" role="status">Load a model to begin.</p>
@@ -72,40 +69,23 @@
     <button type="button" data-view="top">Top</button>
     <button type="button" data-view="three">Three quarter</button>
     <button type="button" data-view="rear">Rear</button>
-    <label class="check"><input type="checkbox" id="split"> Part colours</label>
+    <label class="check"><input type="checkbox" id="split"> Group colours</label>
     <label class="check"><input type="checkbox" id="ghost"> Like gun outline</label>
   </div>
 
   <section class="columns">
     <section class="panel">
-      <h2 class="label">Edit</h2>
-      <p id="sel-info" class="muted">No part selected. Click one in the converted view or in the list.</p>
+      <h2 class="label">Pieces</h2>
+      <p id="sel-info" class="muted">No piece selected. Click one in the converted view or in the list.</p>
       <div class="row">
         <label>Group <select id="group">
           <option>gunModel</option><option>ammoModel</option><option>slideModel</option><option>defaultScopeModel</option>
         </select></label>
-        <label>Kind <select id="kind">
-          <option>cuboid</option><option>taper</option><option>wedge</option><option>skew</option>
-          <option>octagon</option><option>split</option>
-        </select></label>
-        <button id="apply-kind" type="button">Apply kind</button>
-      </div>
-      <div class="row">
-        <label>Step <input id="step" type="number" value="0.05" min="0.01" step="0.01" size="5"></label>
-        <button type="button" data-move="-1,0,0">Back</button>
-        <button type="button" data-move="1,0,0">Forward</button>
-        <button type="button" data-move="0,-1,0">Up</button>
-        <button type="button" data-move="0,1,0">Down</button>
-        <button type="button" data-move="0,0,1">Left</button>
-        <button type="button" data-move="0,0,-1">Right</button>
-      </div>
-      <div class="row">
-        <button id="drop" type="button">Drop part</button>
-        <button id="undo" type="button">Undo</button>
+        <span class="muted">ammoModel moves on reload, slideModel when firing, defaultScopeModel hides under a sight.</span>
       </div>
       <div class="table-box">
         <table id="parts">
-          <thead><tr><th>#</th><th>Group</th><th>Label</th><th>Kind</th></tr></thead>
+          <thead><tr><th>#</th><th>Group</th><th>Label</th><th>Triangles</th></tr></thead>
           <tbody></tbody>
         </table>
       </div>

@@ -79,6 +79,17 @@ class IdAndFileTest(unittest.TestCase):
             meshpack.write_dmesh([{"name": "gunModel", "pivot": (0, 0, 0), "verts": tri * (meshpack.CAP + 1)}])
 
 
+class CostTest(unittest.TestCase):
+    def test_draw_cost_as_measured_against_the_akm(self):
+        """Dev test gunpack perf=true, 23 Oktober 2026, the same runs: akmm (5,240 triangles) 0.87 x the akm's draw, ak47m
+        (30,000) 1.50 x; the budget is 1.5 x."""
+        self.assertAlmostEqual(meshpack.estimate(5240)["ratio"], 0.87, delta=0.02)
+        self.assertAlmostEqual(meshpack.estimate(30000)["ratio"], 1.50, delta=0.02)
+        self.assertEqual(meshpack.estimate(5240)["verdict"], "ok")
+        self.assertEqual(meshpack.estimate(30000)["verdict"], "ok", "the cap itself is within the budget")
+        self.assertEqual(meshpack.estimate(40000)["verdict"], "heavy")
+
+
 class NormalsTest(unittest.TestCase):
     def test_a_box_stays_sharp(self):
         tris = tris_of(synth.box(0, 0, 0, 2, 1, 1))
@@ -307,6 +318,21 @@ class MeshConversionTest(unittest.TestCase):
             lums.append(match.lum(c))
         mean = sum(lums) / len(lums)
         self.assertAlmostEqual(mean, common, delta=10, msg="receiver %.1f, the akm's common metal %.1f" % (mean, common))
+
+    def test_the_command_line_converts_one_to_one(self):
+        import io
+        import tempfile
+        from contextlib import redirect_stdout
+        d = tempfile.mkdtemp()
+        pieces = synth.rotated(synth.synth_gun(), synth.ROTATIONS["identity"], scale=1.0)
+        with open(os.path.join(d, "synthgun.glb"), "wb") as f:
+            f.write(synth.glb_of(pieces).bytes())
+        out = io.StringIO()
+        with redirect_stdout(out):
+            convert.main([os.path.join(d, "synthgun.glb"), "--name", "synthcli", "--like", "akm", "--length", "28",
+                          "--author", "gunconv tests", "--license", "own", "--out", os.path.join(d, "out")])
+        self.assertTrue(os.path.isfile(os.path.join(d, "out", "synthcli", "mesh.dmesh")), out.getvalue())
+        self.assertIn("triangles", out.getvalue())
 
     def test_a_mirrored_source_still_faces_out(self):
         conv = convert.convert_mesh(synth_model(mirror_z=True), name="synthmesh", like="akm", length=28.0)

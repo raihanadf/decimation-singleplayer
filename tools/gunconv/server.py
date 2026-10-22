@@ -10,14 +10,19 @@ API (JSON):
     GET  /api/gun?name=GUN            a Decimation gun's parts (corners and groups, no texture): the like gun overlay
     POST /api/upload?filename=F       body = the file; stored under build/gunconv/work/uploads/
     POST /api/convert                 {sample | upload, name, display, like, category, length, lengthMm, muzzle, up,
-                                       mirror, source, mode ("exact"), budget}: the converted parts, points, header,
-                                       candidates, matrix, stats (exact mode: faces and the estimated cost)
+                                       mirror, source, mode}: mode "mesh" (the default, the page's one Convert:
+                                       the source's triangles 1:1 with a pixel texture; pieces, a preview of the
+                                       mesh and a token: the mesh stays here for the export), or for the command
+                                       line's older ways "style" (Decimation style boxes) and "exact" (+ budget)
     POST /api/reshape                 {part, kind}: the part as another kind (edit.py)
     POST /api/export                  the (edited) conversion: writes build/gunconv/out/<name>/, returns files and
-                                       the study.py gaps rows against Decimation's guns of the category
+                                       (box modes) the study.py gaps rows against Decimation's guns of the category;
+                                       a mesh conversion by its token, with the page's groups, name and points
 """
 import argparse
+import collections
 import json
+import threading
 import os
 import re
 import sys
@@ -54,6 +59,11 @@ def under(base, rel):
     if not path.startswith(os.path.normpath(base) + os.sep):
         raise BadRequest("path outside its folder: %r" % rel)
     return path
+
+
+MESHES = collections.OrderedDict()     # token -> a mesh mode Conversion (its mesh is too large for the page to send back)
+MESHES_LOCK = threading.Lock()
+KEEP = 4
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -183,11 +193,23 @@ class Handler(BaseHTTPRequestHandler):
                   length=req.get("length") or None, length_mm=req.get("lengthMm") or None,
                   muzzle=req.get("muzzle") or None, up=req.get("up") or None, mirror=bool(req.get("mirror")),
                   source=src)
-        if req.get("mode") == "exact":                   # the Exact button: the faces 1:1 (exact.py)
+        mode = req.get("mode") or "mesh"
+        if mode == "exact":                              # box plates of the source's faces (exact.py), command line
             conv = convert.convert_exact(path, budget=req.get("budget") or None, **kw)
-        else:
+        elif mode == "style":                            # Decimation style boxes (milestones 1 to 3), command line
             conv = convert.convert(path, **kw)
+        elif mode == "mesh":
+            conv = convert.convert_mesh(path, **kw)
+        else:
+            raise BadRequest("mode %r: mesh, style or exact" % mode)
         out = conv.to_json()
+        if mode == "mesh":
+            token = os.urandom(8).hex()
+            with MESHES_LOCK:
+                MESHES[token] = conv
+                while len(MESHES) > KEEP:
+                    MESHES.popitem(last=False)
+            out["token"] = token
         out["path"] = rel
         out["seconds"] = round(time.time() - t, 2)
         self.json(out)
@@ -199,6 +221,20 @@ class Handler(BaseHTTPRequestHandler):
 
     def export(self):
         req = json.loads(self.body() or b"{}")
+        if (req.get("stats") or {}).get("mode") == "mesh":
+            with MESHES_LOCK:
+                kept = MESHES.get(req.get("token"))
+            if kept is None:
+                raise BadRequest("this conversion is no longer kept by the server (restarted, or 4 newer ones): convert again")
+            conv = kept
+            conv.name = req.get("name") or conv.name
+            conv.display = req.get("display") or conv.display
+            conv.points = req.get("points") or conv.points
+            groups = {p["id"]: p["group"] for p in req.get("pieces", []) if "id" in p and "group" in p}
+            conv.pieces = [dict(p, group=groups.get(p["id"], p["group"])) for p in conv.pieces]
+            self.json(dict(package.export(conv, self.out, display=req.get("display"), source=req.get("source")),
+                           metrics=[]))
+            return
         conv = convert.Conversion.from_json(req)
         res = package.export(conv, self.out, display=req.get("display"), source=req.get("source"))
         rows = []

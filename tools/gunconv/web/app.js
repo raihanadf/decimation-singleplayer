@@ -25,8 +25,8 @@ const DECI_TO_THREE = new THREE.Matrix4().makeScale(1, -1, -1);
 // the (ix, iy, iz) index of each corner in study.Part.verts() order (the like gun outline)
 const STUDY_ORDER = [C(1, 0, 0), C(1, 1, 0), C(0, 1, 0), C(0, 0, 1), C(1, 0, 1), C(1, 1, 1), C(0, 1, 1), C(0, 0, 0)];
 
-const state = { samples: [], path: null, conv: null, parts: [], history: [], sel: -1, meshes: [], guns: {},
-  sourceFile: null };
+const state = { samples: [], path: null, conv: null, parts: [], pieces: [], sel: -1, meshes: [], guns: {},
+  sourceFile: null, texture: null };
 window.gunconv = { state };
 
 // ------------------------------------------------------------------ views
@@ -229,32 +229,76 @@ function applySourceMatrix() {
 
 // ------------------------------------------------------------------ the converted parts
 
-function partColour(p, i) {
-  if ($("split").checked) return new THREE.Color().setHSL(((i * 0.618034) % 1), 0.55, 0.55);
-  return new THREE.Color().setRGB(p.colour[0] / 255, p.colour[1] / 255, p.colour[2] / 255, THREE.SRGBColorSpace);
+// Group colours (the "Group colours" box): which pieces Decimation moves on reload, on firing, hides under a sight.
+const GROUP_COLOURS = { gunModel: 0x77726a, ammoModel: 0xc0602f, slideModel: 0x3f72c0, defaultScopeModel: 0x4f9a55 };
+
+function bytes(b64) {
+  const bin = atob(b64);
+  const out = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
+  return out.buffer;
 }
 
+function texture(src) {
+  if (state.texture && state.texture.userData.src === src) return state.texture;
+  const t = new THREE.TextureLoader().load(src, () => conv.render());
+  t.userData.src = src;
+  t.magFilter = THREE.NearestFilter;      // Minecraft's: the texels stay square
+  t.minFilter = THREE.NearestFilter;
+  t.generateMipmaps = false;
+  t.colorSpace = THREE.SRGBColorSpace;
+  t.flipY = false;                        // v runs down the image, as Minecraft binds it
+  state.texture = t;
+  return t;
+}
+
+// The converted mesh (the server's preview: positions, normals, texture coordinates and each triangle's piece), one
+// three.js mesh a piece so a click picks it; Decimation's y down and z left turned into three.js's.
 function drawParts() {
   conv.clear();
   state.meshes = [];
-  state.parts.forEach((p, i) => {
-    const pos = [];
-    for (const f of HEXA_FACES) for (const k of f) pos.push(...toThree(p.corners[HEXA[k]]));
-    const g = new THREE.BufferGeometry();
-    g.setAttribute("position", new THREE.Float32BufferAttribute(pos, 3));
-    g.computeVertexNormals();
-    const mesh = new THREE.Mesh(g, new THREE.MeshStandardMaterial({ color: partColour(p, i), roughness: 0.9,
-      metalness: 0, flatShading: true, side: THREE.DoubleSide }));
-    mesh.userData.index = i;
-    conv.root.add(mesh);
-    state.meshes.push(mesh);
-  });
+  const m = state.conv && state.conv.mesh;
+  if (m) {
+    const pos = new Float32Array(bytes(m.positions)), nor = new Float32Array(bytes(m.normals));
+    const uv = new Float32Array(bytes(m.uvs)), owner = new Uint16Array(bytes(m.piece));
+    const by = new Map();
+    for (let t = 0; t < owner.length; t++) {
+      if (!by.has(owner[t])) by.set(owner[t], []);
+      by.get(owner[t]).push(t);
+    }
+    const map = texture(m.texture);
+    for (const [pi, tris] of by) {
+      const P = new Float32Array(tris.length * 9), N = new Float32Array(tris.length * 9), U = new Float32Array(tris.length * 6);
+      tris.forEach((t, j) => {
+        for (let k = 0; k < 3; k++) {
+          const v = t * 3 + k, o = j * 3 + k;
+          P[o * 3] = pos[v * 3]; P[o * 3 + 1] = -pos[v * 3 + 1]; P[o * 3 + 2] = -pos[v * 3 + 2];
+          N[o * 3] = nor[v * 3]; N[o * 3 + 1] = -nor[v * 3 + 1]; N[o * 3 + 2] = -nor[v * 3 + 2];
+          U[o * 2] = uv[v * 2]; U[o * 2 + 1] = uv[v * 2 + 1];
+        }
+      });
+      const g = new THREE.BufferGeometry();
+      g.setAttribute("position", new THREE.BufferAttribute(P, 3));
+      g.setAttribute("normal", new THREE.BufferAttribute(N, 3));
+      g.setAttribute("uv", new THREE.BufferAttribute(U, 2));
+      const piece = state.pieces[pi] || { group: "gunModel" };
+      const mat = $("split").checked
+        ? new THREE.MeshStandardMaterial({ color: GROUP_COLOURS[piece.group] || 0x888888, roughness: 0.85, metalness: 0,
+          side: THREE.DoubleSide })
+        : new THREE.MeshStandardMaterial({ map, roughness: 0.85, metalness: 0, side: THREE.DoubleSide });
+      const mesh = new THREE.Mesh(g, mat);
+      mesh.userData.index = pi;
+      conv.root.add(mesh);
+      state.meshes.push(mesh);
+    }
+  }
   drawOutline();
   drawGhost();
   conv.render();
   renderTable();
-  $("conv-count").textContent = state.parts.length ? "(" + state.parts.length + " parts)" : "";
-  if (state.conv && state.conv.stats && state.conv.stats.mode === "exact") $("cost").textContent = costLine(state.parts.length);
+  const st = (state.conv || {}).stats || {};
+  $("conv-count").textContent = st.triangles ? "(" + st.triangles.toLocaleString() + " triangles)" : "";
+  $("cost").textContent = costLine();
 }
 
 function edgeLines(corners, colour, opacity) {
@@ -269,13 +313,14 @@ function edgeLines(corners, colour, opacity) {
 function drawOutline() {
   const old = conv.root.getObjectByName("outline");
   if (old) conv.root.remove(old);
-  if (state.sel < 0 || !state.parts[state.sel]) return;
+  const mesh = state.meshes.find((m) => m.userData.index === state.sel);
+  if (!mesh) return;
   const accent = getComputedStyle(document.documentElement).getPropertyValue("--select").trim() || "#B4552F";
-  const lines = edgeLines(state.parts[state.sel].corners, accent, 1);
-  lines.material.depthTest = false;
-  lines.renderOrder = 10;
-  lines.name = "outline";
-  conv.root.add(lines);
+  const box = new THREE.BoxHelper(mesh, accent);
+  box.material.depthTest = false;
+  box.renderOrder = 10;
+  box.name = "outline";
+  conv.root.add(box);
 }
 
 async function drawGhost() {
@@ -298,10 +343,10 @@ async function drawGhost() {
 function renderTable() {
   const body = $("parts").querySelector("tbody");
   body.innerHTML = "";
-  state.parts.forEach((p, i) => {
+  state.pieces.forEach((p, i) => {
     const tr = document.createElement("tr");
     tr.dataset.index = i;
-    for (const t of [i, p.group, p.label, p.kind]) {
+    for (const t of [i, p.group, p.label, p.triangles]) {
       const td = document.createElement("td");
       td.textContent = t;
       tr.appendChild(td);
@@ -312,21 +357,14 @@ function renderTable() {
   });
 }
 
-function size(p) {
-  const s = [0, 1, 2].map((a) => Math.max(...p.corners.map((c) => c[a])) - Math.min(...p.corners.map((c) => c[a])));
-  return s.map((v) => v.toFixed(2)).join(" x ");
-}
-
 function select(i) {
   state.sel = i;
-  const p = state.parts[i];
+  const p = state.pieces[i];
   if (p) {
-    $("sel-info").textContent = "#" + i + "  " + p.label + "  (" + p.name + "), " + p.group + ", " + p.kind +
-      ", " + size(p) + " units";
+    $("sel-info").textContent = "#" + i + "  " + p.label + ", " + p.group + ", " + p.triangles + " triangles";
     $("group").value = p.group;
-    $("kind").value = p.kind;
   } else {
-    $("sel-info").textContent = "No part selected. Click one in the converted view or in the list.";
+    $("sel-info").textContent = "No piece selected. Click one in the converted view or in the list.";
   }
   drawOutline();
   conv.render();
@@ -350,86 +388,13 @@ conv.renderer.domElement.addEventListener("pointerup", (e) => {
 
 // ------------------------------------------------------------------ edits
 
-function remember() {
-  state.history.push(JSON.stringify(state.parts));
-  if (state.history.length > 100) state.history.shift();
-}
-
-function kindOf(p) {
-  // the same rules as fit.kind (absolute corners)
-  const c = p.corners;
-  for (let i = 0; i < 8; i++) for (let j = i + 1; j < 8; j++) {
-    if (Math.abs(c[i][0] - c[j][0]) + Math.abs(c[i][1] - c[j][1]) + Math.abs(c[i][2] - c[j][2]) < 0.02) return "wedge";
-  }
-  const lo = [0, 1, 2].map((a) => Math.min(...c.map((q) => q[a])));
-  const hi = [0, 1, 2].map((a) => Math.max(...c.map((q) => q[a])));
-  if (c.every((q) => [0, 1, 2].every((a) => Math.abs(q[a] - lo[a]) < 1e-3 || Math.abs(q[a] - hi[a]) < 1e-3))) return "cuboid";
-  const bit = [4, 2, 1];
-  for (let ax = 0; ax < 3; ax++) {
-    const f0 = c.filter((_, k) => !(k & bit[ax])), f1 = c.filter((_, k) => k & bit[ax]);
-    for (let o = 0; o < 3; o++) {
-      if (o === ax) continue;
-      const e0 = Math.max(...f0.map((q) => q[o])) - Math.min(...f0.map((q) => q[o]));
-      const e1 = Math.max(...f1.map((q) => q[o])) - Math.min(...f1.map((q) => q[o]));
-      if (Math.abs(e0 - e1) > 0.02) return "taper";
-    }
-  }
-  return "skew";
-}
-
-function move(d) {
-  const p = state.parts[state.sel];
-  if (!p) return status("Select a part first.", true);
-  const step = parseFloat($("step").value) || 0.05;
-  remember();
-  p.corners = p.corners.map((q) => [q[0] + d[0] * step, q[1] + d[1] * step, q[2] + d[2] * step].map((v) => +v.toFixed(5)));
-  drawParts();
-  select(state.sel);
-}
-
-for (const b of document.querySelectorAll("[data-move]")) {
-  b.addEventListener("click", () => move(b.dataset.move.split(",").map(Number)));
-}
-
+// A piece's group: what Decimation's animations move (the export puts each group's triangles under its placeholder)
 $("group").addEventListener("change", () => {
-  const p = state.parts[state.sel];
+  const p = state.pieces[state.sel];
   if (!p) return;
-  remember();
   p.group = $("group").value;
   drawParts();
   select(state.sel);
-});
-
-$("apply-kind").addEventListener("click", async () => {
-  const p = state.parts[state.sel];
-  if (!p) return status("Select a part first.", true);
-  try {
-    const r = await api("/api/reshape", { part: p, kind: $("kind").value });
-    remember();
-    state.parts.splice(state.sel, 1, ...r.parts);
-    drawParts();
-    select(state.sel);
-    status("Part " + state.sel + " is now " + $("kind").value + " (" + r.parts.length + " part" + (r.parts.length > 1 ? "s" : "") + ").");
-  } catch (e) {
-    status(e.message, true);
-  }
-});
-
-$("drop").addEventListener("click", () => {
-  if (!state.parts[state.sel]) return status("Select a part first.", true);
-  remember();
-  state.parts.splice(state.sel, 1);
-  const next = Math.min(state.sel, state.parts.length - 1);
-  drawParts();
-  select(next);
-});
-
-$("undo").addEventListener("click", () => {
-  if (!state.history.length) return status("Nothing to undo.");
-  state.parts = JSON.parse(state.history.pop());
-  for (const p of state.parts) p.kind = kindOf(p);
-  drawParts();
-  select(Math.min(state.sel, state.parts.length - 1));
 });
 
 for (const id of ["split", "ghost"]) $(id).addEventListener("change", () => { drawParts(); select(state.sel); });
@@ -507,6 +472,7 @@ $("load-sample").addEventListener("click", async () => {
   state.path = path;
   state.conv = null;
   state.parts = [];
+  state.pieces = [];
   state.sourceFile = s ? s.file : path.split("/").pop();
   setCredit(s && s.source);
   conv.clear();
@@ -529,6 +495,7 @@ $("file").addEventListener("change", async () => {
     state.path = r.path;
     state.conv = null;
     state.parts = [];
+    state.pieces = [];
     state.sourceFile = f.name;
     setCredit(null);
     conv.clear();
@@ -540,39 +507,32 @@ $("file").addEventListener("change", async () => {
   }
 });
 
-$("budget").addEventListener("input", () => { $("budget-value").textContent = $("budget").value; });
-
-// The cost of an exact mode gun from the server's model (tools/gunconv/exact.py estimate, measured in game against
-// Decimation's akm): shown before export, again after every edit; over the budget a warning, over twice it the export
-// refuses.
-function costLine(parts) {
-  const m = ((state.conv || {}).stats || {}).cost ? state.conv.stats.cost.model : null;
-  if (!m) return "";
-  const ms = m.a + m.b * parts, ratio = ms / m.akm;
-  const verdict = ratio <= m.budget ? "within the budget" : ratio <= 2 * m.budget ? "heavy: over " + m.budget +
-    " x the akm's" : "refused at export: over " + 2 * m.budget + " x";
-  return parts + " parts, estimated draw " + ms.toFixed(2) + " ms, " + ratio.toFixed(2) + " x the akm's: " + verdict + ".";
+// The cost line: triangles, the texture, the draw time estimated from the game's measurements (meshpack.estimate).
+function costLine() {
+  const st = (state.conv || {}).stats || {};
+  if (!st.cost) return "";
+  return st.triangles.toLocaleString() + " triangles" + (st.exact ? "" : " (simplified from " + st.source.toLocaleString() +
+    ")") + ", texture " + st.texture.join(" x ") + "; estimated draw " + st.cost.ratio.toFixed(2) + " x the akm's (budget " +
+    st.cost.budget + " x)" + (st.cost.verdict === "ok" ? "." : ": heavy.");
 }
 
-$("exact").addEventListener("click", () => convertWith("exact"));
-$("convert").addEventListener("click", () => convertWith(""));
+$("convert").addEventListener("click", convertNow);
 
-async function convertWith(mode) {
+async function convertNow() {
   if (!state.path) return status("Load a model first.", true);
   busy(true);
-  status(mode === "exact" ? "Converting exact ..." : "Converting ...");
+  status("Converting ...");
   const req = {
     [state.path.startsWith("uploads/") ? "upload" : "sample"]: state.path,
     name: $("name").value.trim(), display: $("display").value.trim(), category: $("category").value,
     like: $("like").value, lengthMm: num("length-mm"), muzzle: $("muzzle").value, up: $("up").value,
-    mirror: $("mirror").checked, mode: mode, budget: Number($("budget").value),
+    mirror: $("mirror").checked,
     source: { author: $("author").value.trim(), url: $("url").value.trim(), license: $("license").value.trim() },
   };
   try {
     const r = await api("/api/convert", req);
     state.conv = r;
-    state.parts = r.parts;
-    state.history = [];
+    state.pieces = r.pieces || [];
     state.sel = -1;
     $("name").value = r.name;
     $("display").value = r.display;
@@ -585,24 +545,7 @@ async function convertWith(mode) {
     showPoints(r.points);
     const ul = $("warnings");
     ul.innerHTML = "";
-    const notes = r.warnings.slice();
-    const st = r.stats || {};
-    if (st.byGun) {
-      const guns = Object.entries(st.byGun).sort((a, b) => b[1] - a[1]).map(([g, n]) => g + " " + n).join(", ");
-      notes.unshift("From Decimation exemplars: " + (st.fromExemplars || 0) + " parts (" + (guns || "none") +
-        "); from the fit: " + (st.fromFit || 0) + " parts.");
-      const secs = Object.entries(st.exemplars || {}).filter(([, v]) => v.sections).map(([a, v]) =>
-        a + " (" + v.sections.map((s) => s.gun + " " + s.from.toFixed(1) + ".." + s.to.toFixed(1)).join(", ") + ")");
-      if (secs.length) notes.push("Areas partly from exemplars, the rest fitted: " + secs.join("; ") + ".");
-      const kept = Object.entries(st.exemplars || {}).filter(([, v]) => v.fit !== undefined && !v.sections)
-        .map(([a]) => a);
-      if (kept.length) notes.push("Areas kept as fitted (no exemplar passed the gates): " + kept.join(", ") + ".");
-      if (st.detailsByGun) {
-        const dg = Object.entries(st.detailsByGun).sort((a, b) => b[1] - a[1]).map(([g, n]) => g + " " + n).join(", ");
-        notes.push("Details placed on fitted areas: " + (st.fromDetails || 0) + (dg ? " (" + dg + ")" : "") + ".");
-      }
-    }
-    for (const w of notes.length ? notes : ["none"]) {
+    for (const w of r.warnings.length ? r.warnings : ["none"]) {
       const li = document.createElement("li");
       li.textContent = w;
       li.className = "note";
@@ -613,9 +556,8 @@ async function convertWith(mode) {
     select(-1);
     frameBoth("side");
     const g = r.stats.groups;
-    status("Converted " + (mode === "exact" ? "exact " : "") + "in " + r.seconds + " s: " + r.parts.length + " parts (" +
+    status("Converted in " + r.seconds + " s: " + r.stats.triangles.toLocaleString() + " triangles (" +
       Object.entries(g).map(([k, v]) => k + " " + v).join(", ") + "), like " + r.like + ", " + r.category + ".");
-    $("cost").textContent = mode === "exact" ? costLine(r.parts.length) : "";
   } catch (e) {
     status(e.message, true);
   } finally {
@@ -627,8 +569,9 @@ $("export").addEventListener("click", async () => {
   if (!state.conv) return status("Convert first.", true);
   busy(true);
   status("Exporting ...");
-  const req = Object.assign({}, state.conv, {
-    parts: state.parts, name: $("name").value.trim() || state.conv.name, display: $("display").value.trim(),
+  const { mesh, ...kept } = state.conv;     // the mesh stays on the server (the token names it)
+  const req = Object.assign({}, kept, {
+    pieces: state.pieces, name: $("name").value.trim() || state.conv.name, display: $("display").value.trim(),
     points: readPoints(),
     source: { file: state.sourceFile || (state.conv.source && state.conv.source.file), author: $("author").value.trim(),
       url: $("url").value.trim(), license: $("license").value.trim() },
@@ -646,27 +589,12 @@ $("export").addEventListener("click", async () => {
     const p = el("p", "Written to ");
     const code = el("code", r.dir);
     code.id = "package-dir";
-    p.append(code, " (" + r.parts + " parts).");
+    p.append(code, " (" + (r.triangles !== undefined ? r.triangles.toLocaleString() + " triangles" : r.parts + " parts") + ").");
     const ul = el("ul");
     ul.id = "package-files";
     for (const f of r.files) ul.appendChild(el("li", f));
     report.append(p, ul);
-    if (r.metrics.length) {
-      const table = el("table");
-      const head = el("tr");
-      for (const h of ["Metric", "Ours", "Median", "q10 .. q90"]) head.appendChild(el("th", h));
-      table.appendChild(el("thead")).appendChild(head);
-      const body = table.appendChild(el("tbody"));
-      for (const m of r.metrics) {
-        const tr = el("tr");
-        tr.append(el("td", m.metric), el("td", String(m.ours), m.inside ? "" : "out"), el("td", String(m.median)),
-          el("td", m.q10 + " .. " + m.q90));
-        body.appendChild(tr);
-      }
-      report.appendChild(table);
-    }
-    const outside = r.metrics.filter((m) => !m.inside).map((m) => m.metric);
-    status("Exported " + r.files.length + " files." + (outside.length ? " Outside Decimation's range: " + outside.join(", ") + "." : ""));
+    status("Exported " + r.files.length + " files.");
   } catch (e) {
     status(e.message, true);
   } finally {
