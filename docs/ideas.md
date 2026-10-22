@@ -204,6 +204,9 @@ User: "for the feat i have more". Notes on what we already have are mine [not an
     (TracerItem deci/ay/k, the Gunsmith's tracer slot).
 35. **Specific mobs at specific places** ("specific location can be spawned by specfic mob"). Related: zone infected
     variants (fixes/InfectedVariants, docs/zones.md), MilitarySpawner, Garrisons.
+    Decided 22 Oktober 2026 (user): a table per place kind, editable in a config file: the wasteland irradiated and
+    military infected, demons at night; bases and airports soldiers; hospitals medic infected; police stations riot
+    infected; forests infected dogs; highways bandit groups. Agent, feature 8.
 36. **Loot does not refill in singleplayer, a refill timer on servers**: "since city can be generated, loot by default is
     empty forever after player loot it, except multiplayer they can be disable or enable for minutes refill loots (by
     default is enable for server)". Decimation's crate cooldown is per position (deci/aB/e; docs/decimation_code/
@@ -219,6 +222,9 @@ User: "for the feat i have more". Notes on what we already have are mine [not an
 40. **Attachments with benefits on guns** ("attachemnt can have benefit on guns"): each attachment changes stats
     (recoil, spread, aim speed, noise...). Today: grips change recoil (fixes/GripRecoil), suppressors noise
     (fixes/GunNoise), sights zoom; Decimation's own rules otherwise (docs/decimation_code/weapons.md).
+    Decided 22 Oktober 2026 (user): Tarkov style stats, a small plus and minus each: sights aim faster or slower by size,
+    suppressors quieter and no flash but a little less damage, stocks less recoil, lasers tighter hip fire, grips as
+    now; shown in the Gunsmith screen. Agent, feature 9.
 41. **Radiation pills** for radiation sickness. Decimation has no such item [checked in decimation_items.tsv: no rad
     or iodine item]; its radiation today is only "irradiated" while inside a RADIATION zone without a gas mask, 10 % a
     tick 1 damage (docs/zones.md RADIATION): a sickness that lasts after leaving would be new.
@@ -236,6 +242,8 @@ User: "for the feat i have more". Notes on what we already have are mine [not an
     tooltip, an empty filter lets our dose rise and gets Decimation's zone damage, Decimation's HUD then says
     "Irradiated"; fitting through our channel (message 32), one filter used; filters in military and police loot (one
     entry each, as rare as a gas mask).
+    Follow up decided 22 Oktober 2026 (user): Gas Mask Filters about 3 % of military crate opens (police 7 % as built); an
+    empty filter protects against nothing, Decimation's tear gas included. Agent, feature 7 follow up.
 43. **The wasteland city one radiation zone everywhere** ("wasteland city become full radiation zone on all place"). Each
     wasteland district is a MILITARY zone today (docs/wasteland.md, city/Wasteland); Decimation's RADIATION zone works in
     singleplayer since v0.46.0 (fixes/ZoneRules). A place can be in two zone kinds only if the zone lists allow it
