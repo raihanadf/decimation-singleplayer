@@ -1495,3 +1495,24 @@ lineup photo zombies_v0.34.0. Not seen by the user in game yet
   Capsules are, one filter entry per list, the "still full" refusal, warnings at 10 % and empty, Decimation's HUD saying
   "Irradiated" with an empty filter, the fit sound, the block click rule, the sector box, existing worlds upgraded at
   load, "Filter: N%" written like Decimation's "Damage Reduction 5%".
+- Follow up (user, 22 Oktober 2026, docs/ideas.md 42: "Gas Mask Filters about 3 % of military crate opens (police 7 % as
+  built); an empty filter protects against nothing, Decimation's tear gas included"):
+  - Loot: GasMaskFilter.addLoot now puts as many filters in the pools as their weights ask for: copiesFor finds the whole
+    number of entries whose share of opens (1 or 2 rolls an open, PatchLootRolls) is nearest the target. Military: 9
+    entries in each of the 6 pools holding Decimation's military gas mask, 3.2 % of military crate opens by the weights
+    (8 would give 2.8 %, 10 give 3.5 %; 10000 opens rolled in three runs: 308, 322 and 280). Police: still 1 entry, now 5.6 % of police crate
+    opens, not 7 %: feature 10's repair parts went into the same pools since, and 2 entries would give 10.6 %, further
+    from 7 % (575 and 567 of 10000 rolled). Logged at start: "gas mask filters: 9 in each of 6 loot pools like gasmaskmilitary".
+  - Tear gas: Decimation's check is on the CLIENT (TearGasGrenadeEntity.onUpdate, once settled, every tick for the 600
+    ticks it lasts): every player whose box meets x and z within 6, 3 below to 5 above the gas and under 5 blocks away,
+    not in creative, not already poisoned and without a gas mask ITEM gets PacketApplyPoison, whose server handler gives
+    Poison V for 40 ticks. Ours, on the server: a player whose worn gas mask filter is empty gets the same poison from
+    any settled tear gas in that reach (a box search round such players only, every 4 ticks); a player without a mask is
+    left to Decimation's path, a filter with life left still protects. With radiation (above) an empty filter now
+    protects against nothing Decimation checks a gas mask for (also its HUD and its tint; the breathing sound stays).
+  - Checks: unit GasMaskFilterTest 4 more (share of opens, copies for 3 % and 7 %, the tear gas reach, our share of
+    poisonings), RED then GREEN, suite 215. Dev test radset 39 checks: tear gas without a mask poisoned by Decimation's
+    own path (the gas active), with an empty filter poisoned by ours (1 poisoning), with filter left not poisoned; the
+    loot checks count opens holding a filter (rolled within 4 sigma of the weights) and that one entry more or less
+    would land further from the target.
+  - Cost: nothing more for a player with filter left; with an empty filter one small box search every 4 ticks.

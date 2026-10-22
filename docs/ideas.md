@@ -244,6 +244,9 @@ User: "for the feat i have more". Notes on what we already have are mine [not an
     entry each, as rare as a gas mask).
     Follow up decided 22 Oktober 2026 (user): Gas Mask Filters about 3 % of military crate opens (police 7 % as built); an
     empty filter protects against nothing, Decimation's tear gas included. Agent, feature 7 follow up.
+    Follow up built 22 Oktober 2026 (new_feature.md "Radiation set", follow up): 9 filter entries in the military pools,
+    3.2 % of military crate opens; police 1 entry, 5.6 % now (feature 10's repair parts grew the pool, 2 entries would
+    be 10.6 %); an empty filter lets Decimation's tear gas poison through (fixes/GasMaskFilter, server side).
 43. **The wasteland city one radiation zone everywhere** ("wasteland city become full radiation zone on all place"). Each
     wasteland district is a MILITARY zone today (docs/wasteland.md, city/Wasteland); Decimation's RADIATION zone works in
     singleplayer since v0.46.0 (fixes/ZoneRules). A place can be in two zone kinds only if the zone lists allow it

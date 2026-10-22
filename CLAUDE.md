@@ -1353,7 +1353,8 @@ of the last session:
   Radiation set (22 Oktober 2026, feature 7, branch bugfix, new_feature.md): fixes/RadiationPills (deciworldgen:
   radiation_pills, used like Decimation's Pain Killers, 40 dose points off), fixes/GasMaskFilter (filter life in the worn
   mask's tag, wears only in radiation, a right click fits Decimation's Gas Mask Filter through message 32;
-  Deci.wearsGasMask needs filter left), city/WastelandRadiation (RADIATION over every wasteland city, older worlds at
+  Deci.wearsGasMask needs filter left; an empty filter also lets Decimation's tear gas poison through, whose own check
+  runs on the client; loot rates per share of opens, copiesFor), city/WastelandRadiation (RADIATION over every wasteland city, older worlds at
   load; two zone kinds on one place both apply); dev test radset. Traps: Decimation's gear screen holds the worn mask
   stack itself, and a changed tag sent to that slot clears the client's cursor (write it only with no screen open); a
   held use key takes the next item of a stack right after a use ends (a test holds one in the hand); per thread
