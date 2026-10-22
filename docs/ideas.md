@@ -323,4 +323,18 @@ User: "for the feat i have more". Notes on what we already have are mine [not an
     Open for the build [not analysed]: how Decimation draws players (its own player renderer and gear layers, or
     vanilla RenderPlayer), and whether its human skins fit the player model's texture layout (64 x 32). BUILT the same
     day (new_feature.md "Random Decimation skins instead of Steve"): vanilla RenderPlayer, skins 64 x 32, picked by name.
+55. **Gun converter, next steps after the mesh guns** (user, 23 Oktober 2026, after milestone 4 worked: "im happy this
+    feature is real, im desprate before cause its look shit"; later, not designed yet, in this order as the user said
+    it):
+    1. **Attachments through the converter**: an attachment model (sight, grip, suppressor, ...) converted like a gun,
+       as a mesh in Decimation's tones, into its own attachment package.
+    2. **Attachment preview on the converted gun**: the page shows every attachment the gun takes and lets the user
+       fit one in the preview, to test how it sits before export.
+    3. **Better part identification**: the roles (body, magazine, bolt or slide, iron sights) found more reliably
+       (today: names first, then materials, then the like gun's anatomy; docs/gunconv.md section 13).
+    4. **A stock attachment slot** (AR-15 platform): stocks become an attachment kind of their own.
+    5. **Aim preview**: the page shows the gun as it looks while aiming, so the right crosshair spot (the sight line)
+       is known exactly before export.
+    6. **Attachment aim preview**: for a converted sight, how it looks while aiming through it, with its own reticle /
+       crosshair.
 

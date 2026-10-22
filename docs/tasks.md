@@ -149,7 +149,9 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [x] gun converter milestone 4: converted guns as real meshes 1:1, pixel texture in the like gun's tones, cap 30000 (docs/gunconv.md 13; dev and production client with OptiFine checked)
 - [x] gun converter page in the DeciRemnant site's look, plain labels (user, 23 Oktober 2026; local, checked in the browser)
 - [x] gun converter editor page and mesh guns: user verdict 23 Oktober 2026 "pretty nuts ... most of them is well so good" (page)
-- [ ] gun converter mesh guns: the user's look in game, slight improvements as they show up
+- [x] gun converter mesh guns: the user's Mk47 checked in game; user: "im happy this feature is real" (23 Oktober 2026)
+- [ ] gun converter next (docs/ideas.md 55): attachments converted, attachment preview, better part roles, stock slot (AR-15), aim preview, sight aim preview
+- [ ] gun converter: the Mk47's sight mount and height (top rail, not the AK side mount)
 - [x] features 1 to 4 (armor vs NPCs, NPC tracer colours, loot magazine rounds, magazine unload) on main and prerelease
 - [x] looted guns hold rounds (1 in 2, like loot magazines; idea 53) on main and prerelease
 - [x] feature 5 radiation dose on the HUD (idea 30): main, prerelease, production client with OptiFine, dedicated server

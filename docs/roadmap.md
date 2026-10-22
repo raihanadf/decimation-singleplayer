@@ -277,6 +277,11 @@ Agent rules: our channel's message ids from 32 up (this session from 2), no grap
   end to end. The user asked for Tarkov's models through an API: declined (public repository and releases).
   Milestone 1, converter side DONE 22 Oktober 2026 (branch gunconv-tool, docs/gunconv.md): tools/gunconv page and
   converter, packages ak47 (CC0, the milestone rifle) and akmc (CC BY) in build/gunconv/out; game side open (agent 2).
+  Milestone 4 DONE 23 Oktober 2026 on main (docs/gunconv.md section 13): converted guns are the source's mesh 1:1 with a
+  pixel texture in the like gun's tones, the page is an editor (sidebar, two views); the user: "im happy this feature
+  is real". Next (docs/ideas.md 55, user's order): attachments through the converter, attachment preview on the gun,
+  better part identification, a stock attachment slot (AR-15), aim preview (the crosshair spot), aim preview through a
+  converted sight.
 
 docs/ideas.md: more crate / loot block types, crate levels 1 / 2 / 3 with richer loot per level (user
 13 Oktober 2026, item 17; goes behind the wasteland's locked doors first), more military NPC outfits, a sniper bandit egg, harder
