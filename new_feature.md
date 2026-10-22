@@ -19,9 +19,15 @@ Status values: `Done` / `Decided` (direction agreed, not built yet) /
   out of the hand spinning, a fake catch, the catch into the low hold (the knife has its own place off the hand); inspect:
   upright, tilted, hung point down, flat across. Decimation's first person body hides its arms only for guns: showModel
   off for our knives (three hands when looking down, user).
-- Checked: dev test `melee` 4 PASS (slot change starts the draw, Y starts the inspect, each knife), frames compared with
-  the reference videos; `-Pgif` samples both animations every 1/20 s without the HUD. User checked earlier builds in
-  Prism; the toss draw not seen by the user yet [not verified in game]. Arm is one skin block (no fingers).
+- Slashes (user: "the slashing animation is legit boring, refer to the video"): after the Sovereign blade's attacks, clicks
+  closer than 0.9 s chain A (forehand, right to left), B (backhand, left to right), C (katana: heavy overhead diagonal;
+  karambit: a thrust); a new swing is Minecraft's swingProgressInt back at 0. Minecraft's own swing is held at 0 for the
+  first person frame (onRenderTick START / END), so third person still swings. Follow throughs keep the blade in view.
+- Checked: dev test `melee` 6 PASS (slot change starts the draw, Y starts the inspect, a swing starts slash A, each
+  knife), frames compared with the reference videos; `-Pgif` samples draw, inspect and slashes every 1/20 s without the
+  HUD. User checked earlier builds in Prism; toss draw and slashes not seen by the user yet [not verified in game]. Arm is
+  one skin block (no fingers). Looking down: the user reports the katana's handling as bugged; dev shots show only the
+  body (feet, floor edge) below the view, same as an empty hand: cause not found yet.
 
 ### New attachments: RK-1 Foregrip, ELCAN SpecterDR 1x/4x, grips on every gun (21 Oktober 2026, main)
 - User: "we have 2 new attachment: new grip, and 4x scope"; chosen: the SpecterDR with a 1x/4x switch on a key (G),

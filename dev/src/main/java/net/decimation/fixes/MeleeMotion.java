@@ -38,7 +38,7 @@ import net.minecraftforge.common.MinecraftForge;
 @SideOnly(Side.CLIENT)
 public final class MeleeMotion
 {
-    public static final int NONE = 0, DRAW = 1, INSPECT = 2;
+    public static final int NONE = 0, DRAW = 1, INSPECT = 2, SLASH_A = 3, SLASH_B = 4, SLASH_C = 5;
     /** Dev test melee: an animation and its time in seconds instead of the clock (testAnim -1: the clock). */
     public static int testAnim = -1;
     public static float testTime;
@@ -87,14 +87,65 @@ public final class MeleeMotion
         {3.45f, 0.50f, 0.15f, -0.30f, 0, 0, 0, 0, 35, 172},
         {4.15f, 0.48f, 0.17f, -0.30f, 0, 0, 0, 0, 35, 168},
         {4.85f, 0, 0, 0, 0, 0, 0, 0, 0, 360}};
-    private static final float[][][][] ANIMS = {{KARAMBIT_DRAW, KARAMBIT_INSPECT}, {KATANA_DRAW, KATANA_INSPECT}};
+    // the slashes after the Sovereign blade's attacks (user's reference video, 23 Oktober 2026), chained by quick clicks:
+    // A a forehand (hand raised high right, the blade sweeps right to left leading, ends low left), B a backhand (blade
+    // pulled across to the left, sweeps back to the right), C the heavy one (arm up overhead, blade cocked back, a big
+    // diagonal down to the lower left); each starts and ends at rest so any can follow any
+    private static final float[][] KATANA_SLASH_A = {
+        {0.00f, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+        {0.07f, 0.75f, 0.30f, -0.15f, 0, 0, -20, 0, -20, 80},
+        {0.13f, 0.35f, 0.12f, -0.25f, 0, 0, 10, 0, 0, 160},
+        {0.19f, -0.15f, -0.05f, -0.10f, 0, 0, 15, 0, 0, 115},
+        {0.30f, 0.00f, -0.05f, 0.00f, 0, 0, 4, 0, 0, 30},
+        {0.42f, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
+    private static final float[][] KATANA_SLASH_B = {
+        {0.00f, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+        {0.07f, -0.05f, 0.05f, -0.10f, 0, 0, 15, 0, 20, 150},
+        {0.13f, 0.40f, 0.15f, -0.25f, 0, 0, -5, 0, 0, 90},
+        {0.19f, 0.62f, 0.05f, -0.12f, 0, 0, -15, 0, 0, 25},
+        {0.30f, 0.20f, 0.00f, 0.00f, 0, 0, -4, 0, 0, -5},
+        {0.42f, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
+    private static final float[][] KATANA_SLASH_C = {
+        {0.00f, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+        {0.15f, 0.55f, 0.40f, -0.50f, -20, 0, -10, 30, 0, 100},
+        {0.27f, 0.15f, 0.08f, -0.35f, 10, 0, 10, -20, 0, 190},
+        {0.36f, -0.20f, -0.05f, -0.15f, 5, 0, 15, -10, 0, 170},
+        {0.50f, 0.00f, -0.05f, 0.00f, 0, 0, 3, 0, 0, 20},
+        {0.62f, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
+    // the karambit's: short wrist cuts (the claw stays in the fist), a forehand, a backhand and a thrust
+    private static final float[][] KARAMBIT_SLASH_A = {
+        {0.00f, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+        {0.06f, 0.30f, 0.15f, -0.05f, -10, 15, -30, 0, 0, 0},
+        {0.12f, -0.05f, 0.02f, -0.15f, 5, -10, 25, 0, 0, 0},
+        {0.18f, -0.25f, -0.12f, 0.00f, 8, -15, 35, 0, 0, 0},
+        {0.32f, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
+    private static final float[][] KARAMBIT_SLASH_B = {
+        {0.00f, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+        {0.06f, -0.20f, 0.05f, -0.05f, -5, -15, 30, 0, 0, 0},
+        {0.12f, 0.15f, 0.08f, -0.15f, 0, 10, -20, 0, 0, 0},
+        {0.18f, 0.30f, -0.08f, 0.00f, 5, 15, -30, 0, 0, 0},
+        {0.32f, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
+    private static final float[][] KARAMBIT_SLASH_C = {
+        {0.00f, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+        {0.10f, 0.06f, 0.08f, 0.05f, 15, 0, -10, 0, 0, 0},
+        {0.18f, -0.06f, 0.06f, -0.35f, -15, 0, 5, 0, 0, 0},
+        {0.30f, -0.04f, 0.04f, -0.25f, -10, 0, 0, 0, 0, 0},
+        {0.45f, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
+    private static final float[][][][] ANIMS = {
+        {KARAMBIT_DRAW, KARAMBIT_INSPECT, KARAMBIT_SLASH_A, KARAMBIT_SLASH_B, KARAMBIT_SLASH_C},
+        {KATANA_DRAW, KATANA_INSPECT, KATANA_SLASH_A, KATANA_SLASH_B, KATANA_SLASH_C}};
+    /** Clicks closer than this (seconds) chain the slashes A, B, C; a longer pause starts again at A. */
+    private static final float COMBO = 0.9f;
 
     private static KeyBinding key;
     private static Field equipped, prevEquipped, drawn, drawnSlot, mainModel;
     /** The models whose arms are out of Decimation's first person body draw now (onBodyPre / onBodyPost). */
     private static final ModelBiped[] hidden = new ModelBiped[3];
-    private static int anim, lastSlot = -1;
-    private static long start;
+    private static int anim, lastSlot = -1, combo;
+    private static long start, lastSlash;
+    /** Minecraft's own arm swing, held at 0 for the frame's first person draw and put back after (onRenderTick). */
+    private static float swing, prevSwing;
+    private static boolean swingHeld;
     private static Item lastItem;
     private static final float[] pose = new float[12];
 
@@ -208,24 +259,47 @@ public final class MeleeMotion
                 start = System.nanoTime();
             }
         }
-        if (anim == INSPECT && mc.thePlayer.isSwingInProgress)
+        if (ours && mc.thePlayer.isSwingInProgress && mc.thePlayer.swingProgressInt == 0 && anim != DRAW)
         {
-            anim = NONE;                               // a swing ends the inspect, as in CS and Valorant
+            long now = System.nanoTime();                // a new swing (Minecraft restarts it at 0): the next slash
+            combo = (now - lastSlash) / 1e9f < COMBO ? (combo + 1) % 3 : 0;
+            lastSlash = now;
+            anim = SLASH_A + combo;                      // also ends an inspect, as in CS and Valorant
+            start = now;
         }
     }
 
     /**
      * Minecraft's equip dip left out while our knife is in hand (the draw is its own way in): the item the first person
      * view draws and its slot set to the knife in hand, the dip held at rest. Minecraft only swaps the drawn item while
-     * its dip is down, so holding the dip alone kept the old item on screen.
+     * its dip is down, so holding the dip alone kept the old item on screen. Its arm swing is held at 0 for the frame
+     * too (our slashes are the swing) and put back at the frame's end, so the third person body still swings.
      */
     @SubscribeEvent
     public void onRenderTick(TickEvent.RenderTickEvent e)
     {
         Minecraft mc = Minecraft.getMinecraft();
-        if (e.phase != TickEvent.Phase.START || mc.thePlayer == null || NewMelee.kind(itemInHand(mc)) < 0)
+        if (e.phase == TickEvent.Phase.END)
+        {
+            if (swingHeld && mc.thePlayer != null)
+            {
+                mc.thePlayer.swingProgress = swing;
+                mc.thePlayer.prevSwingProgress = prevSwing;
+            }
+            swingHeld = false;
+            return;
+        }
+        if (mc.thePlayer == null || NewMelee.kind(itemInHand(mc)) < 0)
         {
             return;
+        }
+        if (mc.gameSettings.thirdPersonView == 0)
+        {
+            swing = mc.thePlayer.swingProgress;
+            prevSwing = mc.thePlayer.prevSwingProgress;
+            mc.thePlayer.swingProgress = 0;
+            mc.thePlayer.prevSwingProgress = 0;
+            swingHeld = true;
         }
         try
         {

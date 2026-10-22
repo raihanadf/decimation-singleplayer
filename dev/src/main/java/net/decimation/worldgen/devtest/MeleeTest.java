@@ -30,6 +30,12 @@ public class MeleeTest extends DevTestMode
         : new float[][] {{0.0f, 0.15f, 0.3f, 0.5f}, {0.0f, 0.12f, 0.24f, 0.36f, 0.46f, 0.56f, 0.66f, 0.78f}};
     private static final float[][] INSPECT = GIF ? new float[][] {times(0, MeleeMotion.INSPECT), times(1, MeleeMotion.INSPECT)}
         : new float[][] {{0.45f, 1.05f, 1.7f, 2.3f}, {0.4f, 0.85f, 1.3f, 1.75f, 2.0f, 2.3f, 2.95f, 3.2f, 3.45f, 4.15f, 4.45f, 4.7f}};
+    /** Slash A, B, C per kind: wind up, strike, follow through (GIF: every 1/20 s). */
+    private static final float[][][] SLASH = GIF
+        ? new float[][][] {{times(0, MeleeMotion.SLASH_A), times(0, MeleeMotion.SLASH_B), times(0, MeleeMotion.SLASH_C)},
+                           {times(1, MeleeMotion.SLASH_A), times(1, MeleeMotion.SLASH_B), times(1, MeleeMotion.SLASH_C)}}
+        : new float[][][] {{{0.06f, 0.12f, 0.18f}, {0.06f, 0.12f, 0.18f}, {0.10f, 0.18f, 0.30f}},
+                           {{0.07f, 0.13f, 0.19f}, {0.07f, 0.13f, 0.19f}, {0.15f, 0.27f, 0.36f}}};
     private volatile int ticks;
     /** The server drops the weapon of this kind in front of the player (-1 none). */
     private volatile int drop = -1;
@@ -56,7 +62,12 @@ public class MeleeTest extends DevTestMode
         mc.gameSettings.fovSetting = 70f;
         wait++;
         String n = NAMES[kind];
-        int frames = 1 + DRAW[kind].length + INSPECT[kind].length;
+        int slashes = 0;
+        for (float[] s : SLASH[kind])
+        {
+            slashes += s.length;
+        }
+        int frames = 1 + DRAW[kind].length + INSPECT[kind].length + slashes;
         if (step == 0)                                     // select the weapon: the draw must start
         {
             hold(mc);
@@ -82,6 +93,15 @@ public class MeleeTest extends DevTestMode
                 DevTestResults.check(name(), n + ": inspect key starts the inspect", MeleeMotion.playing(),
                                      MeleeMotion.playing() == MeleeMotion.INSPECT, String.valueOf(MeleeMotion.INSPECT));
             }
+            if (wait == 60)
+            {
+                mc.thePlayer.swingItem();                   // a click: the inspect ends, the first slash plays
+            }
+            if (wait == 63)
+            {
+                DevTestResults.check(name(), n + ": a swing starts slash A", MeleeMotion.playing(),
+                                     MeleeMotion.playing() == MeleeMotion.SLASH_A, String.valueOf(MeleeMotion.SLASH_A));
+            }
             if (wait > 80)
             {
                 next();
@@ -101,14 +121,27 @@ public class MeleeTest extends DevTestMode
                 MeleeMotion.testAnim = MeleeMotion.DRAW;
                 MeleeMotion.testTime = DRAW[kind][f - 1];
             }
-            else
+            else if (f <= DRAW[kind].length + INSPECT[kind].length)
             {
                 MeleeMotion.testAnim = MeleeMotion.INSPECT;
                 MeleeMotion.testTime = INSPECT[kind][f - 1 - DRAW[kind].length];
             }
+            else
+            {
+                int s = f - 1 - DRAW[kind].length - INSPECT[kind].length, a = 0;
+                while (s >= SLASH[kind][a].length)
+                {
+                    s -= SLASH[kind][a].length;
+                    a++;
+                }
+                MeleeMotion.testAnim = MeleeMotion.SLASH_A + a;
+                MeleeMotion.testTime = SLASH[kind][a][s];
+            }
             if (wait > 4)
             {
-                String what = f == 0 ? "idle" : f <= DRAW[kind].length ? "draw" + (f - 1) : "inspect" + (f - 1 - DRAW[kind].length);
+                String what = f == 0 ? "idle" : f <= DRAW[kind].length ? "draw" + (f - 1)
+                    : f <= DRAW[kind].length + INSPECT[kind].length ? "inspect" + (f - 1 - DRAW[kind].length)
+                    : "slash" + (f - 1 - DRAW[kind].length - INSPECT[kind].length);
                 DevTestUtil.screenshot(mc, name(), "melee_" + n + "_" + what);
                 next();
             }
@@ -129,9 +162,20 @@ public class MeleeTest extends DevTestMode
         }
         else if (step == 3 + frames)                       // looking down (Decimation's body: no arms of its own), then dropped on the floor
         {
-            hold(mc);
-            look(mc, 90, wait <= 12 ? 75 : 40);
-            if (wait == 12)
+            if (wait <= 8)
+            {
+                mc.thePlayer.inventory.currentItem = 2;      // empty hand first: what the body alone shows below the view
+            }
+            else
+            {
+                hold(mc);
+            }
+            look(mc, 90, wait <= 16 ? 75 : 40);
+            if (wait == 8)
+            {
+                DevTestUtil.screenshot(mc, name(), "melee_" + n + "_down_empty");
+            }
+            if (wait == 16)
             {
                 DevTestUtil.screenshot(mc, name(), "melee_" + n + "_down");
             }
