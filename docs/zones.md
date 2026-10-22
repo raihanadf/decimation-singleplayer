@@ -31,6 +31,11 @@ marked `[inferred]`. The code that makes zones work in singleplayer is `fixes/Zo
 - `isEntityNearZone` / `isPlayerNearZone` / `isInfectedNearZone` (b(...)): the box grown by 10
   blocks on every side (`isPlayerNearZone(p, type, n)` takes the margin, but its body uses 10).
 - Coordinates are cast to int (posX truncated toward zero: off by one west / north of 0).
+- Two kinds on one place (analysed 22 Oktober 2026, feature 7): every check walks the one flat list and asks ONE kind
+  (inside any box of that kind); no reader picks a single kind per place (EntitySpawnZoneHandler asks MILITARY, POLICE,
+  SAFEZONE in turn). So boxes of two kinds over the same ground simply both apply: the wasteland city is MILITARY and
+  RADIATION at once (Decimation's own check answers both there, dev test radset). Only the GPS map shows it: a mark at
+  each box's middle, radiation drawn first, then safezone, then military on top.
 
 ## 3. What each zone type does
 
@@ -62,7 +67,7 @@ Rules in the code, and whether they run in singleplayer (SP) before v0.46.0:
 - Map: military zones drawn on the GPS map (client list).
 - Our generator tags military sites and bases MILITARY, city streets / police places POLICE, and
   since v0.54.0 each city's wasteland district as one MILITARY box (128 x 128, y 0 to 255; city/
-  Wasteland.zone, docs/wasteland.md).
+  Wasteland.zone, docs/wasteland.md); since 22 Oktober 2026 the wasteland city is a RADIATION zone as well (below).
 
 ### RADIATION
 - PlayerZoneTickHandler (SERVER): inside, not creative, `enableIrradiation` (default true):
@@ -70,9 +75,17 @@ Rules in the code, and whether they run in singleplayer (SP) before v0.46.0:
   `deci:misc.effect.irradiated` sound.
 - PlayerData.tick (runs in SP): irradiated and no gas mask: 10 % per tick 1 damage
   (DamageSources.irradiated), smoke particles; with a gas mask a breathing sound. HUD line
-  "Irradiated" / "Protected"; client effects in ClientEventHandler.
-- In SP nothing sets the flag before v0.46.0, so radiation zones did nothing. We generate no
-  RADIATION zones yet (the "Irradiated Military Zone" biome has no effect, `[not decided]`).
+  "Irradiated" / "Protected"; client effects in ClientEventHandler. "Gas mask" is the ITEM (deci:gasmask,
+  deci:gasmaskmilitary) everywhere Decimation asks (also its tear gas).
+- In SP nothing sets the flag before v0.46.0, so radiation zones did nothing. Since 22 Oktober 2026 (feature 7) we
+  generate one over every wasteland city (city/WastelandRadiation, docs/wasteland.md: the sector, 256 x 256, in worlds
+  with whole sector wasteland cities, else each district; older worlds get theirs at load); the "Irradiated Military
+  Zone" biome still has no effect.
+- Gas mask filters (feature 7, fixes/GasMaskFilter, new_feature.md "Radiation set"): a worn gas mask's filter wears 1 a
+  tick while this flag is on (12000 ticks, 10 minutes, kept in the mask's tag); with an empty filter Deci.wearsGasMask is
+  false (our dose rises) and we do Decimation's zone damage above ourselves, since Decimation spares the item; its HUD
+  then says "Irradiated" and tints the screen (the client's mask hidden from its draw). A right click with Decimation's
+  Gas Mask Filter fits a new one. Radiation pills (fixes/RadiationPills) take 40 points off our dose.
 - Measured 22 Oktober 2026 (dev test radiation): 10 s inside without a mask took 9 to 10 of 20 health (the 10 % chance
   a tick and the vanilla half second hit cooldown: about 1 a second).
 - Our dose on top (22 Oktober 2026, fixes/RadiationDose, new_feature.md "Radiation dose on the HUD"): while this flag

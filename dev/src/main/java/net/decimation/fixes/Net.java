@@ -21,5 +21,7 @@ public final class Net
     {
         CHANNEL.registerMessage(MagUnload.Handler.class, MagUnload.Message.class, 0, Side.SERVER);   // unload the held magazine
         CHANNEL.registerMessage(RadiationDose.SyncHandler.class, RadiationDose.Sync.class, 1, Side.CLIENT);   // the dose on the HUD
+        // ids from 32: the feature agent's (branch bugfix; docs/roadmap.md "Feature order")
+        CHANNEL.registerMessage(GasMaskFilter.FitHandler.class, GasMaskFilter.FitMessage.class, 32, Side.SERVER);   // fit a gas mask filter
     }
 }

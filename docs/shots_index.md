@@ -1880,3 +1880,16 @@ Production client with OptiFine HD U E7 (the brother's laptop setup), AKM with t
   SkinTest0 (right, human0: black coat), name tags "Survivor"; bottom, the first run's corpses: SkinTest0's in human0
   (left), the dev account's as STEVE (right: Decimation's crafatar path), the bug the alias textures fixed.
 - corpses_after_alias.png: the same two corpses after the fix: human0 left, the dev account's own skin right.
+
+## radset_v0.66.1 (22 Oktober 2026, feature 7: radiation set; dev test radset; branch bugfix worktree only)
+- icons_decimation_vs_ours.png: Decimation's Pain Killers (white bottle, dark lid, red label with a white cross) and
+  Vitamin Capsules (grey canister, purple band) at 8x, our Radiation Pills at the right (amber bottle, white ridged
+  cap, yellow label with a black radiation sign), each also at game size below.
+- pills_hotbar.png: dev client at 1440 x 810 on the arena, two Radiation Pills in hotbar slots 1 and 2, the item name
+  "Radiation Pills" over the hotbar, the radiation icon at 89 %. pills_hotbar_zoom.png: those two slots enlarged (the
+  bottle reads at slot size, the sign as three wedges round a dot).
+- empty_filter_hud.png: inside the test radiation zone wearing a gas mask whose filter is empty: Decimation's gas mask
+  view (dark round edge), its stats box ending "☣ Irradiated" (not "Protected"), the screen tinted, our chat lines in
+  yellow "Your gas mask filter is almost used up!" and red "Your gas mask filter is used up! Fit a new Gas Mask
+  Filter.", health 80 %, our radiation icon 17 %; a Decimation tip card "Bleeding" top left (left from the radiation
+  test run before).

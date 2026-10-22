@@ -31,3 +31,6 @@ docs/references/decimation_items.tsv. Guns: decimation-code-weapons.
   rag is a BandageItem.
 - Giving armor and expecting a multiplier on NPC shots: Decimation applies it only to player gunshots; NPC fire
   goes through our ArmorGunfireHandler.
+- Changing the worn mask's tag while a screen is open: Decimation's gear screen holds that very stack, and the slot
+  update makes the client clear its cursor (docs/decimation_code/items.md section 4; fixes/GasMaskFilter waits).
+- Testing a held use item with a stack in hand: the held button takes the next one right after the first.

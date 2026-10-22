@@ -1300,3 +1300,108 @@ lineup photo zombies_v0.34.0. Not seen by the user in game yet
   texture); hook 0.23 us a call. Dedicated server [not run: client only code; a corpse there carries the server id,
   which the alias covers with the offline id].
 
+## Radiation set (22 Oktober 2026, feature 7 of docs/roadmap.md "Feature order", ideas 41 to 43; branch bugfix)
+- User (decisions of 22 Oktober 2026, docs/ideas.md 41 to 43): a radiation pill takes 40 percentage points off the dose
+  at once and is found in medical loot; a gas mask's filter wears only while its wearer is in radiation, about 10
+  minutes a filter, and an empty filter protects no more until a new Gas Mask Filter is fitted (right click it); "wasteland
+  city become full radiation zone on all place".
+- Pills (fixes/RadiationPills, deciworldgen:radiation_pills, "Radiation Pills"): used the way Decimation's own pills are
+  (Pain Killers HealingSyringeItem, Vitamin Capsules DrugSyringeItem): 4 to a stack, a held right click in the block
+  pose for 32 ticks, Decimation's syringe "open" sound at most every 8 s (PlayerData's long action timer), then on the
+  server RadiationDose.lower(player, 40) (40 x 240 = 9600 of 24000, never below 0), one pill gone (an empty slot, never
+  a stack of 0) and the syringe "use" sound, on the client the green chat line "You've used the Radiation Pills to lower
+  your radiation!". Tooltip "Medical Item (For Radiation -40%)" in Decimation's red, Decimation's medical creative tab.
+  A held button takes the next pill of a stack right after the first (vanilla's repeat; Decimation's pills do the
+  same). Loot: one entry wherever Vitamin Capsules are (the medical list: medical crates), weight 0.9 like theirs, 7.3 %
+  a roll. Icon ours (tools/item_icons.py, 32 x 32 in the style measured from Decimation's pill icons: only opaque
+  pixels, the shape's border in one dark slate (64, 66, 72), fills shaded like a lit cylinder): an amber bottle, a white
+  cap, a yellow label with a black radiation sign.
+- Filters (fixes/GasMaskFilter): the life is ticks in the worn mask's own tag (deciworldgen_filter, 12000 = 10 minutes;
+  a mask without the tag has a full filter). Server, one pass over the players a tick: while Decimation's irradiated
+  flag is on (never in creative) and a gas mask is worn (deci:gasmask, deci:gasmaskmilitary) the life falls 1 a tick in
+  our per player memory; it goes into the tag at each whole percent (every 120 ticks), when leaving radiation, when the
+  mask comes off, at death (before Decimation's DeathHandler gives the gear to the corpse) and at logout (FML posts it
+  before the player save), never while a screen is open: Decimation's gear screen holds the worn stack itself, and a
+  changed tag sent to its mask slot makes the client clear its cursor and rebuild the slots (PlayerExtraInventory.
+  markDirty). Empty: Deci.wearsGasMask answers no, so our dose rises as without a mask, and Decimation's own zone damage,
+  which spares any gas mask item (PlayerData.tick: 10 % a tick, 1 damage, DamageSources.irradiated), is applied by us.
+  Chat once each: yellow "Your gas mask filter is almost used up!" at 10 %, red "Your gas mask filter is used up! Fit a
+  new Gas Mask Filter.".
+- Fitting: a right click with Decimation's Gas Mask Filter (deci:ItemScrapMilitaryGasMaskFilter) while wearing a gas
+  mask. The client cancels the click and sends message 32 (our channel fixes/Net; the feature agent's ids start at 32),
+  once a press (a press on a block fires a block and an air event); a click on a block with a use of its own (a
+  Decimation loot block, anything with a tile entity: props, chests, Decimation's doors) stays the block's. The server
+  checks again: the filter in hand, one gas mask worn, no screen open, the filter not at 100 % ("Your gas mask filter is
+  still full!": a full filter is never thrown away), at most one fit a player a tick; then the filter is full, one Gas
+  Mask Filter is taken (none in creative), Decimation's gear sound (deci:misc.armor.equip) and the green line "You've
+  fitted a new Gas Mask Filter!". A stack of masks (commands only) is refused.
+- Loot: one Gas Mask Filter entry wherever Decimation's military gas mask is (military crates and wrecks, care packages,
+  mech wrecks) and one wherever the police vest is (police crates and cars). Its weight is its own 0.5 (a LootChanceItem
+  of Decimation's, the same in every list), so it is as rare as a gas mask and rarer than any weight 0.9 item: military
+  0.27 % a roll (about 0.4 % a crate, 1 or 2 rolls), police 4.7 % a roll (about 7 % a crate); a second military entry
+  would already beat the common items there (0.48 %). Supply drops keep Decimation's entry.
+- Client view: "Filter: N%" in every gas mask's tooltip (rounded up, so any life left shows at least 1 %; green over 50,
+  yellow over 10, red), "Right click to fit it into your gas mask" in the filter's. Decimation's HUD line "☣ Protected"
+  (IngameHud) and its missing green tint (ClientEventHandler) follow the mask item only; while the worn filter is empty
+  and the player irradiated, a HIGHEST priority overlay handler hides the client's own mask for Decimation's draw
+  (PlayerData.setMask on the client only sets a field) and a LOWEST one puts it back: "☣ Irradiated" and the tint, as
+  without a mask. The client learns the empty filter from Decimation's own PacketSyncPlayerData (the mask with its tag),
+  sent after we mark its PlayerData dirty when a filter empties or is fitted.
+- Wasteland (city/WastelandRadiation): a RADIATION zone over every wasteland city. Two kinds on one place, analysed:
+  Decimation keeps every zone in one flat list and each check asks one kind (ZoneManager.isPlayerInZone and the others:
+  inside any box of that kind); its spawn handler asks MILITARY, POLICE, SAFEZONE in turn; nothing picks one kind per
+  place. So a RADIATION box on the ground of the MILITARY boxes adds the radiation rules and changes nothing military.
+  Worlds with whole sector wasteland cities (since v0.57.1): one box over the sector, 256 x 256, every height, so the
+  GPS map shows the radiation mark at the city's middle beside the four districts' military marks; older worlds: one
+  over each district, 128 x 128 (there both marks fall on one spot and the military one is drawn on top). Added with
+  the district's military zone when a chunk near it is populated (Wasteland.zone, StructureData markers
+  "!wr_s<rx>_<rz>" or "!wr_<gx>_<gz>").
+- Existing worlds too (my call): at world load (lowest priority, after ZoneStore read the world's zones) every wasteland
+  military zone of ours (Wasteland.zone's box with its "!wz_" marker) without a radiation zone of ours over its middle
+  gets its box. Cheap (one pass over our zones at load, only adds, idempotent) and safe for the save; for players it
+  means whoever logged out inside a wasteland city of an older world is irradiated at the next login (the user's wish;
+  Decimation's damage about 1 a second without a working mask, our dose on top). Decimation's radiation hurts players
+  only: garrisons and NPCs there are unaffected.
+- Checks: unit GasMaskFilterTest 8 (10 minutes a filter, wear only in radiation, percent rounded up, no tag a full filter,
+  clamped tags, tag steps, fit decisions, warnings), RadiationDoseTest one more (40 points, never below 0),
+  WastelandRadiationTest 3 (district and sector boxes, markers, military box recognition): RED (94 compile errors) then
+  GREEN; suite 188, 0 failures. Dev test `radset` 36 checks, all PASS (last run 22 Oktober 2026 16:00, 1440 x 810):
+  pills like Pain Killers (stack 4, use 32 ticks from Forge's item use start, block pose, same tab), 90 % fell 9601 in
+  one tick (9600 and the tick's fall) to 49 %, the HUD 49 like the server, 20 % to 0, one pill used each time and the
+  hand slot empty; no wear in 100 ticks outside radiation, 196 in 196 ticks inside with no dose and no damage, the tag
+  at 11880 with the count at 11804, the tag equal to the count after leaving; an empty filter: no protection, the dose
+  rose 5400 in 90 ticks (60 a tick), 3 to 6 damage in 90 ticks (Decimation's damage done by us), one low and one empty
+  warning, Decimation's HUD saw no gas mask in 47 of 47 frames with the mask back after each draw (shot: "☣
+  Irradiated"); a press on the floor filled an empty filter with one filter and one message, a full filter refused, two
+  forged requests in one tick used one filter (the second dropped), creative filled it with none used, a stack of 2
+  masks refused, no message without a gas mask, a click on a loot crate opened the crate and fitted nothing; loot
+  entries 1, 1 and 1, 10000 opens of each crate: 38 filters (40 expected), 717 (708), 1108 pills (1098); the wasteland
+  district at 0,512 got its military zone and the sector's radiation box (0,512 to 255,767), Decimation's own check
+  answers both kinds there, and the load upgrade put a removed radiation box back. Shots docs/shots/radset_v0.66.1.
+- Performance (budgets: server under 50 us a tick, HUD under 20 us a frame, no allocation a tick, packets only on a
+  change): our per player work 0.10 us in radiation and 0.27 us out of it (3 x 1000 runs on the server thread); the
+  whole handler 8.5 to 14.6 us a tick on average (wall time since the start, a load average of 10 to 38 with a second
+  dev game running beside it). Allocation (HotSpot's per thread allocated bytes): in steady state nothing but the tag
+  written each whole percent (16 bytes per 120 ticks, 0.08 bytes a tick on real ticks); the first ticks of a path the
+  JIT had not compiled yet read 16 bytes a tick, and one batch of 1000 runs 912 bytes once, both gone once warm
+  [inferred: JIT warm up]. Packets: message 32 only on a fit click, Decimation's PlayerData sync only when a filter
+  empties or is fitted. HUD: the two overlay handlers 1.2 to 5.6 us a frame (two checks, nothing allocated). The pills:
+  nothing per tick.
+- Bug review: a filter is taken only after every check, in one server step; two requests in one tick use one (tested);
+  a full inventory changes nothing (nothing goes into the inventory); creative wears nothing (not irradiated) and fits
+  without using one (tested); a stack of masks is refused (tested) and would wear as one; a mask taken off keeps its
+  wear (the old stack's tag is written when the slot changes); a crash between autosaves loses at most 119 ticks of
+  wear (the player's favour); a dying player's mask (now the corpse's) no longer wears.
+- Regressions run in the same game: zones, loot, useitems, magunload PASS; wasteland PASS (a new district in generation
+  got its sector's radiation zone: log "wasteland radiation zone 1536,256 to 1791,511"); radiation: every functional
+  check PASS, its own cost checks FAILED under the load (HUD draw 223 and 261 us against 200, server tick 112 us once,
+  then 38.7 us): RadiationHud and RadiationDose are unchanged but for the filter check, a second game (Decimation-scratch)
+  ran beside it; to rerun on a quiet Mac [not verified].
+- Not verified: the production client with OptiFine and the dedicated server (the main session's runs); the death and
+  logout writes of the tag (no death or logout in the test); tear gas: Decimation's tear gas still spares any gas mask
+  item, even with an empty filter (TearGasGrenadeEntity checks the item; the filter wears in radiation only, by the
+  user's decision; open question).
+- My calls: pill tooltip and chat text, no refusal at 0 % dose (Decimation's pills have none), pills only where Vitamin
+  Capsules are, one filter entry per list, the "still full" refusal, warnings at 10 % and empty, Decimation's HUD saying
+  "Irradiated" with an empty filter, the fit sound, the block click rule, the sector box, existing worlds upgraded at
+  load, "Filter: N%" written like Decimation's "Damage Reduction 5%".
