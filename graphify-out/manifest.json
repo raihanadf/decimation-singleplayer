@@ -325,9 +325,9 @@
     "semantic_hash": "0145e0863788d451e8ae4273d3c2abdd"
   },
   "docs/shots_index.md": {
-    "mtime": 1792700918.419169,
-    "ast_hash": "cf0cacb6a0785669ab6c784eac35e664",
-    "semantic_hash": "cf0cacb6a0785669ab6c784eac35e664"
+    "mtime": 1792701639.2988775,
+    "ast_hash": "b97be67e5b61742c8b520950607561ec",
+    "semantic_hash": "b97be67e5b61742c8b520950607561ec"
   },
   "docs/interior_spec.md": {
     "mtime": 1791385593.9436893,
@@ -1540,9 +1540,9 @@
     "semantic_hash": "294036847a9caffda351bfa855a78636"
   },
   "docs/tasks.md": {
-    "mtime": 1792699372.2791064,
-    "ast_hash": "5d5671fa0daab0a28b1dd482d241603b",
-    "semantic_hash": "5d5671fa0daab0a28b1dd482d241603b"
+    "mtime": 1792701639.2991872,
+    "ast_hash": "47a78293b64561d90e7d2d9f065df335",
+    "semantic_hash": "47a78293b64561d90e7d2d9f065df335"
   },
   "tools/skillcheck.py": {
     "mtime": 1792098139.5315723,
@@ -3115,9 +3115,9 @@
     "semantic_hash": "3c8173adb49fc2c25f90779fd234fddd"
   },
   "tools/gunconv/convert.py": {
-    "mtime": 1792698518.4510787,
-    "ast_hash": "22401a4b1205cc974edcfb79e9c3e3ed",
-    "semantic_hash": "22401a4b1205cc974edcfb79e9c3e3ed"
+    "mtime": 1792701567.4411826,
+    "ast_hash": "7d3c4759cee3cfcbeff5b4f08df14a43",
+    "semantic_hash": "7d3c4759cee3cfcbeff5b4f08df14a43"
   },
   "tools/gunconv/edit.py": {
     "mtime": 1792666223.5794194,
@@ -3155,9 +3155,9 @@
     "semantic_hash": "a77993e2e8e0180beceb72442e99798e"
   },
   "tools/gunconv/tests/test_convert.py": {
-    "mtime": 1792687572.6240118,
-    "ast_hash": "8f6aad8138b52781f54ea25a6494e956",
-    "semantic_hash": "8f6aad8138b52781f54ea25a6494e956"
+    "mtime": 1792701543.9115398,
+    "ast_hash": "dd9fcbb74ba9aea58cc08b39c685d440",
+    "semantic_hash": "dd9fcbb74ba9aea58cc08b39c685d440"
   },
   "tools/gunconv/tests/test_edit.py": {
     "mtime": 1792666223.5803049,
@@ -3185,9 +3185,9 @@
     "semantic_hash": "f228fff56b1c5b2b8472ddad5fca802c"
   },
   "tools/gunconv/web/app.js": {
-    "mtime": 1792700829.4710703,
-    "ast_hash": "bf50a52028a2a0a72151b85535bc5ae5",
-    "semantic_hash": "bf50a52028a2a0a72151b85535bc5ae5"
+    "mtime": 1792701590.938274,
+    "ast_hash": "1c946594aaf6c5c2e91ea13e05d8f273",
+    "semantic_hash": "1c946594aaf6c5c2e91ea13e05d8f273"
   },
   "tools/guns/gunpack_standin.py": {
     "mtime": 1792666245.1224093,
@@ -3200,9 +3200,9 @@
     "semantic_hash": "ab4f1605f4e6483d363a9a791e8a6681"
   },
   "docs/gunconv.md": {
-    "mtime": 1792700918.4185865,
-    "ast_hash": "e78356bbf320cbf767949822d03d4929",
-    "semantic_hash": "e78356bbf320cbf767949822d03d4929"
+    "mtime": 1792701639.2985075,
+    "ast_hash": "7a8a0f449e13cfc317f43245d92dd01d",
+    "semantic_hash": "7a8a0f449e13cfc317f43245d92dd01d"
   },
   "docs/references/gunconv_sources.md": {
     "mtime": 1792687572.6162803,
