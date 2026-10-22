@@ -7,6 +7,24 @@ current: add new requests here as they come in, move finished items to
 Priority order inside each section is the one last agreed with the user,
 or `[not decided]`.
 
+## Version milestones (user, 23 Oktober 2026)
+
+A version number marks a milestone, a set of features with their fixes, not one release per number: patches and
+smaller releases sit in between (0.70.1, 0.71 ...).
+- **0.70.0** (next release, name proposed "Scavenger"): everything carried to prerelease since 0.66.1: loot rules A B C,
+  looted mags and guns with rounds, magazine unload, the radiation set and dose HUD, dark nights and moon phases,
+  durability and repair parts, the trader market by day, mobs by place, NPC tracer colours, armor x 0.8 against NPCs,
+  no Steve, inventory shift click, prop hardness, foregrip seat. Not in it: the gun converter's mesh guns (the package
+  loader is main only), multiplayer.
+- **0.80**: quests (docs/superpowers/specs/2026-10-22-events-quests-design.md, draft).
+- **0.90**: the cities revamped and changed (docs/city_replacement.md).
+- **0.95**: optimizing every part, multiplayer above all.
+- **1.0.0**: the first release (docs/release_1.0.md).
+- OPEN, asked 23 Oktober 2026: the 18 Oktober rule says "pre-releases carry only low to medium fixes; multiplayer and
+  the new cities ship together in 1.0.0, so no jar a player downloads before 1.0.0 may hold multiplayer code"; whether
+  0.90 ships the new cities to players and 0.95 ships multiplayer, or both stay on main until 1.0.0, is the user's
+  answer to wait for.
+
 ## Open bugs
 
 0. **Server stalls while new city areas generate** (20 Oktober 2026): FIXED, released in 0.65.0 (DeciBiome.decorate ticks at once,
