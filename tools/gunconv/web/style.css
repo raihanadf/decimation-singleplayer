@@ -64,8 +64,8 @@ button:disabled { opacity: .45; cursor: default; }
 .panel > summary { display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 12px; cursor: pointer; list-style: none;
   background: var(--panel-hd); color: var(--label); text-shadow: 2px 2px 0 var(--label-sh); user-select: none; }
 .panel > summary::-webkit-details-marker { display: none; }
-.panel > summary::before { content: ""; width: 0; height: 0; border: 4px solid transparent; border-left: 5px solid var(--muted);
-  margin-right: 2px; transform-origin: 2px 4px; transition: transform .12s; }
+.panel > summary::before { content: "\25B8"; color: var(--muted); text-shadow: none; font-size: 11px; width: 10px;
+  transition: transform .12s; }
 .panel[open] > summary::before { transform: rotate(90deg); }
 .count { margin-left: auto; color: var(--muted); text-shadow: none; font-size: 12px; }
 .rows { display: grid; gap: 8px; padding: 12px; }
@@ -94,13 +94,12 @@ details.sub > summary::-webkit-details-marker { display: none; }
 #parts tbody tr { cursor: pointer; }
 #parts tbody tr:hover td { background: var(--hover); color: var(--text); }
 #parts tbody tr.on td { background: var(--pick); color: #fff; }
-#parts tbody tr.on td:first-child { box-shadow: inset 2px 0 0 var(--accent); }
 .notes { margin: 0; padding: 10px 12px 12px 28px; color: var(--muted); font-size: 12.5px; }
 .notes li + li { margin-top: 6px; }
 #report code { font: 11.5px ui-monospace, Menlo, monospace; color: var(--text); overflow-wrap: anywhere; }
 #report ul { margin: 0; padding-left: 16px; font: 11.5px/1.6 ui-monospace, Menlo, monospace; color: var(--dim); overflow-wrap: anywhere; }
 #report pre { margin: 0; padding: 6px 8px; white-space: pre-wrap; overflow-wrap: anywhere; font: 11.5px/1.5 ui-monospace, Menlo, monospace;
-  background: var(--field); color: var(--text); border-left: 2px solid var(--label); }
+  background: var(--field); color: var(--text); border: 1px solid var(--line); border-radius: 3px; }
 
 /* the stage: a tool row over two views side by side */
 .stage { grid-area: stage; display: grid; grid-template-rows: 40px minmax(0, 1fr); min-width: 0; min-height: 0; }
