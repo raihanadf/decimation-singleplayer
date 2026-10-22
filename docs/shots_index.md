@@ -1897,6 +1897,11 @@ Production client with OptiFine HD U E7 (the brother's laptop setup), AKM with t
   splint icons at 8x (32 x 32, outlined, shaded); bottom, ours: Armor Repair Kit (an olive case with a grey plate
   emblem and a dark strap), Armor Plate (a dark plate with cut top corners and a light band), Gun Parts (a grey bolt
   carrier and a spring drawn as a row of slanted strokes, the weakest of the three).
+## lootsearch_v0.66.1 (22 Oktober 2026, feature 12 C: Tarkov style search; dev test lootsearch)
+- crate_searching.png (854 x 480): Decimation's inventory screen with a military crate's loot area, two filled slots: the
+  first being searched (a dark square with a ring of grey dots, the lit one turning), the next a dark square with a grey
+  "?"; the rest of the loot area empty.
+
 ## lootblocks_v0.66.1 (22 Oktober 2026, feature 12 B: lootable copies and loot kinds; dev test lootblocks)
 - sheet_lootblocks.png: the look check, 30 frames in pairs (a = Decimation's original, b = our copy) at one spot with one
   camera, 1920 wide: the six pickup trucks (black, blue, green, red, grey, white) seen from behind, the water pallet and the

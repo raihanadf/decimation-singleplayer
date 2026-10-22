@@ -173,6 +173,7 @@ public class DevAutoTest
         if (name.equals("lootmags")) return new net.decimation.worldgen.devtest.LootMagsTest();
         if (name.equals("lootrules")) return new net.decimation.worldgen.devtest.LootRulesTest(); // feature 12 A: looted stays looted
         if (name.equals("lootblocks")) return new net.decimation.worldgen.devtest.LootBlocksLiveTest(); // feature 12 B: copies, kinds
+        if (name.equals("lootsearch")) return new net.decimation.worldgen.devtest.LootSearchLiveTest(); // feature 12 C: search
         if (name.equals("magunload")) return new net.decimation.worldgen.devtest.MagUnloadTest();
         if (name.equals("radiation")) return new net.decimation.worldgen.devtest.RadiationTest();
         if (name.equals("channelmp")) return new net.decimation.worldgen.devtest.ChannelRemoteTest();

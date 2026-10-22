@@ -1742,3 +1742,26 @@ lineup photo zombies_v0.34.0. Not seen by the user in game yet
   the page, icons in the like gun's proportions. Tests: 85, RED first for the labeller, exemplars and icon.
 - ak47: 74 of 204 parts from exemplars; akmc: 120 of 162 (receiver, stock, grip, magazine of the AKM fitted to the
   source). Page smoke test passed (agent-browser, port 8791). Not verified in game.
+
+## Loot rules C: Tarkov style search (22 Oktober 2026, feature 12 C, idea 29)
+- User: "loot system where it need to be analyzed one by one before taking it. so the item will show loading icon animation
+  then if it done it can be take it"; chosen: by value, 1 to 3 s an item.
+- fixes/LootSearch: a loot inventory starts unsearched; the server reveals its filled slots in slot order, each after its
+  time (guns, keycards, gold bottlecaps 3 s; attachments, armor, vests, masks, backpacks, repair parts, filters 2 s; the rest
+  1 s), only while its screen is open; the progress of an inventory is kept when the screen closes (a crate rolls a new
+  inventory each open, our loot bodies keep theirs). Our GearContainer refuses every click on an unsearched slot (and a
+  double click gathering skips them) on both sides; Net message 4 sends the progress when the screen opens and at each
+  reveal; the client draws a dark "?" over unsearched slots, a turning dot ring and a progress bar on the one being
+  searched, and an unsearched stack has no tooltip (cleared at the lowest priority: Decimation adds its lines after ours).
+  Switch: -Ddeciworldgen.lootsearch=false (LootSearch.enabled; dev test invshift turns it off for its loot step).
+- Checks: unit LootSearchTest 4 (RED: no class, then GREEN); suite 271. Dev test lootsearch all PASS: every filled slot hidden
+  at first on both sides, a click and a shift click on one take nothing, no tooltip, the first slot revealed after 60
+  server ticks (expected 60), all after 100 (expected 100), a searched slot taken, a loot body kept 27 ticks of its gun's
+  search while closed and went on from there. Shot docs/shots/lootsearch_v0.66.1. Regressions invshift, loot, lootrules,
+  lootblocks PASS; lootmags's "a looted loaded gun fires" failed in 3 of 5 runs, with the search on and off alike (passed
+  with it off once and on once): the shot depends on the looted gun picked [not verified which guns]; its check now names
+  the gun.
+- Performance (budget: server under 20 us a tick, drawing under 100 us a frame, a packet only at a reveal): server 4.42 us a
+  tick (median of 451, with a loot screen open), drawing 45.2 us a frame (median of 154); one message per reveal.
+- Trap: a busy Mac (an emulator at 228 % and a forgotten process of mine at 90 %) tripled averages: costs are medians now.
+- Not done: the carry to prerelease, the production client with OptiFine, the graph.
