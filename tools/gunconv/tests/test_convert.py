@@ -149,12 +149,35 @@ class TemplateColourTest(unittest.TestCase):
         gun's part it overlaps most (Decimation's akm: wood stock, dark metal receiver)."""
         grey = [(n, mesh, "Default", (128, 128, 128)) for n, mesh, _, _ in synth.synth_gun()]
         g = synth.glb_of(synth.rotated(grey, synth.ROTATIONS["identity"], scale=1.0))
+        # the fit's tones (exemplar parts keep their exemplar's own tones: test_exemplar.ToneTest)
         conv = convert.convert(meshio.read_bytes(g.bytes(), "onecolour.glb"), name="onecolour", like="akm",
-                               length=28.0)
+                               length=28.0, exemplars=False)
         stock = [p.colour for p in conv.parts if p.label == "stock"]
         receiver = [p.colour for p in conv.parts if p.label == "receiver"]
         self.assertTrue(stock and all(c[0] > c[2] + 8 for c in stock), stock)          # brown wood
         self.assertTrue(receiver and all(abs(c[0] - c[2]) <= 8 for c in receiver), receiver)   # grey metal
+
+
+@unittest.skipUnless(JAR, "needs Decimation.jar")
+class PartColourTest(unittest.TestCase):
+    def test_one_piece_with_two_colours(self):
+        """A textured one material file (the Lightning sample) holds its wooden stock and its steel barrel in one
+        connected piece: each fitted part takes the colour of the source under it, not the piece's average."""
+        wood, steel = (120, 70, 40), (140, 140, 145)
+        rings = [(0.0, -1.5, 1.5, -0.4, 0.4, wood), (6.0, -1.2, 1.2, -0.4, 0.4, wood),
+                 (6.0, -0.3, 0.3, -0.3, 0.3, steel), (20.0, -0.3, 0.3, -0.3, 0.3, steel)]
+        mesh, cols = synth.stepped_bar(rings)
+        g = synth.Glb()
+        g.node("gun", mesh=g.mesh("gun", mesh, g.material("m", (255, 255, 255)), colours=cols))
+        conv = convert.convert(meshio.read_bytes(g.bytes(), "onepiece.glb"), name="onepiece", category="rifle",
+                               exemplars=False)
+        xs = lambda p: [q[0] for q in p.points()]  # noqa: E731
+        (x0, x1), _, _ = bounds(conv.parts)
+        cut = x0 + 6.0 / 20.0 * (x1 - x0)
+        rear = [p.colour for p in conv.parts if max(xs(p)) <= cut + 0.05]
+        front = [p.colour for p in conv.parts if min(xs(p)) >= cut - 0.05]
+        self.assertTrue(rear and all(c[0] > c[2] + 8 for c in rear), rear)        # brown wood
+        self.assertTrue(front and all(abs(c[0] - c[2]) <= 8 for c in front), front)  # grey steel
 
 
 class NameTest(unittest.TestCase):
@@ -185,6 +208,22 @@ class ToneTest(unittest.TestCase):
             t = convert.tone(c)
             self.assertTrue(18 <= t[0] <= 66 and t[0] == t[1] == t[2], (c, t))
         self.assertLess(convert.tone((60, 60, 60))[0], convert.tone((180, 180, 180))[0])
+
+    def test_big_parts_take_the_like_guns_common_greys(self):
+        """Greys map by area: a light grey covering most of the source (the Mossberg's receiver) takes the like gun's
+        common metal, not its brightest small accent."""
+        import fit
+
+        def part(lum, size):
+            q = fit.new_part("p", "gunModel", (lum, lum, lum), {k: [size if k[i] else 0.0 for i in range(3)]
+                                                                for k in fit.CORNERS})
+            return q
+        pal = {"grey": [30.0] * 9 + [90.0], "greyW": [(30.0, 1.0)] * 9 + [(90.0, 0.1)], "body": None, "ammo": None,
+               "ammoGrey": []}
+        big, small = part(102, 3.0), part(70, 0.5)
+        tones = convert.palette_tones([big, small], ["gunModel", "gunModel"], pal)
+        self.assertLessEqual(tones[0][0], 40)
+        self.assertLessEqual(tones[1][0], tones[0][0])
 
     def test_wood_stays_brown_and_dark(self):
         r, g, b = convert.tone((142, 92, 82))

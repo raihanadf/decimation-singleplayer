@@ -573,8 +573,16 @@ $("convert").addEventListener("click", async () => {
       const guns = Object.entries(st.byGun).sort((a, b) => b[1] - a[1]).map(([g, n]) => g + " " + n).join(", ");
       notes.unshift("From Decimation exemplars: " + (st.fromExemplars || 0) + " parts (" + (guns || "none") +
         "); from the fit: " + (st.fromFit || 0) + " parts.");
-      const kept = Object.entries(st.exemplars || {}).filter(([, v]) => v.fit !== undefined).map(([a]) => a);
-      if (kept.length) notes.push("Areas kept as fitted (no exemplar passed the overlap gate): " + kept.join(", ") + ".");
+      const secs = Object.entries(st.exemplars || {}).filter(([, v]) => v.sections).map(([a, v]) =>
+        a + " (" + v.sections.map((s) => s.gun + " " + s.from.toFixed(1) + ".." + s.to.toFixed(1)).join(", ") + ")");
+      if (secs.length) notes.push("Areas partly from exemplars, the rest fitted: " + secs.join("; ") + ".");
+      const kept = Object.entries(st.exemplars || {}).filter(([, v]) => v.fit !== undefined && !v.sections)
+        .map(([a]) => a);
+      if (kept.length) notes.push("Areas kept as fitted (no exemplar passed the gates): " + kept.join(", ") + ".");
+      if (st.detailsByGun) {
+        const dg = Object.entries(st.detailsByGun).sort((a, b) => b[1] - a[1]).map(([g, n]) => g + " " + n).join(", ");
+        notes.push("Details placed on fitted areas: " + (st.fromDetails || 0) + (dg ? " (" + dg + ")" : "") + ".");
+      }
     }
     for (const w of notes.length ? notes : ["none"]) {
       const li = document.createElement("li");

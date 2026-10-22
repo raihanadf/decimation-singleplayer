@@ -124,3 +124,84 @@ per gun.
 The dataset is built once from the jar (seconds, cached until the jar changes); a conversion loads it once per process
 and refits a few hundred parts (well under a second more). In game an exemplar gun costs what its parts cost: part
 counts stay inside the category's range (study.py gaps).
+
+## Milestone 3: the details (user, 22 Oktober 2026)
+User, after the milestone 2 sheet, rear view, icons and in game shots: "still need big improvement yet. so lets do max
+effort to this convert feature. still so many missing detail in there". Converter side only (agent 1, branch
+gunconv-tool); the package contract does not change.
+
+What milestone 2 left (measured 22 Oktober 2026, docs/gunconv.md section 11): barrel, handguard, magwell, trigger and
+trigger guard never passed the overlap gate on either AK; the ak47's milled receiver failed (0.605) because the labeller
+cut the source's receiver and magwell at another line than the akm's (the source's lower receiver landed in "magwell");
+the akmc's handguard failed (0.489) because its upper and lower handguards differ in length from the akm's; details
+(rivets, pins, ribs, levers, strips) exist only where a whole area came from an exemplar.
+
+### 1. Details in the dataset
+A detail is a part with its smallest side at most 0.3 that sits on a host: another part at least 3 times its volume that
+it touches, with its footprint across one axis inside the host's face and at most 35 % of it, sticking out of the host
+by at most 0.45 along that axis (rivets, pins through the receiver, ribs, strips, levers, sight ears, screws, serrations);
+a part whose longest side is under 0.35 touching a bigger part is one too. The rule lives in study.py (detail_parts), so
+study.py measures any gun the same way. The dataset (version 2) stores per area its details: the face they stand on
+(axis and side, or a pin through the area), the place on it (u along the area's run between its ends, v across between
+the area's outline edges at that u), the corners relative to that point on the host's surface (size, kind and how proud
+it stands stay as Decimation made them), group, tone, the host's tone. Aggregates per category and area: details and
+detail density (details a unit of the area's length).
+
+### 2. The detail layer (details.py)
+Every area of the converted gun that did not take an exemplar's parts gets the details of its closest exemplar (the one
+the area was scored against, the like gun first): placed at the same u and v on our area, the point's height found by
+probing our parts along the face's normal (the outermost face there), each corner on our surface at its own place (a
+leaning face included, skill lesson 15), the inner face 0.06 inside, the outer face as proud as in the exemplar; a pin
+through spans our width plus its overhang. Kept only when it is seated (its inner corners inside our parts), not hidden
+inside another part, not inside a part of another area and not within 0.25 of a detail the source already has; long
+details shrink with our area when it is shorter than the exemplar's. Report: gun.json "converter" "details" per area
+{gun, placed, dropped by reason} and "detailsByGun".
+
+### 3. Construction for every area (exemplar.py)
+- Robust boxes: an exemplar is mapped onto our area's box without small outliers (parts under 5 % of the area's volume
+  that widen the box by more than 15 %).
+- Warp along the run: after the box to box map, the exemplar's side outline columns are matched to ours by dynamic time
+  warping (steps that stretch or shrink by at most 2), so a gas block, a sight base or a magwell lands where ours is.
+- Assemblies first: action (receiver, magwell, trigger, trigger guard, rear sight, charging handle, bolt, rail), front
+  (handguard, barrel, front sight, muzzle, pump) and butt (stock, buttpad) are scored and gated as one outline, so a
+  labelling difference at an inner border no longer fails a match. Passed: every area of the assembly takes that gun's
+  parts. Measured on the prototype: ak47 action 0.833 and front 0.776 box to box, 0.867 and 0.855 warped (gate 0.7).
+- Then single areas (warped), then sections: an area that still fails is judged in bins of 0.5 along its run; the best
+  exemplar takes the bins where its outline overlaps ours by 0.7, a second exemplar the bins left, our fit the rest
+  (parts cut at the bin edges). The report lists each exemplar with its bins.
+- Exemplar parts keep their own group (a charging handle knob on Decimation's bolt carrier stays slideModel; iron sight
+  parts are defaultScopeModel only when the like gun folds its own).
+- Smoothing: stock and grip follow a smoothed profile (a straight line per edge where it strays under 0.15), so the
+  exemplar's slices stay boxes and tapers instead of wedges.
+- Proportions: a front or rear sight that keeps the fit and is taller or longer than the category's q90 is scaled about
+  its base to the category's median.
+
+### 4. Metrics
+study.metrics gets "details" and "detail%" (gaps compares them with the category); `dataset.py density PACKAGE` prints
+per area the details and detail density against the category's medians. Results before and after for ak47, akmc and
+the new guns in docs/gunconv.md.
+
+### 5. Generality
+Four guns without a Decimation twin, of other kinds, recorded in docs/references/gunconv_sources.md before use: the
+Mossberg 590A1 (pump shotgun, J-Toastie, CC BY 3.0), the SIG P228 (pistol, PuKkBuMXDD, CC BY 3.0), a vz. 61 layout
+submachine gun (Kutejnikov, CC BY 4.0) and a Colt Lightning style pump action rifle (LonesomeDucky, CC0). Each compared
+with two Decimation guns of its category on sheets, split, rear and low views.
+
+### 6. Checks
+Test first (tools/gunconv/tests). Every change looked at next to two Decimation guns of the same kind (study.py sheet,
+render --split, rear and low); what was seen goes into docs/gunconv.md and docs/shots_index.md. study.py contact must not
+list a transferred detail. In game at the end in this worktree's dev client (live ports 25595 and 5009): gunview hip,
+aim and NPC for each converted gun next to its like gun, and the gunpack test. A final sheet with each gun beside its
+closest Decimation guns and an honest verdict per gun.
+
+### 7. Performance
+The dataset build adds the detail rule (one pass over each gun's part pairs, boxes first). A conversion adds the warp
+(a few hundred columns squared at most) and the detail placement (a few hundred probes): seconds. In game a converted
+gun costs what its parts cost; the part count stays inside the category's q10..q90 (study.py gaps).
+
+### Status (22 Oktober 2026)
+Converter side done: docs/gunconv.md section 11 (what was built, results before and after, the in game checks, the
+verdict per gun, what is still weak). Beyond this section on the way: per part source colours, greys mapped by area,
+Decimation's pistol scale, donors from the closest guns, wood against steel agreement, holes filled from the fit, details
+thinned on squeezed exemplars.
+

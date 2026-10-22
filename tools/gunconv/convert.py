@@ -40,6 +40,12 @@ HANDS = {"pistol": ((-6.35, 1.07, -2.0), (-1.55, 9.12, 5.32)), "smg": ((-6.55, 1
 MIN_SIZE = 0.08       # parts whose longest side is shorter are not seen in game: dropped
 PANEL = 1.5           # flat parts longer than this along x become panels (rifle parts: longest side median 1.0, q90 1.4)
 SIGHT_REACH = 1.5     # the front sight is moved onto the like gun's sight line only when it is this close already
+FAMILY = 6            # exemplar parts and details come from this many of the closest guns (and the like gun)
+# Decimation draws pistols bigger than its long guns: real lengths over model lengths, pistols 21 .. 30 mm a unit
+# (median about 25: glock17 28.8, m1934 21.1, makarov 24.6, browninghp 23.5, colt 26.0, cz52 24.3), rifles, shotguns
+# and SMGs about 31 (akm 30.9, r870 29.3, mp5a3 29.7) [real lengths from memory, not checked]
+MM_PER_UNIT = {"pistol": 25.0, "revolver": 25.0}
+WEAK_LIKE = 0.6       # a best silhouette overlap under this: no Decimation gun is close, the like gun is a guess
 SLIDE_KICK = {"pistol": 1.2, "revolver": 0.0, "smg": 1.6}  # Fire: slideModel back (style guide section 10: about 2.4)
 KEYWORDS = [("ammoModel", re.compile(r"mag|clip|ammo|cartridge|bullet|shell", re.I)),
             ("slideModel", re.compile(r"bolt|slide|carrier|charg|cocking", re.I)),
@@ -140,17 +146,47 @@ def tone(c):
     return tuple(max(0, min(255, int(round(v * f)))) for v in (r, g, b))
 
 
+def area_of(p):
+    """Surface area of a part's box (1 for a piece without corners)."""
+    if not hasattr(p, "c"):
+        return 1.0
+    (x0, x1), (y0, y1), (z0, z1) = fit.bounds([p])
+    a, b, c = x1 - x0, y1 - y0, z1 - z0
+    return max(1e-6, 2 * (a * b + b * c + a * c))
+
+
 def palette_tones(pieces, groups, pal):
     """One tone per piece. With the like gun's palette (match.palette): grey materials keep their order but take the
-    like gun's metal greys (our darkest grey its 5th percentile, our lightest its 95th), coloured ones take its body
+    like gun's metal greys, both ranked by surface area (our darkest its 5th percentile, our lightest its 95th, so a
+    grey covering most of the gun takes the like gun's common metal), coloured ones take its body
     tone (wood, polymer) or, on the magazine, its magazine tone, a little lighter or darker as the source is. Without
     one: tone() (style guide section 4)."""
     if not pal:
         return [tone(p.colour) for p in pieces]
     greys = sorted(set(round(match.lum(p.colour), 1) for p in pieces if match.grey(p.colour)))
+    # by area: a grey covering most of the source takes the like gun's common metal, not its brightest small accent
+    weight = {}
+    for p in pieces:
+        if match.grey(p.colour):
+            key = round(match.lum(p.colour), 1)
+            weight[key] = weight.get(key, 0.0) + area_of(p)
+    total = sum(weight.values()) or 1.0
+    rank, acc = {}, 0.0
+    for key in greys:
+        rank[key] = (acc + weight[key] / 2) / total
+        acc += weight[key]
 
     def quantile(vals, f):
         return vals[min(len(vals) - 1, max(0, int(round(f * (len(vals) - 1)))))]
+
+    def weighted(pairs, f):
+        tot = sum(w for _, w in pairs)
+        acc2 = 0.0
+        for v, w in pairs:
+            acc2 += w
+            if acc2 >= f * tot:
+                return v
+        return pairs[-1][0]
     coloured = {}
     for p, g in zip(pieces, groups):
         if not match.grey(p.colour):
@@ -158,9 +194,13 @@ def palette_tones(pieces, groups, pal):
     out = []
     for p, g in zip(pieces, groups):
         if match.grey(p.colour):
-            r = greys.index(round(match.lum(p.colour), 1)) / (len(greys) - 1) if len(greys) > 1 else 0.5
-            src = pal["ammoGrey"] if g == "ammoModel" and pal["ammoGrey"] else pal["grey"]
-            v = int(round(quantile(src, 0.05 + 0.9 * r)))
+            r = rank[round(match.lum(p.colour), 1)] if len(greys) > 1 else 0.5
+            if g == "ammoModel" and pal["ammoGrey"]:
+                v = int(round(quantile(pal["ammoGrey"], 0.05 + 0.9 * r)))
+            elif pal.get("greyW"):
+                v = int(round(weighted(pal["greyW"], 0.05 + 0.9 * r)))
+            else:
+                v = int(round(quantile(pal["grey"], 0.05 + 0.9 * r)))
             out.append((v, v, v))
             continue
         base = pal["ammo"] if g == "ammoModel" and pal["ammo"] else pal["body"]
@@ -209,8 +249,9 @@ def body_z(tris, k=64.0):
 # ---------------------------------------------------------------- pieces
 
 class Piece:
-    def __init__(self, tris, label, material, mesh_name, colour):
+    def __init__(self, tris, label, material, mesh_name, colour, tri_colours=None):
         self.tris, self.label, self.material, self.mesh_name, self.colour = tris, label, material, mesh_name, colour
+        self.tri_colours = tri_colours            # per triangle (the mean of its vertices' colours), or None
 
     def centre(self):
         pts = [q for t in self.tris for q in t]
@@ -237,9 +278,12 @@ def pieces_of(model, m):
                 by.setdefault(lab, []).append(fi)
             for lab, fis in by.items():
                 tris = [tuple(verts[i] for i in mesh.faces[fi]) for fi in fis]
+                tri_colours = None
                 if mesh.vcolours:
                     cs = [mesh.vcolours[i] for fi in fis for i in mesh.faces[fi]]
                     colour = tuple(int(round(sum(c[k] for c in cs) / len(cs))) for k in range(3))
+                    tri_colours = [tuple(sum(mesh.vcolours[i][k] for i in mesh.faces[fi]) / 3.0 for k in range(3))
+                                   for fi in fis]
                 else:
                     colour = mesh.colour
                 if lab and not ROOTISH.match(lab):
@@ -248,8 +292,42 @@ def pieces_of(model, m):
                     label = mesh.name
                 else:
                     label = mesh.material or mesh.name
-                out.append(Piece(tris, label, mesh.material or "", mesh.name, colour))
+                out.append(Piece(tris, label, mesh.material or "", mesh.name, colour, tri_colours))
     return out
+
+
+VARIED = 24.0         # a piece whose triangles' colours spread this much (RGB distance, q10 .. q90) gets them per part
+
+
+def varied(piece):
+    """The piece's triangle colours spread by VARIED or more in luminance or in red minus blue (q10 .. q90)."""
+    tc = piece.tri_colours
+    if not tc:
+        return False
+    for vals in (sorted(0.3 * c[0] + 0.59 * c[1] + 0.11 * c[2] for c in tc), sorted(c[0] - c[2] for c in tc)):
+        if vals[int(0.9 * (len(vals) - 1))] - vals[int(0.1 * (len(vals) - 1))] >= VARIED:
+            return True
+    return False
+
+
+def part_colour(part, piece):
+    """The source colour under a fitted part: the area weighted mean of the piece's triangle colours whose middles lie
+    in the part's box (grown 0.05) when the piece's colours vary (a textured one material file), else the piece's."""
+    tc = piece.tri_colours
+    if not varied(piece):
+        return tuple(piece.colour)
+    (x0, x1), (y0, y1), (z0, z1) = [(a - 0.05, b + 0.05) for a, b in fit.bounds([part])]
+    acc, wsum = [0.0, 0.0, 0.0], 0.0
+    for tri, c in zip(piece.tris, tc):
+        m = [(tri[0][i] + tri[1][i] + tri[2][i]) / 3.0 for i in range(3)]
+        if x0 <= m[0] <= x1 and y0 <= m[1] <= y1 and z0 <= m[2] <= z1:
+            w = 0.5 * math.sqrt(sum(v * v for v in fit.cross(fit.sub(tri[1], tri[0]), fit.sub(tri[2], tri[0]))))
+            for i in range(3):
+                acc[i] += w * c[i]
+            wsum += w
+    if wsum <= 1e-12:
+        return tuple(piece.colour)
+    return tuple(int(round(a / wsum)) for a in acc)
 
 
 def keyword_group(piece):
@@ -332,6 +410,18 @@ def exposed_top(p, boxes, i):
     return cover < 0.5 * area
 
 
+INHERIT = ("area", "round")
+
+
+def inherit(new, old):
+    """Parts made from a part (panels, top plates, snapped copies) keep its area and roundness."""
+    for q in new:
+        for k in INHERIT:
+            if hasattr(old, k) and not hasattr(q, k):
+                setattr(q, k, getattr(old, k))
+    return new
+
+
 def layered(parts):
     """Body parts that are bulky and open on top get Decimation's bevelled top plate (fit.layer_top); exemplar parts
     already carry Decimation's construction."""
@@ -340,9 +430,24 @@ def layered(parts):
     for i, p in enumerate(parts):
         if (p.group == "gunModel" and not getattr(p, "round", False) and not getattr(p, "exemplar", None)
                 and exposed_top(p, boxes, i)):
-            out += fit.layer_top(p)
+            out += inherit(fit.layer_top(p), p)
         else:
             out.append(p)
+    return out
+
+
+def panelled(parts):
+    """Fitted body parts longer than PANEL cut into panels and levelled (fit.panels, fit.snap_part); exemplar parts
+    stay as Decimation made them."""
+    out = []
+    for p in parts:
+        if getattr(p, "exemplar", None):
+            out.append(p)
+            continue
+        pieces = fit.panels(p, PANEL) if p.group == "gunModel" and not getattr(p, "round", False) else [p]
+        for r in pieces:
+            inherit([r], p)
+            out += inherit([fit.snap_part(r)], r)
     return out
 
 
@@ -387,7 +492,7 @@ def points_of(parts, like, mount=None):
 # ---------------------------------------------------------------- the conversion
 
 def convert(model, name=None, display=None, category=None, like=None, length=None, length_mm=None, up=None,
-            muzzle=None, mirror=False, tol=fit.TOL, source=None, mount=None, exemplars=True):
+            muzzle=None, mirror=False, tol=fit.TOL, source=None, mount=None, exemplars=True, details_on=True):
     warnings = []
     if name:
         validate_name(name)                              # before the work: a taken name fails at once
@@ -411,6 +516,9 @@ def convert(model, name=None, display=None, category=None, like=None, length=Non
         raise ValueError("like %r needs Decimation.jar (not found)" % like)
     if like is None and cands:
         like = cands[0][0]
+        if cands[0][1] < WEAK_LIKE:
+            warnings.append("no Decimation gun is close (best %s %.2f): the like gun is a guess, pick one on the page"
+                            % cands[0])
     info = None
     if like:
         if like not in match.guns():
@@ -427,7 +535,7 @@ def convert(model, name=None, display=None, category=None, like=None, length=Non
     if length:
         target = float(length)
     elif length_mm:
-        target = float(length_mm) / 31.0
+        target = float(length_mm) / MM_PER_UNIT.get(category, 31.0)
     elif info:
         target = info["length"]
     else:
@@ -466,19 +574,27 @@ def convert(model, name=None, display=None, category=None, like=None, length=Non
     M = compose(rot, s, zscale, (tx, ty, tz))
     pieces = pieces_of(model, M)
     groups = groups_of(pieces, info)
-    if like and len(set(tuple(p.colour) for p in pieces)) <= 1:
-        # one colour in the whole file: the like gun's own part tones by position (a colouring template)
-        lt = match.part_tones(like)
-        tones = [match.template_tone(p.box(), lt) for p in pieces]
-        warnings.append("the file has one colour: tones taken from %s's parts by position" % like)
-    else:
-        tones = palette_tones(pieces, groups, match.palette(like) if like else None)
+    one_colour = bool(like and len(set(tuple(p.colour) for p in pieces)) <= 1 and not any(varied(p) for p in pieces))
     parts, labels_seen = [], {}
-    for piece, group, colour in zip(pieces, groups, tones):
+    for piece, group in zip(pieces, groups):
         base = re.sub(r"[^A-Za-z0-9]", "", piece.label) or "part"
         k = labels_seen.get(base, 0)
         labels_seen[base] = k + 1
-        parts += fit.fit_piece(piece.tris, "%s%d" % (base, k), group, colour, tol=tol, label=piece.label)
+        fitted = fit.fit_piece(piece.tris, "%s%d" % (base, k), group, piece.colour, tol=tol, label=piece.label)
+        for q in fitted:
+            q.colour = part_colour(q, piece)
+        parts += fitted
+    # tones per fitted part (a piece can hold a wooden stock and a steel barrel: part_colour)
+    if one_colour:
+        # one colour in the whole file: the like gun's own part tones by position (a colouring template)
+        lt = match.part_tones(like)
+        for q in parts:
+            q.colour = match.template_tone(fit.bounds([q]), lt)
+        warnings.append("the file has one colour: tones taken from %s's parts by position" % like)
+    else:
+        tones = palette_tones(parts, [q.group for q in parts], match.palette(like) if like else None)
+        for q, c in zip(parts, tones):
+            q.colour = c
     n_fit = len(parts)
     parts = [p for p in parts if size_of(p) >= MIN_SIZE]
     small = n_fit - len(parts)
@@ -487,16 +603,23 @@ def convert(model, name=None, display=None, category=None, like=None, length=Non
     hidden = before - len(parts)
     if small or hidden:
         warnings.append("dropped %d parts too small to see and %d hidden inside others" % (small, hidden))
-    ex_report, by_gun = {}, {}
+    ex_report, by_gun, plan, det_report, det_by_gun = {}, {}, {}, {}, {}
     if exemplars and info:
         import exemplar
         provisional = {"flamePos": tuple(points_of(parts, info, mount)["flame"])}
-        parts, ex_report, by_gun = exemplar.apply(parts, category, like, provisional)
-    parts = [q for p in parts for q in (
-        [p] if getattr(p, "exemplar", None) else
-        [fit.snap_part(r) for r in (fit.panels(p, PANEL) if p.group == "gunModel" and not getattr(p, "round", False)
-                                    else [p])])]
-    parts = layered(parts)
+        family = [n for n, _ in cands[:FAMILY]] if cands else None
+        parts, ex_report, by_gun, plan = exemplar.apply(parts, category, like, provisional,
+                                                         folding=bool(info.get("foldingSights")),
+                                                         exemplar_tones=one_colour, family=family)
+    parts = layered(panelled(parts))
+    if exemplars and info:
+        parts, scaled = exemplar.proportions(parts, category, dataset_data())
+        for a, r in scaled.items():
+            ex_report.setdefault(a, {}).update(r)
+    if exemplars and info and details_on:
+        import dataset
+        import details
+        parts, det_report, det_by_gun = details.apply(parts, plan, dataset.load())
     if not any(p.group == "ammoModel" for p in parts):
         warnings.append("no magazine found (no ammoModel part): the reload moves nothing; set a part's group")
     if not any(p.group == "slideModel" for p in parts):
@@ -516,12 +639,19 @@ def convert(model, name=None, display=None, category=None, like=None, length=Non
     for p in parts:
         counts[p.group] = counts.get(p.group, 0) + 1
     from_ex = sum(1 for p in parts if getattr(p, "exemplar", None))
+    from_det = sum(1 for p in parts if getattr(p, "detail_from", None))
     stats = {"triangles": model.triangle_count(), "pieces": len(pieces), "parts": len(parts), "groups": counts,
              "scale": s, "length": target, "zscale": zscale, "exemplars": ex_report, "byGun": by_gun,
-             "fromExemplars": from_ex, "fromFit": len(parts) - from_ex}
+             "details": det_report, "detailsByGun": det_by_gun, "fromExemplars": from_ex, "fromDetails": from_det,
+             "fromFit": len(parts) - from_ex - from_det}
     return Conversion(name=name, display=display or default_display(model.name or name), category=category,
                       like=like, candidates=cands, parts=parts, points=points, header=header, warnings=warnings,
                       matrix=[list(r) for r in M], source=source, stats=stats)
+
+
+def dataset_data():
+    import dataset
+    return dataset.load()
 
 
 def default_display(stem):

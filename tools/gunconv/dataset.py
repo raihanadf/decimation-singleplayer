@@ -7,6 +7,7 @@ their corners, kind, group, tone, detail flag) that the converter refits onto a 
                                                       # + docs/references/decimation_gun_areas.tsv (aggregates only)
     python3 tools/gunconv/dataset.py check            # the rules against Decimation's own stock / grip / barrel names
     python3 tools/gunconv/dataset.py render GUN ...   # one colour per area, for the eye (docs/shots, git ignored)
+    python3 tools/gunconv/dataset.py density PKG ...  # details per area of converted packages vs the medians
 
 LEGAL: the dataset is Decimation's model data in another form. It stays under build/, is made again from the jar by
 this tool and is never committed; only this code, the rules and the aggregate numbers go into the repository.
@@ -33,7 +34,10 @@ AREAS = ("receiver", "handguard", "barrel", "muzzle", "front_sight", "rear_sight
          "trigger_guard", "trigger", "magazine", "magwell", "charging_handle", "bolt", "rail", "pump", "cylinder")
 DETAIL = 0.3          # a part whose longest side is under this is a detail (rivet, screw, vent, groove) of its area
 STATIONS = 12         # profile stations along an area's run axis
+VERSION = 2           # 2: details by study.detail_parts and their records (milestone 3)
 GRIP_MAX = 4.5        # a pistol grip is at most this long
+GRIP_REAR = 0.2       # without a magazine below, the grip starts ahead of the rear fifth (a straight stock's butt is not one)
+GRIP_TO_MAG = 4.0     # with one, the grip's front is at most this far behind the magazine (the Skorpion's grip is at the rear)
 NO_STOCK = ("pistol", "revolver")
 ZC = -0.15           # Decimation's centre line in z
 # study.Part.verts() order as (ix, iy, iz) corners of the box
@@ -115,7 +119,7 @@ def anchors(shapes, header, cat):
                 else d for x, d in zip(xs, depth)]
         # beside skipped magazine columns a run is a piece of a grip around the magazine (the Uzi's, a pistol's)
         near = (mag[0][0] - 0.55, mag[0][1] + 0.55) if skip_mag else None
-        grip = find_grip(xs, cols, x0, cat, near)
+        grip = find_grip(xs, cols, x0, cat, near, mag[0] if mag else None)
         if grip:
             break
     core_bottom = None
@@ -156,9 +160,10 @@ def runs_of(xs, depth, need):
     return out
 
 
-def find_grip(xs, depth, x0, cat, near=None):
-    """The deepest run of columns hanging at least 55 % as deep as the deepest, at most GRIP_MAX long, not at the rear
-    end (except on guns without a stock), or None. A run too long (grip, guard and lower receiver in one, the M4A4)
+def find_grip(xs, depth, x0, cat, near=None, mag_x=None):
+    """The deepest run of columns hanging at least 55 % as deep as the deepest, at most GRIP_MAX long, near the
+    magazine (its front at most GRIP_TO_MAG behind it) or, without a magazine, not in the rear GRIP_REAR of the gun
+    (except on guns without a stock): the butt of a straight stock hangs deepest but is no grip. Or None. A run too long (grip, guard and lower receiver in one, the M4A4)
     gives its deepest part: the columns at 80 % of its depth around its deepest one. `near`: an x range a run must
     not touch (magazine columns left out)."""
     deepest = max((d for d in depth if d is not None), default=0.0)
@@ -177,7 +182,11 @@ def find_grip(xs, depth, x0, cat, near=None):
             a, b = xs[lo], xs[hi]
         if near and (near[0] <= a <= near[1] or near[0] <= b <= near[1]):
             continue
-        if b - a <= GRIP_MAX and (a > x0 + 0.3 or cat in NO_STOCK):
+        if mag_x is not None:
+            placed = b >= mag_x[0] - GRIP_TO_MAG          # a pistol grip stands near the magazine (a butt does not)
+        else:
+            placed = cat in NO_STOCK or a > x0 + GRIP_REAR * (xs[-1] - x0)
+        if b - a <= GRIP_MAX and placed and (a > x0 + 0.3 or cat in NO_STOCK or mag_x is not None):
             return (a, b)
     return None
 
@@ -296,13 +305,23 @@ def area_entry(items):
 
 
 def exemplars(gun, labels):
-    """{area: exemplar} of one study.Gun (tones from its texture when it has one)."""
+    """{area: exemplar} of one study.Gun (tones from its texture when it has one). Each part's detail flag and each
+    area's detail records follow study.detail_parts (milestone 3: small or thin parts on a host)."""
+    import details
     shapes = shapes_of_gun(gun)
+    rule = study.detail_parts([p.verts() for p in gun.parts])
+    tones = [match.island_tone(gun, p) if gun.texture is not None else None for p in gun.parts]
+    groups = [prefix(p.name) for p in gun.parts]
+    kinds = [study.shape_kind(p) for p in gun.parts]
     by = {}
-    for p, s, (area, detail) in zip(gun.parts, shapes, labels):
-        tone = match.island_tone(gun, p) if gun.texture is not None else None
-        by.setdefault(area, []).append((s, detail, prefix(p.name), study.shape_kind(p), tone))
-    return {area: area_entry(items) for area, items in by.items()}
+    for i, (area, _) in enumerate(labels):
+        by.setdefault(area, []).append(i)
+    out = {}
+    for area, idx in by.items():
+        e = area_entry([(shapes[i], bool(rule[i]), groups[i], kinds[i], tones[i]) for i in idx])
+        e["detailRecs"] = details.records([s.c for s in shapes], rule, idx, tones, groups, kinds)
+        out[area] = e
+    return out
 
 
 # ---------------------------------------------------------------- the dataset
@@ -316,7 +335,7 @@ def build(out=DATASET, names=None):
     """Read every Decimation gun from the jar (textures too), label it and store its exemplars as
     out/decimation_areas.json. Returns a summary."""
     from PIL import Image
-    data = {"version": 1, "jar": jar_stamp(), "areas": list(AREAS), "guns": {}}
+    data = {"version": VERSION, "jar": jar_stamp(), "areas": list(AREAS), "guns": {}}
     total = 0
     with zipfile.ZipFile(study.JAR) as z:
         listing = set(z.namelist())
@@ -353,7 +372,7 @@ def load(out=DATASET):
     if os.path.exists(path):
         with open(path) as f:
             data = json.load(f)
-        if data.get("jar") != jar_stamp() or data.get("version") != 1:
+        if data.get("jar") != jar_stamp() or data.get("version") != VERSION:
             data = None
     if data is None:
         build(out)
@@ -369,18 +388,48 @@ def aggregate(data):
     for g in data["guns"].values():
         for area, ex in g["areas"].items():
             b = ex["box"]
+            run = max(1e-6, b[ex["axis"]][1] - b[ex["axis"]][0])
             cells.setdefault((g["cat"], area), []).append((ex["count"], ex["details"], b[0][1] - b[0][0],
-                                                          b[1][1] - b[1][0], b[2][1] - b[2][0]))
+                                                          b[1][1] - b[1][0], b[2][1] - b[2][0], ex["details"] / run))
     rows = []
     for (cat, area), vals in sorted(cells.items()):
-        med = [statistics.median(v[i] for v in vals) for i in range(5)]
+        med = [statistics.median(v[i] for v in vals) for i in range(6)]
         rows.append({"category": cat, "area": area, "guns": len(vals), "parts": med[0], "details": med[1],
-                     "length": round(med[2], 2), "height": round(med[3], 2), "width": round(med[4], 2)})
+                     "length": round(med[2], 2), "height": round(med[3], 2), "width": round(med[4], 2),
+                     "density": round(med[5], 2)})
+    return rows
+
+
+def medians(data):
+    """{(category, area): {"details", "density"}} medians over Decimation's guns (aggregate)."""
+    return {(r["category"], r["area"]): {"details": r["details"], "density": r["density"]} for r in aggregate(data)}
+
+
+def density(gun, med=None):
+    """Per area of a study.Gun: parts, details (study.detail_parts), the area's length along its run, details a unit
+    of it, and the category's medians (milestone 3 metric; med from medians(), else loaded)."""
+    if med is None:
+        med = medians(load())
+    rule = study.detail_parts([p.verts() for p in gun.parts])
+    shapes = shapes_of_gun(gun)
+    by = {}
+    for i, (area, _) in enumerate(label_gun(gun)):
+        by.setdefault(area, []).append(i)
+    rows = []
+    for area, idx in sorted(by.items()):
+        pts = [q for i in idx for q in shapes[i].c.values()]
+        box = [(min(q[a] for q in pts), max(q[a] for q in pts)) for a in range(3)]
+        run = max(b - a for a, b in box)
+        n = sum(1 for i in idx if rule[i])
+        m = med.get((gun.cat, area), {})
+        rows.append({"area": area, "parts": len(idx), "details": n, "length": round(run, 3),
+                     "density": round(n / run, 3) if run > 0 else 0.0, "medianDetails": m.get("details"),
+                     "medianDensity": m.get("density")})
     return rows
 
 
 def write_aggregate(rows, path=AGGREGATE):
-    keys = ["category", "area", "guns", "parts", "details", "length", "height", "width"]
+    keys = ["category", "area", "guns", "parts", "details", "length", "height", "width", "density"]
     with open(path, "w") as f:
         f.write("# Decimation's guns by anatomy area: medians per category (tools/gunconv/dataset.py; numbers only)\n")
         f.write("\t".join(keys) + "\n")
@@ -448,6 +497,18 @@ def main(argv):
     elif argv[0] == "check":
         agree, total = name_agreement()
         print("rules agree with Decimation's own names on %d of %d parts (%.1f %%)" % (agree, total, 100.0 * agree / total))
+    elif argv[0] == "density":
+        # dataset.py density PACKAGE_DIR ...: details per area of converted guns against the category's medians
+        import package
+        med = medians(load())
+        for d in argv[1:]:
+            g = package.built_gun(d)
+            print("%s (%s), %d parts" % (g.name, g.cat, len(g.parts)))
+            print("  %-16s %5s %7s %7s %8s %8s %8s" % ("area", "parts", "details", "length", "per unit", "median",
+                                                       "med/unit"))
+            for r in density(g, med):
+                print("  %-16s %5d %7d %7.2f %8.2f %8s %8s" % (r["area"], r["parts"], r["details"], r["length"],
+                                                              r["density"], r["medianDetails"], r["medianDensity"]))
     elif argv[0] == "render":
         out = os.path.join(ROOT, "docs", "shots", "gunconv_v0.66.1", "areas")
         for n in argv[1:]:

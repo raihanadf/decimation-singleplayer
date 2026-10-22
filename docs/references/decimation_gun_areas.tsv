@@ -1,104 +1,104 @@
 # Decimation's guns by anatomy area: medians per category (tools/gunconv/dataset.py; numbers only)
-category	area	guns	parts	details	length	height	width
-crossbow	buttpad	1	3	0	0.2	3.5	1.4
-crossbow	charging_handle	1	3	0	0.7	0.4	1.6
-crossbow	front_sight	1	29	0	11.35	2.7	7.9
-crossbow	handguard	1	52	0	10.28	2.95	9.55
-crossbow	magazine	1	6	0	8.4	0.7	0.7
-crossbow	rear_sight	1	7	3	0.8	1.17	0.8
-crossbow	receiver	1	34	0	6.7	3.9	1.7
-crossbow	stock	1	28	0	7.35	6.05	1.8
-mg	barrel	6	12.5	0.0	13.86	2.07	0.8
-mg	buttpad	4	2.0	0.0	0.48	3.7	1.3
-mg	charging_handle	8	4.0	0.0	2.6	1.5	0.95
-mg	front_sight	4	4.0	0.0	0.75	1.43	0.48
-mg	grip	9	8	0	2.05	3.65	1.2
-mg	handguard	8	10.0	0.0	10.52	3.1	1.6
-mg	magazine	9	94	72	2.7	6.65	6.0
-mg	magwell	6	3.5	0.0	4.2	2.28	1.88
-mg	muzzle	6	3.0	0.0	1.65	0.8	0.8
-mg	rear_sight	5	4	1	0.3	0.33	0.6
-mg	receiver	9	53	0	11.3	4.8	2.45
-mg	stock	8	21.5	0.0	7.8	5.08	1.42
-mg	trigger	4	3.5	0.0	1.36	0.76	0.6
-mg	trigger_guard	2	18.0	0.0	5.32	0.88	1.4
-pistol	barrel	7	4	0	2.85	0.7	0.8
-pistol	bolt	9	30	2	7.3	1.25	0.9
-pistol	front_sight	1	1	0	0.45	0.2	0.2
-pistol	grip	9	16	0	3.05	3.9	1.1
-pistol	handguard	7	2	0	0.65	1.0	0.5
-pistol	magazine	9	2	0	2.19	3.85	0.7
-pistol	magwell	9	4	0	2.5	0.65	0.95
-pistol	muzzle	9	3	0	1.55	0.6	0.6
-pistol	rear_sight	1	3	3	0.2	0.2	0.4
-pistol	receiver	9	9	0	5.8	2.45	0.85
-pistol	trigger	9	2	0	1.2	0.48	0.5
-pistol	trigger_guard	7	1	0	1.5	0.2	0.4
-revolver	barrel	2	7.0	0.0	3.1	1.3	0.65
-revolver	cylinder	2	16.0	0.0	3.37	1.7	1.41
-revolver	grip	2	18.0	0.0	3.48	3.49	1.05
-revolver	handguard	1	3	0	0.5	0.7	0.5
-revolver	magazine	2	18.0	2.0	1.27	1.28	1.2
-revolver	magwell	2	6.5	0.0	1.19	1.48	1.3
-revolver	muzzle	2	6.5	0.0	2.0	0.87	0.6
-revolver	receiver	2	19.5	1.5	4.77	2.47	1.3
-revolver	trigger	2	1.0	0.0	0.28	0.31	0.5
-revolver	trigger_guard	1	1	0	0.9	0.25	1.1
-rifle	barrel	53	23	0	10.4	1.75	0.9
-rifle	bolt	29	5	0	3.15	0.75	0.75
-rifle	buttpad	17	1	0	0.35	3.2	1.1
-rifle	charging_handle	45	5	0	5.2	1.0	0.6
-rifle	front_sight	20	6.0	0.5	0.54	0.86	0.5
-rifle	grip	49	8	0	2.75	3.55	1.0
-rifle	handguard	49	18	0	7.13	2.15	1.5
-rifle	magazine	48	4.0	0.0	2.75	4.18	0.86
-rifle	magwell	42	6.0	0.0	3.69	1.96	1.35
-rifle	muzzle	50	7.0	0.0	1.53	0.7	0.65
-rifle	pump	7	4	0	4.45	1.05	1.0
-rifle	rail	4	23.5	0.0	9.25	0.08	0.48
-rifle	rear_sight	27	6	2	0.8	0.89	0.7
-rifle	receiver	53	43	0	10.3	3.63	1.4
-rifle	stock	52	14.5	0.0	7.97	4.2	1.2
-rifle	trigger	38	3.0	0.0	1.36	0.9	0.55
-rifle	trigger_guard	40	2.0	0.0	1.8	1.1	0.6
-rocket	barrel	3	7	0	5.8	1.55	1.3
-rocket	charging_handle	1	4	0	1.0	2.0	1.05
-rocket	front_sight	1	16	6	4.05	2.85	2.1
-rocket	grip	4	9.0	0.0	2.42	3.48	1.2
-rocket	handguard	3	28	2	13.4	5.3	2.3
-rocket	magazine	2	11.5	0.0	8.32	2.23	2.33
-rocket	magwell	1	4	0	5.0	1.6	1.4
-rocket	muzzle	1	1	0	0.6	0.6	0.4
-rocket	rear_sight	2	3.0	1.0	0.13	0.55	0.55
-rocket	receiver	4	27.5	0.0	8.2	4.66	2.12
-rocket	stock	3	18	0	11.85	5.25	1.22
-rocket	trigger	1	11	3	3.4	2.55	0.7
-rocket	trigger_guard	3	2	0	2.7	0.95	1.55
-shotgun	barrel	7	11	0	12.0	1.4	0.8
-shotgun	buttpad	2	1.0	0.0	0.27	2.55	0.9
-shotgun	charging_handle	3	6	0	0.7	0.8	0.45
-shotgun	grip	2	14.0	0.0	3.42	4.1	1.05
-shotgun	handguard	5	7	0	9.85	2.5	1.1
-shotgun	muzzle	6	4.0	0.0	1.43	0.61	0.65
-shotgun	pump	2	23.0	0.0	8.5	1.77	1.45
-shotgun	rear_sight	3	5	3	0.55	0.5	0.5
-shotgun	receiver	7	17	0	6.0	2.73	1.2
-shotgun	stock	7	24	0	7.3	3.9	1.2
-shotgun	trigger	5	4	0	1.05	0.85	0.4
-shotgun	trigger_guard	3	3	0	2.85	0.45	0.8
-smg	barrel	12	11.5	0.0	4.15	1.49	1.07
-smg	bolt	8	3.5	0.0	1.12	0.3	0.72
-smg	buttpad	5	1	0	0.4	2.6	1.1
-smg	charging_handle	6	3.0	0.0	3.95	0.59	0.47
-smg	front_sight	3	3	1	0.5	0.45	0.5
-smg	grip	11	13	0	2.95	3.29	0.9
-smg	handguard	12	11.0	0.0	3.68	1.99	1.28
-smg	magazine	13	4	0	1.85	4.55	0.8
-smg	magwell	12	6.0	0.0	2.45	1.87	1.15
-smg	muzzle	11	6	0	2.0	0.85	0.5
-smg	rail	2	11.5	0.0	4.32	0.06	0.4
-smg	rear_sight	7	4	2	0.3	0.25	0.5
-smg	receiver	13	36	2	9.9	2.6	1.3
-smg	stock	13	15	0	9.65	4.1	1.2
-smg	trigger	8	2.5	0.0	0.45	0.73	0.4
-smg	trigger_guard	8	3.0	0.0	2.0	1.22	1.0
+category	area	guns	parts	details	length	height	width	density
+crossbow	buttpad	1	3	0	0.2	3.5	1.4	0.0
+crossbow	charging_handle	1	3	2	0.7	0.4	1.6	1.25
+crossbow	front_sight	1	29	4	11.35	2.7	7.9	0.35
+crossbow	handguard	1	52	19	10.28	2.95	9.55	1.85
+crossbow	magazine	1	6	4	8.4	0.7	0.7	0.48
+crossbow	rear_sight	1	7	3	0.8	1.17	0.8	2.56
+crossbow	receiver	1	34	17	6.7	3.9	1.7	2.54
+crossbow	stock	1	28	8	7.35	6.05	1.8	1.09
+mg	barrel	6	12.5	0.5	13.86	2.07	0.8	0.07
+mg	buttpad	4	2.0	0.0	0.48	3.7	1.3	0.0
+mg	charging_handle	8	3.5	1.5	1.4	1.29	0.95	0.86
+mg	front_sight	4	4.0	1.0	0.75	1.43	0.48	0.81
+mg	grip	9	8	0	2.4	3.5	1.2	0.0
+mg	handguard	8	8.5	1.0	7.12	2.87	1.45	0.14
+mg	magazine	9	94	56	2.7	6.65	6.0	9.53
+mg	magwell	5	4	0	4.4	2.35	2.15	0.0
+mg	muzzle	6	3.0	0.0	1.65	0.8	0.8	0.0
+mg	rear_sight	4	4.0	3.0	0.32	0.79	0.73	2.91
+mg	receiver	9	32	4	11.3	4.55	2.45	0.96
+mg	stock	8	45.5	17.0	16.0	5.58	1.82	1.78
+mg	trigger	1	1	0	0.4	0.2	0.6	0.0
+mg	trigger_guard	3	3	0	6.2	0.8	1.0	0.0
+pistol	barrel	7	4	0	2.85	0.7	0.8	0.0
+pistol	bolt	9	30	14	7.3	1.25	0.9	2.22
+pistol	front_sight	1	1	1	0.45	0.2	0.2	2.22
+pistol	grip	9	16	2	3.05	3.9	1.1	0.54
+pistol	handguard	7	2	0	0.65	1.0	0.5	0.0
+pistol	magazine	9	2	0	2.19	3.85	0.7	0.0
+pistol	magwell	9	4	2	2.5	0.65	0.95	0.69
+pistol	muzzle	9	3	0	1.55	0.6	0.6	0.0
+pistol	rear_sight	1	3	3	0.2	0.2	0.4	7.5
+pistol	receiver	9	9	2	5.8	2.45	0.85	0.33
+pistol	trigger	9	2	1	1.2	0.48	0.5	0.77
+pistol	trigger_guard	7	1	0	1.5	0.2	0.4	0.0
+revolver	barrel	2	7.0	3.0	3.1	1.3	0.65	1.07
+revolver	cylinder	2	16.0	0.5	3.37	1.7	1.41	0.16
+revolver	grip	2	18.0	1.5	3.48	3.49	1.05	0.33
+revolver	handguard	1	3	1	0.5	0.7	0.5	1.43
+revolver	magazine	2	18.0	8.0	1.27	1.28	1.2	6.25
+revolver	magwell	2	6.5	2.0	1.19	1.48	1.3	0.97
+revolver	muzzle	2	6.5	4.0	2.0	0.87	0.6	2.0
+revolver	receiver	2	19.5	7.0	4.77	2.47	1.3	1.44
+revolver	trigger	2	1.0	0.0	0.28	0.31	0.5	0.0
+revolver	trigger_guard	1	1	0	0.9	0.25	1.1	0.0
+rifle	barrel	53	23	9	10.4	1.75	0.9	0.68
+rifle	bolt	29	5	1	3.15	0.75	0.75	0.63
+rifle	buttpad	17	1	0	0.35	3.2	1.1	0.0
+rifle	charging_handle	45	5	3	4.6	1.0	0.6	0.96
+rifle	front_sight	20	6.0	3.0	0.54	0.86	0.5	3.41
+rifle	grip	49	8	1	2.75	3.55	1.0	0.31
+rifle	handguard	49	18	6	7.0	2.15	1.5	0.95
+rifle	magazine	48	4.0	0.0	2.75	4.18	0.86	0.0
+rifle	magwell	42	5.5	1.5	3.69	1.85	1.35	0.57
+rifle	muzzle	50	7.0	1.0	1.53	0.7	0.65	0.9
+rifle	pump	7	4	1	4.45	1.05	1.0	0.18
+rifle	rail	4	23.5	23.5	9.25	0.08	0.48	2.55
+rifle	rear_sight	27	6	4	0.8	0.89	0.7	2.63
+rifle	receiver	53	43	18	10.3	3.62	1.4	1.83
+rifle	stock	52	15.5	1.0	8.0	4.2	1.2	0.16
+rifle	trigger	37	3	2	1.4	0.9	0.6	1.43
+rifle	trigger_guard	39	2	0	1.8	1.1	0.6	0.0
+rocket	barrel	3	7	3	5.8	1.55	1.3	0.52
+rocket	charging_handle	1	4	1	1.0	2.0	1.05	0.5
+rocket	front_sight	1	16	7	4.05	2.85	2.1	1.73
+rocket	grip	2	11.0	0.5	1.12	3.1	1.72	0.14
+rocket	handguard	3	28	3	13.4	5.55	2.3	0.22
+rocket	magazine	2	11.5	0.0	8.32	2.23	2.33	0.0
+rocket	magwell	1	4	0	5.0	1.6	1.4	0.0
+rocket	muzzle	1	1	0	0.6	0.6	0.4	0.0
+rocket	rear_sight	1	2	2	0.15	0.15	0.6	3.33
+rocket	receiver	4	39.5	5.5	14.76	4.72	2.92	0.39
+rocket	stock	3	18	2	11.85	4.95	1.22	0.17
+rocket	trigger	2	6.0	3.5	1.18	1.44	0.45	2.23
+rocket	trigger_guard	3	4	1	3.4	3.15	1.55	0.14
+shotgun	barrel	7	11	3	12.0	1.4	0.8	0.25
+shotgun	buttpad	2	1.0	0.0	0.27	2.55	0.9	0.0
+shotgun	charging_handle	3	6	3	0.7	0.8	0.45	2.22
+shotgun	grip	2	14.0	2.0	3.42	4.1	1.05	0.43
+shotgun	handguard	5	7	1	9.85	2.5	1.1	0.11
+shotgun	muzzle	6	4.0	0.0	1.43	0.61	0.65	0.0
+shotgun	pump	2	23.0	11.5	8.5	1.77	1.45	1.43
+shotgun	rear_sight	3	5	3	0.55	0.5	0.5	3.64
+shotgun	receiver	7	17	4	6.0	2.73	1.2	0.37
+shotgun	stock	7	24	3	7.3	3.9	1.2	0.3
+shotgun	trigger	5	4	1	1.05	0.85	0.4	0.84
+shotgun	trigger_guard	3	3	1	2.85	0.45	0.8	0.67
+smg	barrel	12	13.0	8.0	4.93	1.49	1.17	1.49
+smg	bolt	8	3.5	3.0	1.12	0.3	0.72	3.24
+smg	buttpad	4	2.5	0.0	0.4	2.6	1.2	0.0
+smg	charging_handle	6	3.0	0.5	3.95	0.59	0.47	0.24
+smg	front_sight	3	3	2	0.5	0.45	0.5	3.64
+smg	grip	10	11.5	2.0	2.8	3.23	0.9	0.6
+smg	handguard	12	16.5	3.5	3.85	2.19	1.31	1.04
+smg	magazine	13	4	0	1.85	4.55	0.8	0.0
+smg	magwell	12	7.0	3.5	2.45	1.99	1.15	1.4
+smg	muzzle	11	6	0	2.0	0.85	0.5	0.0
+smg	rail	2	11.5	11.0	4.32	0.06	0.4	2.55
+smg	rear_sight	7	4	3	0.3	0.25	0.5	4.0
+smg	receiver	13	36	18	9.9	3.45	1.3	1.7
+smg	stock	12	16.0	1.5	9.65	4.7	1.25	0.23
+smg	trigger	10	2.5	1.0	0.48	0.75	0.4	1.41
+smg	trigger_guard	9	2	1	2.0	1.2	0.9	0.4
