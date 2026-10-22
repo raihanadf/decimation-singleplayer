@@ -1477,6 +1477,9 @@ lineup photo zombies_v0.34.0. Not seen by the user in game yet
   [inferred: JIT warm up]. Packets: message 32 only on a fit click, Decimation's PlayerData sync only when a filter
   empties or is fitted. HUD: the two overlay handlers 1.2 to 5.6 us a frame (two checks, nothing allocated). The pills:
   nothing per tick.
+- Production (main session, 22 Oktober 2026, after the merge 12afb2b): radset 36 of 36 and glstack in the production
+  client with OptiFine (38 PASS, one jar of main's tree, sha256 a9e39441); a player's server cost 0.07 us in radiation
+  and 0.16 us out of it, the HUD handlers 2.32 us a frame, nothing allocated out of radiation.
 - Bug review: a filter is taken only after every check, in one server step; two requests in one tick use one (tested);
   a full inventory changes nothing (nothing goes into the inventory); creative wears nothing (not irradiated) and fits
   without using one (tested); a stack of masks is refused (tested) and would wear as one; a mask taken off keeps its
@@ -1487,7 +1490,7 @@ lineup photo zombies_v0.34.0. Not seen by the user in game yet
   check PASS, its own cost checks FAILED under the load (HUD draw 223 and 261 us against 200, server tick 112 us once,
   then 38.7 us): RadiationHud and RadiationDose are unchanged but for the filter check, a second game (Decimation-scratch)
   ran beside it; to rerun on a quiet Mac [not verified].
-- Not verified: the production client with OptiFine and the dedicated server (the main session's runs); the death and
+- Not verified: the dedicated server (message 32; the main session's run); the death and
   logout writes of the tag (no death or logout in the test); tear gas: Decimation's tear gas still spares any gas mask
   item, even with an empty filter (TearGasGrenadeEntity checks the item; the filter wears in radiation only, by the
   user's decision; open question).

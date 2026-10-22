@@ -190,4 +190,7 @@ Checked with it: bundled content unpacked, cities generated, no errors (bug.md v
   floor at a new moon 0.054 against vanilla's 0.297 (OptiFine keeps our light map).
 - Same day, feature 10 (durability, PatchGunWear in the base jar): durability 16 of 16, playerfire, glstack in the
   production client with OptiFine (24 PASS); hooks 3.4 us a hit, 16.4 us a shot.
+- Same day, feature 7 (radiation set, merged from bugfix as 12afb2b): radset 36 of 36 and glstack in the production
+  client with OptiFine (38 PASS, one jar sha256 a9e39441); a player's server cost 0.07 us in radiation, 0.16 us out of
+  it; HUD handlers 2.32 us a frame. Not run yet: the dedicated server (messages 32 fit and 3 rack).
 
