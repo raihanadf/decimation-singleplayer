@@ -217,3 +217,18 @@ Checked with it: bundled content unpacked, cities generated, no errors (bug.md v
   PatchGunWear, the durability feature carried as acc19bf), no multiplayer. Resources equal to main's but the Host
   Online texts and the gunpack index (main only); content 3d2721f3ce41 (same as 0.66.1); the candidate holds no hosting,
   gunpack or relay class. Tag 0.70.0 on prerelease 176482c (local); worktree unit tests 172, 0 failed.
+- Server (first candidate, sha256 794ddf75): pregen light check sky 2,197, block 8,620 (the same as 0.66.0), 225 chunks
+  in 1.5 s; walk 40 steps, view 10: median 71 ms, 90 % 161 ms, worst 311 ms, 1 step over 250 ms; log only the known
+  harmless lines. Client with OptiFine, the 0.66.0 list (menu, stats, genwalk, glstack, throwables, armskin, corpsegun,
+  nospawn, npclook, gunbatch, threads, radios, lightleak, scopeperf, attachments, gunsmith, aimdelay): 198 PASS, 0 FAIL.
+- The user then asked to add raihanadf's two open pull requests (#3 Karambit and Katana, #2 Inline HUD and blood on hit
+  infected): reviewed (no network, process, file write, thread or reflection call in any added line; the PR's GIFs show
+  only his own models over the stone test floor; textures from his tools/guns/melee.py), merged into main (2bf6f4c,
+  edc5354; conflicts were lists both sides grew, plus a duplicate Deci.isGasMask removed), dev client melee, hud, wounds,
+  glstack, npclook: 27 PASS; carried to prerelease 3c49f6d and 021a159 (with Deci.isFirstPersonBodyRenderer, from main's
+  cape fix); tag 0.70.0 moved to 021a159 (local); prerelease unit tests 172, 0 failed.
+- Second candidate sha256 f4eed92a (22,670 entries; linecheck PASS, the same one changed Decimation entry): server
+  starts clean, light check unchanged (pregen 4.9 s with the production client open beside it); client with OptiFine,
+  the 0.66.0 list: 196 PASS, 1 FAIL (throwables "three grenades, one thrown": no grenade spawned and the stack read empty
+  right after attachments and gunsmith); throwables alone twice: PASS both (1 spawned, 2 left): a timing flake of the
+  long batch, not the PRs [inferred].
