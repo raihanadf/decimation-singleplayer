@@ -406,10 +406,23 @@ def render(gun, view, scale=24, ss=2, pad=12, bg=(236, 233, 224, 255), only=None
             ImageDraw.Draw(img).polygon(scr, fill=tuple(int(c * shade) for c in colour) + (255,),
                                         outline=(20, 20, 20, 255))
             continue
-        coeffs = perspective(local, uv)
-        if coeffs is None:
-            continue
-        patch = ptex.transform((bx1 - bx0, by1 - by0), Image.PERSPECTIVE, coeffs, Image.NEAREST)
+        # a quad with two corners on one point (a triangle face: the gun converter's exact mode) has no perspective
+        # map: an affine one from its three distinct corners
+        uniq = []
+        for s, t_uv in zip(local, uv):
+            if all((s[0] - o[0]) ** 2 + (s[1] - o[1]) ** 2 > 0.25 for o, _ in uniq):
+                uniq.append((s, t_uv))
+        if len(uniq) == 3:
+            m = solve([[s[0], s[1], 1] for s, _ in uniq], [t_uv[0] for _, t_uv in uniq])
+            n2 = solve([[s[0], s[1], 1] for s, _ in uniq], [t_uv[1] for _, t_uv in uniq])
+            if m is None or n2 is None:
+                continue
+            patch = ptex.transform((bx1 - bx0, by1 - by0), Image.AFFINE, tuple(m) + tuple(n2), Image.NEAREST)
+        else:
+            coeffs = perspective(local, uv)
+            if coeffs is None:
+                continue
+            patch = ptex.transform((bx1 - bx0, by1 - by0), Image.PERSPECTIVE, coeffs, Image.NEAREST)
         r, g, b, a = patch.split()
         r, g, b = (ch.point(lambda c, f=shade: int(c * f)) for ch in (r, g, b))
         mask = Image.new("L", patch.size, 0)

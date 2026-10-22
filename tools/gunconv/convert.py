@@ -491,8 +491,10 @@ def points_of(parts, like, mount=None):
 
 # ---------------------------------------------------------------- the conversion
 
-def convert(model, name=None, display=None, category=None, like=None, length=None, length_mm=None, up=None,
-            muzzle=None, mirror=False, tol=fit.TOL, source=None, mount=None, exemplars=True, details_on=True):
+def place(model, name=None, category=None, like=None, length=None, length_mm=None, up=None, muzzle=None,
+          mirror=False):
+    """Where the source goes in Decimation's model space (both modes): axes, the like gun, the scale, the alignment onto
+    the like gun and the z centre. Returns a dict (model, warnings, cands, like, info, category, target, s, zscale, M)."""
     warnings = []
     if name:
         validate_name(name)                              # before the work: a taken name fails at once
@@ -572,6 +574,15 @@ def convert(model, name=None, display=None, category=None, like=None, length=Non
         y0 = min(q[1] for t in s_tris for q in t)
         tx, ty = -7.5 - x0, -4.9 - y0                      # rifle median x and top (style guide section 9)
     M = compose(rot, s, zscale, (tx, ty, tz))
+    return {"model": model, "warnings": warnings, "cands": cands, "like": like, "info": info, "category": category,
+            "target": target, "s": s, "zscale": zscale, "M": M}
+
+
+def convert(model, name=None, display=None, category=None, like=None, length=None, length_mm=None, up=None,
+            muzzle=None, mirror=False, tol=fit.TOL, source=None, mount=None, exemplars=True, details_on=True):
+    pl = place(model, name, category, like, length, length_mm, up, muzzle, mirror)
+    model, warnings, cands, like, info = pl["model"], pl["warnings"], pl["cands"], pl["like"], pl["info"]
+    category, target, s, zscale, M = pl["category"], pl["target"], pl["s"], pl["zscale"], pl["M"]
     pieces = pieces_of(model, M)
     groups = groups_of(pieces, info)
     one_colour = bool(like and len(set(tuple(p.colour) for p in pieces)) <= 1 and not any(varied(p) for p in pieces))
@@ -649,6 +660,81 @@ def convert(model, name=None, display=None, category=None, like=None, length=Non
                       matrix=[list(r) for r in M], source=source, stats=stats)
 
 
+def header_of(points, info, category):
+    """The .bmodel header: flamePos from the points, hands and ejection from the like gun (else the style guide's)."""
+    if info:
+        hd = info["header"]
+        return {"flamePos": tuple(points["flame"]), "ejectPos": hd.get("ejectPos", (0.0, 0.0, 0.0)),
+                "rhPos": hd.get("rhPos"), "rhRot": hd.get("rhRot", (0.0, 0.0, 0.0)),
+                "lhPos": hd.get("lhPos"), "lhRot": hd.get("lhRot", (0.0, 0.0, 0.0))}
+    rh, lh = HANDS.get(category, HANDS["rifle"])
+    return {"flamePos": tuple(points["flame"]), "ejectPos": (0.0, 0.0, 0.0), "rhPos": rh, "rhRot": (0.0, 0.0, 0.0),
+            "lhPos": lh, "lhRot": (0.0, 0.0, 0.0)}
+
+
+def convert_exact(model, name=None, display=None, category=None, like=None, length=None, length_mm=None, up=None,
+                  muzzle=None, mirror=False, source=None, mount=None, budget=None):
+    """Exact mode (spec "Exact mode"): the source's faces 1:1 as thin plates (exact.py), placed like convert(); groups,
+    tones (Decimation style), hands, aim line and points as convert() makes them."""
+    import exact
+    budget = int(budget or exact.DEFAULT_BUDGET)
+    if not exact.BUDGET_RANGE[0] <= budget <= exact.BUDGET_RANGE[1]:
+        raise ValueError("face budget must be %d to %d" % exact.BUDGET_RANGE)
+    if name:
+        validate_name(name)
+    pl = place(model, name, category, like, length, length_mm, up, muzzle, mirror)
+    model, warnings, cands, like, info = pl["model"], pl["warnings"], pl["cands"], pl["like"], pl["info"]
+    category, M = pl["category"], pl["M"]
+    pieces = pieces_of(model, M)
+    groups = groups_of(pieces, info)
+    one_colour = bool(like and len(set(tuple(p.colour) for p in pieces)) <= 1 and not any(varied(p) for p in pieces))
+    areas = [exact.area_of(p.tris) for p in pieces]
+    polys = [exact.prepare(p.tris, n) for p, n in zip(pieces, exact.share(areas, budget))]
+    total = sum(len(pp) for pp in polys)
+    if total > budget:                                  # the least faces a piece gets pushed it over: share again
+        polys = [exact.prepare(p.tris, n) for p, n in zip(pieces, exact.share(areas, budget * budget // total, 1))]
+    parts, labels_seen = [], {}
+    for piece, group, pp in zip(pieces, groups, polys):
+        base = re.sub(r"[^A-Za-z0-9]", "", piece.label) or "part"
+        k = labels_seen.get(base, 0)
+        labels_seen[base] = k + 1
+        for i, poly in enumerate(pp):
+            q = fit.new_part("%s%d_%d" % (base, k, i), group, piece.colour, exact.plate(poly), piece.label)
+            q.colour = part_colour(q, piece)
+            parts.append(q)
+    if not parts:
+        raise ValueError("no faces left to convert")
+    if one_colour:
+        lt = match.part_tones(like)
+        for q in parts:
+            q.colour = match.template_tone(fit.bounds([q]), lt)
+        warnings.append("the file has one colour: tones taken from %s's parts by position" % like)
+    else:
+        for q, c in zip(parts, palette_tones(parts, [q.group for q in parts], match.palette(like) if like else None)):
+            q.colour = c
+    if not any(p.group == "ammoModel" for p in parts):
+        warnings.append("no magazine found (no ammoModel part): the reload moves nothing; set a part's group")
+    if not any(p.group == "slideModel" for p in parts):
+        warnings.append("no bolt or slide found (no slideModel part): firing moves nothing; set a part's group")
+    cost = exact.estimate(len(parts))
+    cost["verdict"] = exact.verdict(cost["ratio"])
+    if cost["verdict"] != "ok":
+        warnings.append("estimated draw time %.2f x the akm's (budget %.1f x): %s; lower the face budget"
+                        % (cost["ratio"], exact.BUDGET, "export refused" if cost["verdict"] == "refuse" else "heavy"))
+    points = points_of(parts, info, mount)
+    counts = {}
+    for p in parts:
+        counts[p.group] = counts.get(p.group, 0) + 1
+    stats = {"mode": "exact", "faces": len(parts), "budget": budget, "cost": cost,
+             "triangles": model.triangle_count(), "pieces": len(pieces), "parts": len(parts), "groups": counts,
+             "scale": pl["s"], "length": pl["target"], "zscale": pl["zscale"], "fromExemplars": 0, "fromDetails": 0,
+             "fromFit": len(parts)}
+    name = name or default_name(model.name or "gun")
+    return Conversion(name=name, display=display or default_display(model.name or name), category=category,
+                      like=like, candidates=cands, parts=parts, points=points, header=header_of(points, info, category),
+                      warnings=warnings, matrix=[list(r) for r in M], source=source, stats=stats)
+
+
 def dataset_data():
     import dataset
     return dataset.load()
@@ -678,14 +764,22 @@ def main(argv=None):
     ap.add_argument("--url")
     ap.add_argument("--license")
     ap.add_argument("--out", default=os.path.join(ROOT, "build", "gunconv", "out"))
+    ap.add_argument("--exact", action="store_true", help="exact mode: the source's faces 1:1 as plates")
+    ap.add_argument("--budget", type=int, help="exact mode's face budget (300 to 2000, default 800)")
+    ap.add_argument("--force", action="store_true", help="export even over twice the cost budget (to measure it)")
     a = ap.parse_args(argv)
     src = package.source_for(a.model)
     for k in ("author", "url", "license"):
         if getattr(a, k):
             src[k] = getattr(a, k)
-    conv = convert(a.model, name=a.name, display=a.display, category=a.category, like=a.like, length=a.length,
-                   length_mm=a.length_mm, up=a.up, muzzle=a.muzzle, mirror=a.mirror, source=src)
-    res = package.export(conv, a.out)
+    if a.exact:
+        conv = convert_exact(a.model, name=a.name, display=a.display, category=a.category, like=a.like,
+                             length=a.length, length_mm=a.length_mm, up=a.up, muzzle=a.muzzle, mirror=a.mirror,
+                             source=src, budget=a.budget)
+    else:
+        conv = convert(a.model, name=a.name, display=a.display, category=a.category, like=a.like, length=a.length,
+                       length_mm=a.length_mm, up=a.up, muzzle=a.muzzle, mirror=a.mirror, source=src)
+    res = package.export(conv, a.out, force=a.force)
     print("%s (%s), like %s; %d parts %s" % (conv.name, conv.category, conv.like, len(conv.parts),
                                              json.dumps(conv.stats["groups"])))
     print("candidates: " + ", ".join("%s %.3f" % c for c in conv.candidates[:5]))

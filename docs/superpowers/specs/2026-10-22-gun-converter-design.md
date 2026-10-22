@@ -205,3 +205,41 @@ verdict per gun, what is still weak). Beyond this section on the way: per part s
 Decimation's pistol scale, donors from the closest guns, wood against steel agreement, holes filled from the fit, details
 thinned on squeezed exemplars.
 
+
+## Exact mode (user, 22 Oktober 2026)
+User: "add 1 method converter that only convert 3D gun to bmodel with same 1:1 output, so its basicly just changing the
+format"; then "yes build exact mode. and for the texture still using decimation style". A second way to convert beside
+the Decimation style one; the package contract does not change.
+
+### Geometry (exact.py)
+The source mesh as it is, placed like the Decimation style conversion (axes, like gun, scale, alignment, z centre): no
+exemplars, no shape kinds. Before the boxes the mesh is prepared per piece (one material and skin joint each, as now):
+vertices welded, simplified to a face budget (default 800, 300 to 2000) by quadric edge collapse that keeps border and
+sharp edges (dihedral over 40 degrees weighted) and refuses collapses that flip a face, then coplanar neighbouring
+triangles merged into quads (normals within 3 degrees, the quad convex), then faces too small to see dropped (longest
+side under 0.06 units). The budget is shared by the pieces by surface area.
+
+Every face becomes one part: a thin plate, the face itself on both sides, 0.02 thick along its normal (a quad exactly, a
+triangle as a quad with two corners on one point), its corners in the box's right handed order so each side's normal
+points out of it. Two faces 0.02 apart cannot fight for a pixel and each side is lit from its own normal, with or
+without back face culling in Decimation's renderer.
+
+### Groups, tones, points
+Groups as now: magazine and bolt from names, else the like gun's anatomy boxes (reload and fire animate). Tones Decimation
+style: the face's material or source colour through the like gun's palette (greys by area), one colour files from the
+like gun's parts by position; gunmodel.paint gives every part its shade, gradation and noise. Hands, sounds, aim line and
+attachment points from the like gun as now. gun.json "converter": {"mode": "exact", "faces", "budget"}.
+
+### Cost gate
+In game, measured: each gun's draw time (gunpack perf=true: median, glFinish around, GPU included) and its display lists'
+graphics memory (vmmap -summary, IOAccelerator, before and after its first draw) against Decimation's akm, with ModelBatch
+on in the dev client. Budget: draw time at most 1.5 x the akm's (+0.05 ms). The page shows the part count and an estimated
+cost from a fit of those measurements before export, warns above the budget and refuses an export above twice it.
+
+### Page
+A second button "Exact" beside Convert, the face budget slider, the part count and the estimated cost.
+
+### Checks
+Test first. The six guns (ak47, akmc, m590, p228, csmg, lightning) converted exact: in game hip, aim and NPC, gunpack
+perf=true against their like guns, memory against the akm; a sheet of each gun exact beside its Decimation style version
+and its closest Decimation gun.

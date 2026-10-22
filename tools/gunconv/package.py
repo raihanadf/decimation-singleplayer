@@ -74,7 +74,7 @@ def listing(d):
 
 
 def gun_json(conv, display, source):
-    return {
+    out = {
         "name": conv.name, "display": display, "category": conv.category, "like": conv.like, "magazine": "like",
         "stats": {}, "points": conv.points, "source": source,
         "converter": {"version": 3, "parts": len(conv.parts), "likeCandidates": conv.candidates[:5],
@@ -85,11 +85,20 @@ def gun_json(conv, display, source):
                       "fromDetails": conv.stats.get("fromDetails", 0),
                       "fromFit": conv.stats.get("fromFit", len(conv.parts))},
     }
+    if conv.stats.get("mode") == "exact":
+        out["converter"].update({"mode": "exact", "faces": conv.stats.get("faces"), "budget": conv.stats.get("budget"),
+                                 "cost": conv.stats.get("cost")})
+    return out
 
 
-def export(conv, out_root, display=None, source=None):
-    """Write the package of a Conversion to out_root/<name>/ (an old folder of that name is replaced whole)."""
+def export(conv, out_root, display=None, source=None, force=False):
+    """Write the package of a Conversion to out_root/<name>/ (an old folder of that name is replaced whole). An exact
+    mode gun whose estimated draw time is over twice the budget is refused unless force (spec, "Cost gate")."""
     name = convert.validate_name(conv.name)
+    cost = (conv.stats or {}).get("cost") or {}
+    if cost.get("verdict") == "refuse" and not force:
+        raise ValueError("estimated draw time %.2f x the akm's, over twice the budget: lower the face budget"
+                         % cost.get("ratio", 0.0))
     if conv.category not in convert.CATEGORIES:
         raise ValueError("unknown category %r" % conv.category)
     source = source if source is not None else conv.source
