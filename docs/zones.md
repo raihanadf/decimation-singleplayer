@@ -73,6 +73,12 @@ Rules in the code, and whether they run in singleplayer (SP) before v0.46.0:
   "Irradiated" / "Protected"; client effects in ClientEventHandler.
 - In SP nothing sets the flag before v0.46.0, so radiation zones did nothing. We generate no
   RADIATION zones yet (the "Irradiated Military Zone" biome has no effect, `[not decided]`).
+- Measured 22 Oktober 2026 (dev test radiation): 10 s inside without a mask took 9 to 10 of 20 health (the 10 % chance
+  a tick and the vanilla half second hit cooldown: about 1 a second).
+- Our dose on top (22 Oktober 2026, fixes/RadiationDose, new_feature.md "Radiation dose on the HUD"): while this flag
+  is on and no gas mask is worn the dose rises to 100 % in 20 s, else it falls 100 % in 20 minutes; from 50 % 1 damage
+  every 8 s, from 80 % every 4 s (DamageSources.irradiated), also after leaving; a fifth HUD icon shows it. Decimation's
+  own damage above is unchanged (user choice).
 
 ### SCARY
 - Inside: PlayerData.inScaryZone = true (synced to the client). No reader of that flag was found

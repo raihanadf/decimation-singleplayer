@@ -1326,7 +1326,13 @@ of the last session:
   fixes/GripRails: Gunsmith, NPC loadouts; fixes/MountStrip pops one off a rail-less gun, never while the Gunsmith is
   open). Trap: read every view of a reference (end and bottom too): a side view hid the RK-1's 45 degree roll.
   Our own network channel since 22 Oktober 2026: fixes/Net ("deciworldgen", SimpleNetworkWrapper); message ids fixed,
-  new ones at the end (0: MagUnload). Before, everything rode on Decimation's packets, data watchers and container buttons.
+  new ones at the end (0: MagUnload, client to server; 1: RadiationDose.Sync, server to client). Before, everything rode
+  on Decimation's packets, data watchers and container buttons.
+  Radiation dose on the HUD (22 Oktober 2026, new_feature.md): fixes/RadiationDose (server, per player an
+  IExtendedEntityProperties, saved with the player) and fixes/RadiationHud (a fifth icon in Decimation's status column,
+  our pixel icon from tools/hud_icons.py); dev tests radiation, channelmp (dedicated server: both channel messages).
+  Trap: Decimation's status column (IngameHud) moves down 10 a stats line and runs off the bottom of a short GUI (1080p at
+  GUI scale auto is 270 high): anything placed in it needs a fallback (docs/decimation_code/menus.md 3b).
   Sights need a mount too (22 Oktober 2026): sight_mounts.txt ("gun rail|side|slide") -> fixes/SightMounts; the red dot
   only on pistols with an optic cut or rail, other sights on a rail, claw mount or AK side mount; fixes/MountStrip (was
   GripStrip) pops off grips and sights a gun cannot mount. A new gun needs its row there.

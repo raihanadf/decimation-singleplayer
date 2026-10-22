@@ -239,7 +239,8 @@ a short design talk each first:
    the round into the inventory (dropped if full); held, one every 4 ticks.
    4b. DONE 22 Oktober 2026 (new_feature.md): Looted guns hold rounds (53): 1 in 2 loaded, the rounds like a looted magazine's;
    crates and car loot only, no launchers or crossbows.
-5. Radiation status in the HUD (30).
+5. DONE 22 Oktober 2026 (new_feature.md): Radiation status in the HUD (30): a dose in percent as a fifth status icon, rises
+   in a radiation zone without a gas mask (20 s to full), falls in 20 minutes, hurts from 50 %; Decimation's zone damage kept.
    5b. Every player a random Decimation skin instead of Steve (54): by player id, own skins kept, all 21 human skins
    (user answers 22 Oktober 2026).
 6. DayZ dark nights (52). 7. Radiation set (41 to 43). 8. Specific mobs at specific places (35). 9. Attachment

@@ -33,6 +33,23 @@ Traced `deci.i,net.decimation.mod.common.utils.h,deci.g.j,net.decimation.fixes.L
   list); LocalStats.onClientTick 552 puts our counters into the menu profile and totals line (checked: 48 human, 419
   infected kills shown).
 
+## 3b. The HUD's status column (IngameHud.render, read 22 Oktober 2026 for our radiation icon)
+
+- Drawn from ClientEventHandler on RenderGameOverlayEvent.Post ALL (scaled pixels, `n` = scaled width); nothing while
+  PlayerInventoryScreen (deci/g/g) is open.
+- Stats box top right (statsbg.png at x n-125, y 5): lines in this order: kills, zombie kills, deaths (always), clan (not
+  ClanManagerV1.UNKNOWN_CLAN), days survived, humanity (always), bottlecaps and gold bottlecaps (above 0), high score,
+  score and timer (target timer running), range and a blank line (range finder in hand), then the conditions
+  "☣ Irradiated" (or "☣ Protected" with gasmask / gasmaskmilitary), Bleeding, Infected, Broken Leg. Hidden by
+  ClientState.cf.
+- Status icons: food, water, blood, health (icon_health_infected while infected), 30 x 30 at x n-40, y 15 / 50 / 85 /
+  120, each with a bold percent drawn at half scale at (n*2-63, 60 / 129 / 199 / 266); all moved down by
+  `10 + lines * 10` (0 with the stats hidden). Hidden by ClientState.cl. The icon files are 40 x 40 pixel art (flat
+  fill, lower 40 % darkened to about 0.6, black outline ring alpha about 230, soft ring about 50).
+- The column runs off the bottom on a short GUI: 1080p at GUI scale auto is 270 high, so with 7 or more lines the
+  health icon itself is cut; at 854 x 480 (240 high) already with 7 lines. Anything added below it must fall back
+  (fixes/RadiationHud: left of health on its row). Our reading of it: `Deci.hudIconsDown`, `Deci.hudIconsHidden`.
+
 ## 4. Singleplayer state and known faults
 
 - The menus work offline; everything they fetch from BoehMod (news, profile, server lists, supporter state) is gone:

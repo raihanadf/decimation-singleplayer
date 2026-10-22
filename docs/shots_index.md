@@ -1859,3 +1859,15 @@ Production client with OptiFine HD U E7 (the brother's laptop setup), AKM with t
 - foregrip_after.png: the 19 Foregrips after the fix, each touching its handguard (the AK-12 cell is a stale shot of a
   missed frame; the AKM cell is the rail-less one-spot copy, unchanged).
 
+
+## hud_radiation_v0.66.1 (22 Oktober 2026, feature 5: radiation dose on the HUD; dev test radiation)
+- icons_decimation_vs_ours.png: Decimation's five status icons at 4x on grey (blood drop, apple, health cross, infected
+  cross, water drop) and ours at the right (yellow radiation sign, same pixel style: flat fill darker at the bottom,
+  dark outline, soft ring).
+- hud_1440x810_pair.png: right strip of the dev client at 1440 x 810 (GUI 405 high). Left: inside a radiation zone
+  after 10 s without a mask, stats box with 7 lines ending "☣ Irradiated", the column food, water, blood (100 %),
+  health (50 %) and ours under it at 49 %, same x, its percent where theirs sit. Right: out of the zone with Bleeding
+  and Infected added (8 lines): the whole column one line lower, the health cross green (infected), ours at 34 %
+  still under it.
+- hud_854x480_pair.png: the same two moments at 854 x 480 (GUI 240 high), 2x: the column would run off the bottom,
+  so ours sits left of the health cross on its row (49 % beside health 55 %; 34 % beside 100 %), whole on screen.

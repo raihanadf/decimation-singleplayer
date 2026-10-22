@@ -191,7 +191,8 @@ User: "for the feat i have more". Notes on what we already have are mine [not an
     show loading icon animation then if it done it can be take it"): items in a crate or body unknown until searched,
     one at a time with a spinner. Related: our loot screen (fixes/Loot, Deci.setLootInventory), docs/loot_levels.md.
 30. **Radiation status in the HUD** ("radiation status below player status"). Decimation already tracks radiation per
-    player (docs/decimation_code/player.md) and draws its HUD in IngameHud (deci/g/j).
+    player (docs/decimation_code/player.md) and draws its HUD in IngameHud (deci/g/j). Built 22 Oktober 2026 as a radiation dose in
+    percent (new_feature.md "Radiation dose on the HUD").
 31. **Full story mode with an achievement styled UI**. Related: the story item in "Ideas (later)" (docs/roadmap.md).
 32. **Friendly NPCs that give quests or gifts**: random friendly NPCs offer a quest or a gift; such an NPC never
     despawns and glows (vanilla's glow effect does not exist in 1.7.10: an outline or particles of our own [inferred]).

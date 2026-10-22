@@ -172,6 +172,8 @@ public class DevAutoTest
         if (name.equals("aimdelay")) return new net.decimation.worldgen.devtest.AimDelayTest();
         if (name.equals("lootmags")) return new net.decimation.worldgen.devtest.LootMagsTest();
         if (name.equals("magunload")) return new net.decimation.worldgen.devtest.MagUnloadTest();
+        if (name.equals("radiation")) return new net.decimation.worldgen.devtest.RadiationTest();
+        if (name.equals("channelmp")) return new net.decimation.worldgen.devtest.ChannelRemoteTest();
         if (name.equals("bench")) return new net.decimation.worldgen.devtest.BenchTest();
         if (name.equals("targetpace")) return new net.decimation.worldgen.devtest.TargetPaceTest();
         if (name.equals("npclook")) return new net.decimation.worldgen.devtest.NpcLookTest();

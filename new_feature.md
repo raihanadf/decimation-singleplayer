@@ -1228,3 +1228,33 @@ lineup photo zombies_v0.34.0. Not seen by the user in game yet
   read 0 loaded [inferred: looted guns had no tag, so no rounds; not run against the old code]. Cost: one roll a gun at
   a loot click, server side; no per tick work.
 
+## Radiation dose on the HUD (22 Oktober 2026, feature 5 of docs/roadmap.md "Feature order", idea 30)
+- User: "radiation status below player status"; chosen (questions the same day): a dose in percent, always on screen,
+  a high dose already hurts; then, told that Decimation's own zone damage (about 1 a second without a mask) kills before
+  a 2 minute dose could matter: keep Decimation's damage and make the dose fast. Look: "you better follow pixelated
+  design on hud like health, water, food, blood".
+- Rules (fixes/RadiationDose, server): while Decimation's irradiated flag is on (PlayerData, RADIATION zone, not creative)
+  and no gas mask is worn (gasmask, gasmaskmilitary: Decimation's own protection test) the dose rises 60 a tick of
+  24000 (100 % in 20 s); otherwise it falls 1 a tick (100 % in 20 minutes); from 50 % 1 damage every 8 s, from 80 %
+  every 4 s, with DamageSources.irradiated (Decimation's death message), inside the zone and after leaving it. My calls:
+  the damage numbers, the dose stopping in creative, a new life at 0. Stored in an IExtendedEntityProperties of the
+  server player (saved in the player file; a respawn makes a new player entity: 0 [not run in game, only the unit test of a new Dose]; [not run] the return from the End
+  also makes a new entity and starts at 0). Server work: one pass over the players a tick, a message to that player only
+  when the shown percent changes (Net message 1, RadiationDose.Sync: one byte), and once after joining or respawning.
+- HUD (fixes/RadiationHud, client): a fifth icon under Decimation's food, water, blood and health, same x, 35 below
+  health, its bold percent where theirs sit, moved down with their column by the stats list (Deci.hudIconsDown counts the
+  lines as IngameHud adds them) and hidden with it (ClientState.cl, the inventory screen); where the column would run
+  off a short GUI the icon sits left of health on its row (docs/decimation_code/menus.md 3b). The icon is ours,
+  tools/hud_icons.py: 40 x 40 pixel art in the style measured from Decimation's four icons (flat fill, lower 40 %
+  darkened to 0.6, black outline ring alpha 230, soft ring 50), a yellow radiation sign.
+- Checks: unit RadiationDoseTest (rise, fall, percent, damage steps, half a dose after 10 s) RED then GREEN; the save
+  and clamp tests came after the code; suite 172. Dev test `radiation` 12 checks + 2 screenshot checks, all PASS at
+  1440 x 810 and at 854 x 480: 10 s unmasked = 50 % with Decimation's damage kept (20 to 10 health), mask and creative
+  stop the rise (-100 in 100 ticks, -40 in 40), outside 90 % = 2 damage in 10 s, 60 % = 1, 40 % = 0, falls 200 in
+  200 ticks, HUD percent = server percent, icon whole on screen (below health at 1440 x 810, beside it at 854 x 480;
+  shots docs/shots/hud_radiation_v0.66.1). glstack, zones, magunload PASS in the same game.
+- Performance (budgets: HUD under 200 us a frame, server under 50 us a tick): dev client HUD 48.1 to 48.7 us a frame
+  (6300 frames; nearly all of it the outlined percent, 9 string draws like each of Decimation's four), server 4.5 to
+  4.8 us a tick with one player; no allocation a frame (the text is rebuilt only when the percent changes), a packet
+  only on change.
+
