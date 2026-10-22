@@ -221,18 +221,22 @@ def island_tone(gun, p):
 
 
 def palette(name):
-    """The like gun's tone families, measured on its texture: grey luminances (metal, sorted), the median coloured
-    tone of its body (wood, polymer) and of its magazine (Decimation's akm: metal 10 .. 46, wood about 38,24,21, a
-    bakelite magazine about 88,57,47)."""
+    """The like gun's tone families, measured on its texture: grey luminances (metal, sorted; greyW with each part's
+    surface area), the median coloured tone of its body (wood, polymer) and of its magazine (Decimation's akm: metal
+    10 .. 46, wood about 38,24,21, a bakelite magazine about 88,57,47)."""
     if name not in _PALETTE:
         g = study.load(name)
-        greys, body, ammo, ammo_grey = [], [], [], []
+        greys, body, ammo, ammo_grey, grey_w = [], [], [], [], []
         for p in g.parts:
             c = island_tone(g, p)
             if c is None:
                 continue
             if grey(c):
                 (ammo_grey if p.group == "ammoModel" else greys).append(lum(c))
+                if p.group != "ammoModel":
+                    v = p.verts()
+                    d = [max(q[i] for q in v) - min(q[i] for q in v) for i in range(3)]
+                    grey_w.append((lum(c), 2 * (d[0] * d[1] + d[1] * d[2] + d[0] * d[2])))
             else:
                 (ammo if p.group == "ammoModel" else body).append(c)
 
@@ -240,8 +244,8 @@ def palette(name):
             if not cs:
                 return None
             return sorted(cs, key=lum)[len(cs) // 2]
-        _PALETTE[name] = {"grey": sorted(greys) or [24.0, 64.0], "body": med(body), "ammo": med(ammo),
-                          "ammoGrey": sorted(ammo_grey)}
+        _PALETTE[name] = {"grey": sorted(greys) or [24.0, 64.0], "greyW": sorted(grey_w), "body": med(body),
+                          "ammo": med(ammo), "ammoGrey": sorted(ammo_grey)}
     return _PALETTE[name]
 
 

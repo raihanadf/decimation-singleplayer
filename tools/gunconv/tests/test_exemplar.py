@@ -324,6 +324,61 @@ class NoInterleaveTest(unittest.TestCase):
         self.assertLessEqual(x1, 10.1)
 
 
+def wood_metal(area, boxes):
+    """A dataset gun whose parts carry tones: boxes [(a, b, tone)]."""
+    ex = exemplar.make_area([box_corners(a, b) for a, b, _ in boxes], [c for _, _, c in boxes],
+                            ["gunModel"] * len(boxes))
+    return {"cat": "rifle", "areas": {area: ex}}
+
+
+class MaterialTest(unittest.TestCase):
+    WOOD, METAL = (60, 35, 25), (40, 40, 40)
+
+    def test_wood_where_ours_is_metal_fails(self):
+        """The same outline in wood where ours is steel (a full length rifle stock's handguard over a lever rifle's
+        tube magazine) is no match: the material along the run must agree too."""
+        parts = [ours("bar", (0, -2, -0.5), (10, -1, 0.5), colour=self.METAL),
+                 ours("pump", (2, -1, -0.5), (4, 0, 0.5), colour=self.WOOD)]
+        data = {"guns": {"ex": wood_metal("handguard", [((0, -2, -0.5), (10, -1, 0.5), self.WOOD),
+                                                         ((2, -1, -0.5), (4, 0, 0.5), self.WOOD)])}}
+        out, rep, by, plan = exemplar.apply(parts, "rifle", "ex", {}, data, labels=["handguard"] * 2)
+        self.assertIn("fit", rep["handguard"])
+        self.assertEqual(by, {})
+
+    def test_same_materials_pass(self):
+        parts = [ours("bar", (0, -2, -0.5), (10, -1, 0.5), colour=self.METAL),
+                 ours("pump", (2, -1, -0.5), (4, 0, 0.5), colour=self.WOOD)]
+        data = {"guns": {"ex": wood_metal("handguard", [((0, -2, -0.5), (10, -1, 0.5), self.METAL),
+                                                         ((2, -1, -0.5), (4, 0, 0.5), self.WOOD)])}}
+        out, rep, by, plan = exemplar.apply(parts, "rifle", "ex", {}, data, labels=["handguard"] * 2)
+        self.assertEqual(rep["handguard"]["gun"], "ex")
+
+
+class ColouredTest(unittest.TestCase):
+    def test_classes(self):
+        self.assertTrue(exemplar.coloured((38, 24, 21)))        # the akm's wood
+        self.assertFalse(exemplar.coloured((20, 20, 20)))       # its steel
+        self.assertIsNone(exemplar.coloured((46, 37, 38)))      # its grip: a dark brownish grey votes for neither
+        self.assertIsNone(exemplar.coloured(None))
+
+
+class HoleTest(unittest.TestCase):
+    def test_a_gap_left_between_areas_is_filled_from_the_fit(self):
+        """An exemplar barrel that starts later than ours (its box began with a low rod) left a hole between the
+        receiver and the barrel (the m590's first runs): our fit fills it."""
+        parts = [ours("rec", (0, -2.5, -0.5), (5, -0.5, 0.5)), ours("bar", (5, -1.8, -0.3), (12, -1.2, 0.3))]
+        data = {"guns": {"ex": gun(barrel=[((6, -1.8, -0.3), (12, -1.2, 0.3), "gunModel"),
+                                           ((5, -1.2, -0.1), (12, -1.1, 0.1), "gunModel")])}}
+        out, rep, by, plan = exemplar.apply(parts, "rifle", "ex", {}, data, labels=["receiver", "barrel"])
+        self.assertEqual(rep["barrel"]["gun"], "ex")
+        filled = [p for p in out if not getattr(p, "exemplar", None) and p.area == "barrel"]
+        self.assertTrue(filled)
+        xs = [q[0] for p in filled for q in p.c.values()]
+        self.assertAlmostEqual(min(xs), 5.0, delta=0.15)
+        self.assertLessEqual(max(xs), 6.3)
+        self.assertEqual(rep["barrel"]["filled"], len(filled))
+
+
 class GroupTest(unittest.TestCase):
     def test_moving_parts_keep_their_group(self):
         self.assertEqual(exemplar.new_group("slideModel", False), "slideModel")

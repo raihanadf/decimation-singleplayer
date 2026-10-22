@@ -209,6 +209,22 @@ class ToneTest(unittest.TestCase):
             self.assertTrue(18 <= t[0] <= 66 and t[0] == t[1] == t[2], (c, t))
         self.assertLess(convert.tone((60, 60, 60))[0], convert.tone((180, 180, 180))[0])
 
+    def test_big_parts_take_the_like_guns_common_greys(self):
+        """Greys map by area: a light grey covering most of the source (the Mossberg's receiver) takes the like gun's
+        common metal, not its brightest small accent."""
+        import fit
+
+        def part(lum, size):
+            q = fit.new_part("p", "gunModel", (lum, lum, lum), {k: [size if k[i] else 0.0 for i in range(3)]
+                                                                for k in fit.CORNERS})
+            return q
+        pal = {"grey": [30.0] * 9 + [90.0], "greyW": [(30.0, 1.0)] * 9 + [(90.0, 0.1)], "body": None, "ammo": None,
+               "ammoGrey": []}
+        big, small = part(102, 3.0), part(70, 0.5)
+        tones = convert.palette_tones([big, small], ["gunModel", "gunModel"], pal)
+        self.assertLessEqual(tones[0][0], 40)
+        self.assertLessEqual(tones[1][0], tones[0][0])
+
     def test_wood_stays_brown_and_dark(self):
         r, g, b = convert.tone((142, 92, 82))
         self.assertTrue(r > g > b, (r, g, b))

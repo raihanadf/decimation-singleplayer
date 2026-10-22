@@ -447,7 +447,7 @@ def runs(flags, value=True):
     return out
 
 
-def sections(tarea, cands, follow=False):
+def sections(tarea, cands, follow=False, ours_cols=None):
     """Bins of BIN along x: each of the candidates [(name, score, exemplar)] in turn takes the free bins where its
     outline overlaps ours by GATE (runs of MIN_RUN bins at least); a later one only outside the first one's span (no
     patchwork of two guns). (owners per bin, bin edges, {name: warped})."""
@@ -460,8 +460,11 @@ def sections(tarea, cands, follow=False):
     for name, _, ex in cands[:SECTION_CANDS]:
         w = fitted(ex, tarea, follow)
         loc = bin_overlaps(w, tarea["corners"], edges)
-        free = [owner[i] is None and loc[i] >= GATE and (span is None or not span[0] <= i <= span[1])
-                for i in range(nb)]
+        agree = [None] * nb
+        if ours_cols is not None:
+            agree, _ = material_agreement(tarea["corners"], ours_cols, w, [p.get("tone") for p in ex["parts"]], edges)
+        free = [owner[i] is None and loc[i] >= GATE and agree[i] is not False and
+                (span is None or not span[0] <= i <= span[1]) for i in range(nb)]
         took = False
         for a, b in runs(free):
             if b - a + 1 >= MIN_RUN:
@@ -474,6 +477,103 @@ def sections(tarea, cands, follow=False):
                 mine = [i for i in range(nb) if owner[i] == name]
                 span = (mine[0], mine[-1])
     return owner, edges, warped
+
+
+# ---------------------------------------------------------------- materials along the run
+
+MATERIAL_TOL = 0.25   # an exemplar fails when wood and steel disagree with ours in more than this share of the bins
+MATERIAL_DIFF = 0.45  # a bin disagrees when the coloured (wood, polymer) shares differ by more than this
+
+
+def coloured(c):
+    """True for wood, polymer or tan (saturation over 0.3), False for grey metal (under 0.12), None between: a dark
+    brownish grey (Decimation's AKM grip, 46,37,38) votes for neither."""
+    if c is None:
+        return None
+    mx, mn = max(c[:3]), min(c[:3])
+    sat = (mx - mn) / mx if mx > 0 else 0.0
+    if sat < 0.12:
+        return False
+    if sat > 0.3:
+        return True
+    return None
+
+
+def material_bins(corner_list, colours, edges):
+    """Per x bin the coloured share of the parts' side area there (None where no part with a known tone is)."""
+    out = []
+    boxes = [[(min(q[i] for q in c.values()), max(q[i] for q in c.values())) for i in range(3)] for c in corner_list]
+    for x0, x1 in zip(edges, edges[1:]):
+        tot = col = 0.0
+        for b, c in zip(boxes, colours):
+            k = coloured(c)
+            if k is None:
+                continue
+            w = max(0.0, min(x1, b[0][1]) - max(x0, b[0][0])) * (b[1][1] - b[1][0])
+            tot += w
+            col += w if k else 0.0
+        out.append(col / tot if tot > 1e-9 else None)
+    return out
+
+
+def material_agreement(ours_c, ours_cols, ex_c, ex_cols, edges):
+    """Per bin True (agree), False (wood against steel) or None (unknown), and the share of disagreeing bins."""
+    a, b = material_bins(ours_c, ours_cols, edges), material_bins(ex_c, ex_cols, edges)
+    per = [None if p is None or q is None else abs(p - q) <= MATERIAL_DIFF for p, q in zip(a, b)]
+    known = [v for v in per if v is not None]
+    return per, (sum(1 for v in known if not v) / len(known) if known else 0.0)
+
+
+def bins_of(box, step=BIN):
+    x0, x1 = box[0]
+    nb = max(1, int(math.ceil((x1 - x0) / step - 1e-9)))
+    return [x0 + (x1 - x0) * i / nb for i in range(nb + 1)]
+
+
+# ---------------------------------------------------------------- holes left between areas
+
+HOLE_LONG = 0.25      # a hole in the side outline at least this long ...
+HOLE_TALL = 0.3       # ... and this tall, where our fit had parts and the exemplars left none, is filled from the fit
+
+
+def fill_holes(original, final, k=16.0):
+    """Original parts (the fit, before the exemplars) cut to x ranges where the final side outline lost a stretch of
+    at least HOLE_TALL in a run of columns at least HOLE_LONG long (a barrel starting later than ours left a gap
+    behind it). Returns [(part corners, original index)]."""
+    if not original or not final:
+        return []
+    box = box_of([p.c for p in original] + [p.c for p in final])
+    a = raster([p.c for p in original], box, k)
+    b = raster([p.c for p in final], box, k)
+    pa, pb = a.load(), b.load()
+    need = int(math.ceil(HOLE_TALL * k))
+    cols = []
+    for x in range(a.width):
+        run = best = 0
+        for y in range(a.height):
+            if pa[x, y] and not pb[x, y]:
+                run += 1
+                best = max(best, run)
+            else:
+                run = 0
+        cols.append(best >= need)
+    out = []
+    for c0, c1 in runs(cols):
+        if (c1 - c0 + 1) / k < HOLE_LONG:
+            continue
+        x0, x1 = box[0][0] + c0 / k - 0.05, box[0][0] + (c1 + 1) / k + 0.05
+        for i, p in enumerate(original):
+            cc = clip_x(p.c, x0, x1)
+            if cc and not any(_covered(cc, q) for q in final):
+                out.append((cc, i))
+    return out
+
+
+def _covered(c, q):
+    """A clipped piece c lies inside final part q's box (nothing to fill there)."""
+    qb = [(min(v[i] for v in q.c.values()), max(v[i] for v in q.c.values())) for i in range(3)]
+    return all(qb[i][0] - 0.02 <= min(v[i] for v in c.values()) and max(v[i] for v in c.values()) <= qb[i][1] + 0.02
+               for i in range(3))
 
 
 # ---------------------------------------------------------------- the areas of a converted gun
@@ -567,6 +667,11 @@ def apply(parts, cat, like, header, data=None, labels=None, folding=False, exemp
         ov = overlap(warped, target)
         if ov < GATE:
             continue
+        if not exemplar_tones:                         # a one colour source's tones are borrowed: no material to compare
+            _, bad = material_agreement(target, [parts[i].colour for i in idx], warped,
+                                        [it[0].get("tone") for it in items], bins_of(tarea["box"]))
+            if bad > MATERIAL_TOL:
+                continue
         fallback = _mean([parts[i].colour for i in idx])
         known = [it[0]["tone"] for it in items if it[0].get("tone")]
         made = new_parts(warped, items, gname, fallback, _mean(known))
@@ -597,7 +702,12 @@ def apply(parts, cat, like, header, data=None, labels=None, folding=False, exemp
         exl = lambda n: lum(cands[n]["tone"]) if cands[n].get("tone") else None  # noqa: E731
         warped = fitted(cands[gname], tarea, follow, smooth=area in SMOOTH_AREAS)
         ov = overlap(warped, target)
-        if ov >= GATE:
+        ours_cols = None if exemplar_tones else [parts[i].colour for i in idx]
+        bad = 0.0
+        if ours_cols is not None:
+            _, bad = material_agreement(target, ours_cols, warped, [p.get("tone") for p in cands[gname]["parts"]],
+                                        bins_of(tarea["box"]))
+        if ov >= GATE and bad <= MATERIAL_TOL:
             made = new_parts(warped, [(p, area, exl(gname)) for p in cands[gname]["parts"]], gname, None, None)
             added += made
             keep -= set(idx)
@@ -607,7 +717,7 @@ def apply(parts, cat, like, header, data=None, labels=None, folding=False, exemp
             continue
         owner = None
         if not follow and tarea["axis"] == 0:
-            owner, edges, warped_of = sections(tarea, [(n, sc, cands[n]) for n, sc in order])
+            owner, edges, warped_of = sections(tarea, [(n, sc, cands[n]) for n, sc in order], ours_cols=ours_cols)
         if not owner or max(Counter(o for o in owner if o).values(), default=0) < SECTION_SHARE * len(owner):
             report[area] = {"fit": len(idx), "best": gname, "overlap": round(ov, 3)}
             plan[area] = {"gun": gname}
@@ -649,4 +759,13 @@ def apply(parts, cat, like, header, data=None, labels=None, folding=False, exemp
         if fit_ranges:
             plan[area] = {"gun": gname, "ranges": fit_ranges}
     out = [p for i, p in enumerate(parts) if i in keep] + added
+    gone = [p for i, p in enumerate(parts) if i not in keep]
+    for cc, i in fill_holes(gone, out):
+        src = gone[i]
+        q = fit.new_part(src.name, src.group, src.colour, cc, getattr(src, "label", src.name))
+        q.area = src.area
+        q.filled = True
+        out.append(q)
+        r = report.setdefault(src.area, {})
+        r["filled"] = r.get("filled", 0) + 1
     return out, report, dict(by_gun), plan

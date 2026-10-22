@@ -142,17 +142,47 @@ def tone(c):
     return tuple(max(0, min(255, int(round(v * f)))) for v in (r, g, b))
 
 
+def area_of(p):
+    """Surface area of a part's box (1 for a piece without corners)."""
+    if not hasattr(p, "c"):
+        return 1.0
+    (x0, x1), (y0, y1), (z0, z1) = fit.bounds([p])
+    a, b, c = x1 - x0, y1 - y0, z1 - z0
+    return max(1e-6, 2 * (a * b + b * c + a * c))
+
+
 def palette_tones(pieces, groups, pal):
     """One tone per piece. With the like gun's palette (match.palette): grey materials keep their order but take the
-    like gun's metal greys (our darkest grey its 5th percentile, our lightest its 95th), coloured ones take its body
+    like gun's metal greys, both ranked by surface area (our darkest its 5th percentile, our lightest its 95th, so a
+    grey covering most of the gun takes the like gun's common metal), coloured ones take its body
     tone (wood, polymer) or, on the magazine, its magazine tone, a little lighter or darker as the source is. Without
     one: tone() (style guide section 4)."""
     if not pal:
         return [tone(p.colour) for p in pieces]
     greys = sorted(set(round(match.lum(p.colour), 1) for p in pieces if match.grey(p.colour)))
+    # by area: a grey covering most of the source takes the like gun's common metal, not its brightest small accent
+    weight = {}
+    for p in pieces:
+        if match.grey(p.colour):
+            key = round(match.lum(p.colour), 1)
+            weight[key] = weight.get(key, 0.0) + area_of(p)
+    total = sum(weight.values()) or 1.0
+    rank, acc = {}, 0.0
+    for key in greys:
+        rank[key] = (acc + weight[key] / 2) / total
+        acc += weight[key]
 
     def quantile(vals, f):
         return vals[min(len(vals) - 1, max(0, int(round(f * (len(vals) - 1)))))]
+
+    def weighted(pairs, f):
+        tot = sum(w for _, w in pairs)
+        acc2 = 0.0
+        for v, w in pairs:
+            acc2 += w
+            if acc2 >= f * tot:
+                return v
+        return pairs[-1][0]
     coloured = {}
     for p, g in zip(pieces, groups):
         if not match.grey(p.colour):
@@ -160,9 +190,13 @@ def palette_tones(pieces, groups, pal):
     out = []
     for p, g in zip(pieces, groups):
         if match.grey(p.colour):
-            r = greys.index(round(match.lum(p.colour), 1)) / (len(greys) - 1) if len(greys) > 1 else 0.5
-            src = pal["ammoGrey"] if g == "ammoModel" and pal["ammoGrey"] else pal["grey"]
-            v = int(round(quantile(src, 0.05 + 0.9 * r)))
+            r = rank[round(match.lum(p.colour), 1)] if len(greys) > 1 else 0.5
+            if g == "ammoModel" and pal["ammoGrey"]:
+                v = int(round(quantile(pal["ammoGrey"], 0.05 + 0.9 * r)))
+            elif pal.get("greyW"):
+                v = int(round(weighted(pal["greyW"], 0.05 + 0.9 * r)))
+            else:
+                v = int(round(quantile(pal["grey"], 0.05 + 0.9 * r)))
             out.append((v, v, v))
             continue
         base = pal["ammo"] if g == "ammoModel" and pal["ammo"] else pal["body"]
