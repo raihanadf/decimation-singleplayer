@@ -22,10 +22,10 @@ API (JSON):
 import argparse
 import collections
 import json
-import threading
 import os
 import re
 import sys
+import threading
 import time
 import traceback
 import urllib.parse
@@ -45,7 +45,13 @@ WEB = os.path.join(HERE, "web")
 BUILD = os.path.join(ROOT, "build", "gunconv")
 MODEL_EXT = (".glb", ".gltf", ".obj", ".bbmodel")
 STATIC = {"/": ("index.html", "text/html; charset=utf-8"), "/index.html": ("index.html", "text/html; charset=utf-8"),
-          "/app.js": ("app.js", "text/javascript; charset=utf-8"), "/style.css": ("style.css", "text/css; charset=utf-8")}
+          "/app.js": ("app.js", "text/javascript; charset=utf-8"), "/style.css": ("style.css", "text/css; charset=utf-8"),
+          "/fonts/MinecraftStandard.otf": ("fonts/MinecraftStandard.otf", "font/otf")}   # public domain (its readme)
+# The DeciRemnant site's art (user, 23 Oktober 2026: the page in the site's look): its camo and torn buttons are Decimation's
+# textures and stay in the site's private repo; served from there when it is on this Mac (DECIREMNANT_SITE overrides).
+SITE_UI = os.path.join(os.environ.get("DECIREMNANT_SITE", os.path.expanduser("~/Projects/deciremnant")), "public", "ui")
+UI_NAME = re.compile(r"^/ui/([a-z0-9-]{1,64}\.(?:webp|png))$")
+UI_TYPES = {"webp": "image/webp", "png": "image/png"}
 MAX_UPLOAD = 64 * 1024 * 1024
 
 
@@ -67,6 +73,7 @@ KEEP = 4
 
 
 class Handler(BaseHTTPRequestHandler):
+    site_ui = SITE_UI
     inputs = os.path.join(BUILD, "inputs")
     out = os.path.join(BUILD, "out")
     work = os.path.join(BUILD, "work")
@@ -119,6 +126,13 @@ class Handler(BaseHTTPRequestHandler):
             name, ctype = STATIC[url.path]
             with open(os.path.join(WEB, name), "rb") as f:
                 return self.send(200, f.read(), ctype)
+        m = UI_NAME.match(url.path)
+        if m:
+            path = os.path.join(self.site_ui, m.group(1))
+            if os.path.isfile(path):
+                with open(path, "rb") as f:
+                    return self.send(200, f.read(), UI_TYPES[m.group(1).rsplit(".", 1)[1]])
+            return self.json({"error": "no such picture"}, 404)
         routes = {"/api/samples": self.samples, "/api/file": lambda: self.file(q), "/api/mesh": lambda: self.mesh(q),
                   "/api/gun": lambda: self.gun(q)}
         if url.path in routes:
@@ -247,9 +261,9 @@ class Handler(BaseHTTPRequestHandler):
         self.json(res)
 
 
-def make_server(port=8790, inputs=None, out=None, work=None, host="127.0.0.1"):
+def make_server(port=8790, inputs=None, out=None, work=None, host="127.0.0.1", site_ui=None):
     attrs = {}
-    for k, v in (("inputs", inputs), ("out", out), ("work", work)):
+    for k, v in (("inputs", inputs), ("out", out), ("work", work), ("site_ui", site_ui)):
         if v:
             attrs[k] = os.path.abspath(v)
     handler = type("GunconvHandler", (Handler,), attrs)

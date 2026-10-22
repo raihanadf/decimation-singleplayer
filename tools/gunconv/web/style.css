@@ -1,155 +1,140 @@
-:root {
-  --bg: #F0EEE6;
-  --surface: #FAF9F5;
-  --text: #1F1E1C;
-  --muted: #6E6A62;
-  --accent: #B4552F;
-  --line: #D9D4C7;
-  --canvas: #D6D0C3;
-  --select: #B4552F;
-  --serif: ui-serif, Charter, "Iowan Old Style", Georgia, serif;
-  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
-  color-scheme: light;
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg: #1E1A17;
-    --surface: #27221E;
-    --text: #EDE6DC;
-    --muted: #A69C90;
-    --accent: #D98A64;
-    --line: #3D352F;
-    --canvas: #A0978B;
-    color-scheme: dark;
-  }
-}
-:root[data-theme="dark"] {
-  --bg: #1E1A17;
-  --surface: #27221E;
-  --text: #EDE6DC;
-  --muted: #A69C90;
-  --accent: #D98A64;
-  --line: #3D352F;
-  --canvas: #A0978B;
-  color-scheme: dark;
-}
+/* The gun converter's page in the DeciRemnant site's look (user, 23 Oktober 2026: "use deci web repo style"; the site's
+   app/globals.css): coral on charcoal, tan labels in the game's font, torn buttons, faint camo, facts as lined tables.
+   The site's art (camo, torn masks, logo) comes from its local repo through server.py /ui/ and only when it loaded
+   (body.site-art, app.js); without it the same page stands on flat colours. */
+@font-face { font-family: "Minecraft Standard"; src: url(/fonts/MinecraftStandard.otf) format("opentype"); font-display: swap; }
 
+:root {
+  --bg: #121212; --card: #1D1D1D; --text: #EEEAE4; --muted: #ABA59D; --dim: #8F8982; --label: #C9A97A; --label-sh: #322A1E;
+  --link: #F47A62; --line: #2C2C2C; --dl: #E8553F; --dl-hi: #FF8C74; --dl-lo: #9E3322; --dl-shadow: #3A140D;
+  --dl-bg: #C9432F; --dl-bg-lo: #852818; --slot: #0E0E0E; --deep: #0E0E0E; --bg2: #191919;
+  --canvas: #A9A398;      /* the 3D views: a warm grey the dark guns read on (app.js reads it) */
+  --select: #FF8C74;      /* the picked part's box (app.js reads it) */
+  --font-mc: "Minecraft Standard";
+}
 * { box-sizing: border-box; }
-body {
-  margin: 0;
-  background: var(--bg);
-  color: var(--text);
-  font: 15px/1.5 var(--sans);
-}
-.masthead {
-  max-width: 720px;
-  margin: 0 auto;
-  padding: 48px 16px 24px;
-  text-align: center;
-}
-.kicker, .label {
-  font: 600 11px/1.4 var(--sans);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--accent);
-  margin: 0 0 8px;
-}
-h1 {
-  font: 400 44px/1.1 var(--serif);
-  margin: 0 0 12px;
-}
-.standfirst {
-  font: 17px/1.55 var(--serif);
-  color: var(--muted);
-  margin: 0;
-}
-main {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 0 16px 64px;
-}
-.panel {
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: 6px;
-  padding: 16px;
-  margin: 0 0 16px;
-}
-.row {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 8px 14px;
-  margin: 0 0 10px;
-}
-.row:last-child { margin-bottom: 0; }
-label { color: var(--muted); font-size: 13px; }
-label.check { display: inline-flex; gap: 6px; align-items: center; }
-input, select {
-  font: 14px var(--sans);
-  color: var(--text);
-  background: var(--bg);
-  border: 1px solid var(--line);
-  border-radius: 4px;
-  padding: 4px 6px;
-  margin-left: 4px;
-}
-label.check input { margin: 0; }
-.credit input { width: 220px; max-width: 100%; }
-button {
-  font: 500 14px var(--sans);
-  color: var(--text);
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: 4px;
-  padding: 6px 12px;
-  cursor: pointer;
-}
-button:hover { border-color: var(--muted); }
-button.primary { border-color: var(--text); }
-button:disabled { opacity: 0.5; cursor: default; }
-.status { margin: 0; color: var(--muted); font-size: 14px; }
-.status.error { color: var(--accent); }
-.muted { color: var(--muted); }
-.views {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-}
-.view { margin: 0; }
-.canvas {
-  height: 360px;
-  background: var(--canvas);
-  border: 1px solid var(--line);
-  border-radius: 6px;
-  overflow: hidden;
-  touch-action: none;
-}
-.canvas canvas { display: block; }
-.viewbar { margin: 12px 0 16px; }
-.columns {
-  display: grid;
-  grid-template-columns: 1.2fr 1fr;
-  gap: 16px;
-  align-items: start;
-}
-.table-box {
-  max-height: 320px;
-  overflow: auto;
-  border: 1px solid var(--line);
-  border-radius: 4px;
-}
-table { width: 100%; border-collapse: collapse; font-size: 13px; }
-th, td { text-align: left; padding: 3px 8px; border-bottom: 1px solid var(--line); }
-th { position: sticky; top: 0; background: var(--surface); color: var(--muted); font-weight: 500; }
-tbody tr { cursor: pointer; }
-tbody tr.on { background: var(--bg); box-shadow: inset 3px 0 0 var(--select); }
-.notes { margin: 0 0 16px; padding-left: 18px; font-size: 13px; color: var(--muted); }
-#report table td.out { color: var(--accent); }
-#report code { font-size: 12px; word-break: break-all; }
-#report ul { font-size: 12px; padding-left: 18px; }
+body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.6 -apple-system, system-ui, "Segoe UI", Roboto, sans-serif; }
+a { color: var(--link); text-decoration: none; }
+a:hover { text-decoration: underline; }
+:focus-visible { outline: 2px solid var(--dl); outline-offset: 2px; }
+.wrap { max-width: 1160px; margin: 0 auto; padding: 0 32px 96px; }
+
+/* the game's font at the game's sizes: one font pixel = font size / 6 */
+.mc { font-family: var(--font-mc), ui-monospace, monospace; font-weight: 400; line-height: 1.5; -webkit-font-smoothing: none; }
+.s2 { font-size: 12px; } .s3 { font-size: 18px; }
+.label { color: var(--label); text-shadow: 2px 2px 0 var(--label-sh); margin: 0; letter-spacing: .02em; }
+.hd { margin: 0; font-family: "Arial Narrow", "Helvetica Neue", sans-serif; font-stretch: condensed; font-weight: 700;
+  line-height: 1.02; color: #fff; }
+
+/* the solid top bar of the site's other pages, faint camo under it */
+.bar { position: sticky; top: 0; z-index: 20; display: flex; align-items: center; justify-content: space-between; gap: 24px;
+  padding: 14px 32px; background: var(--deep); border-bottom: 1px solid var(--line); }
+.brand { display: inline-flex; align-items: center; color: #fff; font-weight: 700; }
+.brand img { height: 36px; width: auto; display: block; }
+.bar-note { color: var(--muted); text-shadow: 2px 2px 0 #000; }
+.camo { position: relative; isolation: isolate; }
+.site-art .camo::before { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; opacity: .1;
+  background: url(/ui/camo-urban-eafaf0c0.png) 0 0 / 64px 64px; image-rendering: pixelated; }
+
+.intro { padding: 64px 0 28px; border-bottom: 1px solid var(--line); }
+.intro .label { margin-bottom: 14px; }
+.intro h1 { font-size: clamp(44px, 5vw, 64px); }
+.pitch { margin: 16px 0 0; max-width: 680px; font-size: 16px; line-height: 1.6; color: #D2CCC4; }
+
+/* the steps: a tan number in the game's font, then the step, divided by lines (the site's install guide) */
+.step { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 8px 20px; padding: 34px 0; border-bottom: 1px solid var(--line); }
+.step .n { color: var(--label); text-shadow: 2px 2px 0 var(--label-sh); padding-top: 4px; }
+.step h2 { margin: 0 0 4px; font-size: 22px; font-weight: 600; color: #fff; }
+.hint { margin: 0; font-size: 14px; line-height: 1.55; color: var(--muted); }
+.hint b { color: var(--text); font-weight: 500; }
+
+/* fields: the label above, the input in an inventory slot, a short hint under */
+.fields { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 14px 18px; margin-top: 18px; }
+.field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.field.grow { flex: 1 1 220px; }
+.field label, .ghost-label { font-size: 13px; color: var(--text); }
+.ghost-label { visibility: hidden; }
+.field small { font-size: 12px; line-height: 1.4; color: var(--dim); max-width: 260px; }
+input, select { font: inherit; font-size: 14px; color: var(--text); background: var(--slot); border: 0; padding: 9px 10px; min-height: 40px;
+  box-shadow: inset 2px 2px 0 #050505, inset -2px -2px 0 #3A3A3A; border-radius: 0; }
+input::placeholder { color: #6F6A63; }
+input:focus, select:focus { outline: 2px solid var(--dl); outline-offset: 0; }
+input[type="number"] { width: 8.5em; }
+input[type="file"] { padding: 6px; }
+input[type="file"]::file-selector-button { font: inherit; font-size: 13px; color: #fff; background: #2A2A2A; border: 0; padding: 6px 12px; margin-right: 10px; cursor: pointer; }
+select { cursor: pointer; }
+select:disabled { cursor: not-allowed; color: var(--dim); }
+.check { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; color: var(--text); cursor: pointer; align-self: center; }
+.check input { min-height: 0; width: 16px; height: 16px; accent-color: var(--dl); box-shadow: none; }
+
+details.more { margin-top: 18px; padding: 12px 16px; background: var(--card); }
+details.more summary { cursor: pointer; list-style: none; color: var(--text); font-size: 14px; }
+details.more summary::-webkit-details-marker { display: none; }
+details.more summary::before { content: "+"; display: inline-block; width: 20px; color: var(--label); }
+details.more[open] summary::before { content: "\2212"; }
+details.more .fields { margin-top: 12px; }
+
+/* buttons: Decimation's torn coral one for the step's action, plain dark ones for the rest */
+.actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 22px; margin-top: 24px; }
+.btn-main { display: inline-flex; align-items: center; border: 0; cursor: pointer; background: var(--dl-bg); color: #fff;
+  text-shadow: 3px 3px 0 var(--dl-shadow); padding: 12px 26px 16px; white-space: nowrap;
+  box-shadow: inset 0 -5px 0 var(--dl-bg-lo), inset 0 3px 0 var(--dl); }
+.site-art .btn-main { -webkit-mask: url(/ui/mask.webp) center / 100% 100% no-repeat; mask: url(/ui/mask.webp) center / 100% 100% no-repeat; }
+.btn, .chip { font: inherit; font-size: 14px; color: #fff; background: #262626; border: 0; padding: 9px 16px; min-height: 40px; cursor: pointer;
+  box-shadow: inset 0 -3px 0 #141414, inset 0 2px 0 #3A3A3A; }
+.site-art .btn { background: url(/ui/panel.webp) center / 100% 100% no-repeat; box-shadow: none; padding: 10px 20px 13px; }
+.chip { min-height: 32px; padding: 5px 12px; font-size: 13px; }
+.btn-main:hover, .btn:hover, .chip:hover { filter: brightness(1.15); }
+button:disabled { opacity: .45; cursor: progress; filter: none; }
+
+.status { margin: 0; font-size: 14px; color: var(--muted); max-width: 640px; }
+.status.error { color: var(--link); }
+.cost { margin: 10px 0 0; font-size: 14px; color: var(--text); }
+.cost:empty { display: none; }
+
+/* the two 3D views side by side, each in a slot frame */
+.views { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 18px; margin-top: 18px; }
+.view { margin: 0; min-width: 0; }
+.view figcaption { margin-bottom: 8px; }
+.count { color: var(--muted); text-shadow: none; }
+/* no padding: the 3D view takes the frame's client width, padding would grow it on every resize */
+.canvas { position: relative; height: 400px; overflow: hidden; background: var(--canvas); }
+.canvas::after { content: ""; position: absolute; inset: 0; pointer-events: none; box-shadow: inset 2px 2px 0 #050505, inset -2px -2px 0 #3A3A3A; }
+.canvas canvas { display: block; width: 100%; height: 100%; }
+.viewbar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 12px; margin-top: 14px; }
+.viewbar .label { margin-right: 4px; }
+.viewbar .check { margin-left: 8px; }
+
+.columns { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px 48px; margin-top: 34px; }
+.columns h3 { margin: 0 0 10px; }
+.columns h3 ~ h3 { margin-top: 28px; }
+.columns .fields { margin-top: 12px; }
+
+/* facts as a lined table (the site's .facts) */
+.table-box { max-height: 360px; overflow: auto; margin-top: 16px; border-top: 1px solid var(--line); }
+table.facts { width: 100%; border-collapse: collapse; font-size: 14px; }
+.facts th, .facts td { text-align: left; padding: 8px 10px 8px 0; border-bottom: 1px solid var(--line); }
+.facts thead th { position: sticky; top: 0; background: var(--bg); color: var(--label); font-weight: 400; font-size: 13px; }
+.facts td { color: var(--muted); }
+.facts .num { text-align: right; padding-right: 4px; }
+.facts tbody tr { cursor: pointer; }
+.facts tbody tr:hover td { color: var(--text); }
+.facts tbody tr.on td { color: #fff; background: #2A1B16; }
+.facts tbody tr.on td:first-child { box-shadow: inset 3px 0 0 var(--dl); }
+
+.notes { margin: 0; padding-left: 18px; font-size: 14px; color: var(--muted); }
+.notes li + li { margin-top: 6px; }
+#report { margin-top: 18px; }
+#report code { font: 12.5px ui-monospace, Menlo, monospace; color: var(--text); background: var(--slot); padding: 1px 4px; overflow-wrap: anywhere; }
+#report ul { margin: 10px 0 0; padding-left: 18px; font: 12.5px/1.6 ui-monospace, Menlo, monospace; color: var(--dim); overflow-wrap: anywhere; }
+pre.cmd { margin: 10px 0 0; padding: 9px 12px; white-space: pre-wrap; overflow-wrap: anywhere; font: 12.5px/1.5 ui-monospace, Menlo, monospace;
+  background: var(--slot); color: var(--text); border-left: 2px solid var(--label); }
+
 @media (max-width: 900px) {
-  .views, .columns { grid-template-columns: 1fr; }
-  h1 { font-size: 34px; }
-  .canvas { height: 280px; }
+  .wrap { padding: 0 16px 64px; }
+  .bar { padding: 12px 16px; }
+  .bar-note { display: none; }
+  .step { grid-template-columns: 36px minmax(0, 1fr); gap: 6px 12px; }
+  .views, .columns { grid-template-columns: minmax(0, 1fr); }
+  .canvas { height: 300px; }
 }

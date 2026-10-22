@@ -12,14 +12,24 @@ The converted rifles have not been in the game yet: that is agent 2's part of mi
 | The page (private, local) | `python3 tools/gunconv/server.py [--port 8790]`, then open http://127.0.0.1:8790/ . Listens on 127.0.0.1 only, never published. three.js 0.160.0 comes from cdn.jsdelivr.net, so the page needs the network. |
 | A conversion without the page | `python3 tools/gunconv/convert.py MODEL --name NAME --display TEXT [--like GUN] [--category CAT] [--length UNITS or --length-mm MM] [--muzzle +x] [--up +y] [--mirror] [--author A --url U --license L]` writes build/gunconv/out/NAME/ |
 | Compare with Decimation's guns | `STUDY_OURS=$PWD/build/gunconv/out/NAME/assets/deci python3 tools/guns/study.py gaps ours:NAME` (also sheet, render, vocab, contact, attach) |
-| Tests | `python3 -m unittest discover -s tools/gunconv/tests -t tools/gunconv/tests` (139 tests, about 9 s; tests with a like gun need Decimation.jar, two need the git ignored samples) |
+| Tests | `python3 -m unittest discover -s tools/gunconv/tests -t tools/gunconv/tests` (181 tests, about 17 s; tests with a like gun need Decimation.jar, two need the git ignored samples) |
 | Details per area | `python3 tools/gunconv/dataset.py density build/gunconv/out/NAME ...` (details and details a unit of each area's length against the category's medians, milestone 3) |
-| Exact mode | `convert.py MODEL --exact [--budget FACES] [--force] ...` (section 12; budget 300 to 2000, default 350; --force writes a package over twice the cost budget, to measure it); on the page the Exact button and the face budget slider |
+| Mode | `convert.py MODEL [--mode mesh]` is the default since 23 Oktober 2026 (section 13: the mesh 1:1); `--mode style` the Decimation style boxes, `--mode exact` / `--exact [--budget FACES] [--force]` the box plates (section 12). The page converts mesh only. |
 
 Folders (all git ignored under build/gunconv): inputs/<folder>/ holds a sample model and its source.json
 ({"author", "url", "license"}); work/uploads/ the files opened on the page; out/<name>/ the packages.
 
-The page: Model (a sample or a file of yours, with its author, link and license), Conversion (name, display name,
+The page since 23 Oktober 2026 (user: "use deci web repo style. make sure the input and word UX friendly and easy to
+understand"): the DeciRemnant site's look (its app/globals.css tokens: charcoal, tan labels in Minecraft's font,
+the coral torn button for a step's action, inputs as item slots, lined tables) in five plain steps: Pick a model,
+Credit the maker, Set it up (Name in the game, Item id, Gun type, Handles like; size and turning tucked away), Check it
+(Your model beside In the game, "Colour by what each part does", parts as Body / Magazine / Bolt or slide / Iron
+sights, where attachments go), Export (the folder and the devtest.py line to try it). The font is public domain
+(tools/gunconv/web/fonts, its readme); the site's art (logo, camo, torn masks: Decimation's textures) is served from the
+site's local repo by server.py /ui/ (DECIREMNANT_SITE overrides the path) and used only when it loads (body.site-art),
+never committed here. Checked with agent-browser at 1400 and 390 wide (no sideways scroll), 0 console errors.
+
+Before (milestones 1 to 3, the box modes): Model (a sample or a file of yours, with its author, link and license), Conversion (name, display name,
 category, like gun, the real length in mm, muzzle and up directions when the guess is wrong, mirror), Convert. The source
 model shows as loaded (three.js GLTFLoader, OBJLoader with its MTL, the server's triangles for .bbmodel), turned into
 the converted gun's pose once converted, both views share the camera (Side, Top, Three quarter, Rear; Part colours

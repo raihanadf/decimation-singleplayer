@@ -33,8 +33,14 @@ class ServerTest(unittest.TestCase):
             f.write(g.bytes())
         with open(os.path.join(inputs, "source.json"), "w") as f:
             json.dump(SOURCE, f)
+        site_ui = os.path.join(cls.tmp, "site_ui")
+        os.makedirs(site_ui)
+        with open(os.path.join(site_ui, "mask.webp"), "wb") as f:
+            f.write(b"RIFFtest")
+        with open(os.path.join(cls.tmp, "secret.webp"), "wb") as f:
+            f.write(b"secret")
         cls.srv = server.make_server(0, inputs=os.path.join(cls.tmp, "inputs"), out=os.path.join(cls.tmp, "out"),
-                                     work=os.path.join(cls.tmp, "work"))
+                                     work=os.path.join(cls.tmp, "work"), site_ui=site_ui)
         cls.base = "http://127.0.0.1:%d" % cls.srv.server_port
         cls.thread = threading.Thread(target=cls.srv.serve_forever, daemon=True)
         cls.thread.start()
@@ -67,6 +73,18 @@ class ServerTest(unittest.TestCase):
             self.assertIn(word, body)
         for f in ("/app.js", "/style.css"):
             self.assertEqual(self.get(f)[0], 200)
+
+    def test_the_sites_look(self):
+        """The page wears the DeciRemnant site's look (user, 23 Oktober 2026): the game's font ships with it (public domain),
+        the site's art (camo, torn buttons, logo) comes from the local site repo only, never from this repo."""
+        status, ctype, body = self.get("/fonts/MinecraftStandard.otf")
+        self.assertEqual(body[:4], b"OTTO")
+        self.assertEqual(self.get("/ui/mask.webp")[2], b"RIFFtest")
+        for bad in ("/ui/nope.webp", "/ui/..%2F..%2Fsecret.webp", "/ui/mask.exe"):
+            with self.assertRaises(urllib.error.HTTPError) as e:
+                self.get(bad)
+            self.assertEqual(e.exception.code, 404, bad)
+            e.exception.close()
 
     def test_samples_and_files(self):
         _, _, body = self.get("/api/samples")

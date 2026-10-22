@@ -229,8 +229,12 @@ function applySourceMatrix() {
 
 // ------------------------------------------------------------------ the converted parts
 
-// Group colours (the "Group colours" box): which pieces Decimation moves on reload, on firing, hides under a sight.
+// What each part does, in plain words (the internal group names are Decimation's: gunModel, ammoModel, ...), and its
+// colour when "Colour by what each part does" is on.
+const ROLES = { gunModel: "Body", ammoModel: "Magazine", slideModel: "Bolt or slide", defaultScopeModel: "Iron sights" };
 const GROUP_COLOURS = { gunModel: 0x77726a, ammoModel: 0xc0602f, slideModel: 0x3f72c0, defaultScopeModel: 0x4f9a55 };
+const TYPES = { rifle: "Rifle", smg: "SMG", mg: "Machine gun", shotgun: "Shotgun", pistol: "Pistol", revolver: "Revolver",
+  rocket: "Rocket launcher", crossbow: "Crossbow" };
 
 function bytes(b64) {
   const bin = atob(b64);
@@ -346,11 +350,12 @@ function renderTable() {
   state.pieces.forEach((p, i) => {
     const tr = document.createElement("tr");
     tr.dataset.index = i;
-    for (const t of [i, p.group, p.label, p.triangles]) {
+    [i, ROLES[p.group] || p.group, p.label, p.triangles.toLocaleString()].forEach((t, k) => {
       const td = document.createElement("td");
       td.textContent = t;
+      if (k === 3) td.className = "num";
       tr.appendChild(td);
-    }
+    });
     if (i === state.sel) tr.classList.add("on");
     tr.addEventListener("click", () => select(i));
     body.appendChild(tr);
@@ -360,11 +365,14 @@ function renderTable() {
 function select(i) {
   state.sel = i;
   const p = state.pieces[i];
+  $("group").disabled = !p;
   if (p) {
-    $("sel-info").textContent = "#" + i + "  " + p.label + ", " + p.group + ", " + p.triangles + " triangles";
+    $("sel-info").textContent = "Part " + i + ", " + p.label + ": " + (ROLES[p.group] || p.group) + ", " +
+      p.triangles.toLocaleString() + " triangles.";
     $("group").value = p.group;
   } else {
-    $("sel-info").textContent = "No piece selected. Click one in the converted view or in the list.";
+    $("sel-info").textContent = "No part picked. Click one in the game view or in the list.";
+    $("group").value = "";
   }
   drawOutline();
   conv.render();
@@ -451,15 +459,19 @@ function setCredit(src) {
 }
 
 async function init() {
-  const axes = [["", "auto"]].concat(["+x", "-x", "+y", "-y", "+z", "-z"].map((a) => [a, a]));
+  const axes = [["", "Automatic"]].concat(["+x", "-x", "+y", "-y", "+z", "-z"].map((a) => [a, "The file's " + a]));
+  const art = new Image();                    // the site's art (camo, torn buttons) when its repo is on this computer
+  art.onload = () => document.body.classList.add("site-art");
+  art.src = "/ui/mask.webp";
   for (const s of document.querySelectorAll("select.axis")) fillSelect(s, axes);
   try {
     const r = await api("/api/samples");
     state.samples = r.samples;
-    fillSelect($("category"), [["", "auto"]].concat(r.categories.map((c) => [c, c])));
+    fillSelect($("category"), [["", "Automatic"]].concat(r.categories.map((c) => [c, TYPES[c] || c])));
     fillSelect($("sample"), r.samples.map((s) => [s.path, s.name + ": " + s.file]));
-    if (!r.samples.length) status("No samples in build/gunconv/inputs: open a file.");
-    if (!r.jar) status("Decimation.jar not found: no like gun, the hands come from the style guide.", true);
+    if (!r.samples.length) status("No samples here yet: open your own file in step 1.");
+    if (!r.jar) status("Decimation.jar was not found, so no Decimation gun can be matched: hands and stats come from the" +
+      " defaults.", true);
   } catch (e) {
     status(e.message, true);
   }
@@ -477,10 +489,10 @@ $("load-sample").addEventListener("click", async () => {
   setCredit(s && s.source);
   conv.clear();
   drawParts();
-  status("Loading " + path + " ...");
+  status("Loading the sample ...");
   try {
     await loadSource(path);
-    status("Loaded " + path + ". Convert when ready.");
+    status("Loaded. Fill in the credit if it is empty, then press Convert.");
   } catch (e) {
     status(e.message, true);
   }
@@ -489,7 +501,7 @@ $("load-sample").addEventListener("click", async () => {
 $("file").addEventListener("change", async () => {
   const f = $("file").files[0];
   if (!f) return;
-  status("Uploading " + f.name + " ...");
+  status("Opening " + f.name + " ...");
   try {
     const r = await api("/api/upload?filename=" + encodeURIComponent(f.name), await f.arrayBuffer(), true);
     state.path = r.path;
@@ -501,7 +513,7 @@ $("file").addEventListener("change", async () => {
     conv.clear();
     drawParts();
     await loadSource(r.path);
-    status("Loaded " + f.name + ". Fill in its author and license, then convert.");
+    status("Loaded " + f.name + ". Fill in who made it and its license (step 2), then press Convert.");
   } catch (e) {
     status(e.message, true);
   }
@@ -511,17 +523,18 @@ $("file").addEventListener("change", async () => {
 function costLine() {
   const st = (state.conv || {}).stats || {};
   if (!st.cost) return "";
-  return st.triangles.toLocaleString() + " triangles" + (st.exact ? "" : " (simplified from " + st.source.toLocaleString() +
-    ")") + ", texture " + st.texture.join(" x ") + "; estimated draw " + st.cost.ratio.toFixed(2) + " x the akm's (budget " +
-    st.cost.budget + " x)" + (st.cost.verdict === "ok" ? "." : ": heavy.");
+  return st.triangles.toLocaleString() + " triangles" + (st.exact ? "" : " (the model had " + st.source.toLocaleString() +
+    ", more than the 30,000 a gun may have)") + ", a " + st.texture.join(" x ") + " texture. It takes about " +
+    st.cost.ratio.toFixed(2) + " times as long to draw as Decimation's AKM" + (st.cost.verdict === "ok"
+    ? " (fine up to " + st.cost.budget + ")." : ": heavier than the " + st.cost.budget + " we aim for.");
 }
 
 $("convert").addEventListener("click", convertNow);
 
 async function convertNow() {
-  if (!state.path) return status("Load a model first.", true);
+  if (!state.path) return status("Pick a model in step 1 first.", true);
   busy(true);
-  status("Converting ...");
+  status("Converting, this takes a few seconds ...");
   const req = {
     [state.path.startsWith("uploads/") ? "upload" : "sample"]: state.path,
     name: $("name").value.trim(), display: $("display").value.trim(), category: $("category").value,
@@ -537,7 +550,8 @@ async function convertNow() {
     $("name").value = r.name;
     $("display").value = r.display;
     $("category").value = r.category;
-    fillSelect($("like"), [["", "auto"]].concat(r.candidates.map((c) => [c[0], c[0] + "  " + c[1].toFixed(2)])));
+    fillSelect($("like"), [["", "Automatic"]].concat(r.candidates.map((c) => [c[0], c[0] + " (" + Math.round(c[1] * 100) +
+      " % alike)"])));
     if (r.like && ![...$("like").options].some((o) => o.value === r.like)) {
       fillSelect($("like"), [...[...$("like").options].map((o) => [o.value, o.textContent]), [r.like, r.like]]);
     }
@@ -545,7 +559,7 @@ async function convertNow() {
     showPoints(r.points);
     const ul = $("warnings");
     ul.innerHTML = "";
-    for (const w of r.warnings.length ? r.warnings : ["none"]) {
+    for (const w of r.warnings.length ? r.warnings : ["Nothing to watch out for."]) {
       const li = document.createElement("li");
       li.textContent = w;
       li.className = "note";
@@ -556,8 +570,9 @@ async function convertNow() {
     select(-1);
     frameBoth("side");
     const g = r.stats.groups;
-    status("Converted in " + r.seconds + " s: " + r.stats.triangles.toLocaleString() + " triangles (" +
-      Object.entries(g).map(([k, v]) => k + " " + v).join(", ") + "), like " + r.like + ", " + r.category + ".");
+    status("Done in " + r.seconds + " s. " + Object.entries(g).map(([k, v]) => (ROLES[k] || k) + " " +
+      v.toLocaleString()).join(", ") + " triangles; " + (TYPES[r.category] || r.category).toLowerCase() + ", handles like the " +
+      r.like + ". Check it below, then export.");
   } catch (e) {
     status(e.message, true);
   } finally {
@@ -566,9 +581,9 @@ async function convertNow() {
 }
 
 $("export").addEventListener("click", async () => {
-  if (!state.conv) return status("Convert first.", true);
+  if (!state.conv) return status("Convert the model in step 3 first.", true);
   busy(true);
-  status("Exporting ...");
+  status("Writing the package ...");
   const { mesh, ...kept } = state.conv;     // the mesh stays on the server (the token names it)
   const req = Object.assign({}, kept, {
     pieces: state.pieces, name: $("name").value.trim() || state.conv.name, display: $("display").value.trim(),
@@ -589,12 +604,15 @@ $("export").addEventListener("click", async () => {
     const p = el("p", "Written to ");
     const code = el("code", r.dir);
     code.id = "package-dir";
-    p.append(code, " (" + (r.triangles !== undefined ? r.triangles.toLocaleString() + " triangles" : r.parts + " parts") + ").");
+    p.append(code, " (" + r.files.length + " files" + (r.triangles !== undefined ? ", " + r.triangles.toLocaleString() +
+      " triangles" : "") + ").");
     const ul = el("ul");
     ul.id = "package-files";
     for (const f of r.files) ul.appendChild(el("li", f));
-    report.append(p, ul);
-    status("Exported " + r.files.length + " files.");
+    const next = el("p", "To try it in the dev client, start the test game with this folder's parent:");
+    const cmd = el("pre", "python3 tools/devtest.py --live --gunpacks=" + r.dir.replace(/\/[^/]+$/, "") + " gunpack", "cmd");
+    report.append(p, next, cmd, ul);
+    status("Exported. The folder is listed below.");
   } catch (e) {
     status(e.message, true);
   } finally {

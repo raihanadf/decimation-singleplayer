@@ -2043,3 +2043,7 @@ pixels a unit.
   light, after the like gun's tones (the first bake read lighter grey than the akm's near black metal).
 - prod_diff.png: the production client with OptiFine: changed pixels when slideModel0 / ammoModel0 move (AKM magazine,
   P228 slide, P228 magazine as whole blocks; the rest is OptiFine's shimmer on the floor, no longer counted).
+- page_site_top.png, page_site_p228_bottom.png: the page in the DeciRemnant site's look (23 Oktober 2026): the logo bar
+  with faint camo, tan step numbers, slot inputs, the coral torn Convert; then the P228 checked with "Colour by what each
+  part does" (slide blue, the magazine's base plate orange, the picked magazine boxed in coral), the plain attachment
+  fields and the export report with its devtest.py line.
