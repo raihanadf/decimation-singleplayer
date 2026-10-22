@@ -422,6 +422,22 @@ class ProportionTest(unittest.TestCase):
         self.assertEqual(rep, {})
 
 
+class PreferTest(unittest.TestCase):
+    def test_the_body_gun_gives_the_grip_too(self):
+        """When an assembly came from one gun, the areas judged after it prefer that gun like the like gun."""
+        rec = [((0, -2, -0.5), (10, -1, 0.5), "gunModel")]
+        well = [((3, -1, -0.4), (6, 0, 0.4), "gunModel")]
+        grip_a = [((-1, -1, -0.4), (0.5, 2, 0.4), "gunModel")]
+        grip_b = [((-1, -1, -0.4), (0.5, 2, 0.4), "gunModel"), ((-0.9, 1.9, -0.45), (0.4, 2.0, 0.45), "gunModel")]
+        data = {"guns": {"a": gun(receiver=rec, magwell=well, grip=grip_a), "b": gun(grip=grip_b)}}
+        parts = [ours("rec", (0, -2, -0.5), (10, -1.5, 0.5)), ours("low", (0, -1.5, -0.5), (10, -1, 0.5)),
+                 ours("well", (3, -1, -0.4), (6, 0, 0.4)), ours("grip", (-1, -1, -0.4), (0.5, 2, 0.4))]
+        out, rep, by, plan = exemplar.apply(parts, "rifle", "b", {}, data,
+                                            labels=["receiver", "magwell", "magwell", "grip"])
+        self.assertEqual(rep["receiver"]["gun"], "a")
+        self.assertEqual(rep["grip"]["gun"], "a")
+
+
 class GroupTest(unittest.TestCase):
     def test_moving_parts_keep_their_group(self):
         self.assertEqual(exemplar.new_group("slideModel", False), "slideModel")

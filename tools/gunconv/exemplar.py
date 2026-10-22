@@ -42,6 +42,7 @@ FRONT = ("handguard", "barrel", "front_sight", "muzzle", "pump")
 # the body first (action and front warped as one keep their joint: two warps opened a gap behind the handguard), then
 # each half, then the butt
 ASSEMBLIES = (("body", ACTION + FRONT), ("action", ACTION), ("front", FRONT), ("butt", ("stock", "buttpad")))
+HANDGUNS = ("pistol", "revolver")
 BIN = 0.5             # section bins along x
 MIN_RUN = 2           # an exemplar takes runs of at least this many bins
 SECTION_CANDS = 2     # exemplars tried on the sections of an area (spec: the best, then a second on the bins left)
@@ -689,6 +690,7 @@ def apply(parts, cat, like, header, data=None, labels=None, folding=False, exemp
     ours_tone = {a: _mean([parts[i].colour for i in idx]) for a, idx in by.items()}
     keep = set(range(len(parts)))
     added, report, by_gun, plan, done = [], {}, Counter(), {}, set()
+    assembly_gun = None
 
     def new_parts(warped, items, gname, fallback, ex_mean):
         """items [(exemplar part, its area, the exemplar area's mean tone)]."""
@@ -708,8 +710,11 @@ def apply(parts, cat, like, header, data=None, labels=None, folding=False, exemp
             out.append(q)
         return out
 
-    # 1. assemblies: one outline over several areas
-    for name, areas in ASSEMBLIES:
+    # 1. assemblies: one outline over several areas (a pistol's grip is part of its frame: our frame lofts run into it)
+    assemblies = ASSEMBLIES
+    if cat in HANDGUNS:
+        assemblies = tuple((n, a + ("grip",) if n in ("body", "action") else a) for n, a in ASSEMBLIES)
+    for name, areas in assemblies:
         mine = [a for a in areas if a in by and a not in done]
         if not mine or (len(mine) == 1 and name != "butt") or any(a in done for a in areas if a in by):
             continue                                       # a single area is judged as one below
@@ -744,6 +749,8 @@ def apply(parts, cat, like, header, data=None, labels=None, folding=False, exemp
         made = new_parts(warped, items, gname, fallback, _mean(known))
         theirs = set(a for _, a, _ in items)
         taken = [a for a in mine if a in theirs]           # our areas the exemplar lacks (a moving bolt) stay ours
+        if name in ("body", "action") and assembly_gun is None:
+            assembly_gun = gname
         added += made
         keep -= set(i for a in taken for i in by[a])
         done |= set(taken)
@@ -765,7 +772,10 @@ def apply(parts, cat, like, header, data=None, labels=None, folding=False, exemp
         if not cands:
             report[area] = {"fit": len(idx)}
             continue
-        order = ranked([(n, score(ex, tarea)) for n, ex in cands.items()], like)
+        # the gun that gave an assembly is preferred like the like gun (one gun's construction and tones, not a grip
+        # of another style under a borrowed body)
+        prefer = assembly_gun or like
+        order = ranked([(n, score(ex, tarea)) for n, ex in cands.items()], prefer)
         gname, s = order[0]
         follow = area in PROFILE_AREAS
         exl = lambda n: lum(cands[n]["tone"]) if cands[n].get("tone") else None  # noqa: E731
