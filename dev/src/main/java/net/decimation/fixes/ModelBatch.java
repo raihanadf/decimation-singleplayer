@@ -151,6 +151,56 @@ public final class ModelBatch
         return 0;
     }
 
+    /** For tests: placeholder parts given a mesh, triangles in their lists. */
+    public static long meshLists, meshTriangles;
+
+    /**
+     * A part whose six captured faces are a converted gun's marker box (fixes/gunpack/MeshGun): its mesh group in one list
+     * (triangles with per vertex normals and texture coordinates, scaled by the marker's size, culling off for open
+     * meshes), else 0.
+     */
+    private static int meshList()
+    {
+        float[] xyz = new float[72];
+        for (int q = 0; q < 6; q++)
+        {
+            for (int k = 0; k < 4; k++)
+            {
+                int i = q * 23 + k * 5;
+                xyz[q * 12 + k * 3] = data[i];
+                xyz[q * 12 + k * 3 + 1] = data[i + 1];
+                xyz[q * 12 + k * 3 + 2] = data[i + 2];
+            }
+        }
+        int[] m = net.decimation.fixes.gunpack.MeshGun.marker(xyz, 6);
+        net.decimation.fixes.gunpack.MeshGun gun = m == null ? null : net.decimation.fixes.gunpack.MeshGun.byId(m[0]);
+        if (gun == null || m[1] >= gun.groups.size())
+        {
+            return 0;
+        }
+        float s = net.decimation.fixes.gunpack.MeshGun.markerScale(xyz, 6);
+        net.decimation.fixes.gunpack.MeshGun.Group g = gun.groups.get(m[1]);
+        int list = net.minecraft.client.renderer.GLAllocation.generateDisplayLists(1);
+        GL11.glNewList(list, GL11.GL_COMPILE);
+        GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
+        GL11.glDisable(GL11.GL_CULL_FACE);
+        net.minecraft.client.renderer.Tessellator t = net.minecraft.client.renderer.Tessellator.instance;
+        t.startDrawing(GL11.GL_TRIANGLES);
+        float[] v = g.vertices;
+        for (int i = 0; i < v.length; i += 8)
+        {
+            t.setNormal(v[i + 3], v[i + 4], v[i + 5]);
+            t.addVertexWithUV(v[i] * s, v[i + 1] * s, v[i + 2] * s, v[i + 6], v[i + 7]);
+        }
+        t.draw();
+        GL11.glPopAttrib();
+        GL11.glEndList();
+        meshLists++;
+        meshTriangles += g.triangles();
+        built++;
+        return list;
+    }
+
     /**
      * Stop capturing: the quads in one display list (0 when nothing was drawn or something looked odd: the part then
      * keeps Decimation's lists). Matrices a hidden part pushed without popping (BModelPart.render) are popped.
@@ -173,6 +223,11 @@ public final class ModelBatch
         if (broken || n == 0)
         {
             return 0;
+        }
+        int mesh = n == 6 ? meshList() : 0;
+        if (mesh != 0)
+        {
+            return mesh;                                  // a converted gun's placeholder: its real mesh instead
         }
         int list = net.minecraft.client.renderer.GLAllocation.generateDisplayLists(1);
         GL11.glNewList(list, GL11.GL_COMPILE);

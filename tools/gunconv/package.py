@@ -95,6 +95,8 @@ def export(conv, out_root, display=None, source=None, force=False):
     """Write the package of a Conversion to out_root/<name>/ (an old folder of that name is replaced whole). An exact
     mode gun whose estimated draw time is over twice the budget is refused unless force (spec, "Cost gate")."""
     name = convert.validate_name(conv.name)
+    if (conv.stats or {}).get("mode") == "mesh":
+        return export_mesh(conv, out_root, display, source)
     if (conv.stats or {}).get("mode") == "exact":       # the parts as they are now (the page may have edited them)
         import exact
         cost = exact.estimate(len(conv.parts))
@@ -139,6 +141,71 @@ def export(conv, out_root, display=None, source=None, force=False):
             json.dump(gun_json(conv, display, source), f, indent=2)
             f.write("\n")
     return {"dir": out_dir, "files": listing(out_dir), "parts": len(conv.parts)}
+
+
+def checked_source(conv, source):
+    source = source if source is not None else conv.source
+    if conv.category not in convert.CATEGORIES:
+        raise ValueError("unknown category %r" % conv.category)
+    if not source or not license_ok(source.get("license")):
+        raise ValueError("the source model needs a license we may ship (CC0, CC BY or own): %r"
+                         % ((source or {}).get("license"),))
+    if not source.get("author") or not source.get("file"):
+        raise ValueError("the source model needs its author and file name (credit)")
+    return source
+
+
+def export_mesh(conv, out_root, display=None, source=None):
+    """The package of a mesh mode gun (converter milestone 4, docs/superpowers/specs/2026-10-23-gun-mesh-design.md):
+    mesh.dmesh beside gun.json ("mesh"), the skeleton .bmodel (one marker part a group), the baked texture, the icon
+    rendered from the mesh, Decimation's animation timings. Groups as the page left them (conv.pieces)."""
+    import meshpack
+    name = convert.validate_name(conv.name)
+    if conv.mesh is None:
+        raise ValueError("this conversion's mesh is no longer in memory (the page outlived the server): convert again")
+    source = checked_source(conv, source)
+    groups = [p["group"] for p in conv.pieces] if conv.pieces else ["gunModel"] * len(conv.mesh.pieces)
+    if len(groups) != len(conv.mesh.pieces) or any(g not in meshpack.GROUPS for g in groups):
+        raise ValueError("one group per piece, each one of %s" % ", ".join(meshpack.GROUPS))
+    dm = conv.mesh.dmesh_groups(groups)
+    if not dm:
+        raise ValueError("no triangles to export")
+    data = meshpack.write_dmesh(dm)
+    header = dict(conv.header)
+    header["flamePos"] = tuple(conv.points["flame"])
+    display = display or conv.display or name
+    out_dir = os.path.join(os.path.abspath(out_root), name)
+    cat = conv.category
+    with LOCK:
+        if os.path.isdir(out_dir):
+            shutil.rmtree(out_dir)
+        assets = os.path.join(out_dir, "assets", "deci")
+        paths = {"model": os.path.join(assets, "models", "guns", cat, name + ".bmodel"),
+                 "texture": os.path.join(assets, "textures", "model", "guns", cat, name, name + ".png"),
+                 "icon": os.path.join(assets, "textures", "items", "gun", cat, name + ".png")}
+        for path in paths.values():
+            os.makedirs(os.path.dirname(path), exist_ok=True)
+        with open(paths["model"], "w") as f:
+            f.write(meshpack.skeleton(name, header, dm, conv.mesh.image.size))
+        conv.mesh.image.save(paths["texture"])
+        meshpack.icon([p["tris"] for p in conv.mesh.pieces], conv.mesh).save(paths["icon"])
+        anim_dir = os.path.join(assets, "animations", name)
+        os.makedirs(anim_dir)
+        for anim, text in animations(cat, [convert.MeshPiece(g["name"], g["name"], []) for g in dm]).items():
+            with open(os.path.join(anim_dir, name + anim + ".anib"), "w") as f:
+                f.write(text)
+        with open(os.path.join(out_dir, "mesh.dmesh"), "wb") as f:
+            f.write(data)
+        gj = gun_json(conv, display, source)
+        gj["mesh"] = "mesh.dmesh"
+        gj["converter"].update({"mode": "mesh", "triangles": sum(len(g["verts"]) // 24 for g in dm),
+                                "sourceTriangles": conv.stats.get("source"), "texture": list(conv.mesh.image.size),
+                                "groups": {g["name"]: len(g["verts"]) // 24 for g in dm}})
+        with open(os.path.join(out_dir, "gun.json"), "w") as f:
+            json.dump(gj, f, indent=2)
+            f.write("\n")
+    return {"dir": out_dir, "files": listing(out_dir), "parts": len(dm),
+            "triangles": sum(len(g["verts"]) // 24 for g in dm)}
 
 
 def like_icon_box(like):

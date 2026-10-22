@@ -30,7 +30,7 @@ public final class GunPack
         Arrays.asList("rifle", "smg", "mg", "shotgun", "pistol", "revolver", "rocket", "crossbow"));
     public static final List<String> MOUNTS = Collections.unmodifiableList(Arrays.asList("rail", "side", "slide"));
     private static final List<String> TOP = Arrays.asList("name", "display", "category", "like", "magazine", "stats", "points",
-                                                          "source");
+                                                          "source", "mesh");
     private static final List<String> STATS = Arrays.asList("damage", "rpm", "pitch", "yaw", "recovery", "slowdown", "auto");
     private static final List<String> POINTS = Arrays.asList("flame", "railTop", "rail", "gripRail", "mount", "sightShift",
                                                              "barrelShift");
@@ -38,6 +38,8 @@ public final class GunPack
     private static final List<String> SOURCE = Arrays.asList("file", "author", "url", "license");
 
     public String name, display, category, like;
+    /** A real mesh beside gun.json ("mesh.dmesh"), drawn through the skeleton .bmodel's placeholders (MeshGun), or null. */
+    public String mesh;
     /** The gun's own magazine, or null: it loads the like gun's magazines. */
     public Magazine magazine;
     public final Stats stats = new Stats();
@@ -188,6 +190,11 @@ public final class GunPack
         if (p.name != null && !p.name.matches("[a-z][a-z0-9_]{1,31}"))
         {
             bad.add("name \"" + p.name + "\": lower case letters, digits and _, 2 to 32, starting with a letter");
+        }
+        p.mesh = text(o, "mesh", bad, false);
+        if (p.mesh != null && !p.mesh.matches("[a-z0-9_]{1,32}\\.dmesh"))
+        {
+            bad.add("mesh \"" + p.mesh + "\": a file name like mesh.dmesh");
         }
         p.display = text(o, "display", bad, true);
         if (p.display != null && (p.display.trim().isEmpty() || p.display.length() > 64))

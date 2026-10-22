@@ -97,6 +97,21 @@ class GunPackTest
         assertEquals(Boolean.TRUE, p.stats.auto);
     }
 
+    /** Converter milestone 4: a mesh gun names its mesh.dmesh beside gun.json; no "mesh" is a box gun. */
+    @Test
+    void aMeshGunNamesItsMeshFile() throws Exception
+    {
+        GunPack p = GunPack.parse(with(RIFLE, "\"magazine\": \"like\",", "\"magazine\": \"like\", \"mesh\": \"mesh.dmesh\","), false);
+        assertEquals("mesh.dmesh", p.mesh);
+        assertTrue(p.warnings.isEmpty(), p.warnings.toString());
+        assertNull(GunPack.parse(RIFLE, false).mesh, "a box gun has none");
+        for (String bad : new String[] {"../mesh.dmesh", "assets/mesh.dmesh", "mesh.obj", "Mesh.dmesh"})
+        {
+            assertTrue(mentions(problems(with(RIFLE, "\"magazine\": \"like\",", "\"magazine\": \"like\", \"mesh\": \"" + bad + "\","),
+                                         false), "mesh"), bad);
+        }
+    }
+
     @Test
     void fieldsNotKnownAreWarningsNeverErrors() throws Exception
     {

@@ -28,6 +28,25 @@ class Mesh:
         self.name, self.material, self.colour = name, material, colour
         self.verts, self.faces = verts, faces
         self.vlabels, self.vcolours = vlabels, vcolours
+        # the texture behind the colours (colour_at): per vertex (u, v) with v down as images run, the image, the
+        # material's multiplier (glTF: linear, OBJ: as written) and per vertex multipliers (or None)
+        self.uvs, self.image, self.tint, self.linear, self.vcol = None, None, (1.0, 1.0, 1.0), False, None
+
+    def colour_at(self, fi, w):
+        """sRGB 0..255 inside face fi at barycentric weights w: the texture at the interpolated UV when the mesh has
+        one (a low poly gun's detail lives in its texture), else its vertex colours interpolated, else its colour."""
+        f = self.faces[fi]
+        if self.image is not None and self.uvs is not None and all(self.uvs[i] is not None for i in f):
+            u = sum(w[k] * self.uvs[f[k]][0] for k in range(3))
+            v = sum(w[k] * self.uvs[f[k]][1] for k in range(3))
+            t = sample(self.image, u, v)
+            m = [sum(w[k] * self.vcol[f[k]][i] for k in range(3)) for i in range(3)] if self.vcol else (1.0, 1.0, 1.0)
+            if self.linear:
+                return to255([linear_to_srgb(self.tint[i] * srgb_to_linear(t[i]) * m[i]) for i in range(3)])
+            return to255([self.tint[i] * t[i] * m[i] for i in range(3)])
+        if self.vcolours:
+            return tuple(int(round(sum(w[k] * self.vcolours[f[k]][i] for k in range(3)))) for i in range(3))
+        return tuple(int(c) for c in self.colour[:3])
 
 
 class Model:
@@ -367,7 +386,13 @@ def read_primitive(g, p, node, m, world, name):
         colour = tuple(int(round(sum(c[i] for c in vcolours) / len(vcolours))) for i in range(3))
     else:
         colour = to255([linear_to_srgb(c) for c in factor])
-    return Mesh(name, mat_name, colour, verts, faces, labels, vcolours)
+    mesh = Mesh(name, mat_name, colour, verts, faces, labels, vcolours)
+    mesh.tint, mesh.linear = tuple(factor), True
+    if vcol is not None:
+        mesh.vcol = [tuple(c[:3]) for c in vcol]
+    if tex is not None:
+        mesh.image, mesh.uvs = tex[0], [tuple(uv[:2]) for uv in tex[1]]
+    return mesh
 
 
 # ---------------------------------------------------------------- OBJ
@@ -485,7 +510,13 @@ def read_obj(text, base_dir, stem=""):
             colour = tuple(int(round(sum(c[i] for c in vcolours) / len(vcolours))) for i in range(3))
         else:
             colour = to255(kd)
-        meshes.append(Mesh(r["name"], r["material"], colour, verts, faces, None, vcolours))
+        mesh = Mesh(r["name"], r["material"], colour, verts, faces, None, vcolours)
+        mesh.tint = tuple(kd)
+        if any(c is not None for c in vcols):
+            mesh.vcol = [c if c is not None else (1.0, 1.0, 1.0) for c in vcols]
+        if img is not None:
+            mesh.image, mesh.uvs = img, [(uv[0], 1.0 - uv[1]) if uv is not None else None for uv in uvs]  # OBJ v up
+        meshes.append(mesh)
     if not meshes:
         raise MeshError("no faces in this OBJ file")
     return Model(meshes, "obj", stem)

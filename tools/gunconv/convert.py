@@ -70,12 +70,19 @@ class Conversion:
         self.matrix = kw.get("matrix")
         self.source = kw.get("source")
         self.stats = kw.get("stats", {})
+        self.mesh = kw.get("mesh")                     # mesh mode: meshpack.MeshResult (kept by the server, not JSON)
+        self.pieces = kw.get("pieces", [])             # mesh mode: [{"id", "label", "group", "triangles"}]
 
     def to_json(self):
-        return {"name": self.name, "display": self.display, "category": self.category, "like": self.like,
-                "candidates": self.candidates, "parts": parts_to_json(self.parts), "points": self.points,
-                "header": {k: list(v) for k, v in self.header.items()}, "warnings": self.warnings,
-                "matrix": self.matrix, "source": self.source, "stats": self.stats}
+        out = {"name": self.name, "display": self.display, "category": self.category, "like": self.like,
+               "candidates": self.candidates, "parts": parts_to_json(self.parts), "points": self.points,
+               "header": {k: list(v) for k, v in self.header.items()}, "warnings": self.warnings,
+               "matrix": self.matrix, "source": self.source, "stats": self.stats}
+        if self.pieces:
+            out["pieces"] = self.pieces
+        if self.mesh is not None:
+            out["mesh"] = self.mesh.preview()
+        return out
 
     @classmethod
     def from_json(cls, d):
@@ -83,7 +90,7 @@ class Conversion:
                    candidates=d.get("candidates", []), parts=parts_from_json(d.get("parts", [])),
                    points=d.get("points", {}), header={k: tuple(v) for k, v in d.get("header", {}).items()},
                    warnings=d.get("warnings", []), matrix=d.get("matrix"), source=d.get("source"),
-                   stats=d.get("stats", {}))
+                   stats=d.get("stats", {}), pieces=d.get("pieces", []))
 
 
 # ---------------------------------------------------------------- parts as JSON (the page edits these)
@@ -249,9 +256,10 @@ def body_z(tris, k=64.0):
 # ---------------------------------------------------------------- pieces
 
 class Piece:
-    def __init__(self, tris, label, material, mesh_name, colour, tri_colours=None):
+    def __init__(self, tris, label, material, mesh_name, colour, tri_colours=None, src=None):
         self.tris, self.label, self.material, self.mesh_name, self.colour = tris, label, material, mesh_name, colour
         self.tri_colours = tri_colours            # per triangle (the mean of its vertices' colours), or None
+        self.src = src                            # per triangle (meshio.Mesh, face index): colour_at inside it
 
     def centre(self):
         pts = [q for t in self.tris for q in t]
@@ -292,7 +300,8 @@ def pieces_of(model, m):
                     label = mesh.name
                 else:
                     label = mesh.material or mesh.name
-                out.append(Piece(tris, label, mesh.material or "", mesh.name, colour, tri_colours))
+                out.append(Piece(tris, label, mesh.material or "", mesh.name, colour, tri_colours,
+                                 [(mesh, fi) for fi in fis]))
     return out
 
 
@@ -729,6 +738,85 @@ def convert_exact(model, name=None, display=None, category=None, like=None, leng
     return Conversion(name=name, display=display or default_display(model.name or name), category=category,
                       like=like, candidates=cands, parts=parts, points=points, header=header_of(points, info, category),
                       warnings=warnings, matrix=[list(r) for r in M], source=source, stats=stats)
+
+
+class MeshPiece:
+    """A piece of a mesh mode gun as points_of and the animations read parts: group, label, points."""
+
+    def __init__(self, label, group, tris):
+        self.label = self.name = label
+        self.group, self.tris = group, tris
+
+    def points(self):
+        return [q for t in self.tris for q in t]
+
+
+class ToneIndex:
+    """match.template_tone for points (a texel's box): the like gun's part boxes binned by x, a unit a bin."""
+
+    def __init__(self, tones, grow=0.05):
+        self.tones, self.bins = tones, {}
+        for k, (b, _) in enumerate(tones):
+            for x in range(int(math.floor(b[0][0] - grow)), int(math.floor(b[0][1] + grow)) + 1):
+                self.bins.setdefault(x, []).append(k)
+
+    def at(self, p, half=0.125):
+        ks = set(self.bins.get(int(math.floor(p[0] - half)), ())) | set(self.bins.get(int(math.floor(p[0] + half)), ()))
+        near = [self.tones[k] for k in sorted(ks)] or self.tones
+        return match.template_tone([(p[i] - half, p[i] + half) for i in range(3)], near)
+
+
+def source_colour(piece):
+    """The colour inside a piece's source face (its texture at the interpolated UV, vertex colours or its colour)."""
+    src = piece.src
+    return lambda t, w, p: src[t][0].colour_at(src[t][1], w)
+
+
+def convert_mesh(model, name=None, display=None, category=None, like=None, length=None, length_mm=None, up=None,
+                 muzzle=None, mirror=False, source=None, mount=None, cap=None):
+    """Mesh mode (converter milestone 4, docs/superpowers/specs/2026-10-23-gun-mesh-design.md; user, 23 Oktober 2026:
+    "use convert 1:1 instead generating decimation style guns"): the source's triangles as they are (simplified only
+    over the cap of 30000), placed, grouped and pointed like convert(); the texture baked by meshpack in Decimation's
+    tones, pixelated (a texel a quarter unit). Returns a Conversion with no parts, its mesh in .mesh."""
+    import meshpack
+    cap = int(cap or meshpack.CAP)
+    if name:
+        validate_name(name)
+    pl = place(model, name, category, like, length, length_mm, up, muzzle, mirror)
+    model, warnings, cands, like, info = pl["model"], pl["warnings"], pl["cands"], pl["like"], pl["info"]
+    category, M = pl["category"], pl["M"]
+    pieces = pieces_of(model, M)
+    groups = groups_of(pieces, info)
+    one_colour = bool(like and len(set(tuple(p.colour) for p in pieces)) <= 1 and not any(varied(p) for p in pieces))
+    if one_colour:
+        index = ToneIndex(match.part_tones(like))
+        fns, tone_fn = [lambda t, w, p: index.at(p)] * len(pieces), None
+        warnings.append("the file has one colour: tones taken from %s's parts by position" % like)
+    else:
+        fns, tone_fn = [source_colour(p) for p in pieces], tone
+    name = name or default_name(model.name or "gun")
+    res = meshpack.build([p.tris for p in pieces], fns, tone=tone_fn, seed=meshpack.mesh_id(name), cap=cap)
+    parts = [MeshPiece(p.label, g, r["tris"]) for p, g, r in zip(pieces, groups, res.pieces)]
+    live = [q for q in parts if q.tris]
+    if not res.stats["exact"]:
+        warnings.append("%d triangles simplified to %d (the cap is %d)" % (res.stats["source"], res.stats["triangles"],
+                                                                          cap))
+    if not any(q.group == "ammoModel" for q in live):
+        warnings.append("no magazine found (no ammoModel piece): the reload moves nothing; set a piece's group")
+    if not any(q.group == "slideModel" for q in live):
+        warnings.append("no bolt or slide found (no slideModel piece): firing moves nothing; set a piece's group")
+    points = points_of(live, info, mount)
+    counts = {}
+    for q in live:
+        counts[q.group] = counts.get(q.group, 0) + len(q.tris)
+    stats = {"mode": "mesh", "triangles": res.stats["triangles"], "source": model.triangle_count(), "cap": cap,
+             "exact": res.stats["exact"], "texture": res.stats["texture"], "charts": res.stats["charts"],
+             "pieces": len(pieces), "groups": counts, "scale": pl["s"], "length": pl["target"], "zscale": pl["zscale"]}
+    return Conversion(name=name, display=display or default_display(model.name or name), category=category,
+                      like=like, candidates=cands, parts=[], points=points, header=header_of(points, info, category),
+                      warnings=warnings, matrix=[list(r) for r in M], source=source, stats=stats, mesh=res,
+                      pieces=[{"id": i, "label": q.label, "group": q.group, "triangles": len(q.tris)}
+                              for i, q in enumerate(parts)])
 
 
 def dataset_data():

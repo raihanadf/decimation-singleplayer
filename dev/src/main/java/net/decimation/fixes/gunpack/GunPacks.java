@@ -208,6 +208,15 @@ public final class GunPacks
             long t = System.nanoTime();
             try
             {
+                if (client && l.pack.mesh != null)
+                {
+                    // a 1:1 mesh gun: its placeholders find the mesh by the name's id when Decimation compiles them
+                    MeshGun mesh = MeshGun.read(l.source.bytes(l.pack.mesh));
+                    if (!MeshGun.register(l.pack.name, mesh))
+                    {
+                        throw new IllegalArgumentException("its mesh id " + MeshGun.id(l.pack.name) + " is taken by another gun's name");
+                    }
+                }
                 registerOne(l, sights, client);
                 LOADED.add(l);
             }
@@ -249,6 +258,10 @@ public final class GunPacks
             {
                 bad.add("missing assets/deci/" + f);
             }
+        }
+        if (p.mesh != null && !l.source.has(p.mesh))
+        {
+            bad.add("missing " + p.mesh);
         }
         for (String kind : new String[] {"Rack", "SlideBack"})
         {

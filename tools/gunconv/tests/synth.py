@@ -227,9 +227,20 @@ class Glb:
             "baseColorFactor": [srgb_to_linear(c) for c in rgb255] + [1.0]}})
         return len(self.j["materials"]) - 1
 
-    def mesh(self, name, mesh, material=None, joints=None, weights=None, colours=None):
+    def textured_material(self, name, png):
+        """A material whose base colour is the PNG (bytes), stored in the buffer."""
+        view = self._view(png)
+        self.j.setdefault("images", []).append({"bufferView": view, "mimeType": "image/png"})
+        self.j.setdefault("textures", []).append({"source": len(self.j["images"]) - 1})
+        self.j["materials"].append({"name": name, "pbrMetallicRoughness": {
+            "baseColorTexture": {"index": len(self.j["textures"]) - 1}}})
+        return len(self.j["materials"]) - 1
+
+    def mesh(self, name, mesh, material=None, joints=None, weights=None, colours=None, uvs=None):
         verts, faces = mesh
         attrs = {"POSITION": self.accessor(verts, "f", 5126, "VEC3", 3, minmax=True)}
+        if uvs is not None:
+            attrs["TEXCOORD_0"] = self.accessor(uvs, "f", 5126, "VEC2", 2)
         if colours is not None:                       # sRGB 0..255 per vertex, stored linear (COLOR_0)
             attrs["COLOR_0"] = self.accessor([tuple(srgb_to_linear(c) for c in col) for col in colours], "f", 5126,
                                              "VEC3", 3)

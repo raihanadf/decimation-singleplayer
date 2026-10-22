@@ -135,3 +135,53 @@ class BbmodelTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+def png(pixels, w, h):
+    """PNG bytes of w x h RGBA pixels given row by row."""
+    from io import BytesIO
+    from PIL import Image
+    im = Image.new("RGBA", (w, h))
+    im.putdata(pixels)
+    b = BytesIO()
+    im.save(b, "PNG")
+    return b.getvalue()
+
+
+class ColourAtTest(unittest.TestCase):
+    """The colour inside a face (converter milestone 4: a mesh gun's pixel texture is baked from the source's own
+    texture at each texel, not from its vertices)."""
+
+    def test_gltf_texture_at_the_interpolated_uv(self):
+        g = synth.Glb()
+        mat = g.textured_material("Skin", png([(200, 0, 0, 255), (0, 0, 200, 255)], 2, 1))
+        tri = ([(0, 0, 0), (1, 0, 0), (0, 1, 0)], [(0, 1, 2)])
+        g.node("t", mesh=g.mesh("t", tri, mat, uvs=[(0.1, 0.5), (0.9, 0.5), (0.1, 0.5)]))
+        mesh = meshio.read_bytes(g.bytes(), "t.glb").meshes[0]
+        self.assertEqual(tuple(mesh.colour_at(0, (1.0, 0.0, 0.0))), (200, 0, 0), "vertex 0: the left texel")
+        self.assertEqual(tuple(mesh.colour_at(0, (0.0, 1.0, 0.0))), (0, 0, 200), "vertex 1: the right texel")
+        self.assertEqual(tuple(mesh.colour_at(0, (0.2, 0.8, 0.0))), (0, 0, 200), "u 0.74 inside the face")
+
+    def test_obj_texture_v_runs_up(self):
+        d = tempfile.mkdtemp()
+        with open(os.path.join(d, "t.png"), "wb") as f:
+            f.write(png([(200, 0, 0, 255), (0, 0, 200, 255)], 1, 2))        # top row red, bottom blue
+        with open(os.path.join(d, "t.mtl"), "w") as f:
+            f.write("newmtl Skin\nKd 1 1 1\nmap_Kd t.png\n")
+        with open(os.path.join(d, "t.obj"), "w") as f:
+            f.write("mtllib t.mtl\nv 0 0 0\nv 1 0 0\nv 0 1 0\nvt 0.5 0.9\nvt 0.5 0.1\nvt 0.5 0.9\nusemtl Skin\n"
+                    "f 1/1 2/2 3/3\n")
+        mesh = meshio.load(os.path.join(d, "t.obj")).meshes[0]
+        self.assertEqual(tuple(mesh.colour_at(0, (1.0, 0.0, 0.0))), (200, 0, 0), "v 0.9 is the top row")
+        self.assertEqual(tuple(mesh.colour_at(0, (0.0, 1.0, 0.0))), (0, 0, 200), "v 0.1 the bottom row")
+
+    def test_vertex_colours_interpolate_and_plain_meshes_keep_their_colour(self):
+        g = synth.Glb()
+        tri = ([(0, 0, 0), (1, 0, 0), (0, 1, 0)], [(0, 1, 2)])
+        g.node("v", mesh=g.mesh("v", tri, g.material("Paint", (90, 90, 90)),
+                                 colours=[(255, 255, 255), (0, 0, 0), (0, 0, 0)]))
+        g.node("p", mesh=g.mesh("p", tri, g.material("Steel", (60, 61, 62))))
+        by = {m.name: m for m in meshio.read_bytes(g.bytes(), "t.glb").meshes}
+        self.assertEqual(tuple(by["v"].colour_at(0, (1.0, 0.0, 0.0))), (90, 90, 90), "material x white vertex")
+        self.assertLess(by["v"].colour_at(0, (0.5, 0.5, 0.0))[0], 60, "darker toward the black vertices")
+        self.assertEqual(tuple(by["p"].colour_at(0, (0.3, 0.3, 0.4))), (60, 61, 62))

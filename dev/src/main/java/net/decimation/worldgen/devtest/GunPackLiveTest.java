@@ -15,6 +15,7 @@ import net.decimation.fixes.SightMounts;
 import net.decimation.fixes.gunpack.GunPack;
 import net.decimation.fixes.gunpack.GunPackRows;
 import net.decimation.fixes.gunpack.GunPacks;
+import net.decimation.fixes.gunpack.MeshGun;
 import net.decimation.fixes.gunsmith.GunParts;
 import net.decimation.fixes.gunsmith.GunSlot;
 import net.minecraft.client.Minecraft;
@@ -71,11 +72,46 @@ public class GunPackLiveTest extends DevTestMode
             }
         }
         boolean shotsDone = clientChecked && shot >= packs.size() && t >= SHOTS + packs.size() * EACH;
+        if (shotsDone && !meshChecked)
+        {
+            meshChecked = true;
+            meshDrawn(packs);
+        }
         if (shotsDone && perf && !packs.isEmpty())
         {
             return perf(packs);
         }
         return !shotsDone;
+    }
+
+    private boolean meshChecked;
+
+    /**
+     * Mesh guns (converter milestone 4) once each was held: Decimation compiled their placeholder parts, so ModelBatch must
+     * have put every mesh group into a list of its own (counted since the game started: lists are compiled once).
+     */
+    private void meshDrawn(List<GunPacks.Loaded> packs)
+    {
+        int groups = 0, tris = 0;
+        for (GunPacks.Loaded l : packs)
+        {
+            MeshGun m = l.pack.mesh == null ? null : MeshGun.byId(MeshGun.id(l.pack.name));
+            if (m != null)
+            {
+                groups += m.groups.size();
+                for (MeshGun.Group g : m.groups)
+                {
+                    tris += g.triangles();
+                }
+            }
+        }
+        if (groups == 0)
+        {
+            return;
+        }
+        long lists = net.decimation.fixes.ModelBatch.meshLists, drawn = net.decimation.fixes.ModelBatch.meshTriangles;
+        DevTestResults.check(name(), "mesh guns drawn from their meshes", lists + " lists, " + drawn + " triangles",
+                             lists >= groups && drawn >= tris, "at least " + groups + " lists and " + tris + " triangles");
     }
 
     /** perf=true: each package gun's draw against its twin's (gc<gun>) or else its like gun's, glFinish around each. */
@@ -469,6 +505,18 @@ public class GunPackLiveTest extends DevTestMode
         DevTestResults.check(name(), n + " model", parts + " top level parts", parts == top && parts > 0,
                              "the package's " + top + " (of " + l.model.declared + " declared, children hang from their parent),"
                              + " loaded through the resource manager");
+        if (p.mesh != null)
+        {
+            MeshGun mesh = MeshGun.byId(MeshGun.id(n));
+            int tris = 0;
+            for (MeshGun.Group g : mesh == null ? new ArrayList<MeshGun.Group>() : mesh.groups)
+            {
+                tris += g.triangles();
+            }
+            DevTestResults.check(name(), n + " mesh", mesh == null ? "not registered" : mesh.groups.size() + " groups, " + tris
+                                 + " triangles", mesh != null && mesh.groups.size() == top && tris > 0,
+                                 "registered under its name's id, a group a placeholder part (" + top + ")");
+        }
         List<String> missing = new ArrayList<String>();
         for (String f : new String[] {p.modelPath(), p.texturePath(), p.iconPath(), p.animationPath("Fire"), p.animationPath("Reload1")})
         {

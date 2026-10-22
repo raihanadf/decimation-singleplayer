@@ -41,6 +41,11 @@ public abstract class GunPackSource
 
     public String text(String path) throws IOException
     {
+        return new String(bytes(path), "UTF-8");
+    }
+
+    public byte[] bytes(String path) throws IOException
+    {
         InputStream in = open(path);
         try
         {
@@ -50,7 +55,7 @@ public abstract class GunPackSource
             {
                 b.write(buf, 0, n);
             }
-            return new String(b.toByteArray(), "UTF-8");
+            return b.toByteArray();
         }
         finally
         {
