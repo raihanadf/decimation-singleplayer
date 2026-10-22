@@ -653,6 +653,38 @@ def inside(shape, q, eps=0.0):
     return all(dot(n, sub(q, m)) <= eps for n, m in shape)
 
 
+# box faces of a hexahedron, wound outward, over the corners in HEXA order (tests/synth.py builds boxes the same way)
+HEXA = [(0, 0, 0), (1, 0, 0), (1, 1, 0), (0, 1, 0), (0, 0, 1), (1, 0, 1), (1, 1, 1), (0, 1, 1)]
+HEXA_FACES = [(0, 2, 1), (0, 3, 2), (4, 5, 6), (4, 6, 7), (0, 1, 5), (0, 5, 4),
+              (3, 7, 6), (3, 6, 2), (0, 4, 7), (0, 7, 3), (1, 2, 6), (1, 6, 5)]
+
+
+def hexa_tris(c):
+    """The 12 triangles of a part's corners c[(ix, iy, iz)]."""
+    v = [tuple(c[k]) for k in HEXA]
+    return [(v[a], v[b], v[d]) for a, b, d in HEXA_FACES]
+
+
+def profile(tris, axis, box, n):
+    """[(t, b_lo, b_hi, c_lo, c_hi)] at n stations t = 0 .. 1 along `axis` of `box` (CYCLIC order for b, c): the
+    section's extents there; stations without a section take their neighbours' values."""
+    a0, a1 = box[axis]
+    rows = []
+    for i in range(n):
+        t = (i + 0.5) / n
+        cs = cross_section(tris, axis, a0 + (a1 - a0) * t) if a1 > a0 else None
+        rows.append([t] + (list(cs[:4]) if cs else [None] * 4))
+    known = [r for r in rows if r[1] is not None]
+    if not known:
+        b, c = CYCLIC[axis]
+        return [[r[0], box[b][0], box[b][1], box[c][0], box[c][1]] for r in rows]
+    for r in rows:
+        if r[1] is None:
+            near = min(known, key=lambda k: abs(k[0] - r[0]))
+            r[1:] = near[1:]
+    return rows
+
+
 def bounds(parts):
     pts = [q for p in parts for q in p.c.values()]
     return [(min(q[i] for q in pts), max(q[i] for q in pts)) for i in range(3)]
