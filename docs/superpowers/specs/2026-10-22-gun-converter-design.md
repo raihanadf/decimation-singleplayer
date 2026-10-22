@@ -243,3 +243,8 @@ A second button "Exact" beside Convert, the face budget slider, the part count a
 Test first. The six guns (ak47, akmc, m590, p228, csmg, lightning) converted exact: in game hip, aim and NPC, gunpack
 perf=true against their like guns, memory against the akm; a sheet of each gun exact beside its Decimation style version
 and its closest Decimation gun.
+
+### Exact mode status (23 Oktober 2026)
+Built and measured: docs/gunconv.md section 12. Changed on the way: one quadric queue over all pieces instead of a budget
+shared by area (thin bars broke apart); the default budget is 350, measured within 1.5 x the akm (800 drew about 2.2 x).
+

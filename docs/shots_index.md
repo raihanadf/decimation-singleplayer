@@ -2015,5 +2015,14 @@ pixels a unit.
   empty (test timing), NPCs hold each. m3_ingame_gunview_long.png: r870, m590, kar98k, lightning (smoke clouds and a thrown
   NPC are test noise from other mobs); m3_ingame_gunview_short.png: uzi, csmg, m1934, p228, hip and aim like their like
   guns. m3_ingame_gunpack.png: the six packages held in first person with their names and icons (gunpack 124 PASS).
+- x_exact_sheet.png and x_group_0..5.png (exact mode, docs/gunconv.md section 12): per gun the closest Decimation
+  gun, ours Decimation style, ours exact at 350 faces, side and three quarter: the exact ones are the sources' shapes in
+  dark tones (AK-47 milled receiver and front, the Mossberg, the Lightning's crescent butt and wooden pump, the vz. 61's
+  folded stock, the P228's slide with lighter serration strips).
+- x_ingame_final_1.png, x_ingame_final_2.png: gunview of akm, ak47x, akmcx, m590x, then lightningx, csmgx, p228x (final
+  packages): hip at the like gun's place, aim, NPCs holding them; no holes or dark inverted faces. x_ingame_gunview_five.png
+  and x_ingame_gunview_ak47.png: the same with the earlier 800 face packages; x_ingame_aks_350.png, x_ingame_long_350.png,
+  x_ingame_short_350.png: the 350 face packages shared by area (before the one queue). x_page_exact.png: the page after
+  the Exact button (373 parts, "estimated draw 0.64 ms, 1.41 x the akm's: within the budget").
 - m3_page_m590.png: the converter page after converting the Mossberg sample: source and converted side by side, notes
   with the exemplar guns, the partly fitted areas and "Details placed on fitted areas: 11 (benellim4 9, spas12 2)".
