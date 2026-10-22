@@ -1378,6 +1378,13 @@ lineup photo zombies_v0.34.0. Not seen by the user in game yet
   at 2, not in loadedEntityList), while leftover rain made isDaytime false at noon. Now durability and radiation put
   the game mode back, zombies makes its player creative and zeroes rain and thunder strength: zombies, durability,
   radiation, zombies in one game 42 of 42.
+- Automated security review of the commit, two findings. (1) Free repair, real: the melee clamp guessed Forge's wear
+  as health x points / 25 plus 1, but Forge caps a nearly used up piece's wear at 1, so a big hit set a used up piece
+  back several points (protecting again). Now Durability.forgeWear is Forge's formula and a piece is set to the maximum
+  less 1 only when the hit would pass the maximum (unit tests; live check "a big melee hit on a used up piece: no free
+  repair", 17 of 17). (2) Jams enforced on the client only: true, and kept: Decimation's shots are client authoritative
+  (the client picks target and damage, the server applies what PacketGunHit says), so a modified client fires anyway;
+  a server check would need a patch of Decimation's hit handler and stop nothing of that. Noted, not changed.
 - Production client with OptiFine (one jar of main's tree, with PatchGunWear): durability 16 of 16 with the same
   numbers, playerfire and glstack PASS (24 in all); hooks 3.4 us a hit warm and 16.4 us a shot. Dedicated server [not
   run: the hit and shot hooks are the same server code as in singleplayer; the R rack rides Net message 3 like
