@@ -18,7 +18,9 @@ GunItem.setDamage's (deci/ay/i), the player's shot damage reaches us in LivingHu
 - Aim speed: ScopeZoom's zoom ramp and the aim movement scaled; damage: our LivingHurtEvent on "gunDeci" by the
   shooter's held gun's attachments (server side, both lines); hip spread: Decimation's spread value for the held gun
   while not aiming (a hook like PatchGripRecoil's, only if no event reaches it [to check in code]).
-- Gunsmith screen: a stats panel under the slots (aim speed, recoil, hip spread, noise, damage) with the change each
+- Gunsmith screen (the customize screen; user, 23 Oktober 2026: "in customize mode, it show stats in there"): a stats panel
+  showing the held gun's current stats and, while the mouse is over an attachment in the list or a slot, the change it
+  makes; under the slots (aim speed, recoil, hip spread, noise, damage) with the change each
   attachment makes, green plus and red minus, in Decimation's font.
 
 ## Performance
