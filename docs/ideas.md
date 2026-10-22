@@ -241,7 +241,13 @@ User: "for the feat i have more". Notes on what we already have are mine [not an
 47. **Armor durability, repaired with parts**: armor 256, vests 512; 1 shot = 1 durability; armor repaired with an armor
     part, vests with an armor plate (a new item found in military and police crates). Decimation's armor has no wear
     against gunshots today [not analysed].
+    Decided 22 Oktober 2026 (user): at 0 an armor piece or vest stays worn but protects nothing until repaired; one
+    armor part or armor plate repairs a quarter (four for full); parts and plates in military and police crates only.
+    Feature 10, this session.
 48. **Gun durability, repaired with gun parts**. Decimation's guns have no durability today [not analysed].
+    Decided 22 Oktober 2026 (user): 1 durability a shot, about 1500 rounds for a rifle (more for pistols, less for machine
+    guns); below 25 % the odd jam, cleared by racking; at 0 it will not fire until repaired; one gun parts item repairs a
+    quarter; found in military and police crates. Feature 10, this session.
 49. **More lootable props, each in two versions (plain and lootable)**: truck, wooden crate, water pallet, military
     radio, small military radio. Decimation's loot registry is per block (33 blocks, docs/loot_levels.md section 2):
     a lootable version is a block of ours or a metadata rule [not designed].
