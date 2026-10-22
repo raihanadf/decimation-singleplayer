@@ -65,6 +65,10 @@ class ColosTest
     @Test
     void withOverlapTheNextSocketOpensBeforeTheFarOneCloses() throws Exception
     {
+        for (int i = 0; i < 200 && EchoServer.openHops.get() > 0; i++)
+        {
+            Thread.sleep(10);       // an earlier test's socket closes on the server's thread: its "close" lands late
+        }
         EchoServer.hopEvents.clear();
         RelaySocket s = RelaySocket.openNear(new URI("ws://127.0.0.1:" + port + "/hop/FRA,SIN"), null, "apac-se", 3, true);
         assertEquals("SIN", s.colo());

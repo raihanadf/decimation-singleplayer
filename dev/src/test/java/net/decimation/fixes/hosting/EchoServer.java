@@ -28,6 +28,8 @@ final class EchoServer
     static final java.util.concurrent.atomic.AtomicInteger pings = new java.util.concurrent.atomic.AtomicInteger();
     /** /hop/A,B,C: the n-th connection on that path is told it landed in data center n (x-colo), as the relay does. */
     static final List<String> hopEvents = new CopyOnWriteArrayList<String>();
+    /** /hop/ sockets the server has open: a test that reads hopEvents waits for the earlier tests' to close. */
+    static final java.util.concurrent.atomic.AtomicInteger openHops = new java.util.concurrent.atomic.AtomicInteger();
     static final java.util.Map<String, java.util.concurrent.atomic.AtomicInteger> hops = new java.util.concurrent.ConcurrentHashMap<String, java.util.concurrent.atomic.AtomicInteger>();
     private static NioEventLoopGroup group;
     private static Channel server;
@@ -58,12 +60,16 @@ final class EchoServer
                                     final int n = hops.computeIfAbsent(r.getUri(), k -> new java.util.concurrent.atomic.AtomicInteger()).getAndIncrement();
                                     extra.add("x-colo", colos[Math.min(n, colos.length - 1)]);
                                     hopEvents.add("open " + n);
+                                    openHops.incrementAndGet();
                                     if (n == 0 && r.getUri().contains("greet")) // the far one hears something first
                                     {
                                         ctx.channel().eventLoop().schedule(() -> ctx.writeAndFlush(new TextWebSocketFrame("first")), 0,
                                                                            java.util.concurrent.TimeUnit.MILLISECONDS);
                                     }
-                                    ctx.channel().closeFuture().addListener(f -> hopEvents.add("close " + n));
+                                    ctx.channel().closeFuture().addListener(f -> {
+                                        hopEvents.add("close " + n);
+                                        openHops.decrementAndGet();
+                                    });
                                 }
                                 hs.handshake(ctx.channel(), r, extra, ctx.channel().newPromise());
                                 if (r.getUri().startsWith("/join/"))
