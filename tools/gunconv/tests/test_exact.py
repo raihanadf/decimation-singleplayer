@@ -88,6 +88,21 @@ class SimplifyTest(unittest.TestCase):
         self.assertEqual(len(polys), 6)                             # merged into the box's 6 quads, nothing lost
 
 
+class AllPiecesTest(unittest.TestCase):
+    def test_thin_bars_keep_their_shape_beside_a_big_body(self):
+        """One quadric queue over all pieces: the big flat body loses its triangles first, a thin round bar beside it
+        keeps its shape (shared by area, the AK-47's barrel and gas tube got a face or two and broke apart)."""
+        body = grid_box(0, 0, 0, 10, 3, 1, 12)                      # 1,728 triangles of flat sides
+        verts, faces = synth.cylinder_x(10, 20, 1.5, 0.5, 0.2, n=24)  # a thin bar: 96 triangles
+        bar = tris_of((verts, faces))
+        out = exact.prepare_all([body, bar], budget=60)
+        self.assertLessEqual(sum(len(p) for p in out), 60)
+        self.assertGreaterEqual(len(out[1]), 12)                     # still a round bar of several sides
+        pts = [q for p in out[1] for q in p]
+        self.assertAlmostEqual(min(q[0] for q in pts), 10, delta=1e-3)
+        self.assertAlmostEqual(max(q[0] for q in pts), 20, delta=1e-3)
+
+
 class QuadTest(unittest.TestCase):
     def test_box_triangles_become_six_quads(self):
         polys = exact.prepare(grid_box(0, 0, 0, 2, 1, 1, 1), budget=100)

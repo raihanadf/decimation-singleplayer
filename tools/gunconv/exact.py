@@ -16,26 +16,27 @@ MIN_SIDE = 0.06       # faces whose longest side is shorter are not seen in game
 COPLANAR = 3.0        # two triangles within this many degrees make one quad
 BORDER_W = 100.0      # weight of the planes that hold a border edge in place
 TRI_SLACK = 1.5       # simplify to this many triangles a face of budget first (merging makes quads of pairs)
-DEFAULT_BUDGET = 400   # within the cost budget (417 parts at 1.5 x the akm's draw time)
+DEFAULT_BUDGET = 350   # within the cost budget (384 parts at 1.5 x the akm's draw time)
 BUDGET_RANGE = (300, 2000)
 
 # ---------------------------------------------------------------- the cost gate (spec, "Cost gate")
-# Fitted on the in game measurements (dev test gunpack perf=true, 23 Oktober 2026, docs/gunconv.md section 12): the
-# draw time of a held gun, median of 200, glFinish around (GPU included), ModelBatch on, dev client on the M4: eight
-# exact guns of 354 to 1,940 parts lie on 0.290 + 0.000946 ms a part (within 0.04 ms); Decimation's akm (194 parts) drew
-# in 0.438 to 0.530 ms, median 0.456, in the same runs.
+# Fitted on the in game measurements (dev test gunpack perf=true, two launches on 23 Oktober 2026, docs/gunconv.md
+# section 12): the draw time of a held gun, median of 200, glFinish around (GPU included), ModelBatch on, dev client on
+# the M4: fourteen exact guns of 354 to 1,940 parts lie on 0.344 + 0.000903 ms a part (within 0.061 ms); Decimation's
+# akm (194 parts) drew in 0.438 to 0.530 ms, median 0.4605, in the same runs.
 AKM_PARTS = 194
-AKM_MS = 0.456
-COST_A = 0.290        # ms a gun whatever its parts
-COST_B = 0.000946     # ms a part
-BUDGET = 1.5          # at most this times the akm's draw time (417 parts); above: warn, above twice it: refuse (1140)
+AKM_MS = 0.4605
+COST_A = 0.344        # ms a gun whatever its parts
+COST_B = 0.000903     # ms a part
+BUDGET = 1.5          # at most this times the akm's draw time (384 parts); above: warn, above twice it: refuse (1148)
 
 
 def estimate(parts):
     """The cost of a gun of `parts` parts: draw time (ms) and its ratio to the akm's, and its quads (6 a part: the
     display lists Decimation compiles grow with them; graphics memory per gun could not be isolated with vmmap)."""
     ms = COST_A + COST_B * parts
-    return {"drawMs": round(ms, 3), "ratio": round(ms / AKM_MS, 3), "quads": 6 * parts}
+    return {"drawMs": round(ms, 3), "ratio": round(ms / AKM_MS, 3), "quads": 6 * parts,
+            "model": {"a": COST_A, "b": COST_B, "akm": AKM_MS, "budget": BUDGET}}
 
 
 def verdict(ratio):
@@ -142,11 +143,11 @@ def q_best(q, a, b):
     return best, max(0.0, q_err(q, best))
 
 
-def simplify(verts, faces, target):
+def simplify(verts, faces, target, keep_index=False):
     """Collapse edges, cheapest first, until at most `target` faces are left (or no collapse is allowed). Returns
-    (verts, faces) compacted."""
+    (verts, faces) compacted (and, keep_index, the old index of each vertex kept)."""
     if len(faces) <= target:
-        return verts, faces
+        return (verts, faces, list(range(len(verts)))) if keep_index else (verts, faces)
     pos = [list(v) for v in verts]
     fs = [list(f) for f in faces]
     alive = [True] * len(fs)
@@ -238,7 +239,8 @@ def simplify(verts, faces, target):
     keep = [f for i, f in enumerate(fs) if alive[i]]
     used = sorted(set(x for f in keep for x in f))
     remap = {o: n for n, o in enumerate(used)}
-    return [pos[o] for o in used], [[remap[x] for x in f] for f in keep]
+    out = [pos[o] for o in used], [[remap[x] for x in f] for f in keep]
+    return out + (used,) if keep_index else out
 
 
 # ---------------------------------------------------------------- quads
@@ -319,6 +321,39 @@ def prepare_mesh(tris, budget=DEFAULT_BUDGET, min_side=MIN_SIDE, mesh=None):
             continue
         out.append(pts)
     return out, (v2, f2)
+
+
+def prepare_all(pieces, budget=DEFAULT_BUDGET, min_side=MIN_SIDE):
+    """Every piece's triangles (a list of triangle lists) as polygons, [polys per piece], within `budget` faces in all:
+    one quadric queue over all the pieces (never joined: a collapse stays inside its piece), so the big flat surfaces
+    lose their triangles first and a thin bar keeps its shape; merged into quads, faces too small to see dropped."""
+    verts, faces, tag = [], [], []
+    for i, tris in enumerate(pieces):
+        v, f = weld(tris)
+        o = len(verts)
+        verts += v
+        faces += [[a + o, b + o, c + o] for a, b, c in f]
+        tag += [i] * len(v)
+    out = [[] for _ in pieces]
+    if not faces:
+        return out
+    target = max(2, int(budget * TRI_SLACK))
+    polys = None
+    for _ in range(6):
+        verts, faces, used = simplify(verts, faces, target, keep_index=True)
+        tag = [tag[u] for u in used]
+        polys = merge_quads(verts, faces)
+        if len(polys) <= budget or target <= 2:
+            break
+        target = max(2, int(target * budget / float(len(polys))) - 1)
+    for p in polys:
+        pts = [tuple(verts[x]) for x in p]
+        longest = max(math.dist(pts[k], pts[(k + 1) % len(pts)]) for k in range(len(pts)))
+        n = cross(sub(pts[1], pts[0]), sub(pts[2], pts[0]))
+        if longest < min_side or dot(n, n) <= 1e-18:
+            continue
+        out[tag[p[0]]].append(pts)
+    return out
 
 
 def share(areas, budget, least=2):

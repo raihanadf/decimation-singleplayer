@@ -688,26 +688,7 @@ def convert_exact(model, name=None, display=None, category=None, like=None, leng
     pieces = pieces_of(model, M)
     groups = groups_of(pieces, info)
     one_colour = bool(like and len(set(tuple(p.colour) for p in pieces)) <= 1 and not any(varied(p) for p in pieces))
-    areas = [exact.area_of(p.tris) for p in pieces]
-    shares = exact.share(areas, budget)
-    done = [exact.prepare_mesh(p.tris, n) for p, n in zip(pieces, shares)]
-    polys, meshes = [d[0] for d in done], [d[1] for d in done]
-    aim = budget
-    for _ in range(4):                                  # the least faces a piece gets pushed it over: share again
-        total = sum(len(pp) for pp in polys)
-        if total <= budget:
-            break
-        aim = max(1, aim * budget // total - 1)
-        new = exact.share(areas, aim, 1)
-        for i, (p, n) in enumerate(zip(pieces, new)):
-            if n < shares[i]:                           # only pieces whose share fell, going on from their last mesh
-                polys[i], meshes[i] = exact.prepare_mesh(p.tris, n, mesh=meshes[i])
-        shares = [min(a, b) for a, b in zip(shares, new)]
-    if sum(len(pp) for pp in polys) > budget:           # still over: the smallest faces go
-        flat = sorted(((exact.area_of([pt[:3]]), i, j) for i, pp in enumerate(polys) for j, pt in enumerate(pp)),
-                      reverse=True)[:budget]
-        keep = set((i, j) for _, i, j in flat)
-        polys = [[pt for j, pt in enumerate(pp) if (i, j) in keep] for i, pp in enumerate(polys)]
+    polys = exact.prepare_all([p.tris for p in pieces], budget)   # one quadric queue over all pieces
     parts, labels_seen = [], {}
     for piece, group, pp in zip(pieces, groups, polys):
         base = re.sub(r"[^A-Za-z0-9]", "", piece.label) or "part"

@@ -542,11 +542,15 @@ $("file").addEventListener("change", async () => {
 
 $("budget").addEventListener("input", () => { $("budget-value").textContent = $("budget").value; });
 
-// The cost of an exact mode gun (tools/gunconv/exact.py estimate, measured in game: 0.290 ms plus 0.000946 ms a part,
-// Decimation's akm 0.456 ms): shown before export; over 1.5 x the akm's a warning, over twice that the export refuses.
+// The cost of an exact mode gun from the server's model (tools/gunconv/exact.py estimate, measured in game against
+// Decimation's akm): shown before export, again after every edit; over the budget a warning, over twice it the export
+// refuses.
 function costLine(parts) {
-  const ms = 0.290 + 0.000946 * parts, ratio = ms / 0.456;
-  const verdict = ratio <= 1.5 ? "within the budget" : ratio <= 3.0 ? "heavy: over 1.5 x the akm's" : "refused at export: over 3 x";
+  const m = ((state.conv || {}).stats || {}).cost ? state.conv.stats.cost.model : null;
+  if (!m) return "";
+  const ms = m.a + m.b * parts, ratio = ms / m.akm;
+  const verdict = ratio <= m.budget ? "within the budget" : ratio <= 2 * m.budget ? "heavy: over " + m.budget +
+    " x the akm's" : "refused at export: over " + 2 * m.budget + " x";
   return parts + " parts, estimated draw " + ms.toFixed(2) + " ms, " + ratio.toFixed(2) + " x the akm's: " + verdict + ".";
 }
 
