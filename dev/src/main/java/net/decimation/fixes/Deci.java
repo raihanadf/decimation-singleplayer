@@ -322,6 +322,13 @@ public final class Deci
         return data == null ? 0 : data.ci();
     }
 
+    /** PlayerData.get(player).isHolstered() (e, cg): the gun lowered by Decimation's holster key. */
+    public static boolean holstered(EntityPlayer player)
+    {
+        deci.Q.b data = deci.Q.b.e(player);
+        return data != null && data.cg();
+    }
+
     /** PlayerData.get(player).setAimMode(mode) (e, M). */
     public static void setAimMode(EntityPlayer player, int mode)
     {

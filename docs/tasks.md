@@ -177,3 +177,5 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [ ] more clothing slots (docs/ideas.md 61)
 - [x] katana: 17 damage, hits twice as wide, Fire Aspect (anvil) burns the blade after the catch; knives looking down (branch feature/katana-fire-reach)
 - [ ] user: the katana's burn and the look down fix in game
+- [x] gun draws: every gun its own way in by category, its rack at the end (fixes/GunDraw; dev test gundraw; branch feature/gun-draw)
+- [ ] user: the gun draws in game

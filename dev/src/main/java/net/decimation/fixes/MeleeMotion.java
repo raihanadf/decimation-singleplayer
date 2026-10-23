@@ -387,6 +387,16 @@ public final class MeleeMotion
             mc.thePlayer.prevSwingProgress = 0;
             swingHeld = true;
         }
+        holdEquip(mc);
+    }
+
+    /**
+     * Minecraft's equip dip held off for this frame (our knives and GunDraw's draws are their own way in): the first
+     * person view's item and slot set to what is in hand, the dip at rest. Minecraft only swaps the drawn item while its
+     * dip is down, so holding the dip alone would keep the old item on screen.
+     */
+    static void holdEquip(Minecraft mc)
+    {
         try
         {
             if (equipped == null)
@@ -402,9 +412,9 @@ public final class MeleeMotion
             equipped.setFloat(r, 1.0f);
             prevEquipped.setFloat(r, 1.0f);
         }
-        catch (Exception ex)
+        catch (ReflectiveOperationException ex)
         {
-            equipped = null;                           // left to Minecraft: its dip on top of the draw
+            throw new IllegalStateException("ItemRenderer equip fields not reachable", ex);
         }
     }
 

@@ -192,6 +192,7 @@ public class DevAutoTest
         if (name.equals("refugevisit")) return new net.decimation.worldgen.devtest.RefugeVisitTest();
         if (name.equals("cornerart")) return new net.decimation.worldgen.devtest.CornerArtTest();
         if (name.equals("melee")) return new net.decimation.worldgen.devtest.MeleeTest();
+        if (name.equals("gundraw")) return new net.decimation.worldgen.devtest.GunDrawTest();
         if (name.equals("hud")) return new net.decimation.worldgen.devtest.HudTest();
         if (name.equals("wounds")) return new net.decimation.worldgen.devtest.WoundsTest();
         if (name.equals("gunsmith")) return new net.decimation.worldgen.devtest.GunsmithTest();

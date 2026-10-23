@@ -7,6 +7,25 @@ Status values: `Done` / `Decided` (direction agreed, not built yet) /
 
 ## Done
 
+### Gun draws: every gun comes into the view its own way (23 Oktober 2026, branch feature/gun-draw)
+- User: "reimagine when switching to weapons (guns) they all need some kind of intro ... valorant smoothness or cs2 like
+  ... arena breakout for intro animation for ALL of the guns". Decimation had none: a gun rose with Minecraft's flat
+  equip dip.
+- fixes/GunDraw wraps each gun's item renderer the first time the gun is in hand (Decimation's 103 guns, ours and gun
+  pack guns alike): for the first person view it turns back to the view's axes (as MeleeRenderer), moves the gun along
+  keys (Catmull-Rom on real time, MeleeMotion.curve) and lets Decimation draw it from there. A way per WeaponCategory:
+  pistols snap up from the lower right with a flick (CS2), the revolver twirls once, SMGs swing in from the left
+  (Valorant), rifles and shotguns rise low and canted and settle with their weight (Arena Breakout), machine guns the
+  same slower and heavier, the rocket launcher onto the shoulder; 0.5 to 1.1 s. Each gun's own Rack animation
+  (Deci.playRack: its Rack.anib and rack sounds, client only, nothing sent) works the action near the end (all but
+  rockets, crossbow and flamethrower). On a switch to a gun and on leaving Decimation's holster (Deci.holstered).
+  Minecraft's equip dip held off meanwhile (MeleeMotion.holdEquip, shared with the knives); aiming during the draw runs
+  it three times as fast.
+- Checked: dev test `gundraw` 14 PASS (Glock 17, Raging Bull, Uzi, AK-74, R870, PKM, RPG-7: switching starts the
+  draw, the rack plays at its end, none for the RPG), shots at six moments of each draw. A gun below the view for the
+  first tenth of a second read as a delay: every draw starts low but in view. Not seen by the user yet [not verified
+  in game]; firing during the draw is not blocked (Decimation fires on its own mouse read).
+
 ### Katana on fire, wide hits and looking down (23 Oktober 2026, branch feature/katana-fire-reach)
 - User: "fix the character view in FPS mode, look down and you'll see its botched, the character hand is floating (left
   hand)"; "increase the damage for katana and its attack range, 2x wide and damage 17"; "when katana is enchanted with fire
