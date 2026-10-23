@@ -173,5 +173,5 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [ ] random events at places announced to the player: helicopter crash with hard infected, survivor camp with a task giver and a trader (docs/ideas.md 60, big; quests milestone 0.80)
 - [x] durability v2 on main: bars on gun and gas mask icons, the gun tooltip's durability line, vests worn by shots and zombie hits, radiation percent centred, NPC tracers white again (dev client 88 PASS)
 - [x] Decimation's food, water, blood and health percents centred on their icons (PatchHudPercents; user 23 Oktober 2026)
-- [~] release 0.70.0 "Scavenger": fourth candidate (HUD percents), production client and update checks, then the user's go
+- [~] release 0.70.0 "Scavenger": fourth candidate 14399c4b checked (server, client with OptiFine, real update from 0.66.1); waiting for the user's go to publish
 - [ ] more clothing slots (docs/ideas.md 61)

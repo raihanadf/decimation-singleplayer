@@ -1430,9 +1430,9 @@
     "semantic_hash": "00483e1e807a8cbaaded69cf08da1173"
   },
   "docs/production_test.md": {
-    "mtime": 1792705296.0226607,
-    "ast_hash": "17f455bd3a862093e8b9f94683aca0fe",
-    "semantic_hash": "17f455bd3a862093e8b9f94683aca0fe"
+    "mtime": 1792734937.1287937,
+    "ast_hash": "d515ea97af0f5f1df1d1a3f0d23d95df",
+    "semantic_hash": "d515ea97af0f5f1df1d1a3f0d23d95df"
   },
   "dev/src/main/java/net/decimation/worldgen/CityLayout.java": {
     "mtime": 1791899693.3849845,
@@ -1540,9 +1540,9 @@
     "semantic_hash": "294036847a9caffda351bfa855a78636"
   },
   "docs/tasks.md": {
-    "mtime": 1792732916.6994114,
-    "ast_hash": "9934db83051795b2ca358ae1f49bae42",
-    "semantic_hash": "9934db83051795b2ca358ae1f49bae42"
+    "mtime": 1792734937.1292198,
+    "ast_hash": "6c1f0b2e7c04253f821abd7e9f0c9e6f",
+    "semantic_hash": "6c1f0b2e7c04253f821abd7e9f0c9e6f"
   },
   "tools/skillcheck.py": {
     "mtime": 1792098139.5315723,

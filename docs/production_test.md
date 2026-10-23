@@ -232,3 +232,26 @@ Checked with it: bundled content unpacked, cities generated, no errors (bug.md v
   the 0.66.0 list: 196 PASS, 1 FAIL (throwables "three grenades, one thrown": no grenade spawned and the stack read empty
   right after attachments and gunsmith); throwables alone twice: PASS both (1 spawned, 2 left): a timing flake of the
   long batch, not the PRs [inferred].
+- The user then asked for durability v2 and white NPC tracers (main d5e3ebe, prerelease 99dc929; new_feature.md "Durability
+  v2", "NPC tracers white again"): third candidate sha256 7b4fc361 (22,671 entries; base jar = main's dist with
+  PatchDurabilityBars minus the four Multiplayer pictures; linecheck PASS, 34 references from 13 classes; changed since
+  0.66.1: deci/ay/i, ItemGasMaskDeci). Client with OptiFine: batch B plus tracer 274 PASS, 0 FAIL (radset now passes:
+  the harness closes the gear container it leaves open); batch A 196 PASS, 1 FAIL, throwables again. Cause found: the
+  client log had "ProdTester fell from a high place" right then; genwalk flies in creative and leaves a fall distance, and
+  throwables' switch to survival made the first landing fatal (reproduced as `genwalk throwables`; bug.md "Dev tests left
+  a server screen open"). Fixed in DevTestArena and the harness.
+- Then "centre decimation hud percents too" (main 93ae8cc, prerelease carry; PatchHudPercents): fourth candidate sha256
+  14399c4b (22,672 entries; tag 0.70.0 on prerelease HEAD, local; prerelease unit tests 177, 0 failed; linecheck PASS,
+  35 references from 14 classes; changed since 0.66.1: deci/ay/i, deci/g/j, ItemGasMaskDeci, all plain fixes; no
+  hosting, gunpack or multiplayer entry; content 3d2721f3ce41). Server: starts clean (Done 5.6 s), pregen light check sky
+  2,197 and block 8,620 as before, only the known harmless lines. Client with OptiFine: menu, stats, genwalk, glstack,
+  throwables (in batch A's order: PASS, no deaths), radiation (the four Decimation percents +0.0 / +0.5 half pixels, the
+  icon's draw 54.5 us), hud, places, durability (bar hooks 11 ns a stack), radset, lootsearch, invshift: 172 PASS, 2 FAIL
+  in radset ("a full filter is refused": the client's press came after the step's fixed wait; the final counters equal
+  the passing runs'); durability then radset twice more: 67 PASS each, a timing flake [inferred].
+- Real update with candidate 4: the 0.66.1 release jar (sha256 1a827037) and its own test world, fake release server with
+  FILE=candidate: menu found 0.70.0 through the API; Decimation's question box ("DeciRemnant 0.70.0 is out, 241 MB.
+  Update now?"), its progress screen, 240 MB in 7 s, checksum READY, Quit game / Later, the swap helper replaced the
+  running jar (sha256 14399c4b); restarted on it: "up to date (0.70.0)". Test world put back (the update test's copy kept
+  as saves/deciworldgen_devtest_upd0700).
+
