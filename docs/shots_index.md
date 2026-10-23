@@ -2100,4 +2100,7 @@ pixels a unit.
   centred on it.
 - `radiation_more_lines.png`: the same from the "two_more_lines" shot (two more stats lines push the column down):
   every icon lower, health "100%", the trefoil left of it with "34%" centred on it.
+- `hud_percents_centred.png`: the same column after PatchHudPercents (radiation test "inside_half", dev client): apple,
+  water and blood "100%", the health cross "45%" and the trefoil "49%", every percent centred on its icon (before, a short
+  value such as "40%" sat left on the cross).
 

@@ -504,6 +504,10 @@ SRG→MCP from the old root `src/` via `mcp_stable/12` CSVs; the root `src/` +
   `PatchDurabilityBars.java` (23 Oktober 2026, new_feature.md "Durability v2"): GunItem (deci/ay/i, on top of
   PatchGripRecoil and PatchGunWear: read dist/Decimation.jar) and ItemGasMaskDeci get Forge's showDurabilityBar /
   getDurabilityForDisplay, answered by fixes/DurabilityBars (gun wear, mask filter): vanilla's own bar on their icons;
+  `PatchHudPercents.java` (23 Oktober 2026, bug.md "Radiation percent not centred"): IngameHud.render (deci/g/j b, on top
+  of PatchMenuStats and PatchTurfNames: read dist/Decimation.jar) takes the x of its six outlined texts from
+  fixes/HudPercents.x, which centres the food, water, blood and health percents on their icons; it throws unless it finds
+  exactly six calls;
   `PatchVehicleArrows.java` (2026-10-11, bug.md vehicle entry): indirect player hits
   (arrows, thrown, TNT) on deci/ad/e take the health path, not pickup;
   `PatchInfectedAI.java` (2026-10-10, docs/performance.md): infected
@@ -1367,9 +1371,11 @@ of the last session:
   Traps: Decimation's ClientEventHandler.onItemTooltip clears the tooltip of guns, magazines and food at NORMAL priority
   and registers after us, so our lines for those items go in at EventPriority.LOW; the harness closes client screens
   with displayGuiScreen(null), which never tells the server: DevAutoTest now closes a container a mode left open on the
-  server and records "server screen left open" (radset leaves Decimation's gear container); a test that sets the held
-  slot on the server must select it on the client too (mc.thePlayer.inventory.currentItem), the saved world may hold
-  another.
+  server and records "server screen left open" (radset leaves Decimation's gear container), and clears the player's fall
+  distance (genwalk flies in creative: the next mode that switched to survival died on landing; DevTestArena.build
+  clears it too); a test that sets the held slot on the server must select it on the client too
+  (mc.thePlayer.inventory.currentItem), the saved world may hold another. Decimation's HUD percents (food, water, blood,
+  health) are centred by PatchHudPercents + fixes/HudPercents.
   Test trap (same day): a mode that switches the player to survival must put the game mode back (the world saves it);
   zombies, which assumed creative, had its player killed by a hulk and read nothing. Set weather strengths too
   (setRainStrength), not only the raining flag: isDaytime() counts the fading rain.

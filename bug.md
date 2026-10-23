@@ -31,8 +31,15 @@ not something we introduced or need to fix) see `documentation.md`.
 ### Radiation percent not centred on its icon (reported 23 Oktober 2026 by the user with a screenshot, FIXED on main)
 - Cause: RadiationHud drew the percent from 2x + 17 at half scale, Decimation's own start for its percents, which
   centres only a text as wide as "100%"; shorter texts sat left (-2.5 half pixels for "49%"). Fix: RadiationHud.textX
-  (2x + 30 less half the text's width). Decimation's food, water, blood and health percents keep their own start, so a
-  short value of theirs ("40%" on the health cross) still sits a little left: not changed (user's call).
+  (2x + 30 less half the text's width). Decimation's food, water, blood and health percents had the same fault ("40%" on
+  the health cross sat a little left); the user asked for those too ("centre decimation hud percents too"):
+  tools/patches/PatchHudPercents.java sends the x of IngameHud.render's six outlined texts through fixes/HudPercents.x,
+  which centres the four percents (y 60, 129, 199, 266, a text ending in "%") on their icon, the start plus 13.
+  Checks: unit HudPercentsTest; dev test radiation "Decimation's <food|water|blood|health> percent centred" RED (never
+  drawn through HudPercents, 8 FAIL) then GREEN (+0.0 / +0.5 half pixels); shot hud_percents_centred.png. One run of
+  that GREEN read the radiation icon's own draw cost 230.8 us (budget 200): a fresh game with the base jar just
+  deobfuscated, the counter averaging from its first frame; the same game warm read 116.6 us over 21,511 frames (about
+  102 us without the cold run), as before the patch.
 - Checks: unit RadiationHudTest; dev test radiation "percent centred on the icon" RED -2.5 then GREEN; shot
   docs/shots/durability_v0.70.0/radiation_half.png.
 
@@ -45,6 +52,12 @@ not something we introduced or need to fix) see `documentation.md`.
 - Fix: after each mode the harness looks at the player's container on the next server tick, records "server screen left
   open" with its class and closes it as Esc would (EntityPlayerMP.closeScreen). Not a player bug: Esc and the inventory
   key send the close packet [inferred from vanilla's closeScreen].
+- Same day, the second harness leftover: throwables failed "three grenades, one thrown" in batch A of two candidates
+  (an empty hand) and passed alone. The client log had "ProdTester fell from a high place" in that second: genwalk flies
+  in creative and leaves a large fall distance, throwables switches to survival, and the first landing on the arena
+  killed the player (the dead drop everything). Reproduced as `genwalk throwables`. Fix: DevTestArena.build clears the
+  fall distance when it teleports, and the harness clears it after each mode. (The later "fell out of the world" in the
+  same batch is gunsmith's own death check.)
 
 ### Inventory: no shift click (reported 22 Oktober 2026 by the user, FIXED on branch bugfix)
 - User: "fix where inventory cannot shift + click for fast item organize since decimation use custom design instead using

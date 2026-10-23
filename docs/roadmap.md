@@ -11,21 +11,20 @@ or `[not decided]`.
 
 A version number marks a milestone, a set of features with their fixes, not one release per number: patches and
 smaller releases sit in between (0.70.1, 0.71 ...).
-- **0.70.0** (next release, name proposed "Scavenger"): everything carried to prerelease since 0.66.1: loot rules A B C,
-  looted mags and guns with rounds, magazine unload, the radiation set and dose HUD, dark nights and moon phases,
-  durability and repair parts (bars on gun and gas mask icons, vests worn by every hit), the trader market by day, mobs
-  by place, a tracer on every NPC shot (Decimation's near white), armor x 0.8 against NPCs,
-  no Steve, inventory shift click, prop hardness, foregrip seat. Not in it: the gun converter's mesh guns (the package
+- **0.70.0** (next release, named "Scavenger", user 23 Oktober 2026): everything carried to prerelease since 0.66.1:
+  loot rules A B C, looted mags and guns with rounds, magazine unload, the radiation set and dose HUD, dark nights and
+  moon phases, durability and repair parts (bars on gun and gas mask icons, vests worn by every hit), the trader market
+  by day, mobs by place, a tracer on every NPC shot (Decimation's near white), HUD percents centred on their icons, armor
+  x 0.8 against NPCs, no Steve, inventory shift click, prop hardness, foregrip seat. Not in it: the gun converter's mesh guns (the package
   loader is main only), multiplayer.
 - **0.80**: quests (docs/superpowers/specs/2026-10-22-events-quests-design.md, draft).
-- **0.90**: the cities revamped and changed (docs/city_replacement.md).
+- **0.90**: the start of the city work (docs/city_replacement.md): the revamp begins on main and players do not get it
+  in 0.90 (user, 23 Oktober 2026: "0.90 no revamped city, keep on 1.0.0, 0.90 is begin of starting the city task").
 - **0.95**: optimizing every part; multiplayer tested as a full QA pass (user: "multiplayer still have many bug so in
   that feat we act like full QA tester"), on main, not in a pre-release.
-- **1.0.0**: the first release (docs/release_1.0.md), with multiplayer: "still keep release on 1.0.0 since its main
-  promotion and one of main feature" (user, 23 Oktober 2026). The 18 Oktober rule stands for multiplayer: no jar a
+- **1.0.0**: the first release (docs/release_1.0.md), with multiplayer and the revamped cities: "still keep release on
+  1.0.0 since its main promotion and one of main feature" (user, 23 Oktober 2026). The 18 Oktober rule stands for multiplayer: no jar a
   player downloads before 1.0.0 holds multiplayer code.
-- OPEN, asked 23 Oktober 2026: whether 0.90 ships the revamped cities to players or they stay on main until 1.0.0 (the
-  18 Oktober rule had cities and multiplayer together in 1.0.0).
 
 ## Open bugs
 

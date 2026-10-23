@@ -1892,8 +1892,9 @@ Spec docs/superpowers/specs/2026-10-23-gun-mesh-design.md; everything in docs/gu
 - Checks (dev client): durability 27 PASS (bars: worn gun 0.5, half filter 0.5, empty filter 1.0, full filter none, new
   gun none, vest 0.5; tooltip line; vest wear and its client copy), radiation 16, radset 39, tracer 3, glstack, gun: 88
   PASS.
-  Hotbar picture docs/shots/durability_v0.70.0/bars_hotbar_4x.png. Cost: two tag reads for each drawn gun or mask, no
-  allocation [inferred from the code; not timed].
+  Hotbar picture docs/shots/durability_v0.70.0/bars_hotbar_4x.png. Cost measured (durability "bar hooks cost", dev
+  client, median of 5 batches of 200,000 after warm up): 55 ns a stack for both calls, so a full inventory of 45 guns and
+  masks costs about 2.5 us a frame; no allocation.
 
 ## NPC tracers white again (23 Oktober 2026, user)
 - User: "oh yeah pls make the npc shot white tracer again, just changing the color only, the tracer each shot still intact".
