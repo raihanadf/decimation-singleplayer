@@ -175,3 +175,5 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [x] Decimation's food, water, blood and health percents centred on their icons (PatchHudPercents; user 23 Oktober 2026)
 - [~] release 0.70.0 "Scavenger": fourth candidate 14399c4b checked (server, client with OptiFine, real update from 0.66.1); waiting for the user's go to publish
 - [ ] more clothing slots (docs/ideas.md 61)
+- [x] katana: 17 damage, hits twice as wide, Fire Aspect (anvil) burns the blade after the catch; knives looking down (branch feature/katana-fire-reach)
+- [ ] user: the katana's burn and the look down fix in game
