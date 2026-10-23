@@ -179,3 +179,6 @@ and the linked docs; this file only names each item. Keep it current: add an ite
 - [ ] user: the katana's burn and the look down fix in game
 - [x] gun draws: every gun its own way in by category, its rack at the end (fixes/GunDraw; dev test gundraw; branch feature/gun-draw)
 - [ ] user: the gun draws in game
+- [x] Fabric port (Legacy Fabric 1.7.10 + Forge applied ahead, docs/fabric_port.md): menu, checks, gun, zombies, loot pass on Fabric; OptiFine 1.7.10 built in: city view 62 / 71 -> 114 / 114 fps; Prism instance "Decimation Fabric" runs with it
+- [x] FO style modules for 1.7.10 (optimized/, "DeciRemnant Optimized": ChunkVBO, EntityCulling, Dynamic FPS, FastQuit; fabric_port.md item 10): +11 to +38 % on 3 of 4 city views at 1440 x 810 over OptiFine alone; leaving a world 647 ms -> about 10 ms; dev tests pass with them; in the Prism "Decimation Fabric" instance (23 Oktober 2026)
+- [ ] user: play the Prism "Decimation Fabric" instance
